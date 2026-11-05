@@ -1,0 +1,440 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:," />
+    <title>数学II 第6章 微分法と積分法 自習ページ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@600;800&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=STIX+Two+Math&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --bg: #f4f1ea;
+        --surface: #ffffff;
+        --surface-2: #faf7f0;
+        --ink: #262319;
+        --muted: #6f6a5c;
+        --line: #ddd5c2;
+        --line-strong: #b9b09a;
+        --accent: #bf3a26;
+        --accent-deep: #9c2b1a;
+        --accent-soft: #fbeae5;
+        --blue: #2f5da8;
+        --green: #2e7d4f;
+        --shadow: 0 1px 2px rgba(60, 50, 20, .06), 0 8px 24px rgba(60, 50, 20, .07);
+        color-scheme: light dark;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #141519;
+          --surface: #1e2026;
+          --surface-2: #23252d;
+          --ink: #ece7da;
+          --muted: #a39d8d;
+          --line: #35383f;
+          --line-strong: #555a66;
+          --accent: #e8705a;
+          --accent-deep: #f0927d;
+          --accent-soft: #3a2420;
+          --blue: #84aaea;
+          --green: #74c48f;
+          --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+        }
+      }
+      * { box-sizing: border-box; }
+      html { -webkit-text-size-adjust: 100%; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: "Zen Kaku Gothic New", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+        font-size: 16px;
+        line-height: 1.75;
+      }
+      .wrap { max-width: 880px; margin: 0 auto; padding: 20px 16px 64px; }
+
+      /* ---------- header ---------- */
+      .doc-head { border-bottom: 3px double var(--line-strong); padding-bottom: 14px; margin-bottom: 16px; }
+      .doc-head .exam-line {
+        display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap;
+        font-size: 13px; color: var(--muted); font-weight: 700; letter-spacing: .08em;
+      }
+      h1 {
+        font-family: "Shippori Mincho B1", "Hiragino Mincho ProN", serif;
+        font-weight: 800; font-size: clamp(26px, 6vw, 38px); line-height: 1.25;
+        margin: 6px 0 4px;
+      }
+      .doc-head .sub { margin: 0; color: var(--muted); font-size: 14.5px; }
+
+      /* ---------- math notation ---------- */
+      .m { font-family: "STIX Two Math", "Shippori Mincho B1", serif; white-space: nowrap; }
+      .m i { font-style: italic; }
+
+      /* ---------- how to use ---------- */
+      .howto {
+        display: flex; gap: 10px; align-items: flex-start;
+        background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
+        padding: 12px 14px; margin: 0 0 26px; box-shadow: var(--shadow);
+        font-size: 14.5px;
+      }
+      .howto .pen {
+        flex: 0 0 auto; width: 30px; height: 30px; border-radius: 50%;
+        background: var(--accent); color: #fff; display: grid; place-items: center;
+        font-family: "Shippori Mincho B1", serif; font-weight: 800; font-size: 16px; margin-top: 2px;
+      }
+      .howto p { margin: 0; }
+      .howto strong { color: var(--accent-deep); }
+
+      /* ---------- group headings ---------- */
+      .group { margin-bottom: 30px; }
+      .group-head {
+        display: flex; align-items: baseline; gap: 12px;
+        margin: 0 0 12px; padding-bottom: 6px;
+        border-bottom: 2px solid var(--line-strong);
+      }
+      .group-head .g-no {
+        font-family: "Shippori Mincho B1", serif; font-weight: 800; font-size: 15px;
+        color: #fff; background: var(--ink); border-radius: 5px; padding: 1px 10px; line-height: 1.5;
+        white-space: nowrap;
+      }
+      .group-head h2 {
+        font-family: "Shippori Mincho B1", "Hiragino Mincho ProN", serif;
+        font-weight: 800; font-size: clamp(19px, 4.5vw, 23px); line-height: 1.3; margin: 0;
+      }
+
+      /* ---------- unit cards ---------- */
+      .cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+      @media (max-width: 620px) { .cards { grid-template-columns: 1fr; } }
+      .card {
+        display: flex; flex-direction: column; gap: 6px;
+        background: var(--surface); border: 1.5px solid var(--line); border-radius: 12px;
+        box-shadow: var(--shadow); padding: 16px 18px 14px;
+        color: var(--ink); text-decoration: none; line-height: 1.5;
+        transition: border-color .15s ease, transform .15s ease;
+      }
+      a.card:hover { border-color: var(--accent); transform: translateY(-2px); }
+      a.card:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+      .card .c-top { display: flex; align-items: center; gap: 10px; }
+      .card .c-num {
+        font-family: "Shippori Mincho B1", serif; font-weight: 800; font-size: 21px;
+        border: 2.5px solid var(--ink); border-radius: 5px; padding: 0 9px; line-height: 1.35;
+        white-space: nowrap;
+      }
+      a.card:hover .c-num { border-color: var(--accent); color: var(--accent); }
+      .card .c-num.kenkyu { font-size: 15px; padding: 3px 8px; }
+      .card .c-field {
+        font-family: "Shippori Mincho B1", serif; font-weight: 800; font-size: 19px;
+      }
+      .card .c-page {
+        margin-left: auto; font-size: 12.5px; font-weight: 700; color: var(--muted);
+        border: 1px solid var(--line); border-radius: 999px; padding: 1px 10px; white-space: nowrap;
+      }
+      .card .c-desc { margin: 0; font-size: 14px; color: var(--muted); }
+      .card .c-go {
+        margin-top: auto; padding-top: 4px;
+        font-size: 14px; font-weight: 700; color: var(--accent-deep);
+        display: flex; align-items: center; gap: 6px;
+      }
+      .card .c-go .arr { transition: transform .15s ease; }
+      a.card:hover .c-go .arr { transform: translateX(3px); }
+
+      /* ---------- coming soon cards ---------- */
+      .card.soon {
+        background: var(--surface-2); box-shadow: none;
+        border-style: dashed; color: var(--muted);
+      }
+      .card.soon .c-num { border-color: var(--line-strong); color: var(--muted); }
+      .card.soon .c-field { color: var(--muted); }
+      .card .c-soon {
+        margin-top: auto; padding-top: 4px;
+        display: flex; align-items: center;
+      }
+      .card .soon-badge {
+        font-size: 12.5px; font-weight: 700; color: var(--muted);
+        border: 1px solid var(--line-strong); border-radius: 999px; padding: 1px 12px;
+      }
+
+      .foot {
+        margin-top: 26px; padding-top: 12px; border-top: 1px solid var(--line);
+        font-size: 13px; color: var(--muted);
+      }
+      .foot p { margin: 0; }
+      .foot .index-link { margin: 0 0 14px; font-size: 14px; }
+      .foot .index-link a { color: var(--accent-deep); font-weight: 700; }
+      .foot .index-link a:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+      .portal-back {
+        display: inline-flex; align-items: center; gap: 8px;
+        margin-bottom: 14px;
+        background: var(--ink); color: var(--bg);
+        font-size: 14.5px; font-weight: 700; line-height: 1.5;
+        text-decoration: none;
+        border: 1.5px solid var(--ink); border-radius: 10px;
+        padding: 10px 18px;
+        transition: background .15s ease, color .15s ease, border-color .15s ease;
+      }
+      .portal-back:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
+      .portal-back:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+      .portal-back .arr { transition: transform .15s ease; }
+      .portal-back:hover .arr { transform: translateX(-3px); }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="doc-head">
+        <div class="exam-line">
+          <span>数学II 第6章</span>
+          <span>Nanryo mathematics portal</span>
+        </div>
+        <h1>数学II 第6章 微分法と積分法 自習ページ</h1>
+        <p class="sub">教科書の自習用ページ</p>
+      </header>
+
+      <div class="howto">
+        <div class="pen">!</div>
+        <p>
+          このページは、教科書 第6章『微分法と積分法』の自習用まとめです。各カードから節ごとのページへ進めます。各ページでは、例題と練習問題が<strong>「次へ」</strong>ボタンでヒントを1つずつ開く形式になっています。答えは最後に表示されるので、まず自分で考えてみましょう。
+        </p>
+      </div>
+
+      <section class="group" aria-labelledby="g1">
+        <div class="group-head">
+          <span class="g-no">第1節</span>
+          <h2 id="g1">微分係数と導関数</h2>
+        </div>
+        <nav class="cards" aria-label="第1節の項目一覧">
+          <a class="card" href="calc-1.html">
+            <span class="c-top">
+              <span class="c-num">1</span>
+              <span class="c-field">微分係数（1）平均変化率と極限値</span>
+              <span class="c-page">教科書 p.178〜179</span>
+            </span>
+            <p class="c-desc">平均変化率の意味と求め方、<span class="m"><i>h</i>→0</span> のときの極限値の計算。微分係数への入り口</p>
+            <span class="c-go">自習ページを開く <span class="arr">→</span></span>
+          </a>
+
+          <a class="card" href="calc-2.html">
+            <span class="c-top">
+              <span class="c-num">1</span>
+              <span class="c-field">微分係数（2）微分係数と接線の傾き</span>
+              <span class="c-page">教科書 p.180〜181</span>
+            </span>
+            <p class="c-desc">微分係数 <span class="m"><i>f</i>′(<i>a</i>)</span> の定義と、曲線 <span class="m"><i>y</i>=<i>f</i>(<i>x</i>)</span> 上の点における接線の傾きとの関係</p>
+            <span class="c-go">自習ページを開く <span class="arr">→</span></span>
+          </a>
+
+          <a class="card" href="calc-3.html">
+            <span class="c-top">
+              <span class="c-num">2</span>
+              <span class="c-field">導関数とその計算（1）導関数</span>
+              <span class="c-page">教科書 p.182〜183</span>
+            </span>
+            <p class="c-desc">導関数 <span class="m"><i>f</i>′(<i>x</i>)</span> の定義と、定義にしたがって導関数を求める計算。<span class="m">(<i>x</i><sup><i>n</i></sup>)′=<i>nx</i><sup><i>n</i>−1</sup></span> の公式</p>
+            <span class="c-go">自習ページを開く <span class="arr">→</span></span>
+          </a>
+
+          <a class="card" href="calc-4.html">
+            <span class="c-top">
+              <span class="c-num">2</span>
+              <span class="c-field">導関数とその計算（2）関数の微分</span>
+              <span class="c-page">教科書 p.184〜186</span>
+            </span>
+            <p class="c-desc">和・差・実数倍の微分の公式を使って、多項式の導関数を計算する</p>
+            <span class="c-go">自習ページを開く <span class="arr">→</span></span>
+          </a>
+
+          <a class="card" href="calc-5.html">
+            <span class="c-top">
+              <span class="c-num">2</span>
+              <span class="c-field">導関数とその計算（3）いろいろな関数の導関数</span>
+              <span class="c-page">教科書 p.186〜187</span>
+            </span>
+            <p class="c-desc">定数関数の導関数と、積の形の式を展開してから微分するなど、いろいろな関数の微分</p>
+            <span class="c-go">自習ページを開く <span class="arr">→</span></span>
+          </a>
+
+          <a class="card" href="calc-6.html">
+            <span class="c-top">
+              <span class="c-num">3</span>
+              <span class="c-field">接線の方程式</span>
+              <span class="c-page">教科書 p.188〜189</span>
+            </span>
+            <p class="c-desc">接線の傾き＝微分係数。曲線上の点における接線の方程式 <span class="m"><i>y</i>−<i>f</i>(<i>a</i>)=<i>f</i>′(<i>a</i>)(<i>x</i>−<i>a</i>)</span> の求め方</p>
+            <span class="c-go">自習ページを開く <span class="arr">→</span></span>
+          </a>
+        </nav>
+      </section>
+
+      <section class="group" aria-labelledby="g2">
+        <div class="group-head">
+          <span class="g-no">第2節</span>
+          <h2 id="g2">関数の値の変化</h2>
+        </div>
+        <nav class="cards" aria-label="第2節の項目一覧">
+          <a class="card" href="calc-7.html">
+            <span class="c-top">
+              <span class="c-num">4</span>
+              <span class="c-field">関数の増減と極大・極小（1）増減と増減表</span>
+              <span class="c-page">教科書 p.191〜192</span>
+            </span>
+            <p class="c-desc">導関数 <span class="m"><i>f</i>′(<i>x</i>)</span> の符号と関数の増減の関係、増減表の書き方</p>
+            <span class="c-go">自習ページを開く <span class="arr">→</span></span>
+          </a>
+
+          <a class="card" href="calc-8.html">
+            <span class="c-top">
+              <span class="c-num">4</span>
+              <span class="c-field">関数の増減と極大・極小（2）極大・極小</span>
+              <span class="c-page">教科書 p.193〜195</span>
+            </span>
+            <p class="c-desc">極大値・極小値の意味と、増減表から極値を求める手順。3次関数のグラフのかき方</p>
+            <span class="c-go">自習ページを開く <span class="arr">→</span></span>
+          </a>
+
+          <a class="card" href="calc-9.html">
+            <span class="c-top">
+              <span class="c-num kenkyu">研究</span>
+              <span class="c-field">4次関数のグラフ</span>
+              <span class="c-page">教科書 p.196</span>
+            </span>
+            <p class="c-desc">4次関数についても増減表をかいて、グラフの概形を調べる</p>
+            <span class="c-go">自習ページを開く <span class="arr">→</span></span>
+          </a>
+
+          <a class="card" href="calc-10.html">
+            <span class="c-top">
+              <span class="c-num">5</span>
+              <span class="c-field">関数の増減・グラフの応用（1）最大・最小と応用</span>
+              <span class="c-page">教科書 p.197〜198</span>
+            </span>
+            <p class="c-desc">区間における最大値・最小値の求め方と、面積・体積などの最大・最小への応用</p>
+            <span class="c-go">自習ページを開く <span class="arr">→</span></span>
+          </a>
+
+          <a class="card" href="calc-11.html">
+            <span class="c-top">
+              <span class="c-num">5</span>
+              <span class="c-field">関数の増減・グラフの応用（2）方程式・不等式への応用</span>
+              <span class="c-page">教科書 p.199〜200</span>
+            </span>
+            <p class="c-desc">グラフと <span class="m"><i>x</i></span> 軸の共有点から方程式の実数解の個数を調べる方法と、不等式の証明への利用</p>
+            <span class="c-go">自習ページを開く <span class="arr">→</span></span>
+          </a>
+        </nav>
+      </section>
+
+      <section class="group" aria-labelledby="g3">
+        <div class="group-head">
+          <span class="g-no">第3節</span>
+          <h2 id="g3">積分法</h2>
+        </div>
+        <nav class="cards" aria-label="第3節の項目一覧">
+          <a class="card" href="calc-12.html">
+            <span class="c-top">
+              <span class="c-num">6</span>
+              <span class="c-field">不定積分（1）原始関数と不定積分</span>
+              <span class="c-page">教科書 p.202〜203</span>
+            </span>
+            <p class="c-desc">原始関数と不定積分の意味、<span class="m">∫<i>x</i><sup><i>n</i></sup> <i>dx</i></span> の公式と積分定数 <span class="m"><i>C</i></span></p>
+            <span class="c-go">自習ページを開く <span class="arr">→</span></span>
+          </a>
+
+          <a class="card" href="calc-13.html">
+            <span class="c-top">
+              <span class="c-num">6</span>
+              <span class="c-field">不定積分（2）不定積分の性質</span>
+              <span class="c-page">教科書 p.204〜205</span>
+            </span>
+            <p class="c-desc">和・差・実数倍の不定積分の計算と、条件（通る点や微分係数）から関数を決める問題</p>
+            <span class="c-go">自習ページを開く <span class="arr">→</span></span>
+          </a>
+
+          <a class="card" href="calc-14.html">
+            <span class="c-top">
+              <span class="c-num">7</span>
+              <span class="c-field">定積分（1）定積分の計算</span>
+              <span class="c-page">教科書 p.206〜208</span>
+            </span>
+            <p class="c-desc">定積分の定義と、<span class="m">∫<sub><i>a</i></sub><sup><i>b</i></sup> <i>f</i>(<i>x</i>) <i>dx</i>=[<i>F</i>(<i>x</i>)]<sub><i>a</i></sub><sup><i>b</i></sup></span> を使った計算</p>
+            <span class="c-go">自習ページを開く <span class="arr">→</span></span>
+          </a>
+
+          <a class="card" href="calc-15.html">
+            <span class="c-top">
+              <span class="c-num">7</span>
+              <span class="c-field">定積分（2）定積分の性質と微分法</span>
+              <span class="c-page">教科書 p.208〜210</span>
+            </span>
+            <p class="c-desc">定積分の性質（区間に関する性質など）と、定積分で表された関数の導関数</p>
+            <span class="c-go">自習ページを開く <span class="arr">→</span></span>
+          </a>
+
+          <a class="card" href="calc-16.html">
+            <span class="c-top">
+              <span class="c-num">8</span>
+              <span class="c-field">定積分と面積（1）定積分と面積</span>
+              <span class="c-page">教科書 p.211〜214</span>
+            </span>
+            <p class="c-desc">曲線と <span class="m"><i>x</i></span> 軸の間の面積と定積分の関係。<span class="m"><i>x</i></span> 軸の下側にある部分の面積の求め方</p>
+            <span class="c-go">自習ページを開く <span class="arr">→</span></span>
+          </a>
+
+          <a class="card" href="calc-17.html">
+            <span class="c-top">
+              <span class="c-num">8</span>
+              <span class="c-field">定積分と面積（2）2つの曲線の間の面積</span>
+              <span class="c-page">教科書 p.215〜216</span>
+            </span>
+            <p class="c-desc">2つの曲線に囲まれた部分の面積は、（上の関数の式）−（下の関数の式）の定積分で求める</p>
+            <span class="c-go">自習ページを開く <span class="arr">→</span></span>
+          </a>
+
+          <a class="card" href="calc-18.html">
+            <span class="c-top">
+              <span class="c-num kenkyu">研究</span>
+              <span class="c-field">放物線・3次関数の面積</span>
+              <span class="c-page">教科書 p.217〜218</span>
+            </span>
+            <p class="c-desc">放物線と直線、放物線どうし、3次関数と接線などが囲む面積の計算</p>
+            <span class="c-go">自習ページを開く <span class="arr">→</span></span>
+          </a>
+        </nav>
+      </section>
+
+      <section class="group" aria-labelledby="g4">
+        <div class="group-head">
+          <span class="g-no">演習</span>
+          <h2 id="g4">問題演習</h2>
+        </div>
+        <nav class="cards" aria-label="問題演習の一覧">
+          <a class="card" href="calc-hoshu.html">
+            <span class="c-top">
+              <span class="c-num kenkyu">補充</span>
+              <span class="c-field">補充問題</span>
+              <span class="c-page">教科書 p.190・201・219</span>
+            </span>
+            <p class="c-desc">第1節（p.190）・第2節（p.201）・第3節（p.219）の補充問題をまとめて演習し、節ごとの理解を確かめる</p>
+            <span class="c-go">自習ページを開く <span class="arr">→</span></span>
+          </a>
+
+          <a class="card" href="calc-shomatsu.html">
+            <span class="c-top">
+              <span class="c-num kenkyu">章末</span>
+              <span class="c-field">章末問題</span>
+              <span class="c-page">教科書 p.220〜221</span>
+            </span>
+            <p class="c-desc">第6章の総まとめ。微分法と積分法の章末問題に挑戦する</p>
+            <span class="c-go">自習ページを開く <span class="arr">→</span></span>
+          </a>
+        </nav>
+      </section>
+
+      <footer class="foot">
+        <p class="index-link"><a href="kyokasho.html">← 教科書解説の一覧に戻る</a></p>
+        <a class="portal-back" href="index.html"><span class="arr">←</span> Nanryo mathematics portal に戻る</a>
+        <p>まずは第1節の「1 微分係数（1）平均変化率と極限値」から順に進めましょう。分からなかった問題は、ヒントを最後まで開いたあと、もう一度ヒントなしで解き直してみましょう。</p>
+      </footer>
+    </div>
+  </body>
+</html>

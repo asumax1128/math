@@ -1,0 +1,924 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:," />
+    <title>数学II 2 導関数とその計算（1）導関数 自習ページ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Serif+JP:wght@700;900&family=STIX+Two+Math&display=swap" rel="stylesheet" />
+    <style>
+      :root{
+        --bg:#f4f7f5;
+        --surface:#ffffff;
+        --surface2:#eef4f1;
+        --ink:#1d2a26;
+        --ink-soft:#43554e;
+        --line:#cfddd6;
+        --accent:#0e7a5f;
+        --accent-deep:#0a5c48;
+        --accent-soft:#e2f2ec;
+        --blue:#1f6fb4;
+        --orange:#d96c1e;
+        --hint-bg:#fff6cf;
+        --hint-line:#e3c84e;
+        --hint-ink:#4d4210;
+        --ans-bg:#e6f6ea;
+        --ans-line:#4caf6d;
+        --ans-ink:#14401f;
+        --bar-bg:rgba(255,255,255,.94);
+        --shadow:0 2px 10px rgba(20,50,40,.08);
+      }
+      @media (prefers-color-scheme: dark){
+        :root{
+          --bg:#101714;
+          --surface:#1a2420;
+          --surface2:#22302a;
+          --ink:#e8f0ec;
+          --ink-soft:#b3c4bc;
+          --line:#3a4a43;
+          --accent:#3cb894;
+          --accent-deep:#8fd8c0;
+          --accent-soft:#1d332b;
+          --blue:#6cb2e8;
+          --orange:#f09a4e;
+          --hint-bg:#3d3617;
+          --hint-line:#a68e2e;
+          --hint-ink:#f5e9bd;
+          --ans-bg:#17301e;
+          --ans-line:#3f9957;
+          --ans-ink:#c9eed2;
+          --bar-bg:rgba(20,28,24,.94);
+          --shadow:0 2px 10px rgba(0,0,0,.4);
+        }
+      }
+      *{box-sizing:border-box}
+      html{scroll-behavior:smooth}
+      @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} *{transition:none!important;animation:none!important} }
+      body{
+        margin:0; background:var(--bg); color:var(--ink);
+        font-family:"Noto Sans JP",system-ui,-apple-system,"Hiragino Kaku Gothic ProN",sans-serif;
+        line-height:1.85; font-size:16px;
+        padding-bottom:150px;
+      }
+      .wrap{max-width:780px;margin:0 auto;padding:0 16px 8px}
+
+      /* ---------- ヘッダー ---------- */
+      header{padding:26px 0 6px}
+      .pills{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+      .badge{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:700;font-size:13px;
+        padding:4px 12px;border-radius:999px;letter-spacing:.04em;
+      }
+      .badge.num{background:var(--blue)}
+      @media (prefers-color-scheme: dark){ .badge{color:#0c1712} }
+      h1{
+        font-family:"Noto Serif JP",serif;font-weight:900;font-size:32px;line-height:1.3;
+        margin:12px 0 4px;letter-spacing:.02em;
+      }
+      .page-meta{color:var(--ink-soft);font-size:14px;font-weight:500}
+      .page-meta b{color:var(--accent-deep)}
+
+      /* ---------- 使い方 ---------- */
+      .howto{
+        background:var(--accent-soft);border:1.5px solid var(--accent);border-radius:14px;
+        padding:14px 18px;margin:18px 0 26px;box-shadow:var(--shadow);
+      }
+      .howto h2{margin:0 0 6px;font-size:16px;color:var(--accent-deep)}
+      .howto ol{margin:0;padding-left:1.4em}
+      .howto li{margin:2px 0}
+      .howto .next-word{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:700;border-radius:6px;
+        padding:0 8px;font-size:.92em;
+      }
+      @media (prefers-color-scheme: dark){ .howto .next-word{color:#0c1712} }
+
+      /* ---------- セクション見出し ---------- */
+      .sec-head{display:flex;align-items:center;gap:10px;margin:34px 0 12px}
+      .sec-tag{
+        background:var(--ink);color:var(--bg);font-weight:900;font-size:14px;border-radius:8px;
+        padding:3px 10px;white-space:nowrap;
+      }
+      .sec-head h2{font-size:21px;margin:0;font-weight:900}
+      .sec-head .pno{margin-left:auto;color:var(--ink-soft);font-size:13px;white-space:nowrap}
+
+      .card{
+        background:var(--surface);border:1px solid var(--line);border-radius:14px;
+        padding:18px 18px 8px;margin:0 0 18px;box-shadow:var(--shadow);
+      }
+      .card p{margin:0 0 12px}
+      .def{
+        background:var(--surface2);border-radius:10px;padding:12px 16px;margin:0 0 14px;
+      }
+      .def p:last-child{margin-bottom:0}
+      .key{font-weight:900;color:var(--accent-deep)}
+      figure{margin:6px 0 14px}
+      figure svg{width:100%;height:auto;display:block}
+      figcaption{font-size:13.5px;color:var(--ink-soft);text-align:center;margin-top:6px;line-height:1.6}
+      .figbox{background:var(--surface2);border-radius:12px;padding:12px 10px 6px}
+
+      /* ---------- 数式 ---------- */
+      .formula{
+        text-align:center;font-size:18.5px;font-weight:700;letter-spacing:.02em;
+        background:var(--surface2);border-radius:10px;padding:12px 8px;margin:0 0 14px;line-height:2;
+      }
+      .calc{
+        text-align:center;font-weight:700;font-size:17.5px;letter-spacing:.02em;
+        margin:2px 0 10px;line-height:2.1;
+      }
+      .frac{
+        display:inline-flex;flex-direction:column;text-align:center;vertical-align:middle;
+        margin:0 .12em;font-size:.8em;line-height:1.2;font-weight:700;
+      }
+      .frac .num{border-bottom:1.6px solid currentColor;padding:0 .22em}
+      .frac .den{padding:0 .22em}
+      .limd{
+        display:inline-flex;flex-direction:column;text-align:center;vertical-align:middle;
+        line-height:1.02;margin:0 .08em;
+      }
+      .limd .lim-b{font-size:.6em;font-weight:700}
+      .card p,.card li,figcaption,.slider-state{
+        font-family:"STIX Two Math","Noto Sans JP",sans-serif;
+      }
+      sup{font-size:.68em}
+
+      /* ---------- 問題カード（ヒント式） ---------- */
+      .prob{border:2px solid var(--line);transition:border-color .2s}
+      .prob.active{border-color:var(--accent)}
+      .prob-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+      .prob-tag{
+        font-weight:900;font-size:14px;border-radius:8px;padding:3px 12px;color:#fff;background:var(--blue);
+      }
+      .prob-tag.ren{background:#c2452d}
+      .prob-tag.kai{background:var(--accent)}
+      @media (prefers-color-scheme: dark){ .prob-tag{color:#0d141b} .prob-tag.ren{color:#1c0f0a} .prob-tag.kai{color:#0c1712} }
+      .prob-state{margin-left:auto;font-size:13px;font-weight:700;color:var(--ink-soft)}
+      .dots{display:flex;gap:6px;align-items:center}
+      .dot{width:11px;height:11px;border-radius:50%;border:2px solid var(--ink-soft);background:transparent}
+      .dot.on{background:var(--accent);border-color:var(--accent)}
+      .dot.ans.on{background:#2f9e4f;border-color:#2f9e4f}
+      .prob-q{font-weight:700;font-size:16.5px;margin:0 0 10px}
+      .prob-q .sub{font-weight:700}
+
+      .step{display:none;margin:0 0 12px;border-radius:12px;padding:12px 16px 4px;scroll-margin-bottom:190px}
+      .step.show{display:block;animation:pop .25s ease}
+      @keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+      .step h3{margin:0 0 6px;font-size:14px;font-weight:900;letter-spacing:.05em}
+      .step p{margin:0 0 10px}
+      .hint{background:var(--hint-bg);border:1.5px solid var(--hint-line);color:var(--hint-ink)}
+      .hint h3{color:inherit}
+      .answer{background:var(--ans-bg);border:1.5px solid var(--ans-line);color:var(--ans-ink)}
+      .answer .big{font-size:18px;font-weight:900;text-align:center;margin:4px 0 10px}
+      .note{font-size:14px;border-top:1px dashed currentColor;padding-top:8px;margin-top:2px}
+      .prob-done{
+        display:none;text-align:center;font-weight:900;color:var(--accent-deep);
+        padding:2px 0 12px;font-size:15px;
+      }
+      .prob-done.show{display:block}
+
+      /* ---------- タブ ---------- */
+      .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}
+      .tab{
+        font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;
+        border:2px solid var(--line);background:var(--surface);color:var(--ink);
+        border-radius:999px;padding:6px 18px;
+      }
+      .tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+      @media (prefers-color-scheme: dark){ .tab[aria-selected="true"]{color:#0c1712} }
+      .tabpanel{display:none}
+      .tabpanel.show{display:block}
+
+      /* ---------- まとめ ---------- */
+      .summary{border:2px solid var(--accent);background:var(--accent-soft)}
+      .summary h2{margin:0 0 8px;font-size:18px;color:var(--accent-deep)}
+      .summary ul{margin:0;padding-left:1.3em}
+      .summary li{margin:4px 0}
+      .summary li.gate{display:none}
+      .summary li.gate.show{display:list-item}
+
+      /* ---------- フッター ---------- */
+      footer{margin:30px 0 10px;text-align:center}
+      .foot-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+      .back-btn{
+        display:inline-block;text-decoration:none;font-weight:700;color:var(--ink);
+        border:2px solid var(--line);background:var(--surface);border-radius:12px;padding:12px 26px;
+      }
+      .foot-note{color:var(--ink-soft);font-size:13px;margin-top:12px}
+
+      /* ---------- 下部固定バー ---------- */
+      .ctrl-bar{
+        position:fixed;left:0;right:0;bottom:0;z-index:50;background:var(--bar-bg);
+        backdrop-filter:blur(8px);border-top:1.5px solid var(--line);
+        padding:10px 14px calc(10px + env(safe-area-inset-bottom));
+      }
+      .ctrl-inner{max-width:780px;margin:0 auto}
+      .ctrl-label{font-size:13px;font-weight:700;color:var(--ink-soft);margin:0 0 8px;text-align:center}
+      .ctrl-label b{color:var(--accent-deep)}
+      .prog-track{
+        height:8px;background:var(--surface2);border:1px solid var(--line);
+        border-radius:999px;overflow:hidden;margin:0 0 10px;
+      }
+      .prog-fill{height:100%;width:0;background:var(--accent);border-radius:999px;transition:width .3s ease}
+      .ctrl-btns{display:flex;gap:10px}
+      .btn{
+        font-family:inherit;cursor:pointer;border-radius:12px;font-weight:900;border:2px solid var(--line);
+        background:var(--surface);color:var(--ink);padding:12px 14px;font-size:15px;
+      }
+      .btn-next{
+        flex:1;background:var(--accent);border-color:var(--accent);color:#fff;font-size:17px;padding:12px;
+      }
+      @media (prefers-color-scheme: dark){ .btn-next{color:#0c1712} }
+      .btn-next:disabled{background:var(--surface2);border-color:var(--line);color:var(--ink-soft);cursor:default}
+      .btn:active{transform:scale(.98)}
+
+      /* SVG内の文字・線 */
+      .svg-txt{font-family:"STIX Two Math","Noto Sans JP",sans-serif;font-weight:700;fill:var(--ink)}
+      .svg-txt-soft{font-family:"STIX Two Math","Noto Sans JP",sans-serif;fill:var(--ink-soft)}
+      .grid-line{stroke:var(--line);stroke-width:1}
+      .axis-line{stroke:var(--ink-soft);stroke-width:1.6}
+      .curve{fill:none;stroke:var(--accent);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+      .tangent{fill:none;stroke:var(--orange);stroke-width:2.5;stroke-linecap:round}
+      .gd{stroke:var(--ink-soft);stroke-width:1.2;stroke-dasharray:4 4;opacity:.65}
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+
+      <!-- ================= ヘッダー ================= -->
+      <header>
+        <div class="pills">
+          <span class="badge">数学II　第6章　微分法</span>
+          <span class="badge num">2（1）</span>
+        </div>
+        <h1>導関数</h1>
+        <p class="page-meta">教科書 <b>p.182〜183</b>　｜　2 導関数とその計算（1）導関数</p>
+      </header>
+
+      <!-- ================= 使い方 ================= -->
+      <section class="howto" aria-label="使い方">
+        <h2>このページの使い方（自習の流れ）</h2>
+        <ol>
+          <li><b>解説</b>を読んで、導関数の考え方をつかむ</li>
+          <li><b>例題・練習</b>は、まず自分の力で考える ― 分からなければ下の <span class="next-word">次へ</span> でヒントを1つずつ開く</li>
+          <li>答えは、<b>最後のステップ</b>で初めて出てくるよ</li>
+        </ol>
+      </section>
+
+      <!-- ================= 解説A ================= -->
+      <div class="sec-head">
+        <span class="sec-tag">解説 A</span>
+        <h2>導関数とは</h2>
+        <span class="pno">教科書 p.182</span>
+      </div>
+
+      <section class="card prob active" id="prob-kaisetsu" data-flow="kaisetsu" data-label="解説A">
+        <div class="prob-head">
+          <span class="prob-tag kai">解説 A</span>
+          <div class="dots" aria-hidden="true">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span>
+          </div>
+          <span class="prob-state">ヒント 0 / 3</span>
+        </div>
+        <p class="prob-q">関数 f(x)＝x<sup>2</sup> について、x＝a における微分係数 f′(a) を、定義にしたがって計算してみよう。</p>
+        <p>前の項で学んだとおり、微分係数は <b>x＝a における接線の傾き</b>だった。まず図でイメージを確認しよう。</p>
+        <figure>
+          <div class="figbox">
+            <svg viewBox="0 0 520 300" role="img" aria-label="放物線 y＝x の2乗と、点(a, aの2乗)における接線の図">
+              <line x1="30" y1="252" x2="492" y2="252" class="axis-line"></line>
+              <polygon points="483,248 495,252 483,256" fill="var(--ink-soft)"></polygon>
+              <line x1="260" y1="288" x2="260" y2="28" class="axis-line"></line>
+              <polygon points="256,37 260,25 264,37" fill="var(--ink-soft)"></polygon>
+              <polyline class="curve" points="132,87 144,116 156,142 167,165 179,185 190,203 202,218 214,230 225,240 237,247 248,251 260,252 272,251 283,247 295,240 306,230 318,218 330,203 341,185 353,165 364,142 376,116 388,87"></polyline>
+              <line x1="286" y1="255" x2="367" y2="160" class="tangent"></line>
+              <line x1="318" y1="218" x2="318" y2="252" class="gd"></line>
+              <line x1="260" y1="218" x2="318" y2="218" class="gd"></line>
+              <circle cx="318" cy="218" r="5" fill="var(--orange)"></circle>
+              <text x="486" y="242" class="svg-txt" font-size="15" font-style="italic">x</text>
+              <text x="270" y="34" class="svg-txt" font-size="15" font-style="italic">y</text>
+              <text x="268" y="272" class="svg-txt-soft" font-size="13">O</text>
+              <text x="150" y="72" class="svg-txt" font-size="16" font-style="italic">y＝x²</text>
+              <text x="330" y="206" class="svg-txt" font-size="15">(a, a²)</text>
+              <text x="318" y="272" text-anchor="middle" class="svg-txt" font-size="14" font-style="italic">a</text>
+              <text x="376" y="146" class="svg-txt" font-size="14" fill="var(--orange)">接線</text>
+              <text x="330" y="166" class="svg-txt-soft" font-size="13.5">傾きが f′(a)</text>
+            </svg>
+          </div>
+          <figcaption>点 (a, a<sup>2</sup>) における接線の傾きが、微分係数 f′(a)。a の場所が変われば、傾きも変わる。</figcaption>
+        </figure>
+        <p>微分係数の定義は f′(a)＝<span class="limd"><span>lim</span><span class="lim-b">h→0</span></span><span class="frac"><span class="num">f(a＋h)−f(a)</span><span class="den">h</span></span> だったね。下の「次へ」で、計算を1行ずつ進めてみよう。</p>
+
+        <div class="step hint">
+          <h3>計算 1 ― 定義にあてはめる</h3>
+          <p>f(x)＝x<sup>2</sup> だから、f(a＋h)＝(a＋h)<sup>2</sup>、f(a)＝a<sup>2</sup>。これを定義の式に入れると…</p>
+          <p class="calc">f′(a) ＝ <span class="limd"><span>lim</span><span class="lim-b">h→0</span></span><span class="frac"><span class="num">(a＋h)<sup>2</sup>−a<sup>2</sup></span><span class="den">h</span></span></p>
+        </div>
+        <div class="step hint">
+          <h3>計算 2 ― 分子を展開する</h3>
+          <p>(a＋h)<sup>2</sup> を展開すると a<sup>2</sup>＋2ah＋h<sup>2</sup>。a<sup>2</sup> が消えて、分子は 2ah＋h<sup>2</sup> になる。h でくくるところまで進めよう。</p>
+          <p class="calc">分子 ＝ (a<sup>2</sup>＋2ah＋h<sup>2</sup>) − a<sup>2</sup> ＝ 2ah＋h<sup>2</sup> ＝ h(2a＋h)</p>
+          <p class="calc">f′(a) ＝ <span class="limd"><span>lim</span><span class="lim-b">h→0</span></span><span class="frac"><span class="num">h(2a＋h)</span><span class="den">h</span></span></p>
+        </div>
+        <div class="step hint">
+          <h3>計算 3 ― h で約分して、h→0 とする</h3>
+          <p>h≠0 だから、分子と分母の h を約分できる。あとは h を 0 に近づけるだけだ。</p>
+          <p class="calc">f′(a) ＝ <span class="limd"><span>lim</span><span class="lim-b">h→0</span></span>(2a＋h)</p>
+          <p>h→0 のとき 2a＋h は 2a に近づく。つまり f′(a) の値は…？　最後のステップで確認しよう。</p>
+        </div>
+        <div class="step answer">
+          <h3>まとめ ― 導関数の定義</h3>
+          <p class="big">f′(a) ＝ 2a</p>
+          <p>ここで a に注目しよう。a＝1 なら f′(1)＝2、a＝2 なら f′(2)＝4 のように、<b>a の値を決めると f′(a) の値がただ1つ決まる</b>。つまり f′(a) は <b>a の関数</b>になっている。</p>
+          <p>そこで、変数 a を x と書き直した関数 f′(x) を、もとの関数 f(x) の<span class="key">導関数</span>という。一般の関数については、次のように定義する。</p>
+          <p class="formula">導関数　f′(x) ＝ <span class="limd"><span>lim</span><span class="lim-b">h→0</span></span><span class="frac"><span class="num">f(x＋h)−f(x)</span><span class="den">h</span></span></p>
+          <p>導関数を求めることを、<b>f(x) を微分する</b>という。また、f(x) の導関数を表す記号には、f′(x) のほかに <b>y′</b>、<b><span class="frac" style="font-size:.92em"><span class="num">dy</span><span class="den">dx</span></span></b> などがある（y＝f(x) のとき）。</p>
+          <p class="note">このページの f(x)＝x<sup>2</sup> の導関数は f′(x)＝2x。「x＝a での傾き」を、a を動かせる<b>関数</b>としてまとめたものが導関数だよ。</p>
+        </div>
+        <p class="prob-done">解説A クリア！　次は練習5で、f′(a)＝2a を使ってみよう。</p>
+      </section>
+
+      <!-- ================= 練習5 ================= -->
+      <div class="sec-head">
+        <span class="sec-tag">練習</span>
+        <h2>f′(a)＝2a を使ってみる</h2>
+        <span class="pno">教科書 p.182</span>
+      </div>
+
+      <section class="card prob" id="prob-ren5">
+        <div class="prob-head">
+          <span class="prob-tag ren">練習 5</span>
+          <span class="prob-state">下のタブで小問を選んでね</span>
+        </div>
+        <p class="prob-q">関数 f(x)＝x<sup>2</sup> について、解説Aで求めた <b>f′(a)＝2a</b> を利用して、次の微分係数を求めよ。</p>
+
+        <div class="tabs" role="tablist" aria-label="練習5の小問">
+          <button class="tab" role="tab" data-group="ren5" data-tab="ren5-1" aria-selected="true">(1) f′(4)</button>
+          <button class="tab" role="tab" data-group="ren5" data-tab="ren5-2" aria-selected="false">(2) f′(0)</button>
+          <button class="tab" role="tab" data-group="ren5" data-tab="ren5-3" aria-selected="false">(3) f′(−2)</button>
+        </div>
+
+        <!-- (1) -->
+        <div class="tabpanel show" id="panel-ren5-1" data-flow="ren5-1" data-label="練習5 (1)">
+          <div class="prob-head">
+            <span class="sub prob-q" style="margin:0">(1) f′(4)</span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 2</span>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 1 ― 使う式を決める</h3>
+            <p>解説Aで、f(x)＝x<sup>2</sup> のとき <b>f′(a)＝2a</b> が分かっている。f′(4) は「a が 4 のときの f′(a)」のことだ。</p>
+            <p>だから、式の <b>a のところに 4 を代入</b>すればよい。</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 2 ― 代入して式を作る</h3>
+            <p class="calc">f′(4) ＝ 2 × 4</p>
+            <p>あとは、この計算をするだけだよ。</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (1)</h3>
+            <p class="big">f′(4) ＝ 8</p>
+            <p>f′(a)＝2a に a＝4 を代入して、2×4＝8。x＝4 における接線の傾きは 8 ということだね。</p>
+          </div>
+          <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
+        </div>
+
+        <!-- (2) -->
+        <div class="tabpanel" id="panel-ren5-2" data-flow="ren5-2" data-label="練習5 (2)">
+          <div class="prob-head">
+            <span class="sub prob-q" style="margin:0">(2) f′(0)</span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 2</span>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 1 ― a に 0 を代入する</h3>
+            <p>やることは (1) と同じ。f′(a)＝2a の <b>a のところに 0</b> を入れる。</p>
+            <p class="calc">f′(0) ＝ 2 × 0</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 2 ― 計算はそのまま</h3>
+            <p>2×0 の答えは、もちろん 0。難しく考えなくて大丈夫だよ。</p>
+            <p>ちなみに x＝0 は放物線 y＝x<sup>2</sup> の<b>頂点</b>。頂点での接線の傾きがどうなっているか、図を思い出してみよう。</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (2)</h3>
+            <p class="big">f′(0) ＝ 0</p>
+            <p>f′(a)＝2a に a＝0 を代入して、2×0＝0。頂点では接線が<b>水平</b>になるので、傾きが 0 になることとつじつまが合うね。</p>
+          </div>
+          <p class="prob-done">(2) クリア！　次の小問のタブを開いてみよう。</p>
+        </div>
+
+        <!-- (3) -->
+        <div class="tabpanel" id="panel-ren5-3" data-flow="ren5-3" data-label="練習5 (3)">
+          <div class="prob-head">
+            <span class="sub prob-q" style="margin:0">(3) f′(−2)</span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 2</span>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 1 ― マイナスの数もそのまま代入</h3>
+            <p>f′(−2) は「a が −2 のときの f′(a)」。a には<b>負の数もそのまま</b>代入してよい。</p>
+            <p class="calc">f′(−2) ＝ 2 × (−2)</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 2 ― 符号に注意して計算する</h3>
+            <p>2 × (−2) は、正の数 × 負の数。答えの符号は<b>負</b>になるよ。</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (3)</h3>
+            <p class="big">f′(−2) ＝ −4</p>
+            <p>2 × (−2) ＝ −4。傾きが負ということは、x＝−2 における接線は<b>右下がり</b>。放物線の左側のようすと合っているね。</p>
+          </div>
+          <p class="prob-done">(3) クリア！　練習5 完了。次は例5で、定義から導関数を求める計算に慣れよう。</p>
+        </div>
+      </section>
+
+      <!-- ================= 例5 ================= -->
+      <div class="sec-head">
+        <span class="sec-tag">例題</span>
+        <h2>定義にしたがって導関数を求める</h2>
+        <span class="pno">教科書 p.183</span>
+      </div>
+
+      <section class="card prob" id="prob-ex5">
+        <div class="prob-head">
+          <span class="prob-tag">例 5</span>
+          <span class="prob-state">下のタブで小問を選んでね</span>
+        </div>
+        <p class="prob-q">定義 f′(x)＝<span class="limd"><span>lim</span><span class="lim-b">h→0</span></span><span class="frac"><span class="num">f(x＋h)−f(x)</span><span class="den">h</span></span> にしたがって、次の関数の導関数を求めよ。</p>
+
+        <div class="tabs" role="tablist" aria-label="例5の小問">
+          <button class="tab" role="tab" data-group="ex5" data-tab="ex5-1" aria-selected="true">(1) f(x)＝x</button>
+          <button class="tab" role="tab" data-group="ex5" data-tab="ex5-2" aria-selected="false">(2) f(x)＝x³</button>
+          <button class="tab" role="tab" data-group="ex5" data-tab="ex5-3" aria-selected="false">(3) f(x)＝2</button>
+        </div>
+
+        <!-- (1) -->
+        <div class="tabpanel show" id="panel-ex5-1" data-flow="ex5-1" data-label="例5 (1)">
+          <div class="prob-head">
+            <span class="sub prob-q" style="margin:0">(1) f(x)＝x</span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 3</span>
+          </div>
+          <div class="step hint">
+            <h3>計算 1 ― 定義にあてはめる</h3>
+            <p>f(x)＝x のとき、f(x＋h)＝x＋h、f(x)＝x。これを定義の式に入れる。</p>
+            <p class="calc">f′(x) ＝ <span class="limd"><span>lim</span><span class="lim-b">h→0</span></span><span class="frac"><span class="num">(x＋h) − x</span><span class="den">h</span></span></p>
+          </div>
+          <div class="step hint">
+            <h3>計算 2 ― 分子を整理する</h3>
+            <p>分子の (x＋h) − x は、x が消えて <b>h</b> だけが残る。</p>
+            <p class="calc">f′(x) ＝ <span class="limd"><span>lim</span><span class="lim-b">h→0</span></span><span class="frac"><span class="num">h</span><span class="den">h</span></span></p>
+          </div>
+          <div class="step hint">
+            <h3>計算 3 ― 約分して極限をとる</h3>
+            <p><span class="frac"><span class="num">h</span><span class="den">h</span></span> ＝ 1（h≠0）。h に関係ない値 1 の極限は、そのまま 1 だ。</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (1)</h3>
+            <p class="big">f′(x) ＝ 1</p>
+            <p>y＝x のグラフは傾き 1 の直線。どの点でも接線の傾きが 1 であることと一致するね。</p>
+          </div>
+          <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
+        </div>
+
+        <!-- (2) -->
+        <div class="tabpanel" id="panel-ex5-2" data-flow="ex5-2" data-label="例5 (2)">
+          <div class="prob-head">
+            <span class="sub prob-q" style="margin:0">(2) f(x)＝x<sup>3</sup></span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 3</span>
+          </div>
+          <div class="step hint">
+            <h3>計算 1 ― 定義にあてはめる</h3>
+            <p>f(x)＝x<sup>3</sup> のとき、f(x＋h)＝(x＋h)<sup>3</sup>。定義の式に入れる。</p>
+            <p class="calc">f′(x) ＝ <span class="limd"><span>lim</span><span class="lim-b">h→0</span></span><span class="frac"><span class="num">(x＋h)<sup>3</sup> − x<sup>3</sup></span><span class="den">h</span></span></p>
+          </div>
+          <div class="step hint">
+            <h3>計算 2 ― 展開して、h でくくる</h3>
+            <p>展開公式 (x＋h)<sup>3</sup> ＝ x<sup>3</sup>＋3x<sup>2</sup>h＋3xh<sup>2</sup>＋h<sup>3</sup> を使う。x<sup>3</sup> が消えて、残りはすべて h を含む項だから、h でくくれる。</p>
+            <p class="calc">分子 ＝ 3x<sup>2</sup>h＋3xh<sup>2</sup>＋h<sup>3</sup> ＝ h(3x<sup>2</sup>＋3xh＋h<sup>2</sup>)</p>
+          </div>
+          <div class="step hint">
+            <h3>計算 3 ― 約分して、h→0 とする</h3>
+            <p>h で約分すると 3x<sup>2</sup>＋3xh＋h<sup>2</sup>。ここで h→0 とすると、3xh と h<sup>2</sup> はどちらも 0 に近づく。</p>
+            <p class="calc">f′(x) ＝ <span class="limd"><span>lim</span><span class="lim-b">h→0</span></span>(3x<sup>2</sup>＋3xh＋h<sup>2</sup>)</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (2)</h3>
+            <p class="big">f′(x) ＝ 3x<sup>2</sup></p>
+            <p>残るのは 3x<sup>2</sup> だけ。f(x)＝x<sup>2</sup> のときの 2x と並べてみると、「指数が前に出て、指数が1つ減る」パターンが見えてくるね（後の「公式」で確認するよ）。</p>
+          </div>
+          <p class="prob-done">(2) クリア！　次の小問のタブを開いてみよう。</p>
+        </div>
+
+        <!-- (3) -->
+        <div class="tabpanel" id="panel-ex5-3" data-flow="ex5-3" data-label="例5 (3)">
+          <div class="prob-head">
+            <span class="sub prob-q" style="margin:0">(3) f(x)＝2（定数関数）</span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 3</span>
+          </div>
+          <div class="step hint">
+            <h3>計算 1 ― f(x＋h) の値に注意</h3>
+            <p>f(x)＝2 は、x がどんな値でも関数の値が 2 という<b>定数関数</b>。だから f(x＋h) も、やはり <b>2</b> になる。</p>
+            <p class="calc">f′(x) ＝ <span class="limd"><span>lim</span><span class="lim-b">h→0</span></span><span class="frac"><span class="num">2 − 2</span><span class="den">h</span></span></p>
+          </div>
+          <div class="step hint">
+            <h3>計算 2 ― 分子は 0</h3>
+            <p>分子は 2 − 2 ＝ 0。<span class="frac"><span class="num">0</span><span class="den">h</span></span> ＝ 0 だから、式全体はずっと 0 のままだ。</p>
+            <p class="calc">f′(x) ＝ <span class="limd"><span>lim</span><span class="lim-b">h→0</span></span>0</p>
+          </div>
+          <div class="step hint">
+            <h3>計算 3 ― 極限をとる</h3>
+            <p>ずっと 0 であるものの極限は 0。「変化しない関数は、傾き（変化の割合）が 0」というイメージで覚えよう。</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (3)</h3>
+            <p class="big">f′(x) ＝ 0</p>
+            <p>定数関数 y＝2 のグラフは水平な直線で、傾きは 0。計算の結果と一致するね。<b>定数関数の導関数は 0</b> ― これはこのあと公式として何度も使うよ。</p>
+          </div>
+          <p class="prob-done">(3) クリア！　例5 完了。次は練習6で、自分で定義から計算してみよう。</p>
+        </div>
+      </section>
+
+      <!-- ================= 練習6 ================= -->
+      <div class="sec-head">
+        <span class="sec-tag">練習</span>
+        <h2>定義にしたがって導関数を求める</h2>
+        <span class="pno">教科書 p.183</span>
+      </div>
+
+      <section class="card prob" id="prob-ren6">
+        <div class="prob-head">
+          <span class="prob-tag ren">練習 6</span>
+          <span class="prob-state">下のタブで小問を選んでね</span>
+        </div>
+        <p class="prob-q">定義にしたがって、次の関数の導関数を求めよ。例5の計算の流れ（代入 → 分子を整理 → h で約分 → h→0）を思い出そう。</p>
+
+        <div class="tabs" role="tablist" aria-label="練習6の小問">
+          <button class="tab" role="tab" data-group="ren6" data-tab="ren6-1" aria-selected="true">(1) f(x)＝3x</button>
+          <button class="tab" role="tab" data-group="ren6" data-tab="ren6-2" aria-selected="false">(2) f(x)＝−x²</button>
+          <button class="tab" role="tab" data-group="ren6" data-tab="ren6-3" aria-selected="false">(3) f(x)＝4</button>
+        </div>
+
+        <!-- (1) -->
+        <div class="tabpanel show" id="panel-ren6-1" data-flow="ren6-1" data-label="練習6 (1)">
+          <div class="prob-head">
+            <span class="sub prob-q" style="margin:0">(1) f(x)＝3x</span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 3</span>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 1 ― 定義にあてはめる</h3>
+            <p>f(x)＝3x のとき、f(x＋h)＝3(x＋h)。まずこれを定義の式に入れよう。</p>
+            <p class="calc">f′(x) ＝ <span class="limd"><span>lim</span><span class="lim-b">h→0</span></span><span class="frac"><span class="num">3(x＋h) − 3x</span><span class="den">h</span></span></p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 2 ― 分子を整理する</h3>
+            <p>分子の 3(x＋h) を展開すると 3x＋3h。そこから 3x を引くと、何が残るかな？</p>
+            <p class="calc">分子 ＝ (3x＋3h) − 3x ＝ 3h</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 3 ― 約分して極限をとる</h3>
+            <p><span class="frac"><span class="num">3h</span><span class="den">h</span></span> を h で約分すると 3。h に関係ない値だから、極限もそのまま 3 になるはずだ。</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (1)</h3>
+            <p class="big">f′(x) ＝ 3</p>
+            <p>y＝3x は傾き 3 の直線。例5 (1) の y＝x（傾き1 → 導関数 1）と同じで、「直線の導関数は、その傾き」と一致するね。</p>
+          </div>
+          <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
+        </div>
+
+        <!-- (2) -->
+        <div class="tabpanel" id="panel-ren6-2" data-flow="ren6-2" data-label="練習6 (2)">
+          <div class="prob-head">
+            <span class="sub prob-q" style="margin:0">(2) f(x)＝−x<sup>2</sup></span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 3</span>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 1 ― 符号に注意して代入する</h3>
+            <p>f(x＋h)＝−(x＋h)<sup>2</sup>、f(x)＝−x<sup>2</sup>。引くときの符号に注意して、定義の式に入れよう。</p>
+            <p class="calc">f′(x) ＝ <span class="limd"><span>lim</span><span class="lim-b">h→0</span></span><span class="frac"><span class="num">−(x＋h)<sup>2</sup> − (−x<sup>2</sup>)</span><span class="den">h</span></span> ＝ <span class="limd"><span>lim</span><span class="lim-b">h→0</span></span><span class="frac"><span class="num">−(x＋h)<sup>2</sup> ＋ x<sup>2</sup></span><span class="den">h</span></span></p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 2 ― 展開して分子を整理する</h3>
+            <p>(x＋h)<sup>2</sup> ＝ x<sup>2</sup>＋2xh＋h<sup>2</sup>。全体にマイナスがかかるから、−(x＋h)<sup>2</sup> ＝ −x<sup>2</sup>−2xh−h<sup>2</sup> になる。</p>
+            <p class="calc">分子 ＝ (−x<sup>2</sup>−2xh−h<sup>2</sup>) ＋ x<sup>2</sup> ＝ −2xh − h<sup>2</sup></p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 3 ― h で約分して、h→0 とする</h3>
+            <p>分子を h でくくると −h(2x＋h)。分母の h と約分すると −(2x＋h) になる。</p>
+            <p>あとは h→0 とすると、残るのは何かな？</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (2)</h3>
+            <p class="big">f′(x) ＝ −2x</p>
+            <p>−(2x＋h) で h→0 とすると −2x。f(x)＝x<sup>2</sup> の導関数 2x に、マイナスがついた形になったね。</p>
+          </div>
+          <p class="prob-done">(2) クリア！　次の小問のタブを開いてみよう。</p>
+        </div>
+
+        <!-- (3) -->
+        <div class="tabpanel" id="panel-ren6-3" data-flow="ren6-3" data-label="練習6 (3)">
+          <div class="prob-head">
+            <span class="sub prob-q" style="margin:0">(3) f(x)＝4</span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 2</span>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 1 ― これは定数関数</h3>
+            <p>f(x)＝4 は定数関数。例5 (3) の f(x)＝2 とまったく同じタイプだ。f(x＋h) の値も 4 になる。</p>
+            <p class="calc">f′(x) ＝ <span class="limd"><span>lim</span><span class="lim-b">h→0</span></span><span class="frac"><span class="num">4 − 4</span><span class="den">h</span></span></p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 2 ― 分子を計算する</h3>
+            <p>分子は 4 − 4 ＝ 0。<span class="frac"><span class="num">0</span><span class="den">h</span></span> ＝ 0 だから、極限も 0 だ。</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (3)</h3>
+            <p class="big">f′(x) ＝ 0</p>
+            <p>定数関数の導関数は 0。値が 2 でも 4 でも、定数なら答えは同じ 0 になる。</p>
+          </div>
+          <p class="prob-done">(3) クリア！　練習6 完了。次は、ここまでの結果から「公式」を見つけよう。</p>
+        </div>
+      </section>
+
+      <!-- ================= 解説B 公式 ================= -->
+      <div class="sec-head">
+        <span class="sec-tag">解説 B</span>
+        <h2>公式を見つけよう</h2>
+        <span class="pno">教科書 p.183</span>
+      </div>
+
+      <section class="card prob" id="prob-kosiki" data-flow="kosiki" data-label="公式">
+        <div class="prob-head">
+          <span class="prob-tag kai">公式</span>
+          <div class="dots" aria-hidden="true">
+            <span class="dot"></span><span class="dot"></span><span class="dot ans"></span>
+          </div>
+          <span class="prob-state">ヒント 0 / 2</span>
+        </div>
+        <p class="prob-q">解説Aと例5で、定義を使って4つの関数の導関数を求めた。その結果を並べて、共通するパターンを探してみよう。「次へ」で結果を並べるところから始めるよ。</p>
+
+        <div class="step hint">
+          <h3>ステップ 1 ― 結果を並べる</h3>
+          <p>ここまでで分かった導関数は、次の4つだ。</p>
+          <p class="calc">(x)′ ＝ 1　　　(x<sup>2</sup>)′ ＝ 2x　　　(x<sup>3</sup>)′ ＝ 3x<sup>2</sup>　　　(2)′ ＝ 0</p>
+          <p>それぞれ、もとの関数の<b>指数</b>と、導関数の<b>係数</b>・<b>指数</b>を比べてみよう。</p>
+        </div>
+        <div class="step hint">
+          <h3>ステップ 2 ― パターンを読み取る</h3>
+          <p>・x<sup>3</sup> → 3x<sup>2</sup>：指数 <b>3</b> が係数として前に出て、指数は 3−1＝<b>2</b> に減った<br />・x<sup>2</sup> → 2x：指数 <b>2</b> が前に出て、指数は 2−1＝<b>1</b> に減った<br />・x ＝ x<sup>1</sup> → 1：指数 <b>1</b> が前に出て、指数は 1−1＝<b>0</b>（x<sup>0</sup>＝1）になった</p>
+          <p>つまり「<b>指数を係数として前に出し、指数を1つ下げる</b>」という規則が見える。また、定数 2 の導関数は 0 だった。</p>
+        </div>
+        <div class="step answer">
+          <h3>公式</h3>
+          <p class="formula">(x<sup>n</sup>)′ ＝ nx<sup>n−1</sup>　（n は正の整数）</p>
+          <p class="formula">定数関数 (c)′ ＝ 0　（c は定数）</p>
+          <p>この公式を使えば、定義の lim の計算に戻らなくても、x<sup>n</sup> の導関数をすぐに求められる。次の練習7でさっそく使ってみよう。</p>
+          <p class="note">公式は「覚えるもの」ではなく、定義から導いた結果のまとめだよ。忘れたら、例5の計算を思い出せば復元できる。</p>
+        </div>
+        <p class="prob-done">公式 クリア！　最後は練習7で、公式を使って微分してみよう。</p>
+      </section>
+
+      <!-- ================= 練習7 ================= -->
+      <div class="sec-head">
+        <span class="sec-tag">練習</span>
+        <h2>公式を使って微分する</h2>
+        <span class="pno">教科書 p.183</span>
+      </div>
+
+      <section class="card prob" id="prob-ren7">
+        <div class="prob-head">
+          <span class="prob-tag ren">練習 7</span>
+          <span class="prob-state">下のタブで小問を選んでね</span>
+        </div>
+        <p class="prob-q">解説Bで見つけた公式を用いて、次の関数を微分せよ。</p>
+
+        <div class="tabs" role="tablist" aria-label="練習7の小問">
+          <button class="tab" role="tab" data-group="ren7" data-tab="ren7-1" aria-selected="true">(1) y＝x⁴</button>
+          <button class="tab" role="tab" data-group="ren7" data-tab="ren7-2" aria-selected="false">(2) y＝x⁵</button>
+        </div>
+
+        <!-- (1) -->
+        <div class="tabpanel show" id="panel-ren7-1" data-flow="ren7-1" data-label="練習7 (1)">
+          <div class="prob-head">
+            <span class="sub prob-q" style="margin:0">(1) y＝x<sup>4</sup></span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 2</span>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 1 ― 公式の n はいくつ？</h3>
+            <p>y＝x<sup>4</sup> は、公式 (x<sup>n</sup>)′＝nx<sup>n−1</sup> の <b>n＝4</b> の場合だ。</p>
+            <p>公式の n のところに 4 を入れてみよう。</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 2 ― 指数を前に出して、1つ下げる</h3>
+            <p class="calc">y′ ＝ 4x<sup>4−1</sup></p>
+            <p>あとは、指数の 4−1 を計算するだけだよ。</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (1)</h3>
+            <p class="big">y′ ＝ 4x<sup>3</sup></p>
+            <p>指数 4 を前に出し、指数を 4−1＝3 に下げた。定義の計算をしなくても、一瞬で求められたね。</p>
+          </div>
+          <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
+        </div>
+
+        <!-- (2) -->
+        <div class="tabpanel" id="panel-ren7-2" data-flow="ren7-2" data-label="練習7 (2)">
+          <div class="prob-head">
+            <span class="sub prob-q" style="margin:0">(2) y＝x<sup>5</sup></span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 2</span>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 1 ― 公式の n はいくつ？</h3>
+            <p>y＝x<sup>5</sup> は、公式の <b>n＝5</b> の場合。(1) と同じ手順で進めよう。</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 2 ― 指数を前に出して、1つ下げる</h3>
+            <p class="calc">y′ ＝ 5x<sup>5−1</sup></p>
+            <p>指数の計算 5−1 を忘れずに。</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (2)</h3>
+            <p class="big">y′ ＝ 5x<sup>4</sup></p>
+            <p>指数 5 を前に出し、指数を 5−1＝4 に下げた。これで練習7 完了。この項はこれで終わりだよ。</p>
+          </div>
+          <p class="prob-done">(2) クリア！　練習7 完了。下のまとめで確認しよう。</p>
+        </div>
+      </section>
+
+      <!-- ================= まとめ ================= -->
+      <section class="card summary">
+        <h2>この項のポイント</h2>
+        <ul>
+          <li><b>導関数</b>とは、微分係数 f′(a) を a の関数とみたもの：　f′(x) ＝ <span class="limd"><span>lim</span><span class="lim-b">h→0</span></span><span class="frac"><span class="num">f(x＋h)−f(x)</span><span class="den">h</span></span>。導関数を求めることを「微分する」という。</li>
+          <li>導関数の記号は f′(x) のほかに <b>y′</b>、<b>dy/dx</b> がある。</li>
+          <li>定義からの計算の流れは「<b>代入 → 分子を整理 → h で約分 → h→0</b>」。</li>
+          <li class="gate" id="sumFormula">公式：<b>(x<sup>n</sup>)′＝nx<sup>n−1</sup></b>（指数を前に出して、指数を1つ下げる）、<b>定数関数 (c)′＝0</b>。</li>
+          <li class="gate" id="sumExamples">具体例：(x)′＝1、(x<sup>2</sup>)′＝2x、(x<sup>3</sup>)′＝3x<sup>2</sup>、(x<sup>4</sup>)′＝4x<sup>3</sup>、(x<sup>5</sup>)′＝5x<sup>4</sup>。</li>
+          <li id="sumGateNote">公式と具体例は、上の「公式」と「練習7」の課題を最後まで開くと、ここに表示されるよ。</li>
+        </ul>
+      </section>
+
+      <!-- ================= フッター ================= -->
+      <footer>
+        <div class="foot-btns">
+          <a class="back-btn" href="calc.html">← 数学II 第6章 自習ページトップに戻る</a>
+          <a class="back-btn" href="index.html">Nanryo mathematics portal に戻る</a>
+        </div>
+        <p class="foot-note">数学II 第6章 微分法 ｜ 2 導関数とその計算（1）導関数（教科書 p.182〜183）</p>
+      </footer>
+    </div>
+
+    <!-- ================= 下部固定バー ================= -->
+    <div class="ctrl-bar">
+      <div class="ctrl-inner">
+        <p class="ctrl-label">いまの課題：<b id="ctrlLabel">解説A</b>　｜　クリア <b id="ctrlProg">0 / 13</b>　―　「次へ」でヒントを1つずつ開こう</p>
+        <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+        <div class="ctrl-btns">
+          <button class="btn" id="btnReset" type="button">最初からやり直す</button>
+          <button class="btn btn-next" id="btnNext" type="button">次へ：ヒント1を開く</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      (function(){
+        "use strict";
+
+        /* ---------- ヒント式フロー ---------- */
+        var flows = {};
+        var activeId = 'kaisetsu';
+
+        function registerFlow(root){
+          var id = root.getAttribute('data-flow');
+          var steps = Array.prototype.slice.call(root.querySelectorAll(':scope > .step'));
+          var head = root.querySelector(':scope > .prob-head');
+          var dots = head ? Array.prototype.slice.call(head.querySelectorAll('.dot')) : [];
+          var stateEl = head ? head.querySelector('.prob-state') : null;
+          var doneEl = root.querySelector(':scope > .prob-done');
+          flows[id] = {
+            id: id, root: root, steps: steps, dots: dots, stateEl: stateEl,
+            doneEl: doneEl, idx: 0, label: root.getAttribute('data-label') || id,
+            hintTotal: steps.filter(function(s){ return s.classList.contains('hint'); }).length
+          };
+        }
+        registerFlow(document.getElementById('prob-kaisetsu'));
+        registerFlow(document.getElementById('prob-kosiki'));
+        ['ren5-1','ren5-2','ren5-3','ex5-1','ex5-2','ex5-3','ren6-1','ren6-2','ren6-3','ren7-1','ren7-2'].forEach(function(id){
+          registerFlow(document.getElementById('panel-' + id));
+        });
+
+        var btnNext = document.getElementById('btnNext');
+        var btnReset = document.getElementById('btnReset');
+        var ctrlLabel = document.getElementById('ctrlLabel');
+        var ctrlProg = document.getElementById('ctrlProg');
+        var progFill = document.getElementById('progFill');
+        var cards = Array.prototype.slice.call(document.querySelectorAll('.prob'));
+
+        function refreshFlow(f){
+          f.steps.forEach(function(s, i){ s.classList.toggle('show', i < f.idx); });
+          f.dots.forEach(function(d, i){ d.classList.toggle('on', i < f.idx); });
+          if (f.stateEl){
+            if (f.idx === 0) f.stateEl.textContent = 'ヒント 0 / ' + f.hintTotal;
+            else if (f.idx <= f.hintTotal) f.stateEl.textContent = 'ヒント ' + f.idx + ' / ' + f.hintTotal;
+            else f.stateEl.textContent = '解答を表示済み';
+          }
+          if (f.doneEl) f.doneEl.classList.toggle('show', f.idx >= f.steps.length);
+        }
+        function clearedCount(){
+          return Object.keys(flows).filter(function(id){
+            return flows[id].idx >= flows[id].steps.length;
+          }).length;
+        }
+        function refreshBar(){
+          var f = flows[activeId];
+          var total = Object.keys(flows).length;
+          var cleared = clearedCount();
+          ctrlLabel.textContent = f.label;
+          ctrlProg.textContent = cleared + ' / ' + total;
+          progFill.style.width = (total ? (cleared / total * 100) : 0) + '%';
+          if (f.idx >= f.steps.length){
+            btnNext.disabled = true;
+            btnNext.textContent = 'ぜんぶ開いたよ ✓';
+          } else if (f.idx === f.hintTotal){
+            btnNext.disabled = false;
+            btnNext.textContent = '次へ：解答を見る';
+          } else {
+            btnNext.disabled = false;
+            btnNext.textContent = '次へ：ヒント ' + (f.idx + 1) + ' を開く';
+          }
+          cards.forEach(function(card){
+            var own = card.getAttribute('data-flow');
+            var on = own ? (own === activeId) : !!card.querySelector('.tabpanel.show[data-flow="' + activeId + '"]');
+            card.classList.toggle('active', on);
+          });
+          /* まとめの公式・具体例は、該当フロー完了後にだけ表示する */
+          var kosikiDone = flows.kosiki.idx >= flows.kosiki.steps.length;
+          var ren7Done = flows['ren7-1'].idx >= flows['ren7-1'].steps.length &&
+                         flows['ren7-2'].idx >= flows['ren7-2'].steps.length;
+          document.getElementById('sumFormula').classList.toggle('show', kosikiDone);
+          document.getElementById('sumExamples').classList.toggle('show', ren7Done);
+          document.getElementById('sumGateNote').style.display = (kosikiDone && ren7Done) ? 'none' : '';
+        }
+        function setActive(id){
+          activeId = id;
+          refreshBar();
+        }
+
+        btnNext.addEventListener('click', function(){
+          var f = flows[activeId];
+          if (f.idx >= f.steps.length) return;
+          f.idx += 1;
+          refreshFlow(f);
+          refreshBar();
+          var shown = f.steps[f.idx - 1];
+          if (shown) shown.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        });
+        btnReset.addEventListener('click', function(){
+          var f = flows[activeId];
+          f.idx = 0;
+          refreshFlow(f);
+          refreshBar();
+          f.root.scrollIntoView({ block: 'start', behavior: 'smooth' });
+        });
+
+        /* カードを触ったら、その課題を操作対象にする */
+        cards.forEach(function(card){
+          card.addEventListener('click', function(){
+            var own = card.getAttribute('data-flow');
+            if (own){ setActive(own); return; }
+            var visible = card.querySelector('.tabpanel.show');
+            if (visible) setActive(visible.getAttribute('data-flow'));
+          });
+        });
+
+        /* ---------- タブ切り替え ---------- */
+        var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+        tabs.forEach(function(tab){
+          tab.addEventListener('click', function(){
+            var group = tab.getAttribute('data-group');
+            tabs.forEach(function(t){
+              if (t.getAttribute('data-group') === group) t.setAttribute('aria-selected', t === tab ? 'true' : 'false');
+            });
+            var target = tab.getAttribute('data-tab');
+            var card = tab.closest('.prob');
+            Array.prototype.forEach.call(card.querySelectorAll('.tabpanel'), function(p){
+              p.classList.toggle('show', p.id === 'panel-' + target);
+            });
+            setActive(target);
+          });
+        });
+
+        Object.keys(flows).forEach(function(id){ refreshFlow(flows[id]); });
+        refreshBar();
+      })();
+    </script>
+  </body>
+</html>

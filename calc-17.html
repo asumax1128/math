@@ -1,0 +1,911 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:," />
+    <title>数学II 8 定積分と面積（2）2つの曲線の間の面積 自習ページ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Serif+JP:wght@700;900&family=STIX+Two+Math&display=swap" rel="stylesheet" />
+    <style>
+      :root{
+        --bg:#f4f7f5;
+        --surface:#ffffff;
+        --surface2:#eef4f1;
+        --ink:#1d2a26;
+        --ink-soft:#43554e;
+        --line:#cfddd6;
+        --accent:#0e7a5f;
+        --accent-deep:#0a5c48;
+        --accent-soft:#e2f2ec;
+        --blue:#1f6fb4;
+        --orange:#d96c1e;
+        --hint-bg:#fff6cf;
+        --hint-line:#e3c84e;
+        --hint-ink:#4d4210;
+        --ans-bg:#e6f6ea;
+        --ans-line:#4caf6d;
+        --ans-ink:#14401f;
+        --bar-bg:rgba(255,255,255,.94);
+        --shadow:0 2px 10px rgba(20,50,40,.08);
+      }
+      @media (prefers-color-scheme: dark){
+        :root{
+          --bg:#101714;
+          --surface:#1a2420;
+          --surface2:#22302a;
+          --ink:#e8f0ec;
+          --ink-soft:#b3c4bc;
+          --line:#3a4a43;
+          --accent:#3cb894;
+          --accent-deep:#8fd8c0;
+          --accent-soft:#1d332b;
+          --blue:#6cb2e8;
+          --orange:#f09a4e;
+          --hint-bg:#3d3617;
+          --hint-line:#a68e2e;
+          --hint-ink:#f5e9bd;
+          --ans-bg:#17301e;
+          --ans-line:#3f9957;
+          --ans-ink:#c9eed2;
+          --bar-bg:rgba(20,28,24,.94);
+          --shadow:0 2px 10px rgba(0,0,0,.4);
+        }
+      }
+      *{box-sizing:border-box}
+      html{scroll-behavior:smooth}
+      @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} *{transition:none!important} }
+      body{
+        margin:0; background:var(--bg); color:var(--ink);
+        font-family:"Noto Sans JP",system-ui,-apple-system,"Hiragino Kaku Gothic ProN",sans-serif;
+        line-height:1.85; font-size:16px;
+        padding-bottom:118px;
+      }
+      .wrap{max-width:780px;margin:0 auto;padding:0 16px 8px}
+
+      /* ---------- ヘッダー ---------- */
+      header{padding:26px 0 6px}
+      .badge{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:700;font-size:13px;
+        padding:4px 12px;border-radius:999px;letter-spacing:.04em;
+      }
+      .badge.num{background:var(--ink);color:var(--bg);margin-left:6px}
+      @media (prefers-color-scheme: dark){ .badge{color:#0c1712} .badge.num{color:#101714} }
+      h1{
+        font-family:"Noto Serif JP",serif;font-weight:900;font-size:32px;line-height:1.3;
+        margin:12px 0 4px;letter-spacing:.02em;
+      }
+      .page-meta{color:var(--ink-soft);font-size:14px;font-weight:500}
+      .page-meta b{color:var(--accent-deep)}
+
+      /* ---------- 使い方 ---------- */
+      .howto{
+        background:var(--accent-soft);border:1.5px solid var(--accent);border-radius:14px;
+        padding:14px 18px;margin:18px 0 26px;box-shadow:var(--shadow);
+      }
+      .howto h2{margin:0 0 6px;font-size:16px;color:var(--accent-deep)}
+      .howto ol{margin:0;padding-left:1.4em}
+      .howto li{margin:2px 0}
+      .howto .next-word{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:700;border-radius:6px;
+        padding:0 8px;font-size:.92em;
+      }
+      @media (prefers-color-scheme: dark){ .howto .next-word{color:#0c1712} }
+
+      /* ---------- セクション見出し ---------- */
+      .sec-head{display:flex;align-items:center;gap:10px;margin:34px 0 12px}
+      .sec-tag{
+        background:var(--ink);color:var(--bg);font-weight:900;font-size:14px;border-radius:8px;
+        padding:3px 10px;white-space:nowrap;
+      }
+      .sec-head h2{font-size:21px;margin:0;font-weight:900}
+      .sec-head .pno{margin-left:auto;color:var(--ink-soft);font-size:13px;white-space:nowrap}
+
+      .card{
+        background:var(--surface);border:1px solid var(--line);border-radius:14px;
+        padding:18px 18px 8px;margin:0 0 18px;box-shadow:var(--shadow);
+      }
+      .card p{margin:0 0 12px}
+      .def{
+        background:var(--surface2);border-radius:10px;padding:12px 16px;margin:0 0 14px;
+      }
+      .def p:last-child{margin-bottom:0}
+      .key{font-weight:900;color:var(--accent-deep)}
+      figure{margin:6px 0 14px}
+      figure svg{width:100%;height:auto;display:block}
+      figcaption{font-size:13.5px;color:var(--ink-soft);text-align:center;margin-top:6px;line-height:1.6}
+      .figbox{background:var(--surface2);border-radius:12px;padding:12px 10px 6px}
+
+      /* ---------- 数式 ---------- */
+      .formula{
+        text-align:center;font-size:19px;font-weight:700;letter-spacing:.03em;
+        background:var(--surface2);border-radius:10px;padding:12px 8px;margin:0 0 14px;
+      }
+      /* 数式フォント（TeX風）：英数字・記号は STIX Two Math、日本語字形は Noto Sans JP にフォールバック */
+      .card p,.card li,figcaption,table.comp{
+        font-family:"STIX Two Math","Noto Sans JP",sans-serif;
+      }
+
+      /* ---------- 問題カード（ヒント式） ---------- */
+      .prob{border:2px solid var(--line);transition:border-color .2s}
+      .prob.active{border-color:var(--accent)}
+      .prob-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+      .prob-tag{
+        font-weight:900;font-size:14px;border-radius:8px;padding:3px 12px;color:#fff;background:var(--blue);
+      }
+      .prob-tag.ren{background:#c2452d}
+      .prob-tag.oyo{background:#7a4fa3}
+      @media (prefers-color-scheme: dark){ .prob-tag{color:#0d141b} .prob-tag.ren{color:#1c0f0a} .prob-tag.oyo{color:#150e1c} }
+      .prob-state{margin-left:auto;font-size:13px;font-weight:700;color:var(--ink-soft)}
+      .dots{display:flex;gap:6px;align-items:center}
+      .dot{width:11px;height:11px;border-radius:50%;border:2px solid var(--ink-soft);background:transparent}
+      .dot.on{background:var(--accent);border-color:var(--accent)}
+      .dot.ans.on{background:#2f9e4f;border-color:#2f9e4f}
+      .prob-q{font-weight:700;font-size:16.5px;margin:0 0 10px}
+      .prob-q .sub{font-weight:700}
+
+      .step{display:none;margin:0 0 12px;border-radius:12px;padding:12px 16px 4px;scroll-margin-bottom:130px}
+      .step.show{display:block;animation:pop .25s ease}
+      @keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+      .step h3{margin:0 0 6px;font-size:14px;font-weight:900;letter-spacing:.05em}
+      .step p{margin:0 0 10px}
+      .hint{background:var(--hint-bg);border:1.5px solid var(--hint-line);color:var(--hint-ink)}
+      .hint h3{color:inherit}
+      .answer{background:var(--ans-bg);border:1.5px solid var(--ans-line);color:var(--ans-ink)}
+      .answer .big{font-size:18px;font-weight:900;text-align:center;margin:4px 0 10px}
+      .note{font-size:14px;border-top:1px dashed currentColor;padding-top:8px;margin-top:2px}
+      .prob-done{
+        display:none;text-align:center;font-weight:900;color:var(--accent-deep);
+        padding:2px 0 12px;font-size:15px;
+      }
+      .prob-done.show{display:block}
+
+      table.comp{border-collapse:collapse;margin:4px auto 12px;font-size:15px}
+      table.comp th,table.comp td{border:1px solid var(--line);padding:3px 10px;text-align:center}
+      table.comp th{background:var(--surface2)}
+
+      /* ---------- タブ ---------- */
+      .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}
+      .tab{
+        font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;
+        border:2px solid var(--line);background:var(--surface);color:var(--ink);
+        border-radius:999px;padding:6px 18px;
+      }
+      .tab[aria-selected=true]{background:var(--accent);border-color:var(--accent);color:#fff}
+      @media (prefers-color-scheme: dark){ .tab[aria-selected=true]{color:#0c1712} }
+      .tabpanel{display:none}
+      .tabpanel.show{display:block}
+
+      /* ---------- まとめ ---------- */
+      .summary{border:2px solid var(--accent);background:var(--accent-soft)}
+      .summary h2{margin:0 0 8px;font-size:18px;color:var(--accent-deep)}
+      .summary ul{margin:0;padding-left:1.3em}
+      .summary li{margin:4px 0}
+
+      /* ---------- フッター ---------- */
+      footer{margin:30px 0 10px;text-align:center}
+      .foot-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+      .back-btn{
+        display:inline-block;text-decoration:none;font-weight:700;color:var(--ink);
+        border:2px solid var(--line);background:var(--surface);border-radius:12px;padding:12px 26px;
+      }
+      .foot-note{color:var(--ink-soft);font-size:13px;margin-top:12px}
+
+      /* ---------- 下部固定バー ---------- */
+      .ctrl-bar{
+        position:fixed;left:0;right:0;bottom:0;z-index:50;background:var(--bar-bg);
+        backdrop-filter:blur(8px);border-top:1.5px solid var(--line);
+        padding:10px 14px calc(10px + env(safe-area-inset-bottom));
+      }
+      .ctrl-inner{max-width:780px;margin:0 auto}
+      .overall{display:flex;align-items:center;gap:10px;margin:0 0 6px}
+      .overall-bar{flex:1;height:8px;background:var(--surface2);border:1px solid var(--line);border-radius:99px;overflow:hidden}
+      .overall-fill{height:100%;width:0;background:var(--accent);transition:width .3s}
+      .overall span{font-size:12.5px;font-weight:700;color:var(--ink-soft);white-space:nowrap}
+      .ctrl-label{font-size:13px;font-weight:700;color:var(--ink-soft);margin:0 0 8px;text-align:center}
+      .ctrl-label b{color:var(--accent-deep)}
+      .ctrl-btns{display:flex;gap:10px}
+      .btn{
+        font-family:inherit;cursor:pointer;border-radius:12px;font-weight:900;border:2px solid var(--line);
+        background:var(--surface);color:var(--ink);padding:12px 14px;font-size:15px;
+      }
+      .btn-next{
+        flex:1;background:var(--accent);border-color:var(--accent);color:#fff;font-size:18px;padding:12px;
+      }
+      @media (prefers-color-scheme: dark){ .btn-next{color:#0c1712} }
+      .btn-next:disabled{background:var(--surface2);border-color:var(--line);color:var(--ink-soft);cursor:default}
+      .btn:active{transform:scale(.98)}
+
+      /* SVG内の文字・線 */
+      .svg-txt{font-family:"STIX Two Math","Noto Sans JP",sans-serif;font-weight:700;fill:var(--ink)}
+      .svg-txt-soft{font-family:"STIX Two Math","Noto Sans JP",sans-serif;fill:var(--ink-soft)}
+      .grid-line{stroke:var(--line);stroke-width:1}
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+
+      <!-- ================= ヘッダー ================= -->
+      <header>
+        <span class="badge">数学II　第6章　微分法と積分法</span><span class="badge num">8（2）</span>
+        <h1>定積分と面積（2）　2つの曲線の間の面積</h1>
+        <p class="page-meta">教科書 <b>p.215〜216</b>　｜　第3節 積分法　8 定積分と面積</p>
+      </header>
+
+      <!-- ================= 使い方 ================= -->
+      <section class="howto" aria-label="使い方">
+        <h2>このページの使い方（自習の流れ）</h2>
+        <ol>
+          <li><b>解説</b>を「次へ」で進めながら、図でイメージをつかむ</li>
+          <li><b>例・例題</b>をヒントで解く ― 分からなければ下の <span class="next-word">次へ</span> でヒントを1つずつ開く</li>
+          <li><b>練習問題</b>に挑戦 ― 答えは最後のヒントのあとに出てくるよ</li>
+        </ol>
+      </section>
+
+      <!-- ================= 解説B ================= -->
+      <div class="sec-head">
+        <span class="sec-tag">解説 B</span>
+        <h2>2つの曲線の間の面積</h2>
+        <span class="pno">教科書 p.215</span>
+      </div>
+
+      <section class="card prob" id="prob-kaisetsu" data-flow="kaisetsu" data-label="解説B">
+        <div class="prob-head">
+          <span class="prob-tag">解説 B</span>
+          <div class="dots" aria-hidden="true">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span>
+          </div>
+          <span class="prob-state">ヒント 0 / 4</span>
+        </div>
+        <p class="prob-q">a ≦ x ≦ b の範囲で、曲線 y＝f(x) が曲線 y＝g(x) の上側にある（f(x) ≧ g(x)）とき、2つの曲線の間にはさまれた部分の面積 S を定積分で表そう。下の「次へ」で、図を見ながら1つずつ確かめていくよ。</p>
+
+        <div class="step hint">
+          <h3>ステップ 1 ― まず2つの曲線を見る</h3>
+          <p>2つの曲線 y＝f(x)、y＝g(x) は、x＝a と x＝b のところで交わっている。その間の区間 a ≦ x ≦ b では、いつも <b>f(x) ≧ g(x)</b>、つまり y＝f(x) が上、y＝g(x) が下にある。</p>
+          <figure>
+            <div class="figbox">
+              <svg viewBox="0 0 520 300" role="img" aria-label="2つの曲線 y=f(x) と y=g(x) が x=a と x=b で交わる図">
+                <line x1="19" y1="262" x2="462" y2="262" stroke="var(--ink)" stroke-width="2"></line>
+                <path d="M462 262 l-12 -5 v10 z" fill="var(--ink)"></path>
+                <line x1="60" y1="288" x2="60" y2="26" stroke="var(--ink)" stroke-width="2"></line>
+                <path d="M60 20 l-5 12 h10 z" fill="var(--ink)"></path>
+                <line x1="134" y1="262" x2="134" y2="194.6" stroke="var(--ink-soft)" stroke-width="1.5" stroke-dasharray="5 4"></line>
+                <line x1="356" y1="262" x2="356" y2="194.6" stroke="var(--ink-soft)" stroke-width="1.5" stroke-dasharray="5 4"></line>
+                <path d="M60.0,256.2 L66.2,249.9 L72.3,243.8 L78.5,237.9 L84.7,232.3 L90.8,226.8 L97.0,221.6 L103.2,216.5 L109.3,211.7 L115.5,207.1 L121.7,202.8 L127.8,198.6 L134.0,194.6 L140.2,190.9 L146.3,187.4 L152.5,184.0 L158.7,180.9 L164.8,178.0 L171.0,175.4 L177.2,172.9 L183.3,170.7 L189.5,168.6 L195.7,166.8 L201.8,165.2 L208.0,163.8 L214.2,162.6 L220.3,161.7 L226.5,160.9 L232.7,160.4 L238.8,160.1 L245.0,160.0 L251.2,160.1 L257.3,160.4 L263.5,160.9 L269.7,161.7 L275.8,162.6 L282.0,163.8 L288.2,165.2 L294.3,166.8 L300.5,168.6 L306.7,170.7 L312.8,172.9 L319.0,175.4 L325.2,178.0 L331.3,180.9 L337.5,184.0 L343.7,187.4 L349.8,190.9 L356.0,194.6 L362.2,198.6 L368.3,202.8 L374.5,207.1 L380.7,211.7 L386.8,216.5 L393.0,221.6 L399.2,226.8 L405.3,232.3 L411.5,237.9 L417.7,243.8 L423.8,249.9 L430.0,256.2" fill="none" stroke="var(--accent)" stroke-width="3"></path>
+                <path d="M60.0,172.6 L66.2,174.9 L72.3,177.1 L78.5,179.2 L84.7,181.2 L90.8,183.1 L97.0,185.0 L103.2,186.8 L109.3,188.5 L115.5,190.2 L121.7,191.7 L127.8,193.2 L134.0,194.6 L140.2,196.0 L146.3,197.2 L152.5,198.4 L158.7,199.5 L164.8,200.5 L171.0,201.5 L177.2,202.4 L183.3,203.2 L189.5,203.9 L195.7,204.6 L201.8,205.1 L208.0,205.6 L214.2,206.0 L220.3,206.4 L226.5,206.7 L232.7,206.8 L238.8,207.0 L245.0,207.0 L251.2,207.0 L257.3,206.8 L263.5,206.7 L269.7,206.4 L275.8,206.0 L282.0,205.6 L288.2,205.1 L294.3,204.6 L300.5,203.9 L306.7,203.2 L312.8,202.4 L319.0,201.5 L325.2,200.5 L331.3,199.5 L337.5,198.4 L343.7,197.2 L349.8,196.0 L356.0,194.6 L362.2,193.2 L368.3,191.7 L374.5,190.2 L380.7,188.5 L386.8,186.8 L393.0,185.0 L399.2,183.1 L405.3,181.2 L411.5,179.2 L417.7,177.1 L423.8,174.9 L430.0,172.6" fill="none" stroke="var(--blue)" stroke-width="3"></path>
+                <circle cx="134" cy="194.6" r="4" fill="var(--ink)"></circle>
+                <circle cx="356" cy="194.6" r="4" fill="var(--ink)"></circle>
+                <text x="42" y="30" class="svg-txt" font-size="16">y</text>
+                <text x="468" y="280" class="svg-txt" font-size="16">x</text>
+                <text x="42" y="282" class="svg-txt-soft" font-size="15">O</text>
+                <text x="134" y="284" text-anchor="middle" class="svg-txt" font-size="16">a</text>
+                <text x="356" y="284" text-anchor="middle" class="svg-txt" font-size="16">b</text>
+                <text x="252" y="146" text-anchor="middle" class="svg-txt" font-size="16" style="fill:var(--accent-deep)">y＝f(x)</text>
+                <text x="252" y="234" text-anchor="middle" class="svg-txt" font-size="16" style="fill:var(--blue)">y＝g(x)</text>
+              </svg>
+            </div>
+            <figcaption>緑の曲線 y＝f(x) が上、青の曲線 y＝g(x) が下。交点の x 座標が a と b。</figcaption>
+          </figure>
+        </div>
+
+        <div class="step hint">
+          <h3>ステップ 2 ― 求めるのは「間」の部分</h3>
+          <p>求める面積 S は、2つの曲線と直線 x＝a、x＝b で囲まれた、<b>斜線の部分</b>だ。この部分は、x 軸と曲線 y＝f(x) の間の面積から、x 軸と曲線 y＝g(x) の間の面積を引いたもの、と見ることもできる。</p>
+          <figure>
+            <div class="figbox">
+              <svg viewBox="0 0 520 300" role="img" aria-label="2つの曲線の間の部分に斜線が引かれ、面積Sと示された図">
+                <defs>
+                  <pattern id="hatchB2" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                    <line x1="0" y1="0" x2="0" y2="8" stroke="var(--accent)" stroke-width="1.5"></line>
+                  </pattern>
+                </defs>
+                <line x1="19" y1="262" x2="462" y2="262" stroke="var(--ink)" stroke-width="2"></line>
+                <path d="M462 262 l-12 -5 v10 z" fill="var(--ink)"></path>
+                <line x1="60" y1="288" x2="60" y2="26" stroke="var(--ink)" stroke-width="2"></line>
+                <path d="M60 20 l-5 12 h10 z" fill="var(--ink)"></path>
+                <path d="M134.0,194.6 L137.7,192.4 L141.4,190.2 L145.1,188.0 L148.8,186.0 L152.5,184.0 L156.2,182.2 L159.9,180.3 L163.6,178.6 L167.3,177.0 L171.0,175.4 L174.7,173.9 L178.4,172.4 L182.1,171.1 L185.8,169.8 L189.5,168.6 L193.2,167.5 L196.9,166.5 L200.6,165.5 L204.3,164.6 L208.0,163.8 L211.7,163.1 L215.4,162.4 L219.1,161.9 L222.8,161.4 L226.5,160.9 L230.2,160.6 L233.9,160.3 L237.6,160.1 L241.3,160.0 L245.0,160.0 L248.7,160.0 L252.4,160.1 L256.1,160.3 L259.8,160.6 L263.5,160.9 L267.2,161.4 L270.9,161.9 L274.6,162.4 L278.3,163.1 L282.0,163.8 L285.7,164.6 L289.4,165.5 L293.1,166.5 L296.8,167.5 L300.5,168.6 L304.2,169.8 L307.9,171.1 L311.6,172.4 L315.3,173.9 L319.0,175.4 L322.7,177.0 L326.4,178.6 L330.1,180.3 L333.8,182.2 L337.5,184.0 L341.2,186.0 L344.9,188.0 L348.6,190.2 L352.3,192.4 L356.0,194.6 L356.0,194.6 L352.3,195.4 L348.6,196.2 L344.9,197.0 L341.2,197.7 L337.5,198.4 L333.8,199.1 L330.1,199.7 L326.4,200.3 L322.7,200.9 L319.0,201.5 L315.3,202.0 L311.6,202.5 L307.9,203.0 L304.2,203.5 L300.5,203.9 L296.8,204.3 L293.1,204.7 L289.4,205.0 L285.7,205.3 L282.0,205.6 L278.3,205.9 L274.6,206.1 L270.9,206.3 L267.2,206.5 L263.5,206.7 L259.8,206.8 L256.1,206.9 L252.4,206.9 L248.7,207.0 L245.0,207.0 L241.3,207.0 L237.6,206.9 L233.9,206.9 L230.2,206.8 L226.5,206.7 L222.8,206.5 L219.1,206.3 L215.4,206.1 L211.7,205.9 L208.0,205.6 L204.3,205.3 L200.6,205.0 L196.9,204.7 L193.2,204.3 L189.5,203.9 L185.8,203.5 L182.1,203.0 L178.4,202.5 L174.7,202.0 L171.0,201.5 L167.3,200.9 L163.6,200.3 L159.9,199.7 L156.2,199.1 L152.5,198.4 L148.8,197.7 L145.1,197.0 L141.4,196.2 L137.7,195.4 L134.0,194.6 Z" fill="var(--accent)" fill-opacity="0.16"></path>
+                <path d="M134.0,194.6 L137.7,192.4 L141.4,190.2 L145.1,188.0 L148.8,186.0 L152.5,184.0 L156.2,182.2 L159.9,180.3 L163.6,178.6 L167.3,177.0 L171.0,175.4 L174.7,173.9 L178.4,172.4 L182.1,171.1 L185.8,169.8 L189.5,168.6 L193.2,167.5 L196.9,166.5 L200.6,165.5 L204.3,164.6 L208.0,163.8 L211.7,163.1 L215.4,162.4 L219.1,161.9 L222.8,161.4 L226.5,160.9 L230.2,160.6 L233.9,160.3 L237.6,160.1 L241.3,160.0 L245.0,160.0 L248.7,160.0 L252.4,160.1 L256.1,160.3 L259.8,160.6 L263.5,160.9 L267.2,161.4 L270.9,161.9 L274.6,162.4 L278.3,163.1 L282.0,163.8 L285.7,164.6 L289.4,165.5 L293.1,166.5 L296.8,167.5 L300.5,168.6 L304.2,169.8 L307.9,171.1 L311.6,172.4 L315.3,173.9 L319.0,175.4 L322.7,177.0 L326.4,178.6 L330.1,180.3 L333.8,182.2 L337.5,184.0 L341.2,186.0 L344.9,188.0 L348.6,190.2 L352.3,192.4 L356.0,194.6 L356.0,194.6 L352.3,195.4 L348.6,196.2 L344.9,197.0 L341.2,197.7 L337.5,198.4 L333.8,199.1 L330.1,199.7 L326.4,200.3 L322.7,200.9 L319.0,201.5 L315.3,202.0 L311.6,202.5 L307.9,203.0 L304.2,203.5 L300.5,203.9 L296.8,204.3 L293.1,204.7 L289.4,205.0 L285.7,205.3 L282.0,205.6 L278.3,205.9 L274.6,206.1 L270.9,206.3 L267.2,206.5 L263.5,206.7 L259.8,206.8 L256.1,206.9 L252.4,206.9 L248.7,207.0 L245.0,207.0 L241.3,207.0 L237.6,206.9 L233.9,206.9 L230.2,206.8 L226.5,206.7 L222.8,206.5 L219.1,206.3 L215.4,206.1 L211.7,205.9 L208.0,205.6 L204.3,205.3 L200.6,205.0 L196.9,204.7 L193.2,204.3 L189.5,203.9 L185.8,203.5 L182.1,203.0 L178.4,202.5 L174.7,202.0 L171.0,201.5 L167.3,200.9 L163.6,200.3 L159.9,199.7 L156.2,199.1 L152.5,198.4 L148.8,197.7 L145.1,197.0 L141.4,196.2 L137.7,195.4 L134.0,194.6 Z" fill="url(#hatchB2)"></path>
+                <line x1="134" y1="262" x2="134" y2="194.6" stroke="var(--ink-soft)" stroke-width="1.5" stroke-dasharray="5 4"></line>
+                <line x1="356" y1="262" x2="356" y2="194.6" stroke="var(--ink-soft)" stroke-width="1.5" stroke-dasharray="5 4"></line>
+                <path d="M60.0,256.2 L66.2,249.9 L72.3,243.8 L78.5,237.9 L84.7,232.3 L90.8,226.8 L97.0,221.6 L103.2,216.5 L109.3,211.7 L115.5,207.1 L121.7,202.8 L127.8,198.6 L134.0,194.6 L140.2,190.9 L146.3,187.4 L152.5,184.0 L158.7,180.9 L164.8,178.0 L171.0,175.4 L177.2,172.9 L183.3,170.7 L189.5,168.6 L195.7,166.8 L201.8,165.2 L208.0,163.8 L214.2,162.6 L220.3,161.7 L226.5,160.9 L232.7,160.4 L238.8,160.1 L245.0,160.0 L251.2,160.1 L257.3,160.4 L263.5,160.9 L269.7,161.7 L275.8,162.6 L282.0,163.8 L288.2,165.2 L294.3,166.8 L300.5,168.6 L306.7,170.7 L312.8,172.9 L319.0,175.4 L325.2,178.0 L331.3,180.9 L337.5,184.0 L343.7,187.4 L349.8,190.9 L356.0,194.6 L362.2,198.6 L368.3,202.8 L374.5,207.1 L380.7,211.7 L386.8,216.5 L393.0,221.6 L399.2,226.8 L405.3,232.3 L411.5,237.9 L417.7,243.8 L423.8,249.9 L430.0,256.2" fill="none" stroke="var(--accent)" stroke-width="3"></path>
+                <path d="M60.0,172.6 L66.2,174.9 L72.3,177.1 L78.5,179.2 L84.7,181.2 L90.8,183.1 L97.0,185.0 L103.2,186.8 L109.3,188.5 L115.5,190.2 L121.7,191.7 L127.8,193.2 L134.0,194.6 L140.2,196.0 L146.3,197.2 L152.5,198.4 L158.7,199.5 L164.8,200.5 L171.0,201.5 L177.2,202.4 L183.3,203.2 L189.5,203.9 L195.7,204.6 L201.8,205.1 L208.0,205.6 L214.2,206.0 L220.3,206.4 L226.5,206.7 L232.7,206.8 L238.8,207.0 L245.0,207.0 L251.2,207.0 L257.3,206.8 L263.5,206.7 L269.7,206.4 L275.8,206.0 L282.0,205.6 L288.2,205.1 L294.3,204.6 L300.5,203.9 L306.7,203.2 L312.8,202.4 L319.0,201.5 L325.2,200.5 L331.3,199.5 L337.5,198.4 L343.7,197.2 L349.8,196.0 L356.0,194.6 L362.2,193.2 L368.3,191.7 L374.5,190.2 L380.7,188.5 L386.8,186.8 L393.0,185.0 L399.2,183.1 L405.3,181.2 L411.5,179.2 L417.7,177.1 L423.8,174.9 L430.0,172.6" fill="none" stroke="var(--blue)" stroke-width="3"></path>
+                <circle cx="134" cy="194.6" r="4" fill="var(--ink)"></circle>
+                <circle cx="356" cy="194.6" r="4" fill="var(--ink)"></circle>
+                <text x="42" y="30" class="svg-txt" font-size="16">y</text>
+                <text x="468" y="280" class="svg-txt" font-size="16">x</text>
+                <text x="42" y="282" class="svg-txt-soft" font-size="15">O</text>
+                <text x="134" y="284" text-anchor="middle" class="svg-txt" font-size="16">a</text>
+                <text x="356" y="284" text-anchor="middle" class="svg-txt" font-size="16">b</text>
+                <text x="252" y="146" text-anchor="middle" class="svg-txt" font-size="16" style="fill:var(--accent-deep)">y＝f(x)</text>
+                <text x="252" y="234" text-anchor="middle" class="svg-txt" font-size="16" style="fill:var(--blue)">y＝g(x)</text>
+                <text x="245" y="193" text-anchor="middle" class="svg-txt" font-size="22" style="fill:var(--accent-deep)">S</text>
+              </svg>
+            </div>
+            <figcaption>斜線の部分が、2つの曲線の間の面積 S。</figcaption>
+          </figure>
+        </div>
+
+        <div class="step hint">
+          <h3>ステップ 3 ― 縦の長さは「上 − 下」</h3>
+          <p>区間の中の1点 x で図を縦に切ると、切り口の長さは、上の曲線の値から下の曲線の値を引いた <b>f(x) − g(x)</b> になる。この長さを、x＝a から x＝b まで全部集める（積分する）と、斜線部分の面積になる。これが、この項の考え方の中心だ。</p>
+          <figure>
+            <div class="figbox">
+              <svg viewBox="0 0 520 300" role="img" aria-label="あるxにおける縦の切り口の長さが f(x)-g(x) であることを示す図">
+                <line x1="19" y1="262" x2="462" y2="262" stroke="var(--ink)" stroke-width="2"></line>
+                <path d="M462 262 l-12 -5 v10 z" fill="var(--ink)"></path>
+                <line x1="60" y1="288" x2="60" y2="26" stroke="var(--ink)" stroke-width="2"></line>
+                <path d="M60 20 l-5 12 h10 z" fill="var(--ink)"></path>
+                <path d="M134.0,194.6 L137.7,192.4 L141.4,190.2 L145.1,188.0 L148.8,186.0 L152.5,184.0 L156.2,182.2 L159.9,180.3 L163.6,178.6 L167.3,177.0 L171.0,175.4 L174.7,173.9 L178.4,172.4 L182.1,171.1 L185.8,169.8 L189.5,168.6 L193.2,167.5 L196.9,166.5 L200.6,165.5 L204.3,164.6 L208.0,163.8 L211.7,163.1 L215.4,162.4 L219.1,161.9 L222.8,161.4 L226.5,160.9 L230.2,160.6 L233.9,160.3 L237.6,160.1 L241.3,160.0 L245.0,160.0 L248.7,160.0 L252.4,160.1 L256.1,160.3 L259.8,160.6 L263.5,160.9 L267.2,161.4 L270.9,161.9 L274.6,162.4 L278.3,163.1 L282.0,163.8 L285.7,164.6 L289.4,165.5 L293.1,166.5 L296.8,167.5 L300.5,168.6 L304.2,169.8 L307.9,171.1 L311.6,172.4 L315.3,173.9 L319.0,175.4 L322.7,177.0 L326.4,178.6 L330.1,180.3 L333.8,182.2 L337.5,184.0 L341.2,186.0 L344.9,188.0 L348.6,190.2 L352.3,192.4 L356.0,194.6 L356.0,194.6 L352.3,195.4 L348.6,196.2 L344.9,197.0 L341.2,197.7 L337.5,198.4 L333.8,199.1 L330.1,199.7 L326.4,200.3 L322.7,200.9 L319.0,201.5 L315.3,202.0 L311.6,202.5 L307.9,203.0 L304.2,203.5 L300.5,203.9 L296.8,204.3 L293.1,204.7 L289.4,205.0 L285.7,205.3 L282.0,205.6 L278.3,205.9 L274.6,206.1 L270.9,206.3 L267.2,206.5 L263.5,206.7 L259.8,206.8 L256.1,206.9 L252.4,206.9 L248.7,207.0 L245.0,207.0 L241.3,207.0 L237.6,206.9 L233.9,206.9 L230.2,206.8 L226.5,206.7 L222.8,206.5 L219.1,206.3 L215.4,206.1 L211.7,205.9 L208.0,205.6 L204.3,205.3 L200.6,205.0 L196.9,204.7 L193.2,204.3 L189.5,203.9 L185.8,203.5 L182.1,203.0 L178.4,202.5 L174.7,202.0 L171.0,201.5 L167.3,200.9 L163.6,200.3 L159.9,199.7 L156.2,199.1 L152.5,198.4 L148.8,197.7 L145.1,197.0 L141.4,196.2 L137.7,195.4 L134.0,194.6 Z" fill="var(--accent)" fill-opacity="0.10"></path>
+                <line x1="134" y1="262" x2="134" y2="194.6" stroke="var(--ink-soft)" stroke-width="1.5" stroke-dasharray="5 4"></line>
+                <line x1="356" y1="262" x2="356" y2="194.6" stroke="var(--ink-soft)" stroke-width="1.5" stroke-dasharray="5 4"></line>
+                <path d="M60.0,256.2 L66.2,249.9 L72.3,243.8 L78.5,237.9 L84.7,232.3 L90.8,226.8 L97.0,221.6 L103.2,216.5 L109.3,211.7 L115.5,207.1 L121.7,202.8 L127.8,198.6 L134.0,194.6 L140.2,190.9 L146.3,187.4 L152.5,184.0 L158.7,180.9 L164.8,178.0 L171.0,175.4 L177.2,172.9 L183.3,170.7 L189.5,168.6 L195.7,166.8 L201.8,165.2 L208.0,163.8 L214.2,162.6 L220.3,161.7 L226.5,160.9 L232.7,160.4 L238.8,160.1 L245.0,160.0 L251.2,160.1 L257.3,160.4 L263.5,160.9 L269.7,161.7 L275.8,162.6 L282.0,163.8 L288.2,165.2 L294.3,166.8 L300.5,168.6 L306.7,170.7 L312.8,172.9 L319.0,175.4 L325.2,178.0 L331.3,180.9 L337.5,184.0 L343.7,187.4 L349.8,190.9 L356.0,194.6 L362.2,198.6 L368.3,202.8 L374.5,207.1 L380.7,211.7 L386.8,216.5 L393.0,221.6 L399.2,226.8 L405.3,232.3 L411.5,237.9 L417.7,243.8 L423.8,249.9 L430.0,256.2" fill="none" stroke="var(--accent)" stroke-width="3"></path>
+                <path d="M60.0,172.6 L66.2,174.9 L72.3,177.1 L78.5,179.2 L84.7,181.2 L90.8,183.1 L97.0,185.0 L103.2,186.8 L109.3,188.5 L115.5,190.2 L121.7,191.7 L127.8,193.2 L134.0,194.6 L140.2,196.0 L146.3,197.2 L152.5,198.4 L158.7,199.5 L164.8,200.5 L171.0,201.5 L177.2,202.4 L183.3,203.2 L189.5,203.9 L195.7,204.6 L201.8,205.1 L208.0,205.6 L214.2,206.0 L220.3,206.4 L226.5,206.7 L232.7,206.8 L238.8,207.0 L245.0,207.0 L251.2,207.0 L257.3,206.8 L263.5,206.7 L269.7,206.4 L275.8,206.0 L282.0,205.6 L288.2,205.1 L294.3,204.6 L300.5,203.9 L306.7,203.2 L312.8,202.4 L319.0,201.5 L325.2,200.5 L331.3,199.5 L337.5,198.4 L343.7,197.2 L349.8,196.0 L356.0,194.6 L362.2,193.2 L368.3,191.7 L374.5,190.2 L380.7,188.5 L386.8,186.8 L393.0,185.0 L399.2,183.1 L405.3,181.2 L411.5,179.2 L417.7,177.1 L423.8,174.9 L430.0,172.6" fill="none" stroke="var(--blue)" stroke-width="3"></path>
+                <rect x="218.3" y="161.4" width="9" height="45.1" fill="var(--orange)"></rect>
+                <line x1="243" y1="161.4" x2="243" y2="206.5" stroke="var(--ink)" stroke-width="1.5"></line>
+                <line x1="237" y1="161.4" x2="249" y2="161.4" stroke="var(--ink)" stroke-width="1.5"></line>
+                <line x1="237" y1="206.5" x2="249" y2="206.5" stroke="var(--ink)" stroke-width="1.5"></line>
+                <circle cx="134" cy="194.6" r="4" fill="var(--ink)"></circle>
+                <circle cx="356" cy="194.6" r="4" fill="var(--ink)"></circle>
+                <text x="42" y="30" class="svg-txt" font-size="16">y</text>
+                <text x="468" y="280" class="svg-txt" font-size="16">x</text>
+                <text x="42" y="282" class="svg-txt-soft" font-size="15">O</text>
+                <text x="134" y="284" text-anchor="middle" class="svg-txt" font-size="16">a</text>
+                <text x="356" y="284" text-anchor="middle" class="svg-txt" font-size="16">b</text>
+                <text x="222.8" y="148" text-anchor="middle" class="svg-txt" font-size="15">f(x)</text>
+                <text x="222.8" y="228" text-anchor="middle" class="svg-txt" font-size="15">g(x)</text>
+                <text x="222.8" y="284" text-anchor="middle" class="svg-txt-soft" font-size="14">x</text>
+                <text x="256" y="189" class="svg-txt" font-size="16" style="fill:var(--orange)">f(x) − g(x)</text>
+              </svg>
+            </div>
+            <figcaption>オレンジの帯が、x における縦の切り口。その長さは f(x) − g(x)（上から下を引く）。</figcaption>
+          </figure>
+        </div>
+
+        <div class="step hint">
+          <h3>ステップ 4 ― x 軸の下側にあっても同じ</h3>
+          <p>囲まれた部分全体が x 軸の<b>下側</b>にある場合も、考え方は変わらない。2つの曲線を同じだけ上に平行移動すれば、間の部分は x 軸の上側に移るが、<b>間の面積は変わらない</b>からだ。だから、下側にある場合も「上 − 下」を積分すればよい。</p>
+          <figure>
+            <div class="figbox">
+              <svg viewBox="0 0 520 262" role="img" aria-label="x軸の下側にある2曲線の間の部分を、上に平行移動しても面積が変わらないことを示す図">
+                <defs>
+                  <pattern id="hatchB4L" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                    <line x1="0" y1="0" x2="0" y2="8" stroke="var(--accent)" stroke-width="1.5"></line>
+                  </pattern>
+                  <pattern id="hatchB4R" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                    <line x1="0" y1="0" x2="0" y2="8" stroke="var(--accent)" stroke-width="1.5"></line>
+                  </pattern>
+                </defs>
+                <text x="150" y="18" text-anchor="middle" class="svg-txt" font-size="14.5">全体が x 軸の下側</text>
+                <line x1="40" y1="96" x2="276" y2="96" stroke="var(--ink)" stroke-width="2"></line>
+                <path d="M276 96 l-11 -5 v10 z" fill="var(--ink)"></path>
+                <line x1="78" y1="200" x2="78" y2="32" stroke="var(--ink)" stroke-width="2"></line>
+                <path d="M78 26 l-5 12 h10 z" fill="var(--ink)"></path>
+                <path d="M120.0,152.6 L122.1,151.5 L124.2,150.4 L126.3,149.4 L128.4,148.5 L130.5,147.5 L132.6,146.7 L134.7,145.8 L136.8,145.0 L138.9,144.2 L141.0,143.4 L143.1,142.7 L145.2,142.1 L147.3,141.4 L149.4,140.8 L151.5,140.3 L153.6,139.7 L155.7,139.2 L157.8,138.8 L159.9,138.4 L162.0,138.0 L164.1,137.6 L166.2,137.3 L168.3,137.1 L170.4,136.8 L172.5,136.6 L174.6,136.5 L176.7,136.3 L178.8,136.2 L180.9,136.2 L183.0,136.2 L185.1,136.2 L187.2,136.2 L189.3,136.3 L191.4,136.5 L193.5,136.6 L195.6,136.8 L197.7,137.1 L199.8,137.3 L201.9,137.6 L204.0,138.0 L206.1,138.4 L208.2,138.8 L210.3,139.2 L212.4,139.7 L214.5,140.3 L216.6,140.8 L218.7,141.4 L220.8,142.1 L222.9,142.7 L225.0,143.4 L227.1,144.2 L229.2,145.0 L231.3,145.8 L233.4,146.7 L235.5,147.5 L237.6,148.5 L239.7,149.4 L241.8,150.4 L243.9,151.5 L246.0,152.6 L246.0,152.6 L243.9,152.9 L241.8,153.3 L239.7,153.7 L237.6,154.0 L235.5,154.3 L233.4,154.7 L231.3,155.0 L229.2,155.3 L227.1,155.5 L225.0,155.8 L222.9,156.1 L220.8,156.3 L218.7,156.5 L216.6,156.7 L214.5,156.9 L212.4,157.1 L210.3,157.3 L208.2,157.5 L206.1,157.6 L204.0,157.8 L201.9,157.9 L199.8,158.0 L197.7,158.1 L195.6,158.2 L193.5,158.2 L191.4,158.3 L189.3,158.3 L187.2,158.4 L185.1,158.4 L183.0,158.4 L180.9,158.4 L178.8,158.4 L176.7,158.3 L174.6,158.3 L172.5,158.2 L170.4,158.2 L168.3,158.1 L166.2,158.0 L164.1,157.9 L162.0,157.8 L159.9,157.6 L157.8,157.5 L155.7,157.3 L153.6,157.1 L151.5,156.9 L149.4,156.7 L147.3,156.5 L145.2,156.3 L143.1,156.1 L141.0,155.8 L138.9,155.5 L136.8,155.3 L134.7,155.0 L132.6,154.7 L130.5,154.3 L128.4,154.0 L126.3,153.7 L124.2,153.3 L122.1,152.9 L120.0,152.6 Z" fill="var(--accent)" fill-opacity="0.16"></path>
+                <path d="M120.0,152.6 L122.1,151.5 L124.2,150.4 L126.3,149.4 L128.4,148.5 L130.5,147.5 L132.6,146.7 L134.7,145.8 L136.8,145.0 L138.9,144.2 L141.0,143.4 L143.1,142.7 L145.2,142.1 L147.3,141.4 L149.4,140.8 L151.5,140.3 L153.6,139.7 L155.7,139.2 L157.8,138.8 L159.9,138.4 L162.0,138.0 L164.1,137.6 L166.2,137.3 L168.3,137.1 L170.4,136.8 L172.5,136.6 L174.6,136.5 L176.7,136.3 L178.8,136.2 L180.9,136.2 L183.0,136.2 L185.1,136.2 L187.2,136.2 L189.3,136.3 L191.4,136.5 L193.5,136.6 L195.6,136.8 L197.7,137.1 L199.8,137.3 L201.9,137.6 L204.0,138.0 L206.1,138.4 L208.2,138.8 L210.3,139.2 L212.4,139.7 L214.5,140.3 L216.6,140.8 L218.7,141.4 L220.8,142.1 L222.9,142.7 L225.0,143.4 L227.1,144.2 L229.2,145.0 L231.3,145.8 L233.4,146.7 L235.5,147.5 L237.6,148.5 L239.7,149.4 L241.8,150.4 L243.9,151.5 L246.0,152.6 L246.0,152.6 L243.9,152.9 L241.8,153.3 L239.7,153.7 L237.6,154.0 L235.5,154.3 L233.4,154.7 L231.3,155.0 L229.2,155.3 L227.1,155.5 L225.0,155.8 L222.9,156.1 L220.8,156.3 L218.7,156.5 L216.6,156.7 L214.5,156.9 L212.4,157.1 L210.3,157.3 L208.2,157.5 L206.1,157.6 L204.0,157.8 L201.9,157.9 L199.8,158.0 L197.7,158.1 L195.6,158.2 L193.5,158.2 L191.4,158.3 L189.3,158.3 L187.2,158.4 L185.1,158.4 L183.0,158.4 L180.9,158.4 L178.8,158.4 L176.7,158.3 L174.6,158.3 L172.5,158.2 L170.4,158.2 L168.3,158.1 L166.2,158.0 L164.1,157.9 L162.0,157.8 L159.9,157.6 L157.8,157.5 L155.7,157.3 L153.6,157.1 L151.5,156.9 L149.4,156.7 L147.3,156.5 L145.2,156.3 L143.1,156.1 L141.0,155.8 L138.9,155.5 L136.8,155.3 L134.7,155.0 L132.6,154.7 L130.5,154.3 L128.4,154.0 L126.3,153.7 L124.2,153.3 L122.1,152.9 L120.0,152.6 Z" fill="url(#hatchB4L)"></path>
+                <path d="M78.0,181.7 L81.1,179.0 L84.2,176.5 L87.2,174.0 L90.3,171.6 L93.4,169.3 L96.5,167.1 L99.6,164.9 L102.6,162.8 L105.7,160.8 L108.8,158.9 L111.9,157.0 L115.0,155.3 L118.0,153.6 L121.1,152.0 L124.2,150.4 L127.3,149.0 L130.4,147.6 L133.4,146.3 L136.5,145.1 L139.6,143.9 L142.7,142.9 L145.8,141.9 L148.8,141.0 L151.9,140.2 L155.0,139.4 L158.1,138.7 L161.2,138.1 L164.2,137.6 L167.3,137.2 L170.4,136.8 L173.5,136.5 L176.6,136.3 L179.6,136.2 L182.7,136.2 L185.8,136.2 L188.9,136.3 L192.0,136.5 L195.0,136.8 L198.1,137.1 L201.2,137.5 L204.3,138.0 L207.4,138.6 L210.4,139.3 L213.5,140.0 L216.6,140.8 L219.7,141.7 L222.8,142.7 L225.8,143.7 L228.9,144.9 L232.0,146.1 L235.1,147.4 L238.2,148.7 L241.2,150.2 L244.3,151.7 L247.4,153.3 L250.5,155.0 L253.6,156.7 L256.6,158.6 L259.7,160.5 L262.8,162.5" fill="none" stroke="var(--accent)" stroke-width="2.5"></path>
+                <path d="M78.0,142.2 L81.1,143.1 L84.2,144.0 L87.2,144.9 L90.3,145.7 L93.4,146.6 L96.5,147.4 L99.6,148.1 L102.6,148.9 L105.7,149.6 L108.8,150.3 L111.9,150.9 L115.0,151.6 L118.0,152.2 L121.1,152.8 L124.2,153.3 L127.3,153.8 L130.4,154.3 L133.4,154.8 L136.5,155.2 L139.6,155.6 L142.7,156.0 L145.8,156.4 L148.8,156.7 L151.9,157.0 L155.0,157.2 L158.1,157.5 L161.2,157.7 L164.2,157.9 L167.3,158.0 L170.4,158.2 L173.5,158.3 L176.6,158.3 L179.6,158.4 L182.7,158.4 L185.8,158.4 L188.9,158.3 L192.0,158.3 L195.0,158.2 L198.1,158.1 L201.2,157.9 L204.3,157.7 L207.4,157.5 L210.4,157.3 L213.5,157.0 L216.6,156.7 L219.7,156.4 L222.8,156.1 L225.8,155.7 L228.9,155.3 L232.0,154.9 L235.1,154.4 L238.2,153.9 L241.2,153.4 L244.3,152.9 L247.4,152.3 L250.5,151.7 L253.6,151.1 L256.6,150.4 L259.7,149.7 L262.8,149.0" fill="none" stroke="var(--blue)" stroke-width="2.5"></path>
+                <line x1="120" y1="96" x2="120" y2="152.6" stroke="var(--ink-soft)" stroke-width="1.2" stroke-dasharray="4 3"></line>
+                <line x1="246" y1="96" x2="246" y2="152.6" stroke="var(--ink-soft)" stroke-width="1.2" stroke-dasharray="4 3"></line>
+                <text x="120" y="88" text-anchor="middle" class="svg-txt" font-size="13.5">a</text>
+                <text x="246" y="88" text-anchor="middle" class="svg-txt" font-size="13.5">b</text>
+                <line x1="278" y1="152" x2="306" y2="152" stroke="var(--ink)" stroke-width="2"></line>
+                <path d="M306 152 l-10 -5 v10 z" fill="var(--ink)"></path>
+                <text x="292" y="140" text-anchor="middle" class="svg-txt-soft" font-size="12.5">平行移動</text>
+                <text x="412" y="110" text-anchor="middle" class="svg-txt" font-size="14.5">上に平行移動しても…</text>
+                <line x1="290" y1="205" x2="506" y2="205" stroke="var(--ink)" stroke-width="2"></line>
+                <path d="M506 205 l-11 -5 v10 z" fill="var(--ink)"></path>
+                <line x1="318" y1="246" x2="318" y2="130" stroke="var(--ink)" stroke-width="2"></line>
+                <path d="M318 124 l-5 12 h10 z" fill="var(--ink)"></path>
+                <path d="M360.0,173.2 L362.1,172.1 L364.2,171.0 L366.3,170.0 L368.4,169.1 L370.5,168.1 L372.6,167.3 L374.7,166.4 L376.8,165.6 L378.9,164.8 L381.0,164.1 L383.1,163.3 L385.2,162.7 L387.3,162.0 L389.4,161.4 L391.5,160.9 L393.6,160.3 L395.7,159.8 L397.8,159.4 L399.9,159.0 L402.0,158.6 L404.1,158.2 L406.2,157.9 L408.3,157.7 L410.4,157.4 L412.5,157.2 L414.6,157.1 L416.7,156.9 L418.8,156.8 L420.9,156.8 L423.0,156.8 L425.1,156.8 L427.2,156.8 L429.3,156.9 L431.4,157.1 L433.5,157.2 L435.6,157.4 L437.7,157.7 L439.8,157.9 L441.9,158.2 L444.0,158.6 L446.1,159.0 L448.2,159.4 L450.3,159.8 L452.4,160.3 L454.5,160.9 L456.6,161.4 L458.7,162.0 L460.8,162.7 L462.9,163.3 L465.0,164.1 L467.1,164.8 L469.2,165.6 L471.3,166.4 L473.4,167.3 L475.5,168.1 L477.6,169.1 L479.7,170.0 L481.8,171.0 L483.9,172.1 L486.0,173.2 L486.0,173.2 L483.9,173.5 L481.8,173.9 L479.7,174.3 L477.6,174.6 L475.5,174.9 L473.4,175.3 L471.3,175.6 L469.2,175.9 L467.1,176.1 L465.0,176.4 L462.9,176.7 L460.8,176.9 L458.7,177.1 L456.6,177.3 L454.5,177.5 L452.4,177.7 L450.3,177.9 L448.2,178.1 L446.1,178.2 L444.0,178.3 L441.9,178.5 L439.8,178.6 L437.7,178.7 L435.6,178.8 L433.5,178.8 L431.4,178.9 L429.3,178.9 L427.2,179.0 L425.1,179.0 L423.0,179.0 L420.9,179.0 L418.8,179.0 L416.7,178.9 L414.6,178.9 L412.5,178.8 L410.4,178.8 L408.3,178.7 L406.2,178.6 L404.1,178.5 L402.0,178.3 L399.9,178.2 L397.8,178.1 L395.7,177.9 L393.6,177.7 L391.5,177.5 L389.4,177.3 L387.3,177.1 L385.2,176.9 L383.1,176.7 L381.0,176.4 L378.9,176.1 L376.8,175.9 L374.7,175.6 L372.6,175.3 L370.5,174.9 L368.4,174.6 L366.3,174.3 L364.2,173.9 L362.1,173.5 L360.0,173.2 Z" fill="var(--accent)" fill-opacity="0.16"></path>
+                <path d="M360.0,173.2 L362.1,172.1 L364.2,171.0 L366.3,170.0 L368.4,169.1 L370.5,168.1 L372.6,167.3 L374.7,166.4 L376.8,165.6 L378.9,164.8 L381.0,164.1 L383.1,163.3 L385.2,162.7 L387.3,162.0 L389.4,161.4 L391.5,160.9 L393.6,160.3 L395.7,159.8 L397.8,159.4 L399.9,159.0 L402.0,158.6 L404.1,158.2 L406.2,157.9 L408.3,157.7 L410.4,157.4 L412.5,157.2 L414.6,157.1 L416.7,156.9 L418.8,156.8 L420.9,156.8 L423.0,156.8 L425.1,156.8 L427.2,156.8 L429.3,156.9 L431.4,157.1 L433.5,157.2 L435.6,157.4 L437.7,157.7 L439.8,157.9 L441.9,158.2 L444.0,158.6 L446.1,159.0 L448.2,159.4 L450.3,159.8 L452.4,160.3 L454.5,160.9 L456.6,161.4 L458.7,162.0 L460.8,162.7 L462.9,163.3 L465.0,164.1 L467.1,164.8 L469.2,165.6 L471.3,166.4 L473.4,167.3 L475.5,168.1 L477.6,169.1 L479.7,170.0 L481.8,171.0 L483.9,172.1 L486.0,173.2 L486.0,173.2 L483.9,173.5 L481.8,173.9 L479.7,174.3 L477.6,174.6 L475.5,174.9 L473.4,175.3 L471.3,175.6 L469.2,175.9 L467.1,176.1 L465.0,176.4 L462.9,176.7 L460.8,176.9 L458.7,177.1 L456.6,177.3 L454.5,177.5 L452.4,177.7 L450.3,177.9 L448.2,178.1 L446.1,178.2 L444.0,178.3 L441.9,178.5 L439.8,178.6 L437.7,178.7 L435.6,178.8 L433.5,178.8 L431.4,178.9 L429.3,178.9 L427.2,179.0 L425.1,179.0 L423.0,179.0 L420.9,179.0 L418.8,179.0 L416.7,178.9 L414.6,178.9 L412.5,178.8 L410.4,178.8 L408.3,178.7 L406.2,178.6 L404.1,178.5 L402.0,178.3 L399.9,178.2 L397.8,178.1 L395.7,177.9 L393.6,177.7 L391.5,177.5 L389.4,177.3 L387.3,177.1 L385.2,176.9 L383.1,176.7 L381.0,176.4 L378.9,176.1 L376.8,175.9 L374.7,175.6 L372.6,175.3 L370.5,174.9 L368.4,174.6 L366.3,174.3 L364.2,173.9 L362.1,173.5 L360.0,173.2 Z" fill="url(#hatchB4R)"></path>
+                <path d="M318.0,202.3 L321.1,199.6 L324.2,197.1 L327.2,194.6 L330.3,192.2 L333.4,189.9 L336.5,187.7 L339.6,185.5 L342.6,183.4 L345.7,181.4 L348.8,179.5 L351.9,177.6 L355.0,175.9 L358.0,174.2 L361.1,172.6 L364.2,171.0 L367.3,169.6 L370.4,168.2 L373.4,166.9 L376.5,165.7 L379.6,164.5 L382.7,163.5 L385.8,162.5 L388.8,161.6 L391.9,160.8 L395.0,160.0 L398.1,159.3 L401.2,158.7 L404.2,158.2 L407.3,157.8 L410.4,157.4 L413.5,157.1 L416.6,156.9 L419.6,156.8 L422.7,156.8 L425.8,156.8 L428.9,156.9 L432.0,157.1 L435.0,157.4 L438.1,157.7 L441.2,158.1 L444.3,158.6 L447.4,159.2 L450.4,159.9 L453.5,160.6 L456.6,161.4 L459.7,162.3 L462.8,163.3 L465.8,164.3 L468.9,165.5 L472.0,166.7 L475.1,168.0 L478.2,169.3 L481.2,170.8 L484.3,172.3 L487.4,173.9 L490.5,175.6 L493.6,177.3 L496.6,179.2 L499.7,181.1 L502.8,183.1" fill="none" stroke="var(--accent)" stroke-width="2.5"></path>
+                <path d="M318.0,162.8 L321.1,163.7 L324.2,164.6 L327.2,165.5 L330.3,166.3 L333.4,167.2 L336.5,168.0 L339.6,168.7 L342.6,169.5 L345.7,170.2 L348.8,170.9 L351.9,171.5 L355.0,172.2 L358.0,172.8 L361.1,173.4 L364.2,173.9 L367.3,174.4 L370.4,174.9 L373.4,175.4 L376.5,175.8 L379.6,176.2 L382.7,176.6 L385.8,177.0 L388.8,177.3 L391.9,177.6 L395.0,177.8 L398.1,178.1 L401.2,178.3 L404.2,178.5 L407.3,178.6 L410.4,178.8 L413.5,178.9 L416.6,178.9 L419.6,179.0 L422.7,179.0 L425.8,179.0 L428.9,178.9 L432.0,178.9 L435.0,178.8 L438.1,178.7 L441.2,178.5 L444.3,178.3 L447.4,178.1 L450.4,177.9 L453.5,177.6 L456.6,177.3 L459.7,177.0 L462.8,176.7 L465.8,176.3 L468.9,175.9 L472.0,175.5 L475.1,175.0 L478.2,174.5 L481.2,174.0 L484.3,173.5 L487.4,172.9 L490.5,172.3 L493.6,171.7 L496.6,171.0 L499.7,170.3 L502.8,169.6" fill="none" stroke="var(--blue)" stroke-width="2.5"></path>
+                <line x1="360" y1="205" x2="360" y2="173.2" stroke="var(--ink-soft)" stroke-width="1.2" stroke-dasharray="4 3"></line>
+                <line x1="486" y1="205" x2="486" y2="173.2" stroke="var(--ink-soft)" stroke-width="1.2" stroke-dasharray="4 3"></line>
+                <text x="360" y="224" text-anchor="middle" class="svg-txt" font-size="13.5">a</text>
+                <text x="486" y="224" text-anchor="middle" class="svg-txt" font-size="13.5">b</text>
+                <text x="412" y="238" text-anchor="middle" class="svg-txt" font-size="14.5" style="fill:var(--accent-deep)">間の面積は同じ</text>
+              </svg>
+            </div>
+            <figcaption>左：全体が x 軸の下側にある場合。右：2曲線を同じだけ上に平行移動したもの。間の面積は変わらない。</figcaption>
+          </figure>
+        </div>
+
+        <div class="step answer">
+          <h3>公式 ― 2つの曲線の間の面積</h3>
+          <p class="big">S ＝ ∫<sub>a</sub><sup>b</sup> {f(x) − g(x)} dx</p>
+          <p>a ≦ x ≦ b で f(x) ≧ g(x) のとき、曲線 y＝f(x) と y＝g(x) の間にはさまれた部分の面積は、この定積分で求められる。</p>
+          <p class="note"><b>合言葉は「上 − 下」。</b>上の曲線の式から下の曲線の式を引いて、それを積分する。どちらの曲線が上にあるかを、最初に必ず確認しよう。</p>
+        </div>
+        <p class="prob-done">解説B クリア！　次は例20で、実際の計算を確かめよう。</p>
+      </section>
+
+      <!-- ================= 例20 ================= -->
+      <div class="sec-head">
+        <span class="sec-tag">例</span>
+        <h2>例20で解き方を確認</h2>
+        <span class="pno">教科書 p.215</span>
+      </div>
+
+      <section class="card prob" id="prob-rei20" data-flow="rei20" data-label="例20">
+        <div class="prob-head">
+          <span class="prob-tag">例 20</span>
+          <div class="dots" aria-hidden="true">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span>
+          </div>
+          <span class="prob-state">ヒント 0 / 3</span>
+        </div>
+        <p class="prob-q">2つの放物線 y＝x<sup>2</sup>、y＝2x<sup>2</sup>＋1 と y 軸および直線 x＝1 で囲まれた部分の面積を求めよ。</p>
+        <figure>
+          <div class="figbox">
+            <svg viewBox="0 0 520 320" role="img" aria-label="放物線 y=x² と y=2x²+1、y軸と直線 x=1 の図">
+              <line x1="20" y1="280" x2="398" y2="280" stroke="var(--ink)" stroke-width="2"></line>
+              <path d="M398 280 l-11 -5 v10 z" fill="var(--ink)"></path>
+              <line x1="110" y1="302" x2="110" y2="22" stroke="var(--ink)" stroke-width="2"></line>
+              <path d="M110 16 l-5 12 h10 z" fill="var(--ink)"></path>
+              <line x1="280" y1="280" x2="280" y2="76" stroke="var(--ink-soft)" stroke-width="1.5" stroke-dasharray="5 4"></line>
+              <path d="M33.5,266.2 L39.2,268.2 L44.8,270.0 L50.5,271.7 L56.2,273.2 L61.8,274.5 L67.5,275.8 L73.2,276.8 L78.8,277.7 L84.5,278.5 L90.2,279.1 L95.8,279.5 L101.5,279.8 L107.2,280.0 L112.8,280.0 L118.5,279.8 L124.2,279.5 L129.8,279.1 L135.5,278.5 L141.2,277.7 L146.8,276.8 L152.5,275.8 L158.2,274.5 L163.8,273.2 L169.5,271.7 L175.2,270.0 L180.8,268.2 L186.5,266.2 L192.2,264.1 L197.8,261.8 L203.5,259.4 L209.2,256.9 L214.8,254.1 L220.5,251.3 L226.2,248.2 L231.8,245.1 L237.5,241.8 L243.2,238.3 L248.8,234.6 L254.5,230.9 L260.2,226.9 L265.8,222.9 L271.5,218.6 L277.2,214.2 L282.8,209.7 L288.5,205.0 L294.2,200.2 L299.8,195.2 L305.5,190.1 L311.2,184.8 L316.8,179.3 L322.5,173.8 L328.2,168.0 L333.8,162.1 L339.5,156.1 L345.2,149.9 L350.8,143.5 L356.5,137.0 L362.2,130.4 L367.8,123.6 L373.5,116.6" fill="none" stroke="var(--blue)" stroke-width="3"></path>
+              <path d="M38.6,188.0 L43.1,191.0 L47.7,193.7 L52.2,196.3 L56.7,198.6 L61.3,200.8 L65.8,202.8 L70.3,204.6 L74.9,206.2 L79.4,207.6 L83.9,208.8 L88.5,209.8 L93.0,210.6 L97.5,211.3 L102.1,211.7 L106.6,211.9 L111.1,212.0 L115.7,211.8 L120.2,211.5 L124.7,211.0 L129.3,210.3 L133.8,209.3 L138.3,208.2 L142.9,206.9 L147.4,205.4 L151.9,203.7 L156.5,201.8 L161.0,199.8 L165.5,197.5 L170.1,195.0 L174.6,192.4 L179.1,189.5 L183.7,186.5 L188.2,183.2 L192.7,179.8 L197.3,176.2 L201.8,172.3 L206.3,168.3 L210.9,164.1 L215.4,159.7 L219.9,155.1 L224.5,150.3 L229.0,145.4 L233.5,140.2 L238.1,134.8 L242.6,129.3 L247.1,123.5 L251.7,117.6 L256.2,111.4 L260.7,105.1 L265.3,98.6 L269.8,91.8 L274.3,84.9 L278.9,77.8 L283.4,70.5 L287.9,63.0 L292.5,55.3 L297.0,47.4 L301.5,39.4 L306.1,31.1 L310.6,22.6" fill="none" stroke="var(--accent)" stroke-width="3"></path>
+              <text x="94" y="26" class="svg-txt" font-size="16">y</text>
+              <text x="404" y="296" class="svg-txt" font-size="16">x</text>
+              <text x="90" y="300" class="svg-txt-soft" font-size="15">O</text>
+              <text x="280" y="302" text-anchor="middle" class="svg-txt" font-size="16">1</text>
+              <text x="322" y="34" class="svg-txt" font-size="16" style="fill:var(--accent-deep)">y＝2x²＋1</text>
+              <text x="338" y="196" class="svg-txt" font-size="16" style="fill:var(--blue)">y＝x²</text>
+            </svg>
+          </div>
+          <figcaption>囲まれた部分は、左が y 軸（x＝0）、右が直線 x＝1 の範囲にある。</figcaption>
+        </figure>
+
+        <div class="step hint">
+          <h3>ヒント 1 ― どちらが上か調べる</h3>
+          <p>2つの式の差をとると</p>
+          <p style="text-align:center;font-weight:700">(2x<sup>2</sup>＋1) − x<sup>2</sup> ＝ x<sup>2</sup>＋1</p>
+          <p>x<sup>2</sup>＋1 はいつも正の数だから、0 ≦ x ≦ 1 では <b>y＝2x<sup>2</sup>＋1 が上、y＝x<sup>2</sup> が下</b>だと分かる。</p>
+        </div>
+        <div class="step hint">
+          <h3>ヒント 2 ― 図で囲まれた部分を確認する</h3>
+          <p>斜線の部分が求める面積だ。左端は y 軸だから x＝0、右端は直線 x＝1。つまり積分の区間は 0 ≦ x ≦ 1 になる。</p>
+          <figure>
+            <div class="figbox">
+              <svg viewBox="0 0 520 320" role="img" aria-label="例20の囲まれた部分に斜線が引かれた図">
+                <defs>
+                  <pattern id="hatch20" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                    <line x1="0" y1="0" x2="0" y2="8" stroke="var(--accent)" stroke-width="1.5"></line>
+                  </pattern>
+                </defs>
+                <line x1="20" y1="280" x2="398" y2="280" stroke="var(--ink)" stroke-width="2"></line>
+                <path d="M398 280 l-11 -5 v10 z" fill="var(--ink)"></path>
+                <line x1="110" y1="302" x2="110" y2="22" stroke="var(--ink)" stroke-width="2"></line>
+                <path d="M110 16 l-5 12 h10 z" fill="var(--ink)"></path>
+                <path d="M110.0,212.0 L112.8,212.0 L115.7,211.8 L118.5,211.7 L121.3,211.4 L124.2,211.1 L127.0,210.6 L129.8,210.1 L132.7,209.6 L135.5,208.9 L138.3,208.2 L141.2,207.4 L144.0,206.6 L146.8,205.6 L149.7,204.6 L152.5,203.5 L155.3,202.3 L158.2,201.1 L161.0,199.8 L163.8,198.4 L166.7,196.9 L169.5,195.3 L172.3,193.7 L175.2,192.0 L178.0,190.2 L180.8,188.4 L183.7,186.5 L186.5,184.5 L189.3,182.4 L192.2,180.2 L195.0,178.0 L197.8,175.7 L200.7,173.3 L203.5,170.9 L206.3,168.3 L209.2,165.7 L212.0,163.0 L214.8,160.3 L217.7,157.4 L220.5,154.5 L223.3,151.6 L226.2,148.5 L229.0,145.4 L231.8,142.1 L234.7,138.9 L237.5,135.5 L240.3,132.1 L243.2,128.5 L246.0,125.0 L248.8,121.3 L251.7,117.6 L254.5,113.7 L257.3,109.8 L260.2,105.9 L263.0,101.8 L265.8,97.7 L268.7,93.5 L271.5,89.3 L274.3,84.9 L277.2,80.5 L280.0,76.0 L280.0,212.0 L277.2,214.2 L274.3,216.5 L271.5,218.6 L268.7,220.8 L265.8,222.9 L263.0,224.9 L260.2,226.9 L257.3,228.9 L254.5,230.9 L251.7,232.8 L248.8,234.6 L246.0,236.5 L243.2,238.3 L240.3,240.0 L237.5,241.8 L234.7,243.4 L231.8,245.1 L229.0,246.7 L226.2,248.2 L223.3,249.8 L220.5,251.3 L217.7,252.7 L214.8,254.1 L212.0,255.5 L209.2,256.9 L206.3,258.2 L203.5,259.4 L200.7,260.7 L197.8,261.8 L195.0,263.0 L192.2,264.1 L189.3,265.2 L186.5,266.2 L183.7,267.2 L180.8,268.2 L178.0,269.1 L175.2,270.0 L172.3,270.9 L169.5,271.7 L166.7,272.4 L163.8,273.2 L161.0,273.9 L158.2,274.5 L155.3,275.2 L152.5,275.8 L149.7,276.3 L146.8,276.8 L144.0,277.3 L141.2,277.7 L138.3,278.1 L135.5,278.5 L132.7,278.8 L129.8,279.1 L127.0,279.3 L124.2,279.5 L121.3,279.7 L118.5,279.8 L115.7,279.9 L112.8,280.0 L110.0,280.0 Z" fill="var(--accent)" fill-opacity="0.16"></path>
+                <path d="M110.0,212.0 L112.8,212.0 L115.7,211.8 L118.5,211.7 L121.3,211.4 L124.2,211.1 L127.0,210.6 L129.8,210.1 L132.7,209.6 L135.5,208.9 L138.3,208.2 L141.2,207.4 L144.0,206.6 L146.8,205.6 L149.7,204.6 L152.5,203.5 L155.3,202.3 L158.2,201.1 L161.0,199.8 L163.8,198.4 L166.7,196.9 L169.5,195.3 L172.3,193.7 L175.2,192.0 L178.0,190.2 L180.8,188.4 L183.7,186.5 L186.5,184.5 L189.3,182.4 L192.2,180.2 L195.0,178.0 L197.8,175.7 L200.7,173.3 L203.5,170.9 L206.3,168.3 L209.2,165.7 L212.0,163.0 L214.8,160.3 L217.7,157.4 L220.5,154.5 L223.3,151.6 L226.2,148.5 L229.0,145.4 L231.8,142.1 L234.7,138.9 L237.5,135.5 L240.3,132.1 L243.2,128.5 L246.0,125.0 L248.8,121.3 L251.7,117.6 L254.5,113.7 L257.3,109.8 L260.2,105.9 L263.0,101.8 L265.8,97.7 L268.7,93.5 L271.5,89.3 L274.3,84.9 L277.2,80.5 L280.0,76.0 L280.0,212.0 L277.2,214.2 L274.3,216.5 L271.5,218.6 L268.7,220.8 L265.8,222.9 L263.0,224.9 L260.2,226.9 L257.3,228.9 L254.5,230.9 L251.7,232.8 L248.8,234.6 L246.0,236.5 L243.2,238.3 L240.3,240.0 L237.5,241.8 L234.7,243.4 L231.8,245.1 L229.0,246.7 L226.2,248.2 L223.3,249.8 L220.5,251.3 L217.7,252.7 L214.8,254.1 L212.0,255.5 L209.2,256.9 L206.3,258.2 L203.5,259.4 L200.7,260.7 L197.8,261.8 L195.0,263.0 L192.2,264.1 L189.3,265.2 L186.5,266.2 L183.7,267.2 L180.8,268.2 L178.0,269.1 L175.2,270.0 L172.3,270.9 L169.5,271.7 L166.7,272.4 L163.8,273.2 L161.0,273.9 L158.2,274.5 L155.3,275.2 L152.5,275.8 L149.7,276.3 L146.8,276.8 L144.0,277.3 L141.2,277.7 L138.3,278.1 L135.5,278.5 L132.7,278.8 L129.8,279.1 L127.0,279.3 L124.2,279.5 L121.3,279.7 L118.5,279.8 L115.7,279.9 L112.8,280.0 L110.0,280.0 Z" fill="url(#hatch20)"></path>
+                <line x1="280" y1="280" x2="280" y2="76" stroke="var(--ink-soft)" stroke-width="1.5" stroke-dasharray="5 4"></line>
+                <path d="M33.5,266.2 L39.2,268.2 L44.8,270.0 L50.5,271.7 L56.2,273.2 L61.8,274.5 L67.5,275.8 L73.2,276.8 L78.8,277.7 L84.5,278.5 L90.2,279.1 L95.8,279.5 L101.5,279.8 L107.2,280.0 L112.8,280.0 L118.5,279.8 L124.2,279.5 L129.8,279.1 L135.5,278.5 L141.2,277.7 L146.8,276.8 L152.5,275.8 L158.2,274.5 L163.8,273.2 L169.5,271.7 L175.2,270.0 L180.8,268.2 L186.5,266.2 L192.2,264.1 L197.8,261.8 L203.5,259.4 L209.2,256.9 L214.8,254.1 L220.5,251.3 L226.2,248.2 L231.8,245.1 L237.5,241.8 L243.2,238.3 L248.8,234.6 L254.5,230.9 L260.2,226.9 L265.8,222.9 L271.5,218.6 L277.2,214.2 L282.8,209.7 L288.5,205.0 L294.2,200.2 L299.8,195.2 L305.5,190.1 L311.2,184.8 L316.8,179.3 L322.5,173.8 L328.2,168.0 L333.8,162.1 L339.5,156.1 L345.2,149.9 L350.8,143.5 L356.5,137.0 L362.2,130.4 L367.8,123.6 L373.5,116.6" fill="none" stroke="var(--blue)" stroke-width="3"></path>
+                <path d="M38.6,188.0 L43.1,191.0 L47.7,193.7 L52.2,196.3 L56.7,198.6 L61.3,200.8 L65.8,202.8 L70.3,204.6 L74.9,206.2 L79.4,207.6 L83.9,208.8 L88.5,209.8 L93.0,210.6 L97.5,211.3 L102.1,211.7 L106.6,211.9 L111.1,212.0 L115.7,211.8 L120.2,211.5 L124.7,211.0 L129.3,210.3 L133.8,209.3 L138.3,208.2 L142.9,206.9 L147.4,205.4 L151.9,203.7 L156.5,201.8 L161.0,199.8 L165.5,197.5 L170.1,195.0 L174.6,192.4 L179.1,189.5 L183.7,186.5 L188.2,183.2 L192.7,179.8 L197.3,176.2 L201.8,172.3 L206.3,168.3 L210.9,164.1 L215.4,159.7 L219.9,155.1 L224.5,150.3 L229.0,145.4 L233.5,140.2 L238.1,134.8 L242.6,129.3 L247.1,123.5 L251.7,117.6 L256.2,111.4 L260.7,105.1 L265.3,98.6 L269.8,91.8 L274.3,84.9 L278.9,77.8 L283.4,70.5 L287.9,63.0 L292.5,55.3 L297.0,47.4 L301.5,39.4 L306.1,31.1 L310.6,22.6" fill="none" stroke="var(--accent)" stroke-width="3"></path>
+                <text x="94" y="26" class="svg-txt" font-size="16">y</text>
+                <text x="404" y="296" class="svg-txt" font-size="16">x</text>
+                <text x="90" y="300" class="svg-txt-soft" font-size="15">O</text>
+                <text x="280" y="302" text-anchor="middle" class="svg-txt" font-size="16">1</text>
+                <text x="322" y="34" class="svg-txt" font-size="16" style="fill:var(--accent-deep)">y＝2x²＋1</text>
+                <text x="338" y="196" class="svg-txt" font-size="16" style="fill:var(--blue)">y＝x²</text>
+                <text x="195" y="228" text-anchor="middle" class="svg-txt" font-size="21" style="fill:var(--accent-deep)">S</text>
+              </svg>
+            </div>
+            <figcaption>斜線の部分が、y 軸（x＝0）から直線 x＝1 までの間の面積。</figcaption>
+          </figure>
+        </div>
+        <div class="step hint">
+          <h3>ヒント 3 ― 「上 − 下」を積分する</h3>
+          <p>解説Bの公式に当てはめると</p>
+          <p style="text-align:center;font-weight:700">S ＝ ∫<sub>0</sub><sup>1</sup> {(2x<sup>2</sup>＋1) − x<sup>2</sup>} dx ＝ ∫<sub>0</sub><sup>1</sup> (x<sup>2</sup>＋1) dx</p>
+          <p>積分すると [ (1/3)x<sup>3</sup> ＋ x ]<sub>0</sub><sup>1</sup> という形になる。x＝1 を代入した値から、x＝0 を代入した値を引いてみよう。</p>
+        </div>
+        <div class="step answer">
+          <h3>解答</h3>
+          <p class="big">面積は 4/3</p>
+          <p>S ＝ ∫<sub>0</sub><sup>1</sup> {(2x<sup>2</sup>＋1) − x<sup>2</sup>} dx ＝ ∫<sub>0</sub><sup>1</sup> (x<sup>2</sup>＋1) dx</p>
+          <p>　＝ [ (1/3)x<sup>3</sup> ＋ x ]<sub>0</sub><sup>1</sup> ＝ (1/3 ＋ 1) − 0 ＝ <b>4/3</b></p>
+          <p class="note">y 軸は「x＝0 の直線」。左端が y 軸のときは、積分区間の左端が 0 になるよ。</p>
+        </div>
+        <p class="prob-done">例20 クリア！　次は練習37に挑戦しよう。</p>
+      </section>
+
+      <!-- ================= 練習37 ================= -->
+      <div class="sec-head">
+        <span class="sec-tag">練習</span>
+        <h2>練習37に挑戦</h2>
+        <span class="pno">教科書 p.215</span>
+      </div>
+
+      <section class="card prob" id="prob-ren37" data-flow="ren37" data-label="練習37">
+        <div class="prob-head">
+          <span class="prob-tag ren">練習 37</span>
+          <div class="dots" aria-hidden="true">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span>
+          </div>
+          <span class="prob-state">ヒント 0 / 3</span>
+        </div>
+        <p class="prob-q">2つの放物線 y＝(1/2)x<sup>2</sup>、y＝x<sup>2</sup>＋x＋1 と直線 x＝1、x＝2 で囲まれた部分の面積を求めよ。</p>
+
+        <div class="step hint">
+          <h3>ヒント 1 ― 上下関係を確認する</h3>
+          <p>まず、区間の端で2つの値を比べてみよう。</p>
+          <table class="comp">
+            <tr><th></th><th>y＝(1/2)x<sup>2</sup></th><th>y＝x<sup>2</sup>＋x＋1</th></tr>
+            <tr><th>x＝1 のとき</th><td>1/2</td><td>3</td></tr>
+            <tr><th>x＝2 のとき</th><td>2</td><td>7</td></tr>
+          </table>
+          <p>両端とも y＝x<sup>2</sup>＋x＋1 の方が大きい。さらに、差をとると (x<sup>2</sup>＋x＋1) − (1/2)x<sup>2</sup> ＝ (1/2)x<sup>2</sup>＋x＋1 で、これは正の数どうしの和だから区間全体で正。つまり 1 ≦ x ≦ 2 では <b>y＝x<sup>2</sup>＋x＋1 が上、y＝(1/2)x<sup>2</sup> が下</b>だ。</p>
+        </div>
+        <div class="step hint">
+          <h3>ヒント 2 ― 「上 − 下」で立式する</h3>
+          <p>区間は直線 x＝1 から x＝2 まで。公式に当てはめると</p>
+          <p style="text-align:center;font-weight:700">S ＝ ∫<sub>1</sub><sup>2</sup> {(x<sup>2</sup>＋x＋1) − (1/2)x<sup>2</sup>} dx ＝ ∫<sub>1</sub><sup>2</sup> ((1/2)x<sup>2</sup>＋x＋1) dx</p>
+          <p>の形になる。あとは、この定積分を計算するだけだ。</p>
+        </div>
+        <div class="step hint">
+          <h3>ヒント 3 ― 積分して、両端の値を比べる</h3>
+          <p>積分すると [ (1/6)x<sup>3</sup> ＋ (1/2)x<sup>2</sup> ＋ x ]<sub>1</sub><sup>2</sup> となる。</p>
+          <p>x＝2 を代入すると 8/6 ＋ 2 ＋ 2、x＝1 を代入すると 1/6 ＋ 1/2 ＋ 1。この2つの差を求めてみよう。</p>
+        </div>
+        <div class="step answer">
+          <h3>解答</h3>
+          <p class="big">面積は 11/3</p>
+          <p>S ＝ ∫<sub>1</sub><sup>2</sup> {(x<sup>2</sup>＋x＋1) − (1/2)x<sup>2</sup>} dx ＝ ∫<sub>1</sub><sup>2</sup> ((1/2)x<sup>2</sup>＋x＋1) dx</p>
+          <p>　＝ [ (1/6)x<sup>3</sup> ＋ (1/2)x<sup>2</sup> ＋ x ]<sub>1</sub><sup>2</sup></p>
+          <p>　＝ (8/6 ＋ 2 ＋ 2) − (1/6 ＋ 1/2 ＋ 1) ＝ 16/3 − 5/3 ＝ <b>11/3</b></p>
+          <p class="note">上下の確認は、x＝1、x＝2 のような区間の端の値を比べるのが手早い。差の式が「正の数どうしの和」になれば、区間全体で符号が変わらないことも保証できるよ。</p>
+        </div>
+        <p class="prob-done">練習37 クリア！　次は応用例題7に進もう。</p>
+      </section>
+
+      <!-- ================= 応用例題7 ================= -->
+      <div class="sec-head">
+        <span class="sec-tag">応用例題</span>
+        <h2>応用例題7 ― 交点から区間を決める</h2>
+        <span class="pno">教科書 p.216</span>
+      </div>
+
+      <section class="card prob" id="prob-oyo7" data-flow="oyo7" data-label="応用例題7">
+        <div class="prob-head">
+          <span class="prob-tag oyo">応用例題 7</span>
+          <div class="dots" aria-hidden="true">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span>
+          </div>
+          <span class="prob-state">ヒント 0 / 4</span>
+        </div>
+        <p class="prob-q">放物線 y＝x<sup>2</sup>−1 と直線 y＝x＋1 で囲まれた部分の面積を求めよ。</p>
+        <figure>
+          <div class="figbox">
+            <svg viewBox="0 0 520 320" role="img" aria-label="放物線 y=x²-1 と直線 y=x+1 が2点で交わる図">
+              <line x1="14" y1="218" x2="436" y2="218" stroke="var(--ink)" stroke-width="2"></line>
+              <path d="M436 218 l-11 -5 v10 z" fill="var(--ink)"></path>
+              <line x1="200" y1="304" x2="200" y2="20" stroke="var(--ink)" stroke-width="2"></line>
+              <path d="M200 14 l-5 12 h10 z" fill="var(--ink)"></path>
+              <path d="M45.2,15.1 L50.4,32.1 L55.5,48.5 L60.7,64.3 L65.8,79.6 L71.0,94.2 L76.2,108.3 L81.3,121.8 L86.5,134.8 L91.6,147.2 L96.8,159.0 L102.0,170.2 L107.1,180.8 L112.3,190.9 L117.4,200.4 L122.6,209.3 L127.8,217.6 L132.9,225.4 L138.1,232.6 L143.2,239.2 L148.4,245.2 L153.6,250.7 L158.7,255.6 L163.9,259.9 L169.0,263.6 L174.2,266.8 L179.4,269.4 L184.5,271.4 L189.7,272.8 L194.8,273.7 L200.0,274.0 L205.2,273.7 L210.3,272.8 L215.5,271.4 L220.6,269.4 L225.8,266.8 L231.0,263.6 L236.1,259.9 L241.3,255.6 L246.4,250.7 L251.6,245.2 L256.8,239.2 L261.9,232.6 L267.1,225.4 L272.2,217.6 L277.4,209.3 L282.6,200.4 L287.7,190.9 L292.9,180.8 L298.0,170.2 L303.2,159.0 L308.4,147.2 L313.5,134.8 L318.7,121.8 L323.8,108.3 L329.0,94.2 L334.2,79.6 L339.3,64.3 L344.5,48.5 L349.6,32.1 L354.8,15.1" fill="none" stroke="var(--accent)" stroke-width="3"></path>
+              <path d="M20.0,302.0 L26.1,297.2 L32.2,292.5 L38.4,287.7 L44.5,283.0 L50.6,278.2 L56.7,273.4 L62.8,268.7 L69.0,263.9 L75.1,259.2 L81.2,254.4 L87.3,249.6 L93.4,244.9 L99.6,240.1 L105.7,235.4 L111.8,230.6 L117.9,225.8 L124.0,221.1 L130.2,216.3 L136.3,211.6 L142.4,206.8 L148.5,202.0 L154.6,197.3 L160.8,192.5 L166.9,187.8 L173.0,183.0 L179.1,178.2 L185.2,173.5 L191.4,168.7 L197.5,164.0 L203.6,159.2 L209.7,154.4 L215.8,149.7 L222.0,144.9 L228.1,140.2 L234.2,135.4 L240.3,130.6 L246.4,125.9 L252.6,121.1 L258.7,116.4 L264.8,111.6 L270.9,106.8 L277.0,102.1 L283.2,97.3 L289.3,92.6 L295.4,87.8 L301.5,83.0 L307.6,78.3 L313.8,73.5 L319.9,68.8 L326.0,64.0 L332.1,59.2 L338.2,54.5 L344.4,49.7 L350.5,45.0 L356.6,40.2 L362.7,35.4 L368.8,30.7 L375.0,25.9 L381.1,21.2 L387.2,16.4" fill="none" stroke="var(--blue)" stroke-width="3"></path>
+              <circle cx="128" cy="218" r="4.5" fill="var(--ink)"></circle>
+              <circle cx="344" cy="50" r="4.5" fill="var(--ink)"></circle>
+              <text x="184" y="26" class="svg-txt" font-size="16">y</text>
+              <text x="442" y="234" class="svg-txt" font-size="16">x</text>
+              <text x="182" y="238" class="svg-txt-soft" font-size="15">O</text>
+              <text x="366" y="34" class="svg-txt" font-size="16" style="fill:var(--accent-deep)">y＝x²−1</text>
+              <text x="316" y="102" class="svg-txt" font-size="16" style="fill:var(--blue)">y＝x＋1</text>
+            </svg>
+          </div>
+          <figcaption>放物線と直線は2点で交わり、その2点の間で囲まれた部分ができる。交点の x 座標は、まだ図には書かれていない。</figcaption>
+        </figure>
+
+        <div class="step hint">
+          <h3>ヒント 1 ― まず交点の x 座標を求める</h3>
+          <p>この問題では、直線 x＝a、x＝b が与えられていない。囲まれた部分の左端と右端は、2つのグラフの<b>交点</b>だ。</p>
+          <p>交点では2つの y の値が等しくなるから、<b>x<sup>2</sup>−1 ＝ x＋1</b> という方程式を解けば、交点の x 座標が求まる。</p>
+        </div>
+        <div class="step hint">
+          <h3>ヒント 2 ― 方程式を解いて区間を決める</h3>
+          <p>x<sup>2</sup>−1 ＝ x＋1 を整理すると</p>
+          <p style="text-align:center;font-weight:700">x<sup>2</sup> − x − 2 ＝ 0　→　(x＋1)(x−2) ＝ 0</p>
+          <p>よって、交点の x 座標は <b>x ＝ −1, 2</b>。積分の区間は −1 ≦ x ≦ 2 になる。</p>
+        </div>
+        <div class="step hint">
+          <h3>ヒント 3 ― 上下を確認して、図で見る</h3>
+          <p>区間内の点、たとえば x＝0 では、直線の値は 1、放物線の値は −1。だから区間内では<b>直線 y＝x＋1 が上、放物線 y＝x<sup>2</sup>−1 が下</b>だ。</p>
+          <p>「上 − 下」は　(x＋1) − (x<sup>2</sup>−1) ＝ −x<sup>2</sup>＋x＋2　になる。</p>
+          <figure>
+            <div class="figbox">
+              <svg viewBox="0 0 520 320" role="img" aria-label="応用例題7の囲まれた部分に斜線が引かれ、交点のx座標が-1と2であると示された図">
+                <defs>
+                  <pattern id="hatchOYO" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                    <line x1="0" y1="0" x2="0" y2="8" stroke="var(--accent)" stroke-width="1.5"></line>
+                  </pattern>
+                </defs>
+                <line x1="14" y1="218" x2="436" y2="218" stroke="var(--ink)" stroke-width="2"></line>
+                <path d="M436 218 l-11 -5 v10 z" fill="var(--ink)"></path>
+                <line x1="200" y1="304" x2="200" y2="20" stroke="var(--ink)" stroke-width="2"></line>
+                <path d="M200 14 l-5 12 h10 z" fill="var(--ink)"></path>
+                <path d="M128.0,218.0 L131.6,215.2 L135.2,212.4 L138.8,209.6 L142.4,206.8 L146.0,204.0 L149.6,201.2 L153.2,198.4 L156.8,195.6 L160.4,192.8 L164.0,190.0 L167.6,187.2 L171.2,184.4 L174.8,181.6 L178.4,178.8 L182.0,176.0 L185.6,173.2 L189.2,170.4 L192.8,167.6 L196.4,164.8 L200.0,162.0 L203.6,159.2 L207.2,156.4 L210.8,153.6 L214.4,150.8 L218.0,148.0 L221.6,145.2 L225.2,142.4 L228.8,139.6 L232.4,136.8 L236.0,134.0 L239.6,131.2 L243.2,128.4 L246.8,125.6 L250.4,122.8 L254.0,120.0 L257.6,117.2 L261.2,114.4 L264.8,111.6 L268.4,108.8 L272.0,106.0 L275.6,103.2 L279.2,100.4 L282.8,97.6 L286.4,94.8 L290.0,92.0 L293.6,89.2 L297.2,86.4 L300.8,83.6 L304.4,80.8 L308.0,78.0 L311.6,75.2 L315.2,72.4 L318.8,69.6 L322.4,66.8 L326.0,64.0 L329.6,61.2 L333.2,58.4 L336.8,55.6 L340.4,52.8 L344.0,50.0 L344.0,50.0 L340.4,61.1 L336.8,71.8 L333.2,82.3 L329.6,92.6 L326.0,102.5 L322.4,112.2 L318.8,121.5 L315.2,130.6 L311.6,139.5 L308.0,148.0 L304.4,156.3 L300.8,164.2 L297.2,171.9 L293.6,179.4 L290.0,186.5 L286.4,193.4 L282.8,199.9 L279.2,206.2 L275.6,212.3 L272.0,218.0 L268.4,223.5 L264.8,228.6 L261.2,233.5 L257.6,238.2 L254.0,242.5 L250.4,246.6 L246.8,250.3 L243.2,253.8 L239.6,257.1 L236.0,260.0 L232.4,262.7 L228.8,265.0 L225.2,267.1 L221.6,269.0 L218.0,270.5 L214.4,271.8 L210.8,272.7 L207.2,273.4 L203.6,273.9 L200.0,274.0 L196.4,273.9 L192.8,273.4 L189.2,272.7 L185.6,271.8 L182.0,270.5 L178.4,269.0 L174.8,267.1 L171.2,265.0 L167.6,262.7 L164.0,260.0 L160.4,257.1 L156.8,253.8 L153.2,250.3 L149.6,246.6 L146.0,242.5 L142.4,238.2 L138.8,233.5 L135.2,228.6 L131.6,223.5 L128.0,218.0 Z" fill="var(--accent)" fill-opacity="0.16"></path>
+                <path d="M128.0,218.0 L131.6,215.2 L135.2,212.4 L138.8,209.6 L142.4,206.8 L146.0,204.0 L149.6,201.2 L153.2,198.4 L156.8,195.6 L160.4,192.8 L164.0,190.0 L167.6,187.2 L171.2,184.4 L174.8,181.6 L178.4,178.8 L182.0,176.0 L185.6,173.2 L189.2,170.4 L192.8,167.6 L196.4,164.8 L200.0,162.0 L203.6,159.2 L207.2,156.4 L210.8,153.6 L214.4,150.8 L218.0,148.0 L221.6,145.2 L225.2,142.4 L228.8,139.6 L232.4,136.8 L236.0,134.0 L239.6,131.2 L243.2,128.4 L246.8,125.6 L250.4,122.8 L254.0,120.0 L257.6,117.2 L261.2,114.4 L264.8,111.6 L268.4,108.8 L272.0,106.0 L275.6,103.2 L279.2,100.4 L282.8,97.6 L286.4,94.8 L290.0,92.0 L293.6,89.2 L297.2,86.4 L300.8,83.6 L304.4,80.8 L308.0,78.0 L311.6,75.2 L315.2,72.4 L318.8,69.6 L322.4,66.8 L326.0,64.0 L329.6,61.2 L333.2,58.4 L336.8,55.6 L340.4,52.8 L344.0,50.0 L344.0,50.0 L340.4,61.1 L336.8,71.8 L333.2,82.3 L329.6,92.6 L326.0,102.5 L322.4,112.2 L318.8,121.5 L315.2,130.6 L311.6,139.5 L308.0,148.0 L304.4,156.3 L300.8,164.2 L297.2,171.9 L293.6,179.4 L290.0,186.5 L286.4,193.4 L282.8,199.9 L279.2,206.2 L275.6,212.3 L272.0,218.0 L268.4,223.5 L264.8,228.6 L261.2,233.5 L257.6,238.2 L254.0,242.5 L250.4,246.6 L246.8,250.3 L243.2,253.8 L239.6,257.1 L236.0,260.0 L232.4,262.7 L228.8,265.0 L225.2,267.1 L221.6,269.0 L218.0,270.5 L214.4,271.8 L210.8,272.7 L207.2,273.4 L203.6,273.9 L200.0,274.0 L196.4,273.9 L192.8,273.4 L189.2,272.7 L185.6,271.8 L182.0,270.5 L178.4,269.0 L174.8,267.1 L171.2,265.0 L167.6,262.7 L164.0,260.0 L160.4,257.1 L156.8,253.8 L153.2,250.3 L149.6,246.6 L146.0,242.5 L142.4,238.2 L138.8,233.5 L135.2,228.6 L131.6,223.5 L128.0,218.0 Z" fill="url(#hatchOYO)"></path>
+                <line x1="344" y1="50" x2="344" y2="218" stroke="var(--ink-soft)" stroke-width="1.5" stroke-dasharray="5 4"></line>
+                <path d="M45.2,15.1 L50.4,32.1 L55.5,48.5 L60.7,64.3 L65.8,79.6 L71.0,94.2 L76.2,108.3 L81.3,121.8 L86.5,134.8 L91.6,147.2 L96.8,159.0 L102.0,170.2 L107.1,180.8 L112.3,190.9 L117.4,200.4 L122.6,209.3 L127.8,217.6 L132.9,225.4 L138.1,232.6 L143.2,239.2 L148.4,245.2 L153.6,250.7 L158.7,255.6 L163.9,259.9 L169.0,263.6 L174.2,266.8 L179.4,269.4 L184.5,271.4 L189.7,272.8 L194.8,273.7 L200.0,274.0 L205.2,273.7 L210.3,272.8 L215.5,271.4 L220.6,269.4 L225.8,266.8 L231.0,263.6 L236.1,259.9 L241.3,255.6 L246.4,250.7 L251.6,245.2 L256.8,239.2 L261.9,232.6 L267.1,225.4 L272.2,217.6 L277.4,209.3 L282.6,200.4 L287.7,190.9 L292.9,180.8 L298.0,170.2 L303.2,159.0 L308.4,147.2 L313.5,134.8 L318.7,121.8 L323.8,108.3 L329.0,94.2 L334.2,79.6 L339.3,64.3 L344.5,48.5 L349.6,32.1 L354.8,15.1" fill="none" stroke="var(--accent)" stroke-width="3"></path>
+                <path d="M20.0,302.0 L26.1,297.2 L32.2,292.5 L38.4,287.7 L44.5,283.0 L50.6,278.2 L56.7,273.4 L62.8,268.7 L69.0,263.9 L75.1,259.2 L81.2,254.4 L87.3,249.6 L93.4,244.9 L99.6,240.1 L105.7,235.4 L111.8,230.6 L117.9,225.8 L124.0,221.1 L130.2,216.3 L136.3,211.6 L142.4,206.8 L148.5,202.0 L154.6,197.3 L160.8,192.5 L166.9,187.8 L173.0,183.0 L179.1,178.2 L185.2,173.5 L191.4,168.7 L197.5,164.0 L203.6,159.2 L209.7,154.4 L215.8,149.7 L222.0,144.9 L228.1,140.2 L234.2,135.4 L240.3,130.6 L246.4,125.9 L252.6,121.1 L258.7,116.4 L264.8,111.6 L270.9,106.8 L277.0,102.1 L283.2,97.3 L289.3,92.6 L295.4,87.8 L301.5,83.0 L307.6,78.3 L313.8,73.5 L319.9,68.8 L326.0,64.0 L332.1,59.2 L338.2,54.5 L344.4,49.7 L350.5,45.0 L356.6,40.2 L362.7,35.4 L368.8,30.7 L375.0,25.9 L381.1,21.2 L387.2,16.4" fill="none" stroke="var(--blue)" stroke-width="3"></path>
+                <circle cx="128" cy="218" r="4.5" fill="var(--ink)"></circle>
+                <circle cx="344" cy="50" r="4.5" fill="var(--ink)"></circle>
+                <text x="184" y="26" class="svg-txt" font-size="16">y</text>
+                <text x="442" y="234" class="svg-txt" font-size="16">x</text>
+                <text x="182" y="238" class="svg-txt-soft" font-size="15">O</text>
+                <text x="128" y="242" text-anchor="middle" class="svg-txt" font-size="16">−1</text>
+                <text x="344" y="242" text-anchor="middle" class="svg-txt" font-size="16">2</text>
+                <text x="366" y="34" class="svg-txt" font-size="16" style="fill:var(--accent-deep)">y＝x²−1</text>
+                <text x="316" y="102" class="svg-txt" font-size="16" style="fill:var(--blue)">y＝x＋1</text>
+              </svg>
+            </div>
+            <figcaption>斜線の部分が求める面積。区間は交点の x 座標 −1 から 2 まで。</figcaption>
+          </figure>
+        </div>
+        <div class="step hint">
+          <h3>ヒント 4 ― 積分を計算する</h3>
+          <p style="text-align:center;font-weight:700">S ＝ ∫<sub>−1</sub><sup>2</sup> {(x＋1) − (x<sup>2</sup>−1)} dx ＝ ∫<sub>−1</sub><sup>2</sup> (−x<sup>2</sup>＋x＋2) dx</p>
+          <p>積分すると [ −(1/3)x<sup>3</sup> ＋ (1/2)x<sup>2</sup> ＋ 2x ]<sub>−1</sub><sup>2</sup> となる。x＝2 のときの値と、x＝−1 のときの値を、それぞれ計算してみよう。</p>
+        </div>
+        <div class="step answer">
+          <h3>解答</h3>
+          <p class="big">面積は 9/2</p>
+          <p>交点の x 座標は、x<sup>2</sup>−1 ＝ x＋1 を解いて x ＝ −1, 2。この区間では直線が上にあるから</p>
+          <p>S ＝ ∫<sub>−1</sub><sup>2</sup> {(x＋1) − (x<sup>2</sup>−1)} dx ＝ ∫<sub>−1</sub><sup>2</sup> (−x<sup>2</sup>＋x＋2) dx</p>
+          <p>　＝ [ −(1/3)x<sup>3</sup> ＋ (1/2)x<sup>2</sup> ＋ 2x ]<sub>−1</sub><sup>2</sup></p>
+          <p>　＝ (−8/3 ＋ 2 ＋ 4) − (1/3 ＋ 1/2 − 2) ＝ 10/3 − (−7/6) ＝ <b>9/2</b></p>
+          <p class="note"><b>このタイプの第一歩は「交点を求める」こと。</b>交点の x 座標が、そのまま積分区間の両端になる。</p>
+        </div>
+        <p class="prob-done">応用例題7 クリア！　最後は練習38に挑戦しよう。</p>
+      </section>
+
+      <!-- ================= 練習38 ================= -->
+      <div class="sec-head">
+        <span class="sec-tag">練習</span>
+        <h2>練習38に挑戦</h2>
+        <span class="pno">教科書 p.216</span>
+      </div>
+
+      <section class="card prob" id="prob-ren38">
+        <div class="prob-head">
+          <span class="prob-tag ren">練習 38</span>
+          <span class="prob-state">下のタブで小問を選んでね</span>
+        </div>
+        <p class="prob-q">放物線と直線で囲まれた部分の面積を求めよ。</p>
+
+        <div class="tabs" role="tablist" aria-label="練習38の小問">
+          <button class="tab" role="tab" data-tab="ren38-1" aria-selected="true">(1) 直線 y＝−x＋2</button>
+          <button class="tab" role="tab" data-tab="ren38-2" aria-selected="false">(2) 直線 y＝2x</button>
+        </div>
+
+        <!-- (1) -->
+        <div class="tabpanel show" id="panel-ren38-1" data-flow="ren38-1" data-label="練習38 (1)">
+          <div class="prob-head">
+            <span class="sub prob-q" style="margin:0">(1) 放物線 y＝x<sup>2</sup>、直線 y＝−x＋2</span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 3</span>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 1 ― 交点の x 座標を求める</h3>
+            <p>応用例題7と同じ流れだ。交点では y の値が等しいから、x<sup>2</sup> ＝ −x＋2 と置く。</p>
+            <p style="text-align:center;font-weight:700">x<sup>2</sup> ＋ x − 2 ＝ 0　→　(x＋2)(x−1) ＝ 0</p>
+            <p>交点の x 座標と、積分の区間が決まるはずだ。</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 2 ― 上下を確認する</h3>
+            <p>交点は x ＝ −2, 1 だから、区間は −2 ≦ x ≦ 1。その真ん中あたり、たとえば x＝0 では、直線の値が 2、放物線の値が 0。</p>
+            <p>どちらが上か分かったら、「上 − 下」の式を作ってみよう。</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 3 ― 立式して計算する</h3>
+            <p>区間内では直線が上だから、「上 − 下」は (−x＋2) − x<sup>2</sup> ＝ −x<sup>2</sup>−x＋2。</p>
+            <p style="text-align:center;font-weight:700">S ＝ ∫<sub>−2</sub><sup>1</sup> (−x<sup>2</sup>−x＋2) dx ＝ [ −(1/3)x<sup>3</sup> − (1/2)x<sup>2</sup> ＋ 2x ]<sub>−2</sub><sup>1</sup></p>
+            <p>x＝1 のときの値と、x＝−2 のときの値を計算して、差をとってみよう。</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (1)</h3>
+            <p class="big">面積は 9/2</p>
+            <p>交点の x 座標は x ＝ −2, 1 で、この区間では直線 y＝−x＋2 が上にあるから</p>
+            <p>S ＝ ∫<sub>−2</sub><sup>1</sup> {(−x＋2) − x<sup>2</sup>} dx ＝ ∫<sub>−2</sub><sup>1</sup> (−x<sup>2</sup>−x＋2) dx</p>
+            <p>　＝ [ −(1/3)x<sup>3</sup> − (1/2)x<sup>2</sup> ＋ 2x ]<sub>−2</sub><sup>1</sup></p>
+            <p>　＝ (−1/3 − 1/2 ＋ 2) − (8/3 − 2 − 4) ＝ 7/6 − (−10/3) ＝ <b>9/2</b></p>
+          </div>
+          <p class="prob-done">(1) クリア！　(2) のタブも開いてみよう。</p>
+        </div>
+
+        <!-- (2) -->
+        <div class="tabpanel" id="panel-ren38-2" data-flow="ren38-2" data-label="練習38 (2)">
+          <div class="prob-head">
+            <span class="sub prob-q" style="margin:0">(2) 放物線 y＝−x<sup>2</sup>＋3、直線 y＝2x</span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 3</span>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 1 ― 交点の x 座標を求める</h3>
+            <p>交点では y の値が等しいから、−x<sup>2</sup>＋3 ＝ 2x と置く。右辺を左辺に移項すると</p>
+            <p style="text-align:center;font-weight:700">x<sup>2</sup> ＋ 2x − 3 ＝ 0　→　(x＋3)(x−1) ＝ 0</p>
+            <p>交点の x 座標と、積分の区間が決まるはずだ。</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 2 ― 上下を確認する</h3>
+            <p>交点は x ＝ −3, 1 だから、区間は −3 ≦ x ≦ 1。その真ん中あたり、たとえば x＝0 では、放物線の値が 3、直線の値が 0。</p>
+            <p>今度は放物線と直線のどちらが上かな？　「上 − 下」の式を作ってみよう。</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 3 ― 立式して計算する</h3>
+            <p>区間内では放物線が上だから、「上 − 下」は (−x<sup>2</sup>＋3) − 2x ＝ −x<sup>2</sup>−2x＋3。</p>
+            <p style="text-align:center;font-weight:700">S ＝ ∫<sub>−3</sub><sup>1</sup> (−x<sup>2</sup>−2x＋3) dx ＝ [ −(1/3)x<sup>3</sup> − x<sup>2</sup> ＋ 3x ]<sub>−3</sub><sup>1</sup></p>
+            <p>x＝1 のときの値と、x＝−3 のときの値を計算して、差をとってみよう。</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (2)</h3>
+            <p class="big">面積は 32/3</p>
+            <p>交点の x 座標は x ＝ −3, 1 で、この区間では放物線 y＝−x<sup>2</sup>＋3 が上にあるから</p>
+            <p>S ＝ ∫<sub>−3</sub><sup>1</sup> {(−x<sup>2</sup>＋3) − 2x} dx ＝ ∫<sub>−3</sub><sup>1</sup> (−x<sup>2</sup>−2x＋3) dx</p>
+            <p>　＝ [ −(1/3)x<sup>3</sup> − x<sup>2</sup> ＋ 3x ]<sub>−3</sub><sup>1</sup></p>
+            <p>　＝ (−1/3 − 1 ＋ 3) − (9 − 9 − 9) ＝ 5/3 − (−9) ＝ <b>32/3</b></p>
+            <p class="note">(1) では直線が上、(2) では放物線が上。問題ごとに、必ず区間内の点で上下を確かめてから「上 − 下」を作ろう。</p>
+          </div>
+          <p class="prob-done">(2) クリア！　練習38 全小問が終わったら、下のまとめで確認しよう。</p>
+        </div>
+      </section>
+
+      <!-- ================= まとめ ================= -->
+      <section class="card summary">
+        <h2>この項のポイント</h2>
+        <ul>
+          <li><b>2つの曲線の間の面積は S ＝ ∫<sub>a</sub><sup>b</sup> {f(x) − g(x)} dx。</b>「上の式 − 下の式」を積分するのが合言葉。</li>
+          <li><b>上下の確認が最初の一歩。</b>差をとって符号を調べるか、区間内の適当な x（0 など）で2つの値を比べて確かめる。</li>
+          <li><b>区間の両端が与えられていない問題では、交点を求める。</b>2つの式を等しいと置いた方程式を解くと、交点の x 座標がそのまま区間の両端になる。</li>
+          <li><b>全体が x 軸の下側にあっても同じ。</b>上に平行移動しても間の面積は変わらないので、「上 − 下」の公式がそのまま使える。</li>
+        </ul>
+      </section>
+
+      <!-- ================= フッター ================= -->
+      <footer>
+        <div class="foot-btns">
+          <a class="back-btn" href="calc.html">← 数学II 第6章 自習ページトップに戻る</a>
+          <a class="back-btn" href="index.html">Nanryo mathematics portal に戻る</a>
+        </div>
+        <p class="foot-note">数学II 第6章 微分法と積分法 ｜ 8 定積分と面積（2）2つの曲線の間の面積（教科書 p.215〜216）</p>
+      </footer>
+    </div>
+
+    <!-- ================= 下部固定バー ================= -->
+    <div class="ctrl-bar">
+      <div class="ctrl-inner">
+        <div class="overall">
+          <div class="overall-bar"><div class="overall-fill" id="overallFill"></div></div>
+          <span id="overallText">全体の進み具合：0 / 26 ステップ</span>
+        </div>
+        <p class="ctrl-label">いまの課題：<b id="ctrlLabel">解説B</b>　―　「次へ」でヒントを1つずつ開こう</p>
+        <div class="ctrl-btns">
+          <button class="btn" id="btnReset" type="button">最初からやり直す</button>
+          <button class="btn btn-next" id="btnNext" type="button">次へ ▶</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      (function(){
+        "use strict";
+
+        /* ---------- ヒント式フロー ---------- */
+        var flows = {};   // flowId -> {root, steps, dots, stateEl, doneEl, idx, label, card}
+        var activeId = 'kaisetsu';
+
+        function registerFlow(root){
+          var id = root.getAttribute('data-flow');
+          var steps = Array.prototype.slice.call(root.querySelectorAll(':scope > .step'));
+          var head = root.querySelector(':scope > .prob-head');
+          var dots = head ? Array.prototype.slice.call(head.querySelectorAll('.dot')) : [];
+          var stateEl = head ? head.querySelector('.prob-state') : null;
+          var doneEl = root.querySelector(':scope > .prob-done');
+          var card = root;
+          while (card && !(card.classList && card.classList.contains('prob'))) card = card.parentElement;
+          flows[id] = {
+            id: id, root: root, steps: steps, dots: dots, stateEl: stateEl,
+            doneEl: doneEl, idx: 0, label: root.getAttribute('data-label') || id,
+            card: card,
+            hintTotal: steps.filter(function(s){ return s.classList.contains('hint'); }).length
+          };
+        }
+        Array.prototype.slice.call(document.querySelectorAll('[data-flow]')).forEach(registerFlow);
+
+        var btnNext = document.getElementById('btnNext');
+        var btnReset = document.getElementById('btnReset');
+        var ctrlLabel = document.getElementById('ctrlLabel');
+
+        function refreshFlow(f){
+          f.steps.forEach(function(s, i){ s.classList.toggle('show', i < f.idx); });
+          f.dots.forEach(function(d, i){ d.classList.toggle('on', i < f.idx); });
+          if (f.stateEl){
+            if (f.idx === 0) f.stateEl.textContent = 'ヒント 0 / ' + f.hintTotal;
+            else if (f.idx <= f.hintTotal) f.stateEl.textContent = 'ヒント ' + f.idx + ' / ' + f.hintTotal;
+            else f.stateEl.textContent = '解答を表示済み';
+          }
+          if (f.doneEl) f.doneEl.classList.toggle('show', f.idx >= f.steps.length);
+        }
+        var overallFill = document.getElementById('overallFill');
+        var overallText = document.getElementById('overallText');
+        function refreshBar(){
+          var f = flows[activeId];
+          var totalSteps = 0, openedSteps = 0;
+          Object.keys(flows).forEach(function(id){
+            totalSteps += flows[id].steps.length;
+            openedSteps += flows[id].idx;
+          });
+          overallFill.style.width = (totalSteps ? (openedSteps / totalSteps) * 100 : 0) + '%';
+          overallText.textContent = '全体の進み具合：' + openedSteps + ' / ' + totalSteps + ' ステップ';
+          ctrlLabel.textContent = f.label;
+          if (f.idx >= f.steps.length){
+            btnNext.disabled = true;
+            btnNext.textContent = 'ぜんぶ開いたよ ✓';
+          } else if (f.idx === f.hintTotal){
+            btnNext.disabled = false;
+            btnNext.textContent = (f.id === 'kaisetsu') ? '公式を見る ▶' : '解答を見る ▶';
+          } else {
+            btnNext.disabled = false;
+            btnNext.textContent = '次へ ▶（ヒント ' + (f.idx + 1) + '）';
+          }
+          Array.prototype.slice.call(document.querySelectorAll('.prob')).forEach(function(c){
+            c.classList.toggle('active', c === f.card);
+          });
+        }
+        function setActive(id){
+          if (!flows[id]) return;
+          activeId = id;
+          refreshBar();
+        }
+
+        btnNext.addEventListener('click', function(){
+          var f = flows[activeId];
+          if (f.idx >= f.steps.length) return;
+          f.idx += 1;
+          refreshFlow(f);
+          refreshBar();
+          var shown = f.steps[f.idx - 1];
+          if (shown) shown.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        });
+        btnReset.addEventListener('click', function(){
+          var f = flows[activeId];
+          f.idx = 0;
+          refreshFlow(f);
+          refreshBar();
+          f.root.scrollIntoView({ block: 'start', behavior: 'smooth' });
+        });
+
+        /* カードを触ったら、その課題（表示中の小問）を操作対象にする */
+        Array.prototype.slice.call(document.querySelectorAll('.prob')).forEach(function(card){
+          card.addEventListener('click', function(){
+            if (card.getAttribute('data-flow')) { setActive(card.getAttribute('data-flow')); return; }
+            var visible = card.querySelector('.tabpanel.show');
+            if (visible) setActive(visible.getAttribute('data-flow'));
+          });
+        });
+
+        /* ---------- タブ切り替え ---------- */
+        Array.prototype.slice.call(document.querySelectorAll('.tabs')).forEach(function(tabGroup){
+          var tabs = Array.prototype.slice.call(tabGroup.querySelectorAll('.tab'));
+          tabs.forEach(function(tab){
+            tab.addEventListener('click', function(){
+              tabs.forEach(function(t){ t.setAttribute('aria-selected', t === tab ? 'true' : 'false'); });
+              var target = tab.getAttribute('data-tab');
+              var card = tabGroup.parentElement;
+              Array.prototype.slice.call(card.querySelectorAll('.tabpanel')).forEach(function(p){
+                p.classList.toggle('show', p.getAttribute('data-flow') === target);
+              });
+              setActive(target);
+            });
+          });
+        });
+
+        Object.keys(flows).forEach(function(id){ refreshFlow(flows[id]); });
+        refreshBar();
+      })();
+    </script>
+  </body>
+</html>

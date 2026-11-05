@@ -1,0 +1,935 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:," />
+    <title>数学II 7 定積分（2）定積分の性質と微分法 自習ページ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Serif+JP:wght@700;900&family=STIX+Two+Math&display=swap" rel="stylesheet" />
+    <style>
+      :root{
+        --bg:#f4f7f5;
+        --surface:#ffffff;
+        --surface2:#eef4f1;
+        --ink:#1d2a26;
+        --ink-soft:#43554e;
+        --line:#cfddd6;
+        --accent:#0e7a5f;
+        --accent-deep:#0a5c48;
+        --accent-soft:#e2f2ec;
+        --blue:#1f6fb4;
+        --orange:#d96c1e;
+        --red:#c2452d;
+        --hint-bg:#fff6cf;
+        --hint-line:#e3c84e;
+        --hint-ink:#4d4210;
+        --ans-bg:#e6f6ea;
+        --ans-line:#4caf6d;
+        --ans-ink:#14401f;
+        --bar-bg:rgba(255,255,255,.94);
+        --shadow:0 2px 10px rgba(20,50,40,.08);
+      }
+      @media (prefers-color-scheme: dark){
+        :root{
+          --bg:#101714;
+          --surface:#1a2420;
+          --surface2:#22302a;
+          --ink:#e8f0ec;
+          --ink-soft:#b3c4bc;
+          --line:#3a4a43;
+          --accent:#3cb894;
+          --accent-deep:#8fd8c0;
+          --accent-soft:#1d332b;
+          --blue:#6cb2e8;
+          --orange:#f09a4e;
+          --red:#e88a76;
+          --hint-bg:#3d3617;
+          --hint-line:#a68e2e;
+          --hint-ink:#f5e9bd;
+          --ans-bg:#17301e;
+          --ans-line:#3f9957;
+          --ans-ink:#c9eed2;
+          --bar-bg:rgba(20,28,24,.94);
+          --shadow:0 2px 10px rgba(0,0,0,.4);
+        }
+      }
+      *{box-sizing:border-box}
+      html{scroll-behavior:smooth}
+      @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} *{transition:none!important} }
+      body{
+        margin:0; background:var(--bg); color:var(--ink);
+        font-family:"Noto Sans JP",system-ui,-apple-system,"Hiragino Kaku Gothic ProN",sans-serif;
+        line-height:1.85; font-size:16px;
+        padding-bottom:132px;
+      }
+      .wrap{max-width:780px;margin:0 auto;padding:0 16px 8px}
+
+      /* ---------- ヘッダー ---------- */
+      header{padding:26px 0 6px}
+      .badge{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:700;font-size:13px;
+        padding:4px 12px;border-radius:999px;letter-spacing:.04em;
+      }
+      @media (prefers-color-scheme: dark){ .badge{color:#0c1712} }
+      h1{
+        font-family:"Noto Serif JP",serif;font-weight:900;font-size:32px;line-height:1.35;
+        margin:12px 0 4px;letter-spacing:.02em;
+      }
+      .num-badge{
+        display:inline-block;background:var(--ink);color:var(--bg);font-family:"Noto Sans JP",sans-serif;
+        font-weight:900;font-size:17px;border-radius:8px;padding:2px 10px;margin-right:10px;
+        vertical-align:.18em;white-space:nowrap;
+      }
+      .page-meta{color:var(--ink-soft);font-size:14px;font-weight:500}
+      .page-meta b{color:var(--accent-deep)}
+
+      /* ---------- 使い方 ---------- */
+      .howto{
+        background:var(--accent-soft);border:1.5px solid var(--accent);border-radius:14px;
+        padding:14px 18px;margin:18px 0 14px;box-shadow:var(--shadow);
+      }
+      .howto h2{margin:0 0 6px;font-size:16px;color:var(--accent-deep)}
+      .howto ol{margin:0;padding-left:1.4em}
+      .howto li{margin:2px 0}
+      .howto .next-word{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:700;border-radius:6px;
+        padding:0 8px;font-size:.92em;
+      }
+      @media (prefers-color-scheme: dark){ .howto .next-word{color:#0c1712} }
+      .overall{font-size:13.5px;color:var(--ink-soft);margin:0 2px 6px;font-weight:500}
+      .overall b{color:var(--accent-deep)}
+
+      /* ---------- セクション見出し ---------- */
+      .sec-head{display:flex;align-items:center;gap:10px;margin:34px 0 12px}
+      .sec-tag{
+        background:var(--ink);color:var(--bg);font-weight:900;font-size:14px;border-radius:8px;
+        padding:3px 10px;white-space:nowrap;
+      }
+      .sec-head h2{font-size:21px;margin:0;font-weight:900}
+      .sec-head .pno{margin-left:auto;color:var(--ink-soft);font-size:13px;white-space:nowrap}
+
+      .card{
+        background:var(--surface);border:1px solid var(--line);border-radius:14px;
+        padding:18px 18px 8px;margin:0 0 18px;box-shadow:var(--shadow);
+      }
+      .card p{margin:0 0 12px}
+      .def{
+        background:var(--surface2);border-radius:10px;padding:12px 16px;margin:0 0 14px;
+      }
+      .def p:last-child{margin-bottom:0}
+      .key{font-weight:900;color:var(--accent-deep)}
+      figure{margin:6px 0 14px}
+      figure svg{width:100%;height:auto;display:block}
+      figcaption{font-size:13.5px;color:var(--ink-soft);text-align:center;margin-top:6px;line-height:1.6}
+      .figbox{background:var(--surface2);border-radius:12px;padding:12px 10px 6px}
+
+      /* スライダー */
+      .slider-row{display:flex;align-items:center;gap:12px;margin:4px 4px 10px}
+      .slider-row label{font-weight:700;font-size:14px;white-space:nowrap}
+      input[type=range]{flex:1;accent-color:var(--accent);height:32px}
+      .slider-state{font-weight:700;color:var(--accent-deep);text-align:center;font-size:15px;margin:0 0 10px}
+
+      /* ---------- 数式 ---------- */
+      .formula{
+        text-align:center;font-size:19px;font-weight:700;letter-spacing:.03em;
+        background:var(--surface2);border-radius:10px;padding:12px 8px;margin:0 0 14px;
+      }
+      .step .formula{background:rgba(127,127,127,.10)}
+      sub,sup{font-size:.68em}
+      /* 数式フォント（TeX風）：英数字・記号は STIX Two Math、日本語字形は Noto Sans JP にフォールバック */
+      .card p,.card li,figcaption,.slider-state{
+        font-family:"STIX Two Math","Noto Sans JP",sans-serif;
+      }
+
+      /* ---------- 問題カード（ヒント式） ---------- */
+      .prob{border:2px solid var(--line);transition:border-color .2s}
+      .prob.active{border-color:var(--accent)}
+      .prob-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+      .prob-tag{
+        font-weight:900;font-size:14px;border-radius:8px;padding:3px 12px;color:#fff;background:var(--blue);
+      }
+      .prob-tag.ren{background:#c2452d}
+      .prob-tag.kai{background:var(--accent)}
+      @media (prefers-color-scheme: dark){ .prob-tag{color:#0d141b} .prob-tag.ren{color:#1c0f0a} .prob-tag.kai{color:#0c1712} }
+      .prob-state{margin-left:auto;font-size:13px;font-weight:700;color:var(--ink-soft)}
+      .dots{display:flex;gap:6px;align-items:center}
+      .dot{width:11px;height:11px;border-radius:50%;border:2px solid var(--ink-soft);background:transparent}
+      .dot.on{background:var(--accent);border-color:var(--accent)}
+      .dot.ans.on{background:#2f9e4f;border-color:#2f9e4f}
+      .prob-q{font-weight:700;font-size:16.5px;margin:0 0 10px}
+      .prob-q .sub{font-weight:700}
+
+      .step{display:none;margin:0 0 12px;border-radius:12px;padding:12px 16px 4px;scroll-margin-bottom:150px}
+      .step.show{display:block;animation:pop .25s ease}
+      @keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+      .step h3{margin:0 0 6px;font-size:14px;font-weight:900;letter-spacing:.05em}
+      .step p{margin:0 0 10px}
+      .hint{background:var(--hint-bg);border:1.5px solid var(--hint-line);color:var(--hint-ink)}
+      .hint h3{color:inherit}
+      .answer{background:var(--ans-bg);border:1.5px solid var(--ans-line);color:var(--ans-ink)}
+      .answer .big{font-size:18px;font-weight:900;text-align:center;margin:4px 0 10px}
+      .note{font-size:14px;border-top:1px dashed currentColor;padding-top:8px;margin-top:2px}
+      .prob-done{
+        display:none;text-align:center;font-weight:900;color:var(--accent-deep);
+        padding:2px 0 12px;font-size:15px;
+      }
+      .prob-done.show{display:block}
+
+      /* ---------- タブ ---------- */
+      .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}
+      .tab{
+        font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;
+        border:2px solid var(--line);background:var(--surface);color:var(--ink);
+        border-radius:999px;padding:6px 18px;
+      }
+      .tab[aria-selected=true]{background:var(--accent);border-color:var(--accent);color:#fff}
+      @media (prefers-color-scheme: dark){ .tab[aria-selected=true]{color:#0c1712} }
+      .tabpanel{display:none}
+      .tabpanel.show{display:block}
+
+      /* ---------- まとめ ---------- */
+      .summary{border:2px solid var(--accent);background:var(--accent-soft)}
+      .summary h2{margin:0 0 8px;font-size:18px;color:var(--accent-deep)}
+      .summary ul{margin:0;padding-left:1.3em}
+      .summary li{margin:4px 0}
+
+      /* ---------- フッター ---------- */
+      footer{margin:30px 0 10px;text-align:center}
+      .foot-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+      .back-btn{
+        display:inline-block;text-decoration:none;font-weight:700;color:var(--ink);
+        border:2px solid var(--line);background:var(--surface);border-radius:12px;padding:12px 26px;
+      }
+      .foot-note{color:var(--ink-soft);font-size:13px;margin-top:12px}
+
+      /* ---------- 下部固定バー ---------- */
+      .ctrl-bar{
+        position:fixed;left:0;right:0;bottom:0;z-index:50;background:var(--bar-bg);
+        backdrop-filter:blur(8px);border-top:1.5px solid var(--line);
+        padding:10px 14px calc(10px + env(safe-area-inset-bottom));
+      }
+      .ctrl-inner{max-width:780px;margin:0 auto}
+      .pbar{height:7px;background:var(--surface2);border:1px solid var(--line);border-radius:999px;overflow:hidden;margin:0 0 8px}
+      .pbar-fill{height:100%;width:0;background:var(--accent);border-radius:999px;transition:width .35s ease}
+      .ctrl-label{font-size:13px;font-weight:700;color:var(--ink-soft);margin:0 0 8px;text-align:center}
+      .ctrl-label b{color:var(--accent-deep)}
+      .ctrl-btns{display:flex;gap:10px}
+      .btn{
+        font-family:inherit;cursor:pointer;border-radius:12px;font-weight:900;border:2px solid var(--line);
+        background:var(--surface);color:var(--ink);padding:12px 14px;font-size:15px;
+      }
+      .btn-next{
+        flex:1;background:var(--accent);border-color:var(--accent);color:#fff;font-size:17px;padding:12px;
+      }
+      @media (prefers-color-scheme: dark){ .btn-next{color:#0c1712} }
+      .btn-next:disabled{background:var(--surface2);border-color:var(--line);color:var(--ink-soft);cursor:default}
+      .btn:active{transform:scale(.98)}
+
+      /* SVG内の文字・線 */
+      .svg-txt{font-family:"STIX Two Math","Noto Sans JP",sans-serif;font-weight:700;fill:var(--ink)}
+      .svg-txt-soft{font-family:"STIX Two Math","Noto Sans JP",sans-serif;fill:var(--ink-soft)}
+      .grid-line{stroke:var(--line);stroke-width:1}
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+
+      <!-- ================= ヘッダー ================= -->
+      <header>
+        <span class="badge">数学II　第6章　微分法と積分法</span>
+        <h1><span class="num-badge">7（2）</span>定積分の性質と微分法</h1>
+        <p class="page-meta">教科書 <b>p.208〜210</b>　｜　第3節 積分法　B 定積分の性質 ／ C 定積分と微分法</p>
+      </header>
+
+      <!-- ================= 使い方 ================= -->
+      <section class="howto" aria-label="使い方">
+        <h2>このページの使い方（自習の流れ）</h2>
+        <ol>
+          <li><b>解説</b>を読んで、図でイメージをつかむ</li>
+          <li><b>例題</b>をヒントで解く ― 分からなければ下の <span class="next-word">次へ</span> でヒントを1つずつ開く</li>
+          <li><b>練習問題</b>に挑戦 ― 答えは最後のヒントのあとに出てくるよ</li>
+        </ol>
+      </section>
+      <p class="overall" id="overall">全体の進み具合：<b>0 / 8</b> 課題の解答を開きました</p>
+
+      <!-- ================= 解説B ================= -->
+      <div class="sec-head">
+        <span class="sec-tag">解説 B</span>
+        <h2>定積分の性質</h2>
+        <span class="pno">教科書 p.208</span>
+      </div>
+
+      <section class="card prob active" id="prob-kaiB" data-flow="kaiB" data-label="解説B　定積分の性質">
+        <div class="prob-head">
+          <span class="prob-tag kai">解説 B</span>
+          <div class="dots" aria-hidden="true">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span>
+          </div>
+          <span class="prob-state">ヒント 0 / 3</span>
+        </div>
+        <p>前のページで、定積分は原始関数を使って計算できることを学んだ。ここでは、計算をぐっと楽にする<b>定積分の性質</b>をまとめる。関数 <i>f</i>(<i>x</i>) の原始関数の1つを <i>F</i>(<i>x</i>) として、下の <b>次へ</b> を押しながら1つずつ確かめていこう。</p>
+        <figure>
+          <div class="figbox">
+            <svg viewBox="0 0 520 190" role="img" aria-label="数直線上で区間 a から b を、途中の点 c で a から c と c から b に分ける図">
+              <defs>
+                <marker id="ah-b1" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+                  <path d="M0,0 L10,5 L0,10 z" fill="var(--blue)"></path>
+                </marker>
+                <marker id="ah-o1" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+                  <path d="M0,0 L10,5 L0,10 z" fill="var(--orange)"></path>
+                </marker>
+                <marker id="ah-a1" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+                  <path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"></path>
+                </marker>
+              </defs>
+              <text x="18" y="42" class="svg-txt" font-size="14.5" fill="var(--blue)">a から c</text>
+              <text x="18" y="92" class="svg-txt" font-size="14.5" fill="var(--orange)">c から b</text>
+              <text x="18" y="142" class="svg-txt" font-size="14.5" fill="var(--accent-deep)">a から b</text>
+              <line x1="130" y1="38" x2="300" y2="38" stroke="var(--blue)" stroke-width="3.5" marker-end="url(#ah-b1)"></line>
+              <line x1="300" y1="88" x2="470" y2="88" stroke="var(--orange)" stroke-width="3.5" marker-end="url(#ah-o1)"></line>
+              <line x1="130" y1="138" x2="470" y2="138" stroke="var(--accent)" stroke-width="3.5" marker-end="url(#ah-a1)"></line>
+              <g stroke="var(--line)" stroke-width="1.5" stroke-dasharray="5 4">
+                <line x1="130" y1="24" x2="130" y2="152"></line>
+                <line x1="300" y1="24" x2="300" y2="152"></line>
+                <line x1="470" y1="24" x2="470" y2="152"></line>
+              </g>
+              <g class="svg-txt" font-size="16" font-style="italic" text-anchor="middle">
+                <text x="130" y="176">a</text>
+                <text x="300" y="176">c</text>
+                <text x="470" y="176">b</text>
+              </g>
+            </svg>
+          </div>
+          <figcaption>区間 [a, b] は、途中の点 c で [a, c] と [c, b] に分けられる。この「区間をつなげる」見方が、性質の1つになる。</figcaption>
+        </figure>
+
+        <div class="step hint">
+          <h3>性質 1 ― 被積分関数の定数倍・和・差</h3>
+          <p><i>k</i> を定数として、次の3つが成り立つ。不定積分の性質とまったく同じ形だ。</p>
+          <p class="formula">∫<sub>a</sub><sup>b</sup> <i>k f</i>(<i>x</i>)<i>dx</i> ＝ <i>k</i>∫<sub>a</sub><sup>b</sup> <i>f</i>(<i>x</i>)<i>dx</i></p>
+          <p class="formula">∫<sub>a</sub><sup>b</sup> {<i>f</i>(<i>x</i>)＋<i>g</i>(<i>x</i>)}<i>dx</i> ＝ ∫<sub>a</sub><sup>b</sup> <i>f</i>(<i>x</i>)<i>dx</i> ＋ ∫<sub>a</sub><sup>b</sup> <i>g</i>(<i>x</i>)<i>dx</i></p>
+          <p class="formula">∫<sub>a</sub><sup>b</sup> {<i>f</i>(<i>x</i>)−<i>g</i>(<i>x</i>)}<i>dx</i> ＝ ∫<sub>a</sub><sup>b</sup> <i>f</i>(<i>x</i>)<i>dx</i> − ∫<sub>a</sub><sup>b</sup> <i>g</i>(<i>x</i>)<i>dx</i></p>
+          <p>使いどころは逆向き：<b>区間が同じ定積分どうしの和・差は、被積分関数どうしを和・差して1つの積分にまとめられる</b>。このあとの例17・練習31でさっそく使うよ。</p>
+        </div>
+        <div class="step hint">
+          <h3>性質 2 ― 上端と下端が同じ／入れ替わるとき</h3>
+          <p class="formula">∫<sub>a</sub><sup>a</sup> <i>f</i>(<i>x</i>)<i>dx</i> ＝ 0</p>
+          <p class="formula">∫<sub>a</sub><sup>b</sup> <i>f</i>(<i>x</i>)<i>dx</i> ＝ −∫<sub>b</sub><sup>a</sup> <i>f</i>(<i>x</i>)<i>dx</i></p>
+          <p>原始関数で書けば一目瞭然だ。∫<sub>a</sub><sup>a</sup> <i>f</i>(<i>x</i>)<i>dx</i> ＝ <i>F</i>(<i>a</i>)−<i>F</i>(<i>a</i>) ＝ 0。また、∫<sub>b</sub><sup>a</sup> <i>f</i>(<i>x</i>)<i>dx</i> ＝ <i>F</i>(<i>a</i>)−<i>F</i>(<i>b</i>) は、∫<sub>a</sub><sup>b</sup> <i>f</i>(<i>x</i>)<i>dx</i> ＝ <i>F</i>(<i>b</i>)−<i>F</i>(<i>a</i>) のちょうど符号違いになっている。</p>
+          <p><b>積分区間の上下を入れ替えると、符号が変わる</b>。これも計算の途中でよく使う。</p>
+        </div>
+        <div class="step hint">
+          <h3>性質 3 ― 区間をつなげる</h3>
+          <p class="formula">∫<sub>a</sub><sup>b</sup> <i>f</i>(<i>x</i>)<i>dx</i> ＝ ∫<sub>a</sub><sup>c</sup> <i>f</i>(<i>x</i>)<i>dx</i> ＋ ∫<sub>c</sub><sup>b</sup> <i>f</i>(<i>x</i>)<i>dx</i></p>
+          <p>なぜ成り立つか、原始関数で確かめてみよう。右辺は</p>
+          <p class="formula">∫<sub>a</sub><sup>c</sup> <i>f</i>(<i>x</i>)<i>dx</i> ＋ ∫<sub>c</sub><sup>b</sup> <i>f</i>(<i>x</i>)<i>dx</i><br />＝ {<i>F</i>(<i>c</i>)−<i>F</i>(<i>a</i>)}＋{<i>F</i>(<i>b</i>)−<i>F</i>(<i>c</i>)}</p>
+          <p>ここで <i>F</i>(<i>c</i>) が <b>＋と−で打ち消し合って消える</b>から、残りは <i>F</i>(<i>b</i>)−<i>F</i>(<i>a</i>) ＝ ∫<sub>a</sub><sup>b</sup> <i>f</i>(<i>x</i>)<i>dx</i> になる。だから、<i>c</i> が区間 [a, b] の<b>外</b>にあっても、この等式はそのまま成り立つんだ。</p>
+        </div>
+        <div class="step answer">
+          <h3>まとめ ― 定積分の性質</h3>
+          <p><b>被積分関数について</b>（<i>k</i> は定数）</p>
+          <p>・∫<sub>a</sub><sup>b</sup> <i>k f</i>(<i>x</i>)<i>dx</i> ＝ <i>k</i>∫<sub>a</sub><sup>b</sup> <i>f</i>(<i>x</i>)<i>dx</i><br />・∫<sub>a</sub><sup>b</sup> {<i>f</i>(<i>x</i>)±<i>g</i>(<i>x</i>)}<i>dx</i> ＝ ∫<sub>a</sub><sup>b</sup> <i>f</i>(<i>x</i>)<i>dx</i> ± ∫<sub>a</sub><sup>b</sup> <i>g</i>(<i>x</i>)<i>dx</i></p>
+          <p><b>積分区間について</b></p>
+          <p>・∫<sub>a</sub><sup>a</sup> <i>f</i>(<i>x</i>)<i>dx</i> ＝ 0<br />・∫<sub>a</sub><sup>b</sup> <i>f</i>(<i>x</i>)<i>dx</i> ＝ −∫<sub>b</sub><sup>a</sup> <i>f</i>(<i>x</i>)<i>dx</i><br />・∫<sub>a</sub><sup>b</sup> <i>f</i>(<i>x</i>)<i>dx</i> ＝ ∫<sub>a</sub><sup>c</sup> <i>f</i>(<i>x</i>)<i>dx</i> ＋ ∫<sub>c</sub><sup>b</sup> <i>f</i>(<i>x</i>)<i>dx</i></p>
+          <p class="note">合言葉は3つ。<b>「区間が同じなら中身をまとめる」「上下を入れ替えると符号が変わる」「区間はつなげられる」</b>。次の例17から、実際に使ってみよう。</p>
+        </div>
+        <p class="prob-done">解説B クリア！　次は例17で性質を使ってみよう。</p>
+      </section>
+
+      <!-- ================= 例17 ================= -->
+      <div class="sec-head">
+        <span class="sec-tag">例題</span>
+        <h2>例題で解き方を確認</h2>
+        <span class="pno">教科書 p.208</span>
+      </div>
+
+      <section class="card prob" id="prob-ex17" data-flow="ex17" data-label="例17">
+        <div class="prob-head">
+          <span class="prob-tag">例 17</span>
+          <div class="dots" aria-hidden="true">
+            <span class="dot"></span><span class="dot"></span><span class="dot ans"></span>
+          </div>
+          <span class="prob-state">ヒント 0 / 2</span>
+        </div>
+        <p class="prob-q">次の定積分を計算してみよう。</p>
+        <p class="formula">∫<sub>1</sub><sup>2</sup> (<i>x</i><sup>2</sup>＋3<i>x</i>)<i>dx</i> ＋ ∫<sub>1</sub><sup>2</sup> (<i>x</i><sup>2</sup>−3<i>x</i>)<i>dx</i></p>
+
+        <div class="step hint">
+          <h3>ヒント 1 ― まず「区間」に注目する</h3>
+          <p>2つの定積分は、どちらも<b>1 から 2</b> までの積分で、区間がまったく同じだ。</p>
+          <p>区間が同じとき、解説Bの性質1（和）を使って、<b>被積分関数どうしを足して1つの積分にまとめる</b>ことができる。別々に計算するよりずっと楽になるよ。</p>
+        </div>
+        <div class="step hint">
+          <h3>ヒント 2 ― 被積分関数を足す</h3>
+          <p>中身どうしを足すと (<i>x</i><sup>2</sup>＋3<i>x</i>)＋(<i>x</i><sup>2</sup>−3<i>x</i>) になる。</p>
+          <p>＋3<i>x</i> と −3<i>x</i> が打ち消し合って消えるから、残るのは <b>2<i>x</i><sup>2</sup></b> だけ。あとは ∫<sub>1</sub><sup>2</sup> 2<i>x</i><sup>2</sup><i>dx</i> を普通に計算すればよい。</p>
+        </div>
+        <div class="step answer">
+          <h3>解答</h3>
+          <p class="big">14/3</p>
+          <p>∫<sub>1</sub><sup>2</sup> (<i>x</i><sup>2</sup>＋3<i>x</i>)<i>dx</i> ＋ ∫<sub>1</sub><sup>2</sup> (<i>x</i><sup>2</sup>−3<i>x</i>)<i>dx</i><br />＝ ∫<sub>1</sub><sup>2</sup> {(<i>x</i><sup>2</sup>＋3<i>x</i>)＋(<i>x</i><sup>2</sup>−3<i>x</i>)}<i>dx</i><br />＝ ∫<sub>1</sub><sup>2</sup> 2<i>x</i><sup>2</sup><i>dx</i> ＝ [(2/3)<i>x</i><sup>3</sup>]<sub>1</sub><sup>2</sup> ＝ (2/3)(2<sup>3</sup>−1<sup>3</sup>) ＝ (2/3)・7 ＝ <b>14/3</b></p>
+          <p class="note">2つの積分を別々に計算しても同じ答えになるが、計算量は大違い。<b>「区間が同じ → まずまとめる」</b>が合言葉だよ。</p>
+        </div>
+        <p class="prob-done">例17 クリア！　次は練習31に挑戦しよう。</p>
+      </section>
+
+      <!-- ================= 練習31 ================= -->
+      <div class="sec-head">
+        <span class="sec-tag">練習</span>
+        <h2>練習問題に挑戦</h2>
+        <span class="pno">教科書 p.209</span>
+      </div>
+
+      <section class="card prob" id="prob-ren31" data-flow="ren31" data-label="練習31">
+        <div class="prob-head">
+          <span class="prob-tag ren">練習 31</span>
+          <div class="dots" aria-hidden="true">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span>
+          </div>
+          <span class="prob-state">ヒント 0 / 3</span>
+        </div>
+        <p class="prob-q">次の定積分を計算せよ。</p>
+        <p class="formula">∫<sub>−1</sub><sup>1</sup> (<i>x</i>＋2)<sup>2</sup><i>dx</i> − ∫<sub>−1</sub><sup>1</sup> (<i>x</i>−2)<sup>2</sup><i>dx</i></p>
+
+        <div class="step hint">
+          <h3>ヒント 1 ― 例17と同じ見方をする</h3>
+          <p>2つの定積分の区間は、どちらも <b>−1 から 1</b> で同じだ。</p>
+          <p>今度は「差」だから、解説Bの性質1（差）を使って、<b>被積分関数どうしの引き算を1つの積分にまとめる</b>ことができる。</p>
+        </div>
+        <div class="step hint">
+          <h3>ヒント 2 ― 2つの (　)<sup>2</sup> を展開する</h3>
+          <p>まとめる前に、中身を展開しておこう。乗法公式 (<i>x</i>＋<i>a</i>)<sup>2</sup> ＝ <i>x</i><sup>2</sup>＋2<i>ax</i>＋<i>a</i><sup>2</sup> を使うと</p>
+          <p>・(<i>x</i>＋2)<sup>2</sup> ＝ <i>x</i><sup>2</sup>＋4<i>x</i>＋4<br />・(<i>x</i>−2)<sup>2</sup> ＝ <i>x</i><sup>2</sup>−4<i>x</i>＋4</p>
+          <p>この2つの差をとるのが次のステップだ。</p>
+        </div>
+        <div class="step hint">
+          <h3>ヒント 3 ― 差をとると、何が残る？</h3>
+          <p>(<i>x</i><sup>2</sup>＋4<i>x</i>＋4) − (<i>x</i><sup>2</sup>−4<i>x</i>＋4) を項ごとに計算してみよう。</p>
+          <p><i>x</i><sup>2</sup> の項と定数 4 は、どちらも<b>消えてしまう</b>はずだ。残るのは <i>x</i> の項だけ。係数を集めると何倍の <i>x</i> になるか、確かめてみよう。</p>
+        </div>
+        <div class="step answer">
+          <h3>解答</h3>
+          <p class="big">0</p>
+          <p>∫<sub>−1</sub><sup>1</sup> (<i>x</i>＋2)<sup>2</sup><i>dx</i> − ∫<sub>−1</sub><sup>1</sup> (<i>x</i>−2)<sup>2</sup><i>dx</i><br />＝ ∫<sub>−1</sub><sup>1</sup> {(<i>x</i>＋2)<sup>2</sup>−(<i>x</i>−2)<sup>2</sup>}<i>dx</i><br />＝ ∫<sub>−1</sub><sup>1</sup> 8<i>x</i><i>dx</i> ＝ [4<i>x</i><sup>2</sup>]<sub>−1</sub><sup>1</sup> ＝ 4・1<sup>2</sup> − 4・(−1)<sup>2</sup> ＝ 4 − 4 ＝ <b>0</b></p>
+          <p class="note">答えの 0 は偶然ではない。<b>被積分関数 8<i>x</i> は原点対称（奇関数）</b>で、積分区間 [−1, 1] も原点をはさんで対称だから、プラスとマイナスがちょうど打ち消し合う。この見方は、次の「定積分と面積」でもう一度出てくるよ。</p>
+        </div>
+        <p class="prob-done">練習31 クリア！　次は例18で「区間をつなげる」性質を使ってみよう。</p>
+      </section>
+
+      <!-- ================= 例18 ================= -->
+      <div class="sec-head">
+        <span class="sec-tag">例題</span>
+        <h2>区間をつなげる例題</h2>
+        <span class="pno">教科書 p.209</span>
+      </div>
+
+      <section class="card prob" id="prob-ex18" data-flow="ex18" data-label="例18">
+        <div class="prob-head">
+          <span class="prob-tag">例 18</span>
+          <div class="dots" aria-hidden="true">
+            <span class="dot"></span><span class="dot"></span><span class="dot ans"></span>
+          </div>
+          <span class="prob-state">ヒント 0 / 2</span>
+        </div>
+        <p class="prob-q">次の定積分を計算してみよう。</p>
+        <p class="formula">∫<sub>0</sub><sup>4</sup> (<i>x</i><sup>2</sup>−<i>x</i>)<i>dx</i> ＋ ∫<sub>4</sub><sup>2</sup> (<i>x</i><sup>2</sup>−<i>x</i>)<i>dx</i></p>
+        <figure>
+          <div class="figbox">
+            <svg viewBox="0 0 520 178" role="img" aria-label="数直線上で、0から4への矢印と、4から2へ戻る矢印を描いた図">
+              <defs>
+                <marker id="ah-b2" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+                  <path d="M0,0 L10,5 L0,10 z" fill="var(--blue)"></path>
+                </marker>
+                <marker id="ah-o2" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+                  <path d="M0,0 L10,5 L0,10 z" fill="var(--orange)"></path>
+                </marker>
+                <marker id="ah-a2" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+                  <path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"></path>
+                </marker>
+              </defs>
+              <text x="18" y="46" class="svg-txt" font-size="14.5" fill="var(--blue)">0 → 4</text>
+              <text x="18" y="90" class="svg-txt" font-size="14.5" fill="var(--orange)">4 → 2</text>
+              <text x="18" y="134" class="svg-txt" font-size="14.5" fill="var(--accent-deep)">結果は？</text>
+              <line x1="150" y1="42" x2="450" y2="42" stroke="var(--blue)" stroke-width="3.5" marker-end="url(#ah-b2)"></line>
+              <line x1="450" y1="86" x2="300" y2="86" stroke="var(--orange)" stroke-width="3.5" marker-end="url(#ah-o2)"></line>
+              <line x1="150" y1="130" x2="300" y2="130" stroke="var(--accent)" stroke-width="3.5" stroke-dasharray="7 5" marker-end="url(#ah-a2)"></line>
+              <g stroke="var(--line)" stroke-width="1.5" stroke-dasharray="5 4">
+                <line x1="150" y1="28" x2="150" y2="146"></line>
+                <line x1="300" y1="28" x2="300" y2="146"></line>
+                <line x1="450" y1="28" x2="450" y2="146"></line>
+              </g>
+              <g class="svg-txt" font-size="16" text-anchor="middle">
+                <text x="150" y="168">0</text>
+                <text x="300" y="168">2</text>
+                <text x="450" y="168">4</text>
+              </g>
+            </svg>
+          </div>
+          <figcaption>1つ目は「0 から 4 まで」、2つ目は「4 から 2 まで」。ちょうど点 4 でつながっていることに注目。</figcaption>
+        </figure>
+
+        <div class="step hint">
+          <h3>ヒント 1 ― 区間の「つながり」を見る</h3>
+          <p>今回は被積分関数は同じでも、区間は 0→4 と 4→2 で<b>別々</b>だ。ただし、1つ目の終点 4 と2つ目の始点 4 が一致して、区間が<b>つながっている</b>。</p>
+          <p>こういうときは解説Bの性質3（区間をつなげる）が使える。「4 → 2」のように戻ってくる場合でも、<i>F</i>(<i>c</i>) が消える計算はそのまま成り立つんだったね。</p>
+        </div>
+        <div class="step hint">
+          <h3>ヒント 2 ― 1つの積分にまとめる</h3>
+          <p>性質3を a＝0, c＝4, b＝2 として使うと</p>
+          <p class="formula">∫<sub>0</sub><sup>4</sup> (<i>x</i><sup>2</sup>−<i>x</i>)<i>dx</i> ＋ ∫<sub>4</sub><sup>2</sup> (<i>x</i><sup>2</sup>−<i>x</i>)<i>dx</i> ＝ ∫<sub>0</sub><sup>2</sup> (<i>x</i><sup>2</sup>−<i>x</i>)<i>dx</i></p>
+          <p>と、0 から 2 までの1つの積分になる。あとは (<i>x</i><sup>2</sup>−<i>x</i>) の原始関数 (1/3)<i>x</i><sup>3</sup>−(1/2)<i>x</i><sup>2</sup> を使って計算するだけだ。</p>
+        </div>
+        <div class="step answer">
+          <h3>解答</h3>
+          <p class="big">2/3</p>
+          <p>∫<sub>0</sub><sup>4</sup> (<i>x</i><sup>2</sup>−<i>x</i>)<i>dx</i> ＋ ∫<sub>4</sub><sup>2</sup> (<i>x</i><sup>2</sup>−<i>x</i>)<i>dx</i><br />＝ ∫<sub>0</sub><sup>2</sup> (<i>x</i><sup>2</sup>−<i>x</i>)<i>dx</i><br />＝ [(1/3)<i>x</i><sup>3</sup>−(1/2)<i>x</i><sup>2</sup>]<sub>0</sub><sup>2</sup> ＝ (8/3 − 2) − 0 ＝ <b>2/3</b></p>
+          <p class="note">行き過ぎて戻ってくる積分も、つなげてしまえば一直線の積分と同じこと。<b>終点と始点がそろったら「つなげる」</b>が合言葉だよ。</p>
+        </div>
+        <p class="prob-done">例18 クリア！　次は練習32に挑戦しよう。</p>
+      </section>
+
+      <!-- ================= 練習32 ================= -->
+      <section class="card prob" id="prob-ren32">
+        <div class="prob-head">
+          <span class="prob-tag ren">練習 32</span>
+          <span class="prob-state">下のタブで小問を選んでね</span>
+        </div>
+        <p class="prob-q">次の定積分を計算せよ。</p>
+
+        <div class="tabs" role="tablist" aria-label="練習32の小問">
+          <button class="tab" role="tab" data-tab="ren32-1" aria-selected="true">(1) 区間をつなげる</button>
+          <button class="tab" role="tab" data-tab="ren32-2" aria-selected="false">(2) 符号を変えてつなげる</button>
+        </div>
+
+        <!-- (1) -->
+        <div class="tabpanel show" id="panel-ren32-1" data-flow="ren32-1" data-label="練習32 (1)">
+          <div class="prob-head">
+            <span class="sub prob-q" style="margin:0">(1)</span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 2</span>
+          </div>
+          <p class="formula">∫<sub>1</sub><sup>2</sup> (3<i>x</i><sup>2</sup>−4<i>x</i>)<i>dx</i> ＋ ∫<sub>2</sub><sup>3</sup> (3<i>x</i><sup>2</sup>−4<i>x</i>)<i>dx</i></p>
+          <div class="step hint">
+            <h3>ヒント 1 ― 例18と同じ形だ</h3>
+            <p>区間が 1→2 と 2→3 で、点 2 でつながっている。被積分関数も同じ (3<i>x</i><sup>2</sup>−4<i>x</i>) だ。</p>
+            <p>性質3で1つの積分にまとめると、区間は <b>1 から 3</b> までになる。</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 2 ― 原始関数を用意する</h3>
+            <p>3<i>x</i><sup>2</sup>−4<i>x</i> の原始関数は <i>x</i><sup>3</sup>−2<i>x</i><sup>2</sup>（微分して確かめてみよう）。</p>
+            <p>あとは [<i>x</i><sup>3</sup>−2<i>x</i><sup>2</sup>]<sub>1</sub><sup>3</sup> に 3 と 1 を代入して引き算すればよい。</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (1)</h3>
+            <p class="big">10</p>
+            <p>∫<sub>1</sub><sup>2</sup> (3<i>x</i><sup>2</sup>−4<i>x</i>)<i>dx</i> ＋ ∫<sub>2</sub><sup>3</sup> (3<i>x</i><sup>2</sup>−4<i>x</i>)<i>dx</i><br />＝ ∫<sub>1</sub><sup>3</sup> (3<i>x</i><sup>2</sup>−4<i>x</i>)<i>dx</i><br />＝ [<i>x</i><sup>3</sup>−2<i>x</i><sup>2</sup>]<sub>1</sub><sup>3</sup> ＝ (27−18) − (1−2) ＝ 9 − (−1) ＝ <b>10</b></p>
+            <p class="note">(1−2) ＝ −1 を引くところで符号ミスをしやすい。代入した値は、<b>かっこのまま引き算</b>するのが安全だよ。</p>
+          </div>
+          <p class="prob-done">(1) クリア！　タブで (2) に切り替えよう。</p>
+        </div>
+
+        <!-- (2) -->
+        <div class="tabpanel" id="panel-ren32-2" data-flow="ren32-2" data-label="練習32 (2)">
+          <div class="prob-head">
+            <span class="sub prob-q" style="margin:0">(2)</span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 2</span>
+          </div>
+          <p class="formula">∫<sub>0</sub><sup>3</sup> (<i>x</i><sup>2</sup>＋2<i>x</i>)<i>dx</i> − ∫<sub>1</sub><sup>3</sup> (<i>x</i><sup>2</sup>＋2<i>x</i>)<i>dx</i></p>
+          <div class="step hint">
+            <h3>ヒント 1 ― 「引く」を「足す」に変える</h3>
+            <p>このままでは区間がつながらない。そこで、解説Bの性質2を使う。積分区間の<b>上下を入れ替えると符号が変わる</b>から</p>
+            <p class="formula">−∫<sub>1</sub><sup>3</sup> (<i>x</i><sup>2</sup>＋2<i>x</i>)<i>dx</i> ＝ ∫<sub>3</sub><sup>1</sup> (<i>x</i><sup>2</sup>＋2<i>x</i>)<i>dx</i></p>
+            <p>と書き換えられる。式全体は「∫<sub>0</sub><sup>3</sup> ＋ ∫<sub>3</sub><sup>1</sup>」の形になったはずだ。</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 2 ― 点 3 でつなげる</h3>
+            <p>0→3 と 3→1 が点 3 でつながるから、性質3でまとめると区間は <b>0 から 1</b> になる。</p>
+            <p>あとは ∫<sub>0</sub><sup>1</sup> (<i>x</i><sup>2</sup>＋2<i>x</i>)<i>dx</i> を、原始関数 (1/3)<i>x</i><sup>3</sup>＋<i>x</i><sup>2</sup> で計算しよう。</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (2)</h3>
+            <p class="big">4/3</p>
+            <p>∫<sub>0</sub><sup>3</sup> (<i>x</i><sup>2</sup>＋2<i>x</i>)<i>dx</i> − ∫<sub>1</sub><sup>3</sup> (<i>x</i><sup>2</sup>＋2<i>x</i>)<i>dx</i><br />＝ ∫<sub>0</sub><sup>3</sup> (<i>x</i><sup>2</sup>＋2<i>x</i>)<i>dx</i> ＋ ∫<sub>3</sub><sup>1</sup> (<i>x</i><sup>2</sup>＋2<i>x</i>)<i>dx</i><br />＝ ∫<sub>0</sub><sup>1</sup> (<i>x</i><sup>2</sup>＋2<i>x</i>)<i>dx</i><br />＝ [(1/3)<i>x</i><sup>3</sup>＋<i>x</i><sup>2</sup>]<sub>0</sub><sup>1</sup> ＝ (1/3＋1) − 0 ＝ <b>4/3</b></p>
+            <p class="note">考え方を整理すると、[0, 3] の積分から [1, 3] の積分を引くと、残るのは [0, 1] の積分。図で区間を思い浮かべると納得できるね。</p>
+          </div>
+          <p class="prob-done">(2) クリア！　練習32 全小問が終わったら、解説Cへ進もう。</p>
+        </div>
+      </section>
+
+      <!-- ================= 解説C ================= -->
+      <div class="sec-head">
+        <span class="sec-tag">解説 C</span>
+        <h2>定積分と微分法</h2>
+        <span class="pno">教科書 p.209〜210</span>
+      </div>
+
+      <section class="card prob" id="prob-kaiC" data-flow="kaiC" data-label="解説C　定積分と微分法">
+        <div class="prob-head">
+          <span class="prob-tag kai">解説 C</span>
+          <div class="dots" aria-hidden="true">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span>
+          </div>
+          <span class="prob-state">ヒント 0 / 3</span>
+        </div>
+        <p>これまでの定積分は、区間の両端が数のものばかりだった。では、<b>上端を文字 <i>x</i> にしたら</b>どうなるだろう？　下のスライダーで上端 <i>x</i> を動かすと、∫<sub>2</sub><sup><i>x</i></sup> (3<i>t</i><sup>2</sup>−1)<i>dt</i> の値（色のついた部分）が変わっていく様子が見える。</p>
+        <div class="slider-row">
+          <label for="slideX">上端 x を動かす</label>
+          <input type="range" id="slideX" min="2" max="4" value="3" step="0.1" aria-label="定積分の上端 x を動かすスライダー" />
+        </div>
+        <figure>
+          <div class="figbox">
+            <svg viewBox="0 0 520 300" role="img" aria-label="曲線 y＝3t²−1 の下で、t＝2 から t＝x までの部分に色がついた図。x を動かすと色の部分が変わる">
+              <defs>
+                <marker id="ah-ax3" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+                  <path d="M0,0 L10,5 L0,10 z" fill="var(--ink)"></path>
+                </marker>
+              </defs>
+              <!-- 積分を表す部分 -->
+              <path id="areaPath" d="" fill="var(--accent)" opacity="0.28"></path>
+              <!-- 座標軸 -->
+              <line x1="30" y1="252" x2="502" y2="252" stroke="var(--ink)" stroke-width="1.8" marker-end="url(#ah-ax3)"></line>
+              <line x1="60" y1="278" x2="60" y2="14" stroke="var(--ink)" stroke-width="1.8" marker-end="url(#ah-ax3)"></line>
+              <text x="508" y="246" class="svg-txt" font-size="16" font-style="italic">t</text>
+              <text x="72" y="28" class="svg-txt" font-size="16" font-style="italic">y</text>
+              <text x="42" y="272" class="svg-txt-soft" font-size="14">O</text>
+              <!-- 曲線 y=3t^2-1 （px(t)=60+95t, py(y)=252-4.2y） -->
+              <path d="M60,256.2 L107.5,253.1 L155,243.6 L202.5,227.9 L250,205.8 L297.5,177.5 L345,142.8 L392.5,101.9 L440,54.6 L455,36" fill="none" stroke="var(--accent)" stroke-width="3.2" stroke-linecap="round"></path>
+              <text x="398" y="86" class="svg-txt" font-size="16" fill="var(--accent-deep)"><tspan font-style="italic">y</tspan>＝3<tspan font-style="italic">t</tspan><tspan dy="-8" font-size="12">2</tspan><tspan dy="8">−1</tspan></text>
+              <!-- t=2 の基準線 -->
+              <line x1="250" y1="205.8" x2="250" y2="252" stroke="var(--ink-soft)" stroke-width="1.6" stroke-dasharray="5 4"></line>
+              <text x="250" y="272" text-anchor="middle" class="svg-txt-soft" font-size="14">2</text>
+              <!-- x の位置 -->
+              <line id="xLine" x1="345" y1="142.8" x2="345" y2="252" stroke="var(--orange)" stroke-width="2.2" stroke-dasharray="6 4"></line>
+              <circle id="xPt" cx="345" cy="142.8" r="5.5" fill="var(--orange)"></circle>
+              <text id="xLab" x="345" y="272" text-anchor="middle" class="svg-txt" font-size="15" font-style="italic" fill="var(--orange)">x</text>
+              <text x="297" y="238" text-anchor="middle" class="svg-txt" font-size="14.5" fill="var(--accent-deep)">積分の値 S(x)</text>
+            </svg>
+          </div>
+          <figcaption>下端 2 は固定、上端 x だけが動く。すると定積分の値 S(x) も x によって変わる。つまり <b>S(x) は x の関数</b>だ。</figcaption>
+        </figure>
+        <p class="slider-state" id="intState">x ＝ 3.0 のとき，S(x) ＝ 18</p>
+        <p>なぜ積分する変数を <i>x</i> ではなく <i>t</i> と書くのかというと、上端の <i>x</i> と混ざってしまわないようにするためだ。この <i>t</i> のような変数を「仮の変数」と思えばよい。下の <b>次へ</b> で、この関数の正体を確かめていこう。</p>
+
+        <div class="step hint">
+          <h3>ステップ 1 ― 実際に計算すると、x の式になる</h3>
+          <p>∫<sub>2</sub><sup><i>x</i></sup> (3<i>t</i><sup>2</sup>−1)<i>dt</i> を、原始関数 <i>t</i><sup>3</sup>−<i>t</i> で計算してみよう。</p>
+          <p class="formula">∫<sub>2</sub><sup><i>x</i></sup> (3<i>t</i><sup>2</sup>−1)<i>dt</i> ＝ [<i>t</i><sup>3</sup>−<i>t</i>]<sub>2</sub><sup><i>x</i></sup><br />＝ (<i>x</i><sup>3</sup>−<i>x</i>) − (2<sup>3</sup>−2) ＝ <i>x</i><sup>3</sup>−<i>x</i>−6</p>
+          <p>本当に <b><i>x</i> の関数</b>になった。図の S(<i>x</i>) の正体は、S(<i>x</i>) ＝ <i>x</i><sup>3</sup>−<i>x</i>−6 だということだ（スライダーの数字と比べてみよう）。</p>
+        </div>
+        <div class="step hint">
+          <h3>ステップ 2 ― その関数を微分すると…？</h3>
+          <p>S(<i>x</i>) ＝ <i>x</i><sup>3</sup>−<i>x</i>−6 を <i>x</i> で微分すると</p>
+          <p class="formula">S′(<i>x</i>) ＝ 3<i>x</i><sup>2</sup>−1</p>
+          <p>あれ、これは被積分関数 3<i>t</i><sup>2</sup>−1 の <b><i>t</i> を <i>x</i> に置き換えたもの</b>そのものだ。積分したものを微分すると、もとの関数に戻っている。</p>
+        </div>
+        <div class="step hint">
+          <h3>ステップ 3 ― 一般の関数でも成り立つ理由</h3>
+          <p>一般の関数 <i>f</i>(<i>t</i>) で考えよう。原始関数を <i>F</i>(<i>t</i>) とすると</p>
+          <p class="formula">∫<sub><i>a</i></sub><sup><i>x</i></sup> <i>f</i>(<i>t</i>)<i>dt</i> ＝ <i>F</i>(<i>x</i>) − <i>F</i>(<i>a</i>)</p>
+          <p>この右辺を <i>x</i> で微分する。<i>F</i>(<i>a</i>) は <i>a</i> で決まる<b>定数</b>だから、微分すると 0 になって消える。残るのは <i>F</i>(<i>x</i>) の微分だけ、つまり</p>
+          <p class="formula">{<i>F</i>(<i>x</i>) − <i>F</i>(<i>a</i>)}′ ＝ <i>F</i>′(<i>x</i>) ＝ <i>f</i>(<i>x</i>)</p>
+          <p>これが、ステップ2で「もとの関数に戻った」理由だ。</p>
+        </div>
+        <div class="step answer">
+          <h3>公式 ― 定積分と微分法</h3>
+          <p class="big">(d/dx)∫<sub><i>a</i></sub><sup><i>x</i></sup> <i>f</i>(<i>t</i>)<i>dt</i> ＝ <i>f</i>(<i>x</i>)</p>
+          <p><b>上端が <i>x</i> の定積分を <i>x</i> で微分すると、被積分関数の <i>t</i> を <i>x</i> に変えたものになる。</b></p>
+          <p>言い換えると、微分と積分は「逆の操作」。この関係が、微分法と積分法を1つの章で学ぶ意味そのものだよ。</p>
+          <p class="note">注意：この公式が使えるのは、<b>上端がそのまま <i>x</i></b> のときだけ。下端が <i>x</i> のときなどは、性質2で上下を入れ替えてから考える。</p>
+        </div>
+        <p class="prob-done">解説C クリア！　次は練習33で公式を使ってみよう。</p>
+      </section>
+
+      <!-- ================= 練習33 ================= -->
+      <div class="sec-head">
+        <span class="sec-tag">練習</span>
+        <h2>定積分と微分法の練習</h2>
+        <span class="pno">教科書 p.210</span>
+      </div>
+
+      <section class="card prob" id="prob-ren33" data-flow="ren33" data-label="練習33">
+        <div class="prob-head">
+          <span class="prob-tag ren">練習 33</span>
+          <div class="dots" aria-hidden="true">
+            <span class="dot"></span><span class="dot"></span><span class="dot ans"></span>
+          </div>
+          <span class="prob-state">ヒント 0 / 2</span>
+        </div>
+        <p class="prob-q"><i>x</i> の関数 ∫<sub>0</sub><sup><i>x</i></sup> (3<i>t</i><sup>2</sup>−2<i>t</i>−1)<i>dt</i> の導関数を求めよ。</p>
+
+        <div class="step hint">
+          <h3>ヒント 1 ― 公式がそのまま使える形だ</h3>
+          <p>求めるのは「積分の値」ではなく、その<b>導関数</b>。しかも上端はそのまま <i>x</i> になっている。</p>
+          <p>つまり、先に積分を計算してから微分する、なんて遠回りは不要。解説Cの公式 (d/dx)∫<sub><i>a</i></sub><sup><i>x</i></sup> <i>f</i>(<i>t</i>)<i>dt</i> ＝ <i>f</i>(<i>x</i>) がそのまま使える。</p>
+        </div>
+        <div class="step hint">
+          <h3>ヒント 2 ― やることは「置き換え」だけ</h3>
+          <p>公式によれば、答えは被積分関数 3<i>t</i><sup>2</sup>−2<i>t</i>−1 の <b><i>t</i> をすべて <i>x</i> に置き換えたもの</b>になる。</p>
+          <p>下端の 0 は関係ない（<i>a</i> が何であっても、公式の形は変わらない）。置き換えた式を書いてみよう。</p>
+        </div>
+        <div class="step answer">
+          <h3>解答</h3>
+          <p class="big">3<i>x</i><sup>2</sup>−2<i>x</i>−1</p>
+          <p>(d/dx)∫<sub>0</sub><sup><i>x</i></sup> (3<i>t</i><sup>2</sup>−2<i>t</i>−1)<i>dt</i> ＝ <b>3<i>x</i><sup>2</sup>−2<i>x</i>−1</b></p>
+          <p class="note">確かめ：積分を先に計算すると ∫<sub>0</sub><sup><i>x</i></sup> (3<i>t</i><sup>2</sup>−2<i>t</i>−1)<i>dt</i> ＝ [<i>t</i><sup>3</sup>−<i>t</i><sup>2</sup>−<i>t</i>]<sub>0</sub><sup><i>x</i></sup> ＝ <i>x</i><sup>3</sup>−<i>x</i><sup>2</sup>−<i>x</i>。これを微分しても 3<i>x</i><sup>2</sup>−2<i>x</i>−1 になり、一致するね。</p>
+        </div>
+        <p class="prob-done">練習33 クリア！　次は応用例題6に挑戦しよう。</p>
+      </section>
+
+      <!-- ================= 応用例題6 ================= -->
+      <div class="sec-head">
+        <span class="sec-tag">応用例題</span>
+        <h2>等式を満たす関数と定数</h2>
+        <span class="pno">教科書 p.210</span>
+      </div>
+
+      <section class="card prob" id="prob-ouyou6" data-flow="ouyou6" data-label="応用例題6">
+        <div class="prob-head">
+          <span class="prob-tag">応用例題 6</span>
+          <div class="dots" aria-hidden="true">
+            <span class="dot"></span><span class="dot"></span><span class="dot ans"></span>
+          </div>
+          <span class="prob-state">ヒント 0 / 2</span>
+        </div>
+        <p class="prob-q">等式 ∫<sub><i>a</i></sub><sup><i>x</i></sup> <i>f</i>(<i>t</i>)<i>dt</i> ＝ <i>x</i><sup>2</sup>−3<i>x</i>＋2 を満たす関数 <i>f</i>(<i>x</i>) と定数 <i>a</i> の値を求めよ。</p>
+
+        <div class="step hint">
+          <h3>ヒント 1 ― まず両辺を微分する</h3>
+          <p>左辺は「上端が <i>x</i> の定積分」だから、<i>x</i> で微分すると公式で <i>f</i>(<i>x</i>) になる。</p>
+          <p>右辺 <i>x</i><sup>2</sup>−3<i>x</i>＋2 の微分は普通に計算できる。両辺を微分した式から、<i>f</i>(<i>x</i>) がまず決まるはずだ。</p>
+        </div>
+        <div class="step hint">
+          <h3>ヒント 2 ― 次は x＝a を代入する</h3>
+          <p><i>f</i>(<i>x</i>) が分かっても、<i>a</i> はまだ決まらない。そこで、もとの等式に <b><i>x</i> ＝ <i>a</i></b> を代入してみよう。</p>
+          <p>そのとき左辺は ∫<sub><i>a</i></sub><sup><i>a</i></sup> <i>f</i>(<i>t</i>)<i>dt</i> になる。区間の上下が同じ積分の値は、解説Bの性質2で学んだはず。その値と右辺 <i>a</i><sup>2</sup>−3<i>a</i>＋2 を等しくおくと、<i>a</i> の方程式ができる。</p>
+        </div>
+        <div class="step answer">
+          <h3>解答</h3>
+          <p class="big"><i>f</i>(<i>x</i>) ＝ 2<i>x</i>−3，　<i>a</i> ＝ 1, 2</p>
+          <p>等式の両辺を <i>x</i> で微分すると、公式より<br /><i>f</i>(<i>x</i>) ＝ (<i>x</i><sup>2</sup>−3<i>x</i>＋2)′ ＝ <b>2<i>x</i>−3</b></p>
+          <p>次に、等式に <i>x</i> ＝ <i>a</i> を代入する。左辺は ∫<sub><i>a</i></sub><sup><i>a</i></sup> <i>f</i>(<i>t</i>)<i>dt</i> ＝ 0 だから<br />0 ＝ <i>a</i><sup>2</sup>−3<i>a</i>＋2 ＝ (<i>a</i>−1)(<i>a</i>−2)<br />よって <b><i>a</i> ＝ 1, 2</b></p>
+          <p class="note">手順はいつも同じ2段階：<b>① 両辺を微分して <i>f</i>(<i>x</i>)、② <i>x</i>＝<i>a</i> を代入して <i>a</i></b>。この型の問題は入試でも頻出だよ。</p>
+        </div>
+        <p class="prob-done">応用例題6 クリア！　仕上げに練習34に挑戦しよう。</p>
+      </section>
+
+      <!-- ================= 練習34 ================= -->
+      <section class="card prob" id="prob-ren34" data-flow="ren34" data-label="練習34">
+        <div class="prob-head">
+          <span class="prob-tag ren">練習 34</span>
+          <div class="dots" aria-hidden="true">
+            <span class="dot"></span><span class="dot"></span><span class="dot ans"></span>
+          </div>
+          <span class="prob-state">ヒント 0 / 2</span>
+        </div>
+        <p class="prob-q">等式 ∫<sub><i>a</i></sub><sup><i>x</i></sup> <i>f</i>(<i>t</i>)<i>dt</i> ＝ <i>x</i><sup>2</sup>−<i>x</i>−2 を満たす関数 <i>f</i>(<i>x</i>) と定数 <i>a</i> の値を求めよ。</p>
+
+        <div class="step hint">
+          <h3>ヒント 1 ― 応用例題6の手順①</h3>
+          <p>応用例題6とまったく同じ型だ。まずは<b>両辺を <i>x</i> で微分</b>しよう。</p>
+          <p>左辺は公式で <i>f</i>(<i>x</i>)、右辺は <i>x</i><sup>2</sup>−<i>x</i>−2 の微分。これで <i>f</i>(<i>x</i>) が決まる。</p>
+        </div>
+        <div class="step hint">
+          <h3>ヒント 2 ― 手順②：x＝a を代入</h3>
+          <p>もとの等式に <i>x</i> ＝ <i>a</i> を代入すると、左辺は ∫<sub><i>a</i></sub><sup><i>a</i></sup> <i>f</i>(<i>t</i>)<i>dt</i> ＝ 0 になる。</p>
+          <p>だから右辺に <i>a</i> を代入した <i>a</i><sup>2</sup>−<i>a</i>−2 ＝ 0 という2次方程式を解けばよい。因数分解できるはずだ。</p>
+        </div>
+        <div class="step answer">
+          <h3>解答</h3>
+          <p class="big"><i>f</i>(<i>x</i>) ＝ 2<i>x</i>−1，　<i>a</i> ＝ −1, 2</p>
+          <p>両辺を微分すると <i>f</i>(<i>x</i>) ＝ (<i>x</i><sup>2</sup>−<i>x</i>−2)′ ＝ <b>2<i>x</i>−1</b></p>
+          <p><i>x</i> ＝ <i>a</i> を代入すると左辺が 0 になるから<br />0 ＝ <i>a</i><sup>2</sup>−<i>a</i>−2 ＝ (<i>a</i>−2)(<i>a</i>＋1)<br />よって <b><i>a</i> ＝ −1, 2</b></p>
+        </div>
+        <p class="prob-done">練習34 クリア！　この項はこれで全部おしまい。下のまとめで確認しよう。</p>
+      </section>
+
+      <!-- ================= まとめ ================= -->
+      <section class="card summary">
+        <h2>この項のポイント</h2>
+        <ul>
+          <li><b>区間が同じ定積分はまとめられる：</b>∫<sub>a</sub><sup>b</sup> <i>k f</i>(<i>x</i>)<i>dx</i> ＝ <i>k</i>∫<sub>a</sub><sup>b</sup> <i>f</i>(<i>x</i>)<i>dx</i>、和・差も被積分関数の和・差に帰着する（性質1）。</li>
+          <li><b>区間の上下を入れ替えると符号が変わる：</b>∫<sub>a</sub><sup>b</sup> <i>f</i>(<i>x</i>)<i>dx</i> ＝ −∫<sub>b</sub><sup>a</sup> <i>f</i>(<i>x</i>)<i>dx</i>。また ∫<sub>a</sub><sup>a</sup> <i>f</i>(<i>x</i>)<i>dx</i> ＝ 0（性質2）。</li>
+          <li><b>区間はつなげられる：</b>∫<sub>a</sub><sup>b</sup> <i>f</i>(<i>x</i>)<i>dx</i> ＝ ∫<sub>a</sub><sup>c</sup> <i>f</i>(<i>x</i>)<i>dx</i> ＋ ∫<sub>c</sub><sup>b</sup> <i>f</i>(<i>x</i>)<i>dx</i>。<i>c</i> が区間の外でも成り立つ（性質3）。</li>
+          <li><b>定積分と微分法：</b>(d/dx)∫<sub><i>a</i></sub><sup><i>x</i></sup> <i>f</i>(<i>t</i>)<i>dt</i> ＝ <i>f</i>(<i>x</i>)。上端が <i>x</i> の定積分は <i>x</i> の関数で、その導関数は被積分関数に戻る。</li>
+          <li><b>等式 ∫<sub>a</sub><sup>x</sup> f(t)dt ＝（x の式）の問題</b>は、①両辺を微分して <i>f</i>(<i>x</i>)、② <i>x</i> ＝ <i>a</i> を代入して <i>a</i>、の2段階で解く。</li>
+        </ul>
+      </section>
+
+      <!-- ================= フッター ================= -->
+      <footer>
+        <div class="foot-btns">
+          <a class="back-btn" href="calc.html">← 数学II 第6章 自習ページトップに戻る</a>
+          <a class="back-btn" href="index.html">Nanryo mathematics portal に戻る</a>
+        </div>
+        <p class="foot-note">数学II 第6章 微分法と積分法 ｜ 7 定積分（2）定積分の性質と微分法（教科書 p.208〜210）</p>
+      </footer>
+    </div>
+
+    <!-- ================= 下部固定バー ================= -->
+    <div class="ctrl-bar">
+      <div class="ctrl-inner">
+        <div class="pbar" aria-hidden="true"><div class="pbar-fill" id="pbarFill"></div></div>
+        <p class="ctrl-label">いまの課題：<b id="ctrlLabel">解説B　定積分の性質</b>　―　「次へ」でヒントを1つずつ開こう</p>
+        <div class="ctrl-btns">
+          <button class="btn" id="btnReset" type="button">最初からやり直す</button>
+          <button class="btn btn-next" id="btnNext" type="button">次へ ▶</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      (function(){
+        "use strict";
+
+        /* ---------- ヒント式フロー ---------- */
+        var flows = {};   // flowId -> {root, steps, dots, stateEl, doneEl, idx, label, hintTotal}
+        var activeId = 'kaiB';
+        var PROBLEM_IDS = [];
+
+        function registerFlow(root){
+          var id = root.getAttribute('data-flow');
+          var steps = Array.prototype.slice.call(root.querySelectorAll(':scope > .step'));
+          var head = root.querySelector(':scope > .prob-head');
+          var dots = head ? Array.prototype.slice.call(head.querySelectorAll('.dot')) : [];
+          var stateEl = head ? head.querySelector('.prob-state') : null;
+          var doneEl = root.querySelector(':scope > .prob-done');
+          flows[id] = {
+            id: id, root: root, steps: steps, dots: dots, stateEl: stateEl,
+            doneEl: doneEl, idx: 0, label: root.getAttribute('data-label') || id,
+            hintTotal: steps.filter(function(s){ return s.classList.contains('hint'); }).length
+          };
+          if (id.indexOf('kai') !== 0) PROBLEM_IDS.push(id);
+        }
+        Array.prototype.slice.call(document.querySelectorAll('[data-flow]')).forEach(registerFlow);
+
+        var btnNext = document.getElementById('btnNext');
+        var btnReset = document.getElementById('btnReset');
+        var ctrlLabel = document.getElementById('ctrlLabel');
+        var overallEl = document.getElementById('overall');
+        var pbarFill = document.getElementById('pbarFill');
+        var probCards = Array.prototype.slice.call(document.querySelectorAll('.prob'));
+
+        function refreshOverall(){
+          var done = PROBLEM_IDS.filter(function(id){
+            var f = flows[id];
+            return f.idx >= f.steps.length;
+          }).length;
+          overallEl.innerHTML = '全体の進み具合：<b>' + done + ' / ' + PROBLEM_IDS.length + '</b> 課題の解答を開きました';
+          pbarFill.style.width = (PROBLEM_IDS.length ? (done / PROBLEM_IDS.length * 100) : 0) + '%';
+        }
+        function refreshFlow(f){
+          f.steps.forEach(function(s, i){ s.classList.toggle('show', i < f.idx); });
+          f.dots.forEach(function(d, i){ d.classList.toggle('on', i < f.idx); });
+          if (f.stateEl){
+            if (f.idx === 0) f.stateEl.textContent = 'ヒント 0 / ' + f.hintTotal;
+            else if (f.idx <= f.hintTotal) f.stateEl.textContent = 'ヒント ' + f.idx + ' / ' + f.hintTotal;
+            else f.stateEl.textContent = '解答を表示済み';
+          }
+          if (f.doneEl) f.doneEl.classList.toggle('show', f.idx >= f.steps.length);
+          refreshOverall();
+        }
+        function refreshBar(){
+          var f = flows[activeId];
+          ctrlLabel.textContent = f.label;
+          if (f.idx >= f.steps.length){
+            btnNext.disabled = true;
+            btnNext.textContent = 'ぜんぶ開いたよ ✓';
+          } else if (f.idx === f.hintTotal){
+            btnNext.disabled = false;
+            btnNext.textContent = '次へ：解答を開く ▶';
+          } else {
+            btnNext.disabled = false;
+            btnNext.textContent = '次へ：ヒント' + (f.idx + 1) + 'を開く ▶';
+          }
+          probCards.forEach(function(card){
+            card.classList.toggle('active', card.contains(f.root));
+          });
+        }
+        function setActive(id){
+          if (!flows[id]) return;
+          activeId = id;
+          refreshBar();
+        }
+
+        btnNext.addEventListener('click', function(){
+          var f = flows[activeId];
+          if (f.idx >= f.steps.length) return;
+          f.idx += 1;
+          refreshFlow(f);
+          refreshBar();
+          var shown = f.steps[f.idx - 1];
+          if (shown) shown.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        });
+        btnReset.addEventListener('click', function(){
+          var f = flows[activeId];
+          f.idx = 0;
+          refreshFlow(f);
+          refreshBar();
+          f.root.scrollIntoView({ block: 'start', behavior: 'smooth' });
+        });
+
+        /* カード内を触ったら、その課題を操作対象にする */
+        document.addEventListener('click', function(e){
+          var flowEl = e.target.closest ? e.target.closest('[data-flow]') : null;
+          if (flowEl && document.body.contains(flowEl)) setActive(flowEl.getAttribute('data-flow'));
+        });
+
+        /* ---------- タブ切り替え（各カード内） ---------- */
+        Array.prototype.slice.call(document.querySelectorAll('.tabs')).forEach(function(tabGroup){
+          var card = tabGroup.closest('.card');
+          var tabs = Array.prototype.slice.call(tabGroup.querySelectorAll('.tab'));
+          tabs.forEach(function(tab){
+            tab.addEventListener('click', function(){
+              tabs.forEach(function(t){ t.setAttribute('aria-selected', t === tab ? 'true' : 'false'); });
+              var target = tab.getAttribute('data-tab');
+              Array.prototype.slice.call(card.querySelectorAll('.tabpanel')).forEach(function(panel){
+                panel.classList.toggle('show', panel.id === 'panel-' + target);
+              });
+              setActive(target);
+            });
+          });
+        });
+
+        /* ---------- スライダー連動（解説C：SVG属性の更新のみ） ---------- */
+        var sliderX = document.getElementById('slideX');
+        var areaPath = document.getElementById('areaPath');
+        var xLine = document.getElementById('xLine');
+        var xPt = document.getElementById('xPt');
+        var xLab = document.getElementById('xLab');
+        var intState = document.getElementById('intState');
+        function px(t){ return 60 + 95 * t; }
+        function py(y){ return 252 - 4.2 * y; }
+        function fmt(v){
+          var r = Math.round(v * 100) / 100;
+          return (r % 1 === 0) ? String(r) : String(r);
+        }
+        function applySlide(){
+          var x = parseFloat(sliderX.value);
+          var d = 'M' + px(2) + ',' + py(0);
+          var t;
+          for (t = 2; t <= x + 0.0001; t += 0.05){
+            var tt = Math.min(t, x);
+            d += ' L' + px(tt).toFixed(1) + ',' + py(3 * tt * tt - 1).toFixed(1);
+          }
+          d += ' L' + px(x) + ',' + py(0) + ' Z';
+          areaPath.setAttribute('d', d);
+          var cx = px(x), cy = py(3 * x * x - 1);
+          xLine.setAttribute('x1', cx); xLine.setAttribute('x2', cx);
+          xLine.setAttribute('y1', cy); xLine.setAttribute('y2', 252);
+          xPt.setAttribute('cx', cx); xPt.setAttribute('cy', cy);
+          xLab.setAttribute('x', cx);
+          intState.textContent = 'x ＝ ' + x.toFixed(1) + ' のとき，S(x) ＝ ' + fmt(x * x * x - x - 6);
+        }
+        sliderX.addEventListener('input', applySlide);
+        applySlide();
+
+        Object.keys(flows).forEach(function(id){ refreshFlow(flows[id]); });
+        refreshBar();
+      })();
+    </script>
+  </body>
+</html>

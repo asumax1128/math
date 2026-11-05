@@ -1,0 +1,810 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:," />
+    <title>数学II 研究 放物線・3次関数の面積 自習ページ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --bg: #f2f4f7;
+        --card: #ffffff;
+        --ink: #1c2430;
+        --ink-sub: #55606e;
+        --line: #d7dde5;
+        --accent: #1f5fa8;
+        --accent-ink: #ffffff;
+        --accent-soft: #e3edf8;
+        --hint-bg: #fff6d9;
+        --hint-line: #dfc25e;
+        --hint-ink: #4a3d08;
+        --ans-bg: #e6f4ea;
+        --ans-line: #57a773;
+        --ans-ink: #14401f;
+        --chip-bg: #eef1f5;
+        --dot-off: #c9d1db;
+        --hatch-a: #1f5fa8;
+        --hatch-b: #c96a1e;
+        --shadow: 0 1px 3px rgba(20, 35, 60, 0.10);
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #12151a;
+          --card: #1b1f27;
+          --ink: #e9edf2;
+          --ink-sub: #a5aeb9;
+          --line: #333b47;
+          --accent: #6aa9e8;
+          --accent-ink: #0d1522;
+          --accent-soft: #22344d;
+          --hint-bg: #38300f;
+          --hint-line: #a8892f;
+          --hint-ink: #f5e7b8;
+          --ans-bg: #17301f;
+          --ans-line: #4c9a68;
+          --ans-ink: #c9ecd4;
+          --chip-bg: #262c36;
+          --dot-off: #3d4654;
+          --hatch-a: #6aa9e8;
+          --hatch-b: #eda55c;
+          --shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+        }
+      }
+      * { box-sizing: border-box; }
+      html { -webkit-text-size-adjust: 100%; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic UI", "Yu Gothic", "Noto Sans JP", sans-serif;
+        line-height: 1.75;
+        font-size: 16px;
+      }
+      .m {
+        font-family: "STIX Two Math", "Hiragino Mincho ProN", serif;
+        font-size: 1.06em;
+        white-space: nowrap;
+      }
+      .m sup, .m sub { font-size: 0.68em; }
+      /* 分数 */
+      .frac {
+        display: inline-flex; flex-direction: column; text-align: center;
+        vertical-align: middle; margin: 0 0.12em; font-size: 0.84em; line-height: 1.18;
+      }
+      .frac .num { border-bottom: 1.6px solid currentColor; padding: 0 0.22em 0.05em; }
+      .frac .den { padding: 0.05em 0.22em 0; }
+      /* 積分記号（上下限つき） */
+      .intg { display: inline-flex; align-items: center; vertical-align: middle; margin: 0 0.06em; }
+      .intg .sym { font-size: 1.65em; line-height: 1; }
+      .intg .lims { display: inline-flex; flex-direction: column; font-size: 0.66em; line-height: 1.25; margin-left: -0.1em; min-height: 2.5em; justify-content: space-between; }
+      .eval { white-space: nowrap; }
+
+      .wrap { max-width: 880px; margin: 0 auto; padding: 0 16px 40px; }
+
+      /* ===== doc-head ===== */
+      .doc-head { padding: 26px 4px 6px; }
+      .badges { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+      .badge {
+        display: inline-block; padding: 2px 12px; border-radius: 999px;
+        background: var(--chip-bg); color: var(--ink-sub);
+        font-size: 0.82rem; font-weight: 700; letter-spacing: 0.04em;
+      }
+      .badge.kenkyu { background: var(--accent); color: var(--accent-ink); }
+      .doc-head h1 { font-size: 1.55rem; line-height: 1.45; margin: 0 0 8px; }
+      .doc-head .ref { color: var(--ink-sub); font-size: 0.92rem; margin: 0; }
+
+      /* ===== スティッキー操作バー ===== */
+      .sticky-bar {
+        position: sticky; top: 0; z-index: 60;
+        background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+        box-shadow: var(--shadow);
+        padding: 10px 14px; margin: 14px 0 20px;
+        display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+      }
+      .sticky-bar .pb-label { font-size: 0.85rem; font-weight: 700; white-space: nowrap; }
+      .pbar { flex: 1 1 140px; height: 10px; background: var(--chip-bg); border-radius: 999px; overflow: hidden; }
+      .pbar .fill { height: 100%; width: 0%; background: var(--accent); border-radius: 999px; transition: width 0.35s ease; }
+      .sticky-bar .pb-count { font-size: 0.85rem; color: var(--ink-sub); white-space: nowrap; font-variant-numeric: tabular-nums; }
+      .btn {
+        appearance: none; border: 1px solid var(--line); background: var(--card); color: var(--ink);
+        border-radius: 10px; padding: 8px 16px; font-size: 0.92rem; font-weight: 700;
+        cursor: pointer; font-family: inherit;
+      }
+      .btn:hover { border-color: var(--accent); }
+      .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+      .btn.primary:disabled { opacity: 0.45; cursor: default; }
+      .btn.small { padding: 5px 12px; font-size: 0.82rem; }
+
+      /* ===== 使い方ボックス ===== */
+      .howto {
+        background: var(--accent-soft); border-radius: 12px;
+        padding: 14px 18px; margin-bottom: 22px; font-size: 0.95rem;
+      }
+      .howto .howto-title { font-weight: 800; margin-bottom: 4px; }
+      .howto p { margin: 4px 0; }
+
+      /* ===== ユニット ===== */
+      .unit {
+        background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+        box-shadow: var(--shadow); padding: 20px 20px 16px; margin-bottom: 22px;
+      }
+      .unit-head { display: flex; align-items: flex-start; gap: 12px; flex-wrap: wrap; margin-bottom: 6px; }
+      .unit-head h2 { font-size: 1.18rem; line-height: 1.5; margin: 0; flex: 1 1 260px; }
+      .unit-head h2 .sec-badge {
+        display: inline-block; background: var(--accent); color: var(--accent-ink);
+        border-radius: 6px; padding: 0 8px; margin-right: 8px; font-size: 0.85rem; vertical-align: 0.12em;
+      }
+      .dots { display: flex; gap: 6px; padding-top: 8px; }
+      .dots .dot { width: 11px; height: 11px; border-radius: 50%; background: var(--dot-off); transition: background 0.25s; }
+      .dots .dot.on { background: var(--accent); }
+      .dots .dot.ans.on { background: var(--ans-line); }
+      .qbox {
+        background: var(--chip-bg); border-radius: 10px; padding: 12px 16px; margin: 10px 0 14px;
+      }
+      .qbox .q-label { font-weight: 800; font-size: 0.85rem; color: var(--ink-sub); letter-spacing: 0.05em; }
+      .qbox p { margin: 4px 0; }
+      .lead p { margin: 8px 0; }
+
+      figure.fig { margin: 14px 0; text-align: center; }
+      figure.fig svg { max-width: 100%; height: auto; }
+      figure.fig figcaption { font-size: 0.85rem; color: var(--ink-sub); margin-top: 4px; }
+      .fade-el { opacity: 0; visibility: hidden; transition: opacity 0.4s ease; }
+      .fade-el.on { opacity: 1; visibility: visible; }
+      .svg-axis { stroke: var(--ink-sub); stroke-width: 1.4; }
+      .svg-tick { stroke: var(--ink-sub); stroke-width: 1; }
+      .svg-curve { fill: none; stroke: var(--accent); stroke-width: 2.4; }
+      .svg-label { fill: var(--ink); font-family: "STIX Two Math", serif; font-size: 15px; }
+      .svg-label-jp { fill: var(--ink-sub); font-size: 12px; }
+      .svg-point { fill: var(--accent); }
+      .hatch-rect-a { fill: rgba(31, 95, 168, 0.10); }
+      .hatch-line-a { stroke: var(--hatch-a); stroke-width: 1.1; }
+      .hatch-rect-b { fill: rgba(201, 106, 30, 0.12); }
+      .hatch-line-b { stroke: var(--hatch-b); stroke-width: 1.1; }
+      @media (prefers-color-scheme: dark) {
+        .hatch-rect-a { fill: rgba(106, 169, 232, 0.14); }
+        .hatch-rect-b { fill: rgba(237, 165, 92, 0.16); }
+      }
+
+      /* ===== ステップカード ===== */
+      .step { display: none; border-radius: 10px; padding: 12px 16px; margin: 10px 0; }
+      .step.on { display: block; }
+      .step .step-tag { font-weight: 800; font-size: 0.8rem; letter-spacing: 0.06em; margin-bottom: 2px; }
+      .step p { margin: 4px 0; }
+      .step.hint { background: var(--hint-bg); border: 1px solid var(--hint-line); color: var(--hint-ink); }
+      .step.hint .m { color: var(--hint-ink); }
+      .step.answer { background: var(--ans-bg); border: 1px solid var(--ans-line); color: var(--ans-ink); }
+      .step.answer .m { color: var(--ans-ink); }
+      .step.answer .final {
+        display: block; text-align: center; font-size: 1.25rem; font-weight: 700; margin: 8px 0;
+      }
+      .unit-controls { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; align-items: center; }
+      .unit-controls .done-msg { font-size: 0.88rem; color: var(--ans-line); font-weight: 700; display: none; }
+      .unit.done .done-msg { display: inline; }
+
+      /* ===== タブ（練習1） ===== */
+      .tabs { display: flex; gap: 8px; margin: 12px 0 4px; }
+      .tab-btn {
+        appearance: none; border: 1px solid var(--line); background: var(--chip-bg); color: var(--ink-sub);
+        border-radius: 10px 10px 0 0; border-bottom: none; padding: 8px 22px;
+        font-size: 1rem; font-weight: 700; cursor: pointer; font-family: inherit;
+      }
+      .tab-btn.active { background: var(--card); color: var(--ink); box-shadow: inset 0 -3px 0 var(--accent); }
+      .tab-panel { display: none; border-top: 1px solid var(--line); padding-top: 6px; }
+      .tab-panel.active { display: block; }
+      .tab-panel .panel-head { display: flex; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
+      .tab-panel .panel-head .dots { margin-left: auto; }
+
+      /* ===== フッター ===== */
+      .foot-nav { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 6px; }
+      .foot-nav a {
+        flex: 1 1 220px; text-align: center; text-decoration: none;
+        background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+        padding: 13px 16px; color: var(--ink); font-weight: 700; box-shadow: var(--shadow);
+      }
+      .foot-nav a:hover { border-color: var(--accent); color: var(--accent); }
+      .foot-nav a .sub { display: block; font-size: 0.8rem; color: var(--ink-sub); font-weight: 400; margin-top: 2px; }
+
+      @media (prefers-reduced-motion: reduce) {
+        .pbar .fill, .fade-el, .dots .dot { transition: none; }
+      }
+      @media (max-width: 560px) {
+        .doc-head h1 { font-size: 1.3rem; }
+        .unit { padding: 16px 14px 12px; }
+        body { font-size: 15px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+
+      <!-- ===== doc-head ===== -->
+      <header class="doc-head">
+        <div class="badges">
+          <span class="badge">数学II</span>
+          <span class="badge">第6章 微分法と積分法</span>
+          <span class="badge kenkyu">研究</span>
+        </div>
+        <h1>放物線と <span class="m">x</span> 軸で囲まれた部分の面積<br />3次関数のグラフと面積</h1>
+        <p class="ref">教科書 p.217〜218「研究」／ 期末考査に向けた自習ページ</p>
+      </header>
+
+      <!-- ===== スティッキー操作バー ===== -->
+      <div class="sticky-bar" role="region" aria-label="全体の進捗">
+        <span class="pb-label">全体の進捗</span>
+        <div class="pbar"><div class="fill" id="overallFill"></div></div>
+        <span class="pb-count" id="overallCount">0 / 0 ステップ</span>
+        <button type="button" class="btn small" id="resetAll">全部リセット</button>
+      </div>
+
+      <!-- ===== 使い方 ===== -->
+      <div class="howto">
+        <div class="howto-title">このページの使い方</div>
+        <p>答えは最初は隠れています。まず自分の手で考えてから、「次のヒント」ボタンを押してヒントを1つずつ開いていきましょう。</p>
+        <p>ヒントは「1つのヒント＝1つの具体的な作業」になっています。最後のステップまで進むと、緑のカードに解答が表示されます。図の斜線部分も、ステップに合わせて少しずつ現れます。</p>
+      </div>
+
+      <!-- ===== 研究1 ===== -->
+      <section class="unit" data-unit id="u1">
+        <div class="unit-head">
+          <h2><span class="sec-badge">研究1</span>放物線と <span class="m">x</span> 軸で囲まれた部分の面積</h2>
+          <div class="dots" aria-hidden="true"></div>
+        </div>
+        <div class="qbox">
+          <span class="q-label">考えよう</span>
+          <p>放物線 <span class="m">y = (x−α)(x−β)</span>（ただし <span class="m">α &lt; β</span>）と <span class="m">x</span> 軸で囲まれた部分の面積 <span class="m">S</span> を求めてみよう。</p>
+        </div>
+
+        <figure class="fig">
+          <svg id="fig1" viewBox="0 0 340 250" role="img" aria-label="放物線 y=(x−α)(x−β) のグラフ">
+            <defs>
+              <pattern id="hatchA1" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                <rect width="7" height="7" class="hatch-rect-a"></rect>
+                <line x1="0" y1="0" x2="0" y2="7" class="hatch-line-a"></line>
+              </pattern>
+            </defs>
+          </svg>
+          <figcaption>図1　<span class="m">y = (x−α)(x−β)</span> のグラフ</figcaption>
+        </figure>
+
+        <figure class="fig fade-el" data-min-step="2">
+          <svg id="fig2" viewBox="0 0 340 250" role="img" aria-label="平行移動した放物線 y=x(x−k) のグラフ">
+            <defs>
+              <pattern id="hatchA2" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                <rect width="7" height="7" class="hatch-rect-a"></rect>
+                <line x1="0" y1="0" x2="0" y2="7" class="hatch-line-a"></line>
+              </pattern>
+            </defs>
+          </svg>
+          <figcaption>図2　<span class="m">x</span> 軸方向に <span class="m">−α</span> だけ平行移動したグラフ <span class="m">y = x(x−k)</span>（<span class="m">k = β−α</span>）</figcaption>
+        </figure>
+
+        <div class="step hint">
+          <div class="step-tag">ヒント 1 ― 交点と切り取る長さ</div>
+          <p>まず <span class="m">x</span> 軸との交点を確認しよう。<span class="m">y = 0</span> とすると <span class="m">x = α, β</span> だから、放物線が <span class="m">x</span> 軸から切り取る部分の長さは <span class="m">β−α</span> である。</p>
+          <p>また <span class="m">α &lt; x &lt; β</span> では <span class="m">(x−α) &gt; 0</span>，<span class="m">(x−β) &lt; 0</span> なので <span class="m">y &lt; 0</span>、つまり放物線は <span class="m">x</span> 軸の<strong>下側</strong>にある（図1の斜線部分）。</p>
+        </div>
+
+        <div class="step hint">
+          <div class="step-tag">ヒント 2 ― 平行移動して簡単に</div>
+          <p>図形を平行移動しても面積は変わらない。グラフ全体を <span class="m">x</span> 軸方向に <span class="m">−α</span> だけ平行移動すると、交点は <span class="m">0</span> と <span class="m">β−α</span> に移り、放物線の方程式は <span class="m">y = x(x−(β−α))</span> となる（図2）。</p>
+          <p>つまり、左端が原点に来るようにずらして考えてよい。</p>
+        </div>
+
+        <div class="step hint">
+          <div class="step-tag">ヒント 3 ― <span class="m">β−α = k</span> とおいて積分で表す</div>
+          <p><span class="m">β−α = k</span> とおくと、放物線は <span class="m">y = x(x−k)</span> となる。区間 <span class="m">0 ≦ x ≦ k</span> では <span class="m">y ≦ 0</span> だから、面積は符号を変えて</p>
+          <p style="text-align:center"><span class="m">S = <span class="intg"><span class="sym">∫</span><span class="lims"><span>k</span><span>0</span></span></span>{−x(x−k)} dx = <span class="intg"><span class="sym">∫</span><span class="lims"><span>k</span><span>0</span></span></span>(−x<sup>2</sup>+kx) dx</span></p>
+          <p>と表される。</p>
+        </div>
+
+        <div class="step hint">
+          <div class="step-tag">ヒント 4 ― 積分を計算する</div>
+          <p><span class="m">−x<sup>2</sup>+kx</span> の不定積分は <span class="m">−<span class="frac"><span class="num">x<sup>3</sup></span><span class="den">3</span></span> + <span class="frac"><span class="num">k</span><span class="den">2</span></span>x<sup>2</sup></span> だから、</p>
+          <p style="text-align:center"><span class="m">S = <span class="eval">[ −<span class="frac"><span class="num">x<sup>3</sup></span><span class="den">3</span></span> + <span class="frac"><span class="num">k</span><span class="den">2</span></span>x<sup>2</sup> ]<sub>0</sub><sup>k</sup></span> = −<span class="frac"><span class="num">k<sup>3</sup></span><span class="den">3</span></span> + <span class="frac"><span class="num">k<sup>3</sup></span><span class="den">2</span></span> = <span class="frac"><span class="num">k<sup>3</sup></span><span class="den">6</span></span></span></p>
+          <p>となり、平行移動した図形の面積は <span class="m"><span class="frac"><span class="num">k<sup>3</sup></span><span class="den">6</span></span></span> と求められた。</p>
+        </div>
+
+        <div class="step answer">
+          <div class="step-tag">解答 ― 公式</div>
+          <p><span class="m">k = β−α</span> をもとに戻すと、次の公式が得られる。</p>
+          <span class="final"><span class="m">S = <span class="frac"><span class="num">(β−α)<sup>3</sup></span><span class="den">6</span></span></span></span>
+          <p>放物線と <span class="m">x</span> 軸で囲まれた部分の面積は、<strong><span class="m">x</span> 軸から切り取る長さの3乗の <span class="m"><span class="frac"><span class="num">1</span><span class="den">6</span></span></span></strong> である。交点さえ分かれば、積分を計算しなくても面積が出せる。</p>
+        </div>
+
+        <div class="unit-controls">
+          <button type="button" class="btn primary next-btn">次のヒント</button>
+          <button type="button" class="btn reset-btn">最初から</button>
+          <span class="done-msg">完了しました</span>
+        </div>
+      </section>
+
+      <!-- ===== 研究1 例1 ===== -->
+      <section class="unit" data-unit id="u2">
+        <div class="unit-head">
+          <h2><span class="sec-badge">研究1</span>例1　公式を使ってみよう</h2>
+          <div class="dots" aria-hidden="true"></div>
+        </div>
+        <div class="qbox">
+          <span class="q-label">例1</span>
+          <p>放物線 <span class="m">y = x<sup>2</sup>−4x+1</span> と <span class="m">x</span> 軸で囲まれた部分の面積を求めよ。</p>
+        </div>
+
+        <div class="step hint">
+          <div class="step-tag">ヒント 1 ― まず交点</div>
+          <p>公式 <span class="m">S = <span class="frac"><span class="num">(β−α)<sup>3</sup></span><span class="den">6</span></span></span> を使うには、<span class="m">x</span> 軸との交点の <span class="m">x</span> 座標が要る。方程式 <span class="m">x<sup>2</sup>−4x+1 = 0</span> を解こう。</p>
+        </div>
+
+        <div class="step hint">
+          <div class="step-tag">ヒント 2 ― 解の公式</div>
+          <p>解の公式を使うと</p>
+          <p style="text-align:center"><span class="m">x = <span class="frac"><span class="num">4 ± √(16−4)</span><span class="den">2</span></span> = <span class="frac"><span class="num">4 ± 2√3</span><span class="den">2</span></span> = 2 ± √3</span></p>
+          <p>よって <span class="m">α = 2−√3</span>，<span class="m">β = 2+√3</span> とおける。</p>
+        </div>
+
+        <div class="step hint">
+          <div class="step-tag">ヒント 3 ― 切り取る長さ <span class="m">β−α</span></div>
+          <p><span class="m">β−α = (2+√3) − (2−√3) = 2√3</span></p>
+          <p>定数部分が消えて、ルートの部分だけが残ることに注意しよう。</p>
+        </div>
+
+        <div class="step hint">
+          <div class="step-tag">ヒント 4 ― 3乗を計算する</div>
+          <p><span class="m">(β−α)<sup>3</sup> = (2√3)<sup>3</sup> = 2<sup>3</sup> · (√3)<sup>3</sup> = 8 · 3√3 = 24√3</span></p>
+          <p>（<span class="m">(√3)<sup>3</sup> = (√3)<sup>2</sup> · √3 = 3√3</span> です。）</p>
+        </div>
+
+        <div class="step answer">
+          <div class="step-tag">解答</div>
+          <p>公式に代入して</p>
+          <span class="final"><span class="m">S = <span class="frac"><span class="num">24√3</span><span class="den">6</span></span> = 4√3</span></span>
+        </div>
+
+        <div class="unit-controls">
+          <button type="button" class="btn primary next-btn">次のヒント</button>
+          <button type="button" class="btn reset-btn">最初から</button>
+          <span class="done-msg">完了しました</span>
+        </div>
+      </section>
+
+      <!-- ===== 研究2 導入 ===== -->
+      <section class="unit" id="u3">
+        <div class="unit-head">
+          <h2><span class="sec-badge">研究2</span>3次関数のグラフと面積</h2>
+        </div>
+        <div class="lead">
+          <p>2次関数については、研究1の公式のように面積を簡単に求める方法があった。では、3次関数のグラフと <span class="m">x</span> 軸で囲まれた部分の面積はどうだろうか。</p>
+          <p>3次関数についても、<strong>不定積分・定積分の計算は2次関数のときとまったく同じ方法でできる</strong>（<span class="m">x<sup>3</sup></span> の不定積分は <span class="m"><span class="frac"><span class="num">x<sup>4</sup></span><span class="den">4</span></span></span>）。だから、符号に気をつけて区間ごとに積分すれば、3次関数の場合も面積が求められる。</p>
+          <p>まず練習1で、3次関数の積分の計算に慣れよう。</p>
+        </div>
+      </section>
+
+      <!-- ===== 研究2 練習1（タブ式） ===== -->
+      <section class="unit" id="u4">
+        <div class="unit-head">
+          <h2><span class="sec-badge">研究2</span>練習1　3次関数の積分</h2>
+        </div>
+        <div class="tabs" role="tablist">
+          <button type="button" class="tab-btn active" data-tab="ren1a" role="tab">(1)</button>
+          <button type="button" class="tab-btn" data-tab="ren1b" role="tab">(2)</button>
+        </div>
+
+        <div class="tab-panel active" data-unit id="ren1a">
+          <div class="panel-head">
+            <div class="qbox" style="flex:1 1 260px; margin-top:6px;">
+              <span class="q-label">練習1 (1)</span>
+              <p>次の不定積分を求めよ。　<span class="m">∫(4x<sup>3</sup>+6x<sup>2</sup>+3) dx</span></p>
+            </div>
+            <div class="dots" aria-hidden="true"></div>
+          </div>
+
+          <div class="step hint">
+            <div class="step-tag">ヒント 1 ― 項ごとに積分</div>
+            <p>和の積分は、項ごとに分けて積分できる。<span class="m">x<sup>3</sup></span> の積分は <span class="m"><span class="frac"><span class="num">x<sup>4</sup></span><span class="den">4</span></span></span>、<span class="m">x<sup>2</sup></span> の積分は <span class="m"><span class="frac"><span class="num">x<sup>3</sup></span><span class="den">3</span></span></span>、定数 <span class="m">3</span> の積分は <span class="m">3x</span> である。</p>
+          </div>
+
+          <div class="step hint">
+            <div class="step-tag">ヒント 2 ― 係数を整理</div>
+            <p>係数を掛けると、<span class="m">4 · <span class="frac"><span class="num">x<sup>4</sup></span><span class="den">4</span></span> = x<sup>4</sup></span>、<span class="m">6 · <span class="frac"><span class="num">x<sup>3</sup></span><span class="den">3</span></span> = 2x<sup>3</sup></span> となる。分母と係数がちょうど約分できる形になっている。</p>
+          </div>
+
+          <div class="step answer">
+            <div class="step-tag">解答</div>
+            <span class="final"><span class="m">∫(4x<sup>3</sup>+6x<sup>2</sup>+3) dx = x<sup>4</sup>+2x<sup>3</sup>+3x+C</span></span>
+            <p>（<span class="m">C</span> は積分定数。不定積分では忘れずにつけよう。）</p>
+          </div>
+
+          <div class="unit-controls">
+            <button type="button" class="btn primary next-btn">次のヒント</button>
+            <button type="button" class="btn reset-btn">最初から</button>
+            <span class="done-msg">完了しました</span>
+          </div>
+        </div>
+
+        <div class="tab-panel" data-unit id="ren1b">
+          <div class="panel-head">
+            <div class="qbox" style="flex:1 1 260px; margin-top:6px;">
+              <span class="q-label">練習1 (2)</span>
+              <p>次の定積分を求めよ。　<span class="m"><span class="intg"><span class="sym">∫</span><span class="lims"><span>2</span><span>−1</span></span></span>(−x<sup>3</sup>+2x) dx</span></p>
+            </div>
+            <div class="dots" aria-hidden="true"></div>
+          </div>
+
+          <div class="step hint">
+            <div class="step-tag">ヒント 1 ― まず不定積分</div>
+            <p><span class="m">−x<sup>3</sup>+2x</span> の不定積分は <span class="m">−<span class="frac"><span class="num">x<sup>4</sup></span><span class="den">4</span></span> + x<sup>2</sup></span> である。定積分は「上端を代入した値 − 下端を代入した値」で計算する。</p>
+          </div>
+
+          <div class="step hint">
+            <div class="step-tag">ヒント 2 ― 上端と下端を代入</div>
+            <p>上端 <span class="m">x = 2</span> を代入すると <span class="m">−<span class="frac"><span class="num">16</span><span class="den">4</span></span> + 4 = 0</span>。</p>
+            <p>下端 <span class="m">x = −1</span> を代入すると <span class="m">−<span class="frac"><span class="num">1</span><span class="den">4</span></span> + 1 = <span class="frac"><span class="num">3</span><span class="den">4</span></span></span>。（偶数乗では <span class="m">(−1)<sup>4</sup> = 1</span>, <span class="m">(−1)<sup>2</sup> = 1</span> になることに注意。）</p>
+          </div>
+
+          <div class="step answer">
+            <div class="step-tag">解答</div>
+            <span class="final"><span class="m"><span class="intg"><span class="sym">∫</span><span class="lims"><span>2</span><span>−1</span></span></span>(−x<sup>3</sup>+2x) dx = 0 − <span class="frac"><span class="num">3</span><span class="den">4</span></span> = −<span class="frac"><span class="num">3</span><span class="den">4</span></span></span></span>
+            <p>定積分の値が負になったのは、この区間では <span class="m">x</span> 軸の下側の部分が上側の部分より大きいためである。<strong>定積分の値そのものは面積ではない</strong>ことに注意しよう（面積を聞かれたら符号をそろえる必要がある）。</p>
+          </div>
+
+          <div class="unit-controls">
+            <button type="button" class="btn primary next-btn">次のヒント</button>
+            <button type="button" class="btn reset-btn">最初から</button>
+            <span class="done-msg">完了しました</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 研究2 例1 ===== -->
+      <section class="unit" data-unit id="u5">
+        <div class="unit-head">
+          <h2><span class="sec-badge">研究2</span>例1　2つの部分の面積の和</h2>
+          <div class="dots" aria-hidden="true"></div>
+        </div>
+        <div class="qbox">
+          <span class="q-label">例1</span>
+          <p>曲線 <span class="m">y = x(x−1)(x−2)</span> と <span class="m">x</span> 軸で囲まれた2つの部分の面積の和を求めよ。</p>
+        </div>
+
+        <figure class="fig">
+          <svg id="fig3" viewBox="0 0 340 250" role="img" aria-label="曲線 y=x(x−1)(x−2) のグラフ">
+            <defs>
+              <pattern id="hatchA3" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                <rect width="7" height="7" class="hatch-rect-a"></rect>
+                <line x1="0" y1="0" x2="0" y2="7" class="hatch-line-a"></line>
+              </pattern>
+              <pattern id="hatchB3" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)">
+                <rect width="7" height="7" class="hatch-rect-b"></rect>
+                <line x1="0" y1="0" x2="0" y2="7" class="hatch-line-b"></line>
+              </pattern>
+            </defs>
+          </svg>
+          <figcaption>図3　曲線 <span class="m">y = x(x−1)(x−2)</span> のグラフ</figcaption>
+        </figure>
+
+        <div class="step hint">
+          <div class="step-tag">ヒント 1 ― 交点を確認</div>
+          <p><span class="m">y = 0</span> となるのは <span class="m">x = 0, 1, 2</span> のとき。曲線と <span class="m">x</span> 軸で囲まれた部分は、区間 <span class="m">[0, 1]</span> の部分と区間 <span class="m">[1, 2]</span> の部分の2つある（図3）。</p>
+        </div>
+
+        <div class="step hint">
+          <div class="step-tag">ヒント 2 ― 区間 [0, 1] の符号</div>
+          <p><span class="m">0 &lt; x &lt; 1</span> では、<span class="m">x &gt; 0</span>，<span class="m">x−1 &lt; 0</span>，<span class="m">x−2 &lt; 0</span> だから、積は<strong>正</strong>になる。つまり曲線は <span class="m">x</span> 軸の<strong>上側</strong>にある（図3の青い斜線部分）。</p>
+        </div>
+
+        <div class="step hint">
+          <div class="step-tag">ヒント 3 ― 区間 [1, 2] の符号</div>
+          <p><span class="m">1 &lt; x &lt; 2</span> では、<span class="m">x &gt; 0</span>，<span class="m">x−1 &gt; 0</span>，<span class="m">x−2 &lt; 0</span> だから、積は<strong>負</strong>になる。曲線は <span class="m">x</span> 軸の<strong>下側</strong>にある（図3の橙色の斜線部分）。</p>
+          <p>面積の和を求めるので、2つの区間を<strong>別々に</strong>計算し、下側の部分は符号を変えてから加える。</p>
+        </div>
+
+        <div class="step hint">
+          <div class="step-tag">ヒント 4 ― 展開して [0, 1] の面積</div>
+          <p>展開すると <span class="m">y = x<sup>3</sup>−3x<sup>2</sup>+2x</span> で、不定積分は <span class="m"><span class="frac"><span class="num">x<sup>4</sup></span><span class="den">4</span></span> − x<sup>3</sup> + x<sup>2</sup></span> である。</p>
+          <p>区間 <span class="m">[0, 1]</span> の部分は上側にあるので、そのまま積分して</p>
+          <p style="text-align:center"><span class="m"><span class="intg"><span class="sym">∫</span><span class="lims"><span>1</span><span>0</span></span></span>(x<sup>3</sup>−3x<sup>2</sup>+2x) dx = <span class="eval">[ <span class="frac"><span class="num">x<sup>4</sup></span><span class="den">4</span></span> − x<sup>3</sup> + x<sup>2</sup> ]<sub>0</sub><sup>1</sup></span> = <span class="frac"><span class="num">1</span><span class="den">4</span></span> − 1 + 1 = <span class="frac"><span class="num">1</span><span class="den">4</span></span></span></p>
+        </div>
+
+        <div class="step hint">
+          <div class="step-tag">ヒント 5 ― [1, 2] の面積</div>
+          <p>区間 <span class="m">[1, 2]</span> の部分は下側にあるので、積分した値の符号を変える。</p>
+          <p style="text-align:center"><span class="m">−<span class="intg"><span class="sym">∫</span><span class="lims"><span>2</span><span>1</span></span></span>(x<sup>3</sup>−3x<sup>2</sup>+2x) dx = −<span class="eval">[ <span class="frac"><span class="num">x<sup>4</sup></span><span class="den">4</span></span> − x<sup>3</sup> + x<sup>2</sup> ]<sub>1</sub><sup>2</sup></span> = −{(4−8+4) − <span class="frac"><span class="num">1</span><span class="den">4</span></span>} = <span class="frac"><span class="num">1</span><span class="den">4</span></span></span></p>
+        </div>
+
+        <div class="step answer">
+          <div class="step-tag">解答</div>
+          <p>2つの部分の面積の和は</p>
+          <span class="final"><span class="m"><span class="frac"><span class="num">1</span><span class="den">4</span></span> + <span class="frac"><span class="num">1</span><span class="den">4</span></span> = <span class="frac"><span class="num">1</span><span class="den">2</span></span></span></span>
+          <p>2つの部分の面積が等しくなったのは偶然ではなく、この曲線が点 <span class="m">(1, 0)</span> に関して点対称だからである。</p>
+        </div>
+
+        <div class="unit-controls">
+          <button type="button" class="btn primary next-btn">次のヒント</button>
+          <button type="button" class="btn reset-btn">最初から</button>
+          <span class="done-msg">完了しました</span>
+        </div>
+      </section>
+
+      <!-- ===== 研究2 練習2 ===== -->
+      <section class="unit" data-unit id="u6">
+        <div class="unit-head">
+          <h2><span class="sec-badge">研究2</span>練習2　自分で解いてみよう</h2>
+          <div class="dots" aria-hidden="true"></div>
+        </div>
+        <div class="qbox">
+          <span class="q-label">練習2</span>
+          <p>曲線 <span class="m">y = x(x+1)(x−2)</span> と <span class="m">x</span> 軸で囲まれた2つの部分の面積の和を求めよ。</p>
+        </div>
+
+        <div class="step hint">
+          <div class="step-tag">ヒント 1 ― 交点を確認</div>
+          <p><span class="m">y = 0</span> となるのは <span class="m">x = −1, 0, 2</span> のとき。囲まれた部分は、区間 <span class="m">[−1, 0]</span> の部分と区間 <span class="m">[0, 2]</span> の部分の2つである。</p>
+        </div>
+
+        <div class="step hint">
+          <div class="step-tag">ヒント 2 ― 符号を調べる</div>
+          <p><span class="m">−1 &lt; x &lt; 0</span> では、<span class="m">x &lt; 0</span>，<span class="m">x+1 &gt; 0</span>，<span class="m">x−2 &lt; 0</span> だから積は<strong>正</strong>で、曲線は <span class="m">x</span> 軸の<strong>上側</strong>にある。</p>
+          <p><span class="m">0 &lt; x &lt; 2</span> では、<span class="m">x &gt; 0</span>，<span class="m">x+1 &gt; 0</span>，<span class="m">x−2 &lt; 0</span> だから積は<strong>負</strong>で、曲線は <span class="m">x</span> 軸の<strong>下側</strong>にある。</p>
+        </div>
+
+        <div class="step hint">
+          <div class="step-tag">ヒント 3 ― 展開と不定積分</div>
+          <p>展開すると <span class="m">y = x<sup>3</sup>−x<sup>2</sup>−2x</span>。不定積分は</p>
+          <p style="text-align:center"><span class="m"><span class="frac"><span class="num">x<sup>4</sup></span><span class="den">4</span></span> − <span class="frac"><span class="num">x<sup>3</sup></span><span class="den">3</span></span> − x<sup>2</sup></span></p>
+          <p>である（<span class="m">x<sup>2</sup></span> の係数が <span class="m">−1</span> なので、積分では <span class="m">−<span class="frac"><span class="num">x<sup>3</sup></span><span class="den">3</span></span></span> になる点に注意）。</p>
+        </div>
+
+        <div class="step hint">
+          <div class="step-tag">ヒント 4 ― [−1, 0] の部分の面積</div>
+          <p>この区間では曲線は上側にあるので、そのまま積分する。<span class="m">x = −1</span> を代入した値は</p>
+          <p style="text-align:center"><span class="m"><span class="frac"><span class="num">1</span><span class="den">4</span></span> + <span class="frac"><span class="num">1</span><span class="den">3</span></span> − 1 = −<span class="frac"><span class="num">5</span><span class="den">12</span></span></span></p>
+          <p>だから、面積は <span class="m">0 − (−<span class="frac"><span class="num">5</span><span class="den">12</span></span>) = <span class="frac"><span class="num">5</span><span class="den">12</span></span></span> である。</p>
+        </div>
+
+        <div class="step hint">
+          <div class="step-tag">ヒント 5 ― [0, 2] の部分の面積</div>
+          <p>この区間では曲線は下側にあるので、符号を変える。<span class="m">x = 2</span> を代入した値は <span class="m">4 − <span class="frac"><span class="num">8</span><span class="den">3</span></span> − 4 = −<span class="frac"><span class="num">8</span><span class="den">3</span></span></span> だから、面積は</p>
+          <p style="text-align:center"><span class="m">−<span class="eval">[ <span class="frac"><span class="num">x<sup>4</sup></span><span class="den">4</span></span> − <span class="frac"><span class="num">x<sup>3</sup></span><span class="den">3</span></span> − x<sup>2</sup> ]<sub>0</sub><sup>2</sup></span> = <span class="frac"><span class="num">8</span><span class="den">3</span></span></span></p>
+        </div>
+
+        <div class="step answer">
+          <div class="step-tag">解答</div>
+          <p>2つの部分の面積の和は</p>
+          <span class="final"><span class="m"><span class="frac"><span class="num">5</span><span class="den">12</span></span> + <span class="frac"><span class="num">8</span><span class="den">3</span></span> = <span class="frac"><span class="num">5</span><span class="den">12</span></span> + <span class="frac"><span class="num">32</span><span class="den">12</span></span> = <span class="frac"><span class="num">37</span><span class="den">12</span></span></span></span>
+        </div>
+
+        <div class="unit-controls">
+          <button type="button" class="btn primary next-btn">次のヒント</button>
+          <button type="button" class="btn reset-btn">最初から</button>
+          <span class="done-msg">完了しました</span>
+        </div>
+      </section>
+
+      <!-- ===== フッター ===== -->
+      <nav class="foot-nav">
+        <a href="calc.html">第6章 微分法と積分法 トップへ<span class="sub">章のページ一覧に戻る</span></a>
+        <a href="index.html">Nanryo mathematics portal へ<span class="sub">ポータルのトップに戻る</span></a>
+      </nav>
+
+    </div>
+
+    <script>
+      (function () {
+        "use strict";
+
+        /* ---------- SVG図の生成 ---------- */
+        var NS = "http://www.w3.org/2000/svg";
+        function el(name, attrs) {
+          var e = document.createElementNS(NS, name);
+          for (var k in attrs) e.setAttribute(k, attrs[k]);
+          return e;
+        }
+        function buildFigure(cfg) {
+          var svg = document.getElementById(cfg.id);
+          if (!svg) return;
+          var W = 340, H = 250;
+          var X = function (x) { return (x - cfg.xMin) / (cfg.xMax - cfg.xMin) * W; };
+          var Y = function (y) { return H - (y - cfg.yMin) / (cfg.yMax - cfg.yMin) * H; };
+
+          /* 斜線部分（曲線とx軸の間） */
+          cfg.regions.forEach(function (r) {
+            var d = "", N = 60, i, x;
+            for (i = 0; i <= N; i++) {
+              x = r.a + (r.b - r.a) * i / N;
+              d += (i === 0 ? "M" : "L") + X(x).toFixed(1) + "," + Y(cfg.fn(x)).toFixed(1) + " ";
+            }
+            d += "L" + X(r.b).toFixed(1) + "," + Y(0).toFixed(1) + " L" + X(r.a).toFixed(1) + "," + Y(0).toFixed(1) + " Z";
+            var p = el("path", { d: d, fill: "url(#" + r.pat + ")" });
+            p.classList.add("fade-el");
+            p.setAttribute("data-min-step", r.step);
+            svg.appendChild(p);
+          });
+
+          /* 軸 */
+          var xAxis = el("line", { x1: 4, y1: Y(0), x2: W - 6, y2: Y(0) });
+          xAxis.classList.add("svg-axis"); svg.appendChild(xAxis);
+          var xHead = el("path", { d: "M" + (W - 6) + "," + Y(0) + " l-8,-3.5 v7 Z", fill: "var(--ink-sub)" });
+          svg.appendChild(xHead);
+          if (cfg.xMin < 0) {
+            var yAxis = el("line", { x1: X(0), y1: H - 4, x2: X(0), y2: 8 });
+            yAxis.classList.add("svg-axis"); svg.appendChild(yAxis);
+            var yHead = el("path", { d: "M" + X(0) + ",8 l-3.5,8 h7 Z", fill: "var(--ink-sub)" });
+            svg.appendChild(yHead);
+            var yLab = el("text", { x: X(0) + 8, y: 20 });
+            yLab.classList.add("svg-label"); yLab.textContent = "y"; svg.appendChild(yLab);
+          }
+          var xLab = el("text", { x: W - 16, y: Y(0) - 8 });
+          xLab.classList.add("svg-label"); xLab.textContent = "x"; svg.appendChild(xLab);
+          var oLab = el("text", { x: X(0) - 16, y: Y(0) + 18 });
+          oLab.classList.add("svg-label"); oLab.textContent = "O"; svg.appendChild(oLab);
+
+          /* 目盛り */
+          (cfg.ticks || []).forEach(function (t) {
+            var tick = el("line", { x1: X(t), y1: Y(0) - 4, x2: X(t), y2: Y(0) + 4 });
+            tick.classList.add("svg-tick"); svg.appendChild(tick);
+          });
+
+          /* 曲線 */
+          var d = "", N = 140, i, x, y;
+          for (i = 0; i <= N; i++) {
+            x = cfg.xMin + (cfg.xMax - cfg.xMin) * i / N;
+            y = cfg.fn(x);
+            if (y > cfg.yMax) y = cfg.yMax;
+            if (y < cfg.yMin) y = cfg.yMin;
+            d += (i === 0 ? "M" : "L") + X(x).toFixed(1) + "," + Y(y).toFixed(1) + " ";
+          }
+          var curve = el("path", { d: d });
+          curve.classList.add("svg-curve"); svg.appendChild(curve);
+
+          /* 交点とラベル */
+          (cfg.points || []).forEach(function (pt) {
+            var g = el("g", {});
+            var c = el("circle", { cx: X(pt.x), cy: Y(0), r: 4 });
+            c.classList.add("svg-point"); g.appendChild(c);
+            var t = el("text", { x: X(pt.x), y: Y(0) + 22, "text-anchor": "middle" });
+            t.classList.add("svg-label"); t.textContent = pt.label; g.appendChild(t);
+            if (pt.step) { g.classList.add("fade-el"); g.setAttribute("data-min-step", pt.step); }
+            svg.appendChild(g);
+          });
+
+          /* 曲線の式ラベル */
+          if (cfg.curveLabel) {
+            var cl = el("text", { x: X(cfg.curveLabel.x), y: Y(cfg.curveLabel.y), "text-anchor": "middle" });
+            cl.classList.add("svg-label"); cl.textContent = cfg.curveLabel.text; svg.appendChild(cl);
+          }
+        }
+
+        buildFigure({
+          id: "fig1",
+          fn: function (x) { return (x - 1) * (x - 4); },
+          xMin: -0.6, xMax: 5.6, yMin: -3.4, yMax: 4.6,
+          ticks: [1, 2, 3, 4, 5],
+          regions: [{ a: 1, b: 4, step: 1, pat: "hatchA1" }],
+          points: [{ x: 1, label: "α", step: 1 }, { x: 4, label: "β", step: 1 }],
+          curveLabel: { x: 4.15, y: 3.7, text: "y=(x−α)(x−β)" }
+        });
+        buildFigure({
+          id: "fig2",
+          fn: function (x) { return x * (x - 3); },
+          xMin: -1.7, xMax: 4.5, yMin: -3.4, yMax: 4.6,
+          ticks: [1, 2, 3, 4],
+          regions: [{ a: 0, b: 3, step: 2, pat: "hatchA2" }],
+          points: [{ x: 3, label: "k", step: 2 }],
+          curveLabel: { x: 3.6, y: -1.8, text: "y=x(x−k)" }
+        });
+        buildFigure({
+          id: "fig3",
+          fn: function (x) { return x * (x - 1) * (x - 2); },
+          xMin: -0.7, xMax: 2.7, yMin: -0.85, yMax: 0.85,
+          ticks: [1, 2],
+          regions: [
+            { a: 0, b: 1, step: 2, pat: "hatchA3" },
+            { a: 1, b: 2, step: 3, pat: "hatchB3" }
+          ],
+          points: [
+            { x: 0, label: "0", step: 1 },
+            { x: 1, label: "1", step: 1 },
+            { x: 2, label: "2", step: 1 }
+          ],
+          curveLabel: { x: 1.55, y: -0.68, text: "y=x(x−1)(x−2)" }
+        });
+
+        /* ---------- ステップ式ヒント ---------- */
+        var units = Array.prototype.slice.call(document.querySelectorAll("[data-unit]"));
+        var state = new Map();
+
+        function totalSteps() {
+          var t = 0;
+          units.forEach(function (u) { t += u.querySelectorAll(".step").length; });
+          return t;
+        }
+        function doneSteps() {
+          var t = 0;
+          state.forEach(function (v) { t += v; });
+          return t;
+        }
+        function updateOverall() {
+          var total = totalSteps(), done = doneSteps();
+          document.getElementById("overallCount").textContent = done + " / " + total + " ステップ";
+          document.getElementById("overallFill").style.width = (total ? (done / total * 100) : 0) + "%";
+        }
+
+        function refresh(unit) {
+          var cur = state.get(unit) || 0;
+          var steps = unit.querySelectorAll(".step");
+          steps.forEach(function (s, i) {
+            s.classList.toggle("on", i < cur);
+          });
+          var dotsBox = unit.querySelector(".dots");
+          if (dotsBox) {
+            var dots = dotsBox.children;
+            for (var i = 0; i < dots.length; i++) dots[i].classList.toggle("on", i < cur);
+          }
+          unit.querySelectorAll("[data-min-step]").forEach(function (elm) {
+            elm.classList.toggle("on", cur >= parseInt(elm.getAttribute("data-min-step"), 10));
+          });
+          unit.classList.toggle("done", cur >= steps.length);
+          var btn = unit.querySelector(".next-btn");
+          if (btn) {
+            if (cur >= steps.length) { btn.disabled = true; btn.textContent = "完了"; }
+            else if (cur === steps.length - 1) { btn.disabled = false; btn.textContent = "解答を見る"; }
+            else { btn.disabled = false; btn.textContent = "次のヒント"; }
+          }
+          updateOverall();
+        }
+
+        units.forEach(function (unit) {
+          state.set(unit, 0);
+          var steps = unit.querySelectorAll(".step");
+          var dotsBox = unit.querySelector(".dots");
+          if (dotsBox) {
+            steps.forEach(function (s, i) {
+              var d = document.createElement("span");
+              d.className = "dot" + (s.classList.contains("answer") ? " ans" : "");
+              dotsBox.appendChild(d);
+            });
+          }
+          var nextBtn = unit.querySelector(".next-btn");
+          if (nextBtn) {
+            nextBtn.addEventListener("click", function () {
+              var cur = state.get(unit) || 0;
+              if (cur < steps.length) {
+                state.set(unit, cur + 1);
+                refresh(unit);
+                var shown = steps[cur];
+                if (shown && shown.scrollIntoView) {
+                  shown.scrollIntoView({ block: "nearest", behavior: "smooth" });
+                }
+              }
+            });
+          }
+          var resetBtn = unit.querySelector(".reset-btn");
+          if (resetBtn) {
+            resetBtn.addEventListener("click", function () {
+              state.set(unit, 0);
+              refresh(unit);
+            });
+          }
+          refresh(unit);
+        });
+
+        document.getElementById("resetAll").addEventListener("click", function () {
+          units.forEach(function (u) { state.set(u, 0); refresh(u); });
+        });
+
+        /* ---------- タブ（練習1） ---------- */
+        document.querySelectorAll(".tab-btn").forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            document.querySelectorAll(".tab-btn").forEach(function (b) { b.classList.toggle("active", b === btn); });
+            document.querySelectorAll(".tab-panel").forEach(function (p) {
+              p.classList.toggle("active", p.id === btn.getAttribute("data-tab"));
+            });
+          });
+        });
+      })();
+    </script>
+  </body>
+</html>

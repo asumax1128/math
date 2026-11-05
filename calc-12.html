@@ -1,0 +1,711 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:," />
+    <title>数学II 6 不定積分（1）原始関数と不定積分 自習ページ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&family=STIX+Two+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --bg: #f2f5f8;
+        --surface: #ffffff;
+        --surface-2: #eef2f6;
+        --ink: #1d2735;
+        --ink-soft: #55636f;
+        --line: #d5dde5;
+        --accent: #1663b8;
+        --accent-soft: #dcebfb;
+        --accent-ink: #ffffff;
+        --hint-bg: #fff6d6;
+        --hint-line: #dfc25e;
+        --hint-tag: #8a6d00;
+        --ans-bg: #e4f5ea;
+        --ans-line: #4da26a;
+        --ans-tag: #1e6b3c;
+        --explain-tag: #1663b8;
+        --prob-tag: #b3541e;
+        --ng: #c0392b;
+        --curve1: #1663b8;
+        --curve2: #d2691e;
+        --curve3: #2e8b57;
+        --shadow: 0 1px 3px rgba(20, 35, 55, .10);
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #10151c;
+          --surface: #1a212c;
+          --surface-2: #232c39;
+          --ink: #e9eef5;
+          --ink-soft: #a5b2c1;
+          --line: #35424f;
+          --accent: #62a5ec;
+          --accent-soft: #22354d;
+          --accent-ink: #0d1520;
+          --hint-bg: #38320f;
+          --hint-line: #8a7a2e;
+          --hint-tag: #ecd27a;
+          --ans-bg: #15301f;
+          --ans-line: #3f7d55;
+          --ans-tag: #7ed79b;
+          --explain-tag: #62a5ec;
+          --prob-tag: #eda26b;
+          --ng: #ef8a7d;
+          --curve1: #62a5ec;
+          --curve2: #eda26b;
+          --curve3: #6fce97;
+          --shadow: 0 1px 3px rgba(0, 0, 0, .45);
+        }
+      }
+      * { box-sizing: border-box; }
+      html { -webkit-text-size-adjust: 100%; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
+        line-height: 1.75;
+        font-size: 16px;
+        padding-bottom: 92px;
+      }
+      .wrap { max-width: 760px; margin: 0 auto; padding: 20px 16px 8px; }
+
+      /* ---------- doc head ---------- */
+      .doc-head { display: flex; gap: 16px; align-items: flex-start; margin: 6px 0 18px; }
+      .badge {
+        flex: 0 0 auto;
+        min-width: 76px; height: 76px;
+        padding: 6px 10px;
+        background: var(--accent);
+        color: var(--accent-ink);
+        border-radius: 14px;
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        line-height: 1.15;
+        box-shadow: var(--shadow);
+      }
+      .badge .b-num { font-family: "STIX Two Math", "STIX Two Text", serif; font-size: 34px; font-weight: 600; }
+      .badge .b-sub { font-size: 13px; letter-spacing: .08em; }
+      .doc-head h1 { font-size: 24px; margin: 2px 0 4px; line-height: 1.4; }
+      .doc-head .meta { color: var(--ink-soft); font-size: 14px; margin: 0; }
+
+      /* ---------- usage box ---------- */
+      .usage {
+        background: var(--surface-2);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 14px 18px 12px;
+        margin-bottom: 22px;
+      }
+      .usage h2 { font-size: 16px; margin: 0 0 6px; }
+      .usage ol { margin: 0; padding-left: 1.4em; }
+      .usage li { margin: 2px 0; }
+
+      /* ---------- section cards ---------- */
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        box-shadow: var(--shadow);
+        padding: 20px 20px 16px;
+        margin-bottom: 20px;
+      }
+      .card-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+      .tag {
+        font-size: 12.5px; font-weight: 700; letter-spacing: .06em;
+        padding: 2px 10px; border-radius: 999px; color: #fff;
+      }
+      .tag.explain { background: var(--explain-tag); }
+      .tag.example { background: var(--accent); }
+      .tag.practice { background: var(--prob-tag); }
+      @media (prefers-color-scheme: dark) {
+        .tag.explain, .tag.example, .tag.practice { color: #10151c; }
+      }
+      .card-head h2 { font-size: 19px; margin: 0; line-height: 1.45; }
+      .dots { display: flex; gap: 6px; margin-left: auto; align-items: center; }
+      .dot { width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--accent); opacity: .45; }
+      .dot.on { background: var(--accent); opacity: 1; }
+
+      .step { display: none; padding: 10px 0 2px; }
+      .step.on { display: block; animation: fadein .25s ease; }
+      @keyframes fadein { from { opacity: 0; } to { opacity: 1; } }
+      @media (prefers-reduced-motion: reduce) {
+        .step.on { animation: none; }
+      }
+      .step + .step { border-top: 1px dashed var(--line); margin-top: 10px; }
+      .step p { margin: 6px 0; }
+      .step-label { font-size: 13px; font-weight: 700; letter-spacing: .05em; margin: 0 0 4px; }
+      .hint { background: var(--hint-bg); border: 1px solid var(--hint-line); border-radius: 10px; padding: 12px 16px 8px; margin-top: 10px; }
+      .hint .step-label { color: var(--hint-tag); }
+      .answer { background: var(--ans-bg); border: 1px solid var(--ans-line); border-radius: 10px; padding: 12px 16px 8px; margin-top: 10px; }
+      .answer .step-label { color: var(--ans-tag); }
+
+      .next-btn {
+        margin-top: 14px;
+        font: inherit; font-weight: 700; font-size: 15px;
+        color: var(--accent); background: var(--accent-soft);
+        border: 1.5px solid var(--accent); border-radius: 999px;
+        padding: 8px 22px; cursor: pointer;
+      }
+      .next-btn:disabled { opacity: .45; cursor: default; }
+      .done-note { color: var(--ans-tag); font-weight: 700; font-size: 14px; margin-left: 10px; }
+
+      /* ---------- math ---------- */
+      .m { font-family: "STIX Two Math", "STIX Two Text", serif; font-size: 1.08em; white-space: nowrap; }
+      .m sup, .m sub { font-size: .68em; }
+      .formula {
+        font-family: "STIX Two Math", "STIX Two Text", serif;
+        font-size: 1.25em; text-align: center;
+        margin: 12px 0; padding: 10px 8px;
+        background: var(--surface-2); border-radius: 10px;
+        overflow-x: auto; white-space: nowrap;
+      }
+      .answer .formula, .hint .formula { background: rgba(127, 127, 127, .10); }
+      .frac { display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle; margin: 0 .14em; line-height: 1.18; font-size: .84em; }
+      .frac > .num { border-bottom: .055em solid currentColor; padding: 0 .2em .05em; }
+      .frac > .den { padding: .05em .2em 0; }
+      .check { color: var(--ans-tag); font-weight: 700; }
+
+      /* ---------- choices (練習23) ---------- */
+      .choices { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 12px 0 4px; }
+      @media (max-width: 480px) { .choices { grid-template-columns: 1fr; } }
+      .choice {
+        font: inherit; text-align: left; cursor: pointer;
+        background: var(--surface); color: var(--ink);
+        border: 2px solid var(--line); border-radius: 10px;
+        padding: 10px 14px; display: flex; align-items: baseline; gap: 10px;
+      }
+      .choice .cno { font-weight: 700; color: var(--ink-soft); }
+      .choice.sel { border-color: var(--accent); background: var(--accent-soft); }
+      .choice.ok { border-color: var(--ans-line); background: var(--ans-bg); }
+      .choice.ng { border-color: var(--ng); }
+      .choice .mark { margin-left: auto; font-weight: 700; }
+      .choice.ok .mark { color: var(--ans-tag); }
+      .choice.ng .mark { color: var(--ng); }
+      .verdict { font-weight: 700; margin-top: 8px; }
+
+      /* ---------- figures ---------- */
+      figure { margin: 12px 0 6px; text-align: center; }
+      figure svg { max-width: 100%; height: auto; }
+      figcaption { font-size: 13.5px; color: var(--ink-soft); margin-top: 4px; }
+      .svg-axis { stroke: var(--ink-soft); stroke-width: 1.4; }
+      .svg-grid { stroke: var(--line); stroke-width: 1; }
+      .svg-txt { fill: var(--ink); font-family: "STIX Two Math", "STIX Two Text", serif; font-size: 14px; }
+      .svg-txt-jp { fill: var(--ink); font-size: 13px; }
+      .curve1 { stroke: var(--curve1); }
+      .curve2 { stroke: var(--curve2); }
+      .curve3 { stroke: var(--curve3); }
+      .box-node { fill: var(--surface-2); stroke: var(--accent); stroke-width: 1.6; }
+      .arrow-line { stroke: var(--accent); stroke-width: 2; fill: none; }
+
+      /* ---------- footer ---------- */
+      .foot-nav { display: flex; gap: 12px; flex-wrap: wrap; margin: 26px 0 10px; }
+      .foot-nav a {
+        flex: 1 1 200px; text-align: center; text-decoration: none;
+        font-weight: 700; color: var(--accent);
+        border: 1.5px solid var(--accent); border-radius: 10px;
+        padding: 12px 10px; background: var(--surface);
+      }
+
+      /* ---------- sticky control bar ---------- */
+      .ctrl {
+        position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
+        background: var(--surface); border-top: 1px solid var(--line);
+        padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+        box-shadow: 0 -2px 8px rgba(0, 0, 0, .08);
+      }
+      .ctrl-inner { max-width: 760px; margin: 0 auto; display: flex; align-items: center; gap: 14px; }
+      .ctrl-progress { flex: 1 1 auto; min-width: 0; }
+      .ctrl-progress .p-label { font-size: 12.5px; color: var(--ink-soft); margin: 0 0 4px; white-space: nowrap; }
+      .p-track { height: 8px; background: var(--surface-2); border: 1px solid var(--line); border-radius: 999px; overflow: hidden; }
+      .p-fill { height: 100%; width: 0; background: var(--accent); border-radius: 999px; transition: width .3s ease; }
+      @media (prefers-reduced-motion: reduce) { .p-fill { transition: none; } }
+      .ctrl button {
+        font: inherit; font-weight: 700; font-size: 14.5px; cursor: pointer;
+        border-radius: 999px; padding: 8px 18px; white-space: nowrap;
+      }
+      .ctrl .go { color: var(--accent-ink); background: var(--accent); border: 1.5px solid var(--accent); }
+      .ctrl .go:disabled { opacity: .45; cursor: default; }
+      .ctrl .reset { color: var(--ink-soft); background: transparent; border: 1.5px solid var(--line); }
+      @media (max-width: 560px) {
+        body { padding-bottom: 128px; }
+        .ctrl-inner { flex-wrap: wrap; gap: 8px 10px; }
+        .ctrl-progress { flex: 1 1 100%; }
+        .ctrl .reset { margin-left: auto; }
+        .ctrl button { padding: 7px 14px; font-size: 14px; }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="wrap">
+
+      <div class="doc-head">
+        <div class="badge" aria-hidden="true">
+          <span class="b-num">6</span>
+          <span class="b-sub">（1）</span>
+        </div>
+        <div>
+          <h1>不定積分（1）　原始関数と不定積分</h1>
+          <p class="meta">数学II　第6章／教科書 p.202〜203</p>
+        </div>
+      </div>
+
+      <div class="usage">
+        <h2>このページの使い方</h2>
+        <ol>
+          <li>まず、答えを見ずに自分で考えてみよう。</li>
+          <li>「次へ」のボタンで、ヒントや説明を<strong>1つずつ</strong>開いていこう。</li>
+          <li>答え（解答）は<strong>最後のステップ</strong>でだけ表示されます。</li>
+        </ol>
+      </div>
+
+      <!-- ================= 解説A ================= -->
+      <section class="card" data-sec data-kind="explain">
+        <div class="card-head">
+          <span class="tag explain">解説</span>
+          <h2>導関数と不定積分 ― 微分の「逆」を考える</h2>
+          <div class="dots" data-dots aria-hidden="true"></div>
+        </div>
+
+        <div class="step on">
+          <p>これまでは、関数が与えられたときに、その<strong>導関数</strong>を求める計算（微分）をしてきました。</p>
+          <p>たとえば、関数 <span class="m">x<sup>2</sup></span> を微分すると</p>
+          <p class="formula">(x<sup>2</sup>)′ = 2x</p>
+          <p>となります。ここでは発想を逆にして、<strong>「微分すると <span class="m">2x</span> になる関数は何か」</strong>を考えます。</p>
+        </div>
+
+        <div class="step">
+          <p><span class="m">x<sup>2</sup></span> を微分すると <span class="m">2x</span> になるので、<span class="m">x<sup>2</sup></span> は「微分すると <span class="m">2x</span> になる関数」の1つです。</p>
+          <p>このように、関数 <span class="m">f(x)</span> に対して、<strong>微分すると <span class="m">f(x)</span> になる関数</strong>を、<span class="m">f(x)</span> の<strong>原始関数</strong>といいます。</p>
+          <p class="formula">x<sup>2</sup> は 2x の原始関数である</p>
+        </div>
+
+        <div class="step">
+          <p>原始関数は <span class="m">x<sup>2</sup></span> だけではありません。<span class="m">x<sup>2</sup> + 3</span> や <span class="m">x<sup>2</sup> − 5</span> を微分してみると、</p>
+          <p class="formula">(x<sup>2</sup> + 3)′ = 2x,　　(x<sup>2</sup> − 5)′ = 2x</p>
+          <p>定数の部分は微分すると 0 になって消えるので、どちらも <span class="m">2x</span> の原始関数です。<strong>違いは定数の部分だけ</strong>です。</p>
+          <figure>
+            <svg viewBox="0 0 320 215" role="img" aria-label="yイコールxの2乗、yイコールxの2乗プラス3、yイコールxの2乗マイナス5の3本の放物線。形は同じで上下にずれている">
+              <line class="svg-grid" x1="40" y1="123" x2="280" y2="123" stroke-dasharray="0" opacity="0"/>
+              <line class="svg-axis" x1="14" y1="123" x2="308" y2="123" />
+              <polygon points="308,123 300,119 300,127" fill="var(--ink-soft)" />
+              <line class="svg-axis" x1="160" y1="208" x2="160" y2="10" />
+              <polygon points="160,10 156,18 164,18" fill="var(--ink-soft)" />
+              <polyline class="curve2" fill="none" stroke-width="2.2" points="52,9.8 60,21.3 80,46 100,65.3 120,79 140,87.3 160,90 180,87.3 200,79 220,65.3 240,46 260,21.3 268,9.8" />
+              <polyline class="curve1" fill="none" stroke-width="2.2" points="40,24 60,54.3 80,79 100,98.3 120,112 140,120.3 160,123 180,120.3 200,112 220,98.3 240,79 260,54.3 280,24" />
+              <polyline class="curve3" fill="none" stroke-width="2.2" points="40,79 60,109.3 80,134 100,153.3 120,167 140,175.3 160,178 180,175.3 200,167 220,153.3 240,134 260,109.3 280,79" />
+              <text class="svg-txt" x="298" y="114">x</text>
+              <text class="svg-txt" x="168" y="22">y</text>
+              <text class="svg-txt" x="146" y="140">O</text>
+              <line class="curve2" stroke-width="3" x1="14" y1="204" x2="34" y2="204" />
+              <text class="svg-txt" x="39" y="209" font-size="12.5">y = x² + 3</text>
+              <line class="curve1" stroke-width="3" x1="128" y1="204" x2="148" y2="204" />
+              <text class="svg-txt" x="153" y="209" font-size="12.5">y = x²</text>
+              <line class="curve3" stroke-width="3" x1="212" y1="204" x2="232" y2="204" />
+              <text class="svg-txt" x="237" y="209" font-size="12.5">y = x² − 5</text>
+            </svg>
+            <figcaption>3本の放物線は形が同じで、上下にずれているだけ（定数の違い）</figcaption>
+          </figure>
+        </div>
+
+        <div class="step">
+          <p>一般に、<span class="m">F(x)</span> が <span class="m">f(x)</span> の原始関数の1つなら、<span class="m">F(x)</span> にどんな定数を加えたものも原始関数になります。まとめて</p>
+          <p class="formula">F(x) + C　（C は定数）</p>
+          <p>と書きます。この <span class="m">C</span> を<strong>積分定数</strong>といいます。</p>
+        </div>
+
+        <div class="step answer">
+          <p class="step-label">まとめ ― 不定積分の記号</p>
+          <p><span class="m">f(x)</span> の原始関数全体を <span class="m">f(x)</span> の<strong>不定積分</strong>といい、記号で</p>
+          <p class="formula">∫ f(x) dx = F(x) + C</p>
+          <p>と表します。不定積分を求めることを、<span class="m">f(x)</span> を<strong>積分する</strong>といいます。</p>
+          <p>たとえば <span class="m">2x</span> を積分すると、<span class="m">∫ 2x dx = x<sup>2</sup> + C</span> となります。</p>
+        </div>
+
+        <button class="next-btn" data-next type="button">次へ</button>
+      </section>
+
+      <!-- ================= 例11 ================= -->
+      <section class="card" data-sec data-kind="example">
+        <div class="card-head">
+          <span class="tag example">例11</span>
+          <h2>2x の原始関数</h2>
+          <div class="dots" data-dots aria-hidden="true"></div>
+        </div>
+
+        <div class="step on">
+          <p>関数 <span class="m">2x</span> の原始関数には、どのようなものがあるでしょうか。上の解説と結びつけて考えてみましょう。</p>
+        </div>
+
+        <div class="step hint">
+          <p class="step-label">ヒント</p>
+          <p>原始関数かどうかは、<strong>微分して元に戻るか</strong>で確かめられます。<span class="m">(x<sup>2</sup>)′ = 2x</span> でしたね。また、定数を加えても微分の結果は変わりません。</p>
+        </div>
+
+        <div class="step answer">
+          <p class="step-label">解答</p>
+          <p><span class="m">x<sup>2</sup></span>、<span class="m">x<sup>2</sup> + 3</span>、<span class="m">x<sup>2</sup> − 5</span> などはいずれも <span class="m">2x</span> の原始関数です。</p>
+          <p>これらをまとめて、<span class="m">2x</span> の原始関数は</p>
+          <p class="formula">x<sup>2</sup> + C　（C は積分定数）</p>
+          <p>と表されます。</p>
+        </div>
+
+        <button class="next-btn" data-next type="button">次へ</button>
+      </section>
+
+      <!-- ================= 練習23 ================= -->
+      <section class="card" data-sec data-kind="practice" id="sec-r23">
+        <div class="card-head">
+          <span class="tag practice">練習23</span>
+          <h2>3x² の原始関数を選ぼう</h2>
+          <div class="dots" data-dots aria-hidden="true"></div>
+        </div>
+
+        <div class="step on">
+          <p>次の中から、<span class="m">3x<sup>2</sup></span> の原始関数であるものを<strong>すべて</strong>選びましょう。タップして選択できます（複数選択可）。</p>
+          <div class="choices" id="r23-choices">
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span class="m">6x</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span class="m">x<sup>3</sup></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span class="m">x<sup>3</sup> + 2x</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span class="m">x<sup>3</sup> − 4</span><span class="mark"></span></button>
+          </div>
+          <p>選んだら、「次へ」でヒントを開いて確かめていきましょう。</p>
+        </div>
+
+        <div class="step hint">
+          <p class="step-label">ヒント1 ― 確かめ方</p>
+          <p>候補が原始関数かどうかは、<strong>その候補を微分して <span class="m">3x<sup>2</sup></span> に戻るか</strong>で確かめられます。4つとも、1つずつ微分してみましょう。</p>
+        </div>
+
+        <div class="step hint">
+          <p class="step-label">ヒント2 ― ①と③を微分すると</p>
+          <p class="formula">(6x)′ = 6</p>
+          <p class="formula">(x<sup>3</sup> + 2x)′ = 3x<sup>2</sup> + 2</p>
+          <p><span class="m">6</span> は <span class="m">3x<sup>2</sup></span> ではありません。また <span class="m">3x<sup>2</sup> + 2</span> には余分な <span class="m">+2</span> がついていて、<span class="m">3x<sup>2</sup></span> にはなりません。この2つは原始関数では<strong>ありません</strong>。</p>
+        </div>
+
+        <div class="step hint">
+          <p class="step-label">ヒント3 ― ②と④を微分すると</p>
+          <p class="formula">(x<sup>3</sup>)′ = 3x<sup>2</sup>,　　(x<sup>3</sup> − 4)′ = 3x<sup>2</sup></p>
+          <p>どちらも <span class="m">3x<sup>2</sup></span> に戻ります。④の <span class="m">−4</span> のような<strong>定数は微分すると消える</strong>ので、原始関数であることに影響しません。</p>
+        </div>
+
+        <div class="step answer">
+          <p class="step-label">解答</p>
+          <p><span class="m">3x<sup>2</sup></span> の原始関数であるものは</p>
+          <p class="formula">② x<sup>3</sup>　と　④ x<sup>3</sup> − 4</p>
+          <p class="verdict" id="r23-verdict"></p>
+        </div>
+
+        <button class="next-btn" data-next type="button">次へ</button>
+      </section>
+
+      <!-- ================= 例12 ================= -->
+      <section class="card" data-sec data-kind="example">
+        <div class="card-head">
+          <span class="tag example">例12</span>
+          <h2>基本的な不定積分</h2>
+          <div class="dots" data-dots aria-hidden="true"></div>
+        </div>
+
+        <div class="step on">
+          <p>次の不定積分を求めてみましょう。</p>
+          <p class="formula">∫ 1 dx,　　∫ x dx,　　∫ x<sup>2</sup> dx</p>
+          <p>いずれも、「微分すると元の関数になるもの」を探すことがポイントです。</p>
+        </div>
+
+        <div class="step hint">
+          <p class="step-label">ヒント1 ― ∫ 1 dx</p>
+          <p>微分すると <span class="m">1</span> になる関数は <span class="m">x</span> です（<span class="m">(x)′ = 1</span>）。よって</p>
+          <p class="formula">∫ 1 dx = x + C</p>
+        </div>
+
+        <div class="step hint">
+          <p class="step-label">ヒント2 ― ∫ x dx</p>
+          <p><span class="m">(x<sup>2</sup>)′ = 2x</span> です。<span class="m">2x</span> の係数 <span class="m">2</span> を消すために <span class="m"><span class="frac"><span class="num">1</span><span class="den">2</span></span></span> をかけると、<span class="m">(<span class="frac"><span class="num">1</span><span class="den">2</span></span>x<sup>2</sup>)′ = x</span> となります。よって</p>
+          <p class="formula">∫ x dx = <span class="frac"><span class="num">1</span><span class="den">2</span></span>x<sup>2</sup> + C</p>
+        </div>
+
+        <div class="step hint">
+          <p class="step-label">ヒント3 ― ∫ x² dx</p>
+          <p>同じように、<span class="m">(x<sup>3</sup>)′ = 3x<sup>2</sup></span> の係数 <span class="m">3</span> を <span class="m"><span class="frac"><span class="num">1</span><span class="den">3</span></span></span> で消すと、<span class="m">(<span class="frac"><span class="num">1</span><span class="den">3</span></span>x<sup>3</sup>)′ = x<sup>2</sup></span> となります。よって</p>
+          <p class="formula">∫ x<sup>2</sup> dx = <span class="frac"><span class="num">1</span><span class="den">3</span></span>x<sup>3</sup> + C</p>
+        </div>
+
+        <div class="step answer">
+          <p class="step-label">解答</p>
+          <p class="formula">∫ 1 dx = x + C</p>
+          <p class="formula">∫ x dx = <span class="frac"><span class="num">1</span><span class="den">2</span></span>x<sup>2</sup> + C</p>
+          <p class="formula">∫ x<sup>2</sup> dx = <span class="frac"><span class="num">1</span><span class="den">3</span></span>x<sup>3</sup> + C</p>
+          <p><span class="check">✓ 確認</span>　答えを微分すると元に戻ります：
+            <span class="m">(x + C)′ = 1</span>、<span class="m">(<span class="frac"><span class="num">1</span><span class="den">2</span></span>x<sup>2</sup> + C)′ = x</span>、<span class="m">(<span class="frac"><span class="num">1</span><span class="den">3</span></span>x<sup>3</sup> + C)′ = x<sup>2</sup></span>。
+            このように、<strong>微分と積分は互いに逆の計算</strong>です。</p>
+          <figure>
+            <svg viewBox="0 0 340 132" role="img" aria-label="原始関数F(x)を微分するとf(x)になり、f(x)を積分するとF(x)プラスCに戻るという、微分と積分の逆の関係を示す図">
+              <rect class="box-node" x="8" y="42" width="118" height="48" rx="10" />
+              <text class="svg-txt" x="67" y="72" text-anchor="middle">F(x)</text>
+              <rect class="box-node" x="214" y="42" width="118" height="48" rx="10" />
+              <text class="svg-txt" x="273" y="72" text-anchor="middle">f(x)</text>
+              <path class="arrow-line" d="M 132 52 L 202 52" />
+              <polygon points="208,52 198,47 198,57" fill="var(--accent)" />
+              <text class="svg-txt-jp" x="170" y="40" text-anchor="middle">微分</text>
+              <text class="svg-txt" x="170" y="24" text-anchor="middle" font-size="12.5">F′(x) = f(x)</text>
+              <path class="arrow-line" d="M 208 82 L 138 82" />
+              <polygon points="132,82 142,77 142,87" fill="var(--accent)" />
+              <text class="svg-txt-jp" x="170" y="104" text-anchor="middle">積分</text>
+              <text class="svg-txt" x="170" y="124" text-anchor="middle" font-size="12.5">∫ f(x) dx = F(x) + C</text>
+            </svg>
+            <figcaption>微分と積分は互いに逆の計算</figcaption>
+          </figure>
+        </div>
+
+        <button class="next-btn" data-next type="button">次へ</button>
+      </section>
+
+      <!-- ================= 解説 公式 ================= -->
+      <section class="card" data-sec data-kind="explain">
+        <div class="card-head">
+          <span class="tag explain">解説</span>
+          <h2>公式 ― xⁿ の不定積分</h2>
+          <div class="dots" data-dots aria-hidden="true"></div>
+        </div>
+
+        <div class="step on">
+          <p>例12で、<span class="m">1</span>（＝<span class="m">x<sup>0</sup></span>）、<span class="m">x</span>、<span class="m">x<sup>2</sup></span> の不定積分を求めました。その3つの結果を並べてみると、左辺の指数と右辺の形との間に規則性が見えてきます。</p>
+          <p>「次へ」を押して、例12の結果を並べて確かめてみましょう。</p>
+        </div>
+
+        <div class="step">
+          <p>例12の結果を並べます（<span class="m">1</span> は <span class="m">x<sup>0</sup></span> と見ます）。</p>
+          <p class="formula">∫ x<sup>0</sup> dx = x + C</p>
+          <p class="formula">∫ x<sup>1</sup> dx = <span class="frac"><span class="num">1</span><span class="den">2</span></span>x<sup>2</sup> + C</p>
+          <p class="formula">∫ x<sup>2</sup> dx = <span class="frac"><span class="num">1</span><span class="den">3</span></span>x<sup>3</sup> + C</p>
+          <p>右辺を見ると、<strong>指数が 1 増えて</strong>いて、係数には<strong>増えた後の指数で割った</strong>分数がついています。</p>
+          <p>たとえば <span class="m">x<sup>2</sup></span> の積分では、指数 <span class="m">2</span> が <span class="m">3</span> に増え、係数は <span class="m"><span class="frac"><span class="num">1</span><span class="den">3</span></span></span> になっています。</p>
+        </div>
+
+        <div class="step answer">
+          <p class="step-label">公式</p>
+          <p><span class="m">n</span> が 0 または正の整数のとき、次の公式が成り立ちます。</p>
+          <p class="formula">∫ x<sup>n</sup> dx = <span class="frac"><span class="num">1</span><span class="den">n + 1</span></span>x<sup>n+1</sup> + C</p>
+          <p>「指数を 1 増やして、その指数で割る」と覚えましょう。</p>
+        </div>
+
+        <button class="next-btn" data-next type="button">次へ</button>
+      </section>
+
+      <!-- ================= 練習24 ================= -->
+      <section class="card" data-sec data-kind="practice">
+        <div class="card-head">
+          <span class="tag practice">練習24</span>
+          <h2>公式を確かめて、使ってみよう</h2>
+          <div class="dots" data-dots aria-hidden="true"></div>
+        </div>
+
+        <div class="step on">
+          <p>（1）公式 <span class="m">∫ x<sup>n</sup> dx = <span class="frac"><span class="num">1</span><span class="den">n + 1</span></span>x<sup>n+1</sup> + C</span> が成り立つことを、<strong>右辺を微分して</strong>確かめましょう。</p>
+          <p>（2）公式を使って、<span class="m">∫ x<sup>3</sup> dx</span> を求めましょう。</p>
+        </div>
+
+        <div class="step hint">
+          <p class="step-label">ヒント1 ― （1）の方針</p>
+          <p>右辺 <span class="m"><span class="frac"><span class="num">1</span><span class="den">n + 1</span></span>x<sup>n+1</sup> + C</span> を微分します。<span class="m">x<sup>n+1</sup></span> を微分すると指数が前に出て、<span class="m">(n + 1)x<sup>n</sup></span> になることに注目しましょう。</p>
+        </div>
+
+        <div class="step hint">
+          <p class="step-label">ヒント2 ― （1）の計算の途中</p>
+          <p class="formula">(<span class="frac"><span class="num">1</span><span class="den">n + 1</span></span>x<sup>n+1</sup> + C)′ = <span class="frac"><span class="num">1</span><span class="den">n + 1</span></span> · (n + 1)x<sup>n</sup></p>
+          <p>あとは、係数の <span class="m"><span class="frac"><span class="num">1</span><span class="den">n + 1</span></span></span> と <span class="m">(n + 1)</span> が約分されてどうなるかを確認しましょう。</p>
+        </div>
+
+        <div class="step hint">
+          <p class="step-label">ヒント3 ― （2）の方針</p>
+          <p><span class="m">∫ x<sup>3</sup> dx</span> は、公式の <span class="m">n</span> に <span class="m">3</span> を当てはめたものです。指数は <span class="m">3 + 1 = 4</span> になり、係数はその <span class="m">4</span> で割ります。</p>
+        </div>
+
+        <div class="step answer">
+          <p class="step-label">解答</p>
+          <p>（1）右辺を微分すると</p>
+          <p class="formula">(<span class="frac"><span class="num">1</span><span class="den">n + 1</span></span>x<sup>n+1</sup> + C)′ = <span class="frac"><span class="num">1</span><span class="den">n + 1</span></span> · (n + 1)x<sup>n</sup> = x<sup>n</sup></p>
+          <p>となり、左辺の <span class="m">x<sup>n</sup></span> と一致します。よって、右辺は <span class="m">x<sup>n</sup></span> の原始関数であり、公式が成り立ちます。</p>
+          <p>（2）公式に <span class="m">n = 3</span> を当てはめて</p>
+          <p class="formula">∫ x<sup>3</sup> dx = <span class="frac"><span class="num">1</span><span class="den">4</span></span>x<sup>4</sup> + C</p>
+        </div>
+
+        <button class="next-btn" data-next type="button">次へ</button>
+      </section>
+
+      <nav class="foot-nav">
+        <a href="calc.html">← 第6章トップに戻る</a>
+        <a href="index.html">Nanryo mathematics portal に戻る</a>
+      </nav>
+
+    </main>
+
+    <div class="ctrl" role="region" aria-label="操作バー">
+      <div class="ctrl-inner">
+        <div class="ctrl-progress">
+          <p class="p-label" id="p-label">全体の進捗　0 / 0 ステップ</p>
+          <div class="p-track"><div class="p-fill" id="p-fill"></div></div>
+        </div>
+        <button class="reset" id="btn-reset" type="button">はじめから</button>
+        <button class="go" id="btn-go" type="button">次へ進む</button>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        var sections = Array.prototype.slice.call(document.querySelectorAll('[data-sec]'));
+        var revealed = [];   // number of steps currently shown per section
+        var stepsList = [];
+        var totalSteps = 0;
+
+        sections.forEach(function (sec, i) {
+          var steps = Array.prototype.slice.call(sec.querySelectorAll('.step'));
+          stepsList.push(steps);
+          totalSteps += steps.length;
+          revealed.push(1);
+          var dotsBox = sec.querySelector('[data-dots]');
+          steps.forEach(function () {
+            var d = document.createElement('span');
+            d.className = 'dot';
+            dotsBox.appendChild(d);
+          });
+          var btn = sec.querySelector('[data-next]');
+          btn.addEventListener('click', function () { reveal(i); });
+        });
+
+        var pFill = document.getElementById('p-fill');
+        var pLabel = document.getElementById('p-label');
+        var btnGo = document.getElementById('btn-go');
+        var btnReset = document.getElementById('btn-reset');
+
+        function btnLabel(i) {
+          var steps = stepsList[i];
+          if (revealed[i] >= steps.length) return null;
+          var next = steps[revealed[i]];
+          var kind = sections[i].getAttribute('data-kind');
+          if (next.classList.contains('answer')) {
+            return kind === 'practice' || kind === 'example' ? '解答を見る' : 'まとめを見る';
+          }
+          if (next.classList.contains('hint')) return 'ヒントをひらく';
+          return '次へ';
+        }
+
+        function update() {
+          var shown = 0;
+          sections.forEach(function (sec, i) {
+            shown += revealed[i];
+            var dots = sec.querySelectorAll('.dot');
+            Array.prototype.forEach.call(dots, function (d, j) {
+              d.classList.toggle('on', j < revealed[i]);
+            });
+            var btn = sec.querySelector('[data-next]');
+            var label = btnLabel(i);
+            if (label === null) {
+              btn.disabled = true;
+              btn.textContent = '完了';
+            } else {
+              btn.disabled = false;
+              btn.textContent = label;
+            }
+          });
+          pFill.style.width = (totalSteps ? (shown / totalSteps) * 100 : 0) + '%';
+          pLabel.textContent = '全体の進捗　' + shown + ' / ' + totalSteps + ' ステップ';
+          btnGo.disabled = sections.every(function (sec, i) {
+            return revealed[i] >= stepsList[i].length;
+          });
+          btnGo.textContent = btnGo.disabled ? 'すべて完了' : '次へ進む';
+        }
+
+        function reveal(i) {
+          if (revealed[i] < stepsList[i].length) {
+            stepsList[i][revealed[i]].classList.add('on');
+            revealed[i]++;
+            if (sections[i].id === 'sec-r23' && revealed[i] === stepsList[i].length) {
+              judgeR23();
+            }
+            update();
+          }
+        }
+
+        btnGo.addEventListener('click', function () {
+          for (var i = 0; i < sections.length; i++) {
+            if (revealed[i] < stepsList[i].length) {
+              reveal(i);
+              var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+              stepsList[i][revealed[i] - 1].scrollIntoView({
+                block: 'center',
+                behavior: reduce ? 'auto' : 'smooth'
+              });
+              break;
+            }
+          }
+        });
+
+        btnReset.addEventListener('click', function () {
+          sections.forEach(function (sec, i) {
+            revealed[i] = 1;
+            stepsList[i].forEach(function (st, j) {
+              st.classList.toggle('on', j === 0);
+            });
+          });
+          // clear 練習23 selection / judgement
+          Array.prototype.forEach.call(document.querySelectorAll('#r23-choices .choice'), function (c) {
+            c.classList.remove('sel', 'ok', 'ng');
+            c.querySelector('.mark').textContent = '';
+          });
+          document.getElementById('r23-verdict').textContent = '';
+          update();
+          window.scrollTo({ top: 0, behavior: 'auto' });
+        });
+
+        /* ---- 練習23 choices ---- */
+        var CORRECT = { 2: true, 4: true };
+        var choices = Array.prototype.slice.call(document.querySelectorAll('#r23-choices .choice'));
+        choices.forEach(function (c) {
+          c.addEventListener('click', function () {
+            c.classList.toggle('sel');
+            var secIdx = sections.indexOf(document.getElementById('sec-r23'));
+            if (revealed[secIdx] >= stepsList[secIdx].length) judgeR23();
+          });
+        });
+
+        function judgeR23() {
+          var selected = {};
+          choices.forEach(function (c) {
+            if (c.classList.contains('sel')) selected[c.getAttribute('data-choice')] = true;
+          });
+          choices.forEach(function (c) {
+            var n = c.getAttribute('data-choice');
+            var mark = c.querySelector('.mark');
+            c.classList.remove('ok', 'ng');
+            mark.textContent = '';
+            if (CORRECT[n]) {
+              c.classList.add('ok');
+              mark.textContent = '○';
+            } else if (selected[n]) {
+              c.classList.add('ng');
+              mark.textContent = '×';
+            }
+          });
+          var verdict = document.getElementById('r23-verdict');
+          var names = { 1: '①', 2: '②', 3: '③', 4: '④' };
+          var picked = Object.keys(selected).map(function (k) { return names[k]; });
+          var isCorrect = picked.length === 2 && selected[2] && selected[4];
+          if (picked.length === 0) {
+            verdict.textContent = '答えは ② と ④ です。選択肢を選んでから見直すと、自分の考えと比べられます。';
+          } else if (isCorrect) {
+            verdict.textContent = 'あなたの選択（' + picked.join('・') + '）は正解です。';
+          } else {
+            verdict.textContent = 'あなたの選択は ' + picked.join('・') + ' でした。答えは ② と ④ です。違ったものは、微分するとどこが 3x² にならないか、ヒント2・ヒント3で確かめ直してみましょう。';
+          }
+        }
+
+        update();
+      })();
+    </script>
+  </body>
+</html>
