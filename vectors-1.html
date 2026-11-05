@@ -1,0 +1,852 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:," />
+    <title>数学C 1 ベクトル 自習ページ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Serif+JP:wght@700;900&display=swap" rel="stylesheet" />
+    <style>
+      :root{
+        --bg:#f4f7f5;
+        --surface:#ffffff;
+        --surface2:#eef4f1;
+        --ink:#1d2a26;
+        --ink-soft:#43554e;
+        --line:#cfddd6;
+        --accent:#0e7a5f;
+        --accent-deep:#0a5c48;
+        --accent-soft:#e2f2ec;
+        --blue:#1f6fb4;
+        --orange:#d96c1e;
+        --hint-bg:#fff6cf;
+        --hint-line:#e3c84e;
+        --hint-ink:#4d4210;
+        --ans-bg:#e6f6ea;
+        --ans-line:#4caf6d;
+        --ans-ink:#14401f;
+        --bar-bg:rgba(255,255,255,.94);
+        --shadow:0 2px 10px rgba(20,50,40,.08);
+        --arrow-img:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 12' preserveAspectRatio='none'%3E%3Cpath d='M2 6 H90 M82 1.5 L91 6 L82 10.5' stroke='%231d2a26' stroke-width='2.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      }
+      @media (prefers-color-scheme: dark){
+        :root{
+          --bg:#101714;
+          --surface:#1a2420;
+          --surface2:#22302a;
+          --ink:#e8f0ec;
+          --ink-soft:#b3c4bc;
+          --line:#3a4a43;
+          --accent:#3cb894;
+          --accent-deep:#8fd8c0;
+          --accent-soft:#1d332b;
+          --blue:#6cb2e8;
+          --orange:#f09a4e;
+          --hint-bg:#3d3617;
+          --hint-line:#a68e2e;
+          --hint-ink:#f5e9bd;
+          --ans-bg:#17301e;
+          --ans-line:#3f9957;
+          --ans-ink:#c9eed2;
+          --bar-bg:rgba(20,28,24,.94);
+          --shadow:0 2px 10px rgba(0,0,0,.4);
+          --arrow-img:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 12' preserveAspectRatio='none'%3E%3Cpath d='M2 6 H90 M82 1.5 L91 6 L82 10.5' stroke='%23e8f0ec' stroke-width='2.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+        }
+      }
+      *{box-sizing:border-box}
+      html{scroll-behavior:smooth}
+      @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} *{transition:none!important} }
+      body{
+        margin:0; background:var(--bg); color:var(--ink);
+        font-family:"Noto Sans JP",system-ui,-apple-system,"Hiragino Kaku Gothic ProN",sans-serif;
+        line-height:1.85; font-size:16px;
+        padding-bottom:118px;
+      }
+      .wrap{max-width:780px;margin:0 auto;padding:0 16px 8px}
+
+      /* ---------- ヘッダー ---------- */
+      header{padding:26px 0 6px}
+      .badge{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:700;font-size:13px;
+        padding:4px 12px;border-radius:999px;letter-spacing:.04em;
+      }
+      @media (prefers-color-scheme: dark){ .badge{color:#0c1712} }
+      h1{
+        font-family:"Noto Serif JP",serif;font-weight:900;font-size:34px;line-height:1.3;
+        margin:12px 0 4px;letter-spacing:.02em;
+      }
+      .page-meta{color:var(--ink-soft);font-size:14px;font-weight:500}
+      .page-meta b{color:var(--accent-deep)}
+
+      /* ---------- 使い方 ---------- */
+      .howto{
+        background:var(--accent-soft);border:1.5px solid var(--accent);border-radius:14px;
+        padding:14px 18px;margin:18px 0 26px;box-shadow:var(--shadow);
+      }
+      .howto h2{margin:0 0 6px;font-size:16px;color:var(--accent-deep)}
+      .howto ol{margin:0;padding-left:1.4em}
+      .howto li{margin:2px 0}
+      .howto .next-word{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:700;border-radius:6px;
+        padding:0 8px;font-size:.92em;
+      }
+      @media (prefers-color-scheme: dark){ .howto .next-word{color:#0c1712} }
+
+      /* ---------- セクション見出し ---------- */
+      .sec-head{display:flex;align-items:center;gap:10px;margin:34px 0 12px}
+      .sec-tag{
+        background:var(--ink);color:var(--bg);font-weight:900;font-size:14px;border-radius:8px;
+        padding:3px 10px;white-space:nowrap;
+      }
+      .sec-head h2{font-size:21px;margin:0;font-weight:900}
+      .sec-head .pno{margin-left:auto;color:var(--ink-soft);font-size:13px;white-space:nowrap}
+
+      .card{
+        background:var(--surface);border:1px solid var(--line);border-radius:14px;
+        padding:18px 18px 8px;margin:0 0 18px;box-shadow:var(--shadow);
+      }
+      .card p{margin:0 0 12px}
+      .def{
+        background:var(--surface2);border-radius:10px;padding:12px 16px;margin:0 0 14px;
+      }
+      .def p:last-child{margin-bottom:0}
+      .key{font-weight:900;color:var(--accent-deep)}
+      figure{margin:6px 0 14px}
+      figure svg{width:100%;height:auto;display:block}
+      figcaption{font-size:13.5px;color:var(--ink-soft);text-align:center;margin-top:6px;line-height:1.6}
+      .figbox{background:var(--surface2);border-radius:12px;padding:12px 10px 6px}
+
+      /* スライダー */
+      .slider-row{display:flex;align-items:center;gap:12px;margin:4px 4px 10px}
+      .slider-row label{font-weight:700;font-size:14px;white-space:nowrap}
+      input[type=range]{flex:1;accent-color:var(--accent);height:32px}
+      .slider-state{font-weight:700;color:var(--accent-deep);text-align:center;font-size:15px;margin:0 0 10px}
+
+      /* ---------- 数式・矢印表記 ---------- */
+      .v{
+        display:inline-block;position:relative;padding-top:.5em;line-height:1.1;
+        font-weight:700;font-style:normal;white-space:nowrap;
+      }
+      .v::before{
+        content:"";position:absolute;top:.02em;left:-.04em;right:-.04em;height:.34em;
+        background-image:var(--arrow-img);background-repeat:no-repeat;background-size:100% 100%;
+      }
+      .formula{
+        text-align:center;font-size:19px;font-weight:700;letter-spacing:.03em;
+        background:var(--surface2);border-radius:10px;padding:12px 8px;margin:0 0 14px;
+      }
+      .abs{font-weight:400}
+
+      /* ---------- 問題カード（ヒント式） ---------- */
+      .prob{border:2px solid var(--line);transition:border-color .2s}
+      .prob.active{border-color:var(--accent)}
+      .prob-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+      .prob-tag{
+        font-weight:900;font-size:14px;border-radius:8px;padding:3px 12px;color:#fff;background:var(--blue);
+      }
+      .prob-tag.ren{background:#c2452d}
+      @media (prefers-color-scheme: dark){ .prob-tag{color:#0d141b} .prob-tag.ren{color:#1c0f0a} }
+      .prob-state{margin-left:auto;font-size:13px;font-weight:700;color:var(--ink-soft)}
+      .dots{display:flex;gap:6px;align-items:center}
+      .dot{width:11px;height:11px;border-radius:50%;border:2px solid var(--ink-soft);background:transparent}
+      .dot.on{background:var(--accent);border-color:var(--accent)}
+      .dot.ans.on{background:#2f9e4f;border-color:#2f9e4f}
+      .prob-q{font-weight:700;font-size:16.5px;margin:0 0 10px}
+      .prob-q .sub{font-weight:700}
+
+      .step{display:none;margin:0 0 12px;border-radius:12px;padding:12px 16px 4px;scroll-margin-bottom:130px}
+      .step.show{display:block;animation:pop .25s ease}
+      @keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+      .step h3{margin:0 0 6px;font-size:14px;font-weight:900;letter-spacing:.05em}
+      .step p{margin:0 0 10px}
+      .hint{background:var(--hint-bg);border:1.5px solid var(--hint-line);color:var(--hint-ink)}
+      .hint h3{color:inherit}
+      .answer{background:var(--ans-bg);border:1.5px solid var(--ans-line);color:var(--ans-ink)}
+      .answer .big{font-size:18px;font-weight:900;text-align:center;margin:4px 0 10px}
+      .note{font-size:14px;border-top:1px dashed currentColor;padding-top:8px;margin-top:2px}
+      .prob-done{
+        display:none;text-align:center;font-weight:900;color:var(--accent-deep);
+        padding:2px 0 12px;font-size:15px;
+      }
+      .prob-done.show{display:block}
+
+      /* 成分表 */
+      table.comp{border-collapse:collapse;margin:4px auto 12px;font-size:15px}
+      table.comp th,table.comp td{border:1px solid var(--hint-line);padding:3px 10px;text-align:center}
+      table.comp th{background:rgba(0,0,0,.05)}
+      @media (prefers-color-scheme: dark){ table.comp th{background:rgba(255,255,255,.08)} }
+
+      /* ---------- タブ ---------- */
+      .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}
+      .tab{
+        font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;
+        border:2px solid var(--line);background:var(--surface);color:var(--ink);
+        border-radius:999px;padding:6px 18px;
+      }
+      .tab[aria-selected=true]{background:var(--accent);border-color:var(--accent);color:#fff}
+      @media (prefers-color-scheme: dark){ .tab[aria-selected=true]{color:#0c1712} }
+      .tabpanel{display:none}
+      .tabpanel.show{display:block}
+
+      /* ---------- まとめ ---------- */
+      .summary{border:2px solid var(--accent);background:var(--accent-soft)}
+      .summary h2{margin:0 0 8px;font-size:18px;color:var(--accent-deep)}
+      .summary ul{margin:0;padding-left:1.3em}
+      .summary li{margin:4px 0}
+
+      /* ---------- フッター ---------- */
+      footer{margin:30px 0 10px;text-align:center}
+      .back-btn{
+        display:inline-block;text-decoration:none;font-weight:700;color:var(--ink);
+        border:2px solid var(--line);background:var(--surface);border-radius:12px;padding:12px 26px;
+      }
+      .foot-note{color:var(--ink-soft);font-size:13px;margin-top:12px}
+
+      /* ---------- 下部固定バー ---------- */
+      .ctrl-bar{
+        position:fixed;left:0;right:0;bottom:0;z-index:50;background:var(--bar-bg);
+        backdrop-filter:blur(8px);border-top:1.5px solid var(--line);
+        padding:10px 14px calc(10px + env(safe-area-inset-bottom));
+      }
+      .ctrl-inner{max-width:780px;margin:0 auto}
+      .ctrl-label{font-size:13px;font-weight:700;color:var(--ink-soft);margin:0 0 8px;text-align:center}
+      .ctrl-label b{color:var(--accent-deep)}
+      .ctrl-btns{display:flex;gap:10px}
+      .btn{
+        font-family:inherit;cursor:pointer;border-radius:12px;font-weight:900;border:2px solid var(--line);
+        background:var(--surface);color:var(--ink);padding:12px 14px;font-size:15px;
+      }
+      .btn-next{
+        flex:1;background:var(--accent);border-color:var(--accent);color:#fff;font-size:18px;padding:12px;
+      }
+      @media (prefers-color-scheme: dark){ .btn-next{color:#0c1712} }
+      .btn-next:disabled{background:var(--surface2);border-color:var(--line);color:var(--ink-soft);cursor:default}
+      .btn:active{transform:scale(.98)}
+
+      /* SVG内の文字・線 */
+      .svg-txt{font-family:"Noto Sans JP",sans-serif;font-weight:700;fill:var(--ink)}
+      .svg-txt-soft{font-family:"Noto Sans JP",sans-serif;fill:var(--ink-soft)}
+      .grid-line{stroke:var(--line);stroke-width:1}
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+
+      <!-- ================= ヘッダー ================= -->
+      <header>
+        <span class="badge">数学C　第1章　平面上のベクトル</span>
+        <h1>1　ベクトル</h1>
+        <p class="page-meta">教科書 <b>p.8〜9</b>　｜　第1節 ベクトルとその演算</p>
+      </header>
+
+      <!-- ================= 使い方 ================= -->
+      <section class="howto" aria-label="使い方">
+        <h2>このページの使い方（自習の流れ）</h2>
+        <ol>
+          <li><b>解説</b>を読んで、図でイメージをつかむ</li>
+          <li><b>例題</b>をヒントで解く ― 分からなければ下の <span class="next-word">次へ</span> でヒントを1つずつ開く</li>
+          <li><b>練習問題</b>に挑戦 ― 答えは最後のヒントのあとに出てくるよ</li>
+        </ol>
+      </section>
+
+      <!-- ================= 解説A ================= -->
+      <div class="sec-head">
+        <span class="sec-tag">解説 A</span>
+        <h2>有向線分とベクトル</h2>
+        <span class="pno">教科書 p.8</span>
+      </div>
+
+      <section class="card">
+        <div class="def">
+          <p><span class="key">有向線分</span>とは、<b>向きをつけた線分</b>のこと。</p>
+          <p>有向線分ABでは、Aをその<span class="key">始点</span>、Bをその<span class="key">終点</span>といい、その<b>向き</b>はAからBへ向かっているとする。また、線分ABの長さを、有向線分ABの<span class="key">大きさ</span>（長さ）という。</p>
+        </div>
+        <figure>
+          <div class="figbox">
+            <svg viewBox="0 0 520 170" role="img" aria-label="有向線分ABの図。Aが始点、Bが終点">
+              <defs>
+                <marker id="ah-ink" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                  <path d="M0,0 L10,5 L0,10 z" fill="var(--ink)"></path>
+                </marker>
+              </defs>
+              <line x1="90" y1="118" x2="420" y2="52" stroke="var(--ink)" stroke-width="3" marker-end="url(#ah-ink)"></line>
+              <circle cx="90" cy="118" r="4.5" fill="var(--ink)"></circle>
+              <circle cx="420" cy="52" r="4.5" fill="var(--ink)"></circle>
+              <text x="78" y="146" class="svg-txt" font-size="19">A</text>
+              <text x="428" y="46" class="svg-txt" font-size="19">B</text>
+              <rect x="52" y="86" width="52" height="24" rx="5" fill="#f2c230"></rect>
+              <text x="78" y="103" text-anchor="middle" font-size="13.5" font-weight="700" fill="#4d4210">始点</text>
+              <rect x="392" y="66" width="52" height="24" rx="5" fill="#f2c230"></rect>
+              <text x="418" y="83" text-anchor="middle" font-size="13.5" font-weight="700" fill="#4d4210">終点</text>
+              <text x="255" y="66" text-anchor="middle" class="svg-txt-soft" font-size="14">向き：A から B へ</text>
+              <text x="255" y="150" text-anchor="middle" class="svg-txt-soft" font-size="14">線分の長さ ＝ 有向線分ABの「大きさ」</text>
+            </svg>
+          </div>
+          <figcaption>有向線分AB：始点A → 終点B。矢印の向きと、線分の長さ（大きさ）が大事。</figcaption>
+        </figure>
+        <p>平面上で図形を<b>平行移動</b>するとき、その移動は有向線分で表すことができる。線分につけた矢印の向きが「移動する向き」、線分の長さが「移動する距離」を表すからだ。</p>
+        <figure>
+          <div class="figbox">
+            <svg viewBox="0 0 520 190" role="img" aria-label="三角形の平行移動を有向線分で表した図">
+              <defs>
+                <marker id="ah-acc" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                  <path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"></path>
+                </marker>
+              </defs>
+              <polygon points="70,140 170,140 120,60" fill="none" stroke="var(--ink-soft)" stroke-width="2.5"></polygon>
+              <polygon points="300,110 400,110 350,30" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2.5"></polygon>
+              <line x1="120" y1="60" x2="350" y2="30" stroke="var(--accent)" stroke-width="3" marker-end="url(#ah-acc)"></line>
+              <line x1="70" y1="140" x2="300" y2="110" stroke="var(--accent)" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#ah-acc)"></line>
+              <line x1="170" y1="140" x2="400" y2="110" stroke="var(--accent)" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#ah-acc)"></line>
+              <text x="120" y="172" text-anchor="middle" class="svg-txt-soft" font-size="14">もとの図形</text>
+              <text x="350" y="140" text-anchor="middle" class="svg-txt" font-size="14" fill="var(--accent-deep)">平行移動した図形</text>
+              <text x="238" y="30" text-anchor="middle" class="svg-txt" font-size="14">移動を表す有向線分</text>
+            </svg>
+          </div>
+          <figcaption>どの頂点から測っても、平行移動を表す有向線分は「向きが同じで、大きさも等しい」。</figcaption>
+        </figure>
+      </section>
+
+      <section class="card">
+        <div class="def">
+          <p>平行移動を表す有向線分は、いくつも図示できるが、それらは<b>位置が違うだけ</b>であり、向きは同じで大きさも等しい。</p>
+          <p>有向線分の<b>位置の違いを無視して、その向きと大きさだけに着目したもの</b>を<span class="key">ベクトル</span>という。</p>
+        </div>
+        <p class="formula">ベクトルは、向きと大きさをもつ量である</p>
+        <p>たとえば、物理で扱われる<b>速度</b>や<b>力</b>は、向きと大きさをもつ量であり、ベクトルで表すと考えやすくなる。</p>
+        <figure>
+          <div class="figbox">
+            <svg viewBox="0 0 520 210" role="img" aria-label="場所が違う3本の矢印が、すべて同じベクトルを表す図">
+              <defs>
+                <marker id="ah-acc2" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                  <path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"></path>
+                </marker>
+              </defs>
+              <line x1="60" y1="60" x2="220" y2="20" stroke="var(--accent)" stroke-width="4" marker-end="url(#ah-acc2)"></line>
+              <line x1="180" y1="130" x2="340" y2="90" stroke="var(--accent)" stroke-width="4" marker-end="url(#ah-acc2)"></line>
+              <line x1="300" y1="185" x2="460" y2="145" stroke="var(--accent)" stroke-width="4" marker-end="url(#ah-acc2)"></line>
+              <text x="140" y="86" text-anchor="middle" class="svg-txt" font-size="15">ベクトル</text>
+              <text x="262" y="156" text-anchor="middle" class="svg-txt" font-size="15">ベクトル</text>
+              <text x="382" y="130" text-anchor="middle" class="svg-txt" font-size="15">ベクトル</text>
+            </svg>
+          </div>
+          <figcaption>3本とも場所はバラバラ。でも「向き」と「大きさ」が同じだから、<b>同じベクトル</b>を表している。</figcaption>
+        </figure>
+        <p><b>ためしてみよう。</b>下のスライダーを動かして、矢印の場所を左右に動かしてみよう。場所が変わっても、向きと大きさが変わらなければ「同じベクトル」のままであることを確かめよう。</p>
+        <div class="slider-row">
+          <label for="slideVec">場所を動かす</label>
+          <input type="range" id="slideVec" min="0" max="200" value="30" step="1" aria-label="ベクトルの位置を左右に動かすスライダー" />
+        </div>
+        <figure>
+          <div class="figbox">
+            <svg viewBox="0 0 520 150" role="img" aria-label="スライダーで左右に動かせるベクトルの図">
+              <defs>
+                <marker id="ah-slide" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                  <path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"></path>
+                </marker>
+              </defs>
+              <line x1="20" y1="30" x2="500" y2="30" class="grid-line"></line>
+              <line x1="20" y1="75" x2="500" y2="75" class="grid-line"></line>
+              <line x1="20" y1="120" x2="500" y2="120" class="grid-line"></line>
+              <g id="slideGroup">
+                <line x1="60" y1="105" x2="220" y2="55" stroke="var(--accent)" stroke-width="4.5" marker-end="url(#ah-slide)"></line>
+                <circle cx="60" cy="105" r="4.5" fill="var(--accent)"></circle>
+                <text x="140" y="128" text-anchor="middle" class="svg-txt" font-size="15">ベクトル <tspan font-style="italic">a</tspan>→</text>
+              </g>
+            </svg>
+          </div>
+        </figure>
+        <p class="slider-state" id="slideState">場所を動かしても、向きと大きさはそのまま → 同じベクトル</p>
+      </section>
+
+      <!-- ================= 解説B ================= -->
+      <div class="sec-head">
+        <span class="sec-tag">解説 B</span>
+        <h2>ベクトルの表記</h2>
+        <span class="pno">教科書 p.9</span>
+      </div>
+
+      <section class="card">
+        <p>有向線分ABが表すベクトルを <span class="v">AB</span> で表す。また、ベクトルを <span class="v">a</span>、<span class="v">b</span> などの1文字で表すこともある。</p>
+        <p>ベクトル <span class="v">AB</span>、<span class="v">a</span> の<b>大きさ</b>は、それぞれ <span class="abs">|</span><span class="v">AB</span><span class="abs">|</span>、<span class="abs">|</span><span class="v">a</span><span class="abs">|</span> で表す。このとき、<span class="abs">|</span><span class="v">AB</span><span class="abs">|</span> は有向線分ABの長さに等しい。</p>
+        <div class="def">
+          <p><span class="key">等しいベクトル</span>：向きが同じで大きさも等しい2つのベクトル <span class="v">a</span>、<span class="v">b</span> は<b>等しい</b>といい、<span class="v">a</span>＝<span class="v">b</span> と書く。</p>
+          <p><span class="v">AB</span>＝<span class="v">CD</span> のとき、有向線分ABを平行移動して、有向線分CDに重ね合わせることができる。</p>
+        </div>
+        <div class="def">
+          <p><span class="key">逆ベクトル</span>：ベクトル <span class="v">a</span> と大きさが等しく、向きが反対のベクトルを、<span class="v">a</span> の<b>逆ベクトル</b>といい、−<span class="v">a</span> で表す。</p>
+        </div>
+        <p class="formula"><span class="v">a</span>＝<span class="v">AB</span> のとき　−<span class="v">a</span>＝<span class="v">BA</span>　すなわち　<span class="v">BA</span>＝−<span class="v">AB</span></p>
+        <figure>
+          <div class="figbox">
+            <svg viewBox="0 0 520 250" role="img" aria-label="等しいベクトルの組と、逆ベクトルの組の図">
+              <defs>
+                <marker id="ah-b" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                  <path d="M0,0 L10,5 L0,10 z" fill="var(--blue)"></path>
+                </marker>
+                <marker id="ah-o" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                  <path d="M0,0 L10,5 L0,10 z" fill="var(--orange)"></path>
+                </marker>
+              </defs>
+              <text x="26" y="30" class="svg-txt" font-size="15" fill="var(--blue)">等しいベクトル</text>
+              <line x1="60" y1="78" x2="230" y2="48" stroke="var(--blue)" stroke-width="3.5" marker-end="url(#ah-b)"></line>
+              <line x1="60" y1="128" x2="230" y2="98" stroke="var(--blue)" stroke-width="3.5" marker-end="url(#ah-b)"></line>
+              <line x1="60" y1="78" x2="60" y2="128" stroke="var(--line)" stroke-width="1.5" stroke-dasharray="5 4"></line>
+              <line x1="230" y1="48" x2="230" y2="98" stroke="var(--line)" stroke-width="1.5" stroke-dasharray="5 4"></line>
+              <text x="145" y="42" text-anchor="middle" class="svg-txt" font-size="15"><tspan font-style="italic">a</tspan>→</text>
+              <text x="145" y="152" text-anchor="middle" class="svg-txt" font-size="15"><tspan font-style="italic">b</tspan>→</text>
+              <text x="330" y="95" class="svg-txt" font-size="17"><tspan font-style="italic">a</tspan>→ ＝ <tspan font-style="italic">b</tspan>→</text>
+              <text x="26" y="196" class="svg-txt" font-size="15" fill="var(--orange)">逆ベクトル</text>
+              <line x1="60" y1="222" x2="230" y2="222" stroke="var(--orange)" stroke-width="3.5" marker-end="url(#ah-o)"></line>
+              <line x1="230" y1="242" x2="60" y2="242" stroke="var(--orange)" stroke-width="3.5" marker-end="url(#ah-o)"></line>
+              <text x="252" y="227" class="svg-txt" font-size="15"><tspan font-style="italic">a</tspan>→</text>
+              <text x="252" y="247" class="svg-txt" font-size="15">−<tspan font-style="italic">a</tspan>→</text>
+            </svg>
+          </div>
+          <figcaption>等しいベクトルは「平行移動で重なる」。逆ベクトルは「大きさは同じ、向きは真逆」。</figcaption>
+        </figure>
+      </section>
+
+      <!-- ================= 例1 ================= -->
+      <div class="sec-head">
+        <span class="sec-tag">例題</span>
+        <h2>例題で解き方を確認</h2>
+        <span class="pno">教科書 p.9</span>
+      </div>
+
+      <section class="card prob active" id="prob-ex1" data-flow="ex1" data-label="例1">
+        <div class="prob-head">
+          <span class="prob-tag">例 1</span>
+          <div class="dots" aria-hidden="true">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span>
+          </div>
+          <span class="prob-state">ヒント 0 / 3</span>
+        </div>
+        <p class="prob-q">右の図の平行四辺形ABCDにおいて、次のことがいえることを、図を見て確かめよう。</p>
+        <p class="formula"><span class="v">AD</span>＝<span class="v">BC</span>　　<span class="v">BA</span>＝−<span class="v">DC</span></p>
+        <figure>
+          <div class="figbox">
+            <svg viewBox="0 0 520 250" role="img" aria-label="平行四辺形ABCD。Aは左上、Bは左下、Cは右下、Dは右上">
+              <defs>
+                <marker id="ah-bl" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+                  <path d="M0,0 L10,5 L0,10 z" fill="var(--blue)"></path>
+                </marker>
+                <marker id="ah-or" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+                  <path d="M0,0 L10,5 L0,10 z" fill="var(--orange)"></path>
+                </marker>
+              </defs>
+              <polygon points="120,55 70,200 380,200 430,55" fill="none" stroke="var(--ink-soft)" stroke-width="2"></polygon>
+              <!-- AD (A→D) 青 -->
+              <line x1="128" y1="66" x2="414" y2="66" stroke="var(--blue)" stroke-width="4" marker-end="url(#ah-bl)"></line>
+              <!-- BC (B→C) 青 -->
+              <line x1="82" y1="188" x2="364" y2="188" stroke="var(--blue)" stroke-width="4" marker-end="url(#ah-bl)"></line>
+              <!-- BA (B→A) オレンジ -->
+              <line x1="84" y1="188" x2="126" y2="70" stroke="var(--orange)" stroke-width="4" marker-end="url(#ah-or)"></line>
+              <!-- DC (D→C) オレンジ -->
+              <line x1="416" y1="70" x2="374" y2="188" stroke="var(--orange)" stroke-width="4" marker-end="url(#ah-or)"></line>
+              <circle cx="120" cy="55" r="4" fill="var(--ink)"></circle>
+              <circle cx="70" cy="200" r="4" fill="var(--ink)"></circle>
+              <circle cx="380" cy="200" r="4" fill="var(--ink)"></circle>
+              <circle cx="430" cy="55" r="4" fill="var(--ink)"></circle>
+              <text x="96" y="50" class="svg-txt" font-size="20">A</text>
+              <text x="44" y="222" class="svg-txt" font-size="20">B</text>
+              <text x="392" y="222" class="svg-txt" font-size="20">C</text>
+              <text x="442" y="50" class="svg-txt" font-size="20">D</text>
+              <text x="272" y="58" text-anchor="middle" class="svg-txt" font-size="14" fill="var(--blue)"><tspan font-style="italic">AD</tspan>→</text>
+              <text x="225" y="182" text-anchor="middle" class="svg-txt" font-size="14" fill="var(--blue)"><tspan font-style="italic">BC</tspan>→</text>
+              <text x="76" y="128" class="svg-txt" font-size="14" fill="var(--orange)"><tspan font-style="italic">BA</tspan>→</text>
+              <text x="404" y="128" class="svg-txt" font-size="14" fill="var(--orange)"><tspan font-style="italic">DC</tspan>→</text>
+            </svg>
+          </div>
+          <figcaption>青い矢印の組（上の辺と下の辺）と、オレンジの矢印の組（左の辺と右の辺）に注目。</figcaption>
+        </figure>
+
+        <div class="step hint">
+          <h3>ヒント 1 ― まず「辺」だけを見る</h3>
+          <p>平行四辺形では、<b>向かい合う辺（対辺）は平行で、長さが等しい</b>。図で確かめよう。</p>
+          <p>・上の辺ADと下の辺BC：平行で、長さも等しい<br />・左の辺BAと右の辺DC：平行で、長さも等しい</p>
+        </div>
+        <div class="step hint">
+          <h3>ヒント 2 ― 青い組：<span class="v">AD</span> と <span class="v">BC</span></h3>
+          <p><span class="v">AD</span> は「AからDへ」、<span class="v">BC</span> は「BからCへ」。2つとも<b>右向き</b>で、辺の長さも等しい。</p>
+          <p>つまり、<b>向きも大きさも同じ</b>。これは「等しいベクトル」の条件そのものだ。</p>
+        </div>
+        <div class="step hint">
+          <h3>ヒント 3 ― オレンジの組：<span class="v">BA</span> と <span class="v">DC</span></h3>
+          <p><span class="v">BA</span> は「BからAへ（左上向き）」、<span class="v">DC</span> は「DからCへ（右下向き）」。</p>
+          <p>大きさ（辺の長さ）は等しいけれど、<b>向きがちょうど反対</b>になっている。反対向きの関係は、どんな言葉で表したかな？</p>
+        </div>
+        <div class="step answer">
+          <h3>解答</h3>
+          <p class="big"><span class="v">AD</span>＝<span class="v">BC</span>　　<span class="v">BA</span>＝−<span class="v">DC</span></p>
+          <p><span class="v">AD</span> と <span class="v">BC</span> は、向きが同じで大きさも等しいので<b>等しいベクトル</b>である。</p>
+          <p><span class="v">BA</span> と <span class="v">DC</span> は、大きさが等しく向きが反対なので、互いに<b>逆ベクトル</b>の関係にある。よって <span class="v">BA</span>＝−<span class="v">DC</span> と書ける。</p>
+        </div>
+        <p class="prob-done">例1 クリア！　次は練習1に挑戦しよう。</p>
+      </section>
+
+      <!-- ================= 練習1 ================= -->
+      <div class="sec-head">
+        <span class="sec-tag">練習</span>
+        <h2>練習問題に挑戦</h2>
+        <span class="pno">教科書 p.9</span>
+      </div>
+
+      <section class="card prob" id="prob-ren1" data-flow="ren1" data-label="練習1">
+        <div class="prob-head">
+          <span class="prob-tag ren">練習 1</span>
+          <span class="prob-state" id="ren1-state">下のタブで小問を選んでね</span>
+        </div>
+        <p class="prob-q">右の図に示されたベクトルについて、次のようなベクトルの番号の組をすべてあげよ。</p>
+        <figure>
+          <div class="figbox">
+            <svg viewBox="0 0 520 300" role="img" aria-label="方眼の上に描かれた8本のベクトル①から⑧">
+              <defs>
+                <marker id="ah-g" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                  <path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"></path>
+                </marker>
+              </defs>
+              <!-- 方眼 7列×4行 -->
+              <g>
+                <line x1="36" y1="22" x2="484" y2="22" class="grid-line"></line>
+                <line x1="36" y1="86" x2="484" y2="86" class="grid-line"></line>
+                <line x1="36" y1="150" x2="484" y2="150" class="grid-line"></line>
+                <line x1="36" y1="214" x2="484" y2="214" class="grid-line"></line>
+                <line x1="36" y1="278" x2="484" y2="278" class="grid-line"></line>
+                <line x1="36" y1="22" x2="36" y2="278" class="grid-line"></line>
+                <line x1="100" y1="22" x2="100" y2="278" class="grid-line"></line>
+                <line x1="164" y1="22" x2="164" y2="278" class="grid-line"></line>
+                <line x1="228" y1="22" x2="228" y2="278" class="grid-line"></line>
+                <line x1="292" y1="22" x2="292" y2="278" class="grid-line"></line>
+                <line x1="356" y1="22" x2="356" y2="278" class="grid-line"></line>
+                <line x1="420" y1="22" x2="420" y2="278" class="grid-line"></line>
+                <line x1="484" y1="22" x2="484" y2="278" class="grid-line"></line>
+              </g>
+              <!-- 矢印8本：始点(col,row)→終点。x=36+64*col, y=22+64*row -->
+              <line x1="36" y1="150" x2="228" y2="22" stroke="var(--accent)" stroke-width="3.5" marker-end="url(#ah-g)"></line><!-- ① (0,2)→(3,0) -->
+              <line x1="356" y1="150" x2="228" y2="22" stroke="var(--accent)" stroke-width="3.5" marker-end="url(#ah-g)"></line><!-- ② (5,2)→(3,0) -->
+              <line x1="356" y1="86" x2="484" y2="22" stroke="var(--accent)" stroke-width="3.5" marker-end="url(#ah-g)"></line><!-- ③ (5,1)→(7,0) -->
+              <line x1="36" y1="214" x2="292" y2="86" stroke="var(--accent)" stroke-width="3.5" marker-end="url(#ah-g)"></line><!-- ④ (0,3)→(4,1) -->
+              <line x1="420" y1="214" x2="292" y2="150" stroke="var(--accent)" stroke-width="3.5" marker-end="url(#ah-g)"></line><!-- ⑤ (6,3)→(4,2) -->
+              <line x1="100" y1="214" x2="228" y2="278" stroke="var(--accent)" stroke-width="3.5" marker-end="url(#ah-g)"></line><!-- ⑥ (1,3)→(3,4) -->
+              <line x1="228" y1="278" x2="164" y2="214" stroke="var(--accent)" stroke-width="3.5" marker-end="url(#ah-g)"></line><!-- ⑦ (3,4)→(2,3) -->
+              <line x1="356" y1="278" x2="484" y2="150" stroke="var(--accent)" stroke-width="3.5" marker-end="url(#ah-g)"></line><!-- ⑧ (5,4)→(7,2) -->
+              <!-- 番号バッジ -->
+              <g font-size="15" font-weight="900" text-anchor="middle">
+                <circle cx="104" cy="74" r="13" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"></circle><text x="104" y="80" fill="var(--accent-deep)">1</text>
+                <circle cx="330" cy="62" r="13" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"></circle><text x="330" y="68" fill="var(--accent-deep)">2</text>
+                <circle cx="392" cy="34" r="13" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"></circle><text x="392" y="40" fill="var(--accent-deep)">3</text>
+                <circle cx="130" cy="128" r="13" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"></circle><text x="130" y="134" fill="var(--accent-deep)">4</text>
+                <circle cx="386" cy="196" r="13" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"></circle><text x="386" y="202" fill="var(--accent-deep)">5</text>
+                <circle cx="130" cy="262" r="13" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"></circle><text x="130" y="268" fill="var(--accent-deep)">6</text>
+                <circle cx="168" cy="236" r="13" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"></circle><text x="168" y="242" fill="var(--accent-deep)">7</text>
+                <circle cx="392" cy="232" r="13" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"></circle><text x="392" y="238" fill="var(--accent-deep)">8</text>
+              </g>
+            </svg>
+          </div>
+          <figcaption>番号は丸数字①〜⑧に対応。矢印ごとに「右に何マス、上に何マス」進むかを数えるのがカギ。</figcaption>
+        </figure>
+
+        <div class="tabs" role="tablist" aria-label="練習1の小問">
+          <button class="tab" role="tab" data-tab="ren1-1" aria-selected="true">(1) 等しい</button>
+          <button class="tab" role="tab" data-tab="ren1-2" aria-selected="false">(2) 大きさが等しい</button>
+          <button class="tab" role="tab" data-tab="ren1-3" aria-selected="false">(3) 向きが同じ</button>
+          <button class="tab" role="tab" data-tab="ren1-4" aria-selected="false">(4) 逆ベクトル</button>
+        </div>
+
+        <!-- (1) -->
+        <div class="tabpanel show" id="panel-ren1-1" data-flow="ren1-1" data-label="練習1 (1)">
+          <div class="prob-head">
+            <span class="sub prob-q" style="margin:0">(1) 等しいベクトル</span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 3</span>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 1 ― まず8本ぜんぶ「数える」</h3>
+            <p>各矢印について、始点から終点まで<b>「右に何マス、上に何マス」</b>進むかを数えよう（左・下に進むときはマイナスで表す）。数えた結果はこの表で確かめてね。</p>
+            <table class="comp">
+              <tr><th>番号</th><th>①</th><th>②</th><th>③</th><th>④</th><th>⑤</th><th>⑥</th><th>⑦</th><th>⑧</th></tr>
+              <tr><th>右へ</th><td>3</td><td>−2</td><td>2</td><td>4</td><td>−2</td><td>2</td><td>−1</td><td>2</td></tr>
+              <tr><th>上へ</th><td>2</td><td>2</td><td>1</td><td>2</td><td>1</td><td>−1</td><td>1</td><td>2</td></tr>
+            </table>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 2 ― 「等しい」の条件を確認</h3>
+            <p>ベクトルが等しいのは、<b>向きも大きさも両方とも同じ</b>とき。表でいえば、<b>「右へ」と「上へ」の数が両方とも完全一致</b>する組があれば、それが答えになる。</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 3 ― 組を1つずつ探す</h3>
+            <p>数が似ている組に注意しよう。たとえば③(2, 1)と⑥(2, −1)は「右へ」は同じでも「上へ」が違う。⑧(2, 2)と②(−2, 2)も「上へ」は同じでも「右へ」が違う。</p>
+            <p>8本をぜんぶ比べてみて、両方とも一致する組は見つかるかな…？</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (1)</h3>
+            <p class="big">等しいベクトルの組は、ない</p>
+            <p>「右へ・上へ」の数が両方とも一致する組は、8本の中に1組も存在しない。だから答えは「ない」になる。</p>
+            <p class="note"><b>ここが大事：</b>「大きさが等しいだけ」や「向きが同じだけ」では、<b>等しいベクトルとは言えない</b>。等しいと言えるのは、向きと大きさの<b>両方</b>が同じときに限る。この問題は、その条件を確認するための問題だよ。</p>
+          </div>
+          <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
+        </div>
+
+        <!-- (2) -->
+        <div class="tabpanel" id="panel-ren1-2" data-flow="ren1-2" data-label="練習1 (2)">
+          <div class="prob-head">
+            <span class="sub prob-q" style="margin:0">(2) 大きさが等しいベクトル</span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 3</span>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 1 ― まず8本ぜんぶ「数える」</h3>
+            <p>各矢印について、始点から終点まで<b>「右に何マス、上に何マス」</b>進むかを数えよう（左・下に進むときはマイナスで表す）。数えた結果はこの表で確かめてね。</p>
+            <table class="comp">
+              <tr><th>番号</th><th>①</th><th>②</th><th>③</th><th>④</th><th>⑤</th><th>⑥</th><th>⑦</th><th>⑧</th></tr>
+              <tr><th>右へ</th><td>3</td><td>−2</td><td>2</td><td>4</td><td>−2</td><td>2</td><td>−1</td><td>2</td></tr>
+              <tr><th>上へ</th><td>2</td><td>2</td><td>1</td><td>2</td><td>1</td><td>−1</td><td>1</td><td>2</td></tr>
+            </table>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 2 ― 大きさは「三平方の定理」で比べる</h3>
+            <p>（右へ x、上へ y）の矢印の大きさは <b>√(x²＋y²)</b>。√の中身 <b>x²＋y²</b> が等しい組同士が、大きさの等しい組になる。</p>
+            <p>だから、8本それぞれに x²＋y² を計算して、同じ値になるものを探せばよい。</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 3 ― x²＋y² を計算する</h3>
+            <p>① 13、② 8、③ 5、④ 20、⑤ 5、⑥ 5、⑦ 2、⑧ 8。</p>
+            <p>同じ値になったのは、どの番号とどの番号かな？　3つ同じ値になったものは、組の作り方に注意してね。</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (2)</h3>
+            <p class="big">②と⑧　／　③と⑤、③と⑥、⑤と⑥</p>
+            <p>②と⑧は大きさ <b>2√2</b>（x²＋y²＝8）。③、⑤、⑥は大きさ <b>√5</b>（x²＋y²＝5）で、この3本からは2本ずつの組が3通りできる。</p>
+            <p class="note">向きが違っていても、大きささえ等しければこの (2) の答えになる。(1) との違いがポイントだよ。</p>
+          </div>
+          <p class="prob-done">(2) クリア！　次の小問のタブを開いてみよう。</p>
+        </div>
+
+        <!-- (3) -->
+        <div class="tabpanel" id="panel-ren1-3" data-flow="ren1-3" data-label="練習1 (3)">
+          <div class="prob-head">
+            <span class="sub prob-q" style="margin:0">(3) 向きが同じベクトル</span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 3</span>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 1 ― まず8本ぜんぶ「数える」</h3>
+            <p>各矢印について、始点から終点まで<b>「右に何マス、上に何マス」</b>進むかを数えよう（左・下に進むときはマイナスで表す）。数えた結果はこの表で確かめてね。</p>
+            <table class="comp">
+              <tr><th>番号</th><th>①</th><th>②</th><th>③</th><th>④</th><th>⑤</th><th>⑥</th><th>⑦</th><th>⑧</th></tr>
+              <tr><th>右へ</th><td>3</td><td>−2</td><td>2</td><td>4</td><td>−2</td><td>2</td><td>−1</td><td>2</td></tr>
+              <tr><th>上へ</th><td>2</td><td>2</td><td>1</td><td>2</td><td>1</td><td>−1</td><td>1</td><td>2</td></tr>
+            </table>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 2 ― 向きが同じ ＝「数の比」が同じ</h3>
+            <p>たとえば（右へ2、上へ1）と（右へ4、上へ2）は、2倍に伸ばしただけで進む向きは同じ。このように、<b>（右へ）：（上へ）の比が等しい</b>組が、向きの同じ組になる。</p>
+            <p>逆に、符号が1つでも違うと向きは変わってしまうことにも注意。</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 3 ― 比を比べてみる</h3>
+            <p>⑦(−1, 1)を2倍すると (−2, 2)。これはどの番号と同じ数になるかな？</p>
+            <p>また③(2, 1)を2倍すると (4, 2)。これと同じ数の番号も探してみよう。</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (3)</h3>
+            <p class="big">②と⑦　／　③と④</p>
+            <p>②(−2, 2)は⑦(−1, 1)のちょうど2倍で、向きが同じ。④(4, 2)は③(2, 1)のちょうど2倍で、向きが同じ。</p>
+            <p class="note">向きが同じでも大きさが違えば、(1) の「等しいベクトル」にはならない。ここでも (1) との違いを確認しておこう。</p>
+          </div>
+          <p class="prob-done">(3) クリア！　次の小問のタブを開いてみよう。</p>
+        </div>
+
+        <!-- (4) -->
+        <div class="tabpanel" id="panel-ren1-4" data-flow="ren1-4" data-label="練習1 (4)">
+          <div class="prob-head">
+            <span class="sub prob-q" style="margin:0">(4) 互いに逆ベクトル</span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 3</span>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 1 ― まず8本ぜんぶ「数える」</h3>
+            <p>各矢印について、始点から終点まで<b>「右に何マス、上に何マス」</b>進むかを数えよう（左・下に進むときはマイナスで表す）。数えた結果はこの表で確かめてね。</p>
+            <table class="comp">
+              <tr><th>番号</th><th>①</th><th>②</th><th>③</th><th>④</th><th>⑤</th><th>⑥</th><th>⑦</th><th>⑧</th></tr>
+              <tr><th>右へ</th><td>3</td><td>−2</td><td>2</td><td>4</td><td>−2</td><td>2</td><td>−1</td><td>2</td></tr>
+              <tr><th>上へ</th><td>2</td><td>2</td><td>1</td><td>2</td><td>1</td><td>−1</td><td>1</td><td>2</td></tr>
+            </table>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 2 ― 逆ベクトルは「符号が両方反対」</h3>
+            <p>逆ベクトルは、大きさが等しくて向きが反対。数の表でいえば、<b>「右へ」の符号も「上へ」の符号も、両方とも反対</b>になっている組のことだ。</p>
+            <p>たとえば (2, 1) の逆ベクトルは (−2, −1) になる。</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 3 ― 大きさが等しい組の中から探す</h3>
+            <p>逆ベクトル同士は大きさが等しいはず。だから (2) で見つけた「大きさ√5」の3本 ③(2, 1)、⑤(−2, 1)、⑥(2, −1) の中に候補がある。</p>
+            <p>この中で、符号が<b>両方とも</b>反対になっているのは、どの組とどの組かな？</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (4)</h3>
+            <p class="big">⑤と⑥</p>
+            <p>⑤(−2, 1)と⑥(2, −1)は、右への数も上への数も符号が反対。大きさはどちらも√5で等しいので、互いに逆ベクトルの関係にある。</p>
+            <p class="note">③(2, 1)と⑤(−2, 1)は「右へ」の符号だけが反対で、向きは真逆ではない。両方の符号が反対、が条件だよ。</p>
+          </div>
+          <p class="prob-done">(4) クリア！　練習1 全小問が終わったら、下のまとめで確認しよう。</p>
+        </div>
+      </section>
+
+      <!-- ================= まとめ ================= -->
+      <section class="card summary">
+        <h2>この項のポイント</h2>
+        <ul>
+          <li><b>ベクトルは「向きと大きさ」をもつ量。</b>長さや温度のような「数値だけの量」とはここが違う。</li>
+          <li><b>位置は関係ない。</b>場所が違っても、向きと大きさが同じなら同じベクトル。</li>
+          <li><b>等しいベクトルの条件は「向きも大きさも両方同じ」。</b>片方だけでは「等しい」とは言えない。</li>
+          <li><b>逆ベクトル −<span class="v" style="padding-top:.4em">a</span></b> は、<span class="v" style="padding-top:.4em">a</span> と大きさが等しく向きが反対。<span class="v" style="padding-top:.4em">AB</span> の逆は <span class="v" style="padding-top:.4em">BA</span>、つまり <span class="v" style="padding-top:.4em">BA</span>＝−<span class="v" style="padding-top:.4em">AB</span>。</li>
+        </ul>
+      </section>
+
+      <!-- ================= フッター ================= -->
+      <footer>
+        <a class="back-btn" href="vectors.html" id="backToTop">← トップページに戻る</a>
+        <p class="foot-note">数学C 第1章 平面上のベクトル ｜ 1 ベクトル（教科書 p.8〜9）</p>
+      </footer>
+    </div>
+
+    <!-- ================= 下部固定バー ================= -->
+    <div class="ctrl-bar">
+      <div class="ctrl-inner">
+        <p class="ctrl-label">いまの課題：<b id="ctrlLabel">例1</b>　―　「次へ」でヒントを1つずつ開こう</p>
+        <div class="ctrl-btns">
+          <button class="btn" id="btnReset" type="button">最初からやり直す</button>
+          <button class="btn btn-next" id="btnNext" type="button">次へ ▶</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      (function(){
+        "use strict";
+
+        /* ---------- スライダー連動（SVG属性の更新のみ） ---------- */
+        var slider = document.getElementById('slideVec');
+        var group = document.getElementById('slideGroup');
+        var state = document.getElementById('slideState');
+        function applySlide(){
+          var v = parseInt(slider.value, 10);
+          group.setAttribute('transform', 'translate(' + v + ',0)');
+          if (v === 0) {
+            state.textContent = 'いちばん左。向きと大きさはこのまま → 同じベクトル';
+          } else if (v === 200) {
+            state.textContent = 'いちばん右まで動かしても、向きと大きさはそのまま → 同じベクトル';
+          } else {
+            state.textContent = '場所を動かしても、向きと大きさはそのまま → 同じベクトル';
+          }
+        }
+        slider.addEventListener('input', applySlide);
+        applySlide();
+
+        /* ---------- ヒント式フロー ---------- */
+        var flows = {};   // flowId -> {root, steps, dots, stateEl, doneEl, idx, label}
+        var activeId = 'ex1';
+
+        function registerFlow(root){
+          var id = root.getAttribute('data-flow');
+          var steps = Array.prototype.slice.call(root.querySelectorAll(':scope > .step'));
+          var head = root.querySelector(':scope > .prob-head');
+          var dots = head ? Array.prototype.slice.call(head.querySelectorAll('.dot')) : [];
+          var stateEl = head ? head.querySelector('.prob-state') : null;
+          var doneEl = root.querySelector(':scope > .prob-done');
+          flows[id] = {
+            id: id, root: root, steps: steps, dots: dots, stateEl: stateEl,
+            doneEl: doneEl, idx: 0, label: root.getAttribute('data-label') || id,
+            hintTotal: steps.filter(function(s){ return s.classList.contains('hint'); }).length
+          };
+        }
+        registerFlow(document.getElementById('prob-ex1'));
+        ['ren1-1','ren1-2','ren1-3','ren1-4'].forEach(function(id){
+          registerFlow(document.getElementById('panel-' + id));
+        });
+
+        var btnNext = document.getElementById('btnNext');
+        var btnReset = document.getElementById('btnReset');
+        var ctrlLabel = document.getElementById('ctrlLabel');
+        var ren1Card = document.getElementById('prob-ren1');
+        var ex1Card = document.getElementById('prob-ex1');
+
+        function refreshFlow(f){
+          f.steps.forEach(function(s, i){ s.classList.toggle('show', i < f.idx); });
+          f.dots.forEach(function(d, i){ d.classList.toggle('on', i < f.idx); });
+          if (f.stateEl){
+            if (f.idx === 0) f.stateEl.textContent = 'ヒント 0 / ' + f.hintTotal;
+            else if (f.idx <= f.hintTotal) f.stateEl.textContent = 'ヒント ' + f.idx + ' / ' + f.hintTotal;
+            else f.stateEl.textContent = '解答を表示済み';
+          }
+          if (f.doneEl) f.doneEl.classList.toggle('show', f.idx >= f.steps.length);
+        }
+        function refreshBar(){
+          var f = flows[activeId];
+          ctrlLabel.textContent = f.label;
+          if (f.idx >= f.steps.length){
+            btnNext.disabled = true;
+            btnNext.textContent = 'ぜんぶ開いたよ ✓';
+          } else if (f.idx === f.hintTotal){
+            btnNext.disabled = false;
+            btnNext.textContent = '解答を見る ▶';
+          } else {
+            btnNext.disabled = false;
+            btnNext.textContent = '次へ ▶（ヒント ' + (f.idx + 1) + '）';
+          }
+          ex1Card.classList.toggle('active', activeId === 'ex1');
+          ren1Card.classList.toggle('active', activeId !== 'ex1');
+        }
+        function setActive(id){
+          activeId = id;
+          refreshBar();
+        }
+
+        btnNext.addEventListener('click', function(){
+          var f = flows[activeId];
+          if (f.idx >= f.steps.length) return;
+          f.idx += 1;
+          refreshFlow(f);
+          refreshBar();
+          var shown = f.steps[f.idx - 1];
+          if (shown) shown.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        });
+        btnReset.addEventListener('click', function(){
+          var f = flows[activeId];
+          f.idx = 0;
+          refreshFlow(f);
+          refreshBar();
+          f.root.scrollIntoView({ block: 'start', behavior: 'smooth' });
+        });
+
+        /* カードを触ったら、その課題を操作対象にする */
+        ex1Card.addEventListener('click', function(){ setActive('ex1'); });
+        ren1Card.addEventListener('click', function(){
+          var visible = ren1Card.querySelector('.tabpanel.show');
+          if (visible) setActive(visible.getAttribute('data-flow'));
+        });
+
+        /* ---------- タブ切り替え ---------- */
+        var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+        tabs.forEach(function(tab){
+          tab.addEventListener('click', function(){
+            tabs.forEach(function(t){ t.setAttribute('aria-selected', t === tab ? 'true' : 'false'); });
+            var target = tab.getAttribute('data-tab');
+            ['ren1-1','ren1-2','ren1-3','ren1-4'].forEach(function(id){
+              document.getElementById('panel-' + id).classList.toggle('show', id === target);
+            });
+            setActive(target);
+          });
+        });
+
+        Object.keys(flows).forEach(function(id){ refreshFlow(flows[id]); });
+        refreshBar();
+      })();
+    </script>
+  </body>
+</html>
