@@ -1,0 +1,1572 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:," />
+    <title>数学C 4 ベクトルの内積 自習ページ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Serif+JP:wght@700;900&display=swap" rel="stylesheet" />
+    <style>
+      :root{
+        --bg:#f4f7f5;
+        --surface:#ffffff;
+        --surface2:#eef4f1;
+        --ink:#1d2a26;
+        --ink-soft:#43554e;
+        --line:#cfddd6;
+        --accent:#0e7a5f;
+        --accent-deep:#0a5c48;
+        --accent-soft:#e2f2ec;
+        --blue:#1f6fb4;
+        --orange:#d96c1e;
+        --red:#c2452d;
+        --hint-bg:#fff6cf;
+        --hint-line:#e3c84e;
+        --hint-ink:#4d4210;
+        --ans-bg:#e6f6ea;
+        --ans-line:#4caf6d;
+        --ans-ink:#14401f;
+        --bar-bg:rgba(255,255,255,.94);
+        --shadow:0 2px 10px rgba(20,50,40,.08);
+        --arrow-img:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 12' preserveAspectRatio='none'%3E%3Cpath d='M2 6 H90 M82 1.5 L91 6 L82 10.5' stroke='%231d2a26' stroke-width='2.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      }
+      @media (prefers-color-scheme: dark){
+        :root{
+          --bg:#101714;
+          --surface:#1a2420;
+          --surface2:#22302a;
+          --ink:#e8f0ec;
+          --ink-soft:#b3c4bc;
+          --line:#3a4a43;
+          --accent:#3cb894;
+          --accent-deep:#8fd8c0;
+          --accent-soft:#1d332b;
+          --blue:#6cb2e8;
+          --orange:#f09a4e;
+          --red:#f0836b;
+          --hint-bg:#3d3617;
+          --hint-line:#a68e2e;
+          --hint-ink:#f5e9bd;
+          --ans-bg:#17301e;
+          --ans-line:#3f9957;
+          --ans-ink:#c9eed2;
+          --bar-bg:rgba(20,28,24,.94);
+          --shadow:0 2px 10px rgba(0,0,0,.4);
+          --arrow-img:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 12' preserveAspectRatio='none'%3E%3Cpath d='M2 6 H90 M82 1.5 L91 6 L82 10.5' stroke='%23e8f0ec' stroke-width='2.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+        }
+      }
+      *{box-sizing:border-box}
+      html{scroll-behavior:smooth}
+      @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} *{transition:none!important} }
+      body{
+        margin:0; background:var(--bg); color:var(--ink);
+        font-family:"Noto Sans JP",system-ui,-apple-system,"Hiragino Kaku Gothic ProN",sans-serif;
+        line-height:1.85; font-size:16px;
+        padding-bottom:118px;
+      }
+      .wrap{max-width:780px;margin:0 auto;padding:0 16px 8px}
+
+      header{padding:26px 0 6px}
+      .badge{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:700;font-size:13px;
+        padding:4px 12px;border-radius:999px;letter-spacing:.04em;
+      }
+      @media (prefers-color-scheme: dark){ .badge{color:#0c1712} }
+      h1{
+        font-family:"Noto Serif JP",serif;font-weight:900;font-size:34px;line-height:1.3;
+        margin:12px 0 4px;letter-spacing:.02em;
+      }
+      .page-meta{color:var(--ink-soft);font-size:14px;font-weight:500}
+      .page-meta b{color:var(--accent-deep)}
+
+      .howto{
+        background:var(--accent-soft);border:1.5px solid var(--accent);border-radius:14px;
+        padding:14px 18px;margin:18px 0 26px;box-shadow:var(--shadow);
+      }
+      .howto h2{margin:0 0 6px;font-size:16px;color:var(--accent-deep)}
+      .howto ol{margin:0;padding-left:1.4em}
+      .howto li{margin:2px 0}
+      .howto .next-word{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:700;border-radius:6px;
+        padding:0 8px;font-size:.92em;
+      }
+      @media (prefers-color-scheme: dark){ .howto .next-word{color:#0c1712} }
+
+      .sec-head{display:flex;align-items:center;gap:10px;margin:34px 0 12px}
+      .sec-tag{
+        background:var(--ink);color:var(--bg);font-weight:900;font-size:14px;border-radius:8px;
+        padding:3px 10px;white-space:nowrap;
+      }
+      .sec-head h2{font-size:21px;margin:0;font-weight:900}
+      .sec-head .pno{margin-left:auto;color:var(--ink-soft);font-size:13px;white-space:nowrap}
+
+      .card{
+        background:var(--surface);border:1px solid var(--line);border-radius:14px;
+        padding:18px 18px 8px;margin:0 0 18px;box-shadow:var(--shadow);
+      }
+      .card p{margin:0 0 12px}
+      .def{
+        background:var(--surface2);border-radius:10px;padding:12px 16px;margin:0 0 14px;
+      }
+      .def p:last-child{margin-bottom:0}
+      .def ol,.def ul{margin:0;padding-left:1.4em}
+      .def li{margin:3px 0}
+      .key{font-weight:900;color:var(--accent-deep)}
+      figure{margin:6px 0 14px}
+      figure svg{width:100%;height:auto;display:block}
+      figcaption{font-size:13.5px;color:var(--ink-soft);text-align:center;margin-top:6px;line-height:1.6}
+      .figbox{background:var(--surface2);border-radius:12px;padding:12px 10px 6px}
+
+      .slider-row{display:flex;align-items:center;gap:12px;margin:4px 4px 10px}
+      .slider-row label{font-weight:700;font-size:14px;white-space:nowrap}
+      input[type=range]{flex:1;accent-color:var(--accent);height:32px}
+      .slider-state{font-weight:700;color:var(--accent-deep);text-align:center;font-size:15px;margin:0 0 10px}
+
+      .stage-btns{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:10px 0 2px}
+      .stage-btn{
+        font-family:inherit;font-size:13.5px;font-weight:700;cursor:pointer;
+        border:2px solid var(--line);background:var(--surface);color:var(--ink);
+        border-radius:999px;padding:4px 14px;
+      }
+      .stage-btn.on{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+      .stage-btn:active{transform:scale(.97)}
+
+      .legend{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;font-size:13.5px;font-weight:700;margin:2px 0 8px}
+      .legend span::before{content:"";display:inline-block;width:22px;height:5px;border-radius:3px;margin-right:6px;vertical-align:middle}
+      .legend .lg-a::before{background:var(--accent)}
+      .legend .lg-b::before{background:var(--blue)}
+      .legend .lg-r::before{background:var(--red)}
+
+      .v{
+        display:inline-block;position:relative;padding-top:.5em;line-height:1.1;
+        font-weight:700;font-style:normal;white-space:nowrap;
+      }
+      .v::before{
+        content:"";position:absolute;top:.02em;left:-.04em;right:-.04em;height:.34em;
+        background-image:var(--arrow-img);background-repeat:no-repeat;background-size:100% 100%;
+      }
+      .formula{
+        text-align:center;font-size:19px;font-weight:700;letter-spacing:.03em;
+        background:var(--surface2);border-radius:10px;padding:12px 8px;margin:0 0 14px;
+      }
+      .abs{font-weight:400}
+      .fr{white-space:nowrap}
+      .fr sup,.fr sub{font-size:.68em}
+      sub,sup{font-size:.72em}
+
+      .cos-table{width:100%;border-collapse:collapse;margin:0 0 14px;font-size:14px;text-align:center}
+      .cos-table th,.cos-table td{border:1px solid var(--line);padding:6px 1px}
+      .cos-table th{background:var(--surface2);font-weight:900}
+      .cos-table td{font-weight:700}
+
+      .column-card{border:1.5px dashed var(--accent)}
+      .column-card h3{margin:0 0 8px;font-size:16px;color:var(--accent-deep)}
+
+      .prob{border:2px solid var(--line);transition:border-color .2s}
+      .prob.active{border-color:var(--accent)}
+      .prob-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+      .prob-tag{
+        font-weight:900;font-size:14px;border-radius:8px;padding:3px 12px;color:#fff;background:var(--blue);
+      }
+      .prob-tag.ren{background:#c2452d}
+      @media (prefers-color-scheme: dark){ .prob-tag{color:#0d141b} .prob-tag.ren{color:#ffe9e2} }
+      .prob-state{margin-left:auto;font-size:13px;font-weight:700;color:var(--ink-soft)}
+      .dots{display:flex;gap:6px;align-items:center}
+      .dot{width:11px;height:11px;border-radius:50%;border:2px solid var(--ink-soft);background:transparent}
+      .dot.on{background:var(--accent);border-color:var(--accent)}
+      .dot.ans.on{background:#2f9e4f;border-color:#2f9e4f}
+      .prob-q{font-weight:700;font-size:16.5px;margin:0 0 10px}
+
+      .step{display:none;margin:0 0 12px;border-radius:12px;padding:12px 16px 4px;scroll-margin-bottom:130px}
+      .step.show{display:block;animation:pop .25s ease}
+      @keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+      .step h3{margin:0 0 6px;font-size:14px;font-weight:900;letter-spacing:.05em}
+      .step p{margin:0 0 10px}
+      .hint{background:var(--hint-bg);border:1.5px solid var(--hint-line);color:var(--hint-ink)}
+      .hint h3{color:inherit}
+      .answer{background:var(--ans-bg);border:1.5px solid var(--ans-line);color:var(--ans-ink)}
+      .answer .big{font-size:18px;font-weight:900;text-align:center;margin:4px 0 10px}
+      .note{font-size:14px;border-top:1px dashed currentColor;padding-top:8px;margin-top:2px}
+      .prob-done{
+        display:none;text-align:center;font-weight:900;color:var(--accent-deep);
+        padding:2px 0 12px;font-size:15px;
+      }
+      .prob-done.show{display:block}
+
+      .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}
+      .tab{
+        font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;
+        border:2px solid var(--line);background:var(--surface);color:var(--ink);
+        border-radius:999px;padding:6px 18px;
+      }
+      .tab[aria-selected=true]{background:var(--accent);border-color:var(--accent);color:#fff}
+      @media (prefers-color-scheme: dark){ .tab[aria-selected=true]{color:#0c1712} }
+      .tabpanel{display:none}
+      .tabpanel.show{display:block}
+
+      .summary{border:2px solid var(--accent);background:var(--accent-soft)}
+      .summary h2{margin:0 0 8px;font-size:18px;color:var(--accent-deep)}
+      .summary ul{margin:0;padding-left:1.3em}
+      .summary li{margin:4px 0}
+
+      footer{margin:30px 0 10px;text-align:center}
+      .back-btn{
+        display:inline-block;text-decoration:none;font-weight:700;color:var(--ink);
+        border:2px solid var(--line);background:var(--surface);border-radius:12px;padding:12px 26px;
+      }
+      .foot-note{color:var(--ink-soft);font-size:13px;margin-top:12px}
+
+      .ctrl-bar{
+        position:fixed;left:0;right:0;bottom:0;z-index:50;background:var(--bar-bg);
+        backdrop-filter:blur(8px);border-top:1.5px solid var(--line);
+        padding:10px 14px calc(10px + env(safe-area-inset-bottom));
+      }
+      .ctrl-inner{max-width:780px;margin:0 auto}
+      .ctrl-label{font-size:13px;font-weight:700;color:var(--ink-soft);margin:0 0 8px;text-align:center}
+      .ctrl-label b{color:var(--accent-deep)}
+      .ctrl-btns{display:flex;gap:10px}
+      .btn{
+        font-family:inherit;cursor:pointer;border-radius:12px;font-weight:900;border:2px solid var(--line);
+        background:var(--surface);color:var(--ink);padding:12px 14px;font-size:15px;
+      }
+      .btn-next{
+        flex:1;background:var(--accent);border-color:var(--accent);color:#fff;font-size:18px;padding:12px;
+      }
+      @media (prefers-color-scheme: dark){ .btn-next{color:#0c1712} }
+      .btn-next:disabled{background:var(--surface2);border-color:var(--line);color:var(--ink-soft);cursor:default}
+      .btn:active{transform:scale(.98)}
+
+      .svg-txt{font-family:"Noto Sans JP",sans-serif;font-weight:700;fill:var(--ink)}
+      .svg-txt-soft{font-family:"Noto Sans JP",sans-serif;fill:var(--ink-soft)}
+      .grid-line{stroke:var(--line);stroke-width:1}
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+
+      <!-- ================= ヘッダー ================= -->
+      <header>
+        <span class="badge">数学C　第1章　平面上のベクトル</span>
+        <h1>4　ベクトルの内積</h1>
+        <p class="page-meta">教科書 <b>p.22〜28</b>　｜　第1節 ベクトルとその演算</p>
+      </header>
+
+      <!-- ================= 使い方 ================= -->
+      <section class="howto" aria-label="使い方">
+        <h2>このページの使い方（自習の流れ）</h2>
+        <ol>
+          <li><b>解説</b>を読んで、図でイメージをつかむ（スライダーを動かして、角度と内積の符号の関係を確かめよう）</li>
+          <li><b>例・例題</b>をヒントで解く ― 分からなければ下の <span class="next-word">次へ</span> でヒントを1つずつ開く</li>
+          <li><b>練習問題</b>に挑戦 ― 答えは最後のヒントのあとに出てくるよ</li>
+        </ol>
+      </section>
+
+      <!-- ================= 解説A ベクトルの内積 ================= -->
+      <div class="sec-head">
+        <span class="sec-tag">解説 A</span>
+        <h2>ベクトルの内積</h2>
+        <span class="pno">教科書 p.22〜23</span>
+      </div>
+
+      <section class="card">
+        <div class="def">
+          <p><span class="key">なす角</span>：<span class="v">0</span> でない2つのベクトル <span class="v">a</span>、<span class="v">b</span> について、1点Oを定め、<span class="v">a</span>＝<span class="v">OA</span>、<span class="v">b</span>＝<span class="v">OB</span> となる点A、Bをとる。このようにして定まる ∠AOB の大きさ θ を、<span class="v">a</span> と <span class="v">b</span> の<span class="key">なす角</span>という。ただし、<b>0°≦θ≦180°</b> である。</p>
+          <p>ポイントは、2つのベクトルの<b>始点を1点にそろえて</b>から測る角度だということ。もとの図で離れた場所に描かれていても、平行移動して始点をそろえる。</p>
+        </div>
+        <div class="def">
+          <p><span class="key">内積の定義</span>：<span class="v">0</span> でない2つのベクトル <span class="v">a</span> と <span class="v">b</span> のなす角を θ とすると</p>
+          <p style="text-align:center;font-size:19px"><b><span class="v">a</span>・<span class="v">b</span>＝<span class="abs">|</span><span class="v">a</span><span class="abs">|</span><span class="abs">|</span><span class="v">b</span><span class="abs">|</span>cosθ</b></p>
+          <p>この <span class="abs">|</span><span class="v">a</span><span class="abs">|</span><span class="abs">|</span><span class="v">b</span><span class="abs">|</span>cosθ を <span class="v">a</span> と <span class="v">b</span> の<span class="key">内積</span>といい、<span class="v">a</span>・<span class="v">b</span> と表す（この量は、三角形OABに余弦定理を使ったときに現れる）。</p>
+          <p><span class="v">a</span>＝<span class="v">0</span> または <span class="v">b</span>＝<span class="v">0</span> のときは、<b><span class="v">a</span>・<span class="v">b</span>＝0</b> と定める。</p>
+        </div>
+        <p><b>注意：</b>内積 <span class="v">a</span>・<span class="v">b</span> は、名前は「積」でも<span class="key">ベクトルではなく実数（ただの数）</span>である。答えに矢印はつかないし、正の数にも負の数にも0にもなる。符号は cosθ が決める：θ が鋭角（90°より小さい）なら正、θ＝90° なら 0、θ が鈍角（90°より大きい）なら負になる。</p>
+        <figure>
+          <div class="figbox">
+            <svg viewBox="0 0 520 340" role="img" aria-label="内積スライダー連動図。共通の始点Oから出る2本の矢印a、bとなす角θ">
+              <defs>
+                <marker id="ip-a" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"></path></marker>
+                <marker id="ip-b" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--blue)"></path></marker>
+              </defs>
+              <!-- a→（固定） -->
+              <line x1="200" y1="250" x2="354" y2="178" stroke="var(--accent)" stroke-width="4.5" marker-end="url(#ip-a)"></line>
+              <!-- θの弧（JSで更新） -->
+              <path id="ipArc" d="" fill="none" stroke="var(--red)" stroke-width="2.5"></path>
+              <!-- b→（JSで更新） -->
+              <line id="ipLineB" x1="200" y1="250" x2="270" y2="129" stroke="var(--blue)" stroke-width="4.5" marker-end="url(#ip-b)"></line>
+              <circle cx="200" cy="250" r="5" fill="var(--ink)"></circle>
+              <circle id="ipDotB" cx="270" cy="129" r="5" fill="var(--ink)"></circle>
+              <text x="182" y="276" class="svg-txt" font-size="16">O</text>
+              <text x="330" y="164" class="svg-txt" font-size="16" fill="var(--accent-deep)"><tspan font-style="italic">a</tspan>→</text>
+              <text x="366" y="184" class="svg-txt-soft" font-size="13">|<tspan font-style="italic">a</tspan>→|＝2</text>
+              <text id="ipLabelB" x="252" y="112" class="svg-txt" font-size="16" fill="var(--blue)"><tspan font-style="italic">b</tspan>→</text>
+              <text id="ipLabelBLen" x="196" y="112" class="svg-txt-soft" font-size="13">|<tspan font-style="italic">b</tspan>→|＝3</text>
+              <text id="ipTheta" x="252" y="196" class="svg-txt" font-size="17" fill="var(--red)">θ</text>
+            </svg>
+          </div>
+          <div class="slider-row">
+            <label for="ipRange">なす角 θ</label>
+            <input type="range" id="ipRange" min="0" max="180" step="15" value="60" />
+            <span id="ipThetaVal" style="font-weight:900;min-width:4ch;text-align:right">60°</span>
+          </div>
+          <div class="stage-btns" role="group" aria-label="代表的な角度">
+            <button class="stage-btn" type="button" data-angle="45">θ＝45°</button>
+            <button class="stage-btn" type="button" data-angle="90">θ＝90°</button>
+            <button class="stage-btn" type="button" data-angle="120">θ＝120°</button>
+            <button class="stage-btn" type="button" data-angle="180">θ＝180°</button>
+          </div>
+          <p class="slider-state" id="ipState">θ＝60°　cosθ＝1/2　a→・b→＝2×3×(1/2)＝3（正の値）</p>
+          <figcaption><span class="abs">|</span><span class="v" style="padding-top:.4em">a</span><span class="abs">|</span>＝2、<span class="abs">|</span><span class="v" style="padding-top:.4em">b</span><span class="abs">|</span>＝3 と固定して、θ だけを動かしている。θ＝90° で内積は 0 になり、θ が鈍角になると cosθ が負になるので内積も負になることを確かめよう。</figcaption>
+        </figure>
+        <p>計算でよく使う cosθ の値を、早見表で復習しておこう。</p>
+        <table class="cos-table" aria-label="cosθの早見表">
+          <tr><th>θ</th><th>0°</th><th>30°</th><th>45°</th><th>60°</th><th>90°</th><th>120°</th><th>135°</th><th>150°</th><th>180°</th></tr>
+          <tr><th>cosθ</th><td>1</td><td>√3/2</td><td>1/√2</td><td>1/2</td><td>0</td><td>−1/2</td><td>−1/√2</td><td>−√3/2</td><td>−1</td></tr>
+        </table>
+        <p>90° を境に符号が変わること、120°・135°・150° は 60°・45°・30° の値にマイナスがついたもの、と覚えると速い。</p>
+      </section>
+
+      <!-- 例9 -->
+      <section class="card prob" data-flow="ex9" data-label="例9">
+        <div class="prob-head">
+          <span class="prob-tag">例 9</span>
+          <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+          <span class="prob-state">ヒント 0 / 2</span>
+        </div>
+        <p class="prob-q"><span class="abs">|</span><span class="v">a</span><span class="abs">|</span>＝2、<span class="abs">|</span><span class="v">b</span><span class="abs">|</span>＝3 で、<span class="v">a</span> と <span class="v">b</span> のなす角 θ が θ＝60° のとき、内積 <span class="v">a</span>・<span class="v">b</span> を求めよ。</p>
+        <div class="step hint">
+          <h3>ヒント 1 ― 定義の式に3つの数を当てはめる</h3>
+          <p>内積の定義は <span class="v">a</span>・<span class="v">b</span>＝<span class="abs">|</span><span class="v">a</span><span class="abs">|</span><span class="abs">|</span><span class="v">b</span><span class="abs">|</span>cosθ。必要なのは「<span class="v">a</span> の大きさ」「<span class="v">b</span> の大きさ」「cosθ」の3つだけだ。この問題では 2 と 3 がすでに与えられているから、あとは cos60° の値を思い出すだけだよ。</p>
+        </div>
+        <div class="step hint">
+          <h3>ヒント 2 ― cos60° の値を使う</h3>
+          <p>上の早見表の通り cos60°＝<span class="fr"><sup>1</sup>/<sub>2</sub></span>。だから計算は 2×3×<span class="fr"><sup>1</sup>/<sub>2</sub></span> になる。まず 2×3＝6 を計算してから、<span class="fr"><sup>1</sup>/<sub>2</sub></span> を掛けてみよう。</p>
+        </div>
+        <div class="step answer">
+          <h3>解答</h3>
+          <p class="big"><span class="v">a</span>・<span class="v">b</span>＝3</p>
+          <p><span class="v">a</span>・<span class="v">b</span>＝<span class="abs">|</span><span class="v">a</span><span class="abs">|</span><span class="abs">|</span><span class="v">b</span><span class="abs">|</span>cosθ＝2×3×cos60°＝2×3×<span class="fr"><sup>1</sup>/<sub>2</sub></span>＝3。</p>
+          <p class="note">答えは「3」というただの数。内積はベクトルではないので、矢印はつけない。</p>
+        </div>
+        <p class="prob-done">例9 クリア！　次は練習17で、同じ型を2問解いてみよう。</p>
+      </section>
+
+      <!-- 練習17 -->
+      <section class="card prob" id="prob-ren17">
+        <div class="prob-head">
+          <span class="prob-tag ren">練習 17</span>
+          <span class="prob-state">下のタブで小問を選んでね</span>
+        </div>
+        <p class="prob-q"><span class="v">a</span> と <span class="v">b</span> のなす角を θ とする。次の場合に内積 <span class="v">a</span>・<span class="v">b</span> を求めよ。</p>
+        <div class="tabs" role="tablist" aria-label="練習17の小問">
+          <button class="tab" role="tab" data-tab="ren17-1" aria-selected="true">(1)</button>
+          <button class="tab" role="tab" data-tab="ren17-2" aria-selected="false">(2)</button>
+        </div>
+
+        <!-- 練習17 (1) -->
+        <div class="tabpanel show" id="panel-ren17-1" data-flow="ren17-1" data-label="練習17 (1)">
+          <div class="prob-head">
+            <span class="prob-q" style="margin:0">(1)　<span class="abs">|</span><span class="v">a</span><span class="abs">|</span>＝4、<span class="abs">|</span><span class="v">b</span><span class="abs">|</span>＝3、θ＝45°</span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 2</span>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 1 ― 例9とまったく同じ型</h3>
+            <p>定義の式 <span class="v">a</span>・<span class="v">b</span>＝<span class="abs">|</span><span class="v">a</span><span class="abs">|</span><span class="abs">|</span><span class="v">b</span><span class="abs">|</span>cosθ に、4 と 3 を当てはめる。計算は 4×3×cos45° の形になる。まず 4×3＝12 を出しておこう。</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 2 ― cos45°＝1/√2 を掛けて、有理化する</h3>
+            <p>12×<span class="fr"><sup>1</sup>/<sub>√2</sub></span> を計算する。分母の √2 を有理化すると <span class="fr"><sup>12</sup>/<sub>√2</sub></span>＝<span class="fr"><sup>12√2</sup>/<sub>2</sub></span> になるから、あとは約分するだけだ。</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (1)</h3>
+            <p class="big"><span class="v">a</span>・<span class="v">b</span>＝6√2</p>
+            <p><span class="v">a</span>・<span class="v">b</span>＝4×3×cos45°＝12×<span class="fr"><sup>1</sup>/<sub>√2</sub></span>＝<span class="fr"><sup>12</sup>/<sub>√2</sub></span>＝6√2。</p>
+          </div>
+          <p class="prob-done">(1) クリア！　(2) のタブを開いてみよう。</p>
+        </div>
+
+        <!-- 練習17 (2) -->
+        <div class="tabpanel" id="panel-ren17-2" data-flow="ren17-2" data-label="練習17 (2)">
+          <div class="prob-head">
+            <span class="prob-q" style="margin:0">(2)　<span class="abs">|</span><span class="v">a</span><span class="abs">|</span>＝6、<span class="abs">|</span><span class="v">b</span><span class="abs">|</span>＝6、θ＝150°</span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 2</span>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 1 ― θ が鈍角だから、答えは負になるはず</h3>
+            <p>まず符号の見当をつけよう。θ＝150° は鈍角だから cos150° は負。したがって内積も負の数になる。計算の型は同じで、6×6×cos150° だ。6×6＝36 を先に出しておこう。</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 2 ― cos150° は cos30° にマイナス</h3>
+            <p>早見表の通り cos150°＝−<span class="fr"><sup>√3</sup>/<sub>2</sub></span>。36×(−<span class="fr"><sup>√3</sup>/<sub>2</sub></span>) を計算する。36÷2＝18 だから、答えは −18×√3 の形になるよ。</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (2)</h3>
+            <p class="big"><span class="v">a</span>・<span class="v">b</span>＝−18√3</p>
+            <p><span class="v">a</span>・<span class="v">b</span>＝6×6×cos150°＝36×(−<span class="fr"><sup>√3</sup>/<sub>2</sub></span>)＝−18√3。鈍角だから負になる、という見当と一致したね。</p>
+          </div>
+          <p class="prob-done">(2) クリア！　練習17はこれで終わり。次は例10で「なす角の取り方」を学ぼう。</p>
+        </div>
+      </section>
+
+      <!-- 例10 -->
+      <section class="card prob" data-flow="ex10" data-label="例10">
+        <div class="prob-head">
+          <span class="prob-tag">例 10</span>
+          <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+          <span class="prob-state">ヒント 0 / 3</span>
+        </div>
+        <p class="prob-q">右の図の直角三角形ABCにおいて、内積 <span class="v">AB</span>・<span class="v">BC</span> を求めよ。ただし、∠C＝90°、∠A＝30°、AB＝2、BC＝1、AC＝√3 である。</p>
+        <figure>
+          <div class="figbox">
+            <svg viewBox="0 0 520 340" role="img" aria-label="例10の直角三角形ABC。Aが左、Bが右、CがBの左上。AB→とBC→のなす角θは外側の120度">
+              <defs>
+                <marker id="e10-a" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"></path></marker>
+                <marker id="e10-b" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--blue)"></path></marker>
+              </defs>
+              <!-- ABの延長線（破線） -->
+              <line x1="440" y1="290" x2="508" y2="290" stroke="var(--ink-soft)" stroke-width="1.8" stroke-dasharray="6 5"></line>
+              <!-- 辺AC -->
+              <line x1="60" y1="290" x2="345" y2="126" stroke="var(--ink)" stroke-width="2.2"></line>
+              <!-- θの弧（Bの外側） -->
+              <path d="M486 290 A46 46 0 0 0 417 250" fill="none" stroke="var(--red)" stroke-width="2.5"></path>
+              <!-- AB→ -->
+              <line x1="60" y1="290" x2="430" y2="290" stroke="var(--accent)" stroke-width="4" marker-end="url(#e10-a)"></line>
+              <!-- BC→ -->
+              <line x1="440" y1="290" x2="349" y2="136" stroke="var(--blue)" stroke-width="4" marker-end="url(#e10-b)"></line>
+              <!-- Cの直角マーク -->
+              <polyline points="331,134 339,148 353,140" fill="none" stroke="var(--ink)" stroke-width="1.8"></polyline>
+              <!-- Aの30°の弧 -->
+              <path d="M100 290 A40 40 0 0 0 95 270" fill="none" stroke="var(--ink-soft)" stroke-width="1.8"></path>
+              <circle cx="60" cy="290" r="4" fill="var(--ink)"></circle>
+              <circle cx="440" cy="290" r="4" fill="var(--ink)"></circle>
+              <circle cx="345" cy="126" r="4" fill="var(--ink)"></circle>
+              <text x="42" y="316" class="svg-txt" font-size="16">A</text>
+              <text x="448" y="316" class="svg-txt" font-size="16">B</text>
+              <text x="337" y="108" class="svg-txt" font-size="16">C</text>
+              <text x="118" y="282" class="svg-txt-soft" font-size="13">30°</text>
+              <text x="382" y="266" class="svg-txt-soft" font-size="13">60°</text>
+              <text x="472" y="228" class="svg-txt" font-size="16" fill="var(--red)">θ</text>
+              <text x="242" y="318" class="svg-txt" font-size="14">2</text>
+              <text x="404" y="216" class="svg-txt" font-size="14">1</text>
+              <text x="176" y="192" class="svg-txt" font-size="14">√3</text>
+              <text x="222" y="272" class="svg-txt" font-size="14" fill="var(--accent-deep)"><tspan font-style="italic">AB</tspan>→</text>
+              <text x="392" y="176" class="svg-txt" font-size="14" fill="var(--blue)"><tspan font-style="italic">BC</tspan>→</text>
+            </svg>
+          </div>
+          <figcaption><span class="v" style="padding-top:.4em">AB</span> は A→B の矢印（右向き）、<span class="v" style="padding-top:.4em">BC</span> は B→C の矢印（左上向き）。なす角 θ は、2本の矢印の<b>始点をそろえたとき</b>の角度だから、三角形の内角 60° ではなく、その外側の角になる。</figcaption>
+        </figure>
+        <div class="step hint">
+          <h3>ヒント 1 ― まず「なす角 θ」を決めるのが先</h3>
+          <p>内積の式には <span class="abs">|</span><span class="v">AB</span><span class="abs">|</span>＝2 と <span class="abs">|</span><span class="v">BC</span><span class="abs">|</span>＝1 がすでにある。足りないのは θ だけだ。ただし θ は、<span class="v">AB</span> と <span class="v">BC</span> の<b>始点をそろえたとき</b>の角度で、三角形の内角とは限らない。ここを間違えないようにしよう。</p>
+        </div>
+        <div class="step hint">
+          <h3>ヒント 2 ― <span class="v">AB</span> を B の位置まで平行移動して考える</h3>
+          <p><span class="v">AB</span> は「右向き」の矢印。これを始点が B に重なるように平行移動すると、B から右向きに出る矢印になる（図の破線の向き）。一方 <span class="v">BC</span> は B から左上に出る。この2本の間の角が θ だ。</p>
+          <p>三角形の内角 ∠B は 180°−90°−30°＝60° で、θ はその隣の外側の角。直線は 180° だから、θ＝180°−60° と計算できる。</p>
+        </div>
+        <div class="step hint">
+          <h3>ヒント 3 ― θ＝120° を式に当てはめる</h3>
+          <p>θ＝120° と分かった。あとは定義通り <span class="v">AB</span>・<span class="v">BC</span>＝<span class="abs">|</span><span class="v">AB</span><span class="abs">|</span><span class="abs">|</span><span class="v">BC</span><span class="abs">|</span>cos120° を計算する。cos120° は早見表の通り負の値だよ。</p>
+        </div>
+        <div class="step answer">
+          <h3>解答</h3>
+          <p class="big"><span class="v">AB</span>・<span class="v">BC</span>＝−1</p>
+          <p><span class="v">AB</span> と <span class="v">BC</span> のなす角は θ＝180°−60°＝120° であるから</p>
+          <p style="text-align:center"><span class="v">AB</span>・<span class="v">BC</span>＝<span class="abs">|</span><span class="v">AB</span><span class="abs">|</span><span class="abs">|</span><span class="v">BC</span><span class="abs">|</span>cos120°＝2×1×(−<span class="fr"><sup>1</sup>/<sub>2</sub></span>)＝−1</p>
+          <p class="note"><b>いちばんのポイント：</b>なす角は「始点をそろえた角」。図形の内角をそのまま使うと 60° になって符号が逆になる。この問題の狙いはそこだ。</p>
+        </div>
+        <p class="prob-done">例10 クリア！　次は練習18で、同じ三角形の別の内積に挑戦しよう。</p>
+      </section>
+
+      <!-- 練習18 -->
+      <section class="card prob" id="prob-ren18">
+        <div class="prob-head">
+          <span class="prob-tag ren">練習 18</span>
+          <span class="prob-state">下のタブで小問を選んでね</span>
+        </div>
+        <p class="prob-q">例10の直角三角形ABC（∠C＝90°、∠A＝30°、AB＝2、BC＝1、AC＝√3）において、次の内積を求めよ。</p>
+        <figure>
+          <div class="figbox">
+            <svg viewBox="0 0 520 340" role="img" aria-label="練習18の直角三角形ABC。例10と同じ図">
+              <defs>
+                <marker id="e18-a" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--ink-soft)"></path></marker>
+              </defs>
+              <line x1="60" y1="290" x2="345" y2="126" stroke="var(--ink)" stroke-width="2.2"></line>
+              <line x1="60" y1="290" x2="430" y2="290" stroke="var(--ink-soft)" stroke-width="3" marker-end="url(#e18-a)"></line>
+              <line x1="440" y1="290" x2="345" y2="126" stroke="var(--ink)" stroke-width="2.2"></line>
+              <polyline points="331,134 339,148 353,140" fill="none" stroke="var(--ink)" stroke-width="1.8"></polyline>
+              <path d="M100 290 A40 40 0 0 0 95 270" fill="none" stroke="var(--ink-soft)" stroke-width="1.8"></path>
+              <circle cx="60" cy="290" r="4" fill="var(--ink)"></circle>
+              <circle cx="440" cy="290" r="4" fill="var(--ink)"></circle>
+              <circle cx="345" cy="126" r="4" fill="var(--ink)"></circle>
+              <text x="42" y="316" class="svg-txt" font-size="16">A</text>
+              <text x="448" y="316" class="svg-txt" font-size="16">B</text>
+              <text x="337" y="108" class="svg-txt" font-size="16">C</text>
+              <text x="118" y="282" class="svg-txt-soft" font-size="13">30°</text>
+              <text x="382" y="266" class="svg-txt-soft" font-size="13">60°</text>
+              <text x="242" y="318" class="svg-txt" font-size="14">2</text>
+              <text x="404" y="216" class="svg-txt" font-size="14">1</text>
+              <text x="176" y="192" class="svg-txt" font-size="14">√3</text>
+            </svg>
+          </div>
+          <figcaption>例10と同じ三角形。どちらの小問も、出発点は「2本の矢印の始点をそろえたら、間の角は何度か」を考えること。</figcaption>
+        </figure>
+        <div class="tabs" role="tablist" aria-label="練習18の小問">
+          <button class="tab" role="tab" data-tab="ren18-1" aria-selected="true">(1)</button>
+          <button class="tab" role="tab" data-tab="ren18-2" aria-selected="false">(2)</button>
+        </div>
+
+        <!-- 練習18 (1) -->
+        <div class="tabpanel show" id="panel-ren18-1" data-flow="ren18-1" data-label="練習18 (1)">
+          <div class="prob-head">
+            <span class="prob-q" style="margin:0">(1)　<span class="v">BA</span>・<span class="v">AC</span></span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 2</span>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 1 ― 2本の矢印の向きを確認する</h3>
+            <p><span class="v">BA</span> は B→A の矢印で、左向き。<span class="abs">|</span><span class="v">BA</span><span class="abs">|</span>＝AB＝2 だ。<span class="v">AC</span> は A→C の矢印で、右上向き。<span class="abs">|</span><span class="v">AC</span><span class="abs">|</span>＝√3。この2本の始点をそろえたときの角が何度か、図で指さして考えてみよう。</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 2 ― なす角は 150°</h3>
+            <p><span class="v">AC</span> を B の位置まで平行移動すると、B から右上（水平から 30° 上向き）に出る矢印になる。<span class="v">BA</span> は B から左向き。この2本の間の角は 180°−30°＝150° だ。あとは 2×√3×cos150° を計算しよう。cos150°＝−<span class="fr"><sup>√3</sup>/<sub>2</sub></span> だよ。</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (1)</h3>
+            <p class="big"><span class="v">BA</span>・<span class="v">AC</span>＝−3</p>
+            <p><span class="v">BA</span> と <span class="v">AC</span> のなす角は 150° であるから、<span class="v">BA</span>・<span class="v">AC</span>＝2×√3×cos150°＝2×√3×(−<span class="fr"><sup>√3</sup>/<sub>2</sub></span>)＝−√3×√3＝−3。</p>
+          </div>
+          <p class="prob-done">(1) クリア！　(2) のタブを開いてみよう。</p>
+        </div>
+
+        <!-- 練習18 (2) -->
+        <div class="tabpanel" id="panel-ren18-2" data-flow="ren18-2" data-label="練習18 (2)">
+          <div class="prob-head">
+            <span class="prob-q" style="margin:0">(2)　<span class="v">AC</span>・<span class="v">BC</span></span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 2</span>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 1 ― 2本とも「C に向かう／C から出る」矢印として見る</h3>
+            <p><span class="v">AC</span> は A→C、<span class="v">BC</span> は B→C。始点をそろえるために、<span class="v">AC</span> を平行移動して始点を C に合わせると、C から「A とは反対の向き」に出る矢印になる……と難しく考えなくてもよい。実は、<span class="v">CA</span> と <span class="v">CB</span> のなす角が ∠C＝90° で、<span class="v">AC</span> は <span class="v">CA</span> の逆向き、という関係に気づくのが近道だ。</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 2 ― なす角は 90°、cos90°＝0</h3>
+            <p><span class="v">AC</span> と <span class="v">BC</span> のなす角は 90° になる（辺ACと辺BCがCで直交していることの現れだ）。cos90°＝0 だから、大きさ <span class="abs">|</span><span class="v">AC</span><span class="abs">|</span>＝√3、<span class="abs">|</span><span class="v">BC</span><span class="abs">|</span>＝1 を掛けても、答えは 0 になる。</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (2)</h3>
+            <p class="big"><span class="v">AC</span>・<span class="v">BC</span>＝0</p>
+            <p><span class="v">AC</span> と <span class="v">BC</span> のなす角は 90° であるから、<span class="v">AC</span>・<span class="v">BC</span>＝√3×1×cos90°＝0。</p>
+            <p class="note">「なす角 90° ⇔ 内積 0」は、このあと解説Cの<b>垂直条件</b>として主役になる。ここで先に感覚をつかんでおこう。</p>
+          </div>
+          <p class="prob-done">(2) クリア！　練習18はこれで終わり。次は解説Bへ進もう。</p>
+        </div>
+      </section>
+
+      <!-- ================= 解説B 成分による内積の表示 ================= -->
+      <div class="sec-head">
+        <span class="sec-tag">解説 B</span>
+        <h2>成分による内積の表示</h2>
+        <span class="pno">教科書 p.23〜24</span>
+      </div>
+
+      <section class="card">
+        <div class="def">
+          <p><span class="v">a</span>＝(a<sub>1</sub>, a<sub>2</sub>)、<span class="v">b</span>＝(b<sub>1</sub>, b<sub>2</sub>) のとき</p>
+          <p style="text-align:center;font-size:19px"><b><span class="v">a</span>・<span class="v">b</span>＝a<sub>1</sub>b<sub>1</sub>＋a<sub>2</sub>b<sub>2</sub></b></p>
+          <p>つまり、<span class="key">x成分同士、y成分同士を掛けて、それを足す</span>だけで内積が求められる。角度 θ が分からなくても計算できるのが、この表示の強みだ。</p>
+        </div>
+        <p>なぜこの式になるのか、あらすじだけ触れておく。<span class="abs">|</span><span class="v">a</span>−<span class="v">b</span><span class="abs">|</span><sup>2</sup> を2通りに表すと、一方は余弦定理から <span class="abs">|</span><span class="v">a</span><span class="abs">|</span><sup>2</sup>＋<span class="abs">|</span><span class="v">b</span><span class="abs">|</span><sup>2</sup>−2(<span class="v">a</span>・<span class="v">b</span>)、他方は成分で計算すると (a<sub>1</sub>−b<sub>1</sub>)<sup>2</sup>＋(a<sub>2</sub>−b<sub>2</sub>)<sup>2</sup> になる。この2つを見比べると、上の成分の式が出てくる。</p>
+        <p>この成分の式は、<span class="v">a</span>＝<span class="v">0</span> または <span class="v">b</span>＝<span class="v">0</span> のときにも成り立つ。</p>
+      </section>
+
+      <!-- 例11 -->
+      <section class="card prob" data-flow="ex11" data-label="例11">
+        <div class="prob-head">
+          <span class="prob-tag">例 11</span>
+          <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+          <span class="prob-state">ヒント 0 / 2</span>
+        </div>
+        <p class="prob-q"><span class="v">a</span>＝(1, 4)、<span class="v">b</span>＝(−2, 3) のとき、内積 <span class="v">a</span>・<span class="v">b</span> を求めよ。</p>
+        <div class="step hint">
+          <h3>ヒント 1 ― x同士、y同士を掛ける場所を決める</h3>
+          <p>成分の内積は「x成分×x成分 ＋ y成分×y成分」。この問題では、x成分の積は 1×(−2)、y成分の積は 4×3 になる。まずこの2つの積を、それぞれ別々に計算してみよう。</p>
+        </div>
+        <div class="step hint">
+          <h3>ヒント 2 ― 2つの積を足す</h3>
+          <p>x成分の積は 1×(−2)＝−2、y成分の積は 4×3＝12 になったはず。あとはこの2つを足すだけ。−2＋12 を計算してみよう。</p>
+        </div>
+        <div class="step answer">
+          <h3>解答</h3>
+          <p class="big"><span class="v">a</span>・<span class="v">b</span>＝10</p>
+          <p><span class="v">a</span>・<span class="v">b</span>＝1×(−2)＋4×3＝−2＋12＝10。</p>
+          <p class="note"><b>型：</b>内積＝(x×x)＋(y×y)。xとyを混ぜて掛けないことだけ気をつければ、計算は単純だ。</p>
+        </div>
+        <p class="prob-done">例11 クリア！　次は練習19で3問、同じ型を練習しよう。</p>
+      </section>
+
+      <!-- 練習19 -->
+      <section class="card prob" id="prob-ren19">
+        <div class="prob-head">
+          <span class="prob-tag ren">練習 19</span>
+          <span class="prob-state">下のタブで小問を選んでね</span>
+        </div>
+        <p class="prob-q">次のベクトル <span class="v">a</span>、<span class="v">b</span> について、内積 <span class="v">a</span>・<span class="v">b</span> を求めよ。</p>
+        <div class="tabs" role="tablist" aria-label="練習19の小問">
+          <button class="tab" role="tab" data-tab="ren19-1" aria-selected="true">(1)</button>
+          <button class="tab" role="tab" data-tab="ren19-2" aria-selected="false">(2)</button>
+          <button class="tab" role="tab" data-tab="ren19-3" aria-selected="false">(3)</button>
+        </div>
+
+        <!-- 練習19 (1) -->
+        <div class="tabpanel show" id="panel-ren19-1" data-flow="ren19-1" data-label="練習19 (1)">
+          <div class="prob-head">
+            <span class="prob-q" style="margin:0">(1)　<span class="v">a</span>＝(2, 5)、<span class="v">b</span>＝(3, −2)</span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 2</span>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 1 ― 式の形を先に書く</h3>
+            <p><span class="v">a</span>・<span class="v">b</span>＝2×3＋5×(−2) と、まず掛け算の形で式を書こう。y成分の積には負の数が入るので、かっこをつけて書くのが安全だ。</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 2 ― 積を出してから足す</h3>
+            <p>x成分の積は 2×3＝6、y成分の積は 5×(−2)＝−10。6＋(−10) を計算しよう。答えは負の数になるよ。</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (1)</h3>
+            <p class="big"><span class="v">a</span>・<span class="v">b</span>＝−4</p>
+            <p><span class="v">a</span>・<span class="v">b</span>＝2×3＋5×(−2)＝6−10＝−4。内積が負ということは、2つのベクトルのなす角は鈍角だということだ。</p>
+          </div>
+          <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
+        </div>
+
+        <!-- 練習19 (2) -->
+        <div class="tabpanel" id="panel-ren19-2" data-flow="ren19-2" data-label="練習19 (2)">
+          <div class="prob-head">
+            <span class="prob-q" style="margin:0">(2)　<span class="v">a</span>＝(1, √3)、<span class="v">b</span>＝(√3, 3)</span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 2</span>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 1 ― 式の形を先に書く</h3>
+            <p><span class="v">a</span>・<span class="v">b</span>＝1×√3＋√3×3 と書く。根号が入っていても、手順はまったく同じだ。</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 2 ― √3×3 は 3√3 と書く</h3>
+            <p>x成分の積は 1×√3＝√3。y成分の積は √3×3＝3√3。どちらも √3 の仲間だから、そのまま足すことができる。√3＋3√3 を計算してみよう。</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (2)</h3>
+            <p class="big"><span class="v">a</span>・<span class="v">b</span>＝4√3</p>
+            <p><span class="v">a</span>・<span class="v">b</span>＝1×√3＋√3×3＝√3＋3√3＝4√3。</p>
+          </div>
+          <p class="prob-done">(2) クリア！　次の小問のタブを開いてみよう。</p>
+        </div>
+
+        <!-- 練習19 (3) -->
+        <div class="tabpanel" id="panel-ren19-3" data-flow="ren19-3" data-label="練習19 (3)">
+          <div class="prob-head">
+            <span class="prob-q" style="margin:0">(3)　<span class="v">a</span>＝(3, √6)、<span class="v">b</span>＝(2, −√6)</span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 2</span>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 1 ― 式の形を先に書く</h3>
+            <p><span class="v">a</span>・<span class="v">b</span>＝3×2＋√6×(−√6) と書く。y成分の積に根号同士の掛け算が入っているのが、この小問の山場だ。</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 2 ― √6×√6＝6 を使う</h3>
+            <p>√6×(−√6)＝−(√6×√6)＝−6。x成分の積は 3×2＝6。だから計算は 6＋(−6) になる。さて、答えはいくつだろう。</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (3)</h3>
+            <p class="big"><span class="v">a</span>・<span class="v">b</span>＝0</p>
+            <p><span class="v">a</span>・<span class="v">b</span>＝3×2＋√6×(−√6)＝6−6＝0。</p>
+            <p class="note">内積が 0 ということは、この2つのベクトルは<b>垂直</b>だということ。次の解説Cで本格的に扱う。</p>
+          </div>
+          <p class="prob-done">(3) クリア！　練習19はこれで終わり。次は解説Cへ進もう。</p>
+        </div>
+      </section>
+
+      <!-- ================= 解説C なす角と垂直条件 ================= -->
+      <div class="sec-head">
+        <span class="sec-tag">解説 C</span>
+        <h2>ベクトルのなす角と垂直条件</h2>
+        <span class="pno">教科書 p.24〜26</span>
+      </div>
+
+      <section class="card">
+        <div class="def">
+          <p><span class="key">なす角の余弦</span>：<span class="v">0</span> でない2つのベクトル <span class="v">a</span>＝(a<sub>1</sub>, a<sub>2</sub>)、<span class="v">b</span>＝(b<sub>1</sub>, b<sub>2</sub>) のなす角を θ（0°≦θ≦180°）とすると、内積の定義を変形して</p>
+          <p style="text-align:center;font-size:18px"><b>cosθ＝<span class="fr"><sup><span class="v">a</span>・<span class="v">b</span></sup>/<sub><span class="abs">|</span><span class="v">a</span><span class="abs">|</span><span class="abs">|</span><span class="v">b</span><span class="abs">|</span></sub></span>＝<span class="fr"><sup>a<sub>1</sub>b<sub>1</sub>＋a<sub>2</sub>b<sub>2</sub></sup>/<sub>√(a<sub>1</sub><sup>2</sup>＋a<sub>2</sub><sup>2</sup>)√(b<sub>1</sub><sup>2</sup>＋b<sub>2</sub><sup>2</sup>)</sub></span></b></p>
+          <p>手順はいつも同じ：<b>① 内積を成分で計算 → ② 大きさを2つ計算 → ③ 割り算して cosθ を出す → ④ 0°≦θ≦180° の範囲で θ を決める</b>。</p>
+        </div>
+        <div class="def">
+          <p><span class="key">垂直条件</span>：<span class="v">0</span> でない2つのベクトル <span class="v">a</span>、<span class="v">b</span> のなす角が 90° のとき、<span class="v">a</span> と <span class="v">b</span> は<b>垂直</b>であるといい、<span class="v">a</span>⊥<span class="v">b</span> と書く。このとき cos90°＝0 だから内積は 0 になる。逆に、内積が 0 になるのは垂直のときに限る。したがって</p>
+          <p style="text-align:center;font-size:18px"><b><span class="v">a</span>⊥<span class="v">b</span>　⇔　<span class="v">a</span>・<span class="v">b</span>＝0　⇔　a<sub>1</sub>b<sub>1</sub>＋a<sub>2</sub>b<sub>2</sub>＝0</b></p>
+          <p>「垂直かどうか」は、角度を調べなくても<b>内積が 0 かどうか</b>だけで判定できる。これがこの項いちばんの道具だ。</p>
+        </div>
+        <p>なお、なす角が 0° のとき2つのベクトルは同じ向き、180° のときは反対向きで、この2つの場合に2つのベクトルは平行である。</p>
+      </section>
+
+      <!-- 例題4 -->
+      <section class="card prob" data-flow="reidai4" data-label="例題4">
+        <div class="prob-head">
+          <span class="prob-tag">例題 4</span>
+          <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+          <span class="prob-state">ヒント 0 / 3</span>
+        </div>
+        <p class="prob-q">次の2つのベクトルのなす角 θ を求めよ。　<span class="v">a</span>＝(1, 2)、<span class="v">b</span>＝(−1, 3)</p>
+        <div class="step hint">
+          <h3>ヒント 1 ― 手順①：まず内積を成分で計算する</h3>
+          <p>cosθ の公式に必要なのは「内積」「<span class="abs">|</span><span class="v">a</span><span class="abs">|</span>」「<span class="abs">|</span><span class="v">b</span><span class="abs">|</span>」の3つ。最初に内積から片づけよう。<span class="v">a</span>・<span class="v">b</span>＝1×(−1)＋2×3 を計算してみよう。</p>
+        </div>
+        <div class="step hint">
+          <h3>ヒント 2 ― 手順②：大きさを2つ計算する</h3>
+          <p>内積は 1×(−1)＋2×3＝−1＋6＝5 になったはず。次は大きさ。<span class="abs">|</span><span class="v">a</span><span class="abs">|</span>＝√(1<sup>2</sup>＋2<sup>2</sup>)、<span class="abs">|</span><span class="v">b</span><span class="abs">|</span>＝√((−1)<sup>2</sup>＋3<sup>2</sup>) をそれぞれ計算しよう。根号の中は 5 と 10 になるよ。</p>
+        </div>
+        <div class="step hint">
+          <h3>ヒント 3 ― 手順③④：cosθ を出して、θ に直す</h3>
+          <p>cosθ＝<span class="fr"><sup>5</sup>/<sub>√5×√10</sub></span>。分母は √5×√10＝√50＝5√2 とまとめられるから、cosθ＝<span class="fr"><sup>5</sup>/<sub>5√2</sub></span>＝<span class="fr"><sup>1</sup>/<sub>√2</sub></span> になる。cos が <span class="fr"><sup>1</sup>/<sub>√2</sub></span> になる角は、0°≦θ≦180° の範囲では1つだけだ。早見表で確認してみよう。</p>
+        </div>
+        <div class="step answer">
+          <h3>解答</h3>
+          <p class="big">θ＝45°</p>
+          <p><span class="v">a</span>・<span class="v">b</span>＝1×(−1)＋2×3＝5、<span class="abs">|</span><span class="v">a</span><span class="abs">|</span>＝√(1<sup>2</sup>＋2<sup>2</sup>)＝√5、<span class="abs">|</span><span class="v">b</span><span class="abs">|</span>＝√((−1)<sup>2</sup>＋3<sup>2</sup>)＝√10。よって cosθ＝<span class="fr"><sup><span class="v">a</span>・<span class="v">b</span></sup>/<sub><span class="abs">|</span><span class="v">a</span><span class="abs">|</span><span class="abs">|</span><span class="v">b</span><span class="abs">|</span></sub></span>＝<span class="fr"><sup>5</sup>/<sub>√5√10</sub></span>＝<span class="fr"><sup>1</sup>/<sub>√2</sub></span>。0°≦θ≦180° であるから、θ＝45°。</p>
+        </div>
+        <p class="prob-done">例題4 クリア！　次は練習20で5問、この手順を練習しよう。</p>
+      </section>
+
+      <!-- 練習20 -->
+      <section class="card prob" id="prob-ren20">
+        <div class="prob-head">
+          <span class="prob-tag ren">練習 20</span>
+          <span class="prob-state">下のタブで小問を選んでね</span>
+        </div>
+        <p class="prob-q">次の2つのベクトルのなす角 θ を求めよ。</p>
+        <div class="tabs" role="tablist" aria-label="練習20の小問">
+          <button class="tab" role="tab" data-tab="ren20-1" aria-selected="true">(1)</button>
+          <button class="tab" role="tab" data-tab="ren20-2" aria-selected="false">(2)</button>
+          <button class="tab" role="tab" data-tab="ren20-3" aria-selected="false">(3)</button>
+          <button class="tab" role="tab" data-tab="ren20-4" aria-selected="false">(4)</button>
+          <button class="tab" role="tab" data-tab="ren20-5" aria-selected="false">(5)</button>
+        </div>
+
+        <!-- 練習20 (1) -->
+        <div class="tabpanel show" id="panel-ren20-1" data-flow="ren20-1" data-label="練習20 (1)">
+          <div class="prob-head">
+            <span class="prob-q" style="margin:0">(1)　<span class="v">a</span>＝(2, 1)、<span class="v">b</span>＝(−3, 1)</span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 2</span>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 1 ― 内積から計算する（答えの符号が見えてくる）</h3>
+            <p><span class="v">a</span>・<span class="v">b</span>＝2×(−3)＋1×1 を計算しよう。結果は負の数になるはずで、それは θ が鈍角だという合図だ。</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 2 ― 大きさ2つと cosθ</h3>
+            <p>内積は −6＋1＝−5。<span class="abs">|</span><span class="v">a</span><span class="abs">|</span>＝√(4＋1)＝√5、<span class="abs">|</span><span class="v">b</span><span class="abs">|</span>＝√(9＋1)＝√10。cosθ＝<span class="fr"><sup>−5</sup>/<sub>√5√10</sub></span>＝<span class="fr"><sup>−5</sup>/<sub>5√2</sub></span>＝−<span class="fr"><sup>1</sup>/<sub>√2</sub></span> になる。cos が −<span class="fr"><sup>1</sup>/<sub>√2</sub></span> になる角は、45° の反対側だ。</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (1)</h3>
+            <p class="big">θ＝135°</p>
+            <p><span class="v">a</span>・<span class="v">b</span>＝−5、<span class="abs">|</span><span class="v">a</span><span class="abs">|</span>＝√5、<span class="abs">|</span><span class="v">b</span><span class="abs">|</span>＝√10 より cosθ＝−<span class="fr"><sup>1</sup>/<sub>√2</sub></span>。0°≦θ≦180° であるから θ＝135°。</p>
+          </div>
+          <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
+        </div>
+
+        <!-- 練習20 (2) -->
+        <div class="tabpanel" id="panel-ren20-2" data-flow="ren20-2" data-label="練習20 (2)">
+          <div class="prob-head">
+            <span class="prob-q" style="margin:0">(2)　<span class="v">a</span>＝(1, √3)、<span class="v">b</span>＝(√3, 1)</span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 2</span>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 1 ― 内積から計算する</h3>
+            <p><span class="v">a</span>・<span class="v">b</span>＝1×√3＋√3×1 を計算しよう。2つの項はどちらも √3 だから、合計は 2√3 になるはずだ。</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 2 ― 大きさはどちらも 2</h3>
+            <p><span class="abs">|</span><span class="v">a</span><span class="abs">|</span>＝√(1＋3)＝2、<span class="abs">|</span><span class="v">b</span><span class="abs">|</span>＝√(3＋1)＝2。cosθ＝<span class="fr"><sup>2√3</sup>/<sub>2×2</sub></span>＝<span class="fr"><sup>√3</sup>/<sub>2</sub></span> になる。cos がこの値になる角を早見表で探そう。</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (2)</h3>
+            <p class="big">θ＝30°</p>
+            <p><span class="v">a</span>・<span class="v">b</span>＝2√3、<span class="abs">|</span><span class="v">a</span><span class="abs">|</span>＝<span class="abs">|</span><span class="v">b</span><span class="abs">|</span>＝2 より cosθ＝<span class="fr"><sup>√3</sup>/<sub>2</sub></span>。0°≦θ≦180° であるから θ＝30°。</p>
+          </div>
+          <p class="prob-done">(2) クリア！　次の小問のタブを開いてみよう。</p>
+        </div>
+
+        <!-- 練習20 (3) -->
+        <div class="tabpanel" id="panel-ren20-3" data-flow="ren20-3" data-label="練習20 (3)">
+          <div class="prob-head">
+            <span class="prob-q" style="margin:0">(3)　<span class="v">a</span>＝(3, −1)、<span class="v">b</span>＝(1, 3)</span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 2</span>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 1 ― 内積から計算する（ここで決着がつくかも）</h3>
+            <p><span class="v">a</span>・<span class="v">b</span>＝3×1＋(−1)×3 を計算しよう。3 と −3 が並ぶはずだ。</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 2 ― 内積が 0 なら、大きさは不要</h3>
+            <p>内積は 3−3＝0 になった。cosθ の分子が 0 ということは cosθ＝0 で、大きさを計算するまでもなく θ が決まる。なす角が 90° ⇔ 内積 0、という垂直条件そのものだ。</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (3)</h3>
+            <p class="big">θ＝90°</p>
+            <p><span class="v">a</span>・<span class="v">b</span>＝3×1＋(−1)×3＝0 であるから cosθ＝0。0°≦θ≦180° であるから θ＝90°。つまり <span class="v">a</span>⊥<span class="v">b</span> だ。</p>
+          </div>
+          <p class="prob-done">(3) クリア！　次の小問のタブを開いてみよう。</p>
+        </div>
+
+        <!-- 練習20 (4) -->
+        <div class="tabpanel" id="panel-ren20-4" data-flow="ren20-4" data-label="練習20 (4)">
+          <div class="prob-head">
+            <span class="prob-q" style="margin:0">(4)　<span class="v">a</span>＝(−4, 2)、<span class="v">b</span>＝(2, −1)</span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 2</span>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 1 ― 計算の前に「何倍か」をチェック</h3>
+            <p>内積を計算する前に、まず <span class="v">b</span> が <span class="v">a</span> の何倍になっていないか見てみよう。x成分：2 は −4 の何倍か。y成分：−1 は 2 の何倍か。どちらも同じ数 −<span class="fr"><sup>1</sup>/<sub>2</sub></span> 倍になることに気づいたかな？</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 2 ― 係数が負 ⇒ 正反対の向き</h3>
+            <p><span class="v">b</span>＝−<span class="fr"><sup>1</sup>/<sub>2</sub></span><span class="v">a</span> と表せる。係数が負だから、<span class="v">b</span> は <span class="v">a</span> と正反対の向きだ。正反対の向きのなす角は決まっている。内積で確かめると <span class="v">a</span>・<span class="v">b</span>＝−10、<span class="abs">|</span><span class="v">a</span><span class="abs">|</span>＝2√5、<span class="abs">|</span><span class="v">b</span><span class="abs">|</span>＝√5 で cosθ＝−1 になることも確認しておこう。</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (4)</h3>
+            <p class="big">θ＝180°</p>
+            <p><span class="v">b</span>＝−<span class="fr"><sup>1</sup>/<sub>2</sub></span><span class="v">a</span> だから、<span class="v">a</span> と <span class="v">b</span> は反対向きで、なす角は θ＝180°。（計算でも cosθ＝<span class="fr"><sup>−10</sup>/<sub>2√5×√5</sub></span>＝−1 となる。）</p>
+            <p class="note">なす角が 0° または 180° ⇒ 2つのベクトルは平行、という場合がこの (4)(5) だ。倍率チェックで一瞬で見抜ける。</p>
+          </div>
+          <p class="prob-done">(4) クリア！　最後の小問のタブを開いてみよう。</p>
+        </div>
+
+        <!-- 練習20 (5) -->
+        <div class="tabpanel" id="panel-ren20-5" data-flow="ren20-5" data-label="練習20 (5)">
+          <div class="prob-head">
+            <span class="prob-q" style="margin:0">(5)　<span class="v">a</span>＝(1, −2)、<span class="v">b</span>＝(3, −6)</span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 2</span>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 1 ― 計算の前に「何倍か」をチェック</h3>
+            <p>(4) と同じ見方をしよう。<span class="v">b</span> の成分 (3, −6) は、<span class="v">a</span> の成分 (1, −2) のそれぞれ何倍か。x成分は 3÷1、y成分は (−6)÷(−2) を計算してみよう。</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 2 ― 係数が正 ⇒ 同じ向き</h3>
+            <p>どちらも 3 倍で、<span class="v">b</span>＝3<span class="v">a</span> と表せる。係数が正だから <span class="v">b</span> は <span class="v">a</span> と同じ向きだ。同じ向きのなす角は決まっているね（内積で確かめると cosθ＝<span class="fr"><sup>15</sup>/<sub>√5×3√5</sub></span>＝1 になる）。</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (5)</h3>
+            <p class="big">θ＝0°</p>
+            <p><span class="v">b</span>＝3<span class="v">a</span> だから、<span class="v">a</span> と <span class="v">b</span> は同じ向きで、なす角は θ＝0°。</p>
+          </div>
+          <p class="prob-done">(5) クリア！　練習20はこれで終わり。次は例12で垂直条件を使ってみよう。</p>
+        </div>
+      </section>
+
+      <!-- 例12 -->
+      <section class="card prob" data-flow="ex12" data-label="例12">
+        <div class="prob-head">
+          <span class="prob-tag">例 12</span>
+          <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+          <span class="prob-state">ヒント 0 / 2</span>
+        </div>
+        <p class="prob-q"><span class="v">a</span>＝(2, 1) と <span class="v">b</span>＝(x, 4) が垂直になるように、x の値を定めよ。</p>
+        <div class="step hint">
+          <h3>ヒント 1 ― 「垂直」を式に翻訳する</h3>
+          <p>垂直条件は「<span class="v">a</span>⊥<span class="v">b</span> ⇔ <span class="v">a</span>・<span class="v">b</span>＝0」。だから、この問題は「内積が 0 になるような x を求める」問題だ。まず <span class="v">a</span>・<span class="v">b</span> を x の式で書いてみよう：<span class="v">a</span>・<span class="v">b</span>＝2×x＋1×4 になる。</p>
+        </div>
+        <div class="step hint">
+          <h3>ヒント 2 ― ＝0 と置いて方程式を解く</h3>
+          <p><span class="v">a</span>・<span class="v">b</span>＝2x＋4。これが 0 になる条件は 2x＋4＝0 という1次方程式だ。移項して解いてみよう。</p>
+        </div>
+        <div class="step answer">
+          <h3>解答</h3>
+          <p class="big">x＝−2</p>
+          <p><span class="v">a</span>・<span class="v">b</span>＝2x＋1×4＝2x＋4。<span class="v">a</span>・<span class="v">b</span>＝0 より 2x＋4＝0。よって x＝−2。</p>
+          <p class="note"><b>型：</b>「垂直になるように x を定めよ」＝「内積＝0 の方程式を解け」。この翻訳ができれば勝ちだ。</p>
+        </div>
+        <p class="prob-done">例12 クリア！　次は練習21で同じ型を2問解こう。</p>
+      </section>
+
+      <!-- 練習21 -->
+      <section class="card prob" id="prob-ren21">
+        <div class="prob-head">
+          <span class="prob-tag ren">練習 21</span>
+          <span class="prob-state">下のタブで小問を選んでね</span>
+        </div>
+        <p class="prob-q">次の2つのベクトルが垂直になるように、x の値を定めよ。</p>
+        <div class="tabs" role="tablist" aria-label="練習21の小問">
+          <button class="tab" role="tab" data-tab="ren21-1" aria-selected="true">(1)</button>
+          <button class="tab" role="tab" data-tab="ren21-2" aria-selected="false">(2)</button>
+        </div>
+
+        <!-- 練習21 (1) -->
+        <div class="tabpanel show" id="panel-ren21-1" data-flow="ren21-1" data-label="練習21 (1)">
+          <div class="prob-head">
+            <span class="prob-q" style="margin:0">(1)　<span class="v">a</span>＝(3, 6)、<span class="v">b</span>＝(x, 4)</span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 2</span>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 1 ― 内積を x の式で書く</h3>
+            <p>例12と同じ型。<span class="v">a</span>・<span class="v">b</span>＝3×x＋6×4 と書く。y成分の積 6×4＝24 を先に計算しておこう。</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 2 ― ＝0 と置いて解く</h3>
+            <p>垂直条件は 3x＋24＝0。これを解くと x は負の数になる。24÷3 の計算が鍵だ。</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (1)</h3>
+            <p class="big">x＝−8</p>
+            <p><span class="v">a</span>・<span class="v">b</span>＝3x＋24＝0 より、3x＝−24。よって x＝−8。</p>
+          </div>
+          <p class="prob-done">(1) クリア！　(2) のタブを開いてみよう。</p>
+        </div>
+
+        <!-- 練習21 (2) -->
+        <div class="tabpanel" id="panel-ren21-2" data-flow="ren21-2" data-label="練習21 (2)">
+          <div class="prob-head">
+            <span class="prob-q" style="margin:0">(2)　<span class="v">a</span>＝(x, −1)、<span class="v">b</span>＝(x, x＋2)</span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 2</span>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 1 ― 内積を x の式で書く（x が2か所ある）</h3>
+            <p><span class="v">a</span>・<span class="v">b</span>＝x×x＋(−1)×(x＋2) と書く。x×x＝x<sup>2</sup> だから、今度は2次方程式になる予感がするね。まずこの式を展開して整理してみよう。</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 2 ― 2次方程式を因数分解する</h3>
+            <p><span class="v">a</span>・<span class="v">b</span>＝x<sup>2</sup>−(x＋2)＝x<sup>2</sup>−x−2。＝0 と置いた x<sup>2</sup>−x−2＝0 は、掛けて −2、足して −1 になる2数（−2 と 1）の組み合わせで因数分解できる。</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (2)</h3>
+            <p class="big">x＝2、−1</p>
+            <p><span class="v">a</span>・<span class="v">b</span>＝x<sup>2</sup>−x−2＝0。(x−2)(x＋1)＝0 と因数分解できるから、x＝2、−1。2次方程式だから答えは2つある。</p>
+          </div>
+          <p class="prob-done">(2) クリア！　練習21はこれで終わり。次は例題5へ進もう。</p>
+        </div>
+      </section>
+
+      <!-- 例題5 -->
+      <section class="card prob" data-flow="reidai5" data-label="例題5">
+        <div class="prob-head">
+          <span class="prob-tag">例題 5</span>
+          <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+          <span class="prob-state">ヒント 0 / 3</span>
+        </div>
+        <p class="prob-q"><span class="v">a</span>＝(√3, −1) に垂直で大きさが 4 のベクトル <span class="v">b</span> を求めよ。</p>
+        <div class="step hint">
+          <h3>ヒント 1 ― <span class="v">b</span>＝(x, y) とおいて、垂直条件から式を1本</h3>
+          <p>求めるベクトルを <span class="v">b</span>＝(x, y) と文字でおくのが出発点。条件は「垂直」と「大きさ4」の2つある。まず垂直条件 <span class="v">a</span>・<span class="v">b</span>＝0 を書くと √3x＋(−1)y＝0、つまり √3x−y＝0 になる。これを y について解くと、y＝√3x という関係が得られる。</p>
+        </div>
+        <div class="step hint">
+          <h3>ヒント 2 ― 大きさの条件に代入する</h3>
+          <p>大きさが 4 という条件は <span class="abs">|</span><span class="v">b</span><span class="abs">|</span><sup>2</sup>＝4<sup>2</sup>、つまり x<sup>2</sup>＋y<sup>2</sup>＝16 と書ける。ここに y＝√3x を代入すると、y<sup>2</sup>＝(√3x)<sup>2</sup>＝3x<sup>2</sup> になるから、式は x<sup>2</sup>＋3x<sup>2</sup>＝16 になる。これを整理してみよう。</p>
+        </div>
+        <div class="step hint">
+          <h3>ヒント 3 ― x を求めて、y も決める</h3>
+          <p>4x<sup>2</sup>＝16 より x<sup>2</sup>＝4、だから x＝±2。x＝2 のとき y＝√3×2＝2√3、x＝−2 のとき y＝−2√3。符号がそろう（複号同順）ことに注意して、2組の答えを書き上げよう。</p>
+        </div>
+        <div class="step answer">
+          <h3>解答</h3>
+          <p class="big"><span class="v">b</span>＝(2, 2√3)、(−2, −2√3)</p>
+          <p><span class="v">b</span>＝(x, y) とする。<span class="v">a</span>⊥<span class="v">b</span> であるから <span class="v">a</span>・<span class="v">b</span>＝0、すなわち √3x−y＝0。よって y＝√3x ……①。<span class="abs">|</span><span class="v">b</span><span class="abs">|</span><sup>2</sup>＝4<sup>2</sup> であるから x<sup>2</sup>＋y<sup>2</sup>＝16 ……②。①を②に代入すると x<sup>2</sup>＋(√3x)<sup>2</sup>＝16、整理すると 4x<sup>2</sup>＝16、すなわち x＝±2。①に代入して、x＝2 のとき y＝2√3、x＝−2 のとき y＝−2√3。したがって <span class="v">b</span>＝(2, 2√3)、(−2, −2√3)。これは <span class="v">b</span>＝(±2, ±2√3)（複号同順）と書くこともある。</p>
+          <p class="note"><b>型：</b>「垂直＋大きさ指定」の問題は、① <span class="v">b</span>＝(x, y) とおく → ② 垂直条件で y を x で表す → ③ 大きさの式に代入、の3段構え。答えは正反対の2本が必ずペアで出る。</p>
+        </div>
+        <p class="prob-done">例題5 クリア！　次は練習22で同じ型を2問解こう。</p>
+      </section>
+
+      <!-- 練習22 -->
+      <section class="card prob" id="prob-ren22">
+        <div class="prob-head">
+          <span class="prob-tag ren">練習 22</span>
+          <span class="prob-state">下のタブで小問を選んでね</span>
+        </div>
+        <p class="prob-q">次の問いに答えよ。</p>
+        <div class="tabs" role="tablist" aria-label="練習22の小問">
+          <button class="tab" role="tab" data-tab="ren22-1" aria-selected="true">(1)</button>
+          <button class="tab" role="tab" data-tab="ren22-2" aria-selected="false">(2)</button>
+        </div>
+
+        <!-- 練習22 (1) -->
+        <div class="tabpanel show" id="panel-ren22-1" data-flow="ren22-1" data-label="練習22 (1)">
+          <div class="prob-head">
+            <span class="prob-q" style="margin:0">(1)　<span class="v">a</span>＝(2, 1) に垂直で、大きさが √10 のベクトル <span class="v">b</span></span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 3</span>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 1 ― <span class="v">b</span>＝(x, y) とおいて、垂直条件から y を x で表す</h3>
+            <p>例題5と同じ3段構え。垂直条件 <span class="v">a</span>・<span class="v">b</span>＝2x＋y＝0 から、y＝−2x という関係を作ろう。</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 2 ― 大きさの条件に代入する</h3>
+            <p>大きさが √10 という条件は x<sup>2</sup>＋y<sup>2</sup>＝10（(√10)<sup>2</sup>＝10）と書ける。y＝−2x を代入すると、y<sup>2</sup>＝4x<sup>2</sup> だから式は x<sup>2</sup>＋4x<sup>2</sup>＝10 になる。</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 3 ― x を求めて、y も決める</h3>
+            <p>5x<sup>2</sup>＝10 より x<sup>2</sup>＝2、だから x＝±√2。x＝√2 のとき y＝−2√2、x＝−√2 のとき y＝2√2。今度は符号が逆の組み合わせ（複号は反対）になる点に注意しよう。</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (1)</h3>
+            <p class="big"><span class="v">b</span>＝(√2, −2√2)、(−√2, 2√2)</p>
+            <p><span class="v">b</span>＝(x, y) とすると、垂直条件より 2x＋y＝0、すなわち y＝−2x。大きさの条件 x<sup>2</sup>＋y<sup>2</sup>＝10 に代入すると 5x<sup>2</sup>＝10、x<sup>2</sup>＝2 より x＝±√2。対応する y は ∓2√2。よって <span class="v">b</span>＝(√2, −2√2)、(−√2, 2√2)。</p>
+          </div>
+          <p class="prob-done">(1) クリア！　(2) のタブを開いてみよう。</p>
+        </div>
+
+        <!-- 練習22 (2) -->
+        <div class="tabpanel" id="panel-ren22-2" data-flow="ren22-2" data-label="練習22 (2)">
+          <div class="prob-head">
+            <span class="prob-q" style="margin:0">(2)　<span class="v">a</span>＝(4, 3) に垂直な単位ベクトル <span class="v">e</span></span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 3</span>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 1 ― <span class="v">e</span>＝(x, y) とおいて、垂直条件から y を x で表す</h3>
+            <p>「単位ベクトル」は大きさが 1 のベクトルのこと。手順は (1) と同じだ。垂直条件 <span class="v">a</span>・<span class="v">e</span>＝4x＋3y＝0 から、y＝−<span class="fr"><sup>4</sup>/<sub>3</sub></span>x という関係を作ろう。</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 2 ― 大きさ 1 の条件に代入する</h3>
+            <p>大きさが 1 という条件は x<sup>2</sup>＋y<sup>2</sup>＝1。y＝−<span class="fr"><sup>4</sup>/<sub>3</sub></span>x を代入すると y<sup>2</sup>＝<span class="fr"><sup>16</sup>/<sub>9</sub></span>x<sup>2</sup> だから、式は x<sup>2</sup>＋<span class="fr"><sup>16</sup>/<sub>9</sub></span>x<sup>2</sup>＝<span class="fr"><sup>25</sup>/<sub>9</sub></span>x<sup>2</sup>＝1 になる。</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 3 ― x を求めて、y も決める</h3>
+            <p>x<sup>2</sup>＝<span class="fr"><sup>9</sup>/<sub>25</sub></span> より x＝±<span class="fr"><sup>3</sup>/<sub>5</sub></span>。x＝<span class="fr"><sup>3</sup>/<sub>5</sub></span> のとき y＝−<span class="fr"><sup>4</sup>/<sub>3</sub></span>×<span class="fr"><sup>3</sup>/<sub>5</sub></span>＝−<span class="fr"><sup>4</sup>/<sub>5</sub></span>。もう1組は符号が両方反対になる。</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (2)</h3>
+            <p class="big"><span class="v">e</span>＝(<span class="fr"><sup>3</sup>/<sub>5</sub></span>, −<span class="fr"><sup>4</sup>/<sub>5</sub></span>)、(−<span class="fr"><sup>3</sup>/<sub>5</sub></span>, <span class="fr"><sup>4</sup>/<sub>5</sub></span>)</p>
+            <p><span class="v">e</span>＝(x, y) とすると、垂直条件より 4x＋3y＝0、すなわち y＝−<span class="fr"><sup>4</sup>/<sub>3</sub></span>x。大きさの条件 x<sup>2</sup>＋y<sup>2</sup>＝1 に代入すると <span class="fr"><sup>25</sup>/<sub>9</sub></span>x<sup>2</sup>＝1、x<sup>2</sup>＝<span class="fr"><sup>9</sup>/<sub>25</sub></span> より x＝±<span class="fr"><sup>3</sup>/<sub>5</sub></span>、対応して y＝∓<span class="fr"><sup>4</sup>/<sub>5</sub></span>。よって <span class="v">e</span>＝(<span class="fr"><sup>3</sup>/<sub>5</sub></span>, −<span class="fr"><sup>4</sup>/<sub>5</sub></span>)、(−<span class="fr"><sup>3</sup>/<sub>5</sub></span>, <span class="fr"><sup>4</sup>/<sub>5</sub></span>)。</p>
+            <p class="note">3:4:5 の直角三角形が見える答えだ。大きさが √(9/25＋16/25)＝1 になっていることも検算しておこう。</p>
+          </div>
+          <p class="prob-done">(2) クリア！　練習22はこれで終わり。次は例13の「垂直ベクトルの作り方」を見よう。</p>
+        </div>
+      </section>
+
+      <!-- 例13＋解説 -->
+      <section class="card">
+        <div class="prob-head">
+          <span class="prob-tag">例 13</span>
+          <span class="prob-state">解説 ― 垂直ベクトルの作り方</span>
+        </div>
+        <p><span class="v">0</span> でないベクトル <span class="v">a</span>＝(a<sub>1</sub>, a<sub>2</sub>) に対して、成分を入れ替えて片方の符号を変えた</p>
+        <p class="formula"><span class="v">b</span>＝(−a<sub>2</sub>, a<sub>1</sub>)　と　<span class="v">c</span>＝(a<sub>2</sub>, −a<sub>1</sub>)</p>
+        <p>は、どちらも <span class="v">a</span> に垂直である。実際、内積を計算すると</p>
+        <p class="formula"><span class="v">a</span>・<span class="v">b</span>＝a<sub>1</sub>(−a<sub>2</sub>)＋a<sub>2</sub>a<sub>1</sub>＝−a<sub>1</sub>a<sub>2</sub>＋a<sub>1</sub>a<sub>2</sub>＝0</p>
+        <p>となり、確かに垂直条件を満たす（<span class="v">c</span> の方も同様に 0 になる）。<span class="v">b</span> と <span class="v">c</span> は互いに正反対の向きで、どちらも <span class="v">a</span> を 90° 回した向きになっている。</p>
+        <figure>
+          <div class="figbox">
+            <svg viewBox="0 0 340 260" role="img" aria-label="例13の図。a=(a1,a2)に対してb=(−a2,a1)が垂直であること">
+              <defs>
+                <marker id="e13-a" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"></path></marker>
+                <marker id="e13-b" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--blue)"></path></marker>
+              </defs>
+              <line x1="16" y1="190" x2="330" y2="190" stroke="var(--ink)" stroke-width="1.6"></line>
+              <path d="M330 190 l-9 -3.6 v7.2 z" fill="var(--ink)"></path>
+              <line x1="150" y1="248" x2="150" y2="14" stroke="var(--ink)" stroke-width="1.6"></line>
+              <path d="M150 14 l-3.6 9 h7.2 z" fill="var(--ink)"></path>
+              <text x="318" y="176" class="svg-txt" font-size="13" font-style="italic">x</text>
+              <text x="160" y="28" class="svg-txt" font-size="13" font-style="italic">y</text>
+              <!-- aの成分の破線 -->
+              <line x1="270" y1="110" x2="270" y2="190" stroke="var(--ink-soft)" stroke-width="1.5" stroke-dasharray="4 4"></line>
+              <!-- a, b -->
+              <line x1="150" y1="190" x2="262" y2="116" stroke="var(--accent)" stroke-width="4" marker-end="url(#e13-a)"></line>
+              <line x1="150" y1="190" x2="76" y2="76" stroke="var(--blue)" stroke-width="4" marker-end="url(#e13-b)"></line>
+              <!-- 直角マーク -->
+              <polyline points="167,179 156,162 139,173" fill="none" stroke="var(--ink)" stroke-width="1.8"></polyline>
+              <circle cx="150" cy="190" r="4" fill="var(--ink)"></circle>
+              <text x="130" y="212" class="svg-txt" font-size="14">O</text>
+              <text x="238" y="98" class="svg-txt" font-size="14" fill="var(--accent-deep)"><tspan font-style="italic">a</tspan>→＝(a₁, a₂)</text>
+              <text x="6" y="60" class="svg-txt" font-size="14" fill="var(--blue)"><tspan font-style="italic">b</tspan>→＝(−a₂, a₁)</text>
+              <text x="262" y="210" class="svg-txt-soft" font-size="13">a₁</text>
+              <text x="278" y="154" class="svg-txt-soft" font-size="13">a₂</text>
+            </svg>
+          </div>
+          <figcaption><span class="v" style="padding-top:.4em">a</span> の成分 (a<sub>1</sub>, a<sub>2</sub>) を入れ替えて、前の成分の符号を変えると <span class="v" style="padding-top:.4em">b</span>＝(−a<sub>2</sub>, a<sub>1</sub>) になり、ちょうど 90° 回した向きになる。「垂直なベクトルを1つ作れ」という問題では、この作り方が最速だ。</figcaption>
+        </figure>
+      </section>
+
+      <!-- 練習23 -->
+      <section class="card prob" data-flow="ren23" data-label="練習23">
+        <div class="prob-head">
+          <span class="prob-tag ren">練習 23</span>
+          <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+          <span class="prob-state">ヒント 0 / 2</span>
+        </div>
+        <p class="prob-q"><span class="v">a</span>＝(4, −2) に垂直なベクトルを1つ示せ。</p>
+        <div class="step hint">
+          <h3>ヒント 1 ― 例13の作り方を使う</h3>
+          <p>例13の通り、(a<sub>1</sub>, a<sub>2</sub>) に対して (−a<sub>2</sub>, a<sub>1</sub>) は垂直になる。<span class="v">a</span>＝(4, −2) なら a<sub>1</sub>＝4、a<sub>2</sub>＝−2 だから、−a<sub>2</sub>＝−(−2)＝2 を計算して、(2, □) の形のベクトルを作ってみよう。</p>
+        </div>
+        <div class="step hint">
+          <h3>ヒント 2 ― 内積で検算する</h3>
+          <p>作ったベクトル (2, 4) が本当に垂直か、内積で確かめる：4×2＋(−2)×4 を計算すると 8−8 になる。0 になれば正解だ。「1つ示せ」だから、合っているものが1つあればよい。</p>
+        </div>
+        <div class="step answer">
+          <h3>解答（例）</h3>
+          <p class="big">(2, 4)</p>
+          <p>(−a<sub>2</sub>, a<sub>1</sub>)＝(2, 4) とすれば、内積は 4×2＋(−2)×4＝0 となり、確かに <span class="v">a</span> に垂直である。</p>
+          <p class="note">答えは1つではない。(−2, −4) のような正反対のもの、(1, 2) のような実数倍したもの、(4, 8) など、<span class="v">a</span> と垂直な直線上にあるベクトルはすべて正解になる。</p>
+        </div>
+        <p class="prob-done">練習23 クリア！　下のコラム「深める」も読んでみよう。</p>
+      </section>
+
+      <!-- 深める -->
+      <section class="card column-card">
+        <h3>深める ― 垂直なベクトルは無数にある</h3>
+        <p>例題5の <span class="v">a</span>＝(√3, −1) に垂直なベクトル <span class="v">b</span>＝(x, y) は、垂直条件 √3x−y＝0 から、すべて y＝√3x を満たす。つまり <span class="v">b</span>＝(x, √3x)＝x(1, √3) と書け、x を t と置けば、<span class="key"><span class="v">b</span>＝t(1, √3)（t は実数）</span>の形をしたものが「すべて」だ。</p>
+        <p>t が変われば大きさや向き（t が負なら正反対の向き）が変わるが、どの t でも <span class="v">a</span> と垂直な1本の直線の上に並ぶ。例題5は、この無数の中から「大きさが4」という条件で t を絞り、2本（t＝2 と t＝−2 に対応するもの）を選び出した問題だったわけだ。</p>
+      </section>
+
+      <!-- ================= 解説D 内積の性質と応用 ================= -->
+      <div class="sec-head">
+        <span class="sec-tag">解説 D</span>
+        <h2>内積の性質と応用</h2>
+        <span class="pno">教科書 p.27〜28</span>
+      </div>
+
+      <section class="card">
+        <div class="def">
+          <p><span class="key">内積の性質</span>（k は実数）：</p>
+          <ol>
+            <li><span class="v">a</span>・<span class="v">a</span>＝<span class="abs">|</span><span class="v">a</span><span class="abs">|</span><sup>2</sup></li>
+            <li><span class="v">a</span>・<span class="v">b</span>＝<span class="v">b</span>・<span class="v">a</span></li>
+            <li>(<span class="v">a</span>＋<span class="v">b</span>)・<span class="v">c</span>＝<span class="v">a</span>・<span class="v">c</span>＋<span class="v">b</span>・<span class="v">c</span></li>
+            <li><span class="v">a</span>・(<span class="v">b</span>＋<span class="v">c</span>)＝<span class="v">a</span>・<span class="v">b</span>＋<span class="v">a</span>・<span class="v">c</span></li>
+            <li>(k<span class="v">a</span>)・<span class="v">b</span>＝k(<span class="v">a</span>・<span class="v">b</span>)</li>
+          </ol>
+          <p>性質3〜5は、ふつうの文字式の分配法則・くくり出しと同じ感覚で使える。性質5より、(2<span class="v">a</span>)・<span class="v">b</span> や 2(<span class="v">a</span>・<span class="v">b</span>) は単に 2<span class="v">a</span>・<span class="v">b</span> と書く。</p>
+        </div>
+        <div class="def">
+          <p><span class="key">大きさの2乗は内積で書ける</span>：性質1を <span class="v">x</span> に使えば、どんなベクトルでも</p>
+          <p style="text-align:center;font-size:18px"><b><span class="abs">|</span><span class="v">x</span><span class="abs">|</span><sup>2</sup>＝<span class="v">x</span>・<span class="v">x</span></b></p>
+          <p>この書き換えと分配法則を組み合わせると、和の大きさの展開公式が出る。</p>
+          <p style="text-align:center;font-size:18px"><b><span class="abs">|</span><span class="v">a</span>＋<span class="v">b</span><span class="abs">|</span><sup>2</sup>＝<span class="abs">|</span><span class="v">a</span><span class="abs">|</span><sup>2</sup>＋2<span class="v">a</span>・<span class="v">b</span>＋<span class="abs">|</span><span class="v">b</span><span class="abs">|</span><sup>2</sup></b></p>
+          <p>形は (x＋y)<sup>2</sup>＝x<sup>2</sup>＋2xy＋y<sup>2</sup> とそっくりだ。この公式が、次の例題6・応用例題2の主役になる。</p>
+        </div>
+      </section>
+
+      <!-- 練習24 -->
+      <section class="card prob" data-flow="ren24" data-label="練習24">
+        <div class="prob-head">
+          <span class="prob-tag ren">練習 24</span>
+          <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+          <span class="prob-state">ヒント 0 / 3</span>
+        </div>
+        <p class="prob-q">教科書の性質の証明にならって、次の等式を証明せよ。　<span class="v">a</span>・(<span class="v">b</span>−<span class="v">c</span>)＝<span class="v">a</span>・<span class="v">b</span>−<span class="v">a</span>・<span class="v">c</span></p>
+        <div class="step hint">
+          <h3>ステップ 1 ― 成分を文字で置く</h3>
+          <p>証明の方針は「成分で計算して、両辺が同じになることを見る」。<span class="v">a</span>＝(a<sub>1</sub>, a<sub>2</sub>)、<span class="v">b</span>＝(b<sub>1</sub>, b<sub>2</sub>)、<span class="v">c</span>＝(c<sub>1</sub>, c<sub>2</sub>) と置こう。その前に、<span class="v">b</span>−<span class="v">c</span> の成分表示を書いておく：<span class="v">b</span>−<span class="v">c</span>＝(b<sub>1</sub>−c<sub>1</sub>, b<sub>2</sub>−c<sub>2</sub>) だ。</p>
+        </div>
+        <div class="step hint">
+          <h3>ステップ 2 ― 左辺を成分の内積で計算する</h3>
+          <p>左辺＝<span class="v">a</span>・(<span class="v">b</span>−<span class="v">c</span>)＝a<sub>1</sub>(b<sub>1</sub>−c<sub>1</sub>)＋a<sub>2</sub>(b<sub>2</sub>−c<sub>2</sub>) と書ける。かっこを展開すると a<sub>1</sub>b<sub>1</sub>−a<sub>1</sub>c<sub>1</sub>＋a<sub>2</sub>b<sub>2</sub>−a<sub>2</sub>c<sub>2</sub> の4項になる。ここまで書いてみよう。</p>
+        </div>
+        <div class="step hint">
+          <h3>ステップ 3 ― 項を並べ替えて、右辺の形にまとめる</h3>
+          <p>4項を「<span class="v">b</span> を含む項」と「<span class="v">c</span> を含む項」に分けると、(a<sub>1</sub>b<sub>1</sub>＋a<sub>2</sub>b<sub>2</sub>)−(a<sub>1</sub>c<sub>1</sub>＋a<sub>2</sub>c<sub>2</sub>) とまとめられる。それぞれのかっこが、どの内積を表しているか確認しよう。</p>
+        </div>
+        <div class="step answer">
+          <h3>証明</h3>
+          <p><span class="v">a</span>＝(a<sub>1</sub>, a<sub>2</sub>)、<span class="v">b</span>＝(b<sub>1</sub>, b<sub>2</sub>)、<span class="v">c</span>＝(c<sub>1</sub>, c<sub>2</sub>) とする。<span class="v">b</span>−<span class="v">c</span>＝(b<sub>1</sub>−c<sub>1</sub>, b<sub>2</sub>−c<sub>2</sub>) であるから</p>
+          <p style="text-align:center">左辺＝a<sub>1</sub>(b<sub>1</sub>−c<sub>1</sub>)＋a<sub>2</sub>(b<sub>2</sub>−c<sub>2</sub>)<br />＝(a<sub>1</sub>b<sub>1</sub>＋a<sub>2</sub>b<sub>2</sub>)−(a<sub>1</sub>c<sub>1</sub>＋a<sub>2</sub>c<sub>2</sub>)<br />＝<span class="v">a</span>・<span class="v">b</span>−<span class="v">a</span>・<span class="v">c</span>＝右辺</p>
+          <p>よって、<span class="v">a</span>・(<span class="v">b</span>−<span class="v">c</span>)＝<span class="v">a</span>・<span class="v">b</span>−<span class="v">a</span>・<span class="v">c</span> が成り立つ。</p>
+          <p class="note">証明の型はどれも同じ：<b>成分で置く → 左辺を計算する → 並べ替えて右辺の形にする</b>。性質1・3の証明もこの型だった。</p>
+        </div>
+        <p class="prob-done">練習24 クリア！　次は例題6で、最も大事な展開公式を証明しよう。</p>
+      </section>
+
+      <!-- 例題6 -->
+      <section class="card prob" data-flow="reidai6" data-label="例題6">
+        <div class="prob-head">
+          <span class="prob-tag">例題 6</span>
+          <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+          <span class="prob-state">ヒント 0 / 3</span>
+        </div>
+        <p class="prob-q">次の等式が成り立つことを示せ。　<span class="abs">|</span><span class="v">a</span>＋<span class="v">b</span><span class="abs">|</span><sup>2</sup>＝<span class="abs">|</span><span class="v">a</span><span class="abs">|</span><sup>2</sup>＋2<span class="v">a</span>・<span class="v">b</span>＋<span class="abs">|</span><span class="v">b</span><span class="abs">|</span><sup>2</sup></p>
+        <div class="step hint">
+          <h3>ステップ 1 ― 左辺を内積の形に書き換える</h3>
+          <p>出発点は性質1の使い方 <span class="abs">|</span><span class="v">x</span><span class="abs">|</span><sup>2</sup>＝<span class="v">x</span>・<span class="v">x</span>。<span class="v">x</span>＝<span class="v">a</span>＋<span class="v">b</span> とみれば、左辺＝(<span class="v">a</span>＋<span class="v">b</span>)・(<span class="v">a</span>＋<span class="v">b</span>) と書ける。ここまでが準備だ。</p>
+        </div>
+        <div class="step hint">
+          <h3>ステップ 2 ― 分配法則で4項に展開する</h3>
+          <p>(<span class="v">a</span>＋<span class="v">b</span>)・(<span class="v">a</span>＋<span class="v">b</span>) を、性質3・4（分配法則）で展開する。ふつうの (x＋y)<sup>2</sup> の展開と同じく、<span class="v">a</span>・<span class="v">a</span>、<span class="v">a</span>・<span class="v">b</span>、<span class="v">b</span>・<span class="v">a</span>、<span class="v">b</span>・<span class="v">b</span> の4項が出てくるはずだ。</p>
+        </div>
+        <div class="step hint">
+          <h3>ステップ 3 ― 性質1・2で右辺の形にまとめる</h3>
+          <p>性質2より <span class="v">b</span>・<span class="v">a</span>＝<span class="v">a</span>・<span class="v">b</span> だから、真ん中の2項は 2<span class="v">a</span>・<span class="v">b</span> にまとまる。さらに性質1より <span class="v">a</span>・<span class="v">a</span>＝<span class="abs">|</span><span class="v">a</span><span class="abs">|</span><sup>2</sup>、<span class="v">b</span>・<span class="v">b</span>＝<span class="abs">|</span><span class="v">b</span><span class="abs">|</span><sup>2</sup> と書き換えれば、右辺と一致するはずだ。</p>
+        </div>
+        <div class="step answer">
+          <h3>証明</h3>
+          <p style="text-align:center">左辺＝(<span class="v">a</span>＋<span class="v">b</span>)・(<span class="v">a</span>＋<span class="v">b</span>)<br />＝<span class="v">a</span>・(<span class="v">a</span>＋<span class="v">b</span>)＋<span class="v">b</span>・(<span class="v">a</span>＋<span class="v">b</span>)<br />＝<span class="v">a</span>・<span class="v">a</span>＋<span class="v">a</span>・<span class="v">b</span>＋<span class="v">b</span>・<span class="v">a</span>＋<span class="v">b</span>・<span class="v">b</span><br />＝<span class="abs">|</span><span class="v">a</span><span class="abs">|</span><sup>2</sup>＋2<span class="v">a</span>・<span class="v">b</span>＋<span class="abs">|</span><span class="v">b</span><span class="abs">|</span><sup>2</sup>＝右辺</p>
+          <p>よって、<span class="abs">|</span><span class="v">a</span>＋<span class="v">b</span><span class="abs">|</span><sup>2</sup>＝<span class="abs">|</span><span class="v">a</span><span class="abs">|</span><sup>2</sup>＋2<span class="v">a</span>・<span class="v">b</span>＋<span class="abs">|</span><span class="v">b</span><span class="abs">|</span><sup>2</sup> が成り立つ。</p>
+          <p class="note">使った道具は3つだけ：<span class="abs">|</span><span class="v">x</span><span class="abs">|</span><sup>2</sup>＝<span class="v">x</span>・<span class="v">x</span>（性質1）、分配法則（性質3・4）、入れ替え（性質2）。この証明の流れは、次の応用例題2でそのまま使う。</p>
+        </div>
+        <p class="prob-done">例題6 クリア！　次は練習25で、同じ展開を2問やってみよう。</p>
+      </section>
+
+      <!-- 練習25 -->
+      <section class="card prob" id="prob-ren25">
+        <div class="prob-head">
+          <span class="prob-tag ren">練習 25</span>
+          <span class="prob-state">下のタブで小問を選んでね</span>
+        </div>
+        <p class="prob-q">次の等式が成り立つことを示せ。</p>
+        <div class="tabs" role="tablist" aria-label="練習25の小問">
+          <button class="tab" role="tab" data-tab="ren25-1" aria-selected="true">(1)</button>
+          <button class="tab" role="tab" data-tab="ren25-2" aria-selected="false">(2)</button>
+        </div>
+
+        <!-- 練習25 (1) -->
+        <div class="tabpanel show" id="panel-ren25-1" data-flow="ren25-1" data-label="練習25 (1)">
+          <div class="prob-head">
+            <span class="prob-q" style="margin:0">(1)　<span class="abs">|</span>2<span class="v">a</span>＋<span class="v">b</span><span class="abs">|</span><sup>2</sup>＝4<span class="abs">|</span><span class="v">a</span><span class="abs">|</span><sup>2</sup>＋4<span class="v">a</span>・<span class="v">b</span>＋<span class="abs">|</span><span class="v">b</span><span class="abs">|</span><sup>2</sup></span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 2</span>
+          </div>
+          <div class="step hint">
+            <h3>ステップ 1 ― 例題6と同じ書き換えから</h3>
+            <p>左辺＝(2<span class="v">a</span>＋<span class="v">b</span>)・(2<span class="v">a</span>＋<span class="v">b</span>) と書いて、分配法則で展開しよう。(2<span class="v">a</span>)・(2<span class="v">a</span>)、(2<span class="v">a</span>)・<span class="v">b</span>、<span class="v">b</span>・(2<span class="v">a</span>)、<span class="v">b</span>・<span class="v">b</span> の4項が出るはずだ。</p>
+          </div>
+          <div class="step hint">
+            <h3>ステップ 2 ― 性質5で係数を前に出す</h3>
+            <p>(2<span class="v">a</span>)・(2<span class="v">a</span>) は性質5を2回使って 4(<span class="v">a</span>・<span class="v">a</span>)＝4<span class="abs">|</span><span class="v">a</span><span class="abs">|</span><sup>2</sup>。(2<span class="v">a</span>)・<span class="v">b</span> と <span class="v">b</span>・(2<span class="v">a</span>) はどちらも 2<span class="v">a</span>・<span class="v">b</span> になるから、合計で 4<span class="v">a</span>・<span class="v">b</span> になることを確かめよう。</p>
+          </div>
+          <div class="step answer">
+            <h3>証明 (1)</h3>
+            <p style="text-align:center">左辺＝(2<span class="v">a</span>＋<span class="v">b</span>)・(2<span class="v">a</span>＋<span class="v">b</span>)<br />＝4<span class="v">a</span>・<span class="v">a</span>＋2<span class="v">a</span>・<span class="v">b</span>＋2<span class="v">b</span>・<span class="v">a</span>＋<span class="v">b</span>・<span class="v">b</span><br />＝4<span class="abs">|</span><span class="v">a</span><span class="abs">|</span><sup>2</sup>＋4<span class="v">a</span>・<span class="v">b</span>＋<span class="abs">|</span><span class="v">b</span><span class="abs">|</span><sup>2</sup>＝右辺</p>
+            <p>よって、<span class="abs">|</span>2<span class="v">a</span>＋<span class="v">b</span><span class="abs">|</span><sup>2</sup>＝4<span class="abs">|</span><span class="v">a</span><span class="abs">|</span><sup>2</sup>＋4<span class="v">a</span>・<span class="v">b</span>＋<span class="abs">|</span><span class="v">b</span><span class="abs">|</span><sup>2</sup> が成り立つ。</p>
+          </div>
+          <p class="prob-done">(1) クリア！　(2) のタブを開いてみよう。</p>
+        </div>
+
+        <!-- 練習25 (2) -->
+        <div class="tabpanel" id="panel-ren25-2" data-flow="ren25-2" data-label="練習25 (2)">
+          <div class="prob-head">
+            <span class="prob-q" style="margin:0">(2)　(<span class="v">a</span>＋<span class="v">b</span>)・(<span class="v">a</span>−<span class="v">b</span>)＝<span class="abs">|</span><span class="v">a</span><span class="abs">|</span><sup>2</sup>−<span class="abs">|</span><span class="v">b</span><span class="abs">|</span><sup>2</sup></span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 2</span>
+          </div>
+          <div class="step hint">
+            <h3>ステップ 1 ― 分配法則で4項に展開する</h3>
+            <p>左辺をそのまま分配法則で展開する。<span class="v">a</span>・<span class="v">a</span>、<span class="v">a</span>・(−<span class="v">b</span>)、<span class="v">b</span>・<span class="v">a</span>、<span class="v">b</span>・(−<span class="v">b</span>) の4項になる。(x＋y)(x−y) の展開と見比べながら書いてみよう。</p>
+          </div>
+          <div class="step hint">
+            <h3>ステップ 2 ― 真ん中の2項が消えることを見る</h3>
+            <p>4項は <span class="v">a</span>・<span class="v">a</span> −<span class="v">a</span>・<span class="v">b</span> ＋<span class="v">b</span>・<span class="v">a</span> −<span class="v">b</span>・<span class="v">b</span>。性質2より <span class="v">b</span>・<span class="v">a</span>＝<span class="v">a</span>・<span class="v">b</span> だから、−<span class="v">a</span>・<span class="v">b</span> と ＋<span class="v">b</span>・<span class="v">a</span> が打ち消し合う。残る2項を性質1で書き換えよう。</p>
+          </div>
+          <div class="step answer">
+            <h3>証明 (2)</h3>
+            <p style="text-align:center">左辺＝<span class="v">a</span>・<span class="v">a</span>−<span class="v">a</span>・<span class="v">b</span>＋<span class="v">b</span>・<span class="v">a</span>−<span class="v">b</span>・<span class="v">b</span><br />＝<span class="abs">|</span><span class="v">a</span><span class="abs">|</span><sup>2</sup>−<span class="abs">|</span><span class="v">b</span><span class="abs">|</span><sup>2</sup>＝右辺</p>
+            <p>よって、(<span class="v">a</span>＋<span class="v">b</span>)・(<span class="v">a</span>−<span class="v">b</span>)＝<span class="abs">|</span><span class="v">a</span><span class="abs">|</span><sup>2</sup>−<span class="abs">|</span><span class="v">b</span><span class="abs">|</span><sup>2</sup> が成り立つ。和と差の積＝2乗の差、という文字式の公式そのままの形だ。</p>
+          </div>
+          <p class="prob-done">(2) クリア！　練習25はこれで終わり。次は応用例題2へ進もう。</p>
+        </div>
+      </section>
+
+      <!-- 応用例題2 -->
+      <section class="card prob" data-flow="ouyou2" data-label="応用例題2">
+        <div class="prob-head">
+          <span class="prob-tag">応用例題 2</span>
+          <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+          <span class="prob-state">ヒント 0 / 3</span>
+        </div>
+        <p class="prob-q"><span class="v">a</span>、<span class="v">b</span> が <span class="abs">|</span><span class="v">a</span><span class="abs">|</span>＝1、<span class="abs">|</span><span class="v">b</span><span class="abs">|</span>＝4、<span class="v">a</span>・<span class="v">b</span>＝2 を満たすとき、<span class="abs">|</span>2<span class="v">a</span>−<span class="v">b</span><span class="abs">|</span> の値を求めよ。</p>
+        <div class="step hint">
+          <h3>ヒント 1 ― 成分は使えない。まず「2乗」から攻める</h3>
+          <p>この問題には成分も角度も出てこない。与えられているのは大きさと内積の数値だけだ。こういうときは、<span class="key">まず <span class="abs">|</span>2<span class="v">a</span>−<span class="v">b</span><span class="abs">|</span><sup>2</sup> を求めて、最後に平方根を取る</span>のが定石。<span class="abs">|</span>2<span class="v">a</span>−<span class="v">b</span><span class="abs">|</span><sup>2</sup>＝(2<span class="v">a</span>−<span class="v">b</span>)・(2<span class="v">a</span>−<span class="v">b</span>) と書くところから始めよう。</p>
+        </div>
+        <div class="step hint">
+          <h3>ヒント 2 ― 展開すると、知っている量だけで書ける</h3>
+          <p>例題6・練習25と同じ展開をすると、<span class="abs">|</span>2<span class="v">a</span>−<span class="v">b</span><span class="abs">|</span><sup>2</sup>＝4<span class="abs">|</span><span class="v">a</span><span class="abs">|</span><sup>2</sup>−4<span class="v">a</span>・<span class="v">b</span>＋<span class="abs">|</span><span class="v">b</span><span class="abs">|</span><sup>2</sup> になる（真ん中の交差項は −2×(2<span class="v">a</span>・<span class="v">b</span>)＝−4<span class="v">a</span>・<span class="v">b</span>）。右辺に出てくるのは <span class="abs">|</span><span class="v">a</span><span class="abs">|</span>、<span class="abs">|</span><span class="v">b</span><span class="abs">|</span>、<span class="v">a</span>・<span class="v">b</span> だけで、全部数値が分かっている。</p>
+        </div>
+        <div class="step hint">
+          <h3>ヒント 3 ― 数値を代入して、最後に平方根</h3>
+          <p><span class="abs">|</span><span class="v">a</span><span class="abs">|</span>＝1、<span class="abs">|</span><span class="v">b</span><span class="abs">|</span>＝4、<span class="v">a</span>・<span class="v">b</span>＝2 を代入する：4×1<sup>2</sup>−4×2＋4<sup>2</sup> を計算してみよう。4<sup>2</sup>＝16 を忘れずに。2乗した値が出たら、<span class="abs">|</span>2<span class="v">a</span>−<span class="v">b</span><span class="abs">|</span>≧0 に注意して平方根を取る。</p>
+        </div>
+        <div class="step answer">
+          <h3>解答</h3>
+          <p class="big"><span class="abs">|</span>2<span class="v">a</span>−<span class="v">b</span><span class="abs">|</span>＝2√3</p>
+          <p><span class="abs">|</span>2<span class="v">a</span>−<span class="v">b</span><span class="abs">|</span><sup>2</sup>＝(2<span class="v">a</span>−<span class="v">b</span>)・(2<span class="v">a</span>−<span class="v">b</span>)＝4<span class="v">a</span>・<span class="v">a</span>−2<span class="v">a</span>・<span class="v">b</span>−2<span class="v">b</span>・<span class="v">a</span>＋<span class="v">b</span>・<span class="v">b</span>＝4<span class="abs">|</span><span class="v">a</span><span class="abs">|</span><sup>2</sup>−4<span class="v">a</span>・<span class="v">b</span>＋<span class="abs">|</span><span class="v">b</span><span class="abs">|</span><sup>2</sup>＝4×1<sup>2</sup>−4×2＋4<sup>2</sup>＝4−8＋16＝12。<span class="abs">|</span>2<span class="v">a</span>−<span class="v">b</span><span class="abs">|</span>≧0 であるから、<span class="abs">|</span>2<span class="v">a</span>−<span class="v">b</span><span class="abs">|</span>＝√12＝2√3。</p>
+          <p class="note"><b>型：</b>「大きさと内積だけが与えられた大きさの問題」は、① 2乗する → ② 内積で展開する → ③ 数値を代入 → ④ 平方根を取る、の4手順。成分も角度もいらない。</p>
+        </div>
+        <p class="prob-done">応用例題2 クリア！　最後は練習26でこの型を2問解こう。</p>
+      </section>
+
+      <!-- 練習26 -->
+      <section class="card prob" id="prob-ren26">
+        <div class="prob-head">
+          <span class="prob-tag ren">練習 26</span>
+          <span class="prob-state">下のタブで小問を選んでね</span>
+        </div>
+        <p class="prob-q"><span class="abs">|</span><span class="v">a</span><span class="abs">|</span>＝3、<span class="abs">|</span><span class="v">b</span><span class="abs">|</span>＝2、<span class="v">a</span>・<span class="v">b</span>＝−3 のとき、次の値を求めよ。</p>
+        <div class="tabs" role="tablist" aria-label="練習26の小問">
+          <button class="tab" role="tab" data-tab="ren26-1" aria-selected="true">(1)</button>
+          <button class="tab" role="tab" data-tab="ren26-2" aria-selected="false">(2)</button>
+        </div>
+
+        <!-- 練習26 (1) -->
+        <div class="tabpanel show" id="panel-ren26-1" data-flow="ren26-1" data-label="練習26 (1)">
+          <div class="prob-head">
+            <span class="prob-q" style="margin:0">(1)　<span class="abs">|</span><span class="v">a</span>＋<span class="v">b</span><span class="abs">|</span></span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 2</span>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 1 ― 2乗して、例題6の公式に代入する</h3>
+            <p><span class="abs">|</span><span class="v">a</span>＋<span class="v">b</span><span class="abs">|</span><sup>2</sup>＝<span class="abs">|</span><span class="v">a</span><span class="abs">|</span><sup>2</sup>＋2<span class="v">a</span>・<span class="v">b</span>＋<span class="abs">|</span><span class="v">b</span><span class="abs">|</span><sup>2</sup>（例題6の公式）。ここに <span class="abs">|</span><span class="v">a</span><span class="abs">|</span>＝3、<span class="abs">|</span><span class="v">b</span><span class="abs">|</span>＝2、<span class="v">a</span>・<span class="v">b</span>＝−3 を当てはめる式を書いてみよう。</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 2 ― 内積が負だから、真ん中の項はマイナス</h3>
+            <p>代入すると 3<sup>2</sup>＋2×(−3)＋2<sup>2</sup> になる。2×(−3)＝−6 だから、合計は 9−6＋4 だ。これを計算して、最後に平方根を取ろう。</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (1)</h3>
+            <p class="big"><span class="abs">|</span><span class="v">a</span>＋<span class="v">b</span><span class="abs">|</span>＝√7</p>
+            <p><span class="abs">|</span><span class="v">a</span>＋<span class="v">b</span><span class="abs">|</span><sup>2</sup>＝<span class="abs">|</span><span class="v">a</span><span class="abs">|</span><sup>2</sup>＋2<span class="v">a</span>・<span class="v">b</span>＋<span class="abs">|</span><span class="v">b</span><span class="abs">|</span><sup>2</sup>＝9＋2×(−3)＋4＝7。<span class="abs">|</span><span class="v">a</span>＋<span class="v">b</span><span class="abs">|</span>≧0 であるから、<span class="abs">|</span><span class="v">a</span>＋<span class="v">b</span><span class="abs">|</span>＝√7。</p>
+          </div>
+          <p class="prob-done">(1) クリア！　(2) のタブを開いてみよう。</p>
+        </div>
+
+        <!-- 練習26 (2) -->
+        <div class="tabpanel" id="panel-ren26-2" data-flow="ren26-2" data-label="練習26 (2)">
+          <div class="prob-head">
+            <span class="prob-q" style="margin:0">(2)　<span class="abs">|</span><span class="v">a</span>−2<span class="v">b</span><span class="abs">|</span></span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 3</span>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 1 ― 2乗して展開する（係数に注意）</h3>
+            <p><span class="abs">|</span><span class="v">a</span>−2<span class="v">b</span><span class="abs">|</span><sup>2</sup>＝(<span class="v">a</span>−2<span class="v">b</span>)・(<span class="v">a</span>−2<span class="v">b</span>) を展開する。(x−2y)<sup>2</sup>＝x<sup>2</sup>−4xy＋4y<sup>2</sup> と同じ形で、<span class="abs">|</span><span class="v">a</span><span class="abs">|</span><sup>2</sup>−4<span class="v">a</span>・<span class="v">b</span>＋4<span class="abs">|</span><span class="v">b</span><span class="abs">|</span><sup>2</sup> になる。真ん中は −2 ではなく −4、最後は <span class="abs">|</span><span class="v">b</span><span class="abs">|</span><sup>2</sup> の4倍だ。</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 2 ― 数値を代入する（負×負に注意）</h3>
+            <p><span class="abs">|</span><span class="v">a</span><span class="abs">|</span>＝3、<span class="abs">|</span><span class="v">b</span><span class="abs">|</span>＝2、<span class="v">a</span>・<span class="v">b</span>＝−3 を代入すると、3<sup>2</sup>−4×(−3)＋4×2<sup>2</sup> になる。−4×(−3) はプラスになるのが、この計算の山場だ。</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 3 ― 合計して平方根を取る</h3>
+            <p>3<sup>2</sup>＝9、−4×(−3)＝12、4×2<sup>2</sup>＝16。合計は 9＋12＋16 だ。37 は素数で、これ以上簡単にはならないから、答えは √ のまま残るはずだ。</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (2)</h3>
+            <p class="big"><span class="abs">|</span><span class="v">a</span>−2<span class="v">b</span><span class="abs">|</span>＝√37</p>
+            <p><span class="abs">|</span><span class="v">a</span>−2<span class="v">b</span><span class="abs">|</span><sup>2</sup>＝<span class="abs">|</span><span class="v">a</span><span class="abs">|</span><sup>2</sup>−4<span class="v">a</span>・<span class="v">b</span>＋4<span class="abs">|</span><span class="v">b</span><span class="abs">|</span><sup>2</sup>＝9−4×(−3)＋4×4＝9＋12＋16＝37。<span class="abs">|</span><span class="v">a</span>−2<span class="v">b</span><span class="abs">|</span>≧0 であるから、<span class="abs">|</span><span class="v">a</span>−2<span class="v">b</span><span class="abs">|</span>＝√37。</p>
+          </div>
+          <p class="prob-done">(2) クリア！　練習26はこれで終わり。「4 ベクトルの内積」は全部クリアだ。下のまとめで確認しよう。</p>
+        </div>
+      </section>
+
+      <!-- ================= まとめ ================= -->
+      <section class="card summary">
+        <h2>この項のポイント</h2>
+        <ul>
+          <li><b>内積には2つの顔がある</b>：定義は <span class="v">a</span>・<span class="v">b</span>＝<span class="abs">|</span><span class="v">a</span><span class="abs">|</span><span class="abs">|</span><span class="v">b</span><span class="abs">|</span>cosθ、成分では <span class="v">a</span>・<span class="v">b</span>＝a<sub>1</sub>b<sub>1</sub>＋a<sub>2</sub>b<sub>2</sub>。内積はベクトルではなく<b>実数</b>。符号は cosθ で決まり、鈍角なら負になる。</li>
+          <li><b>なす角は始点をそろえて測る</b>：図形の中のベクトルでは、内角がそのままなす角になるとは限らない（例10：内角60°でもなす角は120°）。求める手順は cosθ＝<span class="fr"><sup><span class="v">a</span>・<span class="v">b</span></sup>/<sub><span class="abs">|</span><span class="v">a</span><span class="abs">|</span><span class="abs">|</span><span class="v">b</span><span class="abs">|</span></sub></span> を計算し、0°≦θ≦180° で θ を決める。まず「片方がもう片方の何倍か」の倍率チェックをすると、0°・180°の場合は一瞬で分かる。</li>
+          <li><b>垂直 ⇔ 内積 0</b>：<span class="v">a</span>⊥<span class="v">b</span> ⇔ a<sub>1</sub>b<sub>1</sub>＋a<sub>2</sub>b<sub>2</sub>＝0。「垂直になるように x を定めよ」は内積＝0 の方程式、「垂直で大きさ指定」のベクトルは <span class="v">b</span>＝(x, y) とおいて垂直条件と大きさの連立で解く。垂直ベクトルを1つ作るだけなら、成分を入れ替えて片方の符号を変える (−a<sub>2</sub>, a<sub>1</sub>) が最速。</li>
+          <li><b>大きさの問題はまず2乗</b>：<span class="abs">|</span><span class="v">x</span><span class="abs">|</span><sup>2</sup>＝<span class="v">x</span>・<span class="v">x</span> と書いて分配法則で展開する。<span class="abs">|</span><span class="v">a</span>＋<span class="v">b</span><span class="abs">|</span><sup>2</sup>＝<span class="abs">|</span><span class="v">a</span><span class="abs">|</span><sup>2</sup>＋2<span class="v">a</span>・<span class="v">b</span>＋<span class="abs">|</span><span class="v">b</span><span class="abs">|</span><sup>2</sup> が基本形で、数値を代入したら最後に平方根を取る。</li>
+        </ul>
+      </section>
+
+      <!-- ================= フッター ================= -->
+      <footer>
+        <a class="back-btn" href="vectors.html" id="backToTop">← トップページに戻る</a>
+        <p class="foot-note">数学C 第1章 平面上のベクトル ｜ 4 ベクトルの内積（教科書 p.22〜28）</p>
+      </footer>
+    </div>
+
+    <!-- ================= 下部固定バー ================= -->
+    <div class="ctrl-bar">
+      <div class="ctrl-inner">
+        <p class="ctrl-label">いまの課題：<b id="ctrlLabel">例9</b>　―　「次へ」でヒントを1つずつ開こう</p>
+        <div class="ctrl-btns">
+          <button class="btn" id="btnReset" type="button">最初からやり直す</button>
+          <button class="btn btn-next" id="btnNext" type="button">次へ ▶</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      (function(){
+        "use strict";
+
+        /* ---------- 内積スライダー（SVG属性の更新のみ） ---------- */
+        var ipRange = document.getElementById('ipRange');
+        if (ipRange){
+          var OX = 200, OY = 250, PHI_A = -25, LB = 140;
+          var ipLineB = document.getElementById('ipLineB');
+          var ipDotB = document.getElementById('ipDotB');
+          var ipArc = document.getElementById('ipArc');
+          var ipTheta = document.getElementById('ipTheta');
+          var ipLabelB = document.getElementById('ipLabelB');
+          var ipLabelBLen = document.getElementById('ipLabelBLen');
+          var ipThetaVal = document.getElementById('ipThetaVal');
+          var ipState = document.getElementById('ipState');
+          var COS_EXACT = {0:'1', 30:'√3/2', 45:'1/√2', 60:'1/2', 90:'0', 120:'−1/2', 135:'−1/√2', 150:'−√3/2', 180:'−1'};
+          var PROD_EXACT = {0:'6', 30:'3√3', 45:'3√2', 60:'3', 90:'0', 120:'−3', 135:'−3√2', 150:'−3√3', 180:'−6'};
+          function pt(phiDeg, r){
+            var rad = phiDeg * Math.PI / 180;
+            return [OX + r * Math.cos(rad), OY + r * Math.sin(rad)];
+          }
+          function fmt(n){ return (Math.round(n * 100) / 100).toString().replace('-', '−'); }
+          function applyIp(){
+            var th = parseInt(ipRange.value, 10);
+            var phiB = PHI_A - th;
+            var endB = pt(phiB, LB);
+            ipLineB.setAttribute('x2', endB[0]); ipLineB.setAttribute('y2', endB[1]);
+            ipDotB.setAttribute('cx', endB[0]); ipDotB.setAttribute('cy', endB[1]);
+            var as = pt(PHI_A, 52), ae = pt(phiB, 52);
+            ipArc.setAttribute('d', th === 0 ? '' : 'M' + as[0].toFixed(1) + ' ' + as[1].toFixed(1) + ' A52 52 0 0 0 ' + ae[0].toFixed(1) + ' ' + ae[1].toFixed(1));
+            var tp = pt((PHI_A + phiB) / 2, 80);
+            ipTheta.setAttribute('x', tp[0] - 5); ipTheta.setAttribute('y', tp[1] + 6);
+            var lp = pt(phiB, LB + 30);
+            ipLabelB.setAttribute('x', lp[0] - 8); ipLabelB.setAttribute('y', lp[1] + 6);
+            var mp = pt(phiB, LB * 0.5);
+            var brad = phiB * Math.PI / 180;
+            ipLabelBLen.setAttribute('x', mp[0] + Math.sin(brad) * 20);
+            ipLabelBLen.setAttribute('y', mp[1] - Math.cos(brad) * 20 + 5);
+            ipLabelBLen.setAttribute('text-anchor', 'middle');
+            ipThetaVal.textContent = th + '°';
+            var sign = th < 90 ? '（正の値）' : (th === 90 ? '（0 ― 2つのベクトルは垂直）' : '（負の値）');
+            if (COS_EXACT[th] !== undefined){
+              ipState.textContent = 'θ＝' + th + '°　cosθ＝' + COS_EXACT[th] + '　a→・b→＝2×3×(' + COS_EXACT[th] + ')＝' + PROD_EXACT[th] + sign;
+            } else {
+              var c = Math.cos(th * Math.PI / 180);
+              ipState.textContent = 'θ＝' + th + '°　cosθ≒' + fmt(c) + '　a→・b→≒' + fmt(6 * c) + sign;
+            }
+            Array.prototype.forEach.call(document.querySelectorAll('.stage-btn'), function(b){
+              b.classList.toggle('on', parseInt(b.getAttribute('data-angle'), 10) === th);
+            });
+          }
+          ipRange.addEventListener('input', applyIp);
+          Array.prototype.forEach.call(document.querySelectorAll('.stage-btn'), function(b){
+            b.addEventListener('click', function(){
+              ipRange.value = b.getAttribute('data-angle');
+              applyIp();
+            });
+          });
+          applyIp();
+        }
+
+        /* ---------- ヒント式フロー（汎用） ---------- */
+        var flows = {};
+        var activeId = null;
+
+        function registerFlow(root){
+          var id = root.getAttribute('data-flow');
+          var steps = Array.prototype.slice.call(root.querySelectorAll(':scope > .step'));
+          var head = root.querySelector(':scope > .prob-head');
+          var dots = head ? Array.prototype.slice.call(head.querySelectorAll('.dot')) : [];
+          var stateEl = head ? head.querySelector('.prob-state') : null;
+          var doneEl = root.querySelector(':scope > .prob-done');
+          flows[id] = {
+            id: id, root: root, steps: steps, dots: dots, stateEl: stateEl,
+            doneEl: doneEl, idx: 0, label: root.getAttribute('data-label') || id,
+            hintTotal: steps.filter(function(s){ return s.classList.contains('hint'); }).length
+          };
+          if (!activeId) activeId = id;
+        }
+        Array.prototype.forEach.call(document.querySelectorAll('[data-flow]'), registerFlow);
+
+        var btnNext = document.getElementById('btnNext');
+        var btnReset = document.getElementById('btnReset');
+        var ctrlLabel = document.getElementById('ctrlLabel');
+
+        function refreshFlow(f){
+          f.steps.forEach(function(s, i){ s.classList.toggle('show', i < f.idx); });
+          f.dots.forEach(function(d, i){ d.classList.toggle('on', i < f.idx); });
+          if (f.stateEl){
+            if (f.idx === 0) f.stateEl.textContent = 'ヒント 0 / ' + f.hintTotal;
+            else if (f.idx <= f.hintTotal) f.stateEl.textContent = 'ヒント ' + f.idx + ' / ' + f.hintTotal;
+            else f.stateEl.textContent = '解答を表示済み';
+          }
+          if (f.doneEl) f.doneEl.classList.toggle('show', f.idx >= f.steps.length);
+        }
+        function refreshBar(){
+          var f = flows[activeId];
+          if (!f) return;
+          ctrlLabel.textContent = f.label;
+          if (f.idx >= f.steps.length){
+            btnNext.disabled = true;
+            btnNext.textContent = 'ぜんぶ開いたよ ✓';
+          } else if (f.idx === f.hintTotal){
+            btnNext.disabled = false;
+            btnNext.textContent = '解答を見る ▶';
+          } else {
+            btnNext.disabled = false;
+            btnNext.textContent = '次へ ▶（ヒント ' + (f.idx + 1) + '）';
+          }
+          Array.prototype.forEach.call(document.querySelectorAll('.prob'), function(card){
+            card.classList.toggle('active', card === f.root || card.contains(f.root));
+          });
+        }
+        function setActive(id){
+          if (!flows[id]) return;
+          activeId = id;
+          refreshBar();
+        }
+
+        btnNext.addEventListener('click', function(){
+          var f = flows[activeId];
+          if (!f || f.idx >= f.steps.length) return;
+          f.idx += 1;
+          refreshFlow(f);
+          refreshBar();
+          var shown = f.steps[f.idx - 1];
+          if (shown) shown.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        });
+        btnReset.addEventListener('click', function(){
+          var f = flows[activeId];
+          if (!f) return;
+          f.idx = 0;
+          refreshFlow(f);
+          refreshBar();
+          f.root.scrollIntoView({ block: 'start', behavior: 'smooth' });
+        });
+
+        /* カードを触ったら、その課題（表示中のタブ）を操作対象にする */
+        Array.prototype.forEach.call(document.querySelectorAll('.prob'), function(card){
+          card.addEventListener('click', function(){
+            if (card.getAttribute('data-flow')){
+              setActive(card.getAttribute('data-flow'));
+            } else {
+              var visible = card.querySelector('.tabpanel.show');
+              if (visible) setActive(visible.getAttribute('data-flow'));
+            }
+          });
+        });
+
+        /* ---------- タブ切り替え（汎用） ---------- */
+        Array.prototype.forEach.call(document.querySelectorAll('.tab'), function(tab){
+          tab.addEventListener('click', function(){
+            var card = tab.closest('.prob');
+            if (!card) return;
+            Array.prototype.forEach.call(card.querySelectorAll('.tab'), function(t){
+              t.setAttribute('aria-selected', t === tab ? 'true' : 'false');
+            });
+            var target = tab.getAttribute('data-tab');
+            Array.prototype.forEach.call(card.querySelectorAll('.tabpanel'), function(p){
+              p.classList.toggle('show', p.id === 'panel-' + target);
+            });
+            setActive(target);
+          });
+        });
+
+        Object.keys(flows).forEach(function(id){ refreshFlow(flows[id]); });
+        refreshBar();
+      })();
+    </script>
+  </body>
+</html>
