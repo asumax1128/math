@@ -1,0 +1,942 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:," />
+    <title>数学B B4 ヒント式解説</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@600;800&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --bg: #f4f1ea;
+        --surface: #ffffff;
+        --surface-2: #faf7f0;
+        --ink: #262319;
+        --muted: #6f6a5c;
+        --line: #ddd5c2;
+        --line-strong: #b9b09a;
+        --accent: #bf3a26;
+        --accent-deep: #9c2b1a;
+        --accent-soft: #fbeae5;
+        --blue: #2f5da8;
+        --blue-soft: #e7eef9;
+        --green: #2e7d4f;
+        --green-soft: #e6f2e9;
+        --gold: #a86e14;
+        --hint-bg: #fffaf0;
+        --hint-line: #ecd9ae;
+        --shadow: 0 1px 2px rgba(60, 50, 20, .06), 0 8px 24px rgba(60, 50, 20, .07);
+        color-scheme: light dark;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #141519;
+          --surface: #1e2026;
+          --surface-2: #23252d;
+          --ink: #ece7da;
+          --muted: #a39d8d;
+          --line: #35383f;
+          --line-strong: #555a66;
+          --accent: #e8705a;
+          --accent-deep: #f0927d;
+          --accent-soft: #3a2420;
+          --blue: #84aaea;
+          --blue-soft: #232c3f;
+          --green: #74c48f;
+          --green-soft: #1f3026;
+          --gold: #d9a94f;
+          --hint-bg: #262219;
+          --hint-line: #57482a;
+          --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+        }
+      }
+      * { box-sizing: border-box; }
+      [hidden] { display: none !important; }
+      html { -webkit-text-size-adjust: 100%; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: "Zen Kaku Gothic New", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+        font-size: 16px;
+        line-height: 1.75;
+      }
+      .wrap { max-width: 880px; margin: 0 auto; padding: 20px 16px 64px; }
+
+      /* ---------- header ---------- */
+      .doc-head { border-bottom: 3px double var(--line-strong); padding-bottom: 14px; margin-bottom: 16px; }
+      .doc-head .exam-line {
+        display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap;
+        font-size: 13px; color: var(--muted); font-weight: 700; letter-spacing: .08em;
+      }
+      h1 {
+        font-family: "Shippori Mincho B1", "Hiragino Mincho ProN", serif;
+        font-weight: 800; font-size: clamp(26px, 6vw, 38px); line-height: 1.25;
+        margin: 6px 0 4px;
+      }
+      h1 .b1 {
+        display: inline-block; border: 2.5px solid var(--ink); padding: 0 .28em; margin-right: .3em;
+        font-size: .82em; vertical-align: .06em;
+      }
+      .doc-head .sub { margin: 0; color: var(--muted); font-size: 14.5px; }
+      .howto {
+        display: flex; gap: 10px; align-items: flex-start;
+        background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
+        padding: 12px 14px; margin: 0 0 18px; box-shadow: var(--shadow);
+        font-size: 14.5px;
+      }
+      .howto .pen {
+        flex: 0 0 auto; width: 30px; height: 30px; border-radius: 50%;
+        background: var(--accent); color: #fff; display: grid; place-items: center;
+        font-family: "Shippori Mincho B1", serif; font-weight: 800; font-size: 16px; margin-top: 2px;
+      }
+      .howto p { margin: 0; }
+      .howto strong { color: var(--accent-deep); }
+      .overall { font-size: 13px; color: var(--muted); margin: 10px 2px 0; }
+      .overall b { color: var(--ink); }
+
+      /* ---------- problem tabs ---------- */
+      .tabs { display: grid; grid-template-columns: repeat(auto-fit, minmax(148px, 1fr)); gap: 8px; margin-bottom: 20px; }
+      .tab {
+        appearance: none; text-align: left; cursor: pointer;
+        background: var(--surface); color: var(--ink);
+        border: 1.5px solid var(--line); border-radius: 10px; padding: 10px 12px;
+        font: inherit; line-height: 1.4;
+        display: flex; flex-direction: column; gap: 2px;
+      }
+      .tab:hover { border-color: var(--line-strong); }
+      .tab:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+      .tab .t-top { display: flex; align-items: baseline; gap: 8px; }
+      .tab .t-num {
+        font-family: "Shippori Mincho B1", serif; font-weight: 800; font-size: 19px;
+        border: 2px solid var(--ink); border-radius: 4px; padding: 0 6px; line-height: 1.3;
+      }
+      .tab .t-name { font-weight: 700; font-size: 14.5px; }
+      .tab .t-meta { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); }
+      .tab .t-status { font-weight: 700; }
+      .tab.active { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+      .tab.active .t-num { border-color: var(--accent); color: var(--accent); }
+      .tab.done .t-status { color: var(--green); }
+
+      /* ---------- problem card ---------- */
+      .problem { display: none; }
+      .problem.active { display: block; }
+      .qcard {
+        background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
+        box-shadow: var(--shadow); padding: 20px 20px 16px; margin-bottom: 14px;
+      }
+      .q-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+      .q-num {
+        font-family: "Shippori Mincho B1", serif; font-weight: 800; font-size: 22px;
+        border: 2.5px solid var(--ink); border-radius: 5px; padding: 0 9px; line-height: 1.35;
+      }
+      .q-title { font-family: "Shippori Mincho B1", serif; font-weight: 800; font-size: 20px; }
+      .q-points { margin-left: auto; font-size: 12.5px; color: var(--muted); font-weight: 700; border: 1px solid var(--line); border-radius: 999px; padding: 1px 10px; }
+      .q-body { font-size: 16.5px; line-height: 2; margin: 0; }
+      .defbox {
+        background: var(--surface-2); border: 1px solid var(--line); border-radius: 8px;
+        padding: 10px 16px; margin: 10px 0; font-size: 16.5px; line-height: 2;
+      }
+      .defbox .dlabel { font-weight: 900; font-size: 12.5px; letter-spacing: .08em; color: var(--muted); display: block; margin-bottom: 2px; }
+      .defbox ol { margin: 4px 0 2px; padding-left: 1.4em; }
+      .defbox ol li { margin: 2px 0; }
+
+      /* ---------- math typesetting ---------- */
+      .m { font-family: "Times New Roman", "Shippori Mincho B1", "Hiragino Mincho ProN", serif; font-size: 1.06em; letter-spacing: .01em; white-space: nowrap; }
+      .m i { font-style: italic; }
+      .m sub, .m sup { font-size: .68em; }
+      .frac { display: inline-flex; flex-direction: column; text-align: center; vertical-align: middle; margin: 0 .12em; line-height: 1.15; font-size: .92em; }
+      .frac .num { border-bottom: 1.6px solid currentColor; padding: 0 .32em 1px; }
+      .frac .den { padding: 1px .32em 0; }
+
+      /* ---------- visual panel ---------- */
+      .viz {
+        background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
+        box-shadow: var(--shadow); padding: 16px; margin-bottom: 14px;
+      }
+      .viz-title { font-size: 12.5px; font-weight: 900; letter-spacing: .1em; color: var(--muted); margin: 0 0 10px; }
+      .viz svg { display: block; width: 100%; height: auto; max-width: 620px; margin: 0 auto; }
+      .viz svg text { font-family: "Zen Kaku Gothic New", sans-serif; fill: var(--ink); }
+      .viz .svg-m { font-family: "Times New Roman", serif; font-style: italic; }
+      .viz-note { text-align: center; font-size: 13.5px; color: var(--muted); margin: 8px 0 0; }
+
+      /* slider */
+      .slider-box { border-top: 1px dashed var(--line-strong); margin-top: 12px; padding-top: 12px; }
+      .slider-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+      .slider-row label { font-weight: 900; font-size: 14.5px; }
+      .slider-row input[type="range"] { flex: 1 1 200px; accent-color: var(--accent); height: 34px; }
+      .slider-val { font-family: "Times New Roman", serif; font-size: 19px; font-weight: 700; min-width: 5.2em; }
+      .slider-msg { margin: 8px 0 0; font-size: 14.5px; }
+      .slider-msg .ok { color: var(--green); font-weight: 900; }
+      .slider-msg .ng { color: var(--muted); }
+
+      /* readouts */
+      .readouts { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+      .readout {
+        border: 1.5px solid var(--line-strong); border-radius: 8px; padding: 4px 12px;
+        font-weight: 700; font-size: 14.5px; background: var(--surface-2);
+      }
+      .readout b { color: var(--accent-deep); font-family: "Times New Roman", serif; font-size: 1.08em; }
+      .readout.match { border-color: var(--green); background: var(--green-soft); }
+
+      /* 距離のバー比較 */
+      .bars { margin-top: 12px; display: flex; flex-direction: column; gap: 8px; }
+      .bar-row { display: grid; grid-template-columns: 9.5em 1fr 4.6em; align-items: center; gap: 10px; font-size: 13.5px; font-weight: 700; }
+      .bar-track { height: 14px; background: var(--surface-2); border: 1px solid var(--line); border-radius: 7px; overflow: hidden; }
+      .bar-fill { height: 100%; border-radius: 7px; transition: width .12s ease; }
+      .bar-fill.oa { background: var(--blue); }
+      .bar-fill.ab { background: var(--accent); }
+      .bar-val { font-family: "Times New Roman", serif; font-size: 15px; text-align: right; }
+      @media (max-width: 560px) {
+        .bar-row { grid-template-columns: 7.6em 1fr 4.2em; font-size: 12.5px; }
+      }
+      @media (prefers-reduced-motion: reduce) { .bar-fill { transition: none; } }
+
+      /* 条件チェックリスト */
+      .checks { display: flex; flex-direction: column; gap: 7px; margin-top: 12px; }
+      .chk {
+        display: flex; gap: 9px; align-items: center;
+        border: 1.5px solid var(--line-strong); border-radius: 8px; padding: 6px 12px;
+        font-weight: 700; font-size: 14.5px; background: var(--surface-2);
+      }
+      .chk .chk-mark {
+        flex: 0 0 auto; width: 1.5em; height: 1.5em; border-radius: 50%;
+        display: grid; place-items: center; font-size: 13px; font-weight: 900; color: #fff;
+        background: var(--muted);
+      }
+      .chk.ok { border-color: var(--green); }
+      .chk.ok .chk-mark { background: var(--green); }
+      .chk.ng .chk-mark { background: var(--accent); }
+      .chk .chk-val { margin-left: auto; font-family: "Times New Roman", serif; font-size: 1.02em; white-space: nowrap; }
+
+      /* ---------- stages ---------- */
+      .stage {
+        border-radius: 12px; padding: 16px 18px; margin-bottom: 12px;
+        animation: stage-in .35s ease both;
+      }
+      @keyframes stage-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+      @media (prefers-reduced-motion: reduce) {
+        .stage { animation: none; }
+        html { scroll-behavior: auto; }
+      }
+      .stage.hint { background: var(--hint-bg); border: 1.5px solid var(--hint-line); }
+      .stage.answer { background: var(--surface); border: 2px solid var(--green); box-shadow: var(--shadow); }
+      .stage-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+      .stage-badge {
+        flex: 0 0 auto; font-weight: 900; font-size: 13px; letter-spacing: .06em;
+        border-radius: 999px; padding: 2px 12px;
+      }
+      .hint .stage-badge { background: var(--gold); color: #fff; }
+      .answer .stage-badge { background: var(--green); color: #fff; }
+      @media (prefers-color-scheme: dark) { .hint .stage-badge { color: #1c1710; } }
+      .stage-title { font-weight: 900; font-size: 16.5px; }
+      .stage p { margin: 6px 0; }
+      .stage .mini { font-size: 14px; color: var(--muted); }
+      .formula-line {
+        background: var(--surface-2); border: 1px solid var(--line); border-radius: 8px;
+        padding: 10px 14px; margin: 10px 0; font-size: 17px; line-height: 2; overflow-x: auto;
+      }
+      .hint .formula-line { background: var(--surface); }
+      .ans-line {
+        display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 4px;
+      }
+      .ans-chip {
+        border: 2px solid var(--accent); background: var(--accent-soft); color: var(--accent-deep);
+        border-radius: 8px; padding: 6px 14px; font-weight: 900; font-size: 17px;
+      }
+      .ans-chip .kana { font-size: 12.5px; font-weight: 900; margin-right: 8px; opacity: .75; }
+      .ans-chip .pts { font-size: 12px; font-weight: 700; margin-left: 8px; opacity: .75; }
+      .point-box {
+        border-top: 1px dashed var(--line-strong); margin-top: 12px; padding-top: 10px; font-size: 14.5px;
+      }
+      .point-box .pt { font-weight: 900; color: var(--accent-deep); margin-right: 6px; }
+      .steps { margin: 8px 0; padding-left: 1.3em; }
+      .steps li { margin: 4px 0; }
+      @media (max-width: 560px) {
+        .qcard { padding: 16px 14px 12px; }
+        .stage { padding: 14px; }
+      }
+
+      /* ---------- controls ---------- */
+      .controls {
+        position: sticky; bottom: 10px; z-index: 5;
+        background: var(--surface); border: 1.5px solid var(--line-strong); border-radius: 12px;
+        box-shadow: var(--shadow); padding: 12px 14px;
+        display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+      }
+      .dots { display: flex; gap: 6px; align-items: center; }
+      .dot { width: 11px; height: 11px; border-radius: 50%; border: 2px solid var(--line-strong); background: transparent; }
+      .dot.on { background: var(--gold); border-color: var(--gold); }
+      .dot.on.ans { background: var(--green); border-color: var(--green); }
+      .prog-label { font-size: 13px; color: var(--muted); font-weight: 700; }
+      .next-btn {
+        margin-left: auto; appearance: none; cursor: pointer; border: none;
+        background: var(--accent); color: #fff; font: inherit; font-weight: 900; font-size: 16.5px;
+        border-radius: 10px; padding: 12px 22px; min-height: 50px;
+        box-shadow: 0 3px 0 var(--accent-deep);
+      }
+      .next-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--accent-deep); }
+      .next-btn:disabled { background: var(--green); box-shadow: none; cursor: default; transform: none; }
+      .reset-btn {
+        appearance: none; cursor: pointer; background: none; border: none; font: inherit;
+        color: var(--muted); font-size: 13.5px; font-weight: 700; text-decoration: underline; text-underline-offset: 3px;
+        padding: 8px 4px;
+      }
+      .think-note { font-size: 13.5px; color: var(--muted); margin: 0 2px 12px; }
+
+      footer { margin-top: 34px; border-top: 1px solid var(--line); padding-top: 12px; font-size: 12.5px; color: var(--muted); }
+
+      /* ---------- トップページへの戻りリンク ---------- */
+      .back-top {
+        display: flex; align-items: center; gap: 12px;
+        margin-top: 30px; padding: 14px 18px;
+        background: var(--surface); border: 1.5px solid var(--line-strong); border-radius: 12px;
+        box-shadow: var(--shadow);
+        color: var(--ink); text-decoration: none; font-weight: 900; font-size: 16px;
+      }
+      .back-top:hover { border-color: var(--accent); }
+      .back-top:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+      .back-top .arrow {
+        flex: 0 0 auto; width: 30px; height: 30px; border-radius: 50%;
+        background: var(--accent); color: #fff; display: grid; place-items: center;
+        font-size: 17px; line-height: 1;
+      }
+      .back-top .sub-note { display: block; font-weight: 500; font-size: 13px; color: var(--muted); }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="doc-head">
+        <div class="exam-line"><span>数学 B ・ 必答問題</span><span>配点 20 点</span></div>
+        <h1><span class="b1">B4</span>ヒント式解説</h1>
+        <p class="sub">図形と方程式（円と直線）。いきなり答えを見ないための解説ページ。(1) 直線AB → (2) 円C と接線 ℓ → (3) 2直線に接する円K、と図形が少しずつ組み上がっていく大問で、ヒントは易しい順に少しずつ開きます。</p>
+      </header>
+
+      <div class="howto">
+        <div class="pen">!</div>
+        <p><strong>使い方</strong>：まず自分の力で考えてみよう。詰まったら下の「次へ」を押すと、ヒントが<strong>1つだけ</strong>開きます。ヒントは易しい順に並んでいて、座標平面の図もヒントに合わせて少しずつ変わります。解答が出てくるのは最後のステップだけです。(2) と (3) は前の結果を使うので、順番に進めるのがおすすめです。</p>
+      </div>
+
+      <nav class="tabs" aria-label="問題の選択">
+        <button class="tab active" type="button" data-target="s1">
+          <span class="t-top"><span class="t-num">(1)</span><span class="t-name">直線ABの方程式</span></span>
+          <span class="t-meta"><span>配点 5点</span><span class="t-status">未着手</span></span>
+        </button>
+        <button class="tab" type="button" data-target="s2">
+          <span class="t-top"><span class="t-num">(2)</span><span class="t-name">円C と接線 ℓ</span></span>
+          <span class="t-meta"><span>配点 7点</span><span class="t-status">未着手</span></span>
+        </button>
+        <button class="tab" type="button" data-target="s3">
+          <span class="t-top"><span class="t-num">(3)</span><span class="t-name">円K を求める</span></span>
+          <span class="t-meta"><span>配点 8点</span><span class="t-status">未着手</span></span>
+        </button>
+      </nav>
+      <p class="overall" id="overall">進み具合：<b>0 / 3 問</b>の解答を開きました</p>
+
+      <!-- ================= (1) 直線ABの方程式 ================= -->
+      <section class="problem active" id="s1">
+        <div class="qcard">
+          <div class="q-head">
+            <span class="q-num">B4</span><span class="q-title">(1) 直線ABの方程式</span>
+            <span class="q-points">配点 5点</span>
+          </div>
+          <div class="defbox">
+            <span class="dlabel">問題文（B4 共通）</span>
+            <span class="m"><i>O</i></span> を原点とする座標平面上に2点 <span class="m"><i>A</i>(−1, 2)</span>，<span class="m"><i>B</i>(5, 5)</span> があり、原点 <span class="m"><i>O</i></span> を中心とし直線 <span class="m"><i>AB</i></span> に接する円を <span class="m"><i>C</i></span> とする。また、点 <span class="m"><i>B</i></span> から円 <span class="m"><i>C</i></span> へ引いた2本の接線のうち直線 <span class="m"><i>AB</i></span> でない方を <span class="m"><i>ℓ</i></span> とする。
+            <ol>
+              <li>直線 <span class="m"><i>AB</i></span> の方程式を求めよ。</li>
+              <li>円 <span class="m"><i>C</i></span> の方程式を求めよ。また、接線 <span class="m"><i>ℓ</i></span> の方程式を求めよ。</li>
+              <li>線分 <span class="m"><i>OB</i></span> 上に中心があり、直線 <span class="m"><i>OA</i></span>，<span class="m"><i>AB</i></span> の両方に接する円 <span class="m"><i>K</i></span> の方程式を求めよ。</li>
+            </ol>
+          </div>
+          <p class="q-body">(1) 直線 <span class="m"><i>AB</i></span> の方程式を求めよ。</p>
+        </div>
+
+        <div class="viz" id="viz1">
+          <p class="viz-title">図で見る ― 座標平面の上で、傾きを「横」と「縦」に分ける</p>
+          <svg id="fig1" viewBox="0 0 640 542" role="img" aria-label="座標平面に点A（マイナス1、2）と点B（5、5）が打たれている。ヒントを進めると、2点を結ぶ直線と、横の変化・縦の変化を示す矢印が現れる"></svg>
+          <p class="viz-note" data-min="0" data-max="0">まずは点の位置だけ。A は原点の左上、B は右上にある。ヒントを進めると、ここに「横の変化」と「縦の変化」が現れる。</p>
+          <p class="viz-note" data-min="1" data-max="1" hidden>青い矢印が横の変化、赤い矢印が縦の変化。A から「右へ進んで、上へ上がる」と B に着く。</p>
+          <p class="viz-note" data-min="2" hidden>2点を通る直線が引けた。傾きは「縦の変化 ÷ 横の変化」で決まる。</p>
+        </div>
+
+        <p class="think-note">直線の式は「傾き」と「通る1点」が分かれば作れる。この (1) は、そのための準備運動だよ。</p>
+
+        <div class="stages">
+          <article class="stage hint" hidden>
+            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">まず点を図に打って、変化を目で見る</span></div>
+            <p>座標をそのまま読もう。<span class="m"><i>A</i>(−1, 2)</span> は「<span class="m"><i>x</i> = −1</span>，<span class="m"><i>y</i> = 2</span> の場所」、<span class="m"><i>B</i>(5, 5)</span> は「<span class="m"><i>x</i> = 5</span>，<span class="m"><i>y</i> = 5</span> の場所」だね。上の図に2点を打った。</p>
+            <p>次に、<span class="m"><i>A</i></span> から <span class="m"><i>B</i></span> へ「横にどれだけ進んで、縦にどれだけ上がるか」を数える。図の青い矢印と赤い矢印が、その2つの変化だよ。先に自分で数えてみよう。</p>
+          </article>
+
+          <article class="stage hint" hidden>
+            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">傾き ＝ 縦の変化 ÷ 横の変化</span></div>
+            <p>変化は座標の引き算で出る。<strong>横の変化</strong>は <span class="m"><i>x</i></span> 座標どうしの引き算：</p>
+            <div class="formula-line"><span class="m">5 − (−1) = 6</span></div>
+            <p><strong>縦の変化</strong>は <span class="m"><i>y</i></span> 座標どうしの引き算：</p>
+            <div class="formula-line"><span class="m">5 − 2 = 3</span></div>
+            <p>傾きは「横に1進んだら、縦にどれだけ上がるか」だから、</p>
+            <div class="formula-line">傾き ＝ <span class="m"><span class="frac"><span class="num">縦の変化</span><span class="den">横の変化</span></span> = <span class="frac"><span class="num">3</span><span class="den">6</span></span> = <span class="frac"><span class="num">1</span><span class="den">2</span></span></span></div>
+            <p class="mini">つまずき注意：<span class="m">5 − (−1)</span> は「マイナスを引く」ので <span class="m">5 + 1 = 6</span>。ここで 4 と書くのが、この問題でいちばん多い計算ミスだよ。</p>
+          </article>
+
+          <article class="stage hint" hidden>
+            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">公式に「傾き」と「通る点」をはめる</span></div>
+            <p>傾き <span class="m"><i>m</i></span> で点 <span class="m">(<i>x</i><sub>1</sub>, <i>y</i><sub>1</sub>)</span> を通る直線の公式は：</p>
+            <div class="formula-line"><span class="m"><i>y</i> − <i>y</i><sub>1</sub> = <i>m</i>(<i>x</i> − <i>x</i><sub>1</sub>)</span></div>
+            <p>ここに、傾き <span class="m"><span class="frac"><span class="num">1</span><span class="den">2</span></span></span> と、点 <span class="m"><i>A</i>(−1, 2)</span>（<span class="m"><i>x</i><sub>1</sub> = −1</span>，<span class="m"><i>y</i><sub>1</sub> = 2</span>）をはめると：</p>
+            <div class="formula-line"><span class="m"><i>y</i> − 2 = <span class="frac"><span class="num">1</span><span class="den">2</span></span>(<i>x</i> − (−1)) = <span class="frac"><span class="num">1</span><span class="den">2</span></span>(<i>x</i> + 1)</span></div>
+            <p class="mini">つまずき注意：<span class="m"><i>x</i><sub>1</sub> = −1</span> だから <span class="m"><i>x</i> − <i>x</i><sub>1</sub></span> は <span class="m"><i>x</i> + 1</span> になる。「引くマイナスはプラス」をここでも使うよ。点 <span class="m"><i>B</i></span> をはめても同じ式になるので、検算に使える。</p>
+          </article>
+
+          <article class="stage hint" hidden>
+            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">分数を消して、移項して整理する</span></div>
+            <p>分数 <span class="m"><span class="frac"><span class="num">1</span><span class="den">2</span></span></span> が邪魔なので、まず<strong>両辺を2倍</strong>する（両辺に同じ数をかけても式は変わらない）：</p>
+            <div class="formula-line"><span class="m">2(<i>y</i> − 2) = <i>x</i> + 1</span>　→　<span class="m">2<i>y</i> − 4 = <i>x</i> + 1</span></div>
+            <p>あとは、すべての項を左辺に集めて <span class="m">= 0</span> の形にする。右辺の <span class="m"><i>x</i></span> と <span class="m">1</span> を左へ移すと、符号が逆になるよ。最後の形は自分で書いてみよう。</p>
+          </article>
+
+          <article class="stage answer" hidden>
+            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(1) の答え</span></div>
+            <ol class="steps">
+              <li>2点 <span class="m"><i>A</i>(−1, 2)</span>，<span class="m"><i>B</i>(5, 5)</span> を通る直線の方程式は、公式より <span class="m"><i>y</i> − 2 = <span class="frac"><span class="num">5−2</span><span class="den">5−(−1)</span></span>(<i>x</i> + 1)</span>。</li>
+              <li>傾きは <span class="m"><span class="frac"><span class="num">3</span><span class="den">6</span></span> = <span class="frac"><span class="num">1</span><span class="den">2</span></span></span> だから、整理して <span class="m"><i>x</i> − 2<i>y</i> + 5 = 0</span>。</li>
+            </ol>
+            <div class="ans-line">
+              <span class="ans-chip"><span class="kana">答</span><span class="m"><i>x</i> − 2<i>y</i> + 5 = 0</span><span class="pts">5点</span></span>
+            </div>
+            <div class="point-box"><span class="pt">ポイント</span>傾きは「縦の変化 ÷ 横の変化」。<span class="m"><i>y</i> = <span class="frac"><span class="num">1</span><span class="den">2</span></span><i>x</i> + <span class="frac"><span class="num">5</span><span class="den">2</span></span></span> の形で答えてもよい。この <span class="m"><i>x</i> − 2<i>y</i> + 5 = 0</span> は、(2) で「点と直線の距離」を計算するときにそのまま使う、大事な式だよ。</div>
+          </article>
+        </div>
+
+        <div class="controls">
+          <div class="dots" aria-hidden="true"></div>
+          <span class="prog-label"></span>
+          <button class="next-btn" type="button"></button>
+          <button class="reset-btn" type="button" hidden>最初からやり直す</button>
+        </div>
+      </section>
+
+      <!-- ================= (2) 円C と接線 ℓ ================= -->
+      <section class="problem" id="s2">
+        <div class="qcard">
+          <div class="q-head">
+            <span class="q-num">B4</span><span class="q-title">(2) 円C の方程式と、接線 ℓ の方程式</span>
+            <span class="q-points">配点 7点</span>
+          </div>
+          <div class="defbox">
+            <span class="dlabel">問題文（B4 共通）</span>
+            <span class="m"><i>O</i></span> を原点とする座標平面上に2点 <span class="m"><i>A</i>(−1, 2)</span>，<span class="m"><i>B</i>(5, 5)</span> があり、原点 <span class="m"><i>O</i></span> を中心とし直線 <span class="m"><i>AB</i></span> に接する円を <span class="m"><i>C</i></span> とする。また、点 <span class="m"><i>B</i></span> から円 <span class="m"><i>C</i></span> へ引いた2本の接線のうち直線 <span class="m"><i>AB</i></span> でない方を <span class="m"><i>ℓ</i></span> とする。
+          </div>
+          <p class="q-body">(2) 円 <span class="m"><i>C</i></span> の方程式を求めよ。また、接線 <span class="m"><i>ℓ</i></span> の方程式を求めよ。（(1) の結果： 直線 <span class="m"><i>AB</i></span> は <span class="m"><i>x</i> − 2<i>y</i> + 5 = 0</span>）</p>
+        </div>
+
+        <div class="viz" id="viz2">
+          <p class="viz-title">図で見る ― 円は「中心から直線までの距離」で決まる</p>
+          <svg id="fig2" viewBox="0 0 640 542" role="img" aria-label="直線ABと原点Oの図。ヒントを進めると、原点から直線ABへの垂線、その長さに等しい半径の円C、点Bからのもう1本の接線ℓが順に現れる"></svg>
+          <p class="viz-note" data-min="0" data-max="0">いま見えているのは直線ABと原点Oだけ。円Cの半径は、まだ分かっていない。</p>
+          <p class="viz-note" data-min="1" data-max="1" hidden>原点から直線ABへ垂線を下ろすと、足はちょうど点Aに落ちる。この長さが半径になる。</p>
+          <p class="viz-note" data-min="2" data-max="2" hidden>半径 √5 の円Cが描けた。直線ABは点Aで円にぴったり触れている（接している）。</p>
+          <p class="viz-note" data-min="3" data-max="4" hidden>点Bから円へ引ける接線は2本。1本は直線AB（接点はA）。もう1本の接点を (a, b) と置いて探す。</p>
+          <p class="viz-note" data-min="5" hidden>もう1本の接線 ℓ と、その接点 (2, −1) が見つかった。B から円へ引いた2本の接線がそろったね。</p>
+        </div>
+
+        <p class="think-note">「接する」という言葉は、計算の世界では「中心と直線の距離 ＝ 半径」と読み替えるのが合言葉だよ。</p>
+
+        <div class="stages">
+          <article class="stage hint" hidden>
+            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">円Cに必要なのは「半径」だけ</span></div>
+            <p>円 <span class="m"><i>C</i></span> の中心は原点 <span class="m"><i>O</i></span> と決まっている。あとは<strong>半径</strong>が分かれば、方程式 <span class="m"><i>x</i><sup>2</sup> + <i>y</i><sup>2</sup> = <i>r</i><sup>2</sup></span> が書ける。</p>
+            <p>半径のヒントは「直線 <span class="m"><i>AB</i></span> に<strong>接する</strong>」という言葉の中にある。円が直線に接するとき、<strong>中心から直線までの距離が、ちょうど半径と等しくなる</strong>。図で原点から直線 <span class="m"><i>AB</i></span> へ垂線を下ろしてみた。この垂線の長さが半径だよ。</p>
+            <p class="mini">観察：垂線の足は、ちょうど点 <span class="m"><i>A</i></span> のところに来ているね（あとで効いてくるよ）。</p>
+          </article>
+
+          <article class="stage hint" hidden>
+            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">「点と直線の距離」の公式に、数字を1つずつ入れる</span></div>
+            <p>点 <span class="m">(<i>x</i><sub>1</sub>, <i>y</i><sub>1</sub>)</span> と直線 <span class="m"><i>ax</i> + <i>by</i> + <i>c</i> = 0</span> の距離の公式は：</p>
+            <div class="formula-line"><span class="m"><i>d</i> = <span class="frac"><span class="num">|<i>ax</i><sub>1</sub> + <i>by</i><sub>1</sub> + <i>c</i>|</span><span class="den">√(<i>a</i><sup>2</sup> + <i>b</i><sup>2</sup>)</span></span></span></div>
+            <p>直線 <span class="m"><i>AB</i></span> は <span class="m"><i>x</i> − 2<i>y</i> + 5 = 0</span> だから <span class="m"><i>a</i> = 1</span>，<span class="m"><i>b</i> = −2</span>，<span class="m"><i>c</i> = 5</span>。点は原点 <span class="m">(0, 0)</span>。1つずつ代入すると：</p>
+            <div class="formula-line"><span class="m"><i>r</i> = <span class="frac"><span class="num">|1·0 + (−2)·0 + 5|</span><span class="den">√(1<sup>2</sup> + (−2)<sup>2</sup>)</span></span> = <span class="frac"><span class="num">5</span><span class="den">√5</span></span></span></div>
+            <p>最後に分母を有理化する：<span class="m"><span class="frac"><span class="num">5</span><span class="den">√5</span></span> = <span class="frac"><span class="num">5√5</span><span class="den">5</span></span> = √5</span>。半径は <span class="m">√5</span> だよ。図に円 <span class="m"><i>C</i></span> が描けた。</p>
+            <p class="mini">つまずき注意：分母は <span class="m">√(<i>a</i><sup>2</sup> + <i>b</i><sup>2</sup>)</span>。<span class="m"><i>c</i> = 5</span> は分母には入らないよ。</p>
+          </article>
+
+          <article class="stage hint" hidden>
+            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">円Cを書く。ついでに「接点はA」も確認</span></div>
+            <p>中心が原点で半径が <span class="m"><i>r</i></span> の円は <span class="m"><i>x</i><sup>2</sup> + <i>y</i><sup>2</sup> = <i>r</i><sup>2</sup></span>。<span class="m"><i>r</i> = √5</span> を入れると、<span class="m"><i>r</i><sup>2</sup> = 5</span> だから円 <span class="m"><i>C</i></span> は：</p>
+            <div class="formula-line"><span class="m"><i>x</i><sup>2</sup> + <i>y</i><sup>2</sup> = 5</span></div>
+            <p>ここで点 <span class="m"><i>A</i>(−1, 2)</span> をこの式に入れてみよう：<span class="m">(−1)<sup>2</sup> + 2<sup>2</sup> = 1 + 4 = 5</span>。ぴったり成り立つ。つまり<strong>点Aは円Cの上にあって、直線ABは点Aで円Cに接している</strong>。ヒント1で垂線の足が A に落ちたのは、このためだね。</p>
+            <p>さあ後半戦。点 <span class="m"><i>B</i></span> から引ける接線は2本あって、1本はこの直線 <span class="m"><i>AB</i></span>。もう1本が <span class="m"><i>ℓ</i></span> だよ。</p>
+          </article>
+
+          <article class="stage hint" hidden>
+            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">接線 ℓ は「接点を文字で置く」作戦</span></div>
+            <p>接線 <span class="m"><i>ℓ</i></span> の接点（円に触れる点）を <span class="m">(<i>a</i>, <i>b</i>)</span> と置く。まず、接点は円 <span class="m"><i>C</i></span> の<strong>上にある</strong>から：</p>
+            <div class="formula-line"><span class="m"><i>a</i><sup>2</sup> + <i>b</i><sup>2</sup> = 5</span>　……①</div>
+            <p>次に、円 <span class="m"><i>x</i><sup>2</sup> + <i>y</i><sup>2</sup> = <i>r</i><sup>2</sup></span> の上の点 <span class="m">(<i>p</i>, <i>q</i>)</span> における接線には、公式</p>
+            <div class="formula-line"><span class="m"><i>px</i> + <i>qy</i> = <i>r</i><sup>2</sup></span></div>
+            <p>がある（元の式の <span class="m"><i>x</i><sup>2</sup></span> を <span class="m"><i>px</i></span> に、<span class="m"><i>y</i><sup>2</sup></span> を <span class="m"><i>qy</i></span> に置き換えた形だね）。これを使うと、接線 <span class="m"><i>ℓ</i></span> は <span class="m"><i>ax</i> + <i>by</i> = 5</span> と書ける。あとは「<span class="m"><i>ℓ</i></span> が点 <span class="m"><i>B</i></span> を通る」という条件を式にしよう。</p>
+          </article>
+
+          <article class="stage hint" hidden>
+            <div class="stage-head"><span class="stage-badge">ヒント 5</span><span class="stage-title">B を通る条件と連立して、接点を割り出す</span></div>
+            <p>接線 <span class="m"><i>ax</i> + <i>by</i> = 5</span> が点 <span class="m"><i>B</i>(5, 5)</span> を通るから、<span class="m"><i>x</i> = 5</span>，<span class="m"><i>y</i> = 5</span> を代入して：</p>
+            <div class="formula-line"><span class="m">5<i>a</i> + 5<i>b</i> = 5</span>　つまり　<span class="m"><i>a</i> + <i>b</i> = 1</span>　……②</div>
+            <p>② から <span class="m"><i>b</i> = 1 − <i>a</i></span> として ① に代入すると、<span class="m"><i>a</i><sup>2</sup> − <i>a</i> − 2 = 0</span>、因数分解して <span class="m">(<i>a</i> + 1)(<i>a</i> − 2) = 0</span> となる。</p>
+            <p>解は2つある。<span class="m"><i>a</i> = −1</span> のとき <span class="m"><i>b</i> = 2</span>、これは点 <span class="m"><i>A</i></span>、つまり直線 <span class="m"><i>AB</i></span> の接点だ（接線が2本あることと対応しているね）。<span class="m"><i>ℓ</i></span> は <span class="m"><i>AB</i></span> でない方だから、もう一方の <span class="m"><i>a</i> = 2</span>，<span class="m"><i>b</i> = −1</span> が <span class="m"><i>ℓ</i></span> の接点。図に現れたよ。最後に接線の式を組み立てよう。</p>
+          </article>
+
+          <article class="stage answer" hidden>
+            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(2) の答え</span></div>
+            <ol class="steps">
+              <li>円 <span class="m"><i>C</i></span> の半径 <span class="m"><i>r</i></span> は、原点と直線 <span class="m"><i>AB</i></span>（<span class="m"><i>x</i> − 2<i>y</i> + 5 = 0</span>）の距離に等しいから、<span class="m"><i>r</i> = <span class="frac"><span class="num">|0 − 2·0 + 5|</span><span class="den">√(1<sup>2</sup> + (−2)<sup>2</sup>)</span></span> = √5</span>。よって円 <span class="m"><i>C</i></span> の方程式は <span class="m"><i>x</i><sup>2</sup> + <i>y</i><sup>2</sup> = 5</span>。</li>
+              <li>円 <span class="m"><i>C</i></span> と接線 <span class="m"><i>ℓ</i></span> の接点を <span class="m">(<i>a</i>, <i>b</i>)</span> とすると、<span class="m"><i>a</i><sup>2</sup> + <i>b</i><sup>2</sup> = 5</span>（①）で、接線は <span class="m"><i>ax</i> + <i>by</i> = 5</span> と表される。これが点 <span class="m"><i>B</i>(5, 5)</span> を通るから <span class="m"><i>a</i> + <i>b</i> = 1</span>（②）。</li>
+              <li>①，② から <span class="m"><i>b</i></span> を消去すると <span class="m"><i>a</i><sup>2</sup> − <i>a</i> − 2 = 0</span>、すなわち <span class="m">(<i>a</i> + 1)(<i>a</i> − 2) = 0</span>。点 <span class="m">(<i>a</i>, <i>b</i>)</span> は <span class="m"><i>A</i></span> と異なるから <span class="m"><i>a</i> = 2</span>，<span class="m"><i>b</i> = −1</span>。よって接線 <span class="m"><i>ℓ</i></span> の方程式は <span class="m">2<i>x</i> − <i>y</i> − 5 = 0</span>。</li>
+            </ol>
+            <div class="ans-line">
+              <span class="ans-chip"><span class="kana">円C</span><span class="m"><i>x</i><sup>2</sup> + <i>y</i><sup>2</sup> = 5</span></span>
+              <span class="ans-chip"><span class="kana">接線 ℓ</span><span class="m">2<i>x</i> − <i>y</i> − 5 = 0</span><span class="pts">合わせて7点</span></span>
+            </div>
+            <div class="point-box"><span class="pt">ポイント</span>円が直線に接する ⟺ 中心と直線の距離 ＝ 半径。円の外の点からの接線は<strong>接点を文字で置く</strong>のが定石で、「接点は円の上」「接線はその点を通る」の2条件を連立する。なお、接線の傾きを <span class="m"><i>m</i></span> と置いて、円と連立した2次方程式の判別式が 0 になる条件から求める別解もあるよ。</div>
+          </article>
+        </div>
+
+        <div class="controls">
+          <div class="dots" aria-hidden="true"></div>
+          <span class="prog-label"></span>
+          <button class="next-btn" type="button"></button>
+          <button class="reset-btn" type="button" hidden>最初からやり直す</button>
+        </div>
+      </section>
+
+      <!-- ================= (3) 円K を求める ================= -->
+      <section class="problem" id="s3">
+        <div class="qcard">
+          <div class="q-head">
+            <span class="q-num">B4</span><span class="q-title">(3) 線分OB上に中心があり、2直線に接する円K</span>
+            <span class="q-points">配点 8点</span>
+          </div>
+          <div class="defbox">
+            <span class="dlabel">問題文（B4 共通）</span>
+            <span class="m"><i>O</i></span> を原点とする座標平面上に2点 <span class="m"><i>A</i>(−1, 2)</span>，<span class="m"><i>B</i>(5, 5)</span> があり、原点 <span class="m"><i>O</i></span> を中心とし直線 <span class="m"><i>AB</i></span> に接する円を <span class="m"><i>C</i></span> とする。また、点 <span class="m"><i>B</i></span> から円 <span class="m"><i>C</i></span> へ引いた2本の接線のうち直線 <span class="m"><i>AB</i></span> でない方を <span class="m"><i>ℓ</i></span> とする。
+          </div>
+          <p class="q-body">(3) 線分 <span class="m"><i>OB</i></span> 上に中心があり、直線 <span class="m"><i>OA</i></span>，<span class="m"><i>AB</i></span> の両方に接する円 <span class="m"><i>K</i></span> の方程式を求めよ。</p>
+        </div>
+
+        <div class="viz" id="viz3">
+          <p class="viz-title">図で見る ― 中心を線分OBの上で動かして、「2つの距離が等しくなる場所」を探す</p>
+          <svg id="fig3" viewBox="0 0 640 542" role="img" aria-label="直線OA、直線ABと線分OBの図。ヒントを進めると、線分OBの上を動く中心Pと、直線OAに接する円が現れ、中心から2直線までの距離が比べられる"></svg>
+          <p class="viz-note" data-min="0" data-max="0">舞台は、(2) までで出てきた直線たち。円Kの中心は線分OBのどこかにある。</p>
+          <p class="viz-note" data-min="1" data-max="2" hidden>中心 P(p, p) は線分OBの上を動ける。円はまだ描いていない。</p>
+          <p class="viz-note" data-min="3" data-max="3" hidden>半径を「Pから直線OAまでの距離」に合わせると、円は直線OAにちょうど接する。あとは直線ABにも接するかどうか。</p>
+          <p class="viz-note" data-min="4" data-max="4" hidden>2つの距離を比べよう。等しくなる p は1つだけある。スライダーで探してみよう。</p>
+          <p class="viz-note" data-min="5" hidden>中心 (5/4, 5/4) の円Kが、直線OAと直線ABの両方にぴったり接した。</p>
+          <div class="slider-box" data-min="1" hidden>
+            <div class="slider-row">
+              <label for="pSlider">中心の位置 <span class="m"><i>p</i></span></label>
+              <input type="range" id="pSlider" min="0.3" max="4" step="0.05" value="3" />
+              <span class="slider-val" id="pVal">p = 3</span>
+            </div>
+            <p class="slider-msg" id="pMsg"></p>
+          </div>
+          <div class="bars" data-min="4" hidden>
+            <div class="bar-row"><span>P から直線OAまで</span><div class="bar-track"><div class="bar-fill oa" id="barOA"></div></div><span class="bar-val" id="barOAv"></span></div>
+            <div class="bar-row"><span>P から直線ABまで</span><div class="bar-track"><div class="bar-fill ab" id="barAB"></div></div><span class="bar-val" id="barABv"></span></div>
+          </div>
+          <div class="checks" data-min="4" hidden>
+            <div class="chk" id="chkEq"><span class="chk-mark" id="mkEq">―</span><span>2つの距離が等しい（＝ 両方の直線に接する）</span><span class="chk-val" id="cvEq"></span></div>
+          </div>
+        </div>
+
+        <p class="think-note">中心の場所も半径も、まだ何も決まっていない。でも「中心は線分OBの上」という条件のおかげで、未知数は1つに絞れるよ。</p>
+
+        <div class="stages">
+          <article class="stage hint" hidden>
+            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">中心は P(p, p) と置ける（未知数は1つだけ）</span></div>
+            <p>円 <span class="m"><i>K</i></span> の中心は線分 <span class="m"><i>OB</i></span> の上にある。直線 <span class="m"><i>OB</i></span> は、原点と <span class="m"><i>B</i>(5, 5)</span> を通るから、その方程式は <span class="m"><i>y</i> = <i>x</i></span>（<span class="m"><i>x</i></span> 座標と <span class="m"><i>y</i></span> 座標が等しい直線だね）。</p>
+            <p>だから中心は、文字 <span class="m"><i>p</i></span> を使って</p>
+            <div class="formula-line">中心 <span class="m"><i>P</i>(<i>p</i>, <i>p</i>)</span>　（ただし <span class="m">0 ≦ <i>p</i> ≦ 5</span>）</div>
+            <p>と置ける。上の図にスライダーが出た。<span class="m"><i>p</i></span> を動かすと中心 <span class="m"><i>P</i></span> が線分 <span class="m"><i>OB</i></span> の上を動くよ。あとは <span class="m"><i>p</i></span> の値を1つ決めれば、円が決まる。</p>
+          </article>
+
+          <article class="stage hint" hidden>
+            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">相手の直線OAの式を用意する</span></div>
+            <p>円 <span class="m"><i>K</i></span> が接する相手は、直線 <span class="m"><i>OA</i></span> と直線 <span class="m"><i>AB</i></span>。直線 <span class="m"><i>AB</i></span> は (1) で求めた <span class="m"><i>x</i> − 2<i>y</i> + 5 = 0</span>。直線 <span class="m"><i>OA</i></span> はまだ式にしていないので、ここで作ろう。</p>
+            <p>直線 <span class="m"><i>OA</i></span> は原点 <span class="m">(0, 0)</span> と点 <span class="m"><i>A</i>(−1, 2)</span> を通る。原点を通る直線は <span class="m"><i>y</i> = （傾き）<i>x</i></span> の形で、傾きは <span class="m"><span class="frac"><span class="num">2 − 0</span><span class="den">−1 − 0</span></span> = −2</span>。だから：</p>
+            <div class="formula-line">直線 <span class="m"><i>OA</i></span>：<span class="m"><i>y</i> = −2<i>x</i></span>　つまり　<span class="m">2<i>x</i> + <i>y</i> = 0</span></div>
+            <p>図に直線 <span class="m"><i>OA</i></span> が現れた。原点から点 <span class="m"><i>A</i></span> へ伸びる直線だね。</p>
+          </article>
+
+          <article class="stage hint" hidden>
+            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">接する ⟺ 中心からの距離 ＝ 半径（まずOA側）</span></div>
+            <p>(2) と同じ合言葉を使う。円 <span class="m"><i>K</i></span> が直線 <span class="m"><i>OA</i></span> に接するなら、<strong>中心 <span class="m"><i>P</i></span> から直線 <span class="m"><i>OA</i></span> までの距離が、円 <span class="m"><i>K</i></span> の半径に等しい</strong>。</p>
+            <p>距離の公式に <span class="m"><i>P</i>(<i>p</i>, <i>p</i>)</span> と直線 <span class="m">2<i>x</i> + <i>y</i> = 0</span> を入れると：</p>
+            <div class="formula-line"><span class="m"><i>P</i></span> と直線 <span class="m"><i>OA</i></span> の距離 ＝ <span class="m"><span class="frac"><span class="num">|2<i>p</i> + <i>p</i>|</span><span class="den">√(2<sup>2</sup> + 1<sup>2</sup>)</span></span> = <span class="frac"><span class="num">3<i>p</i></span><span class="den">√5</span></span></span>（<span class="m"><i>p</i> ≧ 0</span> だから <span class="m">|3<i>p</i>| = 3<i>p</i></span>）</div>
+            <p>図では、半径をこの距離に合わせて円を描いてある。スライダーを動かしても、円はいつも直線 <span class="m"><i>OA</i></span> にぴったり接しているはずだよ。残る条件は「直線 <span class="m"><i>AB</i></span> にも接すること」だね。</p>
+          </article>
+
+          <article class="stage hint" hidden>
+            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">AB側の距離も出して、「等しい」と置く</span></div>
+            <p>同じように、中心 <span class="m"><i>P</i>(<i>p</i>, <i>p</i>)</span> から直線 <span class="m"><i>AB</i></span>（<span class="m"><i>x</i> − 2<i>y</i> + 5 = 0</span>）までの距離を、公式で出す：</p>
+            <div class="formula-line"><span class="m"><span class="frac"><span class="num">|<i>p</i> − 2<i>p</i> + 5|</span><span class="den">√(1<sup>2</sup> + (−2)<sup>2</sup>)</span></span> = <span class="frac"><span class="num">|5 − <i>p</i>|</span><span class="den">√5</span></span></span></div>
+            <p>円 <span class="m"><i>K</i></span> が<strong>両方</strong>の直線に接するには、2つの距離が等しくなければならない（どちらも同じ半径になるから）。絶対値のまま書くと：</p>
+            <div class="formula-line"><span class="m">|3<i>p</i>| = |<i>p</i> − 5|</span>　（両辺に <span class="m">√5</span> をかけて整理した形）</div>
+            <p>図に2つの距離のバーとチェックが出た。<span class="m"><i>p</i></span> が小さいと <span class="m"><i>OA</i></span> 側が短く、<span class="m"><i>p</i></span> が大きいと <span class="m"><i>AB</i></span> 側が短くなる。バーが同じ長さになる場所を探してみよう。</p>
+            <p class="mini">図の見方：円は半径＝「OAまでの距離」で描いてある。<span class="m"><i>AB</i></span> までの距離の方が長い間は、円は線 <span class="m"><i>AB</i></span> に届かず、短いと線を突き抜けてしまう。ちょうど触れるのは、2つが等しいときだけだよ。</p>
+          </article>
+
+          <article class="stage hint" hidden>
+            <div class="stage-head"><span class="stage-badge">ヒント 5</span><span class="stage-title">絶対値を解く：答えは2つ出るが、使えるのは1つ</span></div>
+            <p>絶対値の等式 <span class="m">|<i>a</i>| = |<i>b</i>|</span> は、<span class="m"><i>a</i> = <i>b</i></span> または <span class="m"><i>a</i> = −<i>b</i></span> と同じ意味。だから <span class="m">|3<i>p</i>| = |<i>p</i> − 5|</span> から：</p>
+            <div class="formula-line"><span class="m">3<i>p</i> = ±(<i>p</i> − 5)</span></div>
+            <p>場合分けして解く。<span class="m">3<i>p</i> = <i>p</i> − 5</span> の方は <span class="m">2<i>p</i> = −5</span> より <span class="m"><i>p</i> = −<span class="frac"><span class="num">5</span><span class="den">2</span></span></span>。でも中心は線分 <span class="m"><i>OB</i></span> の上、つまり <span class="m">0 ≦ <i>p</i> ≦ 5</span> でなければならないので、これは<strong>不適</strong>（図のスライダーでも行けない場所だね）。</p>
+            <p>もう一方の <span class="m">3<i>p</i> = −(<i>p</i> − 5)</span>、つまり <span class="m">3<i>p</i> = 5 − <i>p</i></span> を解くと <span class="m">4<i>p</i> = 5</span>。中心の座標と、半径（＝ ヒント3の距離に <span class="m"><i>p</i></span> を代入した値）を求めて、円の方程式を組み立てよう。</p>
+          </article>
+
+          <article class="stage answer" hidden>
+            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(3) の答え</span></div>
+            <ol class="steps">
+              <li>直線 <span class="m"><i>OB</i></span> は原点を通り傾きが 1 であるから、その方程式は <span class="m"><i>y</i> = <i>x</i></span>。円 <span class="m"><i>K</i></span> の中心は線分 <span class="m"><i>OB</i></span> 上にあるから、<span class="m">0 ≦ <i>p</i> ≦ 5</span> として <span class="m"><i>P</i>(<i>p</i>, <i>p</i>)</span> とおける。</li>
+              <li>円 <span class="m"><i>K</i></span> は直線 <span class="m"><i>OA</i></span>，<span class="m"><i>AB</i></span> の両方に接するから、点 <span class="m"><i>P</i></span> と直線 <span class="m"><i>OA</i></span> の距離は、点 <span class="m"><i>P</i></span> と直線 <span class="m"><i>AB</i></span> の距離に等しく、この距離が円 <span class="m"><i>K</i></span> の半径となる。直線 <span class="m"><i>OA</i></span>，<span class="m"><i>AB</i></span> の方程式はそれぞれ <span class="m">2<i>x</i> + <i>y</i> = 0</span>，<span class="m"><i>x</i> − 2<i>y</i> + 5 = 0</span> であるから、<span class="m"><span class="frac"><span class="num">|2<i>p</i> + <i>p</i>|</span><span class="den">√(2<sup>2</sup> + 1<sup>2</sup>)</span></span> = <span class="frac"><span class="num">|<i>p</i> − 2<i>p</i> + 5|</span><span class="den">√(1<sup>2</sup> + (−2)<sup>2</sup>)</span></span></span>、すなわち <span class="m">|3<i>p</i>| = |<i>p</i> − 5|</span>。</li>
+              <li><span class="m">3<i>p</i> = ±(<i>p</i> − 5)</span> より、<span class="m"><i>p</i> = −<span class="frac"><span class="num">5</span><span class="den">2</span></span></span> または <span class="m"><i>p</i> = <span class="frac"><span class="num">5</span><span class="den">4</span></span></span>。<span class="m">0 ≦ <i>p</i> ≦ 5</span> より <span class="m"><i>p</i> = <span class="frac"><span class="num">5</span><span class="den">4</span></span></span>。よって中心は <span class="m"><i>P</i>(<span class="frac"><span class="num">5</span><span class="den">4</span></span>, <span class="frac"><span class="num">5</span><span class="den">4</span></span>)</span>。</li>
+              <li>円 <span class="m"><i>K</i></span> の半径は、<span class="m"><span class="frac"><span class="num">|2·<span class="frac"><span class="num">5</span><span class="den">4</span></span> + <span class="frac"><span class="num">5</span><span class="den">4</span></span>|</span><span class="den">√(2<sup>2</sup> + 1<sup>2</sup>)</span></span> = <span class="frac"><span class="num">3√5</span><span class="den">4</span></span></span>。したがって、円 <span class="m"><i>K</i></span> の方程式は <span class="m">(<i>x</i> − <span class="frac"><span class="num">5</span><span class="den">4</span></span>)<sup>2</sup> + (<i>y</i> − <span class="frac"><span class="num">5</span><span class="den">4</span></span>)<sup>2</sup> = <span class="frac"><span class="num">45</span><span class="den">16</span></span></span>。</li>
+            </ol>
+            <div class="ans-line">
+              <span class="ans-chip"><span class="kana">答</span><span class="m">(<i>x</i> − <span class="frac"><span class="num">5</span><span class="den">4</span></span>)<sup>2</sup> + (<i>y</i> − <span class="frac"><span class="num">5</span><span class="den">4</span></span>)<sup>2</sup> = <span class="frac"><span class="num">45</span><span class="den">16</span></span></span><span class="pts">8点</span></span>
+            </div>
+            <div class="point-box"><span class="pt">ポイント</span>「直線の上に中心がある」円は、中心を1文字で置くのが出発点。「2直線に接する」は「中心から2直線までの距離が等しい」に翻訳する。絶対値の方程式は解が2つ出るのが普通で、<span class="m">0 ≦ <i>p</i> ≦ 5</span> のような<strong>範囲の条件でふるい落とす（解の吟味）</strong>までがワンセットだよ。ちなみに半径は <span class="m"><span class="frac"><span class="num">3√5</span><span class="den">4</span></span></span> で、その2乗が <span class="m"><span class="frac"><span class="num">45</span><span class="den">16</span></span></span> になる。</div>
+          </article>
+        </div>
+
+        <div class="controls">
+          <div class="dots" aria-hidden="true"></div>
+          <span class="prog-label"></span>
+          <button class="next-btn" type="button"></button>
+          <button class="reset-btn" type="button" hidden>最初からやり直す</button>
+        </div>
+      </section>
+
+      <a class="back-top" href="index.html">
+        <span class="arrow" aria-hidden="true">←</span>
+        <span>トップページに戻る<span class="sub-note">数学B 模試 ヒント式解説 B1〜B8 の一覧へ</span></span>
+      </a>
+
+      <footer>
+        数学B B4（配点20点）図形と方程式 のヒント式解説。(1) 直線AB 5点／(2) 円C・接線ℓ 7点／(3) 円K 8点。
+      </footer>
+    </div>
+
+    <script>
+    (function () {
+      var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+      var overallEl = document.getElementById('overall');
+      var state = {};
+
+      function fmt(n) {
+        var v = Math.round(n * 100) / 100;
+        return String(v).replace('-', '−');
+      }
+
+      /* ---------- 座標平面の共通部品 ---------- */
+      function X(x) { return 46 + (x + 3.3) * 56.7; }
+      function Y(y) { return 14 + (6 - y) * 56.7; }
+      function baseFig(extra) {
+        var s = '<defs><clipPath id="clipF"><rect x="46" y="14" width="556" height="506"></rect></clipPath></defs>';
+        var i;
+        for (i = -3; i <= 6; i++) {
+          if (i === 0) continue;
+          s += '<line x1="' + X(i) + '" y1="14" x2="' + X(i) + '" y2="520" style="stroke:var(--line)" stroke-width="1"></line>';
+        }
+        for (i = -2; i <= 5; i++) {
+          if (i === 0) continue;
+          s += '<line x1="46" y1="' + Y(i) + '" x2="602" y2="' + Y(i) + '" style="stroke:var(--line)" stroke-width="1"></line>';
+        }
+        s += '<line x1="46" y1="' + Y(0) + '" x2="602" y2="' + Y(0) + '" style="stroke:var(--line-strong)" stroke-width="2"></line>';
+        s += '<polygon points="602,' + Y(0) + ' 592,' + (Y(0) - 5) + ' 592,' + (Y(0) + 5) + '" style="fill:var(--line-strong)"></polygon>';
+        s += '<line x1="' + X(0) + '" y1="520" x2="' + X(0) + '" y2="14" style="stroke:var(--line-strong)" stroke-width="2"></line>';
+        s += '<polygon points="' + X(0) + ',14 ' + (X(0) - 5) + ',24 ' + (X(0) + 5) + ',24" style="fill:var(--line-strong)"></polygon>';
+        s += '<text x="612" y="' + (Y(0) + 5) + '" font-size="14" class="svg-m">x</text>';
+        s += '<text x="' + (X(0) + 9) + '" y="30" font-size="14" class="svg-m">y</text>';
+        s += '<g font-size="11" style="fill:var(--muted)" text-anchor="middle">';
+        for (i = -3; i <= 6; i++) {
+          if (i === 0) continue;
+          s += '<text x="' + X(i) + '" y="' + (Y(0) + 18) + '">' + String(i).replace('-', '−') + '</text>';
+        }
+        s += '</g><g font-size="11" style="fill:var(--muted)" text-anchor="end">';
+        for (i = -2; i <= 6; i++) {
+          if (i === 0) continue;
+          s += '<text x="' + (X(0) - 7) + '" y="' + (Y(i) + 4) + '">' + String(i).replace('-', '−') + '</text>';
+        }
+        s += '</g>';
+        s += extra || '';
+        return s;
+      }
+      function pt(x, y, fill, label, dx, dy, anchor, labelFill, bold) {
+        var s = '<circle cx="' + X(x) + '" cy="' + Y(y) + '" r="5.5" style="fill:' + fill + ';stroke:var(--surface)" stroke-width="2"></circle>';
+        if (label) {
+          s += '<text x="' + (X(x) + dx) + '" y="' + (Y(y) + dy) + '" font-size="14.5" text-anchor="' + (anchor || 'start') + '"' +
+            (bold ? ' font-weight="900"' : ' font-weight="700"') +
+            (labelFill ? ' style="fill:' + labelFill + '"' : '') + '>' + label + '</text>';
+        }
+        return s;
+      }
+      function lineAB(color, width, dash) {
+        return '<line x1="' + X(-3.3) + '" y1="' + Y(0.85) + '" x2="' + X(6.5) + '" y2="' + Y(5.75) + '" style="stroke:' + color + '" stroke-width="' + width + '"' + (dash ? ' stroke-dasharray="' + dash + '"' : '') + '></line>';
+      }
+      function ptsOAB() {
+        return pt(0, 0, 'var(--muted)', 'O', -16, 20, 'start') +
+               pt(-1, 2, 'var(--accent)', 'A(−1, 2)', -8, -12, 'end') +
+               pt(5, 5, 'var(--accent)', 'B(5, 5)', -6, -12, 'end');
+      }
+
+      /* ---------- (1) の図 ---------- */
+      var fig1 = document.getElementById('fig1');
+      function renderFig1(r) {
+        var inner = '';
+        if (r >= 2) inner += lineAB('var(--accent)', 3);
+        if (r >= 1) {
+          inner += '<line x1="' + X(-1) + '" y1="' + Y(2) + '" x2="' + X(5) + '" y2="' + Y(2) + '" style="stroke:var(--blue)" stroke-width="2.5" stroke-dasharray="6 4"></line>';
+          inner += '<polygon points="' + X(5) + ',' + Y(2) + ' ' + (X(5) - 10) + ',' + (Y(2) - 5) + ' ' + (X(5) - 10) + ',' + (Y(2) + 5) + '" style="fill:var(--blue)"></polygon>';
+          inner += '<line x1="' + X(5) + '" y1="' + Y(2) + '" x2="' + X(5) + '" y2="' + Y(5) + '" style="stroke:var(--accent)" stroke-width="2.5" stroke-dasharray="6 4"></line>';
+          inner += '<polygon points="' + X(5) + ',' + Y(5) + ' ' + (X(5) - 5) + ',' + (Y(5) + 10) + ' ' + (X(5) + 5) + ',' + (Y(5) + 10) + '" style="fill:var(--accent)"></polygon>';
+          inner += '<text x="' + X(2) + '" y="' + (Y(2) + 26) + '" font-size="13.5" font-weight="900" text-anchor="middle" style="fill:var(--blue)">横の変化 +6</text>';
+          inner += '<text x="' + (X(5) + 12) + '" y="' + Y(3.5) + '" font-size="13.5" font-weight="900" style="fill:var(--accent-deep)">縦の変化 +3</text>';
+        }
+        if (r >= 5) {
+          inner += '<text x="' + X(-3.2) + '" y="' + Y(0.35) + '" font-size="15" class="svg-m" font-weight="700" style="fill:var(--accent-deep)">x − 2y + 5 = 0</text>';
+        }
+        inner += ptsOAB();
+        fig1.innerHTML = baseFig(inner);
+      }
+
+      /* ---------- (2) の図 ---------- */
+      var fig2 = document.getElementById('fig2');
+      function renderFig2(r) {
+        var inner = '';
+        if (r >= 2) {
+          inner += '<circle cx="' + X(0) + '" cy="' + Y(0) + '" r="' + (Math.sqrt(5) * 56.7) + '" style="fill:var(--blue)" fill-opacity="0.08" stroke="var(--blue)" stroke-width="2.5"></circle>';
+        }
+        inner += lineAB('var(--ink)', 2.5);
+        if (r >= 1) {
+          inner += '<line x1="' + X(0) + '" y1="' + Y(0) + '" x2="' + X(-1) + '" y2="' + Y(2) + '" style="stroke:var(--gold)" stroke-width="3" stroke-dasharray="7 4"></line>';
+          inner += '<polyline points="' + X(-0.714) + ',' + Y(2.143) + ' ' + X(-0.571) + ',' + Y(1.857) + ' ' + X(-0.857) + ',' + Y(1.714) + '" fill="none" style="stroke:var(--gold)" stroke-width="2"></polyline>';
+          inner += '<text x="' + X(-3.25) + '" y="' + Y(0.30) + '" font-size="13.5" font-weight="900" style="fill:var(--gold)">O から AB への距離</text>';
+          inner += '<text x="' + X(-3.25) + '" y="' + Y(-0.08) + '" font-size="13.5" font-weight="900" style="fill:var(--gold)">＝ 半径 r</text>';
+        }
+        if (r === 4) {
+          inner += '<line x1="' + X(5) + '" y1="' + Y(5) + '" x2="' + X(2) + '" y2="' + Y(-1) + '" style="stroke:var(--muted)" stroke-width="2.5" stroke-dasharray="6 4"></line>';
+        }
+        if (r >= 5) {
+          inner += '<g clip-path="url(#clipF)"><line x1="' + X(0.8) + '" y1="' + Y(-3.4) + '" x2="' + X(5.45) + '" y2="' + Y(5.9) + '" style="stroke:var(--green)" stroke-width="3"></line></g>';
+          inner += '<text x="' + X(3.45) + '" y="' + Y(-0.5) + '" font-size="15" class="svg-m" font-weight="700" style="fill:var(--green)">ℓ： 2x − y − 5 = 0</text>';
+        }
+        if (r >= 3) {
+          inner += '<text x="' + X(-3.2) + '" y="' + Y(-1.95) + '" font-size="15" class="svg-m" font-weight="700" style="fill:var(--blue)">円C： x² + y² = 5</text>';
+        }
+        inner += ptsOAB();
+        if (r >= 3) {
+          inner += '<circle cx="' + X(-1) + '" cy="' + Y(2) + '" r="11" fill="none" style="stroke:var(--gold)" stroke-width="2.5"></circle>';
+          inner += '<text x="' + (X(-1) - 20) + '" y="' + (Y(2) + 26) + '" font-size="13" font-weight="900" text-anchor="end" style="fill:var(--gold)">接点は A</text>';
+        }
+        if (r === 4) {
+          inner += '<circle cx="' + X(2) + '" cy="' + Y(-1) + '" r="6" fill="none" style="stroke:var(--muted)" stroke-width="2.5"></circle>';
+          inner += '<text x="' + (X(2) + 13) + '" y="' + (Y(-1) + 5) + '" font-size="13.5" font-weight="700" style="fill:var(--muted)">接点 (a, b)</text>';
+        }
+        if (r >= 5) {
+          inner += '<circle cx="' + X(2) + '" cy="' + Y(-1) + '" r="6" style="fill:var(--green);stroke:var(--surface)" stroke-width="2"></circle>';
+          inner += '<text x="' + (X(2) + 13) + '" y="' + (Y(-1) + 22) + '" font-size="13.5" font-weight="900" style="fill:var(--green)">接点 (2, −1)</text>';
+        }
+        fig2.innerHTML = baseFig(inner);
+      }
+
+      /* ---------- (3) の図とスライダー ---------- */
+      var fig3 = document.getElementById('fig3');
+      var pSlider = document.getElementById('pSlider');
+      var pVal = document.getElementById('pVal');
+      var pMsg = document.getElementById('pMsg');
+      function footOA(p) { return [-p / 5, 2 * p / 5]; }
+      function footAB(p) { return [(6 * p - 5) / 5, (3 * p + 10) / 5]; }
+      function renderFig3(r) {
+        var p = parseFloat(pSlider.value);
+        var dOA = 3 * p / Math.sqrt(5);
+        var inner = '';
+        if (r >= 2) {
+          inner += '<line x1="' + X(-1.35) + '" y1="' + Y(2.7) + '" x2="' + X(1.45) + '" y2="' + Y(-2.9) + '" style="stroke:var(--blue)" stroke-width="2.5"></line>';
+          inner += '<text x="' + X(-2.6) + '" y="' + Y(3.6) + '" font-size="14" class="svg-m" font-weight="700" style="fill:var(--blue)">直線OA： 2x + y = 0</text>';
+        }
+        inner += lineAB('var(--ink)', 2.5);
+        inner += '<text x="' + X(-3.2) + '" y="' + Y(5.55) + '" font-size="14" class="svg-m" font-weight="700">直線AB： x − 2y + 5 = 0</text>';
+        inner += '<line x1="' + X(0) + '" y1="' + Y(0) + '" x2="' + X(5) + '" y2="' + Y(5) + '" style="stroke:var(--gold)" stroke-width="3"></line>';
+        inner += '<text x="' + X(3.4) + '" y="' + Y(2.9) + '" font-size="13.5" font-weight="900" style="fill:var(--gold)">線分OB（y = x）</text>';
+        if (r >= 3) {
+          var fo = footOA(p);
+          inner += '<g clip-path="url(#clipF)"><circle cx="' + X(p) + '" cy="' + Y(p) + '" r="' + (dOA * 56.7) + '" style="fill:var(--blue)" fill-opacity="0.10" stroke="var(--blue)" stroke-width="2.5"></circle></g>';
+          inner += '<line x1="' + X(p) + '" y1="' + Y(p) + '" x2="' + X(fo[0]) + '" y2="' + Y(fo[1]) + '" style="stroke:var(--blue)" stroke-width="2.5" stroke-dasharray="6 4"></line>';
+          inner += '<circle cx="' + X(fo[0]) + '" cy="' + Y(fo[1]) + '" r="4" style="fill:var(--blue)"></circle>';
+        }
+        if (r >= 6) {
+          var fb = footAB(p);
+          inner += '<line x1="' + X(p) + '" y1="' + Y(p) + '" x2="' + X(fb[0]) + '" y2="' + Y(fb[1]) + '" style="stroke:var(--accent)" stroke-width="2.5" stroke-dasharray="6 4"></line>';
+          inner += '<circle cx="' + X(fb[0]) + '" cy="' + Y(fb[1]) + '" r="4" style="fill:var(--accent)"></circle>';
+          inner += '<text x="' + X(2.75) + '" y="' + Y(2.1) + '" font-size="14.5" font-weight="900" style="fill:var(--blue)">円 K</text>';
+        }
+        inner += ptsOAB();
+        if (r >= 1) {
+          var anchorEnd = p > 3.4;
+          inner += '<circle cx="' + X(p) + '" cy="' + Y(p) + '" r="7" style="fill:var(--gold);stroke:var(--surface)" stroke-width="2.5"></circle>';
+          inner += '<circle cx="' + X(p) + '" cy="' + Y(p) + '" r="13" fill="none" style="stroke:var(--gold)" stroke-width="1.6" opacity="0.55"></circle>';
+          inner += '<text x="' + (X(p) + (anchorEnd ? -16 : 16)) + '" y="' + (Y(p) - 12) + '" font-size="14.5" font-weight="900" text-anchor="' + (anchorEnd ? 'end' : 'start') + '" style="fill:var(--gold)">P(' + fmt(p) + ', ' + fmt(p) + ')</text>';
+        }
+        fig3.innerHTML = baseFig(inner);
+      }
+      function setChk3(st, cvText) {
+        var c = document.getElementById('chkEq'), m = document.getElementById('mkEq');
+        c.classList.toggle('ok', st === 'ok');
+        c.classList.toggle('ng', st === 'ng');
+        m.textContent = st === 'ok' ? '✓' : (st === 'ng' ? '✗' : '―');
+        document.getElementById('cvEq').textContent = cvText || '';
+      }
+      function updateP3() {
+        var r = state.s3 || 0;
+        var p = parseFloat(pSlider.value);
+        var dOA = 3 * p / Math.sqrt(5);
+        var dAB = (5 - p) / Math.sqrt(5);
+        pVal.textContent = 'p = ' + fmt(p);
+        document.getElementById('barOA').style.width = Math.min(100, dOA / 5.5 * 100) + '%';
+        document.getElementById('barAB').style.width = Math.min(100, dAB / 5.5 * 100) + '%';
+        document.getElementById('barOAv').textContent = fmt(dOA);
+        document.getElementById('barABv').textContent = fmt(dAB);
+        var equal = Math.abs(4 * p - 5) < 0.001;
+        if (r >= 6) {
+          pMsg.innerHTML = '<span class="ok">これが答えの円K。中心 (5/4, 5/4)、半径 3√5/4 ≒ 1.68 で、2直線の両方に接している。</span>';
+          setChk3('ok', fmt(dOA) + ' = ' + fmt(dAB));
+        } else if (r >= 4) {
+          if (equal) {
+            pMsg.innerHTML = '<span class="ok">2つの距離が等しくなった！この p こそ、円Kの中心を決める値だよ。</span>';
+            setChk3('ok', fmt(dOA) + ' = ' + fmt(dAB));
+          } else if (dAB > dOA) {
+            pMsg.innerHTML = '<span class="ng">円（半径＝OAまでの距離）は、まだ直線ABに届いていない。p を大きくすると近づくよ。</span>';
+            setChk3('ng', fmt(dOA) + ' ≠ ' + fmt(dAB));
+          } else {
+            pMsg.innerHTML = '<span class="ng">円が直線ABを突き抜けてしまっている。p を小さくすると離れるよ。</span>';
+            setChk3('ng', fmt(dOA) + ' ≠ ' + fmt(dAB));
+          }
+        } else if (r === 3) {
+          pMsg.innerHTML = equal
+            ? '<span class="ok">おっ、この p では直線ABにもちょうど接しているみたいだ。理由は次のヒントで式にしよう。</span>'
+            : '<span class="ng">円は直線OAには接している。直線ABにも接する p はあるかな？次のヒントで条件を式にするよ。</span>';
+          setChk3('na', '');
+        } else {
+          pMsg.innerHTML = '<span class="ng">中心 P が線分OBの上を動く。p の値が中心の場所を決めるよ。</span>';
+          setChk3('na', '');
+        }
+        renderFig3(r);
+      }
+      pSlider.addEventListener('input', updateP3);
+
+      /* ---------- 全体の進み具合 ---------- */
+      function updateOverall() {
+        var done = 0, total = 0;
+        document.querySelectorAll('.problem').forEach(function (sec) {
+          total++;
+          if (state[sec.id] >= sec.querySelectorAll('.stage').length) done++;
+        });
+        overallEl.innerHTML = '進み具合：<b>' + done + ' / ' + total + ' 問</b>の解答を開きました';
+      }
+
+      /* ---------- 各小問のステップ制御 ---------- */
+      function setupProblem(sec) {
+        var id = sec.id;
+        var stages = Array.prototype.slice.call(sec.querySelectorAll('.stage'));
+        var hints = stages.length - 1;
+        var dotsBox = sec.querySelector('.dots');
+        var prog = sec.querySelector('.prog-label');
+        var nextBtn = sec.querySelector('.next-btn');
+        var resetBtn = sec.querySelector('.reset-btn');
+        var tab = document.querySelector('.tab[data-target="' + id + '"]');
+        var status = tab.querySelector('.t-status');
+        state[id] = 0;
+        stages.forEach(function () {
+          var d = document.createElement('span');
+          d.className = 'dot';
+          dotsBox.appendChild(d);
+        });
+        var dots = Array.prototype.slice.call(dotsBox.children);
+
+        function apply() {
+          var r = state[id];
+          stages.forEach(function (s, idx) { s.hidden = idx >= r; });
+          dots.forEach(function (d, idx) {
+            d.classList.toggle('on', idx < r);
+            d.classList.toggle('ans', idx === stages.length - 1 && idx < r);
+          });
+          sec.querySelectorAll('[data-min]').forEach(function (elm) {
+            var mn = parseInt(elm.getAttribute('data-min'), 10);
+            var mx = elm.getAttribute('data-max');
+            var show = r >= mn && (mx === null || r <= parseInt(mx, 10));
+            if (show) elm.removeAttribute('hidden'); else elm.setAttribute('hidden', '');
+          });
+          if (r === 0) {
+            prog.textContent = 'ヒントはまだ開いていません';
+            nextBtn.disabled = false; nextBtn.textContent = '次へ：ヒント1を開く';
+          } else if (r < hints) {
+            prog.textContent = 'ヒント ' + r + ' / ' + hints + ' を表示中';
+            nextBtn.disabled = false; nextBtn.textContent = '次へ：ヒント' + (r + 1) + 'を開く';
+          } else if (r === hints) {
+            prog.textContent = 'ヒントを全部開きました';
+            nextBtn.disabled = false; nextBtn.textContent = '次へ：解答を開く';
+          } else {
+            prog.textContent = '解答を表示しました';
+            nextBtn.disabled = true; nextBtn.textContent = '解答まで開きました';
+          }
+          resetBtn.hidden = r === 0;
+          tab.classList.toggle('done', r >= stages.length);
+          status.textContent = r === 0 ? '未着手' : (r >= stages.length ? '解答済み' : 'ヒント ' + r + '/' + hints);
+          if (id === 's1') renderFig1(r);
+          if (id === 's2') renderFig2(r);
+          if (id === 's3') {
+            if (r >= stages.length) { pSlider.value = '1.25'; pSlider.disabled = true; }
+            else pSlider.disabled = false;
+            updateP3();
+          }
+          updateOverall();
+        }
+
+        nextBtn.addEventListener('click', function () {
+          if (state[id] < stages.length) {
+            state[id]++;
+            apply();
+            var s = stages[state[id] - 1];
+            if (s) s.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'nearest' });
+          }
+        });
+        resetBtn.addEventListener('click', function () {
+          state[id] = 0;
+          if (id === 's3') pSlider.value = '3';
+          apply();
+          sec.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+        });
+        apply();
+      }
+      document.querySelectorAll('.problem').forEach(setupProblem);
+      renderFig1(0);
+      renderFig2(0);
+      updateP3();
+
+      tabs.forEach(function (tab) {
+        tab.addEventListener('click', function () {
+          tabs.forEach(function (t) { t.classList.toggle('active', t === tab); });
+          document.querySelectorAll('.problem').forEach(function (sec) {
+            sec.classList.toggle('active', sec.id === tab.getAttribute('data-target'));
+          });
+          window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+        });
+      });
+    })();
+    </script>
+  </body>
+</html>

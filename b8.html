@@ -1,0 +1,853 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:," />
+    <title>数学B B8 ヒント式解説</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@600;800&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --bg: #f4f1ea;
+        --surface: #ffffff;
+        --surface-2: #faf7f0;
+        --ink: #262319;
+        --muted: #6f6a5c;
+        --line: #ddd5c2;
+        --line-strong: #b9b09a;
+        --accent: #bf3a26;
+        --accent-deep: #9c2b1a;
+        --accent-soft: #fbeae5;
+        --blue: #2f5da8;
+        --blue-soft: #e7eef9;
+        --green: #2e7d4f;
+        --green-soft: #e6f2e9;
+        --gold: #a86e14;
+        --gold-soft: #f7ecd4;
+        --hint-bg: #fffaf0;
+        --hint-line: #ecd9ae;
+        --shadow: 0 1px 2px rgba(60, 50, 20, .06), 0 8px 24px rgba(60, 50, 20, .07);
+        color-scheme: light dark;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #141519;
+          --surface: #1e2026;
+          --surface-2: #23252d;
+          --ink: #ece7da;
+          --muted: #a39d8d;
+          --line: #35383f;
+          --line-strong: #555a66;
+          --accent: #e8705a;
+          --accent-deep: #f0927d;
+          --accent-soft: #3a2420;
+          --blue: #84aaea;
+          --blue-soft: #232c3f;
+          --green: #74c48f;
+          --green-soft: #1f3026;
+          --gold: #d9a94f;
+          --gold-soft: #38301c;
+          --hint-bg: #262219;
+          --hint-line: #57482a;
+          --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+        }
+      }
+      * { box-sizing: border-box; }
+      [hidden] { display: none !important; }
+      html { -webkit-text-size-adjust: 100%; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: "Zen Kaku Gothic New", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+        font-size: 16px;
+        line-height: 1.75;
+      }
+      .wrap { max-width: 880px; margin: 0 auto; padding: 20px 16px 64px; }
+
+      /* ---------- header ---------- */
+      .doc-head { border-bottom: 3px double var(--line-strong); padding-bottom: 14px; margin-bottom: 16px; }
+      .doc-head .exam-line {
+        display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap;
+        font-size: 13px; color: var(--muted); font-weight: 700; letter-spacing: .08em;
+      }
+      h1 {
+        font-family: "Shippori Mincho B1", "Hiragino Mincho ProN", serif;
+        font-weight: 800; font-size: clamp(26px, 6vw, 38px); line-height: 1.25;
+        margin: 6px 0 4px;
+      }
+      h1 .b1 {
+        display: inline-block; border: 2.5px solid var(--ink); padding: 0 .28em; margin-right: .3em;
+        font-size: .82em; vertical-align: .06em;
+      }
+      .doc-head .sub { margin: 0; color: var(--muted); font-size: 14.5px; }
+      .howto {
+        display: flex; gap: 10px; align-items: flex-start;
+        background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
+        padding: 12px 14px; margin: 0 0 18px; box-shadow: var(--shadow);
+        font-size: 14.5px;
+      }
+      .howto .pen {
+        flex: 0 0 auto; width: 30px; height: 30px; border-radius: 50%;
+        background: var(--accent); color: #fff; display: grid; place-items: center;
+        font-family: "Shippori Mincho B1", serif; font-weight: 800; font-size: 16px; margin-top: 2px;
+      }
+      .howto p { margin: 0; }
+      .howto strong { color: var(--accent-deep); }
+      .overall { font-size: 13px; color: var(--muted); margin: 10px 2px 0; }
+      .overall b { color: var(--ink); }
+
+      /* ---------- problem tabs ---------- */
+      .tabs { display: grid; grid-template-columns: repeat(auto-fit, minmax(148px, 1fr)); gap: 8px; margin-bottom: 20px; }
+      .tab {
+        appearance: none; text-align: left; cursor: pointer;
+        background: var(--surface); color: var(--ink);
+        border: 1.5px solid var(--line); border-radius: 10px; padding: 10px 12px;
+        font: inherit; line-height: 1.4;
+        display: flex; flex-direction: column; gap: 2px;
+      }
+      .tab:hover { border-color: var(--line-strong); }
+      .tab:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+      .tab .t-top { display: flex; align-items: baseline; gap: 8px; }
+      .tab .t-num {
+        font-family: "Shippori Mincho B1", serif; font-weight: 800; font-size: 19px;
+        border: 2px solid var(--ink); border-radius: 4px; padding: 0 6px; line-height: 1.3;
+      }
+      .tab .t-name { font-weight: 700; font-size: 14.5px; }
+      .tab .t-meta { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); }
+      .tab .t-status { font-weight: 700; }
+      .tab.active { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+      .tab.active .t-num { border-color: var(--accent); color: var(--accent); }
+      .tab.done .t-status { color: var(--green); }
+
+      /* ---------- problem card ---------- */
+      .problem { display: none; }
+      .problem.active { display: block; }
+      .qcard {
+        background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
+        box-shadow: var(--shadow); padding: 20px 20px 16px; margin-bottom: 14px;
+      }
+      .q-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+      .q-num {
+        font-family: "Shippori Mincho B1", serif; font-weight: 800; font-size: 22px;
+        border: 2.5px solid var(--ink); border-radius: 5px; padding: 0 9px; line-height: 1.35;
+      }
+      .q-title { font-family: "Shippori Mincho B1", serif; font-weight: 800; font-size: 20px; }
+      .q-points { margin-left: auto; font-size: 12.5px; color: var(--muted); font-weight: 700; border: 1px solid var(--line); border-radius: 999px; padding: 1px 10px; }
+      .q-body { font-size: 16.5px; line-height: 2.1; margin: 0 0 8px; }
+      .q-body:last-child { margin-bottom: 0; }
+      .q-setup {
+        background: var(--surface-2); border: 1px solid var(--line); border-radius: 8px;
+        padding: 10px 14px; margin-bottom: 12px; font-size: 15.5px; line-height: 2.1;
+      }
+      .q-setup .qs-label { font-weight: 900; font-size: 12.5px; letter-spacing: .08em; color: var(--muted); display: block; margin-bottom: 2px; }
+
+      /* ---------- math typesetting ---------- */
+      .m { font-family: "Times New Roman", "Shippori Mincho B1", "Hiragino Mincho ProN", serif; font-size: 1.06em; letter-spacing: .01em; white-space: nowrap; }
+      .m i { font-style: italic; }
+      .m sub, .m sup { font-size: .68em; }
+      .frac { display: inline-flex; flex-direction: column; text-align: center; vertical-align: middle; margin: 0 .12em; line-height: 1.15; font-size: .92em; }
+      .frac .num { border-bottom: 1.6px solid currentColor; padding: 0 .32em 1px; }
+      .frac .den { padding: 1px .32em 0; }
+      .sqrt { white-space: nowrap; }
+      .sqrt .rad { border-top: 1.6px solid currentColor; padding: 0 .12em; }
+      .vec { position: relative; }
+      .vec::before {
+        content: "→"; position: absolute; left: 50%; top: -.82em; transform: translateX(-50%);
+        font-family: "Zen Kaku Gothic New", sans-serif; font-size: .62em; font-weight: 700; line-height: 1; font-style: normal;
+      }
+
+      /* ---------- visual panel ---------- */
+      .viz {
+        background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
+        box-shadow: var(--shadow); padding: 16px; margin-bottom: 14px;
+      }
+      .viz-title { font-size: 12.5px; font-weight: 900; letter-spacing: .1em; color: var(--muted); margin: 0 0 10px; }
+      .viz svg { display: block; width: 100%; height: auto; }
+      .viz svg text { font-family: "Zen Kaku Gothic New", sans-serif; fill: var(--ink); }
+      .viz .svg-m { font-family: "Times New Roman", serif; font-style: italic; }
+      .viz-note { font-size: 13.5px; color: var(--muted); margin: 10px 0 0; text-align: center; }
+      .viz-note b { color: var(--ink); }
+
+      /* slider */
+      .slider-box { border-top: 1px dashed var(--line-strong); margin-top: 12px; padding-top: 12px; }
+      .slider-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+      .slider-row label { font-weight: 900; font-size: 14.5px; }
+      .slider-row input[type="range"] { flex: 1 1 200px; accent-color: var(--accent); height: 34px; }
+      .slider-val { font-family: "Times New Roman", serif; font-size: 19px; font-weight: 700; min-width: 5.2em; }
+      .slider-msg { margin: 8px 0 0; font-size: 14.5px; }
+      .slider-msg .ok { color: var(--green); font-weight: 900; }
+      .slider-msg .ng { color: var(--muted); }
+      .slider-msg .near { color: var(--gold); font-weight: 900; }
+      .coef-line { margin: 6px 0 0; font-size: 15px; }
+      .coef-line .cv { font-family: "Times New Roman", serif; font-weight: 700; }
+
+      /* ratio bar (OE を 5 等分) */
+      .ratiobar { margin: 12px 0 4px; }
+      .ratiobar .rb-track { display: flex; height: 40px; border: 1.5px solid var(--line-strong); border-radius: 8px; overflow: hidden; }
+      .ratiobar .rb-op { background: var(--blue-soft); color: var(--blue); display: grid; place-items: center; font-size: 13px; font-weight: 900; text-align: center; line-height: 1.3; border-right: 1.5px dashed var(--line-strong); }
+      .ratiobar .rb-pe { background: var(--gold-soft); color: var(--gold); display: grid; place-items: center; font-size: 13px; font-weight: 900; text-align: center; line-height: 1.3; flex: 1; }
+      .ratiobar .rb-cap { display: flex; font-size: 12.5px; color: var(--muted); margin-top: 4px; }
+      .ratiobar .rb-cap span { text-align: center; }
+
+      /* ---------- stages ---------- */
+      .stage {
+        border-radius: 12px; padding: 16px 18px; margin-bottom: 12px;
+        animation: stage-in .35s ease both;
+      }
+      @keyframes stage-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+      @media (prefers-reduced-motion: reduce) {
+        .stage { animation: none; }
+        html { scroll-behavior: auto; }
+      }
+      .stage.hint { background: var(--hint-bg); border: 1.5px solid var(--hint-line); }
+      .stage.answer { background: var(--surface); border: 2px solid var(--green); box-shadow: var(--shadow); }
+      .stage-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+      .stage-badge {
+        flex: 0 0 auto; font-weight: 900; font-size: 13px; letter-spacing: .06em;
+        border-radius: 999px; padding: 2px 12px;
+      }
+      .hint .stage-badge { background: var(--gold); color: #fff; }
+      .answer .stage-badge { background: var(--green); color: #fff; }
+      @media (prefers-color-scheme: dark) { .hint .stage-badge { color: #1c1710; } }
+      .stage-title { font-weight: 900; font-size: 16.5px; }
+      .stage p { margin: 6px 0; }
+      .stage .mini { font-size: 14px; color: var(--muted); }
+      .formula-line {
+        background: var(--surface-2); border: 1px solid var(--line); border-radius: 8px;
+        padding: 10px 14px; margin: 10px 0; font-size: 17px; line-height: 2.1; overflow-x: auto;
+      }
+      .hint .formula-line { background: var(--surface); }
+      .ans-line { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 4px; }
+      .ans-chip {
+        border: 2px solid var(--accent); background: var(--accent-soft); color: var(--accent-deep);
+        border-radius: 8px; padding: 6px 14px; font-weight: 900; font-size: 17px;
+      }
+      .ans-chip .kana { font-size: 12.5px; font-weight: 900; margin-right: 8px; opacity: .75; }
+      .ans-chip .pts { font-size: 12px; font-weight: 700; margin-left: 8px; opacity: .75; }
+      .point-box {
+        border-top: 1px dashed var(--line-strong); margin-top: 12px; padding-top: 10px; font-size: 14.5px;
+      }
+      .point-box .pt { font-weight: 900; color: var(--accent-deep); margin-right: 6px; }
+      .steps { margin: 8px 0; padding-left: 1.3em; }
+      .steps li { margin: 4px 0; }
+      @media (max-width: 560px) {
+        .qcard { padding: 16px 14px 12px; }
+        .stage { padding: 14px; }
+        .ans-chip { font-size: 15px; padding: 5px 10px; }
+        .formula-line { font-size: 15.5px; }
+      }
+
+      /* ---------- controls ---------- */
+      .controls {
+        position: sticky; bottom: 10px; z-index: 5;
+        background: var(--surface); border: 1.5px solid var(--line-strong); border-radius: 12px;
+        box-shadow: var(--shadow); padding: 12px 14px;
+        display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+      }
+      .dots { display: flex; gap: 6px; align-items: center; }
+      .dot { width: 11px; height: 11px; border-radius: 50%; border: 2px solid var(--line-strong); background: transparent; }
+      .dot.on { background: var(--gold); border-color: var(--gold); }
+      .dot.on.ans { background: var(--green); border-color: var(--green); }
+      .prog-label { font-size: 13px; color: var(--muted); font-weight: 700; }
+      .next-btn {
+        margin-left: auto; appearance: none; cursor: pointer; border: none;
+        background: var(--accent); color: #fff; font: inherit; font-weight: 900; font-size: 16.5px;
+        border-radius: 10px; padding: 12px 22px; min-height: 50px;
+        box-shadow: 0 3px 0 var(--accent-deep);
+      }
+      .next-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--accent-deep); }
+      .next-btn:disabled { background: var(--green); box-shadow: none; cursor: default; transform: none; }
+      .reset-btn {
+        appearance: none; cursor: pointer; background: none; border: none; font: inherit;
+        color: var(--muted); font-size: 13.5px; font-weight: 700; text-decoration: underline; text-underline-offset: 3px;
+        padding: 8px 4px;
+      }
+      .think-note { font-size: 13.5px; color: var(--muted); margin: 0 2px 12px; }
+
+      /* ---------- back to top page ---------- */
+      .back-home {
+        display: flex; align-items: center; gap: 10px;
+        margin-top: 34px; padding: 14px 16px;
+        background: var(--surface); border: 1.5px solid var(--line-strong); border-radius: 12px;
+        box-shadow: var(--shadow); color: var(--ink); text-decoration: none;
+        font-weight: 900; font-size: 16px;
+      }
+      .back-home:hover { border-color: var(--accent); }
+      .back-home:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+      .back-home .bh-arrow { color: var(--accent); font-size: 19px; line-height: 1; }
+      .back-home .bh-sub { margin-left: auto; font-size: 12.5px; font-weight: 700; color: var(--muted); }
+
+      footer { margin-top: 18px; border-top: 1px solid var(--line); padding-top: 12px; font-size: 12.5px; color: var(--muted); }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="doc-head">
+        <div class="exam-line"><span>数学 B ・ 必答問題</span><span>配点 20 点</span></div>
+        <h1><span class="b1">B8</span>ヒント式解説 ― ベクトル</h1>
+        <p class="sub">いきなり答えを見ないための解説ページ。全3問、ヒントは易しい順に少しずつ開きます。</p>
+      </header>
+
+      <div class="howto">
+        <div class="pen">!</div>
+        <p><strong>使い方</strong>：まず自分の力で考えてみよう。詰まったら下の「次へ」を押すと、ヒントが<strong>1つだけ</strong>開きます。ヒントは易しい順に並んでいて、図もヒントに合わせて少しずつ変わります。解答が出てくるのは最後のステップだけです。</p>
+      </div>
+
+      <nav class="tabs" aria-label="問題の選択">
+        <button class="tab active" type="button" data-target="p1">
+          <span class="t-top"><span class="t-num">(1)</span><span class="t-name">内分点の位置ベクトル</span></span>
+          <span class="t-meta"><span>配点 5点</span><span class="t-status">未着手</span></span>
+        </button>
+        <button class="tab" type="button" data-target="p2">
+          <span class="t-top"><span class="t-num">(2)</span><span class="t-name">点 P と交点 E</span></span>
+          <span class="t-meta"><span>配点 7点</span><span class="t-status">未着手</span></span>
+        </button>
+        <button class="tab" type="button" data-target="p3">
+          <span class="t-top"><span class="t-num">(3)</span><span class="t-name">内積と三角形の面積</span></span>
+          <span class="t-meta"><span>配点 8点</span><span class="t-status">未着手</span></span>
+        </button>
+      </nav>
+      <p class="overall" id="overall">進み具合：<b>0 / 3 問</b>の解答を開きました</p>
+
+      <!-- ================= (1) 内分点 ================= -->
+      <section class="problem active" id="p1">
+        <div class="qcard">
+          <div class="q-head">
+            <span class="q-num">(1)</span><span class="q-title">内分点の位置ベクトル</span>
+            <span class="q-points">配点 5点</span>
+          </div>
+          <div class="q-setup">
+            <span class="qs-label">共通の設定（(1)〜(3)）</span>
+            △OAB があり、辺 AB を <span class="m">1 : 3</span> に内分する点を C、線分 OC を <span class="m">4 : 1</span> に内分する点を D とする。また、<span class="m"><span class="vec">OA</span> = <span class="vec"><i>a</i></span></span>、<span class="m"><span class="vec">OB</span> = <span class="vec"><i>b</i></span></span> とする。
+          </div>
+          <p class="q-body"><span class="m"><span class="vec">OC</span></span>、<span class="m"><span class="vec">OD</span></span> をそれぞれ <span class="m"><span class="vec"><i>a</i></span></span>、<span class="m"><span class="vec"><i>b</i></span></span> を用いて表せ。</p>
+        </div>
+
+        <div class="viz" id="viz1">
+          <p class="viz-title">図で見る ― 点 C と点 D の場所</p>
+          <svg viewBox="0 0 640 300" role="img" aria-label="三角形OABと、辺ABを1対3に内分する点C、線分OCを4対1に内分する点D">
+            <defs>
+              <marker id="mBlue1" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--blue)"></path></marker>
+              <marker id="mGreen1" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--green)"></path></marker>
+            </defs>
+            <polygon points="60,240 590,240 430,55" style="fill:var(--surface-2);stroke:var(--ink)" stroke-width="2.5" stroke-linejoin="round"></polygon>
+            <line x1="430" y1="55" x2="66" y2="237" style="stroke:var(--blue)" stroke-width="3" marker-end="url(#mBlue1)"></line>
+            <line x1="430" y1="55" x2="584" y2="237" style="stroke:var(--green)" stroke-width="3" marker-end="url(#mGreen1)"></line>
+            <g data-min="3" hidden>
+              <line x1="430" y1="55" x2="192.5" y2="240" style="stroke:var(--accent)" stroke-width="2.5"></line>
+            </g>
+            <g data-min="1" hidden>
+              <line x1="60" y1="240" x2="192.5" y2="240" style="stroke:var(--accent)" stroke-width="6" opacity="0.5" stroke-linecap="round"></line>
+              <g style="stroke:var(--line-strong)" stroke-width="2">
+                <line x1="325" y1="232" x2="325" y2="248"></line>
+                <line x1="457.5" y1="232" x2="457.5" y2="248"></line>
+              </g>
+              <circle cx="192.5" cy="240" r="6" style="fill:var(--accent);stroke:var(--surface)" stroke-width="2"></circle>
+              <text x="192.5" y="272" font-size="16" font-weight="900" text-anchor="middle" style="fill:var(--accent-deep)">C</text>
+              <text x="126" y="226" font-size="14" font-weight="900" text-anchor="middle" style="fill:var(--accent-deep)">1</text>
+              <text x="325" y="226" font-size="14" font-weight="900" text-anchor="middle">1</text>
+              <text x="457.5" y="226" font-size="14" font-weight="900" text-anchor="middle">1</text>
+              <text x="545" y="226" font-size="14" font-weight="900" text-anchor="middle">1</text>
+            </g>
+            <g data-min="2" hidden>
+              <g>
+                <rect x="18" y="176" width="86" height="30" rx="15" style="fill:var(--blue)"></rect>
+                <text x="61" y="197" font-size="14.5" font-weight="900" text-anchor="middle" style="fill:#fff">重み 3</text>
+              </g>
+              <g>
+                <rect x="540" y="176" width="86" height="30" rx="15" style="fill:var(--green)"></rect>
+                <text x="583" y="197" font-size="14.5" font-weight="900" text-anchor="middle" style="fill:#fff">重み 1</text>
+              </g>
+            </g>
+            <g data-min="3" hidden>
+              <g style="stroke:var(--line-strong)" stroke-width="2">
+                <line x1="374" y1="86" x2="387" y2="96"></line>
+                <line x1="326" y1="124" x2="339" y2="134"></line>
+                <line x1="279" y1="161" x2="292" y2="171"></line>
+              </g>
+              <circle cx="240" cy="203" r="6" style="fill:var(--accent);stroke:var(--surface)" stroke-width="2"></circle>
+              <text x="218" y="196" font-size="16" font-weight="900" style="fill:var(--accent-deep)">D</text>
+            </g>
+            <circle cx="430" cy="55" r="5.5" style="fill:var(--ink)"></circle>
+            <circle cx="60" cy="240" r="5.5" style="fill:var(--ink)"></circle>
+            <circle cx="590" cy="240" r="5.5" style="fill:var(--ink)"></circle>
+            <text x="430" y="38" font-size="17" font-weight="700" text-anchor="middle">O</text>
+            <text x="42" y="268" font-size="17" font-weight="700">A</text>
+            <text x="598" y="268" font-size="17" font-weight="700">B</text>
+            <text x="238" y="140" font-size="19" style="fill:var(--blue)" class="svg-m">a</text>
+            <text x="522" y="140" font-size="19" style="fill:var(--green)" class="svg-m">b</text>
+            <text x="230" y="128" font-size="13" style="fill:var(--blue)">→</text>
+            <text x="516" y="128" font-size="13" style="fill:var(--green)">→</text>
+          </svg>
+          <p class="viz-note" data-min="1" hidden>辺 AB は <b>4 等分</b>されていて、点 C は A から <b>1 つ目</b>の目盛り。つまり <b>AC : CB = 1 : 3</b>。</p>
+          <p class="viz-note" data-min="2" hidden>内分点の公式では、<b>反対側の長さが「重み」</b>になる。A 側の重みは CB の長さ <b>3</b>、B 側の重みは AC の長さ <b>1</b>。</p>
+          <p class="viz-note" data-min="3" hidden>線分 OC は <b>5 等分</b>されていて、点 D は O から <b>4 つ目</b>の目盛り。つまり <b>OD : DC = 4 : 1</b> で、D は OC の <b>4/5</b> のところ。</p>
+        </div>
+
+        <p class="think-note">やることは2つ：まず <span class="m"><span class="vec">OC</span></span>、次に <span class="m"><span class="vec">OD</span></span>。どちらも「内分点の公式」の出番だよ。</p>
+
+        <div class="stages">
+          <article class="stage hint" hidden>
+            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">まず図で、点 C の場所を確かめる</span></div>
+            <p>「辺 AB を <span class="m">1 : 3</span> に内分する」とは、AB を <strong>4 等分</strong>して、A から <strong>1 つ目</strong>の目盛りのところに点を打つ、ということ。上の図で点 C が現れたので、場所を確認しよう。</p>
+            <p>内分点の位置ベクトルの公式を思い出そう。線分 AB を <span class="m"><i>m</i> : <i>n</i></span> に内分する点 P について：</p>
+            <div class="formula-line"><span class="m"><span class="vec">OP</span> = <span class="frac"><span class="num"><i>n</i>·<span class="vec">OA</span> + <i>m</i>·<span class="vec">OB</span></span><span class="den"><i>m</i> + <i>n</i></span></span></span></div>
+            <p class="mini">ポイントは、かける数が<strong>入れ替わる</strong>こと：<span class="m"><span class="vec">OA</span></span> の方には <span class="m"><i>n</i></span>（B 側の比）、<span class="m"><span class="vec">OB</span></span> の方には <span class="m"><i>m</i></span>（A 側の比）がつく。</p>
+          </article>
+
+          <article class="stage hint" hidden>
+            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">「重み」のイメージで、公式に数を入れる</span></div>
+            <p>図に「重み」の札が出た。点 C は A に近い（<span class="m">AC=1</span>、<span class="m">CB=3</span>）ので、<span class="m"><span class="vec">OA</span></span> の方の重みが<strong>大きく</strong>なる。近い方の頂点のベクトルが強く効く、と覚えよう。</p>
+            <p>この問題では <span class="m"><i>m</i>=1</span>、<span class="m"><i>n</i>=3</span> だから、公式に入れると：</p>
+            <div class="formula-line"><span class="m"><span class="vec">OC</span> = <span class="frac"><span class="num">3<span class="vec"><i>a</i></span> + 1<span class="vec"><i>b</i></span></span><span class="den">1 + 3</span></span></span></div>
+            <p>あとは、分母の <span class="m">4</span> で割って、<span class="m"><span class="vec"><i>a</i></span></span> の係数と <span class="m"><span class="vec"><i>b</i></span></span> の係数をそれぞれ分数の形に直すだけ。自分で書いてみよう。</p>
+          </article>
+
+          <article class="stage hint" hidden>
+            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">点 D は「OC を 4/5 まで進んだ点」</span></div>
+            <p>次は <span class="m"><span class="vec">OD</span></span>。点 D は線分 OC を <span class="m">4 : 1</span> に内分する点、つまり OC を <strong>5 等分</strong>して O から <strong>4 つ目</strong>の目盛り（図に出た）。</p>
+            <p>D は直線 OC の上にあるので、<span class="m"><span class="vec">OD</span></span> は <span class="m"><span class="vec">OC</span></span> を<strong>同じ向きに縮めた</strong>ものになる。何倍に縮めたかというと：</p>
+            <div class="formula-line"><span class="m"><span class="vec">OD</span> = <span class="frac"><span class="num">4</span><span class="den">5</span></span><span class="vec">OC</span></span>　（OC 全体が 5、OD が 4 だから）</div>
+            <p class="mini">内分点の公式でも同じ結果になるけれど、「線分の上の点は、もとのベクトルの定数倍」という見方の方がずっと速い。始点が O のままなのがポイント。</p>
+          </article>
+
+          <article class="stage hint" hidden>
+            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">あとは代入して、係数を掛け算するだけ</span></div>
+            <p>ヒント2で作った <span class="m"><span class="vec">OC</span> = <span class="frac"><span class="num">3</span><span class="den">4</span></span><span class="vec"><i>a</i></span> + <span class="frac"><span class="num">1</span><span class="den">4</span></span><span class="vec"><i>b</i></span></span> を、ヒント3の式に入れると：</p>
+            <div class="formula-line"><span class="m"><span class="vec">OD</span> = <span class="frac"><span class="num">4</span><span class="den">5</span></span>(<span class="frac"><span class="num">3</span><span class="den">4</span></span><span class="vec"><i>a</i></span> + <span class="frac"><span class="num">1</span><span class="den">4</span></span><span class="vec"><i>b</i></span>)</span></div>
+            <p>係数の掛け算は、<span class="m"><span class="vec"><i>a</i></span></span> の方が <span class="m"><span class="frac"><span class="num">4</span><span class="den">5</span></span>·<span class="frac"><span class="num">3</span><span class="den">4</span></span></span>、<span class="m"><span class="vec"><i>b</i></span></span> の方が <span class="m"><span class="frac"><span class="num">4</span><span class="den">5</span></span>·<span class="frac"><span class="num">1</span><span class="den">4</span></span></span>。分母と分子で同じ数が消える（約分できる）ことに注意して、最後の係数を自分で出してみよう。</p>
+          </article>
+
+          <article class="stage answer" hidden>
+            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(1) の答え</span></div>
+            <ol class="steps">
+              <li>点 C は辺 AB を <span class="m">1 : 3</span> に内分する点だから、内分点の公式より <span class="m"><span class="vec">OC</span> = <span class="frac"><span class="num">3<span class="vec">OA</span> + <span class="vec">OB</span></span><span class="den">1 + 3</span></span> = <span class="frac"><span class="num">3</span><span class="den">4</span></span><span class="vec"><i>a</i></span> + <span class="frac"><span class="num">1</span><span class="den">4</span></span><span class="vec"><i>b</i></span></span>。</li>
+              <li>点 D は線分 OC を <span class="m">4 : 1</span> に内分する点だから：
+                <div class="formula-line"><span class="m"><span class="vec">OD</span> = <span class="frac"><span class="num">4</span><span class="den">5</span></span><span class="vec">OC</span> = <span class="frac"><span class="num">4</span><span class="den">5</span></span>(<span class="frac"><span class="num">3</span><span class="den">4</span></span><span class="vec"><i>a</i></span> + <span class="frac"><span class="num">1</span><span class="den">4</span></span><span class="vec"><i>b</i></span>)</span><br /><span class="m">　　 = <span class="frac"><span class="num">3</span><span class="den">5</span></span><span class="vec"><i>a</i></span> + <span class="frac"><span class="num">1</span><span class="den">5</span></span><span class="vec"><i>b</i></span></span></div>
+              </li>
+            </ol>
+            <div class="ans-line">
+              <span class="ans-chip"><span class="kana">OC→</span><span class="m"><span class="frac"><span class="num">3</span><span class="den">4</span></span><span class="vec"><i>a</i></span> + <span class="frac"><span class="num">1</span><span class="den">4</span></span><span class="vec"><i>b</i></span></span></span>
+              <span class="ans-chip"><span class="kana">OD→</span><span class="m"><span class="frac"><span class="num">3</span><span class="den">5</span></span><span class="vec"><i>a</i></span> + <span class="frac"><span class="num">1</span><span class="den">5</span></span><span class="vec"><i>b</i></span></span></span>
+            </div>
+            <div class="point-box"><span class="pt">ポイント</span>内分点の公式は「<strong>反対側の比が重み</strong>」。そして、始点 O から出た線分の上の点は「<strong>もとのベクトルの定数倍</strong>」で処理すると速い。この2つが (2) でも効いてくる。</div>
+          </article>
+        </div>
+
+        <div class="controls">
+          <div class="dots" aria-hidden="true"></div>
+          <span class="prog-label"></span>
+          <button class="next-btn" type="button"></button>
+          <button class="reset-btn" type="button" hidden>最初からやり直す</button>
+        </div>
+      </section>
+
+      <!-- ================= (2) 点Pと交点E ================= -->
+      <section class="problem" id="p2">
+        <div class="qcard">
+          <div class="q-head">
+            <span class="q-num">(2)</span><span class="q-title">点 P と交点 E</span>
+            <span class="q-points">配点 7点</span>
+          </div>
+          <div class="q-setup">
+            <span class="qs-label">(1) の結果</span>
+            <span class="m"><span class="vec">OC</span> = <span class="frac"><span class="num">3</span><span class="den">4</span></span><span class="vec"><i>a</i></span> + <span class="frac"><span class="num">1</span><span class="den">4</span></span><span class="vec"><i>b</i></span></span>、<span class="m"><span class="vec">OD</span> = <span class="frac"><span class="num">3</span><span class="den">5</span></span><span class="vec"><i>a</i></span> + <span class="frac"><span class="num">1</span><span class="den">5</span></span><span class="vec"><i>b</i></span></span>
+          </div>
+          <p class="q-body"><span class="m"><span class="vec">AP</span> = 2<span class="vec">AD</span></span> を満たす点を P とする。このとき、<span class="m"><span class="vec">OP</span></span> を <span class="m"><span class="vec"><i>a</i></span></span>、<span class="m"><span class="vec"><i>b</i></span></span> を用いて表せ。また、直線 OP と直線 AB の交点を E とするとき、<span class="m"><span class="vec">OE</span> = <i>k</i><span class="vec">OP</span></span> を満たす実数 <span class="m"><i>k</i></span> の値を求めよ。</p>
+        </div>
+
+        <div class="viz" id="viz2">
+          <p class="viz-title">図で見る ― 点 P と直線 OP</p>
+          <svg viewBox="0 0 640 300" role="img" aria-label="三角形OABと、ADを2倍にのばした先の点P、直線OPと辺ABの交点E">
+            <defs>
+              <marker id="mRed2" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--accent)"></path></marker>
+            </defs>
+            <polygon points="60,240 590,240 430,55" style="fill:var(--surface-2);stroke:var(--ink)" stroke-width="2.5" stroke-linejoin="round"></polygon>
+            <line x1="430" y1="55" x2="192.5" y2="240" style="stroke:var(--line-strong)" stroke-width="1.8"></line>
+            <g data-min="2" hidden>
+              <line x1="430" y1="55" x2="413.3" y2="240" style="stroke:var(--blue)" stroke-width="2.2" stroke-dasharray="7 6"></line>
+            </g>
+            <g data-min="1" hidden>
+              <line x1="240" y1="203" x2="414" y2="168" style="stroke:var(--accent)" stroke-width="2.5" stroke-dasharray="6 5" marker-end="url(#mRed2)"></line>
+              <g style="stroke:var(--accent-deep)" stroke-width="2.4">
+                <line x1="147" y1="215" x2="153" y2="228"></line>
+                <line x1="327" y1="178" x2="333" y2="191"></line>
+              </g>
+              <circle cx="420" cy="166" r="7" fill="none" style="stroke:var(--accent)" stroke-width="2.5"></circle>
+              <text x="434" y="158" font-size="16" font-weight="900" style="fill:var(--accent-deep)">P</text>
+              <text x="128" y="200" font-size="13.5" font-weight="900" style="fill:var(--accent-deep)">AD</text>
+              <text x="308" y="163" font-size="13.5" font-weight="900" style="fill:var(--accent-deep)">AD</text>
+            </g>
+            <line x1="60" y1="240" x2="234" y2="205" style="stroke:var(--accent)" stroke-width="3" marker-end="url(#mRed2)"></line>
+            <g data-min="3" data-max="4" hidden>
+              <circle id="kPoint" cx="408" cy="277" r="8" style="fill:var(--gold);stroke:var(--surface)" stroke-width="2.5"></circle>
+              <text id="kPointLabel" x="392" y="272" font-size="15" font-weight="900" text-anchor="end" style="fill:var(--gold)">X</text>
+            </g>
+            <g data-min="5" hidden>
+              <line x1="430" y1="55" x2="413.3" y2="240" style="stroke:var(--green)" stroke-width="3.5"></line>
+              <circle cx="413.3" cy="240" r="6.5" style="fill:var(--green);stroke:var(--surface)" stroke-width="2"></circle>
+              <text x="413.3" y="272" font-size="16" font-weight="900" text-anchor="middle" style="fill:var(--green)">E</text>
+              <circle cx="420" cy="166" r="6" style="fill:var(--accent);stroke:var(--surface)" stroke-width="2"></circle>
+            </g>
+            <circle cx="192.5" cy="240" r="5" style="fill:var(--muted)"></circle>
+            <circle cx="240" cy="203" r="5.5" style="fill:var(--ink)"></circle>
+            <circle cx="430" cy="55" r="5.5" style="fill:var(--ink)"></circle>
+            <circle cx="60" cy="240" r="5.5" style="fill:var(--ink)"></circle>
+            <circle cx="590" cy="240" r="5.5" style="fill:var(--ink)"></circle>
+            <text x="192.5" y="272" font-size="15" font-weight="700" text-anchor="middle" style="fill:var(--muted)">C</text>
+            <text x="218" y="196" font-size="16" font-weight="900">D</text>
+            <text x="430" y="38" font-size="17" font-weight="700" text-anchor="middle">O</text>
+            <text x="42" y="268" font-size="17" font-weight="700">A</text>
+            <text x="598" y="268" font-size="17" font-weight="700">B</text>
+          </svg>
+          <p class="viz-note" data-min="1" hidden>赤い矢印 <b>AD</b> を、同じ向き・同じ長さでもう1本つなぐと、その先が点 <b>P</b>。だから <b>P は A から見て「AD の2倍のところ」</b>にある。</p>
+          <p class="viz-note" data-min="2" hidden>青い点線が直線 OP。辺 AB と交わる場所に、求める交点 <b>E</b> がある。</p>
+          <div class="slider-box" data-min="3" hidden>
+            <div class="slider-row">
+              <label for="kSlider">実数 <span class="m"><i>k</i></span> を動かす</label>
+              <input type="range" id="kSlider" min="1" max="2" step="0.01" value="2" />
+              <span class="slider-val" id="kVal">k = 2.00</span>
+            </div>
+            <p class="coef-line"><span class="m"><span class="vec">OX</span> = <i>k</i><span class="vec">OP</span></span> と置くと、<span class="m"><span class="vec">OX</span></span> の係数は　<span class="m"><span class="vec"><i>a</i></span></span> の係数 <span class="cv" id="kS">0.40</span>　／　<span class="m"><span class="vec"><i>b</i></span></span> の係数 <span class="cv" id="kT">0.80</span>　／　<strong>係数の和</strong> <span class="cv" id="kSum">1.20</span></p>
+            <p class="slider-msg" id="kMsg"></p>
+          </div>
+        </div>
+
+        <p class="think-note">仕事は2つ：<span class="m"><span class="vec">OP</span></span> を出すことと、交点 E についての <span class="m"><i>k</i></span> を出すこと。どちらも「始点を O にそろえる」のが第一歩だよ。</p>
+
+        <div class="stages">
+          <article class="stage hint" hidden>
+            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">始点を A から O にそろえ直す</span></div>
+            <p>条件 <span class="m"><span class="vec">AP</span> = 2<span class="vec">AD</span></span> のベクトルは、始点が A。でも答えは「O から見たベクトル」<span class="m"><span class="vec">OP</span></span> で書かなければならない。図の赤い矢印を見よう：A から D へ進む矢印を2倍にのばした先が P だ。</p>
+            <p>始点をそろえる合言葉は「<strong>（行き先）−（出発点）</strong>」。A を始点とするベクトルは、O を始点とするベクトルの引き算で書ける：</p>
+            <div class="formula-line"><span class="m"><span class="vec">AP</span> = <span class="vec">OP</span> − <span class="vec">OA</span></span>　／　<span class="m"><span class="vec">AD</span> = <span class="vec">OD</span> − <span class="vec">OA</span></span></div>
+            <p>この2つを条件の式に入れると、<span class="m"><span class="vec">OP</span> − <span class="vec">OA</span> = 2(<span class="vec">OD</span> − <span class="vec">OA</span>)</span> という式になる。ここから <span class="m"><span class="vec">OP</span></span> だけを左辺に残す形に整理してみよう。</p>
+          </article>
+
+          <article class="stage hint" hidden>
+            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">(1) の結果を代入して、係数を整理する</span></div>
+            <p>整理すると <span class="m"><span class="vec">OP</span> = 2<span class="vec">OD</span> − <span class="vec">OA</span></span> の形になる（<span class="m"><span class="vec">OA</span></span> を右辺に移すと <span class="m">−2<span class="vec">OA</span> + <span class="vec">OA</span> = −<span class="vec">OA</span></span>）。ここに (1) の <span class="m"><span class="vec">OD</span> = <span class="frac"><span class="num">3</span><span class="den">5</span></span><span class="vec"><i>a</i></span> + <span class="frac"><span class="num">1</span><span class="den">5</span></span><span class="vec"><i>b</i></span></span> と <span class="m"><span class="vec">OA</span> = <span class="vec"><i>a</i></span></span> を入れると：</p>
+            <div class="formula-line"><span class="m"><span class="vec">OP</span> = 2(<span class="frac"><span class="num">3</span><span class="den">5</span></span><span class="vec"><i>a</i></span> + <span class="frac"><span class="num">1</span><span class="den">5</span></span><span class="vec"><i>b</i></span>) − <span class="vec"><i>a</i></span></span></div>
+            <p><span class="m"><span class="vec"><i>a</i></span></span> の係数は <span class="m">2·<span class="frac"><span class="num">3</span><span class="den">5</span></span> − 1</span>、<span class="m"><span class="vec"><i>b</i></span></span> の係数は <span class="m">2·<span class="frac"><span class="num">1</span><span class="den">5</span></span></span>。この2つの計算だけ、自分でやってみよう。</p>
+            <p class="mini">つまずき注意：最後の <span class="m">−<span class="vec"><i>a</i></span></span> を落とすミスが多い。<span class="m"><span class="vec">OA</span></span> が <span class="m"><span class="vec"><i>a</i></span></span> そのものだということを忘れずに。</p>
+          </article>
+
+          <article class="stage hint" hidden>
+            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">スライダーで <i>k</i> を探す：「直線 AB の上」の合図は係数の和</span></div>
+            <p>交点 E は直線 OP の上にあるから、<span class="m"><span class="vec">OE</span> = <i>k</i><span class="vec">OP</span></span> と書ける（O から P へ向かう矢印を <span class="m"><i>k</i></span> 倍したもの）。上の図にスライダーが出たので、<span class="m"><i>k</i></span> を動かして、点 X が<strong>辺 AB の上にちょうど乗る</strong>瞬間を探してみよう。</p>
+            <p>そのとき、下に表示される「<strong>係数の和</strong>」に注目。これは偶然ではない：</p>
+            <div class="formula-line">点 X が直線 AB 上にある　⟺　<span class="m"><span class="vec">OX</span> = <i>s</i><span class="vec"><i>a</i></span> + <i>t</i><span class="vec"><i>b</i></span></span> と書いたとき　<span class="m"><i>s</i> + <i>t</i> = 1</span></div>
+            <p class="mini">なぜ和が1になるか：直線 AB は <span class="m"><span class="vec">OA</span></span> と <span class="m"><span class="vec">OB</span></span> の「重み付き平均」の集まりで、重みの合計がちょうど1の点だけが AB 上に来るから。(1) の内分点の公式で分母と分子を見比べてみると納得できるはず。</p>
+          </article>
+
+          <article class="stage hint" hidden>
+            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">「係数の和 = 1」を <i>k</i> の方程式にする</span></div>
+            <p>ヒント2の結果 <span class="m"><span class="vec">OP</span> = <span class="frac"><span class="num">1</span><span class="den">5</span></span><span class="vec"><i>a</i></span> + <span class="frac"><span class="num">2</span><span class="den">5</span></span><span class="vec"><i>b</i></span></span> を <span class="m"><i>k</i></span> 倍すると：</p>
+            <div class="formula-line"><span class="m"><span class="vec">OE</span> = <i>k</i><span class="vec">OP</span> = <span class="frac"><span class="num">1</span><span class="den">5</span></span><i>k</i><span class="vec"><i>a</i></span> + <span class="frac"><span class="num">2</span><span class="den">5</span></span><i>k</i><span class="vec"><i>b</i></span></span></div>
+            <p>係数は <span class="m"><span class="frac"><span class="num"><i>k</i></span><span class="den">5</span></span></span> と <span class="m"><span class="frac"><span class="num">2<i>k</i></span><span class="den">5</span></span></span>。E が直線 AB 上にある条件「係数の和 = 1」に当てはめると、<span class="m"><i>k</i></span> についての1次方程式ができる。あとはそれを解くだけ。スライダーで見つけた値と一致するか、確かめてみよう。</p>
+          </article>
+
+          <article class="stage answer" hidden>
+            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(2) の答え</span></div>
+            <ol class="steps">
+              <li><span class="m"><span class="vec">AP</span> = 2<span class="vec">AD</span></span> より <span class="m"><span class="vec">OP</span> − <span class="vec">OA</span> = 2(<span class="vec">OD</span> − <span class="vec">OA</span>)</span> だから：
+                <div class="formula-line"><span class="m"><span class="vec">OP</span> = 2<span class="vec">OD</span> − <span class="vec">OA</span> = 2(<span class="frac"><span class="num">3</span><span class="den">5</span></span><span class="vec"><i>a</i></span> + <span class="frac"><span class="num">1</span><span class="den">5</span></span><span class="vec"><i>b</i></span>) − <span class="vec"><i>a</i></span></span><br /><span class="m">　　 = <span class="frac"><span class="num">1</span><span class="den">5</span></span><span class="vec"><i>a</i></span> + <span class="frac"><span class="num">2</span><span class="den">5</span></span><span class="vec"><i>b</i></span></span></div>
+              </li>
+              <li><span class="m"><span class="vec">OE</span> = <i>k</i><span class="vec">OP</span> = <span class="frac"><span class="num">1</span><span class="den">5</span></span><i>k</i><span class="vec"><i>a</i></span> + <span class="frac"><span class="num">2</span><span class="den">5</span></span><i>k</i><span class="vec"><i>b</i></span></span>。点 E は直線 AB 上にあるから、係数の和について <span class="m"><span class="frac"><span class="num">1</span><span class="den">5</span></span><i>k</i> + <span class="frac"><span class="num">2</span><span class="den">5</span></span><i>k</i> = 1</span>、すなわち <span class="m"><span class="frac"><span class="num">3</span><span class="den">5</span></span><i>k</i> = 1</span>。よって <span class="m"><i>k</i> = <span class="frac"><span class="num">5</span><span class="den">3</span></span></span>。</li>
+            </ol>
+            <div class="ans-line">
+              <span class="ans-chip"><span class="kana">OP→</span><span class="m"><span class="frac"><span class="num">1</span><span class="den">5</span></span><span class="vec"><i>a</i></span> + <span class="frac"><span class="num">2</span><span class="den">5</span></span><span class="vec"><i>b</i></span></span></span>
+              <span class="ans-chip"><span class="kana">k</span><span class="m"><span class="frac"><span class="num">5</span><span class="den">3</span></span></span></span>
+            </div>
+            <div class="point-box"><span class="pt">ポイント</span>ベクトルの問題の型は2つ：「<strong>始点をそろえる</strong>（行き先 − 出発点）」と「<strong>直線上の点は係数の和が1</strong>」。この2つで (2) は最後まで行ける。ちなみに <span class="m"><i>k</i>=<span class="frac"><span class="num">5</span><span class="den">3</span></span> &gt; 1</span> ということは、E は P よりも O から遠い側、つまり P を通り過ぎた先にある、と図からも読み取れる。</div>
+          </article>
+        </div>
+
+        <div class="controls">
+          <div class="dots" aria-hidden="true"></div>
+          <span class="prog-label"></span>
+          <button class="next-btn" type="button"></button>
+          <button class="reset-btn" type="button" hidden>最初からやり直す</button>
+        </div>
+      </section>
+
+      <!-- ================= (3) 内積と面積 ================= -->
+      <section class="problem" id="p3">
+        <div class="qcard">
+          <div class="q-head">
+            <span class="q-num">(3)</span><span class="q-title">内積と三角形の面積</span>
+            <span class="q-points">配点 8点</span>
+          </div>
+          <div class="q-setup">
+            <span class="qs-label">(2) の結果と、(3) の追加の条件</span>
+            <span class="m"><span class="vec">OP</span> = <span class="frac"><span class="num">1</span><span class="den">5</span></span><span class="vec"><i>a</i></span> + <span class="frac"><span class="num">2</span><span class="den">5</span></span><span class="vec"><i>b</i></span></span>、<span class="m"><i>k</i> = <span class="frac"><span class="num">5</span><span class="den">3</span></span></span>（つまり <span class="m"><span class="vec">OE</span> = <span class="frac"><span class="num">5</span><span class="den">3</span></span><span class="vec">OP</span></span>）。さらに <span class="m">OA = 5</span>、<span class="m">OB = 3</span>、<span class="m">OE ⊥ OA</span> であるとする。
+          </div>
+          <p class="q-body">内積 <span class="m"><span class="vec"><i>a</i></span>·<span class="vec"><i>b</i></span></span> の値を求めよ。また、△AEP の面積を求めよ。</p>
+        </div>
+
+        <div class="viz" id="viz3">
+          <p class="viz-title">図で見る ― (3) の設定（長さの比どおりに描いた図）</p>
+          <svg viewBox="0 0 640 300" role="img" aria-label="OAが5、OBが3で、OEとOAが垂直な三角形OABと、OE上の点P、辺AB上の点E">
+            <polygon points="80.5,113.7 598.4,182.2 400,230" style="fill:var(--surface-2);stroke:var(--ink)" stroke-width="2.5" stroke-linejoin="round"></polygon>
+            <line x1="400" y1="230" x2="425.7" y2="159.3" style="stroke:var(--line-strong)" stroke-width="2"></line>
+            <g data-min="1" hidden>
+              <line x1="400" y1="230" x2="80.5" y2="113.7" style="stroke:var(--blue)" stroke-width="4.5" opacity="0.55" stroke-linecap="round"></line>
+              <line x1="400" y1="230" x2="425.7" y2="159.3" style="stroke:var(--accent)" stroke-width="4.5" opacity="0.55" stroke-linecap="round"></line>
+              <polyline points="375.6,221.1 384.5,196.7 408.9,205.6" fill="none" style="stroke:var(--accent-deep)" stroke-width="2.4"></polyline>
+              <text x="446" y="196" font-size="14.5" font-weight="900" style="fill:var(--accent-deep)">OE ⊥ OA</text>
+            </g>
+            <g data-min="5" hidden>
+              <polygon points="80.5,113.7 425.7,159.3 415.4,187.6" style="fill:var(--green)" opacity="0.28"></polygon>
+              <text x="290" y="140" font-size="15.5" font-weight="900" style="fill:var(--green)">△AEP</text>
+            </g>
+            <g data-min="4" hidden>
+              <g style="stroke:var(--line-strong)" stroke-width="2">
+                <line x1="398.9" y1="213.2" x2="411.3" y2="217.7"></line>
+                <line x1="404.1" y1="199.1" x2="416.5" y2="203.6"></line>
+                <line x1="414.5" y1="170.8" x2="426.9" y2="175.3"></line>
+              </g>
+              <line x1="415.4" y1="187.6" x2="425.7" y2="159.3" style="stroke:var(--gold)" stroke-width="5" stroke-linecap="round"></line>
+            </g>
+            <circle cx="210" cy="130.9" r="4" style="fill:var(--muted)"></circle>
+            <circle cx="248" cy="150.7" r="4" style="fill:var(--muted)"></circle>
+            <circle cx="415.4" cy="187.6" r="5.5" style="fill:var(--ink)"></circle>
+            <circle cx="425.7" cy="159.3" r="5.5" style="fill:var(--ink)"></circle>
+            <circle cx="400" cy="230" r="5.5" style="fill:var(--ink)"></circle>
+            <circle cx="80.5" cy="113.7" r="5.5" style="fill:var(--ink)"></circle>
+            <circle cx="598.4" cy="182.2" r="5.5" style="fill:var(--ink)"></circle>
+            <text x="196" y="122" font-size="13.5" style="fill:var(--muted)">C</text>
+            <text x="256" y="146" font-size="13.5" style="fill:var(--muted)">D</text>
+            <text x="398" y="176" font-size="16" font-weight="900" text-anchor="end">P</text>
+            <text x="440" y="152" font-size="16" font-weight="900">E</text>
+            <text x="382" y="256" font-size="17" font-weight="700">O</text>
+            <text x="58" y="104" font-size="17" font-weight="700">A</text>
+            <text x="606" y="176" font-size="17" font-weight="700">B</text>
+            <text x="212" y="196" font-size="15" font-weight="700" style="fill:var(--blue)">OA = 5</text>
+            <text x="512" y="228" font-size="15" font-weight="700" style="fill:var(--muted)">OB = 3</text>
+          </svg>
+          <p class="viz-note" data-min="1" hidden>O のところの小さな四角が<strong>直角の印</strong>。<b>OE と OA は垂直</b>、というのが (3) の決め手の条件。</p>
+          <p class="viz-note" data-min="4" hidden>OE は <b>5 等分</b>できて、P は O から <b>3 つ目</b>。残りの部分 <b>PE は全体の 2/5</b>（金色の部分）。</p>
+        </div>
+
+        <p class="think-note">手順は決まっている：① <span class="m"><span class="vec">OE</span></span> を <span class="m"><span class="vec"><i>a</i></span></span>、<span class="m"><span class="vec"><i>b</i></span></span> で書く → ②「垂直」を内積の式に直す → ③ 長さ <span class="m">|<span class="vec">OE</span>|</span> と <span class="m">|<span class="vec">PE</span>|</span> を出す → ④ 面積。1つずつ進めよう。</p>
+
+        <div class="stages">
+          <article class="stage hint" hidden>
+            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">まず <span class="m"><span class="vec">OE</span></span> を <span class="m"><span class="vec"><i>a</i></span></span>、<span class="m"><span class="vec"><i>b</i></span></span> で書き直す</span></div>
+            <p>(2) で <span class="m"><span class="vec">OE</span> = <span class="frac"><span class="num">5</span><span class="den">3</span></span><span class="vec">OP</span></span> と分かった。<span class="m"><span class="vec">OP</span> = <span class="frac"><span class="num">1</span><span class="den">5</span></span><span class="vec"><i>a</i></span> + <span class="frac"><span class="num">2</span><span class="den">5</span></span><span class="vec"><i>b</i></span></span> を代入すると：</p>
+            <div class="formula-line"><span class="m"><span class="vec">OE</span> = <span class="frac"><span class="num">5</span><span class="den">3</span></span>(<span class="frac"><span class="num">1</span><span class="den">5</span></span><span class="vec"><i>a</i></span> + <span class="frac"><span class="num">2</span><span class="den">5</span></span><span class="vec"><i>b</i></span>)</span></div>
+            <p>係数は <span class="m"><span class="frac"><span class="num">5</span><span class="den">3</span></span>·<span class="frac"><span class="num">1</span><span class="den">5</span></span></span> と <span class="m"><span class="frac"><span class="num">5</span><span class="den">3</span></span>·<span class="frac"><span class="num">2</span><span class="den">5</span></span></span> の2つの掛け算。約分に注意して、自分で係数を出してみよう。この <span class="m"><span class="vec">OE</span></span> の式が、このあとの計算すべての出発点になる。</p>
+          </article>
+
+          <article class="stage hint" hidden>
+            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">「垂直」を内積の言葉に翻訳する</span></div>
+            <p>ベクトルの世界では、「<strong>垂直</strong>」は内積の言葉でこう言う：</p>
+            <div class="formula-line"><span class="m"><span class="vec">OE</span> ⊥ <span class="vec">OA</span></span>　⟺　<span class="m"><span class="vec">OE</span>·<span class="vec">OA</span> = 0</span></div>
+            <p>ここにヒント1の <span class="m"><span class="vec">OE</span> = <span class="frac"><span class="num">1</span><span class="den">3</span></span><span class="vec"><i>a</i></span> + <span class="frac"><span class="num">2</span><span class="den">3</span></span><span class="vec"><i>b</i></span></span> と <span class="m"><span class="vec">OA</span> = <span class="vec"><i>a</i></span></span> を入れると、左辺は：</p>
+            <div class="formula-line"><span class="m">(<span class="frac"><span class="num">1</span><span class="den">3</span></span><span class="vec"><i>a</i></span> + <span class="frac"><span class="num">2</span><span class="den">3</span></span><span class="vec"><i>b</i></span>)·<span class="vec"><i>a</i></span> = <span class="frac"><span class="num">1</span><span class="den">3</span></span>|<span class="vec"><i>a</i></span>|<sup>2</sup> + <span class="frac"><span class="num">2</span><span class="den">3</span></span><span class="vec"><i>a</i></span>·<span class="vec"><i>b</i></span> = 0</span></div>
+            <p>使う計算ルールは2つだけ：<span class="m"><span class="vec"><i>a</i></span>·<span class="vec"><i>a</i></span> = |<span class="vec"><i>a</i></span>|<sup>2</sup></span>（自分自身との内積は長さの2乗）と、内積は<strong>展開できる</strong>こと。あとは <span class="m">|<span class="vec"><i>a</i></span>| = OA = 5</span> を入れて、<span class="m"><span class="vec"><i>a</i></span>·<span class="vec"><i>b</i></span></span> についての方程式として解いてみよう。</p>
+          </article>
+
+          <article class="stage hint" hidden>
+            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">長さ <span class="m">|<span class="vec">OE</span>|</span> は「2乗してから根号」で出す</span></div>
+            <p>面積には辺 PE の長さが要る。そのためにまず <span class="m">|<span class="vec">OE</span>|</span> を求める。ベクトルの長さは、いきなりは出せないので、<strong>まず2乗を計算する</strong>のが型：</p>
+            <div class="formula-line"><span class="m">|<span class="vec">OE</span>|<sup>2</sup> = <span class="frac"><span class="num">1</span><span class="den">9</span></span>|<span class="vec"><i>a</i></span> + 2<span class="vec"><i>b</i></span>|<sup>2</sup> = <span class="frac"><span class="num">1</span><span class="den">9</span></span>{|<span class="vec"><i>a</i></span>|<sup>2</sup> + 4<span class="vec"><i>a</i></span>·<span class="vec"><i>b</i></span> + 4|<span class="vec"><i>b</i></span>|<sup>2</sup>}</span></div>
+            <p>（<span class="m"><span class="vec">OE</span> = <span class="frac"><span class="num">1</span><span class="den">3</span></span>(<span class="vec"><i>a</i></span> + 2<span class="vec"><i>b</i></span>)</span> とくくると見通しがよい。）中かっこの中には、<span class="m">|<span class="vec"><i>a</i></span>|<sup>2</sup> = 25</span>、<span class="m"><span class="vec"><i>a</i></span>·<span class="vec"><i>b</i></span> = −<span class="frac"><span class="num">25</span><span class="den">2</span></span></span>（ヒント2の答え）、<span class="m">|<span class="vec"><i>b</i></span>|<sup>2</sup> = 9</span> を入れるだけ。計算して <span class="m">|<span class="vec">OE</span>|<sup>2</sup></span> を出し、最後に「長さは正だから」と断って平方根を取ろう。</p>
+            <p class="mini">つまずき注意：内積 <span class="m"><span class="vec"><i>a</i></span>·<span class="vec"><i>b</i></span></span> は<strong>負の数</strong>になることもある（なす角が90°より大きいとき）。マイナスのまま代入してよい。</p>
+          </article>
+
+          <article class="stage hint" hidden>
+            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">PE は OE の「残り 2/5」</span></div>
+            <p><span class="m"><span class="vec">OE</span> = <span class="frac"><span class="num">5</span><span class="den">3</span></span><span class="vec">OP</span></span> ということは、P は OE を <span class="m">3 : 2</span> に分ける場所にいる。図の OE に5等分の目盛りが出た：O から P までが <strong>3</strong>、P から E までが <strong>2</strong>。</p>
+            <div class="ratiobar" aria-hidden="true">
+              <div class="rb-track">
+                <div class="rb-op" style="width:60%">OP（3つ分）</div>
+                <div class="rb-pe">PE（2つ分）</div>
+              </div>
+              <div class="rb-cap"><span style="width:60%">O ――――― P</span><span style="flex:1">P ―― E</span></div>
+            </div>
+            <p>だから <span class="m">|<span class="vec">PE</span>| = <span class="frac"><span class="num">2</span><span class="den">5</span></span>|<span class="vec">OE</span>|</span>。ヒント3で出した <span class="m">|<span class="vec">OE</span>| = <span class="sqrt">√<span class="rad">11</span></span>/3</span> に <span class="m"><span class="frac"><span class="num">2</span><span class="den">5</span></span></span> を掛けて、<span class="m">|<span class="vec">PE</span>|</span> を自分で計算してみよう。</p>
+          </article>
+
+          <article class="stage hint" hidden>
+            <div class="stage-head"><span class="stage-badge">ヒント 5</span><span class="stage-title">面積は「大きい三角形 − 小さい三角形」で見る</span></div>
+            <p>図に △AEP が色づいた。この三角形は、△OAE から △OAP を切り取った残り、と見ることができる：</p>
+            <div class="formula-line">△AEP の面積 = △OAE の面積 − △OAP の面積</div>
+            <p>どちらの三角形も <strong>OA を底辺</strong>にできて、しかも OE と OP はどちらも <strong>OA に垂直</strong>だから、高さはそのまま <span class="m">|<span class="vec">OE</span>|</span> と <span class="m">|<span class="vec">OP</span>|</span> になる。つまり：</p>
+            <div class="formula-line"><span class="m"><span class="frac"><span class="num">1</span><span class="den">2</span></span>·OA·|<span class="vec">OE</span>| − <span class="frac"><span class="num">1</span><span class="den">2</span></span>·OA·|<span class="vec">OP</span>|</span><br /><span class="m">　= <span class="frac"><span class="num">1</span><span class="den">2</span></span>·OA·(|<span class="vec">OE</span>| − |<span class="vec">OP</span>|) = <span class="frac"><span class="num">1</span><span class="den">2</span></span>·OA·|<span class="vec">PE</span>|</span></div>
+            <p>あとは <span class="m">OA = 5</span> と、ヒント4で出した <span class="m">|<span class="vec">PE</span>|</span> の数値を入れるだけ。最後の計算を自分でやってみよう。</p>
+          </article>
+
+          <article class="stage answer" hidden>
+            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(3) の答え</span></div>
+            <ol class="steps">
+              <li><span class="m"><span class="vec">OE</span> = <span class="frac"><span class="num">5</span><span class="den">3</span></span><span class="vec">OP</span> = <span class="frac"><span class="num">1</span><span class="den">3</span></span><span class="vec"><i>a</i></span> + <span class="frac"><span class="num">2</span><span class="den">3</span></span><span class="vec"><i>b</i></span></span>。</li>
+              <li><span class="m">OE ⊥ OA</span> より <span class="m"><span class="vec">OE</span>·<span class="vec">OA</span> = 0</span>。よって <span class="m"><span class="frac"><span class="num">1</span><span class="den">3</span></span>(<span class="vec"><i>a</i></span> + 2<span class="vec"><i>b</i></span>)·<span class="vec"><i>a</i></span> = 0</span>、つまり <span class="m">|<span class="vec"><i>a</i></span>|<sup>2</sup> + 2<span class="vec"><i>a</i></span>·<span class="vec"><i>b</i></span> = 0</span>。<span class="m">|<span class="vec"><i>a</i></span>| = 5</span> を入れて <span class="m">25 + 2<span class="vec"><i>a</i></span>·<span class="vec"><i>b</i></span> = 0</span> だから、<span class="m"><span class="vec"><i>a</i></span>·<span class="vec"><i>b</i></span> = −<span class="frac"><span class="num">25</span><span class="den">2</span></span></span>。</li>
+              <li><span class="m">|<span class="vec">OE</span>|<sup>2</sup> = <span class="frac"><span class="num">1</span><span class="den">9</span></span>{25 + 4·(−<span class="frac"><span class="num">25</span><span class="den">2</span></span>) + 4·9}</span> <span class="m">= <span class="frac"><span class="num">11</span><span class="den">9</span></span></span> より <span class="m">|<span class="vec">OE</span>| = <span class="frac"><span class="sqrt">√<span class="rad">11</span></span><span class="den">3</span></span></span>。</li>
+              <li><span class="m"><span class="vec">OE</span> = <span class="frac"><span class="num">5</span><span class="den">3</span></span><span class="vec">OP</span></span> より <span class="m">OE : PE = 5 : 2</span> だから、<span class="m">|<span class="vec">PE</span>| = <span class="frac"><span class="num">2</span><span class="den">5</span></span>·<span class="frac"><span class="sqrt">√<span class="rad">11</span></span><span class="den">3</span></span> = <span class="frac"><span class="num">2<span class="sqrt">√<span class="rad">11</span></span></span><span class="den">15</span></span></span>。</li>
+              <li><span class="m">PE ⊥ OA</span> であるから、△AEP の面積は <span class="m"><span class="frac"><span class="num">1</span><span class="den">2</span></span>·|<span class="vec">PE</span>|·OA</span> <span class="m">= <span class="frac"><span class="num">1</span><span class="den">2</span></span>·<span class="frac"><span class="num">2<span class="sqrt">√<span class="rad">11</span></span></span><span class="den">15</span></span>·5 = <span class="frac"><span class="sqrt">√<span class="rad">11</span></span><span class="den">3</span></span></span>。</li>
+            </ol>
+            <div class="ans-line">
+              <span class="ans-chip"><span class="kana">a⃗·b⃗</span><span class="m">−<span class="frac"><span class="num">25</span><span class="den">2</span></span></span></span>
+              <span class="ans-chip"><span class="kana">△AEP の面積</span><span class="m"><span class="frac"><span class="sqrt">√<span class="rad">11</span></span><span class="den">3</span></span></span></span>
+            </div>
+            <div class="point-box"><span class="pt">ポイント</span>合言葉は3つ：「<strong>垂直 ⇔ 内積 = 0</strong>」「<strong>長さはまず2乗</strong>（<span class="m">|<span class="vec"><i>a</i></span> + <i>t</i><span class="vec"><i>b</i></span>|<sup>2</sup></span> の展開）」「<strong>面積は底辺 × 高さ</strong>、高さは垂直な辺から取る」。内積が負になるのは、なす角が鈍角（90°より大きい）だからで、図でも ∠AOB が広く開いていることが確かめられる。</div>
+          </article>
+        </div>
+
+        <div class="controls">
+          <div class="dots" aria-hidden="true"></div>
+          <span class="prog-label"></span>
+          <button class="next-btn" type="button"></button>
+          <button class="reset-btn" type="button" hidden>最初からやり直す</button>
+        </div>
+      </section>
+
+      <a class="back-home" href="index.html"><span class="bh-arrow" aria-hidden="true">←</span>トップページに戻る<span class="bh-sub">数学B 模試 B1〜B8 一覧</span></a>
+
+      <footer>
+        数学B B8 ベクトル（配点20点）のヒント式解説。全3問：（1）内分点の位置ベクトル 5点／（2）点 P と交点 E 7点／（3）内積と三角形の面積 8点。
+      </footer>
+    </div>
+
+    <script>
+    (function () {
+      var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+      var overallEl = document.getElementById('overall');
+      var state = {};
+
+      /* ---------- (2) の k スライダー ---------- */
+      var kSlider = document.getElementById('kSlider');
+      var kVal = document.getElementById('kVal');
+      var kS = document.getElementById('kS');
+      var kT = document.getElementById('kT');
+      var kSum = document.getElementById('kSum');
+      var kMsg = document.getElementById('kMsg');
+      var kPoint = document.getElementById('kPoint');
+      var kPointLabel = document.getElementById('kPointLabel');
+      function fmt(x) { return x.toFixed(2); }
+      function kUpdate() {
+        var k = parseFloat(kSlider.value);
+        var s = k / 5, t = 2 * k / 5, sum = s + t;
+        kVal.textContent = 'k = ' + fmt(k);
+        kS.textContent = fmt(s);
+        kT.textContent = fmt(t);
+        kSum.textContent = fmt(sum);
+        var cx = 430 - 10 * k, cy = 55 + 111 * k;
+        kPoint.setAttribute('cx', cx);
+        kPoint.setAttribute('cy', cy);
+        kPointLabel.setAttribute('x', cx - 14);
+        kPointLabel.setAttribute('y', cy - 5);
+        var diff = Math.abs(sum - 1);
+        if (diff <= 0.0035) {
+          kMsg.innerHTML = '<span class="ok">点 X が辺 AB の上に来た！</span> 係数の和がちょうど 1 になっている。この k が求める値（正確には 5/3 = 1.666…）。';
+        } else if (diff <= 0.012) {
+          kMsg.innerHTML = '<span class="near">おしい！</span> 係数の和が 1 にとても近い。もう少しだけ k を' + (sum < 1 ? '大きく' : '小さく') + 'してみよう。';
+        } else if (sum < 1) {
+          kMsg.innerHTML = '<span class="ng">係数の和が 1 より小さい。点 X はまだ辺 AB の手前（O 側）にある。k を大きくしてみよう。</span>';
+        } else {
+          kMsg.innerHTML = '<span class="ng">係数の和が 1 より大きい。点 X は辺 AB を通り過ぎた。k を小さくしてみよう。</span>';
+        }
+      }
+      kSlider.addEventListener('input', kUpdate);
+
+      /* ---------- 全体の進み具合 ---------- */
+      function updateOverall() {
+        var done = 0;
+        document.querySelectorAll('.problem').forEach(function (sec) {
+          if (state[sec.id] >= sec.querySelectorAll('.stage').length) done++;
+        });
+        overallEl.innerHTML = '進み具合：<b>' + done + ' / 3 問</b>の解答を開きました';
+      }
+
+      /* ---------- 各小問のステップ制御 ---------- */
+      function setupProblem(sec) {
+        var id = sec.id;
+        var stages = Array.prototype.slice.call(sec.querySelectorAll('.stage'));
+        var hints = stages.length - 1;
+        var dotsBox = sec.querySelector('.dots');
+        var prog = sec.querySelector('.prog-label');
+        var nextBtn = sec.querySelector('.next-btn');
+        var resetBtn = sec.querySelector('.reset-btn');
+        var tab = document.querySelector('.tab[data-target="' + id + '"]');
+        var status = tab.querySelector('.t-status');
+        state[id] = 0;
+        stages.forEach(function () {
+          var d = document.createElement('span');
+          d.className = 'dot';
+          dotsBox.appendChild(d);
+        });
+        var dots = Array.prototype.slice.call(dotsBox.children);
+
+        function apply() {
+          var r = state[id];
+          stages.forEach(function (s, idx) { s.hidden = idx >= r; });
+          dots.forEach(function (d, idx) {
+            d.classList.toggle('on', idx < r);
+            d.classList.toggle('ans', idx === stages.length - 1 && idx < r);
+          });
+          sec.querySelectorAll('[data-min]').forEach(function (elm) {
+            var mn = parseInt(elm.getAttribute('data-min'), 10);
+            var mx = elm.getAttribute('data-max');
+            var show = r >= mn && (mx === null || r <= parseInt(mx, 10));
+            if (show) elm.removeAttribute('hidden'); else elm.setAttribute('hidden', '');
+          });
+          if (r === 0) {
+            prog.textContent = 'ヒントはまだ開いていません';
+            nextBtn.disabled = false; nextBtn.textContent = '次へ：ヒント1を開く';
+          } else if (r < hints) {
+            prog.textContent = 'ヒント ' + r + ' / ' + hints + ' を表示中';
+            nextBtn.disabled = false; nextBtn.textContent = '次へ：ヒント' + (r + 1) + 'を開く';
+          } else if (r === hints) {
+            prog.textContent = 'ヒントを全部開きました';
+            nextBtn.disabled = false; nextBtn.textContent = '次へ：解答を開く';
+          } else {
+            prog.textContent = '解答を表示しました';
+            nextBtn.disabled = true; nextBtn.textContent = '解答まで開きました';
+          }
+          resetBtn.hidden = r === 0;
+          tab.classList.toggle('done', r >= stages.length);
+          status.textContent = r === 0 ? '未着手' : (r >= stages.length ? '解答済み' : 'ヒント ' + r + '/' + hints);
+          if (id === 'p2') {
+            if (r >= stages.length) { kSlider.value = '1.67'; kSlider.disabled = true; kUpdate(); }
+            else { kSlider.disabled = false; if (r >= 3) kUpdate(); }
+          }
+          updateOverall();
+        }
+
+        nextBtn.addEventListener('click', function () {
+          if (state[id] < stages.length) {
+            state[id]++;
+            apply();
+            var s = stages[state[id] - 1];
+            if (s) s.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'nearest' });
+          }
+        });
+        resetBtn.addEventListener('click', function () {
+          state[id] = 0;
+          if (id === 'p2') kSlider.value = '2';
+          apply();
+          sec.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+        });
+        apply();
+      }
+      document.querySelectorAll('.problem').forEach(setupProblem);
+
+      tabs.forEach(function (tab) {
+        tab.addEventListener('click', function () {
+          tabs.forEach(function (t) { t.classList.toggle('active', t === tab); });
+          document.querySelectorAll('.problem').forEach(function (sec) {
+            sec.classList.toggle('active', sec.id === tab.getAttribute('data-target'));
+          });
+          window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+        });
+      });
+    })();
+    </script>
+  </body>
+</html>

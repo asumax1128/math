@@ -1,0 +1,1093 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:," />
+    <title>数学B B5 ヒント式解説</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@600;800&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --bg: #f4f1ea;
+        --surface: #ffffff;
+        --surface-2: #faf7f0;
+        --ink: #262319;
+        --muted: #6f6a5c;
+        --line: #ddd5c2;
+        --line-strong: #b9b09a;
+        --accent: #bf3a26;
+        --accent-deep: #9c2b1a;
+        --accent-soft: #fbeae5;
+        --blue: #2f5da8;
+        --blue-soft: #e7eef9;
+        --green: #2e7d4f;
+        --green-soft: #e6f2e9;
+        --gold: #a86e14;
+        --hint-bg: #fffaf0;
+        --hint-line: #ecd9ae;
+        --shadow: 0 1px 2px rgba(60, 50, 20, .06), 0 8px 24px rgba(60, 50, 20, .07);
+        /* SVG 描画用（従来の変数名を共通パレットに対応づけ） */
+        --grid: #ddd5c2;
+        --axis: #b9b09a;
+        --curve: #bf3a26;
+        --curve-dim: #cfc7b2;
+        --hl: #a86e14;
+        --card: #ffffff;
+        color-scheme: light dark;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #141519;
+          --surface: #1e2026;
+          --surface-2: #23252d;
+          --ink: #ece7da;
+          --muted: #a39d8d;
+          --line: #35383f;
+          --line-strong: #555a66;
+          --accent: #e8705a;
+          --accent-deep: #f0927d;
+          --accent-soft: #3a2420;
+          --blue: #84aaea;
+          --blue-soft: #232c3f;
+          --green: #74c48f;
+          --green-soft: #1f3026;
+          --gold: #d9a94f;
+          --hint-bg: #262219;
+          --hint-line: #57482a;
+          --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+          --grid: #35383f;
+          --axis: #555a66;
+          --curve: #e8705a;
+          --curve-dim: #4a4e57;
+          --hl: #d9a94f;
+          --card: #1e2026;
+        }
+      }
+      * { box-sizing: border-box; }
+      [hidden] { display: none !important; }
+      html { -webkit-text-size-adjust: 100%; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: "Zen Kaku Gothic New", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+        font-size: 16px;
+        line-height: 1.75;
+      }
+      .wrap { max-width: 880px; margin: 0 auto; padding: 20px 16px 64px; }
+
+      /* ---------- header ---------- */
+      .doc-head { border-bottom: 3px double var(--line-strong); padding-bottom: 14px; margin-bottom: 16px; }
+      .doc-head .exam-line {
+        display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap;
+        font-size: 13px; color: var(--muted); font-weight: 700; letter-spacing: .08em;
+      }
+      h1 {
+        font-family: "Shippori Mincho B1", "Hiragino Mincho ProN", serif;
+        font-weight: 800; font-size: clamp(26px, 6vw, 38px); line-height: 1.25;
+        margin: 6px 0 4px;
+      }
+      h1 .b1 {
+        display: inline-block; border: 2.5px solid var(--ink); padding: 0 .28em; margin-right: .3em;
+        font-size: .82em; vertical-align: .06em;
+      }
+      .doc-head .sub { margin: 0; color: var(--muted); font-size: 14.5px; }
+      .howto {
+        display: flex; gap: 10px; align-items: flex-start;
+        background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
+        padding: 12px 14px; margin: 0 0 18px; box-shadow: var(--shadow);
+        font-size: 14.5px;
+      }
+      .howto .pen {
+        flex: 0 0 auto; width: 30px; height: 30px; border-radius: 50%;
+        background: var(--accent); color: #fff; display: grid; place-items: center;
+        font-family: "Shippori Mincho B1", serif; font-weight: 800; font-size: 16px; margin-top: 2px;
+      }
+      .howto p { margin: 0; }
+      .howto strong { color: var(--accent-deep); }
+      .overall { font-size: 13px; color: var(--muted); margin: 10px 2px 0; }
+      .overall b { color: var(--ink); }
+
+      /* ---------- problem tabs ---------- */
+      .tabs { display: grid; grid-template-columns: repeat(auto-fit, minmax(148px, 1fr)); gap: 8px; margin-bottom: 20px; }
+      .tab {
+        appearance: none; text-align: left; cursor: pointer;
+        background: var(--surface); color: var(--ink);
+        border: 1.5px solid var(--line); border-radius: 10px; padding: 10px 12px;
+        font: inherit; line-height: 1.4;
+        display: flex; flex-direction: column; gap: 2px;
+      }
+      .tab:hover { border-color: var(--line-strong); }
+      .tab:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+      .tab .t-top { display: flex; align-items: baseline; gap: 8px; }
+      .tab .t-num {
+        font-family: "Shippori Mincho B1", serif; font-weight: 800; font-size: 19px;
+        border: 2px solid var(--ink); border-radius: 4px; padding: 0 6px; line-height: 1.3;
+      }
+      .tab .t-name { font-weight: 700; font-size: 14.5px; }
+      .tab .t-meta { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); }
+      .tab .t-status { font-weight: 700; }
+      .tab.active { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+      .tab.active .t-num { border-color: var(--accent); color: var(--accent); }
+      .tab.done .t-status { color: var(--green); }
+
+      /* ---------- problem card ---------- */
+      .problem { display: none; }
+      .problem.active { display: block; }
+      .qcard {
+        background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
+        box-shadow: var(--shadow); padding: 20px 20px 16px; margin-bottom: 14px;
+      }
+      .q-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+      .q-num {
+        font-family: "Shippori Mincho B1", serif; font-weight: 800; font-size: 22px;
+        border: 2.5px solid var(--ink); border-radius: 5px; padding: 0 9px; line-height: 1.35;
+      }
+      .q-title { font-family: "Shippori Mincho B1", serif; font-weight: 800; font-size: 20px; }
+      .q-points { margin-left: auto; font-size: 12.5px; color: var(--muted); font-weight: 700; border: 1px solid var(--line); border-radius: 999px; padding: 1px 10px; }
+      .q-body { font-size: 16.5px; line-height: 2; margin: 0 0 6px; }
+      .q-body:last-child { margin-bottom: 0; }
+
+      /* ---------- math typesetting ---------- */
+      .frac { display: inline-flex; flex-direction: column; text-align: center; vertical-align: middle; margin: 0 .12em; line-height: 1.15; font-size: .92em; }
+      .frac .t { border-bottom: 1.6px solid currentColor; padding: 0 .32em 1px; }
+      .frac .b { padding: 1px .32em 0; }
+
+      /* ---------- visual panel ---------- */
+      .viz {
+        background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
+        box-shadow: var(--shadow); padding: 16px; margin-bottom: 14px;
+      }
+      .viz-title { font-size: 12.5px; font-weight: 900; letter-spacing: .1em; color: var(--muted); margin: 0 0 10px; }
+      .viz svg { display: block; width: 100%; height: auto; }
+      .viz .mini { font-size: 13.5px; color: var(--muted); margin: 8px 0 0; }
+      .readout { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 14.5px; margin: 8px 2px 2px; }
+      .readout .val { font-weight: 800; color: var(--accent-deep); }
+      .readout .val.hl { color: var(--gold); }
+      .slider-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin: 10px 2px 4px; }
+      .slider-row label { font-weight: 900; font-size: 14.5px; white-space: nowrap; }
+      .slider-row input[type="range"] { flex: 1 1 200px; min-width: 140px; accent-color: var(--accent); height: 34px; touch-action: none; }
+      .presets { display: flex; gap: 8px; flex-wrap: wrap; margin: 6px 2px 2px; }
+      .presets button {
+        appearance: none; cursor: pointer; font: inherit; font-size: 13px; font-weight: 700;
+        padding: 4px 12px; border-radius: 999px; border: 1px solid var(--line);
+        background: var(--surface-2); color: var(--ink);
+      }
+      .presets button:active { transform: scale(.97); }
+      .countbig { font-size: 15px; margin: 6px 2px 0; }
+      .countbig b { font-size: 22px; color: var(--accent-deep); }
+      .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 2px; }
+      .chip {
+        border: 1.5px solid var(--accent); color: var(--accent-deep); font-weight: 800; border-radius: 999px;
+        padding: 1px 14px; font-size: 15.5px; font-family: "Shippori Mincho B1", "Hiragino Mincho ProN", serif;
+      }
+
+      /* ---------- stages ---------- */
+      .stage {
+        border-radius: 12px; padding: 16px 18px; margin-bottom: 12px;
+        animation: stage-in .35s ease both;
+      }
+      @keyframes stage-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+      @media (prefers-reduced-motion: reduce) {
+        .stage { animation: none; }
+        html { scroll-behavior: auto; }
+      }
+      .stage.hint { background: var(--hint-bg); border: 1.5px solid var(--hint-line); }
+      .stage.answer { background: var(--surface); border: 2px solid var(--green); box-shadow: var(--shadow); }
+      .stage-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; flex-wrap: wrap; }
+      .stage-badge {
+        flex: 0 0 auto; font-weight: 900; font-size: 13px; letter-spacing: .06em;
+        border-radius: 999px; padding: 2px 12px;
+      }
+      .hint .stage-badge { background: var(--gold); color: #fff; }
+      .answer .stage-badge { background: var(--green); color: #fff; }
+      @media (prefers-color-scheme: dark) { .hint .stage-badge { color: #1c1710; } }
+      .stage-title { font-weight: 900; font-size: 16.5px; }
+      .stage p { margin: 6px 0; }
+      .stage .mini { font-size: 14px; color: var(--muted); }
+      .stage .final { font-size: 18.5px; font-weight: 800; }
+      .eq {
+        font-family: "Times New Roman", "Shippori Mincho B1", "Hiragino Mincho ProN", serif;
+        font-size: 17.5px; text-align: center; line-height: 2;
+        background: var(--surface-2); border: 1px solid var(--line); border-radius: 8px;
+        padding: 8px 10px; margin: 8px 0; overflow-x: auto; white-space: nowrap;
+      }
+      .hint .eq { background: var(--surface); }
+      .viz .eq { margin: 10px 0 2px; }
+      .warn {
+        background: var(--surface-2); border: 1px dashed var(--line-strong); border-radius: 8px;
+        padding: 6px 10px; font-size: 14.5px; margin-top: 6px;
+      }
+      .hint .warn { background: var(--surface); }
+      .warn b { color: var(--accent-deep); }
+      b.key { color: var(--accent-deep); }
+
+      /* ---------- controls ---------- */
+      .controls {
+        position: sticky; bottom: 10px; z-index: 5;
+        background: var(--surface); border: 1.5px solid var(--line-strong); border-radius: 12px;
+        box-shadow: var(--shadow); padding: 12px 14px;
+        display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+      }
+      .dots { display: flex; gap: 6px; align-items: center; }
+      .dot { width: 11px; height: 11px; border-radius: 50%; border: 2px solid var(--line-strong); background: transparent; }
+      .dot.on { background: var(--gold); border-color: var(--gold); }
+      .dot.on.ans { background: var(--green); border-color: var(--green); }
+      .prog-label { font-size: 13px; color: var(--muted); font-weight: 700; }
+      .next-btn {
+        margin-left: auto; appearance: none; cursor: pointer; border: none;
+        background: var(--accent); color: #fff; font: inherit; font-weight: 900; font-size: 16.5px;
+        border-radius: 10px; padding: 12px 22px; min-height: 50px;
+        box-shadow: 0 3px 0 var(--accent-deep);
+      }
+      .next-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--accent-deep); }
+      .next-btn:disabled { background: var(--green); box-shadow: none; cursor: default; transform: none; }
+      .reset-btn {
+        appearance: none; cursor: pointer; background: none; border: none; font: inherit;
+        color: var(--muted); font-size: 13.5px; font-weight: 700; text-decoration: underline; text-underline-offset: 3px;
+        padding: 8px 4px;
+      }
+      .think-note { font-size: 13.5px; color: var(--muted); margin: 0 2px 12px; }
+
+      footer { margin-top: 34px; border-top: 1px solid var(--line); padding-top: 12px; font-size: 12.5px; color: var(--muted); }
+      .back-to-top {
+        display: flex; align-items: center; justify-content: center; gap: 8px;
+        margin-top: 34px; padding: 14px 18px; min-height: 52px;
+        background: var(--surface); border: 1.5px solid var(--line-strong); border-radius: 12px;
+        box-shadow: var(--shadow);
+        color: var(--ink); font-weight: 900; font-size: 16px; text-decoration: none;
+      }
+      .back-to-top:hover { border-color: var(--accent); color: var(--accent-deep); }
+      .back-to-top:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+      .back-to-top .arr { color: var(--accent); font-weight: 900; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="doc-head">
+        <div class="exam-line"><span>数学 B ・ 必答問題</span><span>配点 20 点</span></div>
+        <h1><span class="b1">B5</span>ヒント式解説</h1>
+        <p class="sub">三角関数の大問。関数 y = 3 sin θ + a cos θ を題材に、値の決定 → 合成 → 方程式の解の個数、と進む問題です。全3問、ヒントは易しい順に少しずつ開きます。</p>
+      </header>
+
+      <div class="howto">
+        <div class="pen">!</div>
+        <p><strong>使い方</strong>：まず自分の力で考えてみよう。詰まったら下の「次へ」を押すと、ヒントが<strong>1つだけ</strong>開きます。ヒントは易しい順に並んでいて、図もヒントに合わせて少しずつ変わります。解答が出てくるのは最後のステップだけです。</p>
+      </div>
+
+      <nav class="tabs" aria-label="問題の選択">
+        <button class="tab active" type="button" data-target="p1">
+          <span class="t-top"><span class="t-num">(1)</span><span class="t-name">a の値</span></span>
+          <span class="t-meta"><span>配点 5点</span><span class="t-status">未着手</span></span>
+        </button>
+        <button class="tab" type="button" data-target="p2">
+          <span class="t-top"><span class="t-num">(2)</span><span class="t-name">合成と最小値</span></span>
+          <span class="t-meta"><span>配点 7点</span><span class="t-status">未着手</span></span>
+        </button>
+        <button class="tab" type="button" data-target="p3">
+          <span class="t-top"><span class="t-num">(3)</span><span class="t-name">解の個数と β</span></span>
+          <span class="t-meta"><span>配点 8点</span><span class="t-status">未着手</span></span>
+        </button>
+      </nav>
+      <p class="overall" id="overall">進み具合：<b>0 / 3 問</b>の解答を開きました</p>
+
+      <!-- ================= (1) a の値 ================= -->
+      <section class="problem active" id="p1">
+        <div class="qcard">
+          <div class="q-head">
+            <span class="q-num">(1)</span><span class="q-title">a の値を求めよう</span>
+            <span class="q-points">配点 5点</span>
+          </div>
+          <p class="q-body">関数 y = 3 sin θ + a cos θ があり、θ = <span class="frac"><span class="t">π</span><span class="b">6</span></span> のとき y = 3 である。ただし、a は定数とする。</p>
+          <p class="q-body">(1) a の値を求めよ。</p>
+        </div>
+
+        <div class="viz">
+          <p class="viz-title">図で見る ― 単位円で θ = π/6（30°）の点を見る</p>
+          <svg viewBox="0 0 340 250" role="img" aria-label="単位円と30度の点">
+            <line x1="30" y1="130" x2="320" y2="130" stroke="var(--axis)" stroke-width="1.5"/>
+            <line x1="160" y1="235" x2="160" y2="20" stroke="var(--axis)" stroke-width="1.5"/>
+            <circle cx="160" cy="130" r="95" fill="none" stroke="var(--axis)" stroke-width="1.5"/>
+            <text x="322" y="126" font-size="13" fill="var(--muted)">1</text>
+            <text x="166" y="34" font-size="13" fill="var(--muted)">1</text>
+            <text x="146" y="126" font-size="13" fill="var(--muted)">O</text>
+            <path d="M 195 130 A 35 35 0 0 0 190.3 112.5" fill="none" stroke="var(--hl)" stroke-width="2"/>
+            <text x="198" y="122" font-size="13" fill="var(--hl)" font-weight="700">π/6</text>
+            <line x1="160" y1="130" x2="242.3" y2="82.5" stroke="var(--hl)" stroke-width="2.5"/>
+            <g data-min="2" hidden>
+              <line x1="242.3" y1="82.5" x2="242.3" y2="130" stroke="var(--blue)" stroke-width="2.5" stroke-dasharray="5 4"/>
+              <line x1="160" y1="130" x2="242.3" y2="130" stroke="var(--green)" stroke-width="4"/>
+              <text x="250" y="110" font-size="14" fill="var(--blue)" font-weight="700">sin = 1/2</text>
+              <text x="176" y="148" font-size="14" fill="var(--green)" font-weight="700">cos = √3/2</text>
+            </g>
+            <circle cx="242.3" cy="82.5" r="5" fill="var(--hl)"/>
+          </svg>
+          <p class="mini">点の <b style="color:var(--green)">横の長さが cos</b>、<b style="color:var(--blue)">縦の長さが sin</b> です。ヒント2を開くと値が表示されます。</p>
+          <div data-min="1" hidden>
+            <div class="eq">3 sin <span class="frac"><span class="t">π</span><span class="b">6</span></span> + a cos <span class="frac"><span class="t">π</span><span class="b">6</span></span> = 3</div>
+          </div>
+          <div data-min="3" hidden>
+            <div class="eq">3・<span class="frac"><span class="t">1</span><span class="b">2</span></span> + <span class="frac"><span class="t">√3</span><span class="b">2</span></span> a = 3</div>
+          </div>
+        </div>
+
+        <p class="think-note">聞かれているのは a の値だけ。まずは「代入する」ところから始めよう。詰まったら下の「次へ」でヒントを1つ開く。</p>
+
+        <div class="stages">
+          <article class="stage hint" hidden>
+            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">まず代入する</span></div>
+            <p>「θ = π/6 のとき y = 3」という文を、そのまま式に当てはめてみよう。θ のところに π/6 を、y のところに 3 を入れるだけです（上の式）。</p>
+            <p>これで、わからない文字は <b class="key">a だけ</b> の式になりました。</p>
+          </article>
+
+          <article class="stage hint" hidden>
+            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">sin・cos の値を思い出す</span></div>
+            <p>sin (π/6) と cos (π/6) の値が必要です。単位円で 30° の点を見ると、縦（sin）が <b>1/2</b>、横（cos）が <b>√3/2</b> でしたね。図に値が出ています。</p>
+          </article>
+
+          <article class="stage hint" hidden>
+            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">値を代入して計算する</span></div>
+            <p>2つの値を式に入れると、上の2番目の式になります。まず左側の 3・(1/2) = 3/2 を計算しておきましょう。</p>
+          </article>
+
+          <article class="stage hint" hidden>
+            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">a だけを残す</span></div>
+            <p>両辺から 3/2 を引くと　(√3/2) a = 3/2。次に両辺を √3/2 で割ります（= 2/√3 をかけます）。</p>
+            <p>a = 3/√3 です。分母の √3 を消すために、分母と分子に √3 をかけると（有理化）…</p>
+            <div class="warn"><b>つまずき注意：</b>3/√3 = (3√3)/(√3・√3) = 3√3/3 と約分できます。</div>
+          </article>
+
+          <article class="stage answer" hidden>
+            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(1) の答え</span></div>
+            <p class="final">a = √3</p>
+          </article>
+        </div>
+
+        <div class="controls">
+          <div class="dots" aria-hidden="true"></div>
+          <span class="prog-label"></span>
+          <button class="next-btn" type="button"></button>
+          <button class="reset-btn" type="button" hidden>最初からやり直す</button>
+        </div>
+      </section>
+
+      <!-- ================= (2) 合成と最小値 ================= -->
+      <section class="problem" id="p2">
+        <div class="qcard">
+          <div class="q-head">
+            <span class="q-num">(2)</span><span class="q-title">合成して、最小値を求めよう</span>
+            <span class="q-points">配点 7点</span>
+          </div>
+          <p class="q-body">(2) y を r sin (θ + α)（r &gt; 0，−π ≦ α &lt; π）の形で表せ。また、0 ≦ θ ≦ π のとき、y の最小値とそのときの θ の値を求めよ。</p>
+        </div>
+
+        <div class="viz">
+          <p class="viz-title">図1：合成は「点 (3, a) と原点を結ぶ線」で考える</p>
+          <svg viewBox="0 0 340 235" role="img" aria-label="三角関数の合成の図">
+            <line x1="55" y1="195" x2="325" y2="195" stroke="var(--axis)" stroke-width="1.5"/>
+            <line x1="55" y1="195" x2="55" y2="15" stroke="var(--axis)" stroke-width="1.5"/>
+            <text x="46" y="212" font-size="13" fill="var(--muted)">O</text>
+            <line x1="55" y1="195" x2="241" y2="88" stroke="var(--accent)" stroke-width="2.5"/>
+            <line x1="241" y1="88" x2="241" y2="195" stroke="var(--axis)" stroke-width="1.5" stroke-dasharray="5 4"/>
+            <polyline points="229,195 229,183 241,183" fill="none" stroke="var(--axis)" stroke-width="1.5"/>
+            <circle cx="241" cy="88" r="5" fill="var(--hl)"/>
+            <text x="140" y="205" font-size="14" font-weight="700">3</text>
+            <text x="248" y="150" font-size="14" font-weight="700" data-min="0" data-max="0">a</text>
+            <text x="248" y="150" font-size="14" font-weight="700" data-min="1" hidden>√3</text>
+            <g data-min="2" hidden>
+              <text x="120" y="118" font-size="15" fill="var(--accent)" font-weight="800">r = 2√3</text>
+            </g>
+            <g data-min="3" hidden>
+              <path d="M 105 195 A 50 50 0 0 0 98.3 170" fill="none" stroke="var(--hl)" stroke-width="2"/>
+              <text x="108" y="182" font-size="14" fill="var(--hl)" font-weight="700">α = π/6</text>
+            </g>
+          </svg>
+          <p class="viz-title" style="margin-top:12px">図2：θ を動かして y の変化を見る</p>
+          <svg id="graph2" viewBox="0 0 340 250" role="img" aria-label="yのグラフ"></svg>
+          <div class="slider-row">
+            <label for="thetaSlider">θ</label>
+            <input type="range" id="thetaSlider" min="0" max="180" step="1" value="0" />
+          </div>
+          <div class="readout">
+            <span>θ = <span class="val" id="roTheta">0°</span></span>
+            <span data-min="4" hidden>θ + π/6 = <span class="val" id="roPhi">30°</span></span>
+            <span data-min="4" hidden>sin (θ + π/6) = <span class="val" id="roSin">0.50</span></span>
+            <span data-min="1" hidden>y = <span class="val" id="roY">1.73</span></span>
+          </div>
+          <div class="presets">
+            <button type="button" data-th="0">θ = 0</button>
+            <button type="button" data-th="60">θ = π/3</button>
+            <button type="button" data-th="180">θ = π</button>
+          </div>
+          <p class="viz-title" style="margin-top:12px">図3：単位円でも見る ― 点 P の高さが sin φ</p>
+          <svg id="circle2" viewBox="0 0 340 250" role="img" aria-label="単位円とφの点"></svg>
+          <p class="mini">図2のスライダーと連動しています。点 P は φ = θ + π/6 の位置にあり、P から横に引いた青い破線の高さが sin φ です。θ を π まで進めると、点 P が円の上をどう動くか見てみよう。</p>
+        </div>
+
+        <p class="think-note">仕事は2つ：合成の形を作ることと、最小値を求めること。図は2つあるので、順番に見ていこう。</p>
+
+        <div class="stages">
+          <article class="stage hint" hidden>
+            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">合成の準備：点を描く</span></div>
+            <p>(1) の答えを入れると y = 3 sin θ + √3 cos θ です。合成では、係数の <b>3</b> と <b>√3</b> を座標だと思って、点 (3, √3) を描きます（図1）。</p>
+            <p>原点とこの点を結んだ線の「長さ」が r、「角度」が α になります。</p>
+          </article>
+
+          <article class="stage hint" hidden>
+            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">r を求める（三平方の定理）</span></div>
+            <p>線の長さ r は、横 3・縦 √3 の直角三角形の斜辺です。</p>
+            <div class="eq">r = √( 3<sup>2</sup> + (√3)<sup>2</sup> ) = √(9 + 3) = √12 = 2√3</div>
+          </article>
+
+          <article class="stage hint" hidden>
+            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">α を求める</span></div>
+            <p>角度 α は、cos α = 3/r、sin α = √3/r から決まります。r = 2√3 を入れると cos α = √3/2、sin α = 1/2。両方を同時に満たす角度は…図1に出ています。</p>
+            <p>これで合成は完成：y = 2√3 sin (θ + π/6) です。</p>
+          </article>
+
+          <article class="stage hint" hidden>
+            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">範囲を「ずらして」考える</span></div>
+            <p>最小値を考えるときは、θ そのものではなく <b class="key">θ + π/6</b> の範囲を見ます。0 ≦ θ ≦ π の両辺に π/6 を足すと</p>
+            <div class="eq"><span class="frac"><span class="t">π</span><span class="b">6</span></span> ≦ θ + <span class="frac"><span class="t">π</span><span class="b">6</span></span> ≦ <span class="frac"><span class="t">7π</span><span class="b">6</span></span></div>
+            <p>図2のスライダーで θ を 0 から π まで動かして、θ + π/6 がこの範囲を動くことを確かめてみよう。</p>
+          </article>
+
+          <article class="stage hint" hidden>
+            <div class="stage-head"><span class="stage-badge">ヒント 5</span><span class="stage-title">その範囲で sin の最小を探す</span></div>
+            <p>sin は、角度が π/6 → π/2 で 1/2 → 1 と増え、π/2 → 7π/6 では 1 → <b>−1/2</b> まで減り続けます。だから最小は右端の 7π/6 のときです。</p>
+            <p>θ + π/6 = 7π/6 になるのは θ がいくつ？ そして y = 2√3 × (−1/2) を計算すると…</p>
+            <div class="warn"><b>つまずき注意：</b>sin の最小は「−1」と決めつけないこと。この範囲では −1 まで届かず、−1/2 が最小です。</div>
+          </article>
+
+          <article class="stage answer" hidden>
+            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(2) の答え</span></div>
+            <p class="final">y = 2√3 sin ( θ + <span class="frac"><span class="t">π</span><span class="b">6</span></span> )</p>
+            <p class="final">θ = π のとき、最小値 −√3</p>
+          </article>
+        </div>
+
+        <div class="controls">
+          <div class="dots" aria-hidden="true"></div>
+          <span class="prog-label"></span>
+          <button class="next-btn" type="button"></button>
+          <button class="reset-btn" type="button" hidden>最初からやり直す</button>
+        </div>
+      </section>
+
+      <!-- ================= (3) 解の個数と β ================= -->
+      <section class="problem" id="p3">
+        <div class="qcard">
+          <div class="q-head">
+            <span class="q-num">(3)</span><span class="q-title">解が「ちょうど3個」になる β を求めよう</span>
+            <span class="q-points">配点 8点</span>
+          </div>
+          <p class="q-body">(3) 0 ≦ θ ≦ β（β は正の定数）のとき、y = √6 を満たす θ の値がちょうど3個であるような β の最小値を求めよ。また、そのときの tan β の値を求めよ。</p>
+        </div>
+
+        <div class="viz">
+          <p class="viz-title">図で見る ― β（右端）を動かすと、y = √6 になる θ の個数が変わる</p>
+          <svg id="graph3" viewBox="0 0 340 250" role="img" aria-label="yと√6のグラフ"></svg>
+          <div class="slider-row">
+            <label for="betaSlider">β</label>
+            <input type="range" id="betaSlider" min="0.2" max="8.12" step="0.01" value="3" />
+            <span style="font-size:14.5px">β = <span class="val" id="roBeta" style="font-weight:800;color:var(--accent-deep)">3.00</span></span>
+          </div>
+          <p class="countbig">範囲 0 ≦ θ ≦ β の中にある解は <b id="roCount">2</b> 個</p>
+          <div class="presets">
+            <button type="button" data-beta="1.0">β = 1（解1個）</button>
+            <button type="button" data-beta="3.0">β = 3（解2個）</button>
+            <button type="button" data-beta="6.6">β = 6.6（解3個）</button>
+            <button type="button" data-beta="6.55">β = 25π/12（最小値）</button>
+            <button type="button" data-beta="8.12">β = 8.12（解4個）</button>
+          </div>
+          <p class="viz-title" style="margin-top:12px">単位円でも数える ― 直線 sin φ = √2/2 との交点</p>
+          <svg id="circle3" viewBox="0 0 340 262" role="img" aria-label="単位円とsinφイコール√2/2の交点"></svg>
+          <p class="countbig">単位円の交点で数えた解は <b id="roCountC">2</b> 個<span id="roPhiIn"></span></p>
+          <p class="mini" id="noteMin" hidden>3番目の解 <span class="frac"><span class="t">9π</span><span class="b">4</span></span> が範囲にちょうど入ったところが、β の最小値に対応します：β + <span class="frac"><span class="t">π</span><span class="b">6</span></span> = <span class="frac"><span class="t">9π</span><span class="b">4</span></span> のとき β = <span class="frac"><span class="t">9π</span><span class="b">4</span></span> − <span class="frac"><span class="t">π</span><span class="b">6</span></span> = <span class="frac"><span class="t">25π</span><span class="b">12</span></span>。</p>
+          <div data-min="2" hidden>
+            <p class="viz-title" style="margin-top:12px">φ = θ + π/6 の数直線：解の位置と、範囲の右端 β + π/6</p>
+            <svg id="line3" viewBox="0 0 340 78" role="img" aria-label="φの数直線"></svg>
+          </div>
+          <div data-min="2" hidden>
+            <p class="mini" style="margin-bottom:2px">sin φ = √2/2 になる φ（小さい順）：</p>
+            <div class="chips">
+              <span class="chip">π/4</span><span class="chip">3π/4</span><span class="chip">9π/4</span><span class="chip">11π/4</span>
+            </div>
+          </div>
+        </div>
+
+        <p class="think-note">β を動かすと解の個数がどう変わるか、上のグラフで実験しながら考えよう。詰まったら下の「次へ」でヒントを1つ開く。</p>
+
+        <div class="stages">
+          <article class="stage hint" hidden>
+            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">まず方程式に直す</span></div>
+            <p>y = √6 に、(2) で作った合成の形を代入しよう。</p>
+            <div class="eq">2√3 sin ( θ + <span class="frac"><span class="t">π</span><span class="b">6</span></span> ) = √6</div>
+            <p>両辺を 2√3 で割ると、sin (θ + π/6) = √6 / (2√3) = <b>√2/2</b>（= 1/√2）になります。</p>
+          </article>
+
+          <article class="stage hint" hidden>
+            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">φ と置いて、解を4つ書き出す</span></div>
+            <p>φ = θ + π/6 と置き換えると、式は sin φ = √2/2。「sin が √2/2 になる角度」は 1周に2つ（π/4 と 3π/4）あり、2周目・3周目も +2π ずつして繰り返します。</p>
+            <p>θ ≧ 0 のとき φ ≧ π/6 なので、小さい方から4個書き出すと、上のチップの通りになります。</p>
+          </article>
+
+          <article class="stage hint" hidden>
+            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">β が決める「右端」を押さえる</span></div>
+            <p>0 ≦ θ ≦ β の両辺に π/6 を足すと、φ の範囲は π/6 ≦ φ ≦ <b class="key">β + π/6</b> です。</p>
+            <p>この範囲に解がちょうど3個入るには、右端 β + π/6 が「3番目の解（9π/4）以上、4番目の解（11π/4）未満」でなければいけません。上のグラフと数直線で、β を動かしながら確かめてみよう。</p>
+            <div class="eq"><span class="frac"><span class="t">9π</span><span class="b">4</span></span> ≦ β + <span class="frac"><span class="t">π</span><span class="b">6</span></span> &lt; <span class="frac"><span class="t">11π</span><span class="b">4</span></span></div>
+          </article>
+
+          <article class="stage hint" hidden>
+            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">β の範囲に直し、最小値を読む</span></div>
+            <p>両辺から π/6 を引くと、β の範囲は</p>
+            <div class="eq"><span class="frac"><span class="t">25π</span><span class="b">12</span></span> ≦ β &lt; <span class="frac"><span class="t">31π</span><span class="b">12</span></span></div>
+            <p>「最小値」はこの範囲の<b>左端</b>です。左端には等号がついている（3番目の解をちょうど含む）ことが、最小値が存在する理由です。</p>
+            <div class="warn"><b>つまずき注意：</b>右端に等号をつけると解が4個になってしまいます。不等号の向きと等号の有無が、この問題の核心です。</div>
+          </article>
+
+          <article class="stage hint" hidden>
+            <div class="stage-head"><span class="stage-badge">ヒント 5</span><span class="stage-title">tan β の計算：まず角度を小さくする</span></div>
+            <p>β = 25π/12 は 2π より大きい角度です。tan は周期 π の関数なので、2π を引いても値は同じ：</p>
+            <div class="eq">tan <span class="frac"><span class="t">25π</span><span class="b">12</span></span> = tan ( <span class="frac"><span class="t">25π</span><span class="b">12</span></span> − 2π ) = tan <span class="frac"><span class="t">π</span><span class="b">12</span></span></div>
+            <p>さらに π/12 = π/4 − π/6 と分けると、加法定理 tan (A − B) = (tan A − tan B) / (1 + tan A tan B) が使えます。tan (π/4) = 1、tan (π/6) = 1/√3 を代入して計算してみよう。</p>
+          </article>
+
+          <article class="stage answer" hidden>
+            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(3) の答え</span></div>
+            <p class="final">β の最小値： <span class="frac"><span class="t">25π</span><span class="b">12</span></span></p>
+            <p>tan β = tan (π/12) = ( 1 − 1/√3 ) / ( 1 + 1/√3 ) = (√3 − 1)/(√3 + 1) を有理化して</p>
+            <p class="final">tan β = 2 − √3</p>
+          </article>
+        </div>
+
+        <div class="controls">
+          <div class="dots" aria-hidden="true"></div>
+          <span class="prog-label"></span>
+          <button class="next-btn" type="button"></button>
+          <button class="reset-btn" type="button" hidden>最初からやり直す</button>
+        </div>
+      </section>
+
+      <a class="back-to-top" href="index.html"><span class="arr">←</span>トップページに戻る（B1〜B8 の一覧）</a>
+
+      <footer>
+        数学B B5（配点20点）のヒント式解説。全3問：（1）a の値 5点／（2）合成と最小値 7点／（3）解の個数と tan β 8点。
+      </footer>
+    </div>
+
+    <script>
+    (function () {
+      "use strict";
+      var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+      var overallEl = document.getElementById('overall');
+      var state = {};
+
+      /* ---------- SVG 用カラー取得 ---------- */
+      var varCache = {};
+      function cssVar(name){
+        if (!(name in varCache)) varCache[name] = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+        return varCache[name];
+      }
+
+      /* ---------- graph 2（SVG方式） ---------- */
+      /* canvas の再描画だと実機のドラッグに追随しないため、SVG要素の
+         属性だけを書き換える方式にする。静止部分（グリッド・軸・曲線）は
+         buildGraph2 で一度だけ組み立て、スライダー操作中は動く要素
+         （破線と点）の属性更新と読み取り値の更新だけを行う。 */
+      var svg2 = document.getElementById("graph2");
+      var slider2 = document.getElementById("thetaSlider");
+      var R3 = 2 * Math.sqrt(3);
+      var G2 = { l: 36, r: 12, t: 12, b: 24, W: 340, H: 250, ymin: -2.2, ymax: 3.9 };
+      var g2vl = null, g2pt = null;
+      function g2X(x){ return G2.l + x / Math.PI * (G2.W - G2.l - G2.r); }
+      function g2Y(y){ return G2.t + (G2.ymax - y) / (G2.ymax - G2.ymin) * (G2.H - G2.t - G2.b); }
+      function buildGraph2(){
+        var grid = cssVar("--grid"), axis = cssVar("--axis"), muted = cssVar("--muted");
+        var curve = cssVar("--curve"), hl = cssVar("--hl");
+        var right = G2.l + (G2.W - G2.l - G2.r);
+        var bottom = G2.t + (G2.H - G2.t - G2.b);
+        var s = "";
+        s += '<g stroke="' + grid + '" stroke-width="1">';
+        for (var gy = Math.ceil(G2.ymin); gy <= Math.floor(G2.ymax); gy++){
+          s += '<line x1="' + G2.l + '" y1="' + g2Y(gy).toFixed(1) + '" x2="' + right + '" y2="' + g2Y(gy).toFixed(1) + '"/>';
+        }
+        s += '</g>';
+        s += '<g stroke="' + axis + '" stroke-width="1.4">'
+           + '<line x1="' + G2.l + '" y1="' + g2Y(0).toFixed(1) + '" x2="' + right + '" y2="' + g2Y(0).toFixed(1) + '"/>'
+           + '<line x1="' + G2.l + '" y1="' + G2.t + '" x2="' + G2.l + '" y2="' + bottom + '"/></g>';
+        s += '<g fill="' + muted + '" font-size="12">'
+           + '<text x="' + (g2X(0) - 3).toFixed(1) + '" y="' + (g2Y(0) + 16).toFixed(1) + '">0</text>'
+           + '<text x="' + (g2X(Math.PI / 2) - 8).toFixed(1) + '" y="' + (g2Y(0) + 16).toFixed(1) + '">π/2</text>'
+           + '<text x="' + (g2X(Math.PI) - 3).toFixed(1) + '" y="' + (g2Y(0) + 16).toFixed(1) + '">π</text>'
+           + '<text x="' + (g2X(Math.PI) - 3).toFixed(1) + '" y="' + (g2Y(0) - 6).toFixed(1) + '">θ</text></g>';
+        var d = "";
+        for (var i = 0; i <= 120; i++){
+          var th = Math.PI * i / 120, y = R3 * Math.sin(th + Math.PI / 6);
+          d += (i === 0 ? "M" : "L") + g2X(th).toFixed(1) + " " + g2Y(y).toFixed(1);
+        }
+        s += '<path d="' + d + '" fill="none" stroke="' + curve + '" stroke-width="2.6"/>';
+        s += '<line id="g2vl" stroke="' + hl + '" stroke-width="1.2" stroke-dasharray="4 4"/>';
+        s += '<circle id="g2pt" r="5.5" fill="' + hl + '"/>';
+        svg2.innerHTML = s;
+        g2vl = document.getElementById("g2vl");
+        g2pt = document.getElementById("g2pt");
+        updateGraph2();
+      }
+      function updateGraph2(){
+        if (!g2vl || !g2pt) return;
+        var deg = parseFloat(slider2.value);
+        var t = deg * Math.PI / 180;
+        var yv = R3 * Math.sin(t + Math.PI / 6);
+        var x = g2X(t).toFixed(1);
+        g2vl.setAttribute("x1", x);
+        g2vl.setAttribute("x2", x);
+        g2vl.setAttribute("y1", g2Y(0).toFixed(1));
+        g2vl.setAttribute("y2", g2Y(yv).toFixed(1));
+        g2pt.setAttribute("cx", x);
+        g2pt.setAttribute("cy", g2Y(yv).toFixed(1));
+        document.getElementById("roTheta").textContent = deg + "°";
+        document.getElementById("roPhi").textContent = (deg + 30) + "°";
+        document.getElementById("roSin").textContent = Math.sin(t + Math.PI / 6).toFixed(2);
+        document.getElementById("roY").textContent = yv.toFixed(2);
+        updateCircle2();
+      }
+      /* ドラッグ中はスロットルなしで属性だけを即時更新する */
+      slider2.addEventListener("input", updateGraph2);
+      document.querySelectorAll("[data-th]").forEach(function(b){
+        b.addEventListener("click", function(){ slider2.value = b.getAttribute("data-th"); updateGraph2(); });
+      });
+
+      /* ---------- (2) の単位円（SVG方式） ---------- */
+      /* θスライダーと連動し、φ = θ + π/6 の動径と点 P を動かす。
+         点 P の高さ（青い破線）が sin φ。静止部分は build で一度だけ
+         組み立て、操作中は動く要素の属性だけを更新する。
+         φ の範囲の弧と端点ラベルはヒント4以降、最小値の注記は
+         ヒント5以降にだけ組み立てる（drawAll が段階ごとに再構築）。 */
+      var svgC2 = document.getElementById("circle2");
+      var C2 = { cx: 170, cy: 125, R: 92 };
+      var c2rad = null, c2pt = null, c2hl = null, c2arc = null, c2philab = null, c2sinlab = null;
+      function c2Pt(a, r){ return [C2.cx + r * Math.cos(a), C2.cy - r * Math.sin(a)]; }
+      function buildCircle2(){
+        var axis = cssVar("--axis"), muted = cssVar("--muted");
+        var hl = cssVar("--hl"), blue = cssVar("--blue"), accent = cssVar("--accent");
+        var st = state.p2 || 0;
+        var s = "";
+        s += '<g stroke="' + axis + '" stroke-width="1.4">'
+           + '<line x1="55" y1="' + C2.cy + '" x2="305" y2="' + C2.cy + '"/>'
+           + '<line x1="' + C2.cx + '" y1="12" x2="' + C2.cx + '" y2="238"/></g>';
+        s += '<circle cx="' + C2.cx + '" cy="' + C2.cy + '" r="' + C2.R + '" fill="none" stroke="' + axis + '" stroke-width="1.5"/>';
+        s += '<g fill="' + muted + '" font-size="12.5">'
+           + '<text x="' + (C2.cx + C2.R + 5) + '" y="' + (C2.cy - 5) + '">1</text>'
+           + '<text x="' + (C2.cx + 5) + '" y="' + (C2.cy - C2.R + 2) + '">1</text>'
+           + '<text x="' + (C2.cx - 16) + '" y="' + (C2.cy + 16) + '">O</text></g>';
+        if (st >= 4){
+          var p0 = c2Pt(Math.PI / 6, C2.R), p1 = c2Pt(7 * Math.PI / 6, C2.R);
+          s += '<path d="M' + p0[0].toFixed(1) + ' ' + p0[1].toFixed(1) + ' A' + C2.R + ' ' + C2.R + ' 0 1 0 ' + p1[0].toFixed(1) + ' ' + p1[1].toFixed(1)
+             + '" fill="none" stroke="' + blue + '" stroke-width="3.5" opacity="0.45"/>';
+          s += '<circle cx="' + p0[0].toFixed(1) + '" cy="' + p0[1].toFixed(1) + '" r="4" fill="' + blue + '"/>'
+             + '<circle cx="' + p1[0].toFixed(1) + '" cy="' + p1[1].toFixed(1) + '" r="4" fill="' + blue + '"/>'
+             + '<text x="' + (p0[0] + 4).toFixed(1) + '" y="' + (p0[1] + 16).toFixed(1) + '" font-size="12.5" fill="' + blue + '" font-weight="bold">π/6</text>'
+             + '<text x="' + (p1[0] - 34).toFixed(1) + '" y="' + (p1[1] + 18).toFixed(1) + '" font-size="12.5" fill="' + blue + '" font-weight="bold">7π/6</text>';
+        }
+        if (st >= 5){
+          s += '<text x="8" y="240" font-size="12.5" fill="' + accent + '" font-weight="bold">φ = 7π/6 で sin φ = −1/2（この範囲で最小）</text>';
+        }
+        s += '<line id="c2hl" stroke="' + blue + '" stroke-width="1.6" stroke-dasharray="5 4"/>';
+        s += '<path id="c2arc" fill="none" stroke="' + hl + '" stroke-width="2"/>';
+        s += '<line id="c2rad" stroke="' + hl + '" stroke-width="2.5"/>';
+        s += '<circle id="c2pt" r="5.5" fill="' + hl + '"/>';
+        s += '<text id="c2philab" font-size="13" fill="' + hl + '" font-weight="bold"></text>';
+        s += '<text id="c2sinlab" font-size="13" fill="' + blue + '" font-weight="bold"></text>';
+        svgC2.innerHTML = s;
+        c2rad = document.getElementById("c2rad");
+        c2pt = document.getElementById("c2pt");
+        c2hl = document.getElementById("c2hl");
+        c2arc = document.getElementById("c2arc");
+        c2philab = document.getElementById("c2philab");
+        c2sinlab = document.getElementById("c2sinlab");
+        updateCircle2();
+      }
+      function updateCircle2(){
+        if (!c2rad || !c2pt) return;
+        var deg = parseFloat(slider2.value);
+        var phi = deg * Math.PI / 180 + Math.PI / 6;
+        var p = c2Pt(phi, C2.R);
+        c2rad.setAttribute("x1", C2.cx);
+        c2rad.setAttribute("y1", C2.cy);
+        c2rad.setAttribute("x2", p[0].toFixed(1));
+        c2rad.setAttribute("y2", p[1].toFixed(1));
+        c2pt.setAttribute("cx", p[0].toFixed(1));
+        c2pt.setAttribute("cy", p[1].toFixed(1));
+        c2hl.setAttribute("x1", C2.cx);
+        c2hl.setAttribute("x2", p[0].toFixed(1));
+        c2hl.setAttribute("y1", p[1].toFixed(1));
+        c2hl.setAttribute("y2", p[1].toFixed(1));
+        var a0 = c2Pt(0, 30), a1 = c2Pt(phi, 30);
+        c2arc.setAttribute("d", "M" + a0[0].toFixed(1) + " " + a0[1].toFixed(1) + " A30 30 0 " + (phi > Math.PI ? 1 : 0) + " 0 " + a1[0].toFixed(1) + " " + a1[1].toFixed(1));
+        var mid = c2Pt(phi / 2, 46);
+        c2philab.setAttribute("x", mid[0].toFixed(1));
+        c2philab.setAttribute("y", mid[1].toFixed(1));
+        var show = (state.p2 || 0) >= 4;
+        c2philab.textContent = show ? "φ" : "";
+        c2sinlab.setAttribute("x", C2.cx + 8);
+        c2sinlab.setAttribute("y", (p[1] - 8).toFixed(1));
+        c2sinlab.textContent = show ? ("sin φ = " + Math.sin(phi).toFixed(2)) : "";
+      }
+
+      /* ---------- graph 3 + number line（SVG方式） ---------- */
+      /* (2) と同じく、静止部分は build で一度だけ組み立て、βスライダー
+         操作中は動く要素（強調曲線・βの線・解の点・数直線の帯と目盛）の
+         属性と読み取り値だけを更新する。canvas の再描画はしない。 */
+      var svg3 = document.getElementById("graph3");
+      var svgLine3 = document.getElementById("line3");
+      var slider3 = document.getElementById("betaSlider");
+      var SOL = [Math.PI/12, 7*Math.PI/12, 25*Math.PI/12, 31*Math.PI/12];
+      var PHI_SOL = [Math.PI/4, 3*Math.PI/4, 9*Math.PI/4, 11*Math.PI/4];
+      var SQ6 = Math.sqrt(6);
+      function yOf(th){ return R3 * Math.sin(th + Math.PI/6); }
+
+      var G3 = { l: 36, r: 12, t: 12, b: 24, W: 340, H: 250, ymin: -3.9, ymax: 3.9, XMAX: 8.6 };
+      var g3act = null, g3bl = null, g3blab = null, g3sols = [];
+      function g3X(x){ return G3.l + x / G3.XMAX * (G3.W - G3.l - G3.r); }
+      function g3Y(y){ return G3.t + (G3.ymax - y) / (G3.ymax - G3.ymin) * (G3.H - G3.t - G3.b); }
+      function buildGraph3(){
+        var grid = cssVar("--grid"), axis = cssVar("--axis"), muted = cssVar("--muted");
+        var curve = cssVar("--curve"), dim = cssVar("--curve-dim"), hl = cssVar("--hl"), blue = cssVar("--blue");
+        var right = G3.l + (G3.W - G3.l - G3.r);
+        var bottom = G3.t + (G3.H - G3.t - G3.b);
+        var s = "";
+        s += '<g stroke="' + grid + '" stroke-width="1">';
+        for (var gy = Math.ceil(G3.ymin); gy <= Math.floor(G3.ymax); gy++){
+          s += '<line x1="' + G3.l + '" y1="' + g3Y(gy).toFixed(1) + '" x2="' + right + '" y2="' + g3Y(gy).toFixed(1) + '"/>';
+        }
+        s += '</g>';
+        s += '<g stroke="' + axis + '" stroke-width="1.4">'
+           + '<line x1="' + G3.l + '" y1="' + g3Y(0).toFixed(1) + '" x2="' + right + '" y2="' + g3Y(0).toFixed(1) + '"/>'
+           + '<line x1="' + G3.l + '" y1="' + G3.t + '" x2="' + G3.l + '" y2="' + bottom + '"/></g>';
+        s += '<g fill="' + muted + '" font-size="12">'
+           + '<text x="' + (g3X(0) - 3).toFixed(1) + '" y="' + (g3Y(0) + 16).toFixed(1) + '">0</text>'
+           + '<text x="' + (g3X(Math.PI) - 3).toFixed(1) + '" y="' + (g3Y(0) + 16).toFixed(1) + '">π</text>'
+           + '<text x="' + (g3X(2 * Math.PI) - 6).toFixed(1) + '" y="' + (g3Y(0) + 16).toFixed(1) + '">2π</text>'
+           + '<text x="' + (g3X(G3.XMAX) - 4).toFixed(1) + '" y="' + (g3Y(0) - 6).toFixed(1) + '">θ</text></g>';
+        s += '<line x1="' + G3.l + '" y1="' + g3Y(SQ6).toFixed(1) + '" x2="' + right + '" y2="' + g3Y(SQ6).toFixed(1)
+           + '" stroke="' + hl + '" stroke-width="1.6" stroke-dasharray="7 5"/>';
+        s += '<text x="' + (G3.l + 6) + '" y="' + (g3Y(SQ6) - 6).toFixed(1) + '" font-size="12.5" font-weight="bold" fill="' + hl + '">y = √6</text>';
+        var dDim = "";
+        for (var i = 0; i <= 260; i++){
+          var th = G3.XMAX * i / 260;
+          dDim += (i === 0 ? "M" : "L") + g3X(th).toFixed(1) + " " + g3Y(yOf(th)).toFixed(1);
+        }
+        s += '<path d="' + dDim + '" fill="none" stroke="' + dim + '" stroke-width="2"/>';
+        s += '<path id="g3act" fill="none" stroke="' + curve + '" stroke-width="2.8"/>';
+        s += '<line id="g3bl" stroke="' + blue + '" stroke-width="1.6" y1="' + G3.t + '" y2="' + bottom + '"/>';
+        s += '<text id="g3blab" font-size="12.5" font-weight="bold" fill="' + blue + '" y="' + (bottom + 16) + '">β</text>';
+        SOL.forEach(function(sol, idx){
+          s += '<circle id="g3sol' + idx + '" cx="' + g3X(sol).toFixed(1) + '" cy="' + g3Y(SQ6).toFixed(1) + '" r="5.5"/>';
+        });
+        svg3.innerHTML = s;
+        g3act = document.getElementById("g3act");
+        g3bl = document.getElementById("g3bl");
+        g3blab = document.getElementById("g3blab");
+        g3sols = SOL.map(function(_, idx){ return document.getElementById("g3sol" + idx); });
+        updateGraph3();
+      }
+      function updateGraph3(){
+        if (!g3act || !g3bl) return;
+        var beta = parseFloat(slider3.value);
+        var hl = cssVar("--hl"), card = cssVar("--card");
+        var n = Math.max(2, Math.floor(260 * beta / G3.XMAX));
+        var d = "";
+        for (var j = 0; j <= n; j++){
+          var t2 = beta * j / n;
+          d += (j === 0 ? "M" : "L") + g3X(t2).toFixed(1) + " " + g3Y(yOf(t2)).toFixed(1);
+        }
+        g3act.setAttribute("d", d);
+        var bx = g3X(beta).toFixed(1);
+        g3bl.setAttribute("x1", bx);
+        g3bl.setAttribute("x2", bx);
+        g3blab.setAttribute("x", (g3X(beta) - 4).toFixed(1));
+        var count = 0;
+        SOL.forEach(function(sol, idx){
+          var inside = sol <= beta + 1e-9;
+          if (inside) count++;
+          var c = g3sols[idx];
+          if (!c) return;
+          if (inside){
+            c.setAttribute("fill", hl);
+            c.removeAttribute("stroke");
+          } else {
+            c.setAttribute("fill", card);
+            c.setAttribute("stroke", hl);
+            c.setAttribute("stroke-width", "1.8");
+          }
+        });
+        document.getElementById("roBeta").textContent = beta.toFixed(2);
+        document.getElementById("roCount").textContent = count;
+        updateLine3(beta);
+        updateCircle3(beta);
+      }
+
+      /* ---------- φ の数直線（SVG方式） ---------- */
+      var LN = { l: 14, r: 14, y: 30, W: 340, MAX: 3 * Math.PI };
+      var lnRect = null, lnMark = null, lnLab = null, lnTicks = [];
+      function lnX(v){ return LN.l + v / LN.MAX * (LN.W - LN.l - LN.r); }
+      function buildLine3(){
+        var axis = cssVar("--axis"), muted = cssVar("--muted"), blue = cssVar("--blue");
+        var accent = cssVar("--accent"), hl = cssVar("--hl");
+        var right = LN.l + (LN.W - LN.l - LN.r);
+        var s = "";
+        s += '<rect id="lnRect" x="' + lnX(Math.PI/6).toFixed(1) + '" y="' + (LN.y - 9) + '" height="18" fill="' + accent + '" opacity="0.16"/>';
+        s += '<line x1="' + LN.l + '" y1="' + LN.y + '" x2="' + right + '" y2="' + LN.y + '" stroke="' + axis + '" stroke-width="1.4"/>';
+        PHI_SOL.forEach(function(v, idx){
+          s += '<line x1="' + lnX(v).toFixed(1) + '" y1="' + (LN.y - 8) + '" x2="' + lnX(v).toFixed(1) + '" y2="' + (LN.y + 8) + '" stroke="' + hl + '" stroke-width="2"/>'
+             + '<circle cx="' + lnX(v).toFixed(1) + '" cy="' + LN.y + '" r="4" fill="' + hl + '"/>'
+             + '<text id="lnTick' + idx + '" x="' + (lnX(v) - 12).toFixed(1) + '" y="' + (LN.y + 26) + '" font-size="12"></text>';
+        });
+        s += '<line id="lnMark" stroke="' + blue + '" stroke-width="2.4" y1="' + (LN.y - 13) + '" y2="' + (LN.y + 13) + '"/>';
+        s += '<text id="lnLab" font-size="12" font-weight="bold" fill="' + blue + '" y="' + (LN.y - 18) + '">β + π/6</text>';
+        s += '<text x="' + (lnX(Math.PI/6) - 8).toFixed(1) + '" y="' + (LN.y + 26) + '" font-size="12" fill="' + muted + '">π/6</text>';
+        svgLine3.innerHTML = s;
+        lnRect = document.getElementById("lnRect");
+        lnMark = document.getElementById("lnMark");
+        lnLab = document.getElementById("lnLab");
+        lnTicks = PHI_SOL.map(function(_, idx){ return document.getElementById("lnTick" + idx); });
+        updateLine3(parseFloat(slider3.value));
+      }
+      function updateLine3(beta){
+        if (!lnRect || !lnMark) return;
+        var hl = cssVar("--hl"), muted = cssVar("--muted");
+        var end = Math.min(beta + Math.PI/6, LN.MAX);
+        lnRect.setAttribute("width", Math.max(0, lnX(end) - lnX(Math.PI/6)).toFixed(1));
+        var mx = lnX(beta + Math.PI/6).toFixed(1);
+        lnMark.setAttribute("x1", mx);
+        lnMark.setAttribute("x2", mx);
+        lnLab.setAttribute("x", Math.min(lnX(beta + Math.PI/6) - 18, LN.W - 58).toFixed(1));
+        var showLabels = (state.p3 || 0) >= 2;
+        var labels = ["π/4", "3π/4", "9π/4", "11π/4"];
+        PHI_SOL.forEach(function(v, i){
+          var t = lnTicks[i];
+          if (!t) return;
+          if (!showLabels){ t.textContent = ""; return; }
+          var inside = v <= beta + Math.PI/6 + 1e-9;
+          t.textContent = labels[i];
+          t.setAttribute("fill", inside ? hl : muted);
+          t.setAttribute("font-weight", inside ? "bold" : "normal");
+        });
+      }
+      /* ドラッグ中はスロットルなしで属性だけを即時更新する */
+      slider3.addEventListener("input", updateGraph3);
+      document.querySelectorAll("[data-beta]").forEach(function(b){
+        b.addEventListener("click", function(){ slider3.value = b.getAttribute("data-beta"); updateGraph3(); });
+      });
+
+      /* ---------- (3) の単位円（SVG方式） ---------- */
+      /* 水平線 sin φ = √2/2 と単位円の交点は2点だけだが、解の角は
+         1周目（π/4, 3π/4）と2周目（9π/4, 11π/4）で同じ点に戻る。
+         βスライダーと連動し、φ の範囲の弧（2周目は少し内側の弧）が
+         交点を通るたびに解として数える。2周目の解が入った点には
+         二重の輪を表示する。角のラベルはヒント2以降に表示。 */
+      var svgC3 = document.getElementById("circle3");
+      var C3 = { cx: 170, cy: 126, R: 90 };
+      var c3arcA = null, c3arcB = null, c3end = null, c3endlab = null;
+      var c3p1 = null, c3p2 = null, c3ring1 = null, c3ring2 = null, c3labs = [];
+      function c3Pt(a, r){ return [C3.cx + r * Math.cos(a), C3.cy - r * Math.sin(a)]; }
+      function c3ArcPath(a0, a1, r){
+        var q0 = c3Pt(a0, r), q1 = c3Pt(a1, r);
+        return "M" + q0[0].toFixed(1) + " " + q0[1].toFixed(1) + " A" + r + " " + r + " 0 " + ((a1 - a0) > Math.PI ? 1 : 0) + " 0 " + q1[0].toFixed(1) + " " + q1[1].toFixed(1);
+      }
+      function buildCircle3(){
+        var axis = cssVar("--axis"), muted = cssVar("--muted"), hl = cssVar("--hl");
+        var st = state.p3 || 0;
+        var yline = C3.cy - C3.R * Math.SQRT1_2;
+        var half = C3.R * Math.SQRT1_2;
+        var P1 = c3Pt(Math.PI / 4, C3.R), P2 = c3Pt(3 * Math.PI / 4, C3.R);
+        var s = "";
+        s += '<g stroke="' + axis + '" stroke-width="1.4">'
+           + '<line x1="60" y1="' + C3.cy + '" x2="300" y2="' + C3.cy + '"/>'
+           + '<line x1="' + C3.cx + '" y1="16" x2="' + C3.cx + '" y2="236"/></g>';
+        s += '<circle cx="' + C3.cx + '" cy="' + C3.cy + '" r="' + C3.R + '" fill="none" stroke="' + axis + '" stroke-width="1.5"/>';
+        s += '<g fill="' + muted + '" font-size="12.5">'
+           + '<text x="' + (C3.cx + C3.R + 5) + '" y="' + (C3.cy - 5) + '">1</text>'
+           + '<text x="' + (C3.cx + 5) + '" y="' + (C3.cy - C3.R + 2) + '">1</text>'
+           + '<text x="' + (C3.cx - 16) + '" y="' + (C3.cy + 16) + '">O</text></g>';
+        s += '<line x1="' + (C3.cx - half - 16).toFixed(1) + '" y1="' + yline.toFixed(1) + '" x2="' + (C3.cx + half + 16).toFixed(1) + '" y2="' + yline.toFixed(1)
+           + '" stroke="' + hl + '" stroke-width="1.8" stroke-dasharray="7 5"/>';
+        if (st >= 1){
+          s += '<text x="' + (C3.cx - half + 4).toFixed(1) + '" y="' + (yline - 8).toFixed(1) + '" font-size="12.5" font-weight="bold" fill="' + hl + '">sin φ = √2/2</text>';
+        }
+        s += '<path id="c3arcA" fill="none" stroke="' + cssVar("--accent") + '" stroke-width="3.5" opacity="0.5"/>';
+        s += '<path id="c3arcB" fill="none" stroke="' + cssVar("--accent") + '" stroke-width="3.5" opacity="0.5"/>';
+        s += '<circle id="c3end" r="4.5" fill="' + cssVar("--blue") + '"/>';
+        s += '<text id="c3endlab" font-size="12" font-weight="bold" fill="' + cssVar("--blue") + '">β + π/6</text>';
+        s += '<circle id="c3ring1" cx="' + P1[0].toFixed(1) + '" cy="' + P1[1].toFixed(1) + '" r="11" fill="none" stroke="' + hl + '" stroke-width="2" visibility="hidden"/>';
+        s += '<circle id="c3ring2" cx="' + P2[0].toFixed(1) + '" cy="' + P2[1].toFixed(1) + '" r="11" fill="none" stroke="' + hl + '" stroke-width="2" visibility="hidden"/>';
+        s += '<circle id="c3p1" cx="' + P1[0].toFixed(1) + '" cy="' + P1[1].toFixed(1) + '" r="5.5"/>';
+        s += '<circle id="c3p2" cx="' + P2[0].toFixed(1) + '" cy="' + P2[1].toFixed(1) + '" r="5.5"/>';
+        s += '<text id="c3lab0" font-size="13" x="' + (P1[0] + 14).toFixed(1) + '" y="' + (P1[1] - 4).toFixed(1) + '"></text>';
+        s += '<text id="c3lab2" font-size="13" x="' + (P1[0] + 14).toFixed(1) + '" y="' + (P1[1] + 15).toFixed(1) + '"></text>';
+        s += '<text id="c3lab1" font-size="13" text-anchor="end" x="' + (P2[0] - 14).toFixed(1) + '" y="' + (P2[1] - 4).toFixed(1) + '"></text>';
+        s += '<text id="c3lab3" font-size="13" text-anchor="end" x="' + (P2[0] - 14).toFixed(1) + '" y="' + (P2[1] + 15).toFixed(1) + '"></text>';
+        svgC3.innerHTML = s;
+        c3arcA = document.getElementById("c3arcA");
+        c3arcB = document.getElementById("c3arcB");
+        c3end = document.getElementById("c3end");
+        c3endlab = document.getElementById("c3endlab");
+        c3p1 = document.getElementById("c3p1");
+        c3p2 = document.getElementById("c3p2");
+        c3ring1 = document.getElementById("c3ring1");
+        c3ring2 = document.getElementById("c3ring2");
+        c3labs = [0, 1, 2, 3].map(function(i){ return document.getElementById("c3lab" + i); });
+        updateCircle3(parseFloat(slider3.value));
+      }
+      function updateCircle3(beta){
+        if (!c3arcA || !c3end) return;
+        var hl = cssVar("--hl"), card = cssVar("--card"), muted = cssVar("--muted");
+        var st = state.p3 || 0;
+        var end = beta + Math.PI / 6;
+        c3arcA.setAttribute("d", c3ArcPath(Math.PI / 6, Math.min(end, 2 * Math.PI), C3.R));
+        if (end > 2 * Math.PI) c3arcB.setAttribute("d", c3ArcPath(0, end - 2 * Math.PI, C3.R - 13));
+        else c3arcB.setAttribute("d", "");
+        var er = end > 2 * Math.PI ? C3.R - 13 : C3.R;
+        var ep = c3Pt(end % (2 * Math.PI), er);
+        c3end.setAttribute("cx", ep[0].toFixed(1));
+        c3end.setAttribute("cy", ep[1].toFixed(1));
+        c3endlab.setAttribute("x", Math.min(Math.max(ep[0] - 20, 4), 276).toFixed(1));
+        c3endlab.setAttribute("y", Math.max(ep[1] - 12, 12).toFixed(1));
+        var entered = PHI_SOL.map(function(v){ return v <= end + 1e-9; });
+        [[c3p1, entered[0]], [c3p2, entered[1]]].forEach(function(pair){
+          var c = pair[0];
+          if (!c) return;
+          if (pair[1]){ c.setAttribute("fill", hl); c.removeAttribute("stroke"); }
+          else { c.setAttribute("fill", card); c.setAttribute("stroke", hl); c.setAttribute("stroke-width", "1.8"); }
+        });
+        if (c3ring1) c3ring1.setAttribute("visibility", entered[2] ? "visible" : "hidden");
+        if (c3ring2) c3ring2.setAttribute("visibility", entered[3] ? "visible" : "hidden");
+        var names = ["π/4", "3π/4", "9π/4", "11π/4"];
+        names.forEach(function(nm, i){
+          var t = c3labs[i];
+          if (!t) return;
+          if (st < 2){ t.textContent = ""; return; }
+          t.textContent = nm;
+          t.setAttribute("fill", entered[i] ? hl : muted);
+          t.setAttribute("font-weight", entered[i] ? "bold" : "normal");
+        });
+        var count = entered.filter(Boolean).length;
+        document.getElementById("roCountC").textContent = count;
+        var list = document.getElementById("roPhiIn");
+        if (st >= 2 && count > 0){
+          list.textContent = "（入っている解：φ = " + names.filter(function(_, i){ return entered[i]; }).join("、") + "）";
+        } else {
+          list.textContent = "";
+        }
+        var note = document.getElementById("noteMin");
+        if (note) note.hidden = !(count === 3 && st >= 3);
+      }
+
+      function drawAll(){ varCache = {}; buildGraph2(); buildCircle2(); buildGraph3(); buildLine3(); buildCircle3(); }
+
+      /* ---------- 全体の進み具合 ---------- */
+      function updateOverall() {
+        var secs = document.querySelectorAll('.problem');
+        var done = 0;
+        secs.forEach(function (sec) {
+          if (state[sec.id] >= sec.querySelectorAll('.stage').length) done++;
+        });
+        overallEl.innerHTML = '進み具合：<b>' + done + ' / ' + secs.length + ' 問</b>の解答を開きました';
+      }
+
+      /* ---------- 各小問のステップ制御 ---------- */
+      function setupProblem(sec) {
+        var id = sec.id;
+        var stages = Array.prototype.slice.call(sec.querySelectorAll('.stage'));
+        var hints = stages.length - 1;
+        var dotsBox = sec.querySelector('.dots');
+        var prog = sec.querySelector('.prog-label');
+        var nextBtn = sec.querySelector('.next-btn');
+        var resetBtn = sec.querySelector('.reset-btn');
+        var tab = document.querySelector('.tab[data-target="' + id + '"]');
+        var status = tab.querySelector('.t-status');
+        state[id] = 0;
+        stages.forEach(function () {
+          var d = document.createElement('span');
+          d.className = 'dot';
+          dotsBox.appendChild(d);
+        });
+        var dots = Array.prototype.slice.call(dotsBox.children);
+
+        function apply() {
+          var r = state[id];
+          stages.forEach(function (s, idx) { s.hidden = idx >= r; });
+          dots.forEach(function (d, idx) {
+            d.classList.toggle('on', idx < r);
+            d.classList.toggle('ans', idx === stages.length - 1 && idx < r);
+          });
+          sec.querySelectorAll('[data-min]').forEach(function (elm) {
+            var mn = parseInt(elm.getAttribute('data-min'), 10);
+            var mx = elm.getAttribute('data-max');
+            var show = r >= mn && (mx === null || r <= parseInt(mx, 10));
+            if (show) elm.removeAttribute('hidden'); else elm.setAttribute('hidden', '');
+          });
+          if (r === 0) {
+            prog.textContent = 'ヒントはまだ開いていません';
+            nextBtn.disabled = false; nextBtn.textContent = '次へ：ヒント1を開く';
+          } else if (r < hints) {
+            prog.textContent = 'ヒント ' + r + ' / ' + hints + ' を表示中';
+            nextBtn.disabled = false; nextBtn.textContent = '次へ：ヒント' + (r + 1) + 'を開く';
+          } else if (r === hints) {
+            prog.textContent = 'ヒントを全部開きました';
+            nextBtn.disabled = false; nextBtn.textContent = '次へ：解答を開く';
+          } else {
+            prog.textContent = '解答を表示しました';
+            nextBtn.disabled = true; nextBtn.textContent = '解答まで開きました';
+          }
+          resetBtn.hidden = r === 0;
+          tab.classList.toggle('done', r >= stages.length);
+          status.textContent = r === 0 ? '未着手' : (r >= stages.length ? '解答済み' : 'ヒント ' + r + '/' + hints);
+          updateOverall();
+          drawAll();
+        }
+
+        nextBtn.addEventListener('click', function () {
+          if (state[id] < stages.length) {
+            state[id]++;
+            apply();
+            var s = stages[state[id] - 1];
+            if (s) s.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'nearest' });
+          }
+        });
+        resetBtn.addEventListener('click', function () {
+          state[id] = 0;
+          apply();
+          sec.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+        });
+        apply();
+      }
+      document.querySelectorAll('.problem').forEach(setupProblem);
+
+      tabs.forEach(function (tab) {
+        tab.addEventListener('click', function () {
+          tabs.forEach(function (t) { t.classList.toggle('active', t === tab); });
+          document.querySelectorAll('.problem').forEach(function (sec) {
+            sec.classList.toggle('active', sec.id === tab.getAttribute('data-target'));
+          });
+          window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+          requestAnimationFrame(drawAll);
+        });
+      });
+
+      drawAll();
+      window.addEventListener("resize", drawAll);
+      if (window.matchMedia){
+        var mq = window.matchMedia("(prefers-color-scheme: dark)");
+        if (mq.addEventListener) mq.addEventListener("change", drawAll);
+      }
+    })();
+    </script>
+  </body>
+</html>
