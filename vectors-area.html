@@ -1,0 +1,602 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:," />
+    <title>数学C 研究 三角形の面積 自習ページ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Serif+JP:wght@700;900&display=swap" rel="stylesheet" />
+    <style>
+      :root{
+        --bg:#f4f7f5;
+        --surface:#ffffff;
+        --surface2:#eef4f1;
+        --ink:#1d2a26;
+        --ink-soft:#43554e;
+        --line:#cfddd6;
+        --accent:#0e7a5f;
+        --accent-deep:#0a5c48;
+        --accent-soft:#e2f2ec;
+        --blue:#1f6fb4;
+        --orange:#d96c1e;
+        --hint-bg:#fff6cf;
+        --hint-line:#e3c84e;
+        --hint-ink:#4d4210;
+        --ans-bg:#e6f6ea;
+        --ans-line:#4caf6d;
+        --ans-ink:#14401f;
+        --bar-bg:rgba(255,255,255,.94);
+        --shadow:0 2px 10px rgba(20,50,40,.08);
+        --arrow-img:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 12' preserveAspectRatio='none'%3E%3Cpath d='M2 6 H90 M82 1.5 L91 6 L82 10.5' stroke='%231d2a26' stroke-width='2.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      }
+      @media (prefers-color-scheme: dark){
+        :root{
+          --bg:#101714;
+          --surface:#1a2420;
+          --surface2:#22302a;
+          --ink:#e8f0ec;
+          --ink-soft:#b3c4bc;
+          --line:#3a4a43;
+          --accent:#3cb894;
+          --accent-deep:#8fd8c0;
+          --accent-soft:#1d332b;
+          --blue:#6cb2e8;
+          --orange:#f09a4e;
+          --hint-bg:#3d3617;
+          --hint-line:#a68e2e;
+          --hint-ink:#f5e9bd;
+          --ans-bg:#17301e;
+          --ans-line:#3f9957;
+          --ans-ink:#c9eed2;
+          --bar-bg:rgba(20,28,24,.94);
+          --shadow:0 2px 10px rgba(0,0,0,.4);
+          --arrow-img:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 12' preserveAspectRatio='none'%3E%3Cpath d='M2 6 H90 M82 1.5 L91 6 L82 10.5' stroke='%23e8f0ec' stroke-width='2.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+        }
+      }
+      *{box-sizing:border-box}
+      html{scroll-behavior:smooth}
+      @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} *{transition:none!important} }
+      body{
+        margin:0; background:var(--bg); color:var(--ink);
+        font-family:"Noto Sans JP",system-ui,-apple-system,"Hiragino Kaku Gothic ProN",sans-serif;
+        line-height:1.85; font-size:16px;
+        padding-bottom:118px;
+      }
+      .wrap{max-width:780px;margin:0 auto;padding:0 16px 8px}
+
+      /* ---------- ヘッダー ---------- */
+      header{padding:26px 0 6px}
+      .badge{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:700;font-size:13px;
+        padding:4px 12px;border-radius:999px;letter-spacing:.04em;
+      }
+      @media (prefers-color-scheme: dark){ .badge{color:#0c1712} }
+      h1{
+        font-family:"Noto Serif JP",serif;font-weight:900;font-size:34px;line-height:1.3;
+        margin:12px 0 4px;letter-spacing:.02em;
+      }
+      .page-meta{color:var(--ink-soft);font-size:14px;font-weight:500}
+      .page-meta b{color:var(--accent-deep)}
+
+      /* ---------- 使い方 ---------- */
+      .howto{
+        background:var(--accent-soft);border:1.5px solid var(--accent);border-radius:14px;
+        padding:14px 18px;margin:18px 0 26px;box-shadow:var(--shadow);
+      }
+      .howto h2{margin:0 0 6px;font-size:16px;color:var(--accent-deep)}
+      .howto ol{margin:0;padding-left:1.4em}
+      .howto li{margin:2px 0}
+      .howto .next-word{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:700;border-radius:6px;
+        padding:0 8px;font-size:.92em;
+      }
+      @media (prefers-color-scheme: dark){ .howto .next-word{color:#0c1712} }
+
+      /* ---------- セクション見出し ---------- */
+      .sec-head{display:flex;align-items:center;gap:10px;margin:34px 0 12px}
+      .sec-tag{
+        background:var(--ink);color:var(--bg);font-weight:900;font-size:14px;border-radius:8px;
+        padding:3px 10px;white-space:nowrap;
+      }
+      .sec-head h2{font-size:21px;margin:0;font-weight:900}
+      .sec-head .pno{margin-left:auto;color:var(--ink-soft);font-size:13px;white-space:nowrap}
+
+      .card{
+        background:var(--surface);border:1px solid var(--line);border-radius:14px;
+        padding:18px 18px 8px;margin:0 0 18px;box-shadow:var(--shadow);
+      }
+      .card p{margin:0 0 12px}
+      .def{
+        background:var(--surface2);border-radius:10px;padding:12px 16px;margin:0 0 14px;
+      }
+      .def p:last-child{margin-bottom:0}
+      .key{font-weight:900;color:var(--accent-deep)}
+      figure{margin:6px 0 14px}
+      figure svg{width:100%;height:auto;display:block}
+      figcaption{font-size:13.5px;color:var(--ink-soft);text-align:center;margin-top:6px;line-height:1.6}
+      .figbox{background:var(--surface2);border-radius:12px;padding:12px 10px 6px}
+
+      /* ---------- 数式・矢印表記 ---------- */
+      .v{
+        display:inline-block;position:relative;padding-top:.5em;line-height:1.1;
+        font-weight:700;font-style:normal;white-space:nowrap;
+      }
+      .v::before{
+        content:"";position:absolute;top:.02em;left:-.04em;right:-.04em;height:.34em;
+        background-image:var(--arrow-img);background-repeat:no-repeat;background-size:100% 100%;
+      }
+      .formula{
+        text-align:center;font-size:19px;font-weight:700;letter-spacing:.03em;
+        background:var(--surface2);border-radius:10px;padding:12px 8px;margin:0 0 14px;
+      }
+      .abs{font-weight:400}
+      sub{font-size:.72em}
+
+      /* ---------- 問題カード（ヒント式） ---------- */
+      .prob{border:2px solid var(--line);transition:border-color .2s}
+      .prob.active{border-color:var(--accent)}
+      .prob-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+      .prob-tag{
+        font-weight:900;font-size:14px;border-radius:8px;padding:3px 12px;color:#fff;background:var(--blue);
+      }
+      .prob-tag.ren{background:#c2452d}
+      .prob-tag.kai{background:var(--accent)}
+      @media (prefers-color-scheme: dark){ .prob-tag{color:#0d141b} .prob-tag.ren{color:#1c0f0a} .prob-tag.kai{color:#0c1712} }
+      .prob-state{margin-left:auto;font-size:13px;font-weight:700;color:var(--ink-soft)}
+      .dots{display:flex;gap:6px;align-items:center}
+      .dot{width:11px;height:11px;border-radius:50%;border:2px solid var(--ink-soft);background:transparent}
+      .dot.on{background:var(--accent);border-color:var(--accent)}
+      .dot.ans.on{background:#2f9e4f;border-color:#2f9e4f}
+      .prob-q{font-weight:700;font-size:16.5px;margin:0 0 10px}
+
+      .step{display:none;margin:0 0 12px;border-radius:12px;padding:12px 16px 4px;scroll-margin-bottom:130px}
+      .step.show{display:block;animation:pop .25s ease}
+      @keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+      .step h3{margin:0 0 6px;font-size:14px;font-weight:900;letter-spacing:.05em}
+      .step p{margin:0 0 10px}
+      .hint{background:var(--hint-bg);border:1.5px solid var(--hint-line);color:var(--hint-ink)}
+      .hint h3{color:inherit}
+      .deriv{background:var(--surface2);border:1.5px solid var(--line);color:var(--ink)}
+      .deriv .formula{background:var(--surface)}
+      .answer{background:var(--ans-bg);border:1.5px solid var(--ans-line);color:var(--ans-ink)}
+      .answer .big{font-size:18px;font-weight:900;text-align:center;margin:4px 0 10px}
+      .note{font-size:14px;border-top:1px dashed currentColor;padding-top:8px;margin-top:2px}
+      .prob-done{
+        display:none;text-align:center;font-weight:900;color:var(--accent-deep);
+        padding:2px 0 12px;font-size:15px;
+      }
+      .prob-done.show{display:block}
+
+      /* ---------- まとめ ---------- */
+      .summary{border:2px solid var(--accent);background:var(--accent-soft)}
+      .summary h2{margin:0 0 8px;font-size:18px;color:var(--accent-deep)}
+      .summary ul{margin:0;padding-left:1.3em}
+      .summary li{margin:4px 0}
+
+      /* ---------- フッター ---------- */
+      footer{margin:30px 0 10px;text-align:center}
+      .back-btn{
+        display:inline-block;text-decoration:none;font-weight:700;color:var(--ink);
+        border:2px solid var(--line);background:var(--surface);border-radius:12px;padding:12px 26px;
+      }
+      .foot-note{color:var(--ink-soft);font-size:13px;margin-top:12px}
+
+      /* ---------- 下部固定バー ---------- */
+      .ctrl-bar{
+        position:fixed;left:0;right:0;bottom:0;z-index:50;background:var(--bar-bg);
+        backdrop-filter:blur(8px);border-top:1.5px solid var(--line);
+        padding:10px 14px calc(10px + env(safe-area-inset-bottom));
+      }
+      .ctrl-inner{max-width:780px;margin:0 auto}
+      .ctrl-label{font-size:13px;font-weight:700;color:var(--ink-soft);margin:0 0 8px;text-align:center}
+      .ctrl-label b{color:var(--accent-deep)}
+      .ctrl-btns{display:flex;gap:10px}
+      .btn{
+        font-family:inherit;cursor:pointer;border-radius:12px;font-weight:900;border:2px solid var(--line);
+        background:var(--surface);color:var(--ink);padding:12px 14px;font-size:15px;
+      }
+      .btn-next{
+        flex:1;background:var(--accent);border-color:var(--accent);color:#fff;font-size:18px;padding:12px;
+      }
+      @media (prefers-color-scheme: dark){ .btn-next{color:#0c1712} }
+      .btn-next:disabled{background:var(--surface2);border-color:var(--line);color:var(--ink-soft);cursor:default}
+      .btn:active{transform:scale(.98)}
+
+      /* SVG内の文字・線 */
+      .svg-txt{font-family:"Noto Sans JP",sans-serif;font-weight:700;fill:var(--ink)}
+      .svg-txt-soft{font-family:"Noto Sans JP",sans-serif;fill:var(--ink-soft)}
+      .grid-line{stroke:var(--line);stroke-width:1}
+      .axis-line{stroke:var(--ink-soft);stroke-width:1.6}
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+
+      <!-- ================= ヘッダー ================= -->
+      <header>
+        <span class="badge">数学C　第1章　平面上のベクトル　研究</span>
+        <h1>三角形の面積</h1>
+        <p class="page-meta">教科書 <b>p.29</b>　｜　第1節 ベクトルとその演算</p>
+      </header>
+
+      <!-- ================= 使い方 ================= -->
+      <section class="howto" aria-label="使い方">
+        <h2>このページの使い方（自習の流れ）</h2>
+        <ol>
+          <li><b>解説</b>を読んで、図でイメージをつかむ</li>
+          <li><b>例題</b>をヒントで解く ― 分からなければ下の <span class="next-word">次へ</span> でヒントを1つずつ開く</li>
+          <li><b>練習問題</b>に挑戦 ― 答えは最後のヒントのあとに出てくるよ</li>
+        </ol>
+      </section>
+
+      <!-- ================= 解説：面積の公式 ================= -->
+      <div class="sec-head">
+        <span class="sec-tag">解説</span>
+        <h2>三角形の面積の公式</h2>
+        <span class="pno">教科書 p.29</span>
+      </div>
+
+      <section class="card prob active" id="prob-kai1" data-flow="kai1" data-label="解説：面積の公式" data-kind="deriv">
+        <div class="prob-head">
+          <span class="prob-tag kai">公式の導出</span>
+          <div class="dots" aria-hidden="true">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span>
+          </div>
+          <span class="prob-state">ステップ 0 / 4</span>
+        </div>
+        <p>△OABにおいて、<span class="v">OA</span>＝<span class="v">a</span>、<span class="v">OB</span>＝<span class="v">b</span> とする。このとき、△OABの面積 S を、ベクトル <span class="v">a</span>、<span class="v">b</span> で表してみよう。また、∠AOB＝θ（0°＜θ＜180°）とする。</p>
+        <figure>
+          <div class="figbox">
+            <svg viewBox="0 0 520 262" role="img" aria-label="三角形OABの図。OからAへのベクトルが a、OからBへのベクトルが b、間の角がθ">
+              <defs>
+                <marker id="ah-k1" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+                  <path d="M0,0 L10,5 L0,10 z" fill="var(--ink)"></path>
+                </marker>
+              </defs>
+              <polygon points="90,200 430,200 300,60" fill="var(--accent-soft)"></polygon>
+              <line x1="300" y1="60" x2="430" y2="200" stroke="var(--ink)" stroke-width="2.5"></line>
+              <line x1="90" y1="200" x2="424" y2="200" stroke="var(--ink)" stroke-width="3" marker-end="url(#ah-k1)"></line>
+              <line x1="90" y1="200" x2="296" y2="66" stroke="var(--ink)" stroke-width="3" marker-end="url(#ah-k1)"></line>
+              <path d="M 148 200 A 58 58 0 0 0 138.2 167.8" fill="none" stroke="var(--orange)" stroke-width="2.5"></path>
+              <text x="163" y="192" class="svg-txt" font-size="17" fill="var(--orange)">θ</text>
+              <circle cx="90" cy="200" r="4.5" fill="var(--ink)"></circle>
+              <circle cx="430" cy="200" r="4.5" fill="var(--ink)"></circle>
+              <circle cx="300" cy="60" r="4.5" fill="var(--ink)"></circle>
+              <text x="68" y="224" class="svg-txt" font-size="20">O</text>
+              <text x="440" y="224" class="svg-txt" font-size="20">A</text>
+              <text x="296" y="42" class="svg-txt" font-size="20">B</text>
+              <text x="260" y="230" text-anchor="middle" class="svg-txt" font-size="17"><tspan font-style="italic">a</tspan>→</text>
+              <text x="168" y="122" text-anchor="middle" class="svg-txt" font-size="17"><tspan font-style="italic">b</tspan>→</text>
+            </svg>
+          </div>
+          <figcaption>△OAB。<span class="v" style="padding-top:.4em">OA</span>＝<span class="v" style="padding-top:.4em">a</span>、<span class="v" style="padding-top:.4em">OB</span>＝<span class="v" style="padding-top:.4em">b</span>、2辺の間の角がθ。</figcaption>
+        </figure>
+        <p>公式がどうやって出てくるか、下の <b>次へ</b> で1ステップずつ追ってみよう。</p>
+
+        <div class="step deriv">
+          <h3>ステップ 1 ― 数学Iの面積公式から出発</h3>
+          <p>2辺の長さとその間の角が分かれば、三角形の面積は数学Iで学んだ公式で求められた。</p>
+          <p class="formula">S ＝ (1/2)｜<span class="v">a</span>｜｜<span class="v">b</span>｜sinθ</p>
+          <p>あとは sinθ を、ベクトルで表せる形（内積）に置きかえればよい。</p>
+        </div>
+        <div class="step deriv">
+          <h3>ステップ 2 ― sinθ を cosθ で表す</h3>
+          <p>0°＜θ＜180° では sinθ＞0 だから、sin²θ＋cos²θ＝1 より</p>
+          <p class="formula">sinθ ＝ √(1−cos²θ)</p>
+          <p>そして内積の定義から、cosθ は <span class="v">a</span>・<span class="v">b</span> ＝｜<span class="v">a</span>｜｜<span class="v">b</span>｜cosθ を変形して</p>
+          <p class="formula">cosθ ＝ （<span class="v">a</span>・<span class="v">b</span>）／（｜<span class="v">a</span>｜｜<span class="v">b</span>｜）</p>
+        </div>
+        <div class="step deriv">
+          <h3>ステップ 3 ― ステップ1の公式に代入する</h3>
+          <p>S ＝ (1/2)｜<span class="v">a</span>｜｜<span class="v">b</span>｜√(1−cos²θ) のルートの中に、｜<span class="v">a</span>｜²｜<span class="v">b</span>｜² を取り込むと</p>
+          <p class="formula">S ＝ (1/2)√（｜<span class="v">a</span>｜²｜<span class="v">b</span>｜² − ｜<span class="v">a</span>｜²｜<span class="v">b</span>｜²cos²θ）</p>
+          <p>ここで ｜<span class="v">a</span>｜｜<span class="v">b</span>｜cosθ ＝ <span class="v">a</span>・<span class="v">b</span> だから、｜<span class="v">a</span>｜²｜<span class="v">b</span>｜²cos²θ ＝ （<span class="v">a</span>・<span class="v">b</span>）² と書きかえられる。</p>
+        </div>
+        <div class="step deriv">
+          <h3>ステップ 4 ― ベクトルによる三角形の面積の公式</h3>
+          <p class="formula">S ＝ (1/2)√（｜<span class="v">a</span>｜²｜<span class="v">b</span>｜² − （<span class="v">a</span>・<span class="v">b</span>）²）　……①</p>
+          <p>｜<span class="v">a</span>｜、｜<span class="v">b</span>｜ と内積 <span class="v">a</span>・<span class="v">b</span> の3つが分かれば、角θが分からなくても面積が求められる。これがベクトルによる三角形の面積の公式だ。</p>
+        </div>
+        <p class="prob-done">公式①が導けた！　次は練習1で使ってみよう。</p>
+      </section>
+
+      <!-- ================= 練習1 ================= -->
+      <div class="sec-head">
+        <span class="sec-tag">練習</span>
+        <h2>練習問題に挑戦</h2>
+        <span class="pno">教科書 p.29</span>
+      </div>
+
+      <section class="card prob" id="prob-ren1" data-flow="ren1" data-label="練習1" data-kind="hint">
+        <div class="prob-head">
+          <span class="prob-tag ren">練習 1</span>
+          <div class="dots" aria-hidden="true">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span>
+          </div>
+          <span class="prob-state">ヒント 0 / 3</span>
+        </div>
+        <p class="prob-q">△OABについて、｜<span class="v">OA</span>｜＝4、｜<span class="v">OB</span>｜＝5、<span class="v">OA</span>・<span class="v">OB</span>＝−10 のとき、△OABの面積を求めよ。</p>
+
+        <div class="step hint">
+          <h3>ヒント 1 ― 使う公式を書き出す</h3>
+          <p>解説で導いた公式①を、まずそのまま書いてみよう。</p>
+          <p class="formula" style="background:var(--surface)">S ＝ (1/2)√（｜<span class="v">a</span>｜²｜<span class="v">b</span>｜² − （<span class="v">a</span>・<span class="v">b</span>）²）</p>
+          <p>この問題では <span class="v">a</span>＝<span class="v">OA</span>、<span class="v">b</span>＝<span class="v">OB</span> のこと。問題文の3つの数（4、5、−10）が、公式のどの部分に入るか確認しよう。</p>
+        </div>
+        <div class="step hint">
+          <h3>ヒント 2 ― 3つの数を代入する</h3>
+          <p>｜<span class="v">OA</span>｜＝4、｜<span class="v">OB</span>｜＝5、<span class="v">OA</span>・<span class="v">OB</span>＝−10 を公式①に代入すると</p>
+          <p class="formula" style="background:var(--surface)">S ＝ (1/2)√（4²・5² − （−10）²）</p>
+          <p>内積は<b>2乗する</b>ので、−10 のマイナスは消えてなくなるよ。</p>
+        </div>
+        <div class="step hint">
+          <h3>ヒント 3 ― ルートの中を計算する</h3>
+          <p>4²・5²＝16・25＝<b>400</b>、（−10）²＝<b>100</b>。だからルートの中は 400−100＝<b>300</b>。</p>
+          <p>√300 は、300＝100×3 と見ると √300＝10√3 と直せる。あとは (1/2) 倍するだけだ。</p>
+        </div>
+        <div class="step answer">
+          <h3>解答</h3>
+          <p class="big">S ＝ 5√3</p>
+          <p>S ＝ (1/2)√（4²・5²−（−10）²）＝ (1/2)√300 ＝ (1/2)・10√3 ＝ <b>5√3</b>。</p>
+          <p class="note"><b>ポイント：</b>公式①は「代入するだけ」で使える。内積が負の数でも、2乗するから心配いらない。</p>
+        </div>
+        <p class="prob-done">練習1 クリア！　次は成分で面積を求める公式を学ぼう。</p>
+      </section>
+
+      <!-- ================= 解説：成分による面積の公式 ================= -->
+      <div class="sec-head">
+        <span class="sec-tag">解説</span>
+        <h2>成分による面積の公式</h2>
+        <span class="pno">教科書 p.29</span>
+      </div>
+
+      <section class="card prob" id="prob-kai2" data-flow="kai2" data-label="解説：成分の公式" data-kind="deriv">
+        <div class="prob-head">
+          <span class="prob-tag kai">公式の導出</span>
+          <div class="dots" aria-hidden="true">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span>
+          </div>
+          <span class="prob-state">ステップ 0 / 4</span>
+        </div>
+        <p>公式①において、<span class="v">a</span>＝（a<sub>1</sub>, a<sub>2</sub>）、<span class="v">b</span>＝（b<sub>1</sub>, b<sub>2</sub>）であるとする。このとき、ルートの中身 ｜<span class="v">a</span>｜²｜<span class="v">b</span>｜²−（<span class="v">a</span>・<span class="v">b</span>）² が、成分だけできれいに表せる。下の <b>次へ</b> で計算の流れを追ってみよう。</p>
+
+        <div class="step deriv">
+          <h3>ステップ 1 ― 3つの量を成分で書き直す</h3>
+          <p>成分表示のとき、各量は次のようになる（「3 ベクトルの成分」「4 ベクトルの内積」で学んだ通り）。</p>
+          <p class="formula">｜<span class="v">a</span>｜²＝a<sub>1</sub>²＋a<sub>2</sub>²　　｜<span class="v">b</span>｜²＝b<sub>1</sub>²＋b<sub>2</sub>²　　<span class="v">a</span>・<span class="v">b</span>＝a<sub>1</sub>b<sub>1</sub>＋a<sub>2</sub>b<sub>2</sub></p>
+        </div>
+        <div class="step deriv">
+          <h3>ステップ 2 ― ルートの中身を展開する</h3>
+          <p>｜<span class="v">a</span>｜²｜<span class="v">b</span>｜²−（<span class="v">a</span>・<span class="v">b</span>）² ＝（a<sub>1</sub>²＋a<sub>2</sub>²）（b<sub>1</sub>²＋b<sub>2</sub>²）−（a<sub>1</sub>b<sub>1</sub>＋a<sub>2</sub>b<sub>2</sub>）² を展開すると</p>
+          <p class="formula">＝ a<sub>1</sub>²b<sub>2</sub>² − 2a<sub>1</sub>b<sub>1</sub>a<sub>2</sub>b<sub>2</sub> ＋ a<sub>2</sub>²b<sub>1</sub>²</p>
+          <p>a<sub>1</sub>²b<sub>1</sub>² と a<sub>2</sub>²b<sub>2</sub>² は、引く側にも出てきて<b>打ち消し合う</b>。残るのはこの3項だけだ。</p>
+        </div>
+        <div class="step deriv">
+          <h3>ステップ 3 ― 残った3項をくくる</h3>
+          <p>a<sub>1</sub>²b<sub>2</sub>² − 2a<sub>1</sub>b<sub>1</sub>a<sub>2</sub>b<sub>2</sub> ＋ a<sub>2</sub>²b<sub>1</sub>² は、（X−Y）²＝X²−2XY＋Y² の形そのもの。X＝a<sub>1</sub>b<sub>2</sub>、Y＝a<sub>2</sub>b<sub>1</sub> と見ると</p>
+          <p class="formula">＝ （a<sub>1</sub>b<sub>2</sub> − a<sub>2</sub>b<sub>1</sub>）²</p>
+          <p>つまり、ルートの中身はきれいな<b>2乗の形</b>になる。</p>
+        </div>
+        <div class="step deriv">
+          <h3>ステップ 4 ― 成分による面積の公式</h3>
+          <p class="formula">S ＝ (1/2)√（（a<sub>1</sub>b<sub>2</sub>−a<sub>2</sub>b<sub>1</sub>）²） ＝ (1/2)｜a<sub>1</sub>b<sub>2</sub> − a<sub>2</sub>b<sub>1</sub>｜</p>
+          <p><b>なぜ絶対値がつくの？</b>　a<sub>1</sub>b<sub>2</sub>−a<sub>2</sub>b<sub>1</sub> の符号は、<span class="v">a</span> と <span class="v">b</span> の順序（向きの回り方）で変わってしまう。でも面積はいつも<b>正の数</b>でなければならない。だから √(X²)＝｜X｜ として、絶対値をつけて正にするんだ。</p>
+        </div>
+        <p class="prob-done">成分の公式が導けた！　練習2で使ってみよう。</p>
+      </section>
+
+      <!-- ================= 練習2 ================= -->
+      <div class="sec-head">
+        <span class="sec-tag">練習</span>
+        <h2>座標から面積を求める</h2>
+        <span class="pno">教科書 p.29</span>
+      </div>
+
+      <section class="card prob" id="prob-ren2" data-flow="ren2" data-label="練習2" data-kind="hint">
+        <div class="prob-head">
+          <span class="prob-tag ren">練習 2</span>
+          <div class="dots" aria-hidden="true">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span>
+          </div>
+          <span class="prob-state">ヒント 0 / 3</span>
+        </div>
+        <p class="prob-q">次の3点を頂点とする三角形の面積を求めよ。<br />O（0, 0）,　A（4, 1）,　B（2, −1）</p>
+        <figure>
+          <div class="figbox">
+            <svg viewBox="0 0 520 320" role="img" aria-label="座標平面上の三角形OAB。Oは原点、Aは(4,1)、Bは(2,−1)">
+              <!-- 方眼：原点(130,170)、1目盛り42px、x=-2..8、y=-3..3 -->
+              <g>
+                <line x1="46" y1="44" x2="46" y2="296" class="grid-line"></line>
+                <line x1="88" y1="44" x2="88" y2="296" class="grid-line"></line>
+                <line x1="130" y1="44" x2="130" y2="296" class="grid-line"></line>
+                <line x1="172" y1="44" x2="172" y2="296" class="grid-line"></line>
+                <line x1="214" y1="44" x2="214" y2="296" class="grid-line"></line>
+                <line x1="256" y1="44" x2="256" y2="296" class="grid-line"></line>
+                <line x1="298" y1="44" x2="298" y2="296" class="grid-line"></line>
+                <line x1="340" y1="44" x2="340" y2="296" class="grid-line"></line>
+                <line x1="382" y1="44" x2="382" y2="296" class="grid-line"></line>
+                <line x1="424" y1="44" x2="424" y2="296" class="grid-line"></line>
+                <line x1="466" y1="44" x2="466" y2="296" class="grid-line"></line>
+                <line x1="46" y1="44" x2="466" y2="44" class="grid-line"></line>
+                <line x1="46" y1="86" x2="466" y2="86" class="grid-line"></line>
+                <line x1="46" y1="128" x2="466" y2="128" class="grid-line"></line>
+                <line x1="46" y1="170" x2="466" y2="170" class="grid-line"></line>
+                <line x1="46" y1="212" x2="466" y2="212" class="grid-line"></line>
+                <line x1="46" y1="254" x2="466" y2="254" class="grid-line"></line>
+                <line x1="46" y1="296" x2="466" y2="296" class="grid-line"></line>
+              </g>
+              <line x1="46" y1="170" x2="466" y2="170" class="axis-line"></line>
+              <line x1="130" y1="44" x2="130" y2="296" class="axis-line"></line>
+              <text x="472" y="176" class="svg-txt" font-size="16">x</text>
+              <text x="120" y="34" class="svg-txt" font-size="16">y</text>
+              <polygon points="130,170 298,128 214,212" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2.5"></polygon>
+              <circle cx="130" cy="170" r="4.5" fill="var(--ink)"></circle>
+              <circle cx="298" cy="128" r="4.5" fill="var(--ink)"></circle>
+              <circle cx="214" cy="212" r="4.5" fill="var(--ink)"></circle>
+              <text x="86" y="192" class="svg-txt" font-size="16">O（0, 0）</text>
+              <text x="308" y="122" class="svg-txt" font-size="16">A（4, 1）</text>
+              <text x="206" y="240" class="svg-txt" font-size="16">B（2, −1）</text>
+            </svg>
+          </div>
+          <figcaption>3点 O（0, 0）、A（4, 1）、B（2, −1）を結んだ三角形。原点Oから出る2辺がカギになる。</figcaption>
+        </figure>
+
+        <div class="step hint">
+          <h3>ヒント 1 ― Oから出る2つのベクトルの成分を書く</h3>
+          <p>成分の公式を使うには、<span class="v">a</span>＝<span class="v">OA</span>、<span class="v">b</span>＝<span class="v">OB</span> の成分が必要だ。</p>
+          <p>Oは原点（0, 0）だから、点の座標がそのまま成分になる。</p>
+          <p class="formula" style="background:var(--surface)"><span class="v">OA</span>＝（4, 1）　　<span class="v">OB</span>＝（2, −1）</p>
+        </div>
+        <div class="step hint">
+          <h3>ヒント 2 ― 成分の公式に当てはめる</h3>
+          <p>a<sub>1</sub>＝4、a<sub>2</sub>＝1、b<sub>1</sub>＝2、b<sub>2</sub>＝−1 として、S＝(1/2)｜a<sub>1</sub>b<sub>2</sub>−a<sub>2</sub>b<sub>1</sub>｜ に代入しよう。</p>
+          <p class="formula" style="background:var(--surface)">S ＝ (1/2)｜4×（−1） − 1×2｜</p>
+          <p>「4×（−1）」と「1×2」は、成分同士の<b>たすき掛け</b>（斜め同士の掛け算）だよ。</p>
+        </div>
+        <div class="step hint">
+          <h3>ヒント 3 ― 絶対値の中を計算する</h3>
+          <p>4×（−1）＝<b>−4</b>、1×2＝<b>2</b>。だから中身は −4−2＝<b>−6</b>。</p>
+          <p>マイナスになったら、絶対値をとって <b>6</b> に直す。あとは (1/2) 倍するだけだ。</p>
+        </div>
+        <div class="step answer">
+          <h3>解答</h3>
+          <p class="big">面積 ＝ 3</p>
+          <p>S ＝ (1/2)｜4×（−1）−1×2｜ ＝ (1/2)｜−6｜ ＝ (1/2)×6 ＝ <b>3</b>。</p>
+          <p class="note"><b>ポイント：</b>頂点の1つが原点のときは、残り2点の座標をそのまま成分として「たすき掛けの差の絶対値×(1/2)」で面積が出る。</p>
+        </div>
+        <p class="prob-done">練習2 クリア！　下のまとめで公式を2つとも確認しよう。</p>
+      </section>
+
+      <!-- ================= まとめ ================= -->
+      <section class="card summary">
+        <h2>この項のポイント</h2>
+        <ul>
+          <li><b>ベクトルの公式：</b>△OABで <span class="v" style="padding-top:.4em">OA</span>＝<span class="v" style="padding-top:.4em">a</span>、<span class="v" style="padding-top:.4em">OB</span>＝<span class="v" style="padding-top:.4em">b</span> のとき、面積は <b>S ＝ (1/2)√（｜<span class="v" style="padding-top:.4em">a</span>｜²｜<span class="v" style="padding-top:.4em">b</span>｜² − （<span class="v" style="padding-top:.4em">a</span>・<span class="v" style="padding-top:.4em">b</span>）²）</b>。長さと内積が分かれば、角が分からなくてもOK。</li>
+          <li><b>成分の公式：</b>成分が分かれば <b>S ＝ (1/2)｜a<sub>1</sub>b<sub>2</sub> − a<sub>2</sub>b<sub>1</sub>｜</b>。たすき掛けの差の絶対値をとって、半分にする。</li>
+          <li><b>絶対値を忘れずに。</b>a<sub>1</sub>b<sub>2</sub>−a<sub>2</sub>b<sub>1</sub> は負になることもあるが、面積は正。最後に絶対値で正に直す。</li>
+        </ul>
+      </section>
+
+      <!-- ================= フッター ================= -->
+      <footer>
+        <a class="back-btn" href="vectors.html" id="backToTop">← トップページに戻る</a>
+        <p class="foot-note">数学C 第1章 平面上のベクトル ｜ 研究 三角形の面積（教科書 p.29）</p>
+      </footer>
+    </div>
+
+    <!-- ================= 下部固定バー ================= -->
+    <div class="ctrl-bar">
+      <div class="ctrl-inner">
+        <p class="ctrl-label">いまの課題：<b id="ctrlLabel">解説：面積の公式</b>　―　「次へ」で1ステップずつ開こう</p>
+        <div class="ctrl-btns">
+          <button class="btn" id="btnReset" type="button">最初からやり直す</button>
+          <button class="btn btn-next" id="btnNext" type="button">次へ ▶</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      (function(){
+        "use strict";
+
+        /* ---------- ヒント式フロー ---------- */
+        var flows = {};   // flowId -> {root, steps, dots, stateEl, doneEl, idx, label, kind, stepTotal}
+        var order = ['kai1', 'ren1', 'kai2', 'ren2'];
+        var activeId = 'kai1';
+
+        function registerFlow(root){
+          var id = root.getAttribute('data-flow');
+          var steps = Array.prototype.slice.call(root.querySelectorAll(':scope > .step'));
+          var head = root.querySelector(':scope > .prob-head');
+          var dots = head ? Array.prototype.slice.call(head.querySelectorAll('.dot')) : [];
+          var stateEl = head ? head.querySelector('.prob-state') : null;
+          var doneEl = root.querySelector(':scope > .prob-done');
+          var kind = root.getAttribute('data-kind') || 'hint';
+          flows[id] = {
+            id: id, root: root, steps: steps, dots: dots, stateEl: stateEl,
+            doneEl: doneEl, idx: 0, label: root.getAttribute('data-label') || id,
+            kind: kind,
+            hintTotal: steps.filter(function(s){ return s.classList.contains('hint'); }).length,
+            stepTotal: steps.length
+          };
+        }
+        order.forEach(function(id){
+          registerFlow(document.querySelector('[data-flow="' + id + '"]'));
+        });
+
+        var btnNext = document.getElementById('btnNext');
+        var btnReset = document.getElementById('btnReset');
+        var ctrlLabel = document.getElementById('ctrlLabel');
+
+        function refreshFlow(f){
+          f.steps.forEach(function(s, i){ s.classList.toggle('show', i < f.idx); });
+          f.dots.forEach(function(d, i){ d.classList.toggle('on', i < f.idx); });
+          if (f.stateEl){
+            if (f.kind === 'deriv'){
+              f.stateEl.textContent = f.idx >= f.stepTotal ? '公式を表示済み' : 'ステップ ' + f.idx + ' / ' + f.stepTotal;
+            } else {
+              if (f.idx === 0) f.stateEl.textContent = 'ヒント 0 / ' + f.hintTotal;
+              else if (f.idx <= f.hintTotal) f.stateEl.textContent = 'ヒント ' + f.idx + ' / ' + f.hintTotal;
+              else f.stateEl.textContent = '解答を表示済み';
+            }
+          }
+          if (f.doneEl) f.doneEl.classList.toggle('show', f.idx >= f.steps.length);
+        }
+        function refreshBar(){
+          var f = flows[activeId];
+          ctrlLabel.textContent = f.label;
+          order.forEach(function(id){
+            flows[id].root.classList.toggle('active', id === activeId);
+          });
+          if (f.idx >= f.steps.length){
+            btnNext.disabled = true;
+            btnNext.textContent = 'ぜんぶ開いたよ ✓';
+          } else if (f.kind === 'hint' && f.idx === f.hintTotal){
+            btnNext.disabled = false;
+            btnNext.textContent = '解答を見る ▶';
+          } else if (f.kind === 'deriv' && f.idx === f.stepTotal - 1){
+            btnNext.disabled = false;
+            btnNext.textContent = '公式を見る ▶';
+          } else {
+            btnNext.disabled = false;
+            btnNext.textContent = f.kind === 'deriv'
+              ? '次へ ▶（ステップ ' + (f.idx + 1) + '）'
+              : '次へ ▶（ヒント ' + (f.idx + 1) + '）';
+          }
+        }
+        function setActive(id){
+          activeId = id;
+          refreshBar();
+        }
+
+        btnNext.addEventListener('click', function(){
+          var f = flows[activeId];
+          if (f.idx >= f.steps.length) return;
+          f.idx += 1;
+          refreshFlow(f);
+          refreshBar();
+          var shown = f.steps[f.idx - 1];
+          if (shown) shown.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        });
+        btnReset.addEventListener('click', function(){
+          var f = flows[activeId];
+          f.idx = 0;
+          refreshFlow(f);
+          refreshBar();
+          f.root.scrollIntoView({ block: 'start', behavior: 'smooth' });
+        });
+
+        /* カードを触ったら、その課題を操作対象にする */
+        order.forEach(function(id){
+          flows[id].root.addEventListener('click', function(){ setActive(id); });
+        });
+
+        Object.keys(flows).forEach(function(id){ refreshFlow(flows[id]); });
+        refreshBar();
+      })();
+    </script>
+  </body>
+</html>
