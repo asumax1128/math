@@ -1,0 +1,1167 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:," />
+    <title>数学C 7 図形のベクトルによる表示 自習ページ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Serif+JP:wght@700;900&family=STIX+Two+Math&display=swap" rel="stylesheet" />
+    <style>
+      :root{
+        --bg:#f4f7f5;
+        --surface:#ffffff;
+        --surface2:#eef4f1;
+        --ink:#1d2a26;
+        --ink-soft:#43554e;
+        --line:#cfddd6;
+        --accent:#0e7a5f;
+        --accent-deep:#0a5c48;
+        --accent-soft:#e2f2ec;
+        --blue:#1f6fb4;
+        --orange:#d96c1e;
+        --red:#c2452d;
+        --hint-bg:#fff6cf;
+        --hint-line:#e3c84e;
+        --hint-ink:#4d4210;
+        --ans-bg:#e6f6ea;
+        --ans-line:#4caf6d;
+        --ans-ink:#14401f;
+        --bar-bg:rgba(255,255,255,.94);
+        --shadow:0 2px 10px rgba(20,50,40,.08);
+        --arrow-img:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 12' preserveAspectRatio='none'%3E%3Cpath d='M2 6 H90 M82 1.5 L91 6 L82 10.5' stroke='%231d2a26' stroke-width='2.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      }
+      @media (prefers-color-scheme: dark){
+        :root{
+          --bg:#101714;
+          --surface:#1a2420;
+          --surface2:#22302a;
+          --ink:#e8f0ec;
+          --ink-soft:#b3c4bc;
+          --line:#3a4a43;
+          --accent:#3cb894;
+          --accent-deep:#8fd8c0;
+          --accent-soft:#1d332b;
+          --blue:#6cb2e8;
+          --orange:#f09a4e;
+          --red:#f0836b;
+          --hint-bg:#3d3617;
+          --hint-line:#a68e2e;
+          --hint-ink:#f5e9bd;
+          --ans-bg:#17301e;
+          --ans-line:#3f9957;
+          --ans-ink:#c9eed2;
+          --bar-bg:rgba(20,28,24,.94);
+          --shadow:0 2px 10px rgba(0,0,0,.4);
+          --arrow-img:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 12' preserveAspectRatio='none'%3E%3Cpath d='M2 6 H90 M82 1.5 L91 6 L82 10.5' stroke='%23e8f0ec' stroke-width='2.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+        }
+      }
+      *{box-sizing:border-box}
+      html{scroll-behavior:smooth}
+      @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} *{transition:none!important} }
+      body{
+        margin:0; background:var(--bg); color:var(--ink);
+        font-family:"Noto Sans JP",system-ui,-apple-system,"Hiragino Kaku Gothic ProN",sans-serif;
+        line-height:1.85; font-size:16px;
+        padding-bottom:118px;
+      }
+      .wrap{max-width:780px;margin:0 auto;padding:0 16px 8px}
+
+      header{padding:26px 0 6px}
+      .badge{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:700;font-size:13px;
+        padding:4px 12px;border-radius:999px;letter-spacing:.04em;
+      }
+      @media (prefers-color-scheme: dark){ .badge{color:#0c1712} }
+      h1{
+        font-family:"Noto Serif JP",serif;font-weight:900;font-size:34px;line-height:1.3;
+        margin:12px 0 4px;letter-spacing:.02em;
+      }
+      .page-meta{color:var(--ink-soft);font-size:14px;font-weight:500}
+      .page-meta b{color:var(--accent-deep)}
+
+      .howto{
+        background:var(--accent-soft);border:1.5px solid var(--accent);border-radius:14px;
+        padding:14px 18px;margin:18px 0 26px;box-shadow:var(--shadow);
+      }
+      .howto h2{margin:0 0 6px;font-size:16px;color:var(--accent-deep)}
+      .howto ol{margin:0;padding-left:1.4em}
+      .howto li{margin:2px 0}
+      .howto .next-word{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:700;border-radius:6px;
+        padding:0 8px;font-size:.92em;
+      }
+      @media (prefers-color-scheme: dark){ .howto .next-word{color:#0c1712} }
+
+      .sec-head{display:flex;align-items:center;gap:10px;margin:34px 0 12px}
+      .sec-tag{
+        background:var(--ink);color:var(--bg);font-weight:900;font-size:14px;border-radius:8px;
+        padding:3px 10px;white-space:nowrap;
+      }
+      .sec-head h2{font-size:21px;margin:0;font-weight:900}
+      .sec-head .pno{margin-left:auto;color:var(--ink-soft);font-size:13px;white-space:nowrap}
+
+      .card{
+        background:var(--surface);border:1px solid var(--line);border-radius:14px;
+        padding:18px 18px 8px;margin:0 0 18px;box-shadow:var(--shadow);
+      }
+      .card p{margin:0 0 12px}
+      .def{
+        background:var(--surface2);border-radius:10px;padding:12px 16px;margin:0 0 14px;
+      }
+      .def p:last-child{margin-bottom:0}
+      .key{font-weight:900;color:var(--accent-deep)}
+      figure{margin:6px 0 14px}
+      figure svg{width:100%;height:auto;display:block}
+      figcaption{font-size:13.5px;color:var(--ink-soft);text-align:center;margin-top:6px;line-height:1.6}
+      .figbox{background:var(--surface2);border-radius:12px;padding:12px 10px 6px}
+
+      .legend{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;font-size:13.5px;font-weight:700;margin:2px 0 8px}
+      .legend span::before{content:"";display:inline-block;width:22px;height:5px;border-radius:3px;margin-right:6px;vertical-align:middle}
+      .legend .lg-a::before{background:var(--accent)}
+      .legend .lg-b::before{background:var(--blue)}
+      .legend .lg-r::before{background:var(--red)}
+
+      .v{
+        display:inline-block;position:relative;padding-top:.5em;line-height:1.1;
+        font-family:"STIX Two Math","Noto Sans JP",sans-serif;
+        font-weight:700;font-style:italic;white-space:nowrap;
+      }
+      .v::before{
+        content:"";position:absolute;top:.02em;left:-.04em;right:-.04em;height:.34em;
+        background-image:var(--arrow-img);background-repeat:no-repeat;background-size:100% 100%;
+      }
+      .formula{
+        text-align:center;font-size:19px;font-weight:700;letter-spacing:.03em;
+        background:var(--surface2);border-radius:10px;padding:12px 8px;margin:0 0 14px;
+      }
+      /* 数式フォント（TeX風）：英数字・記号は STIX Two Math、日本語字形は Noto Sans JP にフォールバック */
+      .card p,.card li,figcaption,.slider-val{
+        font-family:"STIX Two Math","Noto Sans JP",sans-serif;
+      }
+      .abs{font-weight:400}
+      .fr{white-space:nowrap}
+      .fr sup,.fr sub{font-size:.68em}
+      sub,sup{font-size:.72em}
+
+      .prob{border:2px solid var(--line);transition:border-color .2s}
+      .prob.active{border-color:var(--accent)}
+      .prob-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+      .prob-tag{
+        font-weight:900;font-size:14px;border-radius:8px;padding:3px 12px;color:#fff;background:var(--blue);
+      }
+      .prob-tag.ren{background:#c2452d}
+      @media (prefers-color-scheme: dark){ .prob-tag{color:#0d141b} .prob-tag.ren{color:#ffe9e2} }
+      .prob-state{margin-left:auto;font-size:13px;font-weight:700;color:var(--ink-soft)}
+      .dots{display:flex;gap:6px;align-items:center}
+      .dot{width:11px;height:11px;border-radius:50%;border:2px solid var(--ink-soft);background:transparent}
+      .dot.on{background:var(--accent);border-color:var(--accent)}
+      .dot.ans.on{background:#2f9e4f;border-color:#2f9e4f}
+      .prob-q{font-weight:700;font-size:16.5px;margin:0 0 10px}
+
+      .step{display:none;margin:0 0 12px;border-radius:12px;padding:12px 16px 4px;scroll-margin-bottom:130px}
+      .step.show{display:block;animation:pop .25s ease}
+      @keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+      .step h3{margin:0 0 6px;font-size:14px;font-weight:900;letter-spacing:.05em}
+      .step p{margin:0 0 10px}
+      .hint{background:var(--hint-bg);border:1.5px solid var(--hint-line);color:var(--hint-ink)}
+      .hint h3{color:inherit}
+      .answer{background:var(--ans-bg);border:1.5px solid var(--ans-line);color:var(--ans-ink)}
+      .answer .big{font-size:18px;font-weight:900;text-align:center;margin:4px 0 10px}
+      .note{font-size:14px;border-top:1px dashed currentColor;padding-top:8px;margin-top:2px}
+      .prob-done{
+        display:none;text-align:center;font-weight:900;color:var(--accent-deep);
+        padding:2px 0 12px;font-size:15px;
+      }
+      .prob-done.show{display:block}
+
+      .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}
+      .tab{
+        font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;
+        border:2px solid var(--line);background:var(--surface);color:var(--ink);
+        border-radius:999px;padding:6px 18px;
+      }
+      .tab[aria-selected=true]{background:var(--accent);border-color:var(--accent);color:#fff}
+      @media (prefers-color-scheme: dark){ .tab[aria-selected=true]{color:#0c1712} }
+      .tabpanel{display:none}
+      .tabpanel.show{display:block}
+
+      .slider-box{margin:0 0 14px}
+      .slider-row{display:flex;align-items:center;gap:12px}
+      .slider-row input[type=range]{flex:1;accent-color:var(--accent);height:32px;cursor:pointer}
+      .slider-val{font-weight:900;color:var(--accent-deep);font-size:17px;white-space:nowrap;min-width:86px;text-align:right}
+      [data-stage]{display:none}
+      [data-stage].on{display:block}
+
+      .summary{border:2px solid var(--accent);background:var(--accent-soft)}
+      .summary h2{margin:0 0 8px;font-size:18px;color:var(--accent-deep)}
+      .summary ul{margin:0;padding-left:1.3em}
+      .summary li{margin:4px 0}
+
+      footer{margin:30px 0 10px;text-align:center}
+      .back-btn{
+        display:inline-block;text-decoration:none;font-weight:700;color:var(--ink);
+        border:2px solid var(--line);background:var(--surface);border-radius:12px;padding:12px 26px;
+      }
+      .foot-note{color:var(--ink-soft);font-size:13px;margin-top:12px}
+
+      .ctrl-bar{
+        position:fixed;left:0;right:0;bottom:0;z-index:50;background:var(--bar-bg);
+        backdrop-filter:blur(8px);border-top:1.5px solid var(--line);
+        padding:10px 14px calc(10px + env(safe-area-inset-bottom));
+      }
+      .ctrl-inner{max-width:780px;margin:0 auto}
+      .ctrl-label{font-size:13px;font-weight:700;color:var(--ink-soft);margin:0 0 8px;text-align:center}
+      .ctrl-label b{color:var(--accent-deep)}
+      .ctrl-btns{display:flex;gap:10px}
+      .btn{
+        font-family:inherit;cursor:pointer;border-radius:12px;font-weight:900;border:2px solid var(--line);
+        background:var(--surface);color:var(--ink);padding:12px 14px;font-size:15px;
+      }
+      .btn-next{
+        flex:1;background:var(--accent);border-color:var(--accent);color:#fff;font-size:18px;padding:12px;
+      }
+      @media (prefers-color-scheme: dark){ .btn-next{color:#0c1712} }
+      .btn-next:disabled{background:var(--surface2);border-color:var(--line);color:var(--ink-soft);cursor:default}
+      .btn:active{transform:scale(.98)}
+
+      .svg-txt{font-family:"STIX Two Math","Noto Sans JP",sans-serif;font-weight:700;fill:var(--ink)}
+      .svg-txt-soft{font-family:"STIX Two Math","Noto Sans JP",sans-serif;fill:var(--ink-soft)}
+      .grid-line{stroke:var(--line);stroke-width:1}
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+
+      <!-- ================= ヘッダー ================= -->
+      <header>
+        <span class="badge">数学C　第1章　平面上のベクトル</span>
+        <h1>7　図形のベクトルによる表示</h1>
+        <p class="page-meta">教科書 <b>p.40〜44</b>　｜　第2節 ベクトルと図形</p>
+      </header>
+
+      <!-- ================= 使い方 ================= -->
+      <section class="howto" aria-label="使い方">
+        <h2>このページの使い方（自習の流れ）</h2>
+        <ol>
+          <li><b>解説</b>を読んで、図でイメージをつかむ（この項の武器は「直線をベクトル方程式で表す」こと）</li>
+          <li><b>例・例題</b>をヒントで解く ― 分からなければ下の <span class="next-word">次へ</span> でヒントを1つずつ開く</li>
+          <li><b>練習問題</b>に挑戦 ― 答えは最後のヒントのあとに出てくるよ</li>
+        </ol>
+      </section>
+
+      <!-- ================= 解説A ベクトル d に平行な直線 ================= -->
+      <div class="sec-head">
+        <span class="sec-tag">解説 A</span>
+        <h2>ベクトル <span class="v">d</span> に平行な直線</h2>
+        <span class="pno">教科書 p.40</span>
+      </div>
+
+      <section class="card">
+        <div class="def">
+          <p>点 A（位置ベクトル <span class="v">a</span>）を通り、ベクトル <span class="v">d</span> に平行な直線 g を考えよう。直線 g 上の点 P（位置ベクトル <span class="v">p</span>）に対して、<span class="v">AP</span> は <span class="v">d</span> と平行だから、</p>
+          <p style="text-align:center;font-size:18px"><b><span class="v">AP</span>＝t<span class="v">d</span> となる実数 t が、ただ1つ決まる</b></p>
+          <p><span class="v">AP</span>＝<span class="v">p</span>−<span class="v">a</span> だから、これを <span class="v">p</span> について解くと次の式が得られる。</p>
+        </div>
+        <p class="formula"><span class="v">p</span>＝<span class="v">a</span>＋t<span class="v">d</span></p>
+        <div class="def">
+          <p>この式を<span class="key">直線 g のベクトル方程式</span>という。t を<span class="key">媒介変数（パラメータ）</span>、<span class="v">d</span> を直線 g の<span class="key">方向ベクトル</span>という。</p>
+          <p>t がすべての実数をとると、点Pは直線 g 全体を動く。t＝0 のとき P＝A、t が正なら <span class="v">d</span> の向き、t が負なら反対向きに進む。つまり <b>t は「Aから <span class="v">d</span> を何個分進んだか」を表す点Pの住所</b>だ。</p>
+        </div>
+        <figure>
+          <div class="figbox">
+            <svg viewBox="0 0 640 360" role="img" aria-label="直線のベクトル方程式の図。スライダーで t を変えると点Pが直線上を動く">
+              <defs>
+                <marker id="ka-a" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"></path></marker>
+              </defs>
+              <line x1="41" y1="351" x2="554" y2="54" stroke="var(--ink-soft)" stroke-width="2.5"></line>
+              <g id="slTicks"></g>
+              <line id="slAP" x1="250" y1="230" x2="345" y2="175" stroke="var(--red)" stroke-width="2.5" stroke-dasharray="7 5"></line>
+              <line x1="250" y1="230" x2="345" y2="175" stroke="var(--accent)" stroke-width="3.5" marker-end="url(#ka-a)"></line>
+              <circle cx="250" cy="230" r="5.5" fill="var(--ink)"></circle>
+              <circle id="slP" cx="345" cy="175" r="7" fill="var(--red)"></circle>
+              <text x="228" y="256" class="svg-txt" font-size="17">A</text>
+              <text id="slPLabel" x="356" y="166" class="svg-txt" font-size="17" fill="var(--red)">P</text>
+              <text x="316" y="196" class="svg-txt" font-size="14" fill="var(--accent-deep)" font-style="italic">d</text>
+              <path d="M315 183 H325 M320 180 L325.5 183 L320 186" stroke="var(--accent-deep)" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+              <text x="566" y="48" class="svg-txt-soft" font-size="15">直線 g</text>
+            </svg>
+          </div>
+          <div class="slider-box">
+            <div class="slider-row">
+              <span style="font-weight:700;font-size:14px">媒介変数 t</span>
+              <input type="range" id="tSlider" min="-2" max="3" step="0.25" value="1" aria-label="媒介変数 t のスライダー" />
+              <span class="slider-val" id="tVal">t ＝ 1.00</span>
+            </div>
+            <p style="margin:6px 0 0;font-size:14px;color:var(--ink-soft)">スライダーを動かすと、点Pが直線 g の上を動く。直線上の点はすべて <span class="v" style="padding-top:.4em">p</span>＝<span class="v" style="padding-top:.4em">a</span>＋t<span class="v" style="padding-top:.4em">d</span> の形で表せて、逆にこの式で表される点はすべて直線 g の上にある。</p>
+          </div>
+          <figcaption>点Aを通り <span class="v" style="padding-top:.4em">d</span> に平行な直線 g。緑の矢印が方向ベクトル <span class="v" style="padding-top:.4em">d</span>、赤い破線が <span class="v" style="padding-top:.4em">AP</span>＝t<span class="v" style="padding-top:.4em">d</span>。目盛りは t＝−2, −1, 0, 1, 2, 3 の位置（t＝0 が点A）。</figcaption>
+        </figure>
+        <div class="def">
+          <p><span class="key">座標で書くと（媒介変数表示）：</span>P(x, y)、A(x<sub>1</sub>, y<sub>1</sub>)、<span class="v">d</span>＝(l, m) とすると、<span class="v">p</span>＝<span class="v">a</span>＋t<span class="v">d</span> は成分で</p>
+          <p style="text-align:center;font-size:18px"><b>x＝x<sub>1</sub>＋lt，　y＝y<sub>1</sub>＋mt</b></p>
+          <p>と書ける。これを直線の<span class="key">媒介変数表示</span>という。</p>
+          <p><span class="key">t を消去すると：</span>2式から t＝(x−x<sub>1</sub>)／l＝(y−y<sub>1</sub>)／m とも書けるから、両辺を比べて</p>
+          <p style="text-align:center;font-size:18px"><b>m(x−x<sub>1</sub>)−l(y−y<sub>1</sub>)＝0</b></p>
+          <p>という、ふつうの直線の方程式が得られる。「方向ベクトルの成分 (l, m) を、相手の式にクロスにかける」と覚えよう。</p>
+        </div>
+      </section>
+
+      <!-- 練習34 -->
+      <section class="card prob" data-flow="ren34" data-label="練習34">
+        <div class="prob-head">
+          <span class="prob-tag ren">練習 34</span>
+          <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+          <span class="prob-state">ヒント 0 / 4</span>
+        </div>
+        <p class="prob-q"><span class="v">p</span>＝<span class="v">a</span>＋t<span class="v">d</span> において、t が次の値をとるとき、点Pはどこにあるか。下の「次へ」を押すたびに、図に点が1つずつ打たれるよ。<br />(1) t＝1　(2) t＝0　(3) t＝4　(4) t＝−2</p>
+        <figure>
+          <div class="figbox">
+            <svg viewBox="0 0 640 300" role="img" aria-label="練習34の図。目盛りのある直線と、t の値ごとの点Pの位置">
+              <defs>
+                <marker id="r34-a" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"></path></marker>
+              </defs>
+              <line x1="79" y1="238" x2="625" y2="62" stroke="var(--ink-soft)" stroke-width="2.5"></line>
+              <g id="r34Ticks"></g>
+              <line x1="290" y1="170" x2="352" y2="150" stroke="var(--accent)" stroke-width="3.5" marker-end="url(#r34-a)"></line>
+              <circle cx="290" cy="170" r="5.5" fill="var(--ink)"></circle>
+              <text x="272" y="200" class="svg-txt" font-size="17">A</text>
+              <text x="330" y="140" class="svg-txt" font-size="14" fill="var(--accent-deep)" font-style="italic">d</text>
+              <path d="M329 127 H339 M334 124 L339.5 127 L334 130" stroke="var(--accent-deep)" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+              <text x="596" y="52" class="svg-txt-soft" font-size="15">直線 g</text>
+              <g data-stage="1">
+                <circle cx="352" cy="150" r="7" fill="var(--red)"></circle>
+                <text x="360" y="128" class="svg-txt" font-size="16" fill="var(--red)">P（t＝1）</text>
+              </g>
+              <g data-stage="2">
+                <circle cx="290" cy="170" r="12" fill="none" stroke="var(--orange)" stroke-width="3"></circle>
+                <text x="186" y="140" class="svg-txt" font-size="16" fill="var(--orange)">P＝A（t＝0）</text>
+              </g>
+              <g data-stage="3">
+                <circle cx="538" cy="90" r="7" fill="var(--red)"></circle>
+                <text x="492" y="76" class="svg-txt" font-size="16" fill="var(--red)">P（t＝4）</text>
+              </g>
+              <g data-stage="4">
+                <circle cx="166" cy="210" r="7" fill="var(--red)"></circle>
+                <text x="120" y="248" class="svg-txt" font-size="16" fill="var(--red)">P（t＝−2）</text>
+              </g>
+            </svg>
+          </div>
+          <figcaption>目盛り1つが <span class="v" style="padding-top:.4em">d</span> 1つ分の長さ。点Aの目盛りが t＝0 で、右へ行くほど t が増える。</figcaption>
+        </figure>
+        <div class="step hint">
+          <h3>(1) t＝1 ― <span class="v">d</span> を1つ分進む</h3>
+          <p><span class="v">p</span>＝<span class="v">a</span>＋1・<span class="v">d</span> だから、<span class="v">AP</span>＝<span class="v">d</span>。</p>
+          <p>点Pは、点Aから <span class="v">d</span> の向きに <span class="v">d</span> を<b>ちょうど1つ分</b>進んだ点だ。図に赤い点が打たれた場所を確認しよう。</p>
+        </div>
+        <div class="step hint">
+          <h3>(2) t＝0 ― 動かないから点A自身</h3>
+          <p><span class="v">p</span>＝<span class="v">a</span>＋0・<span class="v">d</span>＝<span class="v">a</span>。</p>
+          <p>t＝0 では <span class="v">d</span> を1つも進まないから、点Pは<b>点A自身</b>になる。図では点Aにオレンジの丸がついた。</p>
+        </div>
+        <div class="step hint">
+          <h3>(3) t＝4 ― <span class="v">d</span> を4つつないだ先</h3>
+          <p><span class="v">AP</span>＝4<span class="v">d</span> だから、点Aから <span class="v">d</span> の向きに、目盛りを<b>4つ分</b>数えて進んだ点がPだ。</p>
+          <p>図の右のほう、t＝4 の目盛りの位置に点が打たれた。</p>
+        </div>
+        <div class="step hint">
+          <h3>(4) t＝−2 ― マイナスは「反対向きに2つ分」</h3>
+          <p><span class="v">AP</span>＝−2<span class="v">d</span>。マイナスの符号は「<span class="v">d</span> と<b>反対向き</b>」という意味だ。</p>
+          <p>だから点Pは、点Aから反対向きに目盛りを<b>2つ分</b>戻った点になる。図の左下の点を確認しよう。</p>
+        </div>
+        <div class="step answer">
+          <h3>解答（まとめ）</h3>
+          <p>(1) t＝1：点Aから <span class="v">d</span> を1つ分進んだ点</p>
+          <p>(2) t＝0：<b>点A自身</b></p>
+          <p>(3) t＝4：点Aから <span class="v">d</span> を4つ分進んだ点</p>
+          <p>(4) t＝−2：点Aから <span class="v">d</span> と反対向きに2つ分戻った点</p>
+          <p class="note"><b>読み方のコツ：</b>t の絶対値が「<span class="v">d</span> 何個分か」、t の符号が「どちらの向きか」。この2つで点Pの位置が決まる。</p>
+        </div>
+        <p class="prob-done">練習34 クリア！　t の意味がつかめたら、次は例16で座標の問題に進もう。</p>
+      </section>
+
+      <!-- 例16 -->
+      <section class="card prob" data-flow="ex16" data-label="例16">
+        <div class="prob-head">
+          <span class="prob-tag">例 16</span>
+          <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+          <span class="prob-state">ヒント 0 / 4</span>
+        </div>
+        <p class="prob-q">点 A(1, 4) を通り、<span class="v">d</span>＝(2, 3) に平行な直線の媒介変数表示を求めよ。また、媒介変数 t を消去した式で表せ。</p>
+        <figure>
+          <div class="figbox">
+            <svg viewBox="0 0 460 360" role="img" aria-label="例16の図。点A(1, 4)を通り、方向ベクトル(2, 3)に平行な直線">
+              <defs>
+                <marker id="e16-a" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"></path></marker>
+              </defs>
+              <g id="e16Grid"></g>
+              <line x1="30" y1="300" x2="440" y2="300" stroke="var(--ink-soft)" stroke-width="1.8"></line>
+              <line x1="60" y1="330" x2="60" y2="16" stroke="var(--ink-soft)" stroke-width="1.8"></line>
+              <line x1="30" y1="270" x2="180" y2="45" stroke="var(--blue)" stroke-width="3"></line>
+              <line x1="90" y1="180" x2="150" y2="90" stroke="var(--accent)" stroke-width="3.5" marker-end="url(#e16-a)"></line>
+              <circle cx="90" cy="180" r="5.5" fill="var(--ink)"></circle>
+              <text x="66" y="168" class="svg-txt" font-size="16">A(1, 4)</text>
+              <text x="140" y="128" class="svg-txt" font-size="14" fill="var(--accent-deep)"><tspan font-style="italic">d</tspan><tspan dx="2">＝(2, 3)</tspan></text>
+              <path d="M139 115 H149 M144 112 L149.5 115 L144 118" stroke="var(--accent-deep)" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+              <text x="196" y="52" class="svg-txt-soft" font-size="15">直線 g</text>
+              <text x="424" y="322" class="svg-txt-soft" font-size="14">x</text>
+              <text x="70" y="30" class="svg-txt-soft" font-size="14">y</text>
+              <text x="42" y="322" class="svg-txt-soft" font-size="14">O</text>
+            </svg>
+          </div>
+          <figcaption>点A(1, 4) を通り、方向ベクトル <span class="v" style="padding-top:.4em">d</span>＝(2, 3)（右に2、上に3）に平行な直線。方眼1目盛りが1。</figcaption>
+        </figure>
+        <div class="step hint">
+          <h3>ヒント 1 ― まず x の式だけ書く</h3>
+          <p>媒介変数表示の型は x＝x<sub>1</sub>＋lt、y＝y<sub>1</sub>＋mt だった。ここでは x<sub>1</sub>＝1、l＝2（方向ベクトルの x 成分）だ。</p>
+          <p>だから x の式は <b>x＝1＋2t</b> になる。まずこの1本を書こう。</p>
+        </div>
+        <div class="step hint">
+          <h3>ヒント 2 ― y の式も同じ型で書く</h3>
+          <p>y<sub>1</sub>＝4、m＝3（方向ベクトルの y 成分）だから、y の式は <b>y＝4＋3t</b>。</p>
+          <p>x＝1＋2t、y＝4＋3t の2本そろえば、媒介変数表示は完成だ。</p>
+        </div>
+        <div class="step hint">
+          <h3>ヒント 3 ― t を消去する：2式から t を取り出す</h3>
+          <p>x＝1＋2t を t について解くと t＝(x−1)／2。y＝4＋3t からは t＝(y−4)／3。</p>
+          <p>2つの t は同じものだから (x−1)／2＝(y−4)／3。分母をはらうために両辺を6倍すると、<b>3(x−1)＝2(y−4)</b>、つまり 3(x−1)−2(y−4)＝0 になる。</p>
+        </div>
+        <div class="step hint">
+          <h3>ヒント 4 ― 展開して整理する</h3>
+          <p>3(x−1)−2(y−4)＝0 を展開すると 3x−3−2y＋8＝0。</p>
+          <p>定数項は −3＋8＝5 だから、<b>3x−2y＋5＝0</b> と整理できる。符号、とくに −2×(−4)＝＋8 のところを慎重にね。</p>
+        </div>
+        <div class="step answer">
+          <h3>解答</h3>
+          <p class="big">媒介変数表示：x＝1＋2t，　y＝4＋3t<br />t を消去した式：3x−2y＋5＝0</p>
+          <p>点 A(1, 4)、<span class="v">d</span>＝(2, 3) を x＝x<sub>1</sub>＋lt、y＝y<sub>1</sub>＋mt に当てはめて x＝1＋2t、y＝4＋3t。</p>
+          <p>t を消去すると 3(x−1)−2(y−4)＝0 となり、整理して 3x−2y＋5＝0。</p>
+          <p class="note"><b>消去の型：</b>m(x−x<sub>1</sub>)−l(y−y<sub>1</sub>)＝0 に (l, m)＝(2, 3) を入れても同じ式になる。3(x−1)−2(y−4)＝0 がまさにそれだ。</p>
+        </div>
+        <p class="prob-done">例16 クリア！　次は練習35で、方向ベクトルにマイナスの成分がある場合を練習しよう。</p>
+      </section>
+
+      <!-- 練習35 -->
+      <section class="card prob" data-flow="ren35" data-label="練習35">
+        <div class="prob-head">
+          <span class="prob-tag ren">練習 35</span>
+          <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+          <span class="prob-state">ヒント 0 / 4</span>
+        </div>
+        <p class="prob-q">点 A(2, −1) を通り、<span class="v">d</span>＝(−4, 3) に平行な直線を媒介変数表示せよ。また、媒介変数を消去した式で表せ。</p>
+        <figure>
+          <div class="figbox">
+            <svg viewBox="0 0 560 360" role="img" aria-label="練習35の図。点A(2, −1)を通り、方向ベクトル(−4, 3)に平行な直線">
+              <defs>
+                <marker id="r35-a" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"></path></marker>
+              </defs>
+              <g id="r35Grid"></g>
+              <line x1="20" y1="170" x2="545" y2="170" stroke="var(--ink-soft)" stroke-width="1.8"></line>
+              <line x1="300" y1="340" x2="300" y2="14" stroke="var(--ink-soft)" stroke-width="1.8"></line>
+              <line x1="480" y1="290" x2="216" y2="92" stroke="var(--blue)" stroke-width="3"></line>
+              <line x1="360" y1="200" x2="240" y2="110" stroke="var(--accent)" stroke-width="3.5" marker-end="url(#r35-a)"></line>
+              <circle cx="360" cy="200" r="5.5" fill="var(--ink)"></circle>
+              <text x="330" y="230" class="svg-txt" font-size="16">A(2, −1)</text>
+              <text x="196" y="102" class="svg-txt" font-size="14" fill="var(--accent-deep)"><tspan font-style="italic">d</tspan><tspan dx="2">＝(−4, 3)</tspan></text>
+              <path d="M195 89 H205 M200 86 L205.5 89 L200 92" stroke="var(--accent-deep)" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+              <text x="452" y="282" class="svg-txt-soft" font-size="15">直線 g</text>
+              <text x="528" y="192" class="svg-txt-soft" font-size="14">x</text>
+              <text x="310" y="30" class="svg-txt-soft" font-size="14">y</text>
+              <text x="282" y="192" class="svg-txt-soft" font-size="14">O</text>
+            </svg>
+          </div>
+          <figcaption>方向ベクトル (−4, 3) は「左に4、上に3」。直線は右下がりに見えるが、向きは <span class="v" style="padding-top:.4em">d</span> の矢印の向き（左上）でも、その反対（右下）でも同じ直線だ。</figcaption>
+        </figure>
+        <div class="step hint">
+          <h3>ヒント 1 ― x の式：x<sub>1</sub>＝2、l＝−4 を入れる</h3>
+          <p>型は x＝x<sub>1</sub>＋lt。点Aの x 座標は 2、方向ベクトルの x 成分は −4 だ。</p>
+          <p>だから x の式は <b>x＝2−4t</b>（2＋(−4)t と書いても同じ）。符号を落とさないようにね。</p>
+        </div>
+        <div class="step hint">
+          <h3>ヒント 2 ― y の式：y<sub>1</sub>＝−1、m＝3 を入れる</h3>
+          <p>y＝y<sub>1</sub>＋mt に y<sub>1</sub>＝−1、m＝3 を入れると <b>y＝−1＋3t</b>。</p>
+          <p>x＝2−4t、y＝−1＋3t で媒介変数表示は完成だ。</p>
+        </div>
+        <div class="step hint">
+          <h3>ヒント 3 ― t を消去する：分母の −4 に注意</h3>
+          <p>x＝2−4t から t＝(x−2)／(−4)、y＝−1＋3t から t＝(y＋1)／3。</p>
+          <p>等しいから (x−2)／(−4)＝(y＋1)／3。分母をはらうと <b>3(x−2)＝−4(y＋1)</b>、移項して 3(x−2)＋4(y＋1)＝0 になる。</p>
+        </div>
+        <div class="step hint">
+          <h3>ヒント 4 ― 展開して整理する</h3>
+          <p>3(x−2)＋4(y＋1)＝0 を展開すると 3x−6＋4y＋4＝0。</p>
+          <p>定数項は −6＋4＝−2 だから、<b>3x＋4y−2＝0</b> と整理できる。</p>
+        </div>
+        <div class="step answer">
+          <h3>解答</h3>
+          <p class="big">媒介変数表示：x＝2−4t，　y＝−1＋3t<br />t を消去した式：3x＋4y−2＝0</p>
+          <p>点 A(2, −1)、<span class="v">d</span>＝(−4, 3) を型に当てはめて x＝2−4t、y＝−1＋3t。</p>
+          <p>t を消去すると 3(x−2)＋4(y＋1)＝0 となり、整理して 3x＋4y−2＝0。</p>
+          <p class="note"><b>検算：</b>点A(2, −1) を 3x＋4y−2 に代入すると 6−4−2＝0 ✓。直線が点Aを通ることが確かめられた。</p>
+        </div>
+        <p class="prob-done">練習35 クリア！　次は解説Bで、2点を通る直線の表し方を学ぼう。</p>
+      </section>
+
+      <!-- ================= 解説B 異なる2点A、Bを通る直線 ================= -->
+      <div class="sec-head">
+        <span class="sec-tag">解説 B</span>
+        <h2>異なる2点A、Bを通る直線</h2>
+        <span class="pno">教科書 p.41〜42</span>
+      </div>
+
+      <section class="card">
+        <div class="def">
+          <p>2点 A（位置ベクトル <span class="v">a</span>）、B（位置ベクトル <span class="v">b</span>）を通る直線は、解説Aの直線で、<span class="key">方向ベクトルに <span class="v">AB</span>＝<span class="v">b</span>−<span class="v">a</span> を使ったもの</span>とみることができる。</p>
+          <p style="text-align:center;font-size:18px"><b><span class="v">p</span>＝<span class="v">a</span>＋t(<span class="v">b</span>−<span class="v">a</span>)＝(1−t)<span class="v">a</span>＋t<span class="v">b</span></b></p>
+          <p>ここで 1−t＝s と置くと、次の形になる。</p>
+        </div>
+        <p class="formula"><span class="v">p</span>＝s<span class="v">a</span>＋t<span class="v">b</span>，　s＋t＝1</p>
+        <div class="def">
+          <p><span class="key">係数の和が1</span>というのが、この形の目印だ。6の項で学んだ「直線上の点の位置ベクトルは係数の和が1」と同じ話で、見方を変えただけだよ。</p>
+          <p><span class="key">点Pの存在範囲：</span>s＋t＝1 のとき、点Pは<b>直線AB全体</b>を動く。t の値で場所が決まる。</p>
+          <p>・t＜0：Aの外側（Bと反対側）　・t＝0：点A　・0＜t＜1：線分ABの内分点　・t＝1：点B　・t＞1：Bの外側</p>
+          <p>さらに <b>s≧0 かつ t≧0</b>（つまり 0≦t≦1）のとき、点Pの存在範囲は<b>線分AB</b>になる。係数が両方とも0以上かどうかが、「直線」か「線分」かの分かれ目だ。</p>
+        </div>
+        <figure>
+          <div class="figbox">
+            <svg viewBox="0 0 640 250" role="img" aria-label="2点を通る直線と、t の値による点Pの存在範囲">
+              <line x1="30" y1="140" x2="220" y2="140" stroke="var(--orange)" stroke-width="4"></line>
+              <line x1="220" y1="140" x2="420" y2="140" stroke="var(--accent)" stroke-width="5"></line>
+              <line x1="420" y1="140" x2="610" y2="140" stroke="var(--blue)" stroke-width="4"></line>
+              <circle cx="120" cy="140" r="4" fill="var(--orange)"></circle>
+              <circle cx="320" cy="140" r="4" fill="var(--accent)"></circle>
+              <circle cx="520" cy="140" r="4" fill="var(--blue)"></circle>
+              <circle cx="220" cy="140" r="6" fill="var(--ink)"></circle>
+              <circle cx="420" cy="140" r="6" fill="var(--ink)"></circle>
+              <text x="212" y="118" class="svg-txt" font-size="17">A</text>
+              <text x="412" y="118" class="svg-txt" font-size="17">B</text>
+              <text x="196" y="172" class="svg-txt-soft" font-size="13.5">t＝0</text>
+              <text x="396" y="172" class="svg-txt-soft" font-size="13.5">t＝1</text>
+              <text x="125" y="104" text-anchor="middle" class="svg-txt" font-size="14.5" fill="var(--orange)">t＜0</text>
+              <text x="125" y="196" text-anchor="middle" class="svg-txt-soft" font-size="13.5">Aの外側</text>
+              <text x="320" y="104" text-anchor="middle" class="svg-txt" font-size="14.5" fill="var(--accent-deep)">0＜t＜1</text>
+              <text x="320" y="196" text-anchor="middle" class="svg-txt-soft" font-size="13.5">線分ABの内分点</text>
+              <text x="515" y="104" text-anchor="middle" class="svg-txt" font-size="14.5" fill="var(--blue)">t＞1</text>
+              <text x="515" y="196" text-anchor="middle" class="svg-txt-soft" font-size="13.5">Bの外側</text>
+              <text x="320" y="34" text-anchor="middle" class="svg-txt" font-size="15">s＋t＝1 のとき：直線AB全体　／　s, t≧0 のとき：線分AB（緑の部分）</text>
+            </svg>
+          </div>
+          <figcaption><span class="v" style="padding-top:.4em">p</span>＝(1−t)<span class="v" style="padding-top:.4em">a</span>＋t<span class="v" style="padding-top:.4em">b</span> の t を変えたときの点Pの場所。t が 0 から 1 の間にあるときだけ、Pは線分ABの内側にいる。</figcaption>
+        </figure>
+      </section>
+
+      <!-- 練習36 -->
+      <section class="card prob" data-flow="ren36" data-label="練習36">
+        <div class="prob-head">
+          <span class="prob-tag ren">練習 36</span>
+          <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+          <span class="prob-state">ヒント 0 / 4</span>
+        </div>
+        <p class="prob-q"><span class="v">p</span>＝(1−t)<span class="v">a</span>＋t<span class="v">b</span> において、t が次の値をとるとき、点Pはどこにあるか。「次へ」を押すたびに、図に点が1つずつ打たれるよ。<br />(1) t＝1　(2) t＝2　(3) t＝−1　(4) t＝<span class="fr"><sup>1</sup>/<sub>2</sub></span></p>
+        <figure>
+          <div class="figbox">
+            <svg viewBox="0 0 640 260" role="img" aria-label="練習36の図。直線ABと、t の値ごとの点Pの位置">
+              <line x1="30" y1="150" x2="610" y2="150" stroke="var(--ink-soft)" stroke-width="2.5"></line>
+              <g id="r36Ticks"></g>
+              <circle cx="215" cy="150" r="6" fill="var(--ink)"></circle>
+              <circle cx="365" cy="150" r="6" fill="var(--ink)"></circle>
+              <text x="207" y="128" class="svg-txt" font-size="17">A</text>
+              <text x="357" y="128" class="svg-txt" font-size="17">B</text>
+              <text x="586" y="140" class="svg-txt-soft" font-size="15">直線AB</text>
+              <g data-stage="1">
+                <circle cx="365" cy="150" r="12" fill="none" stroke="var(--orange)" stroke-width="3"></circle>
+                <text x="330" y="196" class="svg-txt" font-size="16" fill="var(--orange)">P＝B（t＝1）</text>
+              </g>
+              <g data-stage="2">
+                <circle cx="515" cy="150" r="7" fill="var(--red)"></circle>
+                <text x="452" y="118" class="svg-txt" font-size="16" fill="var(--red)">P（t＝2）</text>
+              </g>
+              <g data-stage="3">
+                <circle cx="65" cy="150" r="7" fill="var(--red)"></circle>
+                <text x="30" y="118" class="svg-txt" font-size="16" fill="var(--red)">P（t＝−1）</text>
+              </g>
+              <g data-stage="4">
+                <circle cx="290" cy="150" r="7" fill="var(--red)"></circle>
+                <text x="238" y="196" class="svg-txt" font-size="16" fill="var(--red)">P（t＝1/2、中点）</text>
+              </g>
+            </svg>
+          </div>
+          <figcaption>目盛りは t の値。Aが t＝0、Bが t＝1 で、目盛り1つ分が <span class="v" style="padding-top:.4em">AB</span> 1つ分の長さ。</figcaption>
+        </figure>
+        <div class="step hint">
+          <h3>(1) t＝1 ― 係数を計算すると <span class="v">b</span> だけが残る</h3>
+          <p>t＝1 を代入すると、<span class="v">p</span>＝(1−1)<span class="v">a</span>＋1・<span class="v">b</span>＝<span class="v">b</span>。</p>
+          <p>つまり点Pは<b>点B自身</b>だ。図では点Bにオレンジの丸がついた。</p>
+        </div>
+        <div class="step hint">
+          <h3>(2) t＝2 ― Bを通り越して、もう1つ分先</h3>
+          <p>書き換えた形 <span class="v">p</span>＝<span class="v">a</span>＋t(<span class="v">b</span>−<span class="v">a</span>) で見ると、<span class="v">AP</span>＝2<span class="v">AB</span>。</p>
+          <p>点Aから <span class="v">AB</span> を2つ分進むから、点Pは<b>点Bの先に、AB 1つ分進んだ点</b>になる。</p>
+        </div>
+        <div class="step hint">
+          <h3>(3) t＝−1 ― Aの手前に1つ分戻る</h3>
+          <p><span class="v">AP</span>＝−1・<span class="v">AB</span>。マイナスだから <span class="v">AB</span> と反対向きだ。</p>
+          <p>点Pは、<b>点Aの前に、AB 1つ分戻った点</b>になる。図の左端の点を確認しよう。</p>
+        </div>
+        <div class="step hint">
+          <h3>(4) t＝<span class="fr"><sup>1</sup>/<sub>2</sub></span> ― ちょうど真ん中</h3>
+          <p><span class="v">p</span>＝<span class="fr"><sup>1</sup>/<sub>2</sub></span><span class="v">a</span>＋<span class="fr"><sup>1</sup>/<sub>2</sub></span><span class="v">b</span>。2点の位置ベクトルの平均は中点の公式そのものだ。</p>
+          <p>点Pは<b>線分ABの中点</b>になる。</p>
+        </div>
+        <div class="step answer">
+          <h3>解答（まとめ）</h3>
+          <p>(1) t＝1：<b>点B</b></p>
+          <p>(2) t＝2：点Bの先に AB を1つ分進んだ点</p>
+          <p>(3) t＝−1：点Aの前に AB を1つ分戻った点</p>
+          <p>(4) t＝<span class="fr"><sup>1</sup>/<sub>2</sub></span>：<b>線分ABの中点</b></p>
+          <p class="note"><b>練習34とのつながり：</b>方向ベクトルに <span class="v">AB</span> を使うと、t は「Aから <span class="v">AB</span> を何個分進んだか」になる。t＝0 でA、t＝1 でBと、目盛りの読み方は練習34とまったく同じだ。</p>
+        </div>
+        <p class="prob-done">練習36 クリア！　次は応用例題6で、この考え方を三角形の存在範囲の問題に応用しよう。</p>
+      </section>
+
+      <!-- 応用例題6 -->
+      <section class="card prob" data-flow="exa6" data-label="応用例題6">
+        <div class="prob-head">
+          <span class="prob-tag">応用例題 6</span>
+          <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+          <span class="prob-state">ヒント 0 / 4</span>
+        </div>
+        <p class="prob-q">△OABにおいて、<span class="v">OP</span>＝s<span class="v">OA</span>＋t<span class="v">OB</span>、s＋t＝2、s≧0、t≧0 を満たす点Pの存在範囲を求めよ。</p>
+        <figure>
+          <div class="figbox">
+            <svg viewBox="0 0 560 400" role="img" aria-label="応用例題6の図。三角形OABと、OA、OBを2倍に伸ばした点A'、B'を結ぶ線分">
+              <polygon points="70,340 530,340 270,40" fill="none" stroke="var(--line)" stroke-width="2"></polygon>
+              <line x1="70" y1="340" x2="300" y2="340" stroke="var(--ink-soft)" stroke-width="2.5"></line>
+              <line x1="70" y1="340" x2="170" y2="190" stroke="var(--ink-soft)" stroke-width="2.5"></line>
+              <line x1="300" y1="340" x2="170" y2="190" stroke="var(--ink-soft)" stroke-width="2"></line>
+              <line x1="530" y1="340" x2="270" y2="40" stroke="var(--red)" stroke-width="4"></line>
+              <line x1="70" y1="340" x2="413" y2="205" stroke="var(--orange)" stroke-width="2" stroke-dasharray="7 5"></line>
+              <circle cx="70" cy="340" r="5" fill="var(--ink)"></circle>
+              <circle cx="300" cy="340" r="5" fill="var(--ink)"></circle>
+              <circle cx="170" cy="190" r="5" fill="var(--ink)"></circle>
+              <circle cx="530" cy="340" r="5.5" fill="var(--red)"></circle>
+              <circle cx="270" cy="40" r="5.5" fill="var(--red)"></circle>
+              <circle cx="413" cy="205" r="6" fill="var(--orange)"></circle>
+              <text x="44" y="348" class="svg-txt" font-size="17">O</text>
+              <text x="292" y="366" class="svg-txt" font-size="17">A</text>
+              <text x="146" y="182" class="svg-txt" font-size="17">B</text>
+              <text x="512" y="366" class="svg-txt" font-size="17" fill="var(--red)">A'</text>
+              <text x="252" y="30" class="svg-txt" font-size="17" fill="var(--red)">B'</text>
+              <text x="424" y="200" class="svg-txt" font-size="16" fill="var(--orange)">P</text>
+              <text x="368" y="322" class="svg-txt-soft" font-size="13.5">OA'＝2 OA</text>
+              <text x="120" y="262" class="svg-txt-soft" font-size="13.5">OB'＝2 OB</text>
+            </svg>
+          </div>
+          <figcaption>A' は辺OAを2倍に伸ばした点（OA'＝2OA）で、Aは OA' の中点。B' も同様。赤い線分A'B' が、点Pの存在範囲の候補だ。</figcaption>
+        </figure>
+        <div class="step hint">
+          <h3>ヒント 1 ― s＋t＝2 を「＝1」の形に直す</h3>
+          <p>解説Bで使える形は「係数の和が1」だった。いまは s＋t＝2 だから、両辺を2で割ってみよう。</p>
+          <p style="text-align:center"><span class="fr"><sup>s</sup>/<sub>2</sub></span>＋<span class="fr"><sup>t</sup>/<sub>2</sub></span>＝1</p>
+          <p>係数を s/2、t/2 と見れば、和が1の形になる。</p>
+        </div>
+        <div class="step hint">
+          <h3>ヒント 2 ― <span class="v">OP</span> を s/2、t/2 を係数にして書き直す</h3>
+          <p><span class="v">OP</span>＝s<span class="v">OA</span>＋t<span class="v">OB</span> の s を (s/2)×2 と見ると、次のように書き直せる。</p>
+          <p style="text-align:center"><span class="v">OP</span>＝<span class="fr"><sup>s</sup>/<sub>2</sub></span>(2<span class="v">OA</span>)＋<span class="fr"><sup>t</sup>/<sub>2</sub></span>(2<span class="v">OB</span>)</p>
+          <p>「2<span class="v">OA</span>」「2<span class="v">OB</span>」という新しいベクトルが現れたことに注目しよう。</p>
+        </div>
+        <div class="step hint">
+          <h3>ヒント 3 ― 点A'、B' をとって、文字を置き換える</h3>
+          <p><span class="v">OA'</span>＝2<span class="v">OA</span>、<span class="v">OB'</span>＝2<span class="v">OB</span> となる点A'、B' をとる。また s'＝s/2、t'＝t/2 と置く。</p>
+          <p>すると <span class="v">OP</span>＝s'<span class="v">OA'</span>＋t'<span class="v">OB'</span> となり、条件は <b>s'＋t'＝1</b> に変わる。これは解説Bで見た「直線A'B' 上の点」の形そのものだ。</p>
+        </div>
+        <div class="step hint">
+          <h3>ヒント 4 ― s≧0、t≧0 から「線分」だと決める</h3>
+          <p>s≧0、t≧0 だから、s'＝s/2≧0、t'＝t/2≧0 も成り立つ。</p>
+          <p>解説Bのルール：「s'＋t'＝1 かつ s', t'≧0 のとき、点Pは<b>線分</b>の上」。直線全体ではなく、A' と B' の間の部分だけが答えになる。</p>
+        </div>
+        <div class="step answer">
+          <h3>解答</h3>
+          <p class="big">線分A'B'　（ただし <span class="v">OA'</span>＝2<span class="v">OA</span>、<span class="v">OB'</span>＝2<span class="v">OB</span>）</p>
+          <p>s＋t＝2 の両辺を2で割ると s/2＋t/2＝1 で、<span class="v">OP</span>＝(s/2)(2<span class="v">OA</span>)＋(t/2)(2<span class="v">OB</span>) と書ける。</p>
+          <p><span class="v">OA'</span>＝2<span class="v">OA</span>、<span class="v">OB'</span>＝2<span class="v">OB</span> となる点をA'、B'、s'＝s/2、t'＝t/2 と置くと、<span class="v">OP</span>＝s'<span class="v">OA'</span>＋t'<span class="v">OB'</span>、s'＋t'＝1、s'≧0、t'≧0 となる。</p>
+          <p>よって、点Pの存在範囲は線分A'B' である。</p>
+          <p class="note"><b>解法の型：</b>「係数の和が1でない」ときは、和が1になるように変形して、新しい点を作る。和が k なら、両辺を k で割って、ベクトルのほうを k 倍にした点を用意するのが手順だ。</p>
+        </div>
+        <p class="prob-done">応用例題6 クリア！　次は練習37で、和が分数の場合に挑戦しよう。</p>
+      </section>
+
+      <!-- 練習37 -->
+      <section class="card prob" data-flow="ren37" data-label="練習37">
+        <div class="prob-head">
+          <span class="prob-tag ren">練習 37</span>
+          <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+          <span class="prob-state">ヒント 0 / 3</span>
+        </div>
+        <p class="prob-q">△OABにおいて、<span class="v">OP</span>＝s<span class="v">OA</span>＋t<span class="v">OB</span>、s＋t＝<span class="fr"><sup>1</sup>/<sub>2</sub></span>、s≧0、t≧0 を満たす点Pの存在範囲を求めよ。</p>
+        <figure>
+          <div class="figbox">
+            <svg viewBox="0 0 560 340" role="img" aria-label="練習37の図。三角形OABと、OA、OBの中点を結ぶ線分">
+              <polygon points="80,290 440,290 220,70" fill="none" stroke="var(--ink-soft)" stroke-width="2.5"></polygon>
+              <line x1="260" y1="290" x2="150" y2="180" stroke="var(--red)" stroke-width="4"></line>
+              <line x1="80" y1="290" x2="205" y2="235" stroke="var(--orange)" stroke-width="2" stroke-dasharray="7 5"></line>
+              <circle cx="80" cy="290" r="5" fill="var(--ink)"></circle>
+              <circle cx="440" cy="290" r="5" fill="var(--ink)"></circle>
+              <circle cx="220" cy="70" r="5" fill="var(--ink)"></circle>
+              <circle cx="260" cy="290" r="5.5" fill="var(--red)"></circle>
+              <circle cx="150" cy="180" r="5.5" fill="var(--red)"></circle>
+              <circle cx="205" cy="235" r="6" fill="var(--orange)"></circle>
+              <text x="54" y="298" class="svg-txt" font-size="17">O</text>
+              <text x="448" y="298" class="svg-txt" font-size="17">A</text>
+              <text x="228" y="60" class="svg-txt" font-size="17">B</text>
+              <text x="252" y="316" class="svg-txt" font-size="17" fill="var(--red)">A'</text>
+              <text x="112" y="172" class="svg-txt" font-size="17" fill="var(--red)">B'</text>
+              <text x="216" y="230" class="svg-txt" font-size="16" fill="var(--orange)">P</text>
+            </svg>
+          </div>
+          <figcaption>A' はOAの中点、B' はOBの中点。赤い線分A'B'（中点連結の線分）が存在範囲の候補だ。</figcaption>
+        </figure>
+        <div class="step hint">
+          <h3>ヒント 1 ― s＋t＝<span class="fr"><sup>1</sup>/<sub>2</sub></span> を「＝1」の形に直す</h3>
+          <p>応用例題6と同じ発想だ。両辺を2倍すると</p>
+          <p style="text-align:center">2s＋2t＝1</p>
+          <p>係数を 2s、2t と見れば、和が1の形になる。今度は係数のほうを2倍にするんだ。</p>
+        </div>
+        <div class="step hint">
+          <h3>ヒント 2 ― <span class="v">OA</span>、<span class="v">OB</span> のほうを <span class="fr"><sup>1</sup>/<sub>2</sub></span> 倍に組み替える</h3>
+          <p>s<span class="v">OA</span>＝(2s)×(<span class="fr"><sup>1</sup>/<sub>2</sub></span><span class="v">OA</span>) のように書き直すと</p>
+          <p style="text-align:center"><span class="v">OP</span>＝(2s)(<span class="fr"><sup>1</sup>/<sub>2</sub></span><span class="v">OA</span>)＋(2t)(<span class="fr"><sup>1</sup>/<sub>2</sub></span><span class="v">OB</span>)</p>
+          <p><span class="fr"><sup>1</sup>/<sub>2</sub></span><span class="v">OA</span> は「OAを半分にしたベクトル」だ。</p>
+        </div>
+        <div class="step hint">
+          <h3>ヒント 3 ― 中点A'、B' をとって、線分か直線かを決める</h3>
+          <p><span class="v">OA'</span>＝<span class="fr"><sup>1</sup>/<sub>2</sub></span><span class="v">OA</span>、<span class="v">OB'</span>＝<span class="fr"><sup>1</sup>/<sub>2</sub></span><span class="v">OB</span> となる点A'、B' をとり、s'＝2s、t'＝2t と置く。</p>
+          <p>すると <span class="v">OP</span>＝s'<span class="v">OA'</span>＋t'<span class="v">OB'</span>、s'＋t'＝1。さらに s, t≧0 だから s', t'≧0。解説Bのルールで、答えが「直線A'B'」か「線分A'B'」か判断しよう。</p>
+        </div>
+        <div class="step answer">
+          <h3>解答</h3>
+          <p class="big">線分A'B'　（ただし A' はOAの中点、B' はOBの中点）</p>
+          <p>s＋t＝<span class="fr"><sup>1</sup>/<sub>2</sub></span> の両辺を2倍すると 2s＋2t＝1 で、<span class="v">OP</span>＝(2s)(<span class="fr"><sup>1</sup>/<sub>2</sub></span><span class="v">OA</span>)＋(2t)(<span class="fr"><sup>1</sup>/<sub>2</sub></span><span class="v">OB</span>) と書ける。</p>
+          <p><span class="v">OA'</span>＝<span class="fr"><sup>1</sup>/<sub>2</sub></span><span class="v">OA</span>、<span class="v">OB'</span>＝<span class="fr"><sup>1</sup>/<sub>2</sub></span><span class="v">OB</span> となる点をA'、B'、s'＝2s、t'＝2t と置くと、<span class="v">OP</span>＝s'<span class="v">OA'</span>＋t'<span class="v">OB'</span>、s'＋t'＝1、s'≧0、t'≧0 となる。</p>
+          <p>よって、点Pの存在範囲は線分A'B' である。A'、B' はそれぞれOA、OBの中点だから、これは中点連結定理の線分だ。</p>
+        </div>
+        <p class="prob-done">練習37 クリア！　下の「深める」で、条件を1つ外した場合も確認しておこう。</p>
+      </section>
+
+      <!-- ================= 深める ================= -->
+      <div class="sec-head">
+        <span class="sec-tag">深める</span>
+        <h2>条件「s≧0、t≧0」がなかったら？</h2>
+      </div>
+
+      <section class="card">
+        <div class="def">
+          <p>応用例題6で、もし条件が s＋t＝2 だけで、<span class="key">「s≧0、t≧0」がない場合</span>はどうなるだろう。</p>
+          <p>s'＝s/2、t'＝t/2 と置く変形はそのまま使えて、<span class="v">OP</span>＝s'<span class="v">OA'</span>＋t'<span class="v">OB'</span>、s'＋t'＝1 となる。ただし s'、t' は<b>すべての実数</b>をとるから、点Pは A' と B' の間だけでは収まらない。</p>
+          <p style="text-align:center;font-size:18px"><b>点Pの存在範囲は、線分A'B' ではなく「直線A'B'」全体になる</b></p>
+          <p>「s, t≧0」という条件は、<b>直線を線分に切り取る</b>はたらきをしている。存在範囲の問題では、最後にこの条件の有無を必ず確認しよう。</p>
+        </div>
+      </section>
+
+      <!-- ================= 解説C ベクトル n に垂直な直線 ================= -->
+      <div class="sec-head">
+        <span class="sec-tag">解説 C</span>
+        <h2>ベクトル <span class="v">n</span> に垂直な直線</h2>
+        <span class="pno">教科書 p.43〜44</span>
+      </div>
+
+      <section class="card">
+        <div class="def">
+          <p>今度は、点 A（位置ベクトル <span class="v">a</span>）を通り、ベクトル <span class="v">n</span> に<span class="key">垂直な</span>直線 g を考えよう。直線 g 上の点 P（位置ベクトル <span class="v">p</span>）については、<span class="v">AP</span> が <span class="v">n</span> と垂直だから、内積が0になる。</p>
+          <p style="text-align:center;font-size:18px"><b><span class="v">n</span>・<span class="v">AP</span>＝0　すなわち　<span class="v">n</span>・(<span class="v">p</span>−<span class="v">a</span>)＝0</b></p>
+          <p>これが直線 g のベクトル方程式で、<span class="v">n</span> を直線 g の<span class="key">法線ベクトル</span>という。「法線」は「直線に垂直な線」という意味だ。</p>
+        </div>
+        <p class="formula"><span class="v">n</span>・(<span class="v">p</span>−<span class="v">a</span>)＝0</p>
+        <figure>
+          <div class="figbox">
+            <svg viewBox="0 0 560 340" role="img" aria-label="法線ベクトルの図。直線 g と、それに垂直な法線ベクトル n">
+              <defs>
+                <marker id="kc-n" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--blue)"></path></marker>
+              </defs>
+              <line x1="54" y1="280" x2="486" y2="100" stroke="var(--ink-soft)" stroke-width="2.5"></line>
+              <line x1="270" y1="190" x2="378" y2="145" stroke="var(--red)" stroke-width="2.5" stroke-dasharray="7 5"></line>
+              <line x1="270" y1="190" x2="315" y2="298" stroke="var(--blue)" stroke-width="3.5" marker-end="url(#kc-n)"></line>
+              <polyline points="284.8,183.8 291,198.6 276.2,204.8" fill="none" stroke="var(--ink-soft)" stroke-width="2"></polyline>
+              <circle cx="270" cy="190" r="5.5" fill="var(--ink)"></circle>
+              <circle cx="378" cy="145" r="6" fill="var(--red)"></circle>
+              <text x="246" y="216" class="svg-txt" font-size="17">A</text>
+              <text x="388" y="138" class="svg-txt" font-size="17" fill="var(--red)">P</text>
+              <text x="322" y="262" class="svg-txt" font-size="14" fill="var(--blue)" font-style="italic">n</text>
+              <path d="M321 249 H331 M326 246 L331.5 249 L326 252" stroke="var(--blue)" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+              <text x="66" y="266" class="svg-txt-soft" font-size="15">直線 g</text>
+              <text x="330" y="182" class="svg-txt-soft" font-size="13.5">AP</text>
+              <path d="M329 170 H348 M342 167 L348.5 170 L342 173" stroke="var(--ink-soft)" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+          </div>
+          <figcaption>点Pが直線 g の上をどこに動いても、<span class="v" style="padding-top:.4em">AP</span> は法線ベクトル <span class="v" style="padding-top:.4em">n</span> と垂直（直角の印）。だから <span class="v" style="padding-top:.4em">n</span>・<span class="v" style="padding-top:.4em">AP</span>＝0 がいつも成り立つ。</figcaption>
+        </figure>
+        <div class="def">
+          <p><span class="key">座標で書くと：</span>点 A(x<sub>1</sub>, y<sub>1</sub>) を通り、<span class="v">n</span>＝(a, b) に垂直な直線の方程式は</p>
+          <p style="text-align:center;font-size:18px"><b>a(x−x<sub>1</sub>)＋b(y−y<sub>1</sub>)＝0</b></p>
+          <p>法線ベクトルの成分を、そのまま (x−x<sub>1</sub>)、(y−y<sub>1</sub>) の係数に並べるだけだ。</p>
+          <p><span class="key">逆に、方程式から法線ベクトルを読む：</span>ベクトル (a, b) は、直線 <b>ax＋by＋c＝0</b> の法線ベクトルである。方程式の x、y の係数が、そのまま法線ベクトルになる。たとえば、例16で求めた直線 3x−2y＋5＝0 の法線ベクトルは (3, −2) だ。</p>
+        </div>
+      </section>
+
+      <!-- 練習38 -->
+      <section class="card prob" id="prob-ren38">
+        <div class="prob-head">
+          <span class="prob-tag ren">練習 38</span>
+          <span class="prob-state">下のタブで小問を選んでね</span>
+        </div>
+        <p class="prob-q">次の点Aを通り、ベクトル <span class="v">n</span> に垂直な直線の方程式を求めよ。</p>
+        <div class="tabs" role="tablist" aria-label="練習38の小問">
+          <button class="tab" role="tab" data-tab="ren38-1" aria-selected="true">(1) A(3, 4)、n→＝(1, 2)</button>
+          <button class="tab" role="tab" data-tab="ren38-2" aria-selected="false">(2) A(−1, 2)、n→＝(3, −4)</button>
+        </div>
+
+        <!-- 練習38 (1) -->
+        <div class="tabpanel show" id="panel-ren38-1" data-flow="ren38-1" data-label="練習38 (1)">
+          <div class="prob-head">
+            <span class="prob-q" style="margin:0">(1)　A(3, 4)、<span class="v">n</span>＝(1, 2)</span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 2</span>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 1 ― 型 a(x−x<sub>1</sub>)＋b(y−y<sub>1</sub>)＝0 に数字を入れる</h3>
+            <p>法線ベクトル <span class="v">n</span>＝(1, 2) だから a＝1、b＝2。点Aは (3, 4) だから x<sub>1</sub>＝3、y<sub>1</sub>＝4。</p>
+            <p>型に当てはめると、<b>1・(x−3)＋2・(y−4)＝0</b>、つまり (x−3)＋2(y−4)＝0 になる。まずこの形を書き写そう。</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 2 ― 展開して、定数項をまとめる</h3>
+            <p>(x−3)＋2(y−4)＝0 を展開すると x−3＋2y−8＝0。</p>
+            <p>定数項は −3−8＝−11 だから、<b>x＋2y−11＝0</b> と整理できる。</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (1)</h3>
+            <p class="big">(x−3)＋2(y−4)＝0　すなわち　x＋2y−11＝0</p>
+            <p>点 A(3, 4) を通り、<span class="v">n</span>＝(1, 2) に垂直な直線の方程式は、a(x−x<sub>1</sub>)＋b(y−y<sub>1</sub>)＝0 の型より (x−3)＋2(y−4)＝0。展開して x＋2y−11＝0。</p>
+            <p class="note"><b>検算：</b>点A(3, 4) を x＋2y−11 に代入すると 3＋8−11＝0 ✓。</p>
+          </div>
+          <p class="prob-done">(1) クリア！　(2) は座標にマイナスがある場合。タブを切り替えて挑戦しよう。</p>
+        </div>
+
+        <!-- 練習38 (2) -->
+        <div class="tabpanel" id="panel-ren38-2" data-flow="ren38-2" data-label="練習38 (2)">
+          <div class="prob-head">
+            <span class="prob-q" style="margin:0">(2)　A(−1, 2)、<span class="v">n</span>＝(3, −4)</span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 2</span>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 1 ― x<sub>1</sub>＝−1 の代入に注意して型に入れる</h3>
+            <p>a＝3、b＝−4、x<sub>1</sub>＝−1、y<sub>1</sub>＝2 を型 a(x−x<sub>1</sub>)＋b(y−y<sub>1</sub>)＝0 に入れる。</p>
+            <p>x−x<sub>1</sub> は x−(−1)＝<b>x＋1</b> になる。ここが一番の注意ポイントだ。式は <b>3(x＋1)−4(y−2)＝0</b> となる。</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 2 ― 展開して、定数項をまとめる</h3>
+            <p>3(x＋1)−4(y−2)＝0 を展開すると 3x＋3−4y＋8＝0。−4×(−2)＝＋8 の符号に注意。</p>
+            <p>定数項は 3＋8＝11 だから、<b>3x−4y＋11＝0</b> と整理できる。</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (2)</h3>
+            <p class="big">3(x＋1)−4(y−2)＝0　すなわち　3x−4y＋11＝0</p>
+            <p>点 A(−1, 2) を通り、<span class="v">n</span>＝(3, −4) に垂直な直線の方程式は、型より 3(x＋1)−4(y−2)＝0。展開して 3x−4y＋11＝0。</p>
+            <p class="note"><b>検算：</b>点A(−1, 2) を 3x−4y＋11 に代入すると −3−8＋11＝0 ✓。</p>
+          </div>
+          <p class="prob-done">(2) クリア！　練習38はこれで終わり。次は練習39で、方程式から法線ベクトルを読み取ろう。</p>
+        </div>
+      </section>
+
+      <!-- 練習39 -->
+      <section class="card prob" id="prob-ren39">
+        <div class="prob-head">
+          <span class="prob-tag ren">練習 39</span>
+          <span class="prob-state">下のタブで小問を選んでね</span>
+        </div>
+        <p class="prob-q">次の直線の法線ベクトルを1つ示せ。</p>
+        <div class="tabs" role="tablist" aria-label="練習39の小問">
+          <button class="tab" role="tab" data-tab="ren39-1" aria-selected="true">(1) 3x−2y＋5＝0</button>
+          <button class="tab" role="tab" data-tab="ren39-2" aria-selected="false">(2) y＝−2x＋3</button>
+        </div>
+
+        <!-- 練習39 (1) -->
+        <div class="tabpanel show" id="panel-ren39-1" data-flow="ren39-1" data-label="練習39 (1)">
+          <div class="prob-head">
+            <span class="prob-q" style="margin:0">(1)　3x−2y＋5＝0</span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 1</span>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 1 ― x と y の係数を、そのまま並べるだけ</h3>
+            <p>解説Cのルール：直線 ax＋by＋c＝0 の法線ベクトルは (a, b)。</p>
+            <p>この直線では a＝3、b＝−2（y の係数は −2、そのままマイナスつきで読む）。あとは (　,　) の形に並べるだけだ。</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (1)</h3>
+            <p class="big">(3, −2)</p>
+            <p>3x−2y＋5＝0 の x、y の係数は 3 と −2 だから、法線ベクトルは (3, −2)。</p>
+            <p class="note"><b>「1つ示せ」の意味：</b>法線ベクトルはこれ以外にも、(6, −4) や (−3, 2) など、実数倍したものがすべて法線ベクトルになる。係数をそのまま読んだ (3, −2) が一番簡単な答えだ。</p>
+          </div>
+          <p class="prob-done">(1) クリア！　(2) は式の形が違う問題。タブを切り替えよう。</p>
+        </div>
+
+        <!-- 練習39 (2) -->
+        <div class="tabpanel" id="panel-ren39-2" data-flow="ren39-2" data-label="練習39 (2)">
+          <div class="prob-head">
+            <span class="prob-q" style="margin:0">(2)　y＝−2x＋3</span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 2</span>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 1 ― まず ax＋by＋c＝0 の形に直す</h3>
+            <p>y＝−2x＋3 のままでは、係数を読み取るルールが使えない。すべての項を左辺に移項しよう。</p>
+            <p>2x を左辺へ移すと <b>2x＋y−3＝0</b> になる（y の係数は 1 と見る）。この形に直すのが最初の一歩だ。</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 2 ― 係数を読み取る</h3>
+            <p>2x＋y−3＝0 で、x の係数は 2、y の係数は 1。</p>
+            <p>あとは (a, b) の形に並べるだけだ。</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (2)</h3>
+            <p class="big">(2, 1)</p>
+            <p>y＝−2x＋3 を変形すると 2x＋y−3＝0 となるから、法線ベクトルは (2, 1)。</p>
+            <p class="note"><b>つまずきポイント：</b>傾き −2 に引っぱられて (−2, …) と書かないこと。法線ベクトルは「ax＋by＋c＝0 の形に直してから、係数を読む」のが手順だ。</p>
+          </div>
+          <p class="prob-done">(2) クリア！　練習39はこれで終わり。この項は全部終わりだ。下のまとめで確認しよう。</p>
+        </div>
+      </section>
+
+      <!-- ================= まとめ ================= -->
+      <section class="card summary">
+        <h2>この項のポイント</h2>
+        <ul>
+          <li><b>直線のベクトル方程式：</b>点Aを通り <span class="v">d</span> に平行な直線は <span class="v">p</span>＝<span class="v">a</span>＋t<span class="v">d</span>。<span class="v">d</span> を<b>方向ベクトル</b>、t を<b>媒介変数</b>という。座標では x＝x<sub>1</sub>＋lt、y＝y<sub>1</sub>＋mt（媒介変数表示）で、t を消去すると m(x−x<sub>1</sub>)−l(y−y<sub>1</sub>)＝0 になる。</li>
+          <li><b>2点を通る直線：</b><span class="v">p</span>＝s<span class="v">a</span>＋t<span class="v">b</span>、s＋t＝1 と表せる。s, t≧0（0≦t≦1）のときは<b>線分AB</b>、条件がなければ<b>直線AB全体</b>。係数の和が1でない存在範囲の問題は、和が1になるように変形して新しい点を作る。</li>
+          <li><b>垂直な直線：</b>点Aを通り <span class="v">n</span> に垂直な直線は <span class="v">n</span>・(<span class="v">p</span>−<span class="v">a</span>)＝0。<span class="v">n</span> を<b>法線ベクトル</b>といい、座標では a(x−x<sub>1</sub>)＋b(y−y<sub>1</sub>)＝0。直線 ax＋by＋c＝0 の法線ベクトルは、係数をそのまま読んで (a, b)。</li>
+        </ul>
+      </section>
+
+      <!-- ================= フッター ================= -->
+      <footer>
+        <a class="back-btn" href="vectors.html" id="backToTop">← トップページに戻る</a>
+        <a class="back-btn" href="index.html" style="margin-left:10px">← Nanryo mathematics portal に戻る</a>
+        <p class="foot-note">数学C 第1章 平面上のベクトル ｜ 7 図形のベクトルによる表示（教科書 p.40〜44）</p>
+      </footer>
+    </div>
+
+    <!-- ================= 下部固定バー ================= -->
+    <div class="ctrl-bar">
+      <div class="ctrl-inner">
+        <p class="ctrl-label">いまの課題：<b id="ctrlLabel">練習34</b>　―　「次へ」でヒントを1つずつ開こう</p>
+        <div class="ctrl-btns">
+          <button class="btn" id="btnReset" type="button">最初からやり直す</button>
+          <button class="btn btn-next" id="btnNext" type="button">次へ ▶</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      (function(){
+        "use strict";
+
+        /* ---------- 目盛り・方眼の生成（SVG） ---------- */
+        function ticks(id, ax, ay, ux, uy, list){
+          var g = document.getElementById(id);
+          if (!g) return;
+          var ns = "http://www.w3.org/2000/svg";
+          list.forEach(function(t){
+            var cx = ax + ux * t, cy = ay + uy * t;
+            var len = Math.sqrt(ux * ux + uy * uy);
+            var nx = -uy / len, ny = ux / len;
+            var line = document.createElementNS(ns, "line");
+            line.setAttribute("x1", cx - nx * 7); line.setAttribute("y1", cy - ny * 7);
+            line.setAttribute("x2", cx + nx * 7); line.setAttribute("y2", cy + ny * 7);
+            line.setAttribute("stroke", "var(--ink-soft)"); line.setAttribute("stroke-width", "2");
+            g.appendChild(line);
+            var dot = document.createElementNS(ns, "circle");
+            dot.setAttribute("cx", cx); dot.setAttribute("cy", cy); dot.setAttribute("r", "2.6");
+            dot.setAttribute("fill", "var(--ink-soft)");
+            g.appendChild(dot);
+            var tx = document.createElementNS(ns, "text");
+            tx.setAttribute("x", cx + nx * 22 - 4); tx.setAttribute("y", cy + ny * 22 + 12);
+            tx.setAttribute("class", "svg-txt-soft"); tx.setAttribute("font-size", "12.5");
+            tx.textContent = "t＝" + t;
+            g.appendChild(tx);
+          });
+        }
+        /* 解説Aスライダー図：A(250,230)、d の描画ベクトル (95,−55) */
+        ticks("slTicks", 250, 230, 95, -55, [-2, -1, 1, 2, 3]);
+        /* 練習34：A(290,170)、目盛り (62,−20) */
+        ticks("r34Ticks", 290, 170, 62, -20, [-3, -2, -1, 1, 2, 3, 4, 5]);
+        /* 練習36：A(215,150)、目盛り (150,0) */
+        (function(){
+          var g = document.getElementById("r36Ticks");
+          if (!g) return;
+          var ns = "http://www.w3.org/2000/svg";
+          [-1, 0.5, 2].forEach(function(t){
+            var cx = 215 + 150 * t;
+            var line = document.createElementNS(ns, "line");
+            line.setAttribute("x1", cx); line.setAttribute("y1", 141);
+            line.setAttribute("x2", cx); line.setAttribute("y2", 159);
+            line.setAttribute("stroke", "var(--ink-soft)"); line.setAttribute("stroke-width", "2");
+            g.appendChild(line);
+            var tx = document.createElementNS(ns, "text");
+            tx.setAttribute("x", cx); tx.setAttribute("y", 182);
+            tx.setAttribute("text-anchor", "middle");
+            tx.setAttribute("class", "svg-txt-soft"); tx.setAttribute("font-size", "12.5");
+            tx.textContent = "t＝" + (t === 0.5 ? "1/2" : t);
+            g.appendChild(tx);
+          });
+        })();
+        /* 方眼（例16・練習35） */
+        function grid(id, ox, oy, scale, xMin, xMax, yMin, yMax){
+          var g = document.getElementById(id);
+          if (!g) return;
+          var ns = "http://www.w3.org/2000/svg";
+          for (var x = xMin; x <= xMax; x++){
+            var l = document.createElementNS(ns, "line");
+            l.setAttribute("x1", ox + x * scale); l.setAttribute("y1", oy - yMin * scale);
+            l.setAttribute("x2", ox + x * scale); l.setAttribute("y2", oy - yMax * scale);
+            l.setAttribute("class", "grid-line");
+            g.appendChild(l);
+          }
+          for (var y = yMin; y <= yMax; y++){
+            var l2 = document.createElementNS(ns, "line");
+            l2.setAttribute("x1", ox + xMin * scale); l2.setAttribute("y1", oy - y * scale);
+            l2.setAttribute("x2", ox + xMax * scale); l2.setAttribute("y2", oy - y * scale);
+            l2.setAttribute("class", "grid-line");
+            g.appendChild(l2);
+          }
+        }
+        grid("e16Grid", 60, 300, 30, -1, 12, -1, 9);
+        grid("r35Grid", 300, 170, 30, -9, 8, -5, 5);
+
+        /* ---------- 解説A：t スライダー ---------- */
+        var slider = document.getElementById("tSlider");
+        var tVal = document.getElementById("tVal");
+        var slP = document.getElementById("slP");
+        var slPLabel = document.getElementById("slPLabel");
+        var slAP = document.getElementById("slAP");
+        function moveP(){
+          var t = parseFloat(slider.value);
+          var x = 250 + 95 * t, y = 230 - 55 * t;
+          slP.setAttribute("cx", x); slP.setAttribute("cy", y);
+          slPLabel.setAttribute("x", x + 11); slPLabel.setAttribute("y", y - 9);
+          slAP.setAttribute("x2", x); slAP.setAttribute("y2", y);
+          tVal.textContent = "t ＝ " + t.toFixed(2);
+        }
+        if (slider) slider.addEventListener("input", moveP);
+
+        /* ---------- ヒント式フロー（汎用） ---------- */
+        var flows = {};
+        var activeId = null;
+
+        function registerFlow(root){
+          var id = root.getAttribute('data-flow');
+          var steps = Array.prototype.slice.call(root.querySelectorAll(':scope > .step'));
+          var head = root.querySelector(':scope > .prob-head');
+          var dots = head ? Array.prototype.slice.call(head.querySelectorAll('.dot')) : [];
+          var stateEl = head ? head.querySelector('.prob-state') : null;
+          var doneEl = root.querySelector(':scope > .prob-done');
+          flows[id] = {
+            id: id, root: root, steps: steps, dots: dots, stateEl: stateEl,
+            doneEl: doneEl, idx: 0, label: root.getAttribute('data-label') || id,
+            hintTotal: steps.filter(function(s){ return s.classList.contains('hint'); }).length
+          };
+          if (!activeId) activeId = id;
+        }
+        Array.prototype.forEach.call(document.querySelectorAll('[data-flow]'), registerFlow);
+
+        var btnNext = document.getElementById('btnNext');
+        var btnReset = document.getElementById('btnReset');
+        var ctrlLabel = document.getElementById('ctrlLabel');
+
+        function refreshFlow(f){
+          f.steps.forEach(function(s, i){ s.classList.toggle('show', i < f.idx); });
+          f.dots.forEach(function(d, i){ d.classList.toggle('on', i < f.idx); });
+          Array.prototype.forEach.call(f.root.querySelectorAll('[data-stage]'), function(g){
+            g.classList.toggle('on', f.idx >= parseInt(g.getAttribute('data-stage'), 10));
+          });
+          if (f.stateEl){
+            if (f.idx === 0) f.stateEl.textContent = 'ヒント 0 / ' + f.hintTotal;
+            else if (f.idx <= f.hintTotal) f.stateEl.textContent = 'ヒント ' + f.idx + ' / ' + f.hintTotal;
+            else f.stateEl.textContent = '解答を表示済み';
+          }
+          if (f.doneEl) f.doneEl.classList.toggle('show', f.idx >= f.steps.length);
+        }
+        function refreshBar(){
+          var f = flows[activeId];
+          if (!f) return;
+          ctrlLabel.textContent = f.label;
+          if (f.idx >= f.steps.length){
+            btnNext.disabled = true;
+            btnNext.textContent = 'ぜんぶ開いたよ ✓';
+          } else if (f.idx === f.hintTotal){
+            btnNext.disabled = false;
+            btnNext.textContent = '解答を見る ▶';
+          } else {
+            btnNext.disabled = false;
+            btnNext.textContent = '次へ ▶（ヒント ' + (f.idx + 1) + '）';
+          }
+          Array.prototype.forEach.call(document.querySelectorAll('.prob'), function(card){
+            card.classList.toggle('active', card === f.root || card.contains(f.root));
+          });
+        }
+        function setActive(id){
+          if (!flows[id]) return;
+          activeId = id;
+          refreshBar();
+        }
+
+        btnNext.addEventListener('click', function(){
+          var f = flows[activeId];
+          if (!f || f.idx >= f.steps.length) return;
+          f.idx += 1;
+          refreshFlow(f);
+          refreshBar();
+          var shown = f.steps[f.idx - 1];
+          if (shown) shown.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        });
+        btnReset.addEventListener('click', function(){
+          var f = flows[activeId];
+          if (!f) return;
+          f.idx = 0;
+          refreshFlow(f);
+          refreshBar();
+          f.root.scrollIntoView({ block: 'start', behavior: 'smooth' });
+        });
+
+        /* カードを触ったら、その課題（表示中のタブ）を操作対象にする */
+        Array.prototype.forEach.call(document.querySelectorAll('.prob'), function(card){
+          card.addEventListener('click', function(){
+            if (card.getAttribute('data-flow')){
+              setActive(card.getAttribute('data-flow'));
+            } else {
+              var visible = card.querySelector('.tabpanel.show');
+              if (visible) setActive(visible.getAttribute('data-flow'));
+            }
+          });
+        });
+
+        /* ---------- タブ切り替え（汎用） ---------- */
+        Array.prototype.forEach.call(document.querySelectorAll('.tab'), function(tab){
+          tab.addEventListener('click', function(){
+            var card = tab.closest('.prob');
+            if (!card) return;
+            Array.prototype.forEach.call(card.querySelectorAll('.tab'), function(t){
+              t.setAttribute('aria-selected', t === tab ? 'true' : 'false');
+            });
+            var target = tab.getAttribute('data-tab');
+            Array.prototype.forEach.call(card.querySelectorAll('.tabpanel'), function(p){
+              p.classList.toggle('show', p.id === 'panel-' + target);
+            });
+            setActive(target);
+          });
+        });
+
+        Object.keys(flows).forEach(function(id){ refreshFlow(flows[id]); });
+        refreshBar();
+      })();
+    </script>
+  </body>
+</html>

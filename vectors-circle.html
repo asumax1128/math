@@ -1,0 +1,657 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:," />
+    <title>数学C 研究 円のベクトル方程式 自習ページ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Serif+JP:wght@700;900&family=STIX+Two+Math&display=swap" rel="stylesheet" />
+    <style>
+      :root{
+        --bg:#f4f7f5;
+        --surface:#ffffff;
+        --surface2:#eef4f1;
+        --ink:#1d2a26;
+        --ink-soft:#43554e;
+        --line:#cfddd6;
+        --accent:#0e7a5f;
+        --accent-deep:#0a5c48;
+        --accent-soft:#e2f2ec;
+        --blue:#1f6fb4;
+        --orange:#d96c1e;
+        --hint-bg:#fff6cf;
+        --hint-line:#e3c84e;
+        --hint-ink:#4d4210;
+        --ans-bg:#e6f6ea;
+        --ans-line:#4caf6d;
+        --ans-ink:#14401f;
+        --bar-bg:rgba(255,255,255,.94);
+        --shadow:0 2px 10px rgba(20,50,40,.08);
+        --arrow-img:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 12' preserveAspectRatio='none'%3E%3Cpath d='M2 6 H90 M82 1.5 L91 6 L82 10.5' stroke='%231d2a26' stroke-width='2.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      }
+      @media (prefers-color-scheme: dark){
+        :root{
+          --bg:#101714;
+          --surface:#1a2420;
+          --surface2:#22302a;
+          --ink:#e8f0ec;
+          --ink-soft:#b3c4bc;
+          --line:#3a4a43;
+          --accent:#3cb894;
+          --accent-deep:#8fd8c0;
+          --accent-soft:#1d332b;
+          --blue:#6cb2e8;
+          --orange:#f09a4e;
+          --hint-bg:#3d3617;
+          --hint-line:#a68e2e;
+          --hint-ink:#f5e9bd;
+          --ans-bg:#17301e;
+          --ans-line:#3f9957;
+          --ans-ink:#c9eed2;
+          --bar-bg:rgba(20,28,24,.94);
+          --shadow:0 2px 10px rgba(0,0,0,.4);
+          --arrow-img:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 12' preserveAspectRatio='none'%3E%3Cpath d='M2 6 H90 M82 1.5 L91 6 L82 10.5' stroke='%23e8f0ec' stroke-width='2.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+        }
+      }
+      *{box-sizing:border-box}
+      html{scroll-behavior:smooth}
+      @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} *{transition:none!important} }
+      body{
+        margin:0; background:var(--bg); color:var(--ink);
+        font-family:"Noto Sans JP",system-ui,-apple-system,"Hiragino Kaku Gothic ProN",sans-serif;
+        line-height:1.85; font-size:16px;
+        padding-bottom:118px;
+      }
+      .wrap{max-width:780px;margin:0 auto;padding:0 16px 8px}
+
+      /* ---------- ヘッダー ---------- */
+      header{padding:26px 0 6px}
+      .badge{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:700;font-size:13px;
+        padding:4px 12px;border-radius:999px;letter-spacing:.04em;
+      }
+      @media (prefers-color-scheme: dark){ .badge{color:#0c1712} }
+      h1{
+        font-family:"Noto Serif JP",serif;font-weight:900;font-size:34px;line-height:1.3;
+        margin:12px 0 4px;letter-spacing:.02em;
+      }
+      .page-meta{color:var(--ink-soft);font-size:14px;font-weight:500}
+      .page-meta b{color:var(--accent-deep)}
+
+      /* ---------- 使い方 ---------- */
+      .howto{
+        background:var(--accent-soft);border:1.5px solid var(--accent);border-radius:14px;
+        padding:14px 18px;margin:18px 0 26px;box-shadow:var(--shadow);
+      }
+      .howto h2{margin:0 0 6px;font-size:16px;color:var(--accent-deep)}
+      .howto ol{margin:0;padding-left:1.4em}
+      .howto li{margin:2px 0}
+      .howto .next-word{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:700;border-radius:6px;
+        padding:0 8px;font-size:.92em;
+      }
+      @media (prefers-color-scheme: dark){ .howto .next-word{color:#0c1712} }
+
+      /* ---------- セクション見出し ---------- */
+      .sec-head{display:flex;align-items:center;gap:10px;margin:34px 0 12px}
+      .sec-tag{
+        background:var(--ink);color:var(--bg);font-weight:900;font-size:14px;border-radius:8px;
+        padding:3px 10px;white-space:nowrap;
+      }
+      .sec-head h2{font-size:21px;margin:0;font-weight:900}
+      .sec-head .pno{margin-left:auto;color:var(--ink-soft);font-size:13px;white-space:nowrap}
+
+      .card{
+        background:var(--surface);border:1px solid var(--line);border-radius:14px;
+        padding:18px 18px 8px;margin:0 0 18px;box-shadow:var(--shadow);
+      }
+      .card p{margin:0 0 12px}
+      figure{margin:6px 0 14px}
+      figure svg{width:100%;height:auto;display:block}
+      figcaption{font-size:13.5px;color:var(--ink-soft);text-align:center;margin-top:6px;line-height:1.6}
+      .figbox{background:var(--surface2);border-radius:12px;padding:12px 10px 6px}
+
+      /* ---------- 数式・矢印表記 ---------- */
+      .v{
+        display:inline-block;position:relative;padding-top:.5em;line-height:1.1;
+        font-family:"STIX Two Math","Noto Sans JP",sans-serif;
+        font-weight:700;font-style:italic;white-space:nowrap;
+      }
+      .v::before{
+        content:"";position:absolute;top:.02em;left:-.04em;right:-.04em;height:.34em;
+        background-image:var(--arrow-img);background-repeat:no-repeat;background-size:100% 100%;
+      }
+      .formula{
+        text-align:center;font-size:19px;font-weight:700;letter-spacing:.03em;
+        background:var(--surface2);border-radius:10px;padding:12px 8px;margin:0 0 14px;
+      }
+      sub{font-size:.72em}
+      /* 数式フォント（TeX風）：英数字・記号は STIX Two Math、日本語字形は Noto Sans JP にフォールバック */
+      .card p,.card li,figcaption,.qtab-eq{
+        font-family:"STIX Two Math","Noto Sans JP",sans-serif;
+      }
+
+      /* ---------- 問題カード（ヒント式） ---------- */
+      .prob{border:2px solid var(--line);transition:border-color .2s}
+      .prob.active{border-color:var(--accent)}
+      .prob-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+      .prob-tag{
+        font-weight:900;font-size:14px;border-radius:8px;padding:3px 12px;color:#fff;background:var(--blue);
+      }
+      .prob-tag.ren{background:#c2452d}
+      .prob-tag.kai{background:var(--accent)}
+      @media (prefers-color-scheme: dark){ .prob-tag{color:#0d141b} .prob-tag.ren{color:#1c0f0a} .prob-tag.kai{color:#0c1712} }
+      .prob-state{margin-left:auto;font-size:13px;font-weight:700;color:var(--ink-soft)}
+      .dots{display:flex;gap:6px;align-items:center}
+      .dot{width:11px;height:11px;border-radius:50%;border:2px solid var(--ink-soft);background:transparent}
+      .dot.on{background:var(--accent);border-color:var(--accent)}
+      .dot.ans.on{background:#2f9e4f;border-color:#2f9e4f}
+      .prob-q{font-weight:700;font-size:16.5px;margin:0 0 10px}
+
+      .step{display:none;margin:0 0 12px;border-radius:12px;padding:12px 16px 4px;scroll-margin-bottom:130px}
+      .step.show{display:block;animation:pop .25s ease}
+      @keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+      .step h3{margin:0 0 6px;font-size:14px;font-weight:900;letter-spacing:.05em}
+      .step p{margin:0 0 10px}
+      .hint{background:var(--hint-bg);border:1.5px solid var(--hint-line);color:var(--hint-ink)}
+      .hint h3{color:inherit}
+      .deriv{background:var(--surface2);border:1.5px solid var(--line);color:var(--ink)}
+      .deriv .formula{background:var(--surface)}
+      .answer{background:var(--ans-bg);border:1.5px solid var(--ans-line);color:var(--ans-ink)}
+      .answer .big{font-size:18px;font-weight:900;text-align:center;margin:4px 0 10px}
+      .note{font-size:14px;border-top:1px dashed currentColor;padding-top:8px;margin-top:2px}
+      .prob-done{
+        display:none;text-align:center;font-weight:900;color:var(--accent-deep);
+        padding:2px 0 12px;font-size:15px;
+      }
+      .prob-done.show{display:block}
+
+      /* ---------- 小問タブ（練習1） ---------- */
+      .qtabs{display:flex;gap:8px;margin:0 0 14px}
+      .qtab{
+        flex:1;font-family:inherit;cursor:pointer;border-radius:12px;padding:10px 8px;
+        border:2px solid var(--line);background:var(--surface);color:var(--ink);
+        font-weight:700;font-size:15px;line-height:1.5;
+      }
+      .qtab.active{border-color:var(--accent);background:var(--accent-soft);box-shadow:inset 0 0 0 1px var(--accent)}
+      .qtab .qtab-eq{display:block;font-size:13.5px;color:var(--ink-soft);font-weight:700}
+      .qtab:active{transform:scale(.98)}
+      .qpanel{display:none}
+      .qpanel.show{display:block}
+
+      /* ---------- まとめ ---------- */
+      .summary{border:2px solid var(--accent);background:var(--accent-soft)}
+      .summary h2{margin:0 0 8px;font-size:18px;color:var(--accent-deep)}
+      .summary ul{margin:0;padding-left:1.3em}
+      .summary li{margin:4px 0}
+
+      /* ---------- フッター ---------- */
+      footer{margin:30px 0 10px;text-align:center}
+      .back-btn{
+        display:inline-block;text-decoration:none;font-weight:700;color:var(--ink);
+        border:2px solid var(--line);background:var(--surface);border-radius:12px;padding:12px 26px;
+      }
+      .foot-note{color:var(--ink-soft);font-size:13px;margin-top:12px}
+
+      /* ---------- 下部固定バー ---------- */
+      .ctrl-bar{
+        position:fixed;left:0;right:0;bottom:0;z-index:50;background:var(--bar-bg);
+        backdrop-filter:blur(8px);border-top:1.5px solid var(--line);
+        padding:10px 14px calc(10px + env(safe-area-inset-bottom));
+      }
+      .ctrl-inner{max-width:780px;margin:0 auto}
+      .ctrl-label{font-size:13px;font-weight:700;color:var(--ink-soft);margin:0 0 8px;text-align:center}
+      .ctrl-label b{color:var(--accent-deep)}
+      .ctrl-btns{display:flex;gap:10px}
+      .btn{
+        font-family:inherit;cursor:pointer;border-radius:12px;font-weight:900;border:2px solid var(--line);
+        background:var(--surface);color:var(--ink);padding:12px 14px;font-size:15px;
+      }
+      .btn-next{
+        flex:1;background:var(--accent);border-color:var(--accent);color:#fff;font-size:18px;padding:12px;
+      }
+      @media (prefers-color-scheme: dark){ .btn-next{color:#0c1712} }
+      .btn-next:disabled{background:var(--surface2);border-color:var(--line);color:var(--ink-soft);cursor:default}
+      .btn:active{transform:scale(.98)}
+
+      /* SVG内の文字・線 */
+      .svg-txt{font-family:"STIX Two Math","Noto Sans JP",sans-serif;font-weight:700;fill:var(--ink)}
+      .svg-txt-soft{font-family:"STIX Two Math","Noto Sans JP",sans-serif;fill:var(--ink-soft)}
+      .grid-line{stroke:var(--line);stroke-width:1}
+      .axis-line{stroke:var(--ink-soft);stroke-width:1.6}
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+
+      <!-- ================= ヘッダー ================= -->
+      <header>
+        <span class="badge">数学C　第1章　平面上のベクトル　研究</span>
+        <h1>円のベクトル方程式</h1>
+        <p class="page-meta">教科書 <b>p.45</b>　｜　第2節 ベクトルと図形</p>
+      </header>
+
+      <!-- ================= 使い方 ================= -->
+      <section class="howto" aria-label="使い方">
+        <h2>このページの使い方（自習の流れ）</h2>
+        <ol>
+          <li><b>解説</b>を読んで、図でイメージをつかむ</li>
+          <li>解説も<b>練習問題</b>も、下の <span class="next-word">次へ</span> で1ステップずつ開いて追っていく</li>
+          <li><b>練習問題</b>に挑戦 ― 答えは最後のヒントのあとに出てくるよ</li>
+        </ol>
+      </section>
+
+      <!-- ================= 解説1 ================= -->
+      <div class="sec-head">
+        <span class="sec-tag">解説 1</span>
+        <h2>中心と半径で表す円</h2>
+        <span class="pno">教科書 p.45</span>
+      </div>
+
+      <section class="card prob active" id="prob-kai1" data-flow="kai1" data-label="解説1：中心と半径で表す円" data-kind="deriv">
+        <div class="prob-head">
+          <span class="prob-tag kai">公式の導出</span>
+          <div class="dots" aria-hidden="true">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span>
+          </div>
+          <span class="prob-state">ステップ 0 / 4</span>
+        </div>
+        <p>点 A（位置ベクトル <span class="v">a</span>）を中心とする、半径 r の円を考える。円周上の点 P の位置ベクトルを <span class="v">p</span> とするとき、P が円周上にあるための条件を、ベクトルの式で表してみよう。</p>
+        <figure>
+          <div class="figbox">
+            <svg viewBox="0 0 520 300" role="img" aria-label="点Aを中心とする円。円周上の点Pと中心Aを結ぶ線分が半径r。原点OからAへの位置ベクトルが a、OからPへの位置ベクトルが p">
+              <defs>
+                <marker id="ah-k1" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+                  <path d="M0,0 L10,5 L0,10 z" fill="var(--ink-soft)"></path>
+                </marker>
+              </defs>
+              <circle cx="280" cy="160" r="105" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="3"></circle>
+              <line x1="70" y1="252" x2="272" y2="166" stroke="var(--ink-soft)" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#ah-k1)"></line>
+              <line x1="70" y1="252" x2="341" y2="86" stroke="var(--ink-soft)" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#ah-k1)"></line>
+              <line x1="280" y1="160" x2="347" y2="80" stroke="var(--orange)" stroke-width="3.5"></line>
+              <circle cx="70" cy="252" r="4.5" fill="var(--ink)"></circle>
+              <circle cx="280" cy="160" r="5" fill="var(--ink)"></circle>
+              <circle cx="347" cy="80" r="5" fill="var(--ink)"></circle>
+              <text x="48" y="276" class="svg-txt" font-size="20">O</text>
+              <text x="262" y="190" class="svg-txt" font-size="20">A</text>
+              <text x="358" y="74" class="svg-txt" font-size="20">P</text>
+              <text x="150" y="196" text-anchor="middle" class="svg-txt" font-size="17"><tspan font-style="italic">a</tspan></text>
+              <path d="M141 180 H159 M153 177 L159.5 180 L153 183" stroke="var(--ink)" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+              <text x="168" y="130" text-anchor="middle" class="svg-txt" font-size="17"><tspan font-style="italic">p</tspan></text>
+              <path d="M159 114 H177 M171 111 L177.5 114 L171 117" stroke="var(--ink)" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+              <text x="326" y="128" text-anchor="middle" class="svg-txt" font-size="18" fill="var(--orange)">r</text>
+            </svg>
+          </div>
+          <figcaption>中心 A、半径 r の円。円周上の点 P は、A からの距離がちょうど r の点。点線は位置ベクトル <span class="v" style="padding-top:.4em">a</span> と <span class="v" style="padding-top:.4em">p</span>。</figcaption>
+        </figure>
+        <p>公式がどうやって出てくるか、下の <b>次へ</b> で1ステップずつ追ってみよう。</p>
+
+        <div class="step deriv">
+          <h3>ステップ 1 ― 円周上の点の条件は「Aからの距離が r」</h3>
+          <p>円とは、中心から<b>距離が一定</b>の点の集まりだった。だから、点 P がこの円周上にあるのは、A から P までの距離がちょうど r のとき。その条件は</p>
+          <p class="formula">｜<span class="v">AP</span>｜＝r</p>
+          <p>距離が r より小さければ円の内側、大きければ円の外側の点になってしまう。</p>
+        </div>
+        <div class="step deriv">
+          <h3>ステップ 2 ― <span class="v">AP</span> を位置ベクトルで表す</h3>
+          <p>2点間のベクトルは「<b>終点の位置ベクトル − 始点の位置ベクトル</b>」だった（「5 位置ベクトル」で学んだ）。始点 A、終点 P だから</p>
+          <p class="formula"><span class="v">AP</span>＝<span class="v">p</span>−<span class="v">a</span></p>
+          <p>これをステップ1の式に代入すると</p>
+          <p class="formula">｜<span class="v">p</span>−<span class="v">a</span>｜＝r　……①</p>
+        </div>
+        <div class="step deriv">
+          <h3>ステップ 3 ― 両辺を2乗して、内積の形にする</h3>
+          <p>①の両辺を2乗すると、左辺は ｜<span class="v">p</span>−<span class="v">a</span>｜² になる。ここで、どんなベクトル <span class="v">v</span> に対しても ｜<span class="v">v</span>｜²＝<span class="v">v</span>・<span class="v">v</span>（自分自身との内積）だったことを思い出そう。</p>
+          <p class="formula">｜<span class="v">p</span>−<span class="v">a</span>｜²＝（<span class="v">p</span>−<span class="v">a</span>）・（<span class="v">p</span>−<span class="v">a</span>）</p>
+          <p>だから①は、次の形にも書ける。</p>
+          <p class="formula">（<span class="v">p</span>−<span class="v">a</span>）・（<span class="v">p</span>−<span class="v">a</span>）＝r²　……②</p>
+        </div>
+        <div class="step deriv">
+          <h3>ステップ 4 ― 円のベクトル方程式（2つの形）</h3>
+          <p class="formula">｜<span class="v">p</span>−<span class="v">a</span>｜＝r　……①　　　（<span class="v">p</span>−<span class="v">a</span>）・（<span class="v">p</span>−<span class="v">a</span>）＝r²　……②</p>
+          <p>①と②が、<b>点 A を中心とする半径 r の円のベクトル方程式</b>だ。①は「中心からの距離が r」という意味が読み取りやすく、②は内積の形で、成分で計算したいときに使いやすい。表している円は同じものだよ。</p>
+        </div>
+        <p class="prob-done">①と②が円のベクトル方程式だ！　練習1で、式から円を読み取ってみよう。</p>
+      </section>
+
+      <!-- ================= 練習1 ================= -->
+      <div class="sec-head">
+        <span class="sec-tag">練習 1</span>
+        <h2>式から円を読み取る</h2>
+        <span class="pno">教科書 p.45</span>
+      </div>
+
+      <p style="margin:0 0 12px">点 A（<span class="v">a</span>）が与えられているとき、次のベクトル方程式において点 P（<span class="v">p</span>）の全体は円となる。円の中心の位置ベクトル、円の半径を求めよう。小問のタブを切り替えて、1問ずつ進めてね。</p>
+
+      <div class="qtabs" role="tablist" aria-label="練習1の小問">
+        <button class="qtab active" type="button" data-qtab="ren1a">（1）<span class="qtab-eq">｜<span class="v" style="padding-top:.4em">p</span>−<span class="v" style="padding-top:.4em">a</span>｜＝3</span></button>
+        <button class="qtab" type="button" data-qtab="ren1b">（2）<span class="qtab-eq">｜2<span class="v" style="padding-top:.4em">p</span>−<span class="v" style="padding-top:.4em">a</span>｜＝4</span></button>
+      </div>
+
+      <section class="card prob qpanel show" id="prob-ren1a" data-flow="ren1a" data-label="練習1（1）" data-kind="hint">
+        <div class="prob-head">
+          <span class="prob-tag ren">練習 1（1）</span>
+          <div class="dots" aria-hidden="true">
+            <span class="dot"></span><span class="dot"></span><span class="dot ans"></span>
+          </div>
+          <span class="prob-state">ヒント 0 / 2</span>
+        </div>
+        <p class="prob-q">｜<span class="v">p</span>−<span class="v">a</span>｜＝3　の表す円の中心の位置ベクトルと、半径を求めよ。</p>
+
+        <div class="step hint">
+          <h3>ヒント 1 ― 解説1の①と見比べる</h3>
+          <p>解説1で作った円のベクトル方程式①を思い出そう。</p>
+          <p class="formula" style="background:var(--surface)">｜<span class="v">p</span>−<span class="v">a</span>｜＝r</p>
+          <p>この問題の式 ｜<span class="v">p</span>−<span class="v">a</span>｜＝3 は、①と<b>まったく同じ形</b>をしている。違うのは右辺の文字 r が、数字の 3 になっているところだけだ。</p>
+        </div>
+        <div class="step hint">
+          <h3>ヒント 2 ― 中心と半径を読み取る</h3>
+          <p>①では、<span class="v">p</span>−<span class="v">a</span> の <span class="v">a</span> が<b>中心の位置ベクトル</b>、右辺の r が<b>半径</b>だった。</p>
+          <p>同じように読み取ると、この問題では中心は位置ベクトル <span class="v">a</span> の点、半径は右辺の数がそのまま入るはずだ。確認してみよう。</p>
+        </div>
+        <div class="step answer">
+          <h3>解答</h3>
+          <p class="big">中心は位置ベクトル <span class="v">a</span> の点 A、半径 3</p>
+          <p>｜<span class="v">p</span>−<span class="v">a</span>｜＝3 は①そのもので、<span class="v">p</span>−<span class="v">a</span> の <span class="v">a</span> が中心、右辺の 3 が半径になる。</p>
+          <p class="note"><b>ポイント：</b>｜<span class="v" style="padding-top:.4em">p</span>−（中心の位置ベクトル）｜＝（半径）の形を見たら、そのまま読み取るだけ。</p>
+        </div>
+        <p class="prob-done">練習1（1）クリア！　タブ（2）に切り替えて、少しひねった式に挑戦しよう。</p>
+      </section>
+
+      <section class="card prob qpanel" id="prob-ren1b" data-flow="ren1b" data-label="練習1（2）" data-kind="hint">
+        <div class="prob-head">
+          <span class="prob-tag ren">練習 1（2）</span>
+          <div class="dots" aria-hidden="true">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span>
+          </div>
+          <span class="prob-state">ヒント 0 / 3</span>
+        </div>
+        <p class="prob-q">｜2<span class="v">p</span>−<span class="v">a</span>｜＝4　の表す円の中心の位置ベクトルと、半径を求めよ。</p>
+
+        <div class="step hint">
+          <h3>ヒント 1 ― ①の形に直すのが目標。まず中身を2でくくる</h3>
+          <p>この式は ｜<span class="v">p</span>−（中心）｜＝（半径）の形に<b>なっていない</b>。じゃまなのは、<span class="v">p</span> についた係数の <b>2</b> だ。</p>
+          <p>まず、絶対値の中の 2<span class="v">p</span>−<span class="v">a</span> を 2 でくくってみよう。<span class="v">a</span> の方も 2 で割るのを忘れずに。</p>
+          <p class="formula" style="background:var(--surface)">2<span class="v">p</span>−<span class="v">a</span>＝2（<span class="v">p</span>−(1/2)<span class="v">a</span>）</p>
+        </div>
+        <div class="step hint">
+          <h3>ヒント 2 ― ｜2<span class="v">v</span>｜＝2｜<span class="v">v</span>｜ を使う</h3>
+          <p>ベクトルを2倍すると、長さも2倍になる。だから ｜2（<span class="v">p</span>−(1/2)<span class="v">a</span>）｜＝2｜<span class="v">p</span>−(1/2)<span class="v">a</span>｜ と書ける。もとの式に当てはめると</p>
+          <p class="formula" style="background:var(--surface)">2｜<span class="v">p</span>−(1/2)<span class="v">a</span>｜＝4</p>
+          <p>あと一歩。両辺をどうすれば、①の形 ｜<span class="v">p</span>−（中心）｜＝（半径）になるかな？</p>
+        </div>
+        <div class="step hint">
+          <h3>ヒント 3 ― 両辺を2で割って、①の形にする</h3>
+          <p>両辺を 2 で割ると</p>
+          <p class="formula" style="background:var(--surface)">｜<span class="v">p</span>−(1/2)<span class="v">a</span>｜＝2</p>
+          <p>これで①の形になった。<span class="v">p</span>−（　） の（　）に入っているものが中心の位置ベクトル、右辺が半径だ。読み取ってみよう。</p>
+        </div>
+        <div class="step answer">
+          <h3>解答</h3>
+          <p class="big">中心は位置ベクトル (1/2)<span class="v">a</span> の点、半径 2</p>
+          <p>｜2<span class="v">p</span>−<span class="v">a</span>｜＝4 ⇔ 2｜<span class="v">p</span>−(1/2)<span class="v">a</span>｜＝4 ⇔ ｜<span class="v">p</span>−(1/2)<span class="v">a</span>｜＝2。よって、中心は位置ベクトル (1/2)<span class="v">a</span> の点で、半径は 2。</p>
+          <p class="note"><b>ポイント：</b><span class="v" style="padding-top:.4em">p</span> に係数がついていたら、まず中身をその係数でくくって両辺を割り、①の形に直してから読み取る。中心は A ではなく、(1/2)<span class="v" style="padding-top:.4em">a</span> の点（線分 OA の中点）になることに注意。</p>
+        </div>
+        <p class="prob-done">練習1（2）クリア！　次は、直径から円を表す方法を学ぼう。</p>
+      </section>
+
+      <!-- ================= 解説2 ================= -->
+      <div class="sec-head">
+        <span class="sec-tag">解説 2</span>
+        <h2>直径の両端で表す円</h2>
+        <span class="pno">教科書 p.45</span>
+      </div>
+
+      <section class="card prob" id="prob-kai2" data-flow="kai2" data-label="解説2：直径の両端で表す円" data-kind="deriv">
+        <div class="prob-head">
+          <span class="prob-tag kai">公式の導出</span>
+          <div class="dots" aria-hidden="true">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span>
+          </div>
+          <span class="prob-state">ステップ 0 / 4</span>
+        </div>
+        <p>今度は、2点 A（<span class="v">a</span>）、B（<span class="v">b</span>）を結ぶ<b>線分 AB を直径とする円</b>を考える。円周上の点 P（<span class="v">p</span>）について、どんな関係が成り立つだろうか。</p>
+        <figure>
+          <div class="figbox">
+            <svg viewBox="0 0 520 300" role="img" aria-label="線分ABを直径とする円。円周上の点PとA、Bを結ぶと角APBが直角になる">
+              <circle cx="260" cy="150" r="115" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="3"></circle>
+              <line x1="145" y1="150" x2="375" y2="150" stroke="var(--ink-soft)" stroke-width="2" stroke-dasharray="6 5"></line>
+              <line x1="145" y1="150" x2="317" y2="50" stroke="var(--ink)" stroke-width="2.5"></line>
+              <line x1="375" y1="150" x2="317" y2="50" stroke="var(--ink)" stroke-width="2.5"></line>
+              <polyline points="303,58 311,72 325,64" fill="none" stroke="var(--orange)" stroke-width="2.5"></polyline>
+              <circle cx="145" cy="150" r="5" fill="var(--ink)"></circle>
+              <circle cx="375" cy="150" r="5" fill="var(--ink)"></circle>
+              <circle cx="317" cy="50" r="5" fill="var(--ink)"></circle>
+              <text x="118" y="176" class="svg-txt" font-size="20">A</text>
+              <text x="384" y="176" class="svg-txt" font-size="20">B</text>
+              <text x="326" y="42" class="svg-txt" font-size="20">P</text>
+              <text x="252" y="140" text-anchor="middle" class="svg-txt-soft" font-size="14">直径 AB</text>
+              <text x="352" y="96" class="svg-txt" font-size="15" fill="var(--orange)">直角</text>
+            </svg>
+          </div>
+          <figcaption>線分 AB を直径とする円。円周上の点 P から A、B に引いた2辺 PA、PB は直角に交わる（オレンジの直角マーク）。</figcaption>
+        </figure>
+        <p>下の <b>次へ</b> で、関係式を1ステップずつ作っていこう。</p>
+
+        <div class="step deriv">
+          <h3>ステップ 1 ― 円周角の定理：直径に対する角は直角</h3>
+          <p>中学で学んだ<b>円周角の定理</b>から、直径 AB に対する円周角 ∠APB は<b>直角</b>になる。つまり、P が A、B と一致しないとき</p>
+          <p class="formula">AP⊥BP</p>
+          <p>図の直角マークがそれを表している。P が円周上のどこにあっても、∠APB はいつも直角だ。</p>
+        </div>
+        <div class="step deriv">
+          <h3>ステップ 2 ― 垂直を内積ゼロで表す</h3>
+          <p>2つのベクトルが垂直なのは、内積が 0 のときだった（「4 ベクトルの内積」）。AP⊥BP を内積で書くと</p>
+          <p class="formula"><span class="v">AP</span>・<span class="v">BP</span>＝0</p>
+        </div>
+        <div class="step deriv">
+          <h3>ステップ 3 ― 位置ベクトルで書き直す</h3>
+          <p><span class="v">AP</span>＝<span class="v">p</span>−<span class="v">a</span>、<span class="v">BP</span>＝<span class="v">p</span>−<span class="v">b</span>（終点 − 始点）を代入すると</p>
+          <p class="formula">（<span class="v">p</span>−<span class="v">a</span>）・（<span class="v">p</span>−<span class="v">b</span>）＝0　……③</p>
+          <p>これが、線分 AB を直径とする円のベクトル方程式だ。</p>
+        </div>
+        <div class="step deriv">
+          <h3>ステップ 4 ― P が A や B に一致するときも③は成り立つ</h3>
+          <p>ステップ1では「P が A、B と一致しないとき」と断った。でも、P が A に一致するときは <span class="v">p</span>−<span class="v">a</span>＝<span class="v">0</span> になるから、③の左辺は <span class="v">0</span> との内積で 0 になり、③はちゃんと成り立つ。P が B に一致するときも同じだ。</p>
+          <p>だから③は、A、B 自身も含めて、<b>線分 AB を直径とする円全体</b>を表す式になっている。</p>
+        </div>
+        <p class="prob-done">③が直径の円の方程式だ！　練習2の証明で使ってみよう。</p>
+      </section>
+
+      <!-- ================= 練習2 ================= -->
+      <div class="sec-head">
+        <span class="sec-tag">練習 2</span>
+        <h2>証明に挑戦</h2>
+        <span class="pno">教科書 p.45</span>
+      </div>
+
+      <section class="card prob" id="prob-ren2" data-flow="ren2" data-label="練習2：証明" data-kind="hint">
+        <div class="prob-head">
+          <span class="prob-tag ren">練習 2</span>
+          <div class="dots" aria-hidden="true">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span>
+          </div>
+          <span class="prob-state">ヒント 0 / 3</span>
+        </div>
+        <p class="prob-q">平面上の異なる2点 O、A に対して <span class="v">OA</span>＝<span class="v">a</span> とすると、線分 OA を直径とする円のベクトル方程式は、その円上の点 P について <span class="v">OP</span>＝<span class="v">p</span> として、<span class="v">p</span>・（<span class="v">p</span>−<span class="v">a</span>）＝0 で与えられることを示せ。</p>
+
+        <div class="step hint">
+          <h3>ヒント 1 ― 解説2の③に当てはめる問題だと見抜く</h3>
+          <p>解説2の③は「線分 AB を直径とする円」の方程式だった。</p>
+          <p class="formula" style="background:var(--surface)">（<span class="v">p</span>−<span class="v">a</span>）・（<span class="v">p</span>−<span class="v">b</span>）＝0　……③</p>
+          <p>この問題の円の直径は線分 OA。つまり③の A、B の役を、<b>O と A</b> が演じることになる。あとは、それぞれの位置ベクトルを③に入れるだけだ。</p>
+        </div>
+        <div class="step hint">
+          <h3>ヒント 2 ― O と A の位置ベクトルを書き出す</h3>
+          <p>直径の両端の位置ベクトルを確認しよう。</p>
+          <p>・点 A の位置ベクトルは、<span class="v">OA</span>＝<span class="v">a</span> と置いたから、そのまま <span class="v">a</span>。<br />・点 O は<b>原点</b>だから、位置ベクトルは <span class="v">0</span>。</p>
+          <p>この2つを③に代入すると、どんな式になるか書いてみよう。</p>
+        </div>
+        <div class="step hint">
+          <h3>ヒント 3 ― 代入して、式を整理する</h3>
+          <p>③で A→<span class="v">a</span>、B→<span class="v">0</span>（O の位置ベクトル）とすると</p>
+          <p class="formula" style="background:var(--surface)">（<span class="v">p</span>−<span class="v">a</span>）・（<span class="v">p</span>−<span class="v">0</span>）＝0</p>
+          <p><span class="v">p</span>−<span class="v">0</span>＝<span class="v">p</span> だから、（<span class="v">p</span>−<span class="v">a</span>）・<span class="v">p</span>＝0。内積は左右を入れ替えても同じ（交換法則）なので、<span class="v">p</span>・（<span class="v">p</span>−<span class="v">a</span>）＝0 の形に直せる。これで示すべき式になった。</p>
+        </div>
+        <div class="step answer">
+          <h3>証明</h3>
+          <p>線分 AB を直径とする円のベクトル方程式は、解説2の③より</p>
+          <p class="formula" style="background:var(--surface)">（<span class="v">p</span>−<span class="v">a</span>）・（<span class="v">p</span>−<span class="v">b</span>）＝0</p>
+          <p>この問題では直径の両端が O と A で、O の位置ベクトルは <span class="v">0</span>、A の位置ベクトルは <span class="v">OA</span>＝<span class="v">a</span> である。よって、③で <span class="v">b</span> を <span class="v">0</span> と置くと</p>
+          <p class="formula" style="background:var(--surface)">（<span class="v">p</span>−<span class="v">a</span>）・（<span class="v">p</span>−<span class="v">0</span>）＝0</p>
+          <p><span class="v">p</span>−<span class="v">0</span>＝<span class="v">p</span> であるから</p>
+          <p class="big"><span class="v">p</span>・（<span class="v">p</span>−<span class="v">a</span>）＝0　（証明終わり）</p>
+          <p class="note"><b>ポイント：</b>証明といっても、やることは「③に当てはめて、<span class="v" style="padding-top:.4em">0</span> を消す」だけ。一般の公式を具体的な点に当てはめる、という流れは証明の基本パターンの1つだよ。</p>
+        </div>
+        <p class="prob-done">練習2 クリア！　下のまとめで2つの基本形を確認しよう。</p>
+      </section>
+
+      <!-- ================= まとめ ================= -->
+      <section class="card summary">
+        <h2>この項のポイント</h2>
+        <ul>
+          <li><b>中心と半径の形：</b>「中心からの距離が一定」という考え方から、<b>｜<span class="v" style="padding-top:.4em">p</span>−<span class="v" style="padding-top:.4em">a</span>｜＝r</b>（内積の形では （<span class="v" style="padding-top:.4em">p</span>−<span class="v" style="padding-top:.4em">a</span>）・（<span class="v" style="padding-top:.4em">p</span>−<span class="v" style="padding-top:.4em">a</span>）＝r²）。中心の位置ベクトルと半径がそのまま読み取れる。</li>
+          <li><b>直径の両端の形：</b>「直径に対する円周角は直角」という考え方から、<b>（<span class="v" style="padding-top:.4em">p</span>−<span class="v" style="padding-top:.4em">a</span>）・（<span class="v" style="padding-top:.4em">p</span>−<span class="v" style="padding-top:.4em">b</span>）＝0</b>。線分 AB を直径とする円を表す。</li>
+          <li><b>読み取りのコツ：</b><span class="v" style="padding-top:.4em">p</span> に係数がついた式は、そのまま読まずに係数でくくって両辺を割り、基本形に直してから中心と半径を読む。</li>
+        </ul>
+      </section>
+
+      <!-- ================= フッター ================= -->
+      <footer>
+        <a class="back-btn" href="vectors.html" id="backToTop">← トップページに戻る</a>
+        <div style="margin-top:12px">
+          <a class="back-btn" href="index.html">Nanryo mathematics portal に戻る</a>
+        </div>
+        <p class="foot-note">数学C 第1章 平面上のベクトル ｜ 研究 円のベクトル方程式（教科書 p.45）</p>
+      </footer>
+    </div>
+
+    <!-- ================= 下部固定バー ================= -->
+    <div class="ctrl-bar">
+      <div class="ctrl-inner">
+        <p class="ctrl-label">いまの課題：<b id="ctrlLabel">解説1：中心と半径で表す円</b>　―　「次へ」で1ステップずつ開こう</p>
+        <div class="ctrl-btns">
+          <button class="btn" id="btnReset" type="button">最初からやり直す</button>
+          <button class="btn btn-next" id="btnNext" type="button">次へ ▶</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      (function(){
+        "use strict";
+
+        /* ---------- ヒント式フロー ---------- */
+        var flows = {};   // flowId -> {root, steps, dots, stateEl, doneEl, idx, label, kind, stepTotal}
+        var order = ['kai1', 'ren1a', 'ren1b', 'kai2', 'ren2'];
+        var activeId = 'kai1';
+
+        function registerFlow(root){
+          var id = root.getAttribute('data-flow');
+          var steps = Array.prototype.slice.call(root.querySelectorAll(':scope > .step'));
+          var head = root.querySelector(':scope > .prob-head');
+          var dots = head ? Array.prototype.slice.call(head.querySelectorAll('.dot')) : [];
+          var stateEl = head ? head.querySelector('.prob-state') : null;
+          var doneEl = root.querySelector(':scope > .prob-done');
+          var kind = root.getAttribute('data-kind') || 'hint';
+          flows[id] = {
+            id: id, root: root, steps: steps, dots: dots, stateEl: stateEl,
+            doneEl: doneEl, idx: 0, label: root.getAttribute('data-label') || id,
+            kind: kind,
+            hintTotal: steps.filter(function(s){ return s.classList.contains('hint'); }).length,
+            stepTotal: steps.length
+          };
+        }
+        order.forEach(function(id){
+          registerFlow(document.querySelector('[data-flow="' + id + '"]'));
+        });
+
+        var btnNext = document.getElementById('btnNext');
+        var btnReset = document.getElementById('btnReset');
+        var ctrlLabel = document.getElementById('ctrlLabel');
+
+        function refreshFlow(f){
+          f.steps.forEach(function(s, i){ s.classList.toggle('show', i < f.idx); });
+          f.dots.forEach(function(d, i){ d.classList.toggle('on', i < f.idx); });
+          if (f.stateEl){
+            if (f.kind === 'deriv'){
+              f.stateEl.textContent = f.idx >= f.stepTotal ? '公式を表示済み' : 'ステップ ' + f.idx + ' / ' + f.stepTotal;
+            } else {
+              if (f.idx === 0) f.stateEl.textContent = 'ヒント 0 / ' + f.hintTotal;
+              else if (f.idx <= f.hintTotal) f.stateEl.textContent = 'ヒント ' + f.idx + ' / ' + f.hintTotal;
+              else f.stateEl.textContent = '解答を表示済み';
+            }
+          }
+          if (f.doneEl) f.doneEl.classList.toggle('show', f.idx >= f.steps.length);
+        }
+        function refreshBar(){
+          var f = flows[activeId];
+          ctrlLabel.textContent = f.label;
+          order.forEach(function(id){
+            flows[id].root.classList.toggle('active', id === activeId);
+          });
+          if (f.idx >= f.steps.length){
+            btnNext.disabled = true;
+            btnNext.textContent = 'ぜんぶ開いたよ ✓';
+          } else if (f.kind === 'hint' && f.idx === f.hintTotal){
+            btnNext.disabled = false;
+            btnNext.textContent = '解答を見る ▶';
+          } else if (f.kind === 'deriv' && f.idx === f.stepTotal - 1){
+            btnNext.disabled = false;
+            btnNext.textContent = '公式を見る ▶';
+          } else {
+            btnNext.disabled = false;
+            btnNext.textContent = f.kind === 'deriv'
+              ? '次へ ▶（ステップ ' + (f.idx + 1) + '）'
+              : '次へ ▶（ヒント ' + (f.idx + 1) + '）';
+          }
+        }
+        function setActive(id){
+          activeId = id;
+          refreshBar();
+        }
+
+        btnNext.addEventListener('click', function(){
+          var f = flows[activeId];
+          if (f.idx >= f.steps.length) return;
+          f.idx += 1;
+          refreshFlow(f);
+          refreshBar();
+          var shown = f.steps[f.idx - 1];
+          if (shown) shown.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        });
+        btnReset.addEventListener('click', function(){
+          var f = flows[activeId];
+          f.idx = 0;
+          refreshFlow(f);
+          refreshBar();
+          f.root.scrollIntoView({ block: 'start', behavior: 'smooth' });
+        });
+
+        /* カードを触ったら、その課題を操作対象にする */
+        order.forEach(function(id){
+          flows[id].root.addEventListener('click', function(){ setActive(id); });
+        });
+
+        /* ---------- 練習1の小問タブ ---------- */
+        var qtabs = Array.prototype.slice.call(document.querySelectorAll('.qtab'));
+        qtabs.forEach(function(tab){
+          tab.addEventListener('click', function(){
+            var target = tab.getAttribute('data-qtab');
+            qtabs.forEach(function(t){ t.classList.toggle('active', t === tab); });
+            ['ren1a', 'ren1b'].forEach(function(id){
+              flows[id].root.classList.toggle('show', id === target);
+            });
+            setActive(target);
+          });
+        });
+
+        Object.keys(flows).forEach(function(id){ refreshFlow(flows[id]); });
+        refreshBar();
+      })();
+    </script>
+  </body>
+</html>

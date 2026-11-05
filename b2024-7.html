@@ -1,0 +1,790 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:," />
+    <title>2024年11月記述模試 B7 ヒント式解説</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --bg: #f4f6f5;
+        --surface: #ffffff;
+        --surface2: #eef2f0;
+        --ink: #1d2a26;
+        --muted: #5a6b64;
+        --line: #d5ded9;
+        --accent: #0e6b5c;
+        --accent-ink: #ffffff;
+        --accent-soft: #e2f0ec;
+        --hint-bg: #fff6d8;
+        --hint-line: #dfc25e;
+        --hint-label: #8a6d1a;
+        --ans-bg: #e5f3e8;
+        --ans-line: #4d9a68;
+        --ans-label: #256b3e;
+        --bar: #7fb3a7;
+        --bar-hi: #0e6b5c;
+        --bar-neg: #b08968;
+        --grid: #ccd6d1;
+        --dot-off: #c9d4cf;
+        --shadow: 0 1px 3px rgba(20, 40, 34, .10);
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #121816;
+          --surface: #1c2421;
+          --surface2: #242e2a;
+          --ink: #e6edea;
+          --muted: #9db0a7;
+          --line: #37453f;
+          --accent: #3fae97;
+          --accent-ink: #0d1512;
+          --accent-soft: #1e332d;
+          --hint-bg: #38300f;
+          --hint-line: #8a7422;
+          --hint-label: #e3c86a;
+          --ans-bg: #173324;
+          --ans-line: #3f8f5f;
+          --ans-label: #7fc996;
+          --bar: #4d7f74;
+          --bar-hi: #3fae97;
+          --bar-neg: #a37f56;
+          --grid: #33413b;
+          --dot-off: #3a4741;
+          --shadow: 0 1px 3px rgba(0, 0, 0, .4);
+        }
+      }
+      * { box-sizing: border-box; }
+      html { -webkit-text-size-adjust: 100%; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic UI", "Yu Gothic", Meiryo, sans-serif;
+        line-height: 1.75;
+        font-size: 16px;
+      }
+      .m {
+        font-family: "STIX Two Math", "Hiragino Mincho ProN", "Yu Mincho", serif;
+        font-size: 1.06em;
+        letter-spacing: .01em;
+        white-space: nowrap;
+      }
+      .mwrap { white-space: normal; }
+      .frac {
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        vertical-align: middle;
+        margin: 0 .18em;
+        line-height: 1.22;
+        font-size: .92em;
+      }
+      .frac .num { border-bottom: 1.6px solid currentColor; padding: 0 .34em; }
+      .frac .den { padding: 0 .34em; }
+      main { max-width: 780px; margin: 0 auto; padding: 20px 16px 40px; }
+
+      /* ---------- header ---------- */
+      .doc-head { display: flex; gap: 16px; align-items: flex-start; margin: 6px 0 18px; }
+      .badge {
+        flex: 0 0 auto;
+        background: var(--accent);
+        color: var(--accent-ink);
+        font-family: "STIX Two Math", serif;
+        font-weight: 700;
+        font-size: 30px;
+        line-height: 1;
+        padding: 14px 16px;
+        border-radius: 10px;
+        letter-spacing: .02em;
+      }
+      .doc-head h1 { margin: 0 0 2px; font-size: 26px; line-height: 1.3; }
+      .doc-head .meta { color: var(--muted); font-size: 14px; margin: 0; }
+
+      .problem-all, .howto, .fig, .formula-box {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        box-shadow: var(--shadow);
+        padding: 16px 18px;
+        margin: 0 0 16px;
+      }
+      .problem-all h2, .howto h2 { font-size: 15px; margin: 0 0 8px; color: var(--accent); letter-spacing: .04em; }
+      .problem-all p { margin: 0; }
+      .howto ol { margin: 0; padding-left: 1.4em; }
+      .howto li { margin: 2px 0; }
+      .howto p { margin: 8px 0 0; color: var(--muted); font-size: 14px; }
+
+      /* ---------- overall progress ---------- */
+      .overall {
+        display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+        background: var(--surface2);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 10px 14px;
+        margin: 0 0 14px;
+        font-size: 14px;
+      }
+      .overall .bar-track { flex: 1 1 140px; height: 10px; background: var(--dot-off); border-radius: 5px; overflow: hidden; }
+      .overall .bar-fill { height: 100%; width: 0%; background: var(--accent); border-radius: 5px; transition: width .35s ease; }
+      .overall strong { font-family: "STIX Two Math", serif; }
+
+      /* ---------- tabs ---------- */
+      .tabs { display: flex; gap: 8px; flex-wrap: wrap; margin: 0 0 16px; }
+      .tab-btn {
+        flex: 1 1 120px;
+        appearance: none;
+        border: 1.5px solid var(--line);
+        background: var(--surface);
+        color: var(--ink);
+        border-radius: 10px;
+        padding: 10px 12px;
+        text-align: left;
+        cursor: pointer;
+        font: inherit;
+        box-shadow: var(--shadow);
+      }
+      .tab-btn .t-top { display: flex; align-items: baseline; gap: 8px; }
+      .tab-btn .t-num { font-family: "STIX Two Math", serif; font-size: 20px; font-weight: 700; }
+      .tab-btn .t-pts { color: var(--muted); font-size: 13px; }
+      .tab-btn .t-status { display: block; font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+      .tab-btn.active { border-color: var(--accent); background: var(--accent-soft); }
+      .tab-btn.done .t-status { color: var(--ans-label); font-weight: 700; }
+
+      /* ---------- panels & steps ---------- */
+      .panel { display: none; }
+      .panel.active { display: block; }
+      .q-box {
+        background: var(--surface);
+        border-left: 5px solid var(--accent);
+        border-radius: 6px;
+        box-shadow: var(--shadow);
+        padding: 14px 18px;
+        margin: 0 0 16px;
+      }
+      .q-box .q-label { font-size: 13px; color: var(--muted); margin: 0 0 4px; }
+      .q-box p { margin: 0; font-size: 17px; }
+      .fig h3 { font-size: 14px; margin: 0 0 6px; color: var(--muted); font-weight: 700; }
+      .fig p.note { margin: 8px 0 0; font-size: 14px; color: var(--muted); }
+      .fig svg { display: block; width: 100%; height: auto; }
+      .slider-row { display: flex; align-items: center; gap: 12px; margin-top: 10px; flex-wrap: wrap; }
+      .slider-row label { font-size: 14px; }
+      .slider-row input[type="range"] { flex: 1 1 180px; accent-color: var(--accent); height: 28px; }
+      .readout { font-size: 15px; margin: 6px 0 0; }
+      .readout .hit { color: var(--ans-label); font-weight: 700; }
+      .formula-box h3 { font-size: 14px; margin: 0 0 8px; color: var(--muted); }
+      .formula-box ul { margin: 0; padding-left: 0; list-style: none; }
+      .formula-box li { margin: 6px 0; font-size: 16px; }
+
+      .step { display: none; margin: 0 0 12px; }
+      .step.open { display: block; animation: fadein .3s ease; }
+      @keyframes fadein { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+      @media (prefers-reduced-motion: reduce) {
+        .step.open { animation: none; }
+        .overall .bar-fill { transition: none; }
+      }
+      .hint-card {
+        background: var(--hint-bg);
+        border: 1px solid var(--hint-line);
+        border-radius: 10px;
+        padding: 12px 16px 14px;
+      }
+      .hint-card .card-label {
+        display: inline-block;
+        font-size: 12.5px; font-weight: 700; color: var(--hint-label);
+        letter-spacing: .06em; margin-bottom: 4px;
+      }
+      .hint-card p { margin: 0; }
+      .hint-card p + p { margin-top: 6px; }
+      .answer-card {
+        background: var(--ans-bg);
+        border: 1.5px solid var(--ans-line);
+        border-radius: 10px;
+        padding: 12px 16px 14px;
+      }
+      .answer-card .card-label {
+        display: inline-block;
+        font-size: 12.5px; font-weight: 700; color: var(--ans-label);
+        letter-spacing: .06em; margin-bottom: 4px;
+      }
+      .answer-card p { margin: 0; }
+      .answer-card p + p { margin-top: 6px; }
+      .answer-card .big { font-size: 19px; }
+
+      /* ---------- sticky control bar ---------- */
+      .ctrl {
+        position: sticky;
+        bottom: 0;
+        margin: 20px -16px -40px;
+        padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+        background: var(--surface);
+        border-top: 1px solid var(--line);
+        box-shadow: 0 -2px 8px rgba(20, 40, 34, .08);
+      }
+      .ctrl-inner { max-width: 780px; margin: 0 auto; }
+      .dots { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 10px; align-items: center; }
+      .dots .dots-label { font-size: 12.5px; color: var(--muted); margin-right: 2px; }
+      .dot { width: 11px; height: 11px; border-radius: 50%; background: var(--dot-off); }
+      .dot.on { background: var(--accent); }
+      .dot.ans.on { background: var(--ans-line); }
+      .ctrl-btns { display: flex; gap: 10px; flex-wrap: wrap; }
+      #nextBtn {
+        flex: 1 1 220px;
+        appearance: none; border: none; cursor: pointer;
+        background: var(--accent); color: var(--accent-ink);
+        font: inherit; font-weight: 700; font-size: 16px;
+        border-radius: 10px; padding: 13px 16px;
+      }
+      #nextBtn:disabled { background: var(--dot-off); color: var(--muted); cursor: default; }
+      #resetBtn {
+        appearance: none; cursor: pointer;
+        background: var(--surface); color: var(--ink);
+        border: 1.5px solid var(--line);
+        font: inherit; font-size: 14.5px;
+        border-radius: 10px; padding: 13px 16px;
+      }
+
+      /* ---------- footer ---------- */
+      footer { margin-top: 34px; border-top: 1px solid var(--line); padding-top: 18px; }
+      footer nav { display: flex; flex-direction: column; gap: 10px; align-items: flex-start; }
+      footer a { color: var(--accent); text-decoration: none; font-size: 15px; }
+      footer a:hover { text-decoration: underline; }
+      footer a.portal-btn {
+        display: inline-block;
+        background: var(--accent); color: var(--accent-ink);
+        border-radius: 10px; padding: 11px 18px; font-weight: 700;
+      }
+      footer a.portal-btn:hover { text-decoration: none; opacity: .9; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header class="doc-head">
+        <div class="badge">B7</div>
+        <div>
+          <h1>数列</h1>
+          <p class="meta">2024年11月記述模試（2年）数学B・大問7（20点）ヒント式解説</p>
+        </div>
+      </header>
+
+      <section class="problem-all">
+        <h2>大問7 の問題</h2>
+        <p>等差数列 <span class="m">{a<sub>n</sub>}</span> があり、<span class="m">a<sub>1</sub> = −11</span>, <span class="m">a<sub>7</sub> − a<sub>3</sub> = 8</span> を満たしている。また、数列 <span class="m">{b<sub>n</sub>}</span> があり、その初項から第 <span class="m">n</span> 項までの和を <span class="m">S<sub>n</sub></span> とすると、<span class="m">S<sub>n</sub> = <span class="frac"><span class="num">3</span><span class="den">2</span></span>n + <span class="frac"><span class="num">1</span><span class="den">4</span></span>{(−1)<sup>n</sup> − 1}</span>（<span class="m">n = 1, 2, 3, …</span>）を満たしている。</p>
+      </section>
+
+      <section class="howto">
+        <h2>使い方</h2>
+        <ol>
+          <li>まずはヒントを見ずに、自分で考えてみよう。</li>
+          <li>下の「次へ」ボタンを押すと、ヒントが1つずつ開いていく。</li>
+          <li>ヒントを全部開いたら、最後に答えが表示される。自分の答えと見比べよう。</li>
+        </ol>
+        <p>小問は上のタブで切り替えられる。途中で別の小問に移っても、開いたヒントはそのまま残るよ。</p>
+      </section>
+
+      <div class="overall">
+        <span>全体の進み具合</span>
+        <div class="bar-track"><div class="bar-fill" id="overallFill"></div></div>
+        <span><strong id="overallText">0 / 25</strong> ステップ</span>
+      </div>
+
+      <div class="tabs" role="tablist">
+        <button class="tab-btn active" data-tab="0" role="tab">
+          <span class="t-top"><span class="t-num">(1)</span><span class="t-pts">5点</span></span>
+          <span class="t-status">まだ開いていない</span>
+        </button>
+        <button class="tab-btn" data-tab="1" role="tab">
+          <span class="t-top"><span class="t-num">(2)</span><span class="t-pts">7点</span></span>
+          <span class="t-status">まだ開いていない</span>
+        </button>
+        <button class="tab-btn" data-tab="2" role="tab">
+          <span class="t-top"><span class="t-num">(3)</span><span class="t-pts">8点</span></span>
+          <span class="t-status">まだ開いていない</span>
+        </button>
+      </div>
+
+      <!-- ================= (1) ================= -->
+      <section class="panel active" data-panel="0">
+        <div class="q-box">
+          <p class="q-label">小問 (1)・5点</p>
+          <p>数列 <span class="m">{a<sub>n</sub>}</span> の公差を求めよ。また、一般項 <span class="m">a<sub>n</sub></span> を求めよ。</p>
+        </div>
+
+        <div class="fig">
+          <h3>図：d を変えて、項の並びを観察しよう</h3>
+          <svg id="figA" viewBox="0 0 680 252" role="img" aria-label="初項マイナス11の等差数列の棒グラフ。スライダーで公差を変えられる">
+            <line id="figA-zero" x1="46" y1="95" x2="664" y2="95" style="stroke:var(--grid)" stroke-width="1.5" />
+            <text id="figA-zero-label" x="40" y="99" text-anchor="end" font-size="13" style="fill:var(--muted)">0</text>
+            <g id="figA-bars"></g>
+          </svg>
+          <div class="slider-row">
+            <label for="dSlider">公差 <span class="m">d</span> = <span class="m" id="dVal">1</span></label>
+            <input type="range" id="dSlider" min="-1" max="3" step="1" value="1" />
+          </div>
+          <p class="readout">いまの <span class="m">d</span> では <span class="m">a<sub>7</sub> − a<sub>3</sub> = <span id="diffVal">4</span></span><span id="diffHit"></span></p>
+          <p class="note">棒グラフは <span class="m">a<sub>1</sub> = −11</span> から、1つ進むごとに <span class="m">d</span> ずつ増える項の並び。<span class="m">a<sub>3</sub></span> と <span class="m">a<sub>7</sub></span> の棒が色濃くなっている。条件 <span class="m">a<sub>7</sub> − a<sub>3</sub> = 8</span> になる <span class="m">d</span> を、スライダーで探してみよう。</p>
+        </div>
+
+        <div class="step"><div class="hint-card">
+          <span class="card-label">ヒント 1</span>
+          <p>まず用語の確認。「公差（こうさ）」とは、等差数列で「隣の項との差」のことだよ。これを <span class="m">d</span> とおくと、一般項の公式は <span class="m">a<sub>n</sub> = a<sub>1</sub> + (n − 1)d</span>。</p>
+          <p><span class="m">a<sub>1</sub> = −11</span> だから、<span class="m">a<sub>n</sub> = −11 + (n − 1)d</span> と書ける。あとは <span class="m">d</span> が決まれば完成だね。</p>
+        </div></div>
+
+        <div class="step"><div class="hint-card">
+          <span class="card-label">ヒント 2</span>
+          <p>条件に出てくる <span class="m">a<sub>7</sub></span> を、公式で表そう。<span class="m">n</span> に <span class="m">7</span> を入れると</p>
+          <p><span class="m">a<sub>7</sub> = −11 + (7 − 1)d = −11 + 6d</span></p>
+        </div></div>
+
+        <div class="step"><div class="hint-card">
+          <span class="card-label">ヒント 3</span>
+          <p>同じように <span class="m">a<sub>3</sub></span> も表そう。<span class="m">n</span> に <span class="m">3</span> を入れると</p>
+          <p><span class="m">a<sub>3</sub> = −11 + (3 − 1)d = −11 + 2d</span></p>
+        </div></div>
+
+        <div class="step"><div class="hint-card">
+          <span class="card-label">ヒント 4</span>
+          <p>条件 <span class="m">a<sub>7</sub> − a<sub>3</sub> = 8</span> に、ヒント2・3の式を代入しよう。</p>
+          <p><span class="m">(−11 + 6d) − (−11 + 2d) = 8</span></p>
+          <p>左辺は <span class="m">−11</span> が消えて、<span class="m">6d − 2d = 4d</span> だけが残る。つまり <span class="m">4d = 8</span> という方程式になった。</p>
+        </div></div>
+
+        <div class="step"><div class="hint-card">
+          <span class="card-label">ヒント 5</span>
+          <p><span class="m">4d = 8</span> を解こう。両辺を <span class="m">4</span> で割ると <span class="m">d</span> が求まる。</p>
+          <p>公差が分かったら、<span class="m">a<sub>n</sub> = −11 + (n − 1)d</span> に代入して、かっこを外して整理すれば一般項の完成だよ。</p>
+        </div></div>
+
+        <div class="step"><div class="answer-card">
+          <span class="card-label">答え</span>
+          <p class="big">公差は <span class="m">2</span></p>
+          <p class="big"><span class="m">a<sub>n</sub> = −11 + 2(n − 1) = 2n − 13</span></p>
+          <p>項を並べると <span class="m">−11, −9, −7, −5, −3, −1, 1, …</span> と、たしかに <span class="m">2</span> ずつ増えていく。<span class="m">a<sub>7</sub> − a<sub>3</sub> = 1 − (−7) = 8</span> で条件にも合っているね。</p>
+        </div></div>
+      </section>
+
+      <!-- ================= (2) ================= -->
+      <section class="panel" data-panel="1">
+        <div class="q-box">
+          <p class="q-label">小問 (2)・7点</p>
+          <p><span class="m">b<sub>1</sub></span> を求めよ。また、数列 <span class="m">{b<sub>n</sub>}</span> の一般項 <span class="m">b<sub>n</sub></span> を求めよ。</p>
+        </div>
+
+        <div class="fig">
+          <h3>図：b<sub>n</sub> の値の並び（n = 1 〜 8）</h3>
+          <svg viewBox="0 0 680 216" role="img" aria-label="b_n の値が 1, 2, 1, 2 と交互になる点列図">
+            <line x1="56" y1="30" x2="56" y2="176" style="stroke:var(--grid)" stroke-width="1.5" />
+            <line x1="56" y1="176" x2="656" y2="176" style="stroke:var(--grid)" stroke-width="1.5" />
+            <line x1="56" y1="121" x2="656" y2="121" style="stroke:var(--grid)" stroke-width="1" stroke-dasharray="5 5" />
+            <line x1="56" y1="66" x2="656" y2="66" style="stroke:var(--grid)" stroke-width="1" stroke-dasharray="5 5" />
+            <text x="46" y="125" text-anchor="end" font-size="14" style="fill:var(--muted)">1</text>
+            <text x="46" y="70" text-anchor="end" font-size="14" style="fill:var(--muted)">2</text>
+            <text x="30" y="103" font-size="14" style="fill:var(--muted)"><tspan font-style="italic">b</tspan><tspan dy="4" font-size="10">n</tspan></text>
+            <polyline points="110,121 180,66 250,121 320,66 390,121 460,66 530,121 600,66" fill="none" style="stroke:var(--bar)" stroke-width="2" />
+            <g font-size="15" text-anchor="middle">
+              <circle cx="110" cy="121" r="8" style="fill:var(--bar-hi)" /><text x="110" y="103" style="fill:var(--ink)">1</text><text x="110" y="198" style="fill:var(--muted)">1</text>
+              <circle cx="180" cy="66" r="8" style="fill:var(--bar-neg)" /><text x="180" y="48" style="fill:var(--ink)">2</text><text x="180" y="198" style="fill:var(--muted)">2</text>
+              <circle cx="250" cy="121" r="8" style="fill:var(--bar-hi)" /><text x="250" y="103" style="fill:var(--ink)">1</text><text x="250" y="198" style="fill:var(--muted)">3</text>
+              <circle cx="320" cy="66" r="8" style="fill:var(--bar-neg)" /><text x="320" y="48" style="fill:var(--ink)">2</text><text x="320" y="198" style="fill:var(--muted)">4</text>
+              <circle cx="390" cy="121" r="8" style="fill:var(--bar-hi)" /><text x="390" y="103" style="fill:var(--ink)">1</text><text x="390" y="198" style="fill:var(--muted)">5</text>
+              <circle cx="460" cy="66" r="8" style="fill:var(--bar-neg)" /><text x="460" y="48" style="fill:var(--ink)">2</text><text x="460" y="198" style="fill:var(--muted)">6</text>
+              <circle cx="530" cy="121" r="8" style="fill:var(--bar-hi)" /><text x="530" y="103" style="fill:var(--ink)">1</text><text x="530" y="198" style="fill:var(--muted)">7</text>
+              <circle cx="600" cy="66" r="8" style="fill:var(--bar-neg)" /><text x="600" y="48" style="fill:var(--ink)">2</text><text x="600" y="198" style="fill:var(--muted)">8</text>
+            </g>
+            <text x="600" y="198" dx="26" font-size="14" style="fill:var(--muted)" font-style="italic">n</text>
+          </svg>
+          <p class="note"><span class="m">n</span> が奇数の項は <span class="m">1</span>、偶数の項は <span class="m">2</span> と、値が交互に現れる。この「行ったり来たり」を1つの式で表すのが、この小問のゴールだよ。</p>
+        </div>
+
+        <div class="step"><div class="hint-card">
+          <span class="card-label">ヒント 1</span>
+          <p><span class="m">b<sub>1</sub></span> は、和の式 <span class="m">S<sub>n</sub></span> から求められる。<span class="m">S<sub>n</sub></span> は「初項から第 <span class="m">n</span> 項までの和」だから、<span class="m">S<sub>1</sub></span> は「第1項だけの和」＝ <span class="m">b<sub>1</sub></span> そのもの。</p>
+          <p>つまり <span class="m">b<sub>1</sub> = S<sub>1</sub></span> だよ。</p>
+        </div></div>
+
+        <div class="step"><div class="hint-card">
+          <span class="card-label">ヒント 2</span>
+          <p><span class="m">S<sub>n</sub></span> の式に <span class="m">n = 1</span> を代入しよう。</p>
+          <p><span class="m">S<sub>1</sub> = <span class="frac"><span class="num">3</span><span class="den">2</span></span>·1 + <span class="frac"><span class="num">1</span><span class="den">4</span></span>{(−1)<sup>1</sup> − 1}</span></p>
+          <p>ここで <span class="m">(−1)<sup>1</sup> = −1</span> だから、<span class="m">{ }</span> の中は <span class="m">−1 − 1 = −2</span> になる。</p>
+        </div></div>
+
+        <div class="step"><div class="hint-card">
+          <span class="card-label">ヒント 3</span>
+          <p>計算を進めよう。<span class="m"><span class="frac"><span class="num">1</span><span class="den">4</span></span> × (−2) = −<span class="frac"><span class="num">1</span><span class="den">2</span></span></span> だから</p>
+          <p><span class="m">S<sub>1</sub> = <span class="frac"><span class="num">3</span><span class="den">2</span></span> − <span class="frac"><span class="num">1</span><span class="den">2</span></span> = 1</span></p>
+          <p>よって <span class="m">b<sub>1</sub> = 1</span>。前半はこれで完了だね。</p>
+        </div></div>
+
+        <div class="step"><div class="hint-card">
+          <span class="card-label">ヒント 4</span>
+          <p>次は一般項。<span class="m">n ≧ 2</span> のときは「和の差」が使える。</p>
+          <p><span class="m">S<sub>n</sub></span>（第 <span class="m">n</span> 項までの和）から <span class="m">S<sub>n−1</sub></span>（第 <span class="m">n − 1</span> 項までの和）を引くと、共通部分が全部消えて、最後の1項 <span class="m">b<sub>n</sub></span> だけが残る。つまり</p>
+          <p><span class="m">b<sub>n</sub> = S<sub>n</sub> − S<sub>n−1</sub></span></p>
+        </div></div>
+
+        <div class="step"><div class="hint-card">
+          <span class="card-label">ヒント 5</span>
+          <p>引き算をするために、まず <span class="m">S<sub>n−1</sub></span> を書こう。<span class="m">S<sub>n</sub></span> の式の <span class="m">n</span> を、全部 <span class="m">n − 1</span> に置きかえるだけだよ。</p>
+          <p><span class="m">S<sub>n−1</sub> = <span class="frac"><span class="num">3</span><span class="den">2</span></span>(n − 1) + <span class="frac"><span class="num">1</span><span class="den">4</span></span>{(−1)<sup>n−1</sup> − 1}</span></p>
+        </div></div>
+
+        <div class="step"><div class="hint-card">
+          <span class="card-label">ヒント 6</span>
+          <p><span class="m">b<sub>n</sub> = S<sub>n</sub> − S<sub>n−1</sub></span> を計算しよう。まず前の部分は</p>
+          <p><span class="m"><span class="frac"><span class="num">3</span><span class="den">2</span></span>n − <span class="frac"><span class="num">3</span><span class="den">2</span></span>(n − 1) = <span class="frac"><span class="num">3</span><span class="den">2</span></span></span></p>
+          <p>残りは <span class="m"><span class="frac"><span class="num">1</span><span class="den">4</span></span>{(−1)<sup>n</sup> − (−1)<sup>n−1</sup>}</span>。ここが一番の山場だよ。</p>
+        </div></div>
+
+        <div class="step"><div class="hint-card">
+          <span class="card-label">ヒント 7</span>
+          <p>符号を整理しよう。<span class="m">(−1)</span> の指数が1つ小さいと、符号は反対になる。つまり <span class="m">(−1)<sup>n−1</sup> = −(−1)<sup>n</sup></span>。</p>
+          <p>だから <span class="m">−(−1)<sup>n−1</sup> = (−1)<sup>n</sup></span> となって、<span class="m">{ }</span> の中は <span class="m">(−1)<sup>n</sup> + (−1)<sup>n</sup> = 2(−1)<sup>n</sup></span>。</p>
+          <p>よって <span class="m mwrap">b<sub>n</sub> = <span class="frac"><span class="num">3</span><span class="den">2</span></span> + <span class="frac"><span class="num">1</span><span class="den">4</span></span>·2(−1)<sup>n</sup> = <span class="frac"><span class="num">3</span><span class="den">2</span></span> + <span class="frac"><span class="num">1</span><span class="den">2</span></span>(−1)<sup>n</sup></span>（<span class="m">n ≧ 2</span>）。</p>
+        </div></div>
+
+        <div class="step"><div class="hint-card">
+          <span class="card-label">ヒント 8</span>
+          <p>最後に、この式が <span class="m">n = 1</span> でも使えるか確かめよう。<span class="m">n = 1</span> を代入すると</p>
+          <p><span class="m"><span class="frac"><span class="num">3</span><span class="den">2</span></span> + <span class="frac"><span class="num">1</span><span class="den">2</span></span>(−1) = <span class="frac"><span class="num">3</span><span class="den">2</span></span> − <span class="frac"><span class="num">1</span><span class="den">2</span></span> = 1</span></p>
+          <p>ヒント3で求めた <span class="m">b<sub>1</sub> = 1</span> と一致した。だから <span class="m">n = 1</span> の場合も、同じ式でまとめてよいんだ。</p>
+        </div></div>
+
+        <div class="step"><div class="answer-card">
+          <span class="card-label">答え</span>
+          <p class="big"><span class="m">b<sub>1</sub> = 1</span></p>
+          <p class="big"><span class="m">b<sub>n</sub> = <span class="frac"><span class="num">3 + (−1)<sup>n</sup></span><span class="den">2</span></span></span></p>
+          <p><span class="m">n</span> が奇数なら <span class="m">(−1)<sup>n</sup> = −1</span> で <span class="m">b<sub>n</sub> = 1</span>、偶数なら <span class="m">(−1)<sup>n</sup> = 1</span> で <span class="m">b<sub>n</sub> = 2</span>。図の「<span class="m">1, 2, 1, 2, …</span>」とぴったり合っているね。</p>
+        </div></div>
+      </section>
+
+      <!-- ================= (3) ================= -->
+      <section class="panel" data-panel="2">
+        <div class="q-box">
+          <p class="q-label">小問 (3)・8点</p>
+          <p><span class="m">c<sub>n</sub> = n·a<sub>n</sub>·b<sub>n</sub></span>（<span class="m">n = 1, 2, 3, …</span>）で定義される数列 <span class="m">{c<sub>n</sub>}</span> がある。このとき、<span class="m">Σ<sub>k=1</sub><sup>n</sup> (c<sub>2k−1</sub> + c<sub>2k</sub>)</span> を <span class="m">n</span> を用いて表せ。</p>
+        </div>
+
+        <div class="fig">
+          <h3>図解：2つずつペアにして足す</h3>
+          <svg viewBox="0 0 680 158" role="img" aria-label="c1とc2、c3とc4、c5とc6をペアにしてまとめる図解">
+            <g fill="none" style="stroke:var(--accent)" stroke-width="2">
+              <path d="M 34 44 Q 113 14 192 44" />
+              <path d="M 226 44 Q 305 14 384 44" />
+              <path d="M 418 44 Q 497 14 576 44" />
+            </g>
+            <g font-size="14" text-anchor="middle" style="fill:var(--accent)">
+              <text x="113" y="16">ペア（k = 1）</text>
+              <text x="305" y="16">ペア（k = 2）</text>
+              <text x="497" y="16">ペア（k = 3）</text>
+            </g>
+            <g>
+              <g style="fill:var(--surface2);stroke:var(--line)" stroke-width="1.5">
+                <rect x="34" y="52" width="74" height="48" rx="6" />
+                <rect x="118" y="52" width="74" height="48" rx="6" />
+                <rect x="226" y="52" width="74" height="48" rx="6" />
+                <rect x="310" y="52" width="74" height="48" rx="6" />
+                <rect x="418" y="52" width="74" height="48" rx="6" />
+                <rect x="502" y="52" width="74" height="48" rx="6" />
+              </g>
+              <g font-size="19" text-anchor="middle" style="fill:var(--ink)">
+                <text x="71" y="83">c<tspan dy="4" font-size="12">1</tspan></text>
+                <text x="155" y="83">c<tspan dy="4" font-size="12">2</tspan></text>
+                <text x="263" y="83">c<tspan dy="4" font-size="12">3</tspan></text>
+                <text x="347" y="83">c<tspan dy="4" font-size="12">4</tspan></text>
+                <text x="455" y="83">c<tspan dy="4" font-size="12">5</tspan></text>
+                <text x="539" y="83">c<tspan dy="4" font-size="12">6</tspan></text>
+              </g>
+              <text x="612" y="83" font-size="20" style="fill:var(--muted)">…</text>
+            </g>
+            <g font-size="14.5" text-anchor="middle" style="fill:var(--muted)">
+              <text x="113" y="128">c<tspan dy="3" font-size="11">2k−1</tspan><tspan dy="-3"> + c</tspan><tspan dy="3" font-size="11">2k</tspan><tspan dy="-3">（k = 1）</tspan></text>
+              <text x="305" y="128">c<tspan dy="3" font-size="11">2k−1</tspan><tspan dy="-3"> + c</tspan><tspan dy="3" font-size="11">2k</tspan><tspan dy="-3">（k = 2）</tspan></text>
+              <text x="497" y="128">c<tspan dy="3" font-size="11">2k−1</tspan><tspan dy="-3"> + c</tspan><tspan dy="3" font-size="11">2k</tspan><tspan dy="-3">（k = 3）</tspan></text>
+            </g>
+            <text x="340" y="152" font-size="14" text-anchor="middle" style="fill:var(--muted)">ペアの和を、k = 1 から n まで全部足したものが Σ の中身だよ</text>
+          </svg>
+          <p class="note">奇数番と偶数番は性質が違う（(2)で見た通り）ので、バラバラに足すのではなく「<span class="m">(c<sub>1</sub> + c<sub>2</sub>) + (c<sub>3</sub> + c<sub>4</sub>) + …</span>」とペアにすると、ペアごとに同じ形の式になって扱いやすくなる。</p>
+        </div>
+
+        <div class="formula-box">
+          <h3>あとで使う「和の公式」一覧</h3>
+          <ul>
+            <li><span class="m">Σ<sub>k=1</sub><sup>n</sup> k<sup>2</sup> = <span class="frac"><span class="num">n(n + 1)(2n + 1)</span><span class="den">6</span></span></span></li>
+            <li><span class="m">Σ<sub>k=1</sub><sup>n</sup> k = <span class="frac"><span class="num">n(n + 1)</span><span class="den">2</span></span></span></li>
+            <li><span class="m">Σ<sub>k=1</sub><sup>n</sup> 1 = n</span>（1 を n 回足すから）</li>
+          </ul>
+        </div>
+
+        <div class="step"><div class="hint-card">
+          <span class="card-label">ヒント 1</span>
+          <p>まず、<span class="m">b</span> の値を「奇数番」と「偶数番」で分けておこう。(2)の答え <span class="m">b<sub>n</sub> = <span class="frac"><span class="num">3 + (−1)<sup>n</sup></span><span class="den">2</span></span></span> で、</p>
+          <p><span class="m">n</span> が奇数のとき <span class="m">(−1)<sup>n</sup> = −1</span>、<span class="m">n</span> が偶数のとき <span class="m">(−1)<sup>n</sup> = 1</span> だったね。</p>
+        </div></div>
+
+        <div class="step"><div class="hint-card">
+          <span class="card-label">ヒント 2</span>
+          <p>ペアの番号を <span class="m">k</span> で書くと、奇数番は <span class="m">2k − 1</span>、偶数番は <span class="m">2k</span> と表せる（<span class="m">k = 1</span> なら <span class="m">1</span> 番と <span class="m">2</span> 番、<span class="m">k = 2</span> なら <span class="m">3</span> 番と <span class="m">4</span> 番）。</p>
+          <p>だから <span class="m">(−1)<sup>2k−1</sup> = −1</span> より <span class="m">b<sub>2k−1</sub> = <span class="frac"><span class="num">3 − 1</span><span class="den">2</span></span> = 1</span>、<span class="m">(−1)<sup>2k</sup> = 1</span> より <span class="m">b<sub>2k</sub> = <span class="frac"><span class="num">3 + 1</span><span class="den">2</span></span> = 2</span>。</p>
+        </div></div>
+
+        <div class="step"><div class="hint-card">
+          <span class="card-label">ヒント 3</span>
+          <p>ペアの1つ目 <span class="m">c<sub>2k−1</sub></span> を作る準備として、まず <span class="m">a<sub>2k−1</sub></span> を求めよう。(1)の答え <span class="m">a<sub>n</sub> = 2n − 13</span> の <span class="m">n</span> に <span class="m">2k − 1</span> を代入して</p>
+          <p><span class="m">a<sub>2k−1</sub> = 2(2k − 1) − 13 = 4k − 15</span></p>
+        </div></div>
+
+        <div class="step"><div class="hint-card">
+          <span class="card-label">ヒント 4</span>
+          <p><span class="m">c<sub>2k−1</sub> = (2k − 1)·a<sub>2k−1</sub>·b<sub>2k−1</sub></span> に、ヒント2・3の結果を代入しよう。</p>
+          <p><span class="m">c<sub>2k−1</sub> = (2k − 1)(4k − 15)·1</span></p>
+          <p>これを展開すると（<span class="m">8k<sup>2</sup> − 30k − 4k + 15</span>）……答えは次のヒントまでに自分で計算してみよう。</p>
+        </div></div>
+
+        <div class="step"><div class="hint-card">
+          <span class="card-label">ヒント 5</span>
+          <p>展開の答え合わせ：<span class="m">c<sub>2k−1</sub> = 8k<sup>2</sup> − 34k + 15</span>。</p>
+          <p>次はペアの2つ目。<span class="m">a<sub>2k</sub></span> を求めよう。<span class="m">a<sub>n</sub> = 2n − 13</span> の <span class="m">n</span> に <span class="m">2k</span> を代入して</p>
+          <p><span class="m">a<sub>2k</sub> = 2·2k − 13 = 4k − 13</span></p>
+        </div></div>
+
+        <div class="step"><div class="hint-card">
+          <span class="card-label">ヒント 6</span>
+          <p><span class="m">c<sub>2k</sub> = 2k·a<sub>2k</sub>·b<sub>2k</sub></span> に代入しよう。<span class="m">b<sub>2k</sub> = 2</span> だったから</p>
+          <p><span class="m">c<sub>2k</sub> = 2k(4k − 13)·2 = 16k<sup>2</sup> − 52k</span></p>
+          <p>（先に <span class="m">2k × 2 = 4k</span> としてから掛けると計算が楽だよ）</p>
+        </div></div>
+
+        <div class="step"><div class="hint-card">
+          <span class="card-label">ヒント 7</span>
+          <p>ペアの和を1つの式にまとめよう。</p>
+          <p><span class="m">c<sub>2k−1</sub> + c<sub>2k</sub> = (8k<sup>2</sup> − 34k + 15) + (16k<sup>2</sup> − 52k) = 24k<sup>2</sup> − 86k + 15</span></p>
+          <p>求める和は、このペアの和を <span class="m">k = 1</span> から <span class="m">n</span> まで足したものになった。</p>
+        </div></div>
+
+        <div class="step"><div class="hint-card">
+          <span class="card-label">ヒント 8</span>
+          <p>あとは和の公式の出番。上の「和の公式」一覧を使って</p>
+          <p><span class="m">Σ<sub>k=1</sub><sup>n</sup> (24k<sup>2</sup> − 86k + 15) = 24·Σk<sup>2</sup> − 86·Σk + 15·Σ1</span></p>
+          <p>と分けて、それぞれに公式を代入しよう。</p>
+        </div></div>
+
+        <div class="step"><div class="hint-card">
+          <span class="card-label">ヒント 9</span>
+          <p>代入して計算すると、こうなる。</p>
+          <p><span class="m">24·<span class="frac"><span class="num">n(n + 1)(2n + 1)</span><span class="den">6</span></span> = 4n(2n<sup>2</sup> + 3n + 1)</span></p>
+          <p><span class="m">86·<span class="frac"><span class="num">n(n + 1)</span><span class="den">2</span></span> = 43n(n + 1)</span>、<span class="m">15·Σ1 = 15n</span></p>
+          <p>だから求める和 <span class="m">= 4n(2n<sup>2</sup> + 3n + 1) − 43n(n + 1) + 15n</span>。あとは展開して、共通の <span class="m">n</span> でくくれば完成だよ。</p>
+        </div></div>
+
+        <div class="step"><div class="answer-card">
+          <span class="card-label">答え</span>
+          <p class="big"><span class="m">Σ<sub>k=1</sub><sup>n</sup> (c<sub>2k−1</sub> + c<sub>2k</sub>) = n(8n<sup>2</sup> − 31n − 24)</span></p>
+          <p>展開の確認：<span class="m mwrap">4n(2n<sup>2</sup> + 3n + 1) − 43n(n + 1) + 15n = 8n<sup>3</sup> + 12n<sup>2</sup> + 4n − 43n<sup>2</sup> − 43n + 15n = 8n<sup>3</sup> − 31n<sup>2</sup> − 24n</span>。これを <span class="m">n</span> でくくった形だね。</p>
+          <p>検算：<span class="m">n = 1</span> のとき、実際のペアの和は <span class="m">c<sub>1</sub> + c<sub>2</sub> = (−11) + (−36) = −47</span>。答えの式は <span class="m">1·(8 − 31 − 24) = −47</span> で一致する。</p>
+        </div></div>
+      </section>
+
+      <!-- ---------- sticky control bar ---------- -->
+      <div class="ctrl">
+        <div class="ctrl-inner">
+          <div class="dots" id="dots"><span class="dots-label">この小問の進み具合</span></div>
+          <div class="ctrl-btns">
+            <button id="nextBtn">次へ：ヒント1を開く</button>
+            <button id="resetBtn">最初からやり直す</button>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <nav>
+          <a href="moshi-b-2024.html">← 2024年11月記述模試 トップに戻る</a>
+          <a href="moshi.html">← 模試解説の一覧に戻る</a>
+          <a class="portal-btn" href="index.html">Nanryo mathematics portal に戻る</a>
+        </nav>
+      </footer>
+    </main>
+
+    <script>
+      (function () {
+        var tabBtns = Array.prototype.slice.call(document.querySelectorAll('.tab-btn'));
+        var panels = Array.prototype.slice.call(document.querySelectorAll('.panel'));
+        var stepsPerPanel = panels.map(function (p) {
+          return Array.prototype.slice.call(p.querySelectorAll('.step'));
+        });
+        var revealed = panels.map(function () { return 0; });
+        var current = 0;
+        var totalSteps = stepsPerPanel.reduce(function (s, a) { return s + a.length; }, 0);
+
+        var nextBtn = document.getElementById('nextBtn');
+        var resetBtn = document.getElementById('resetBtn');
+        var dotsEl = document.getElementById('dots');
+        var overallFill = document.getElementById('overallFill');
+        var overallText = document.getElementById('overallText');
+
+        function hintCount(panelIdx) {
+          return stepsPerPanel[panelIdx].length - 1; // last step is the answer
+        }
+
+        function renderDots() {
+          var label = dotsEl.querySelector('.dots-label');
+          dotsEl.innerHTML = '';
+          dotsEl.appendChild(label);
+          var steps = stepsPerPanel[current];
+          steps.forEach(function (_, i) {
+            var d = document.createElement('span');
+            d.className = 'dot' + (i === steps.length - 1 ? ' ans' : '') + (i < revealed[current] ? ' on' : '');
+            dotsEl.appendChild(d);
+          });
+        }
+
+        function renderStatus() {
+          tabBtns.forEach(function (btn, i) {
+            var st = btn.querySelector('.t-status');
+            var total = stepsPerPanel[i].length;
+            btn.classList.toggle('done', revealed[i] === total);
+            if (revealed[i] === 0) st.textContent = 'まだ開いていない';
+            else if (revealed[i] === total) st.textContent = '完了（答えまで開いた）';
+            else st.textContent = 'ヒント ' + Math.min(revealed[i], hintCount(i)) + ' / ' + hintCount(i) + ' を開いた';
+          });
+          var done = revealed.reduce(function (s, v) { return s + v; }, 0);
+          overallText.textContent = done + ' / ' + totalSteps;
+          overallFill.style.width = (totalSteps ? (done / totalSteps) * 100 : 0) + '%';
+        }
+
+        function renderNextBtn() {
+          var total = stepsPerPanel[current].length;
+          var r = revealed[current];
+          if (r === 0) {
+            nextBtn.disabled = false;
+            nextBtn.textContent = '次へ：ヒント1を開く';
+          } else if (r < hintCount(current)) {
+            nextBtn.disabled = false;
+            nextBtn.textContent = '次へ：ヒント' + (r + 1) + 'を開く';
+          } else if (r === total - 1) {
+            nextBtn.disabled = false;
+            nextBtn.textContent = '次へ：答えを見る';
+          } else {
+            nextBtn.disabled = true;
+            nextBtn.textContent = 'この小問は完了';
+          }
+        }
+
+        function render() { renderDots(); renderStatus(); renderNextBtn(); }
+
+        function switchTab(i) {
+          current = i;
+          tabBtns.forEach(function (b, j) { b.classList.toggle('active', j === i); });
+          panels.forEach(function (p, j) { p.classList.toggle('active', j === i); });
+          render();
+        }
+
+        tabBtns.forEach(function (btn, i) {
+          btn.addEventListener('click', function () { switchTab(i); });
+        });
+
+        nextBtn.addEventListener('click', function () {
+          var steps = stepsPerPanel[current];
+          if (revealed[current] < steps.length) {
+            steps[revealed[current]].classList.add('open');
+            revealed[current]++;
+            render();
+            var opened = steps[revealed[current] - 1];
+            if (opened && opened.scrollIntoView) {
+              var rect = opened.getBoundingClientRect();
+              if (rect.bottom > window.innerHeight - 120) {
+                opened.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+              }
+            }
+          }
+        });
+
+        resetBtn.addEventListener('click', function () {
+          var steps = stepsPerPanel[current];
+          steps.forEach(function (s) { s.classList.remove('open'); });
+          revealed[current] = 0;
+          render();
+        });
+
+        render();
+
+        /* ---------- (1) slider figure ---------- */
+        var svgNS = 'http://www.w3.org/2000/svg';
+        var barsG = document.getElementById('figA-bars');
+        var slider = document.getElementById('dSlider');
+        var dVal = document.getElementById('dVal');
+        var diffVal = document.getElementById('diffVal');
+        var diffHit = document.getElementById('diffHit');
+        // value domain [-18, 10] -> y [212, 30]
+        function yOf(v) { return 30 + (10 - v) / 28 * 182; }
+        var barEls = [];
+        for (var n = 1; n <= 7; n++) {
+          var cx = 60 + (n - 1) * 92;
+          var rect = document.createElementNS(svgNS, 'rect');
+          rect.setAttribute('x', cx - 27);
+          rect.setAttribute('width', 54);
+          rect.setAttribute('rx', 4);
+          rect.setAttribute('style', 'fill:var(' + (n === 3 || n === 7 ? '--bar-hi' : '--bar') + ')');
+          barsG.appendChild(rect);
+          var valText = document.createElementNS(svgNS, 'text');
+          valText.setAttribute('x', cx);
+          valText.setAttribute('text-anchor', 'middle');
+          valText.setAttribute('font-size', '15');
+          valText.setAttribute('style', 'fill:var(--ink)');
+          barsG.appendChild(valText);
+          var labText = document.createElementNS(svgNS, 'text');
+          labText.setAttribute('x', cx);
+          labText.setAttribute('y', 236);
+          labText.setAttribute('text-anchor', 'middle');
+          labText.setAttribute('font-size', '15');
+          labText.setAttribute('style', 'fill:var(--muted)');
+          var t1 = document.createElementNS(svgNS, 'tspan');
+          t1.setAttribute('font-style', 'italic');
+          t1.textContent = 'a';
+          var t2 = document.createElementNS(svgNS, 'tspan');
+          t2.setAttribute('dy', '4');
+          t2.setAttribute('font-size', '11');
+          t2.textContent = String(n);
+          labText.appendChild(t1);
+          labText.appendChild(t2);
+          barsG.appendChild(labText);
+          barEls.push({ rect: rect, valText: valText });
+        }
+        function drawFigA() {
+          var d = parseInt(slider.value, 10);
+          dVal.textContent = d;
+          var zeroY = yOf(0);
+          for (var n = 1; n <= 7; n++) {
+            var v = -11 + (n - 1) * d;
+            var y = yOf(v);
+            var el = barEls[n - 1];
+            if (v >= 0) {
+              el.rect.setAttribute('y', y);
+              el.rect.setAttribute('height', Math.max(zeroY - y, 2));
+              el.valText.setAttribute('y', y - 7);
+            } else {
+              el.rect.setAttribute('y', zeroY);
+              el.rect.setAttribute('height', Math.max(y - zeroY, 2));
+              el.valText.setAttribute('y', y + 20);
+            }
+            el.valText.textContent = v;
+          }
+          var diff = 4 * d;
+          diffVal.textContent = diff;
+          if (diff === 8) {
+            diffHit.innerHTML = ' <span class="hit">= 8 になった！ 条件に合う d が見つかったね</span>';
+          } else {
+            diffHit.textContent = '（条件は 8。もっと大きい？ 小さい？）';
+          }
+        }
+        slider.addEventListener('input', drawFigA);
+        drawFigA();
+      })();
+    </script>
+  </body>
+</html>

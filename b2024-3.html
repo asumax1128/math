@@ -1,0 +1,701 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:," />
+    <title>2024年11月記述模試 B3 ヒント式解説</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap" rel="stylesheet" />
+    <style>
+      :root{
+        --bg:#f6f4ee;
+        --surface:#ffffff;
+        --surface2:#efece3;
+        --ink:#22303e;
+        --ink-soft:#5a6a78;
+        --line:#d9d4c7;
+        --accent:#2456a6;
+        --accent-ink:#ffffff;
+        --hint-bg:#fff6d8;
+        --hint-line:#e3b93c;
+        --hint-tag:#8a6d00;
+        --ans-bg:#e2f4e4;
+        --ans-line:#3f9e4d;
+        --ans-tag:#1e6b2a;
+        --ok:#1e8a3c;
+        --ng:#c62f3b;
+        --bar-bg:rgba(246,244,238,.94);
+        --shadow:0 1px 3px rgba(34,48,62,.12);
+      }
+      @media (prefers-color-scheme: dark){
+        :root{
+          --bg:#14171d;
+          --surface:#1d2129;
+          --surface2:#262b35;
+          --ink:#e6ebf0;
+          --ink-soft:#a7b3bf;
+          --line:#3a4150;
+          --accent:#6f9be0;
+          --accent-ink:#101623;
+          --hint-bg:#3a3319;
+          --hint-line:#a8871f;
+          --hint-tag:#f0cd55;
+          --ans-bg:#1d3524;
+          --ans-line:#3f9e4d;
+          --ans-tag:#7fd48d;
+          --ok:#5cc873;
+          --ng:#ef7d86;
+          --bar-bg:rgba(20,23,29,.94);
+          --shadow:0 1px 3px rgba(0,0,0,.4);
+        }
+      }
+      *{box-sizing:border-box;}
+      html{scroll-behavior:smooth;scroll-padding-bottom:210px;}
+      body{
+        margin:0;background:var(--bg);color:var(--ink);
+        font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic UI","Yu Gothic",Meiryo,"Noto Sans JP",sans-serif;
+        line-height:1.75;font-size:16px;
+        -webkit-text-size-adjust:100%;
+      }
+      .m, .num{font-family:"STIX Two Math","Hiragino Mincho ProN",serif;}
+      .m i, .m var{font-style:italic;}
+      .wrap{max-width:820px;margin:0 auto;padding:20px 16px 170px;}
+
+      /* ヘッダー */
+      .doc-head{display:flex;gap:16px;align-items:flex-start;margin:8px 0 18px;}
+      .badge{
+        flex:0 0 auto;width:64px;height:64px;border-radius:14px;
+        background:var(--accent);color:var(--accent-ink);
+        display:flex;align-items:center;justify-content:center;
+        font-family:"STIX Two Math",serif;font-size:28px;font-weight:700;letter-spacing:.02em;
+        box-shadow:var(--shadow);
+      }
+      .doc-head h1{font-size:24px;margin:2px 0 2px;line-height:1.35;}
+      .doc-head .sub{margin:0;color:var(--ink-soft);font-size:14px;}
+      @media (max-width:520px){ .doc-head h1{font-size:20px;} .badge{width:54px;height:54px;font-size:24px;} }
+
+      .card{background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);}
+
+      /* 共通問題文 */
+      .problem-all{padding:16px 18px;margin-bottom:14px;font-size:17px;}
+      .problem-all .plabel{font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--accent);margin-bottom:4px;}
+
+      /* 使い方 */
+      .howto{padding:14px 18px;margin-bottom:14px;background:var(--surface2);border:1px dashed var(--line);border-radius:12px;font-size:14.5px;}
+      .howto h2{font-size:15px;margin:0 0 6px;}
+      .howto p{margin:4px 0;}
+      .howto b{color:var(--accent);}
+
+      /* 全体進捗 */
+      .overall{padding:12px 18px;margin-bottom:16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+      .overall .olabel{font-size:13.5px;font-weight:700;white-space:nowrap;}
+      .overall .otrack{flex:1 1 180px;height:10px;border-radius:6px;background:var(--surface2);border:1px solid var(--line);overflow:hidden;}
+      .overall .ofill{height:100%;width:0%;background:var(--accent);border-radius:6px;transition:width .45s ease;}
+      .overall .ocount{font-size:13.5px;color:var(--ink-soft);white-space:nowrap;}
+
+      /* タブ */
+      .tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
+      .tab{
+        flex:1 1 150px;min-width:140px;cursor:pointer;text-align:left;scroll-margin-bottom:210px;scroll-margin-top:12px;
+        background:var(--surface);border:1.5px solid var(--line);border-radius:12px;
+        padding:10px 14px;color:var(--ink);font:inherit;box-shadow:var(--shadow);
+      }
+      .tab .tno{font-family:"STIX Two Math",serif;font-size:19px;font-weight:700;}
+      .tab .tpts{font-size:12.5px;color:var(--ink-soft);margin-left:6px;}
+      .tab .tstatus{display:block;font-size:12.5px;margin-top:2px;color:var(--ink-soft);}
+      .tab .tstatus.done{color:var(--ok);font-weight:700;}
+      .tab.active{border-color:var(--accent);outline:2px solid var(--accent);outline-offset:-1px;}
+      .tab:focus-visible{outline:3px solid var(--accent);outline-offset:2px;}
+
+      /* パネル */
+      .panel{display:none;}
+      .panel.active{display:block;}
+      .qbox{padding:16px 18px;margin-bottom:14px;}
+      .qbox .qhead{display:flex;align-items:baseline;gap:10px;margin-bottom:6px;}
+      .qbox .qno{font-family:"STIX Two Math",serif;font-size:21px;font-weight:700;}
+      .qbox .qpts{font-size:12.5px;font-weight:700;color:var(--accent-ink);background:var(--accent);border-radius:999px;padding:1px 10px;}
+      .qbox p{margin:6px 0;font-size:16.5px;}
+
+      /* 図 */
+      .viz{padding:14px 16px;margin-bottom:14px;overflow-x:auto;}
+      .viz .vtitle{font-size:13px;font-weight:700;color:var(--ink-soft);margin-bottom:8px;letter-spacing:.04em;}
+      .viz svg{display:block;margin:0 auto;max-width:100%;height:auto;}
+      .viz [data-step]{opacity:0;transition:opacity .5s ease;}
+      .viz [data-step].on{opacity:1;}
+      .viz text{font-family:"STIX Two Math","Hiragino Kaku Gothic ProN",sans-serif;}
+
+      /* 組立除法の表 */
+      .synth{border-collapse:collapse;margin:6px auto 4px;font-family:"STIX Two Math",serif;font-size:19px;}
+      .synth td{padding:5px 13px;text-align:center;min-width:64px;}
+      .synth .divisor{border-right:2px solid var(--ink);font-weight:700;}
+      .synth tr.brow td{border-top:2px solid var(--ink);}
+      .synth td[data-step]{opacity:0;transition:opacity .5s ease;}
+      .synth td[data-step].on{opacity:1;}
+      .synth .rem{font-weight:700;color:var(--ans-tag);}
+      .synth .quo{font-weight:700;color:var(--accent);}
+      @media (max-width:520px){
+        .synth{font-size:15.5px;}
+        .synth td{padding:4px 7px;min-width:44px;}
+        .formula{white-space:normal;font-size:16.5px;}
+      }
+      .viznote{text-align:center;font-size:13.5px;color:var(--ink-soft);margin:6px 0 0;}
+      .viznote [data-step]{opacity:0;transition:opacity .5s ease;}
+      .viznote [data-step].on{opacity:1;}
+
+      /* ヒント / 解答カード */
+      .step{display:none;border-radius:12px;padding:14px 18px;margin-bottom:12px;border:1.5px solid;box-shadow:var(--shadow);}
+      .step.show{display:block;animation:fadein .4s ease;}
+      @keyframes fadein{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+      @media (prefers-reduced-motion: reduce){
+        .step.show{animation:none;}
+        .viz [data-step],.synth td[data-step],.overall .ofill{transition:none;}
+        html{scroll-behavior:auto;}
+      }
+      .step.hint{background:var(--hint-bg);border-color:var(--hint-line);}
+      .step.answer{background:var(--ans-bg);border-color:var(--ans-line);}
+      .step .stag{font-size:12.5px;font-weight:700;letter-spacing:.06em;margin-bottom:5px;}
+      .step.hint .stag{color:var(--hint-tag);}
+      .step.answer .stag{color:var(--ans-tag);}
+      .step p{margin:5px 0;font-size:16px;}
+      .step .mini{font-size:14px;color:var(--ink-soft);}
+      .step .ans-main{font-size:18.5px;font-weight:700;}
+      .formula{
+        display:block;background:var(--surface);border:1px solid var(--line);border-radius:8px;
+        padding:8px 14px;margin:8px 0;font-family:"STIX Two Math",serif;font-size:18px;text-align:center;overflow-x:auto;white-space:nowrap;
+      }
+      .frac{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;margin:0 .12em;font-size:.92em;line-height:1.25;}
+      .frac .fnum{border-bottom:1.6px solid currentColor;padding:0 .28em;}
+      .frac .fden{padding:0 .28em;}
+      .sqrt{border-top:1.6px solid currentColor;padding:0 .12em;margin-left:.02em;}
+      .ok{color:var(--ok);font-weight:700;}
+      .ng{color:var(--ng);font-weight:700;}
+
+      /* 操作バー */
+      .action-bar{
+        position:sticky;bottom:0;z-index:20;margin-top:20px;
+        background:var(--bar-bg);backdrop-filter:blur(6px);
+        border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);
+        padding:12px 16px;
+      }
+      .dots{display:flex;gap:7px;justify-content:center;margin-bottom:10px;flex-wrap:wrap;}
+      .dot{width:13px;height:13px;border-radius:50%;border:2px solid var(--ink-soft);background:transparent;padding:0;}
+      .dot.filled{background:var(--accent);border-color:var(--accent);}
+      .dot.ansdot.filled{background:var(--ans-line);border-color:var(--ans-line);}
+      .bar-btns{display:flex;gap:10px;align-items:stretch;}
+      .next-btn{
+        flex:1;cursor:pointer;border:none;border-radius:10px;padding:13px 16px;
+        background:var(--accent);color:var(--accent-ink);font:inherit;font-size:16.5px;font-weight:700;
+      }
+      .next-btn:disabled{opacity:.55;cursor:default;}
+      .reset-btn{
+        cursor:pointer;border-radius:10px;padding:13px 14px;font:inherit;font-size:14px;
+        background:var(--surface);color:var(--ink);border:1.5px solid var(--line);
+      }
+      .next-btn:focus-visible,.reset-btn:focus-visible{outline:3px solid var(--accent);outline-offset:2px;}
+      .bar-msg{text-align:center;font-size:13px;color:var(--ink-soft);margin-top:8px;min-height:1.2em;}
+
+      @media (max-width:520px){
+        .action-bar{padding:9px 12px;}
+        .dots{margin-bottom:7px;}
+        .dot{width:11px;height:11px;}
+        .next-btn{padding:11px 12px;font-size:15.5px;}
+        .reset-btn{padding:11px 10px;font-size:13px;}
+        .bar-msg{margin-top:6px;font-size:12.5px;}
+      }
+      /* フッター */
+      footer{margin-top:30px;border-top:1px solid var(--line);padding-top:18px;display:flex;flex-direction:column;gap:10px;align-items:flex-start;}
+      footer a{color:var(--accent);text-decoration:none;font-size:14.5px;}
+      footer a:hover{text-decoration:underline;}
+      .portal-btn{
+        display:inline-block;background:var(--accent);color:var(--accent-ink)!important;
+        border-radius:10px;padding:10px 18px;font-weight:700;
+      }
+      .portal-btn:hover{text-decoration:none;opacity:.9;}
+      @media (max-width:520px){
+        .formula{white-space:normal;}
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+
+      <header class="doc-head">
+        <div class="badge">B3</div>
+        <div>
+          <h1>式と証明・高次方程式</h1>
+          <p class="sub">2024年11月記述模試（2年）数学B ― 大問3（20点）ヒント式解説</p>
+        </div>
+      </header>
+
+      <section class="card problem-all">
+        <div class="plabel">大問3　問題</div>
+        <p>多項式 <span class="m"><i>P</i>(<i>x</i>) ＝ <i>x</i>³ − (<i>k</i>−2)<i>x</i>² − (<i>k</i>−3)<i>x</i> ＋ 2<i>k</i> ＋ 6</span> がある。ただし、<span class="m"><i>k</i></span> は実数の定数とする。</p>
+      </section>
+
+      <section class="howto">
+        <h2>このページの使い方</h2>
+        <p>最初は<b>問題だけ</b>が見えています。まず自分の力で考えてみましょう。</p>
+        <p>分からなくなったら、画面下の<b>「次へ」ボタン</b>を押してください。ヒントが1つずつ開きます。<b>答えは最後のステップ</b>で出てきます。途中でやり直したいときは「最初からやり直す」を押してください。</p>
+      </section>
+
+      <section class="card overall" aria-label="全体の進捗">
+        <span class="olabel">全体の進捗</span>
+        <div class="otrack"><div class="ofill" id="ofill"></div></div>
+        <span class="ocount" id="ocount"></span>
+      </section>
+
+      <nav class="tabs" aria-label="小問の切り替え">
+        <button type="button" class="tab active" data-tab="0">
+          <span class="tno">(1)</span><span class="tpts">5点</span>
+          <span class="tstatus" id="status-0">未着手</span>
+        </button>
+        <button type="button" class="tab" data-tab="1">
+          <span class="tno">(2)</span><span class="tpts">7点</span>
+          <span class="tstatus" id="status-1">未着手</span>
+        </button>
+        <button type="button" class="tab" data-tab="2">
+          <span class="tno">(3)</span><span class="tpts">8点</span>
+          <span class="tstatus" id="status-2">未着手</span>
+        </button>
+      </nav>
+
+      <!-- ================= (1) ================= -->
+      <section class="panel active" id="panel-0">
+        <div class="card qbox">
+          <div class="qhead"><span class="qno">(1)</span><span class="qpts">5点</span></div>
+          <p><span class="m"><i>P</i>(<i>x</i>)</span> を <span class="m"><i>x</i> ＋ 2</span> で割った商と余りを求めよ。</p>
+        </div>
+
+        <div class="card viz">
+          <div class="vtitle">組立除法の表（ヒントを開くと少しずつ埋まります）</div>
+          <table class="synth" aria-label="組立除法の表">
+            <tr>
+              <td></td>
+              <td>1</td>
+              <td>−(<i>k</i>−2)</td>
+              <td>−(<i>k</i>−3)</td>
+              <td>2<i>k</i>＋6</td>
+            </tr>
+            <tr>
+              <td class="divisor">−2</td>
+              <td></td>
+              <td data-step="2">−2</td>
+              <td data-step="4">2<i>k</i></td>
+              <td data-step="5">−2<i>k</i>−6</td>
+            </tr>
+            <tr class="brow">
+              <td></td>
+              <td data-step="2">1</td>
+              <td data-step="3">−<i>k</i></td>
+              <td data-step="4"><i>k</i>＋3</td>
+              <td data-step="5"><span class="rem">0</span></td>
+            </tr>
+          </table>
+          <p class="viznote"><span data-step="6">下段の左3つ「1, −<i>k</i>, <i>k</i>＋3」が<b>商の係数</b>、右端の「0」が<b>余り</b>です。</span></p>
+        </div>
+
+        <div class="step hint">
+          <div class="stag">ヒント 1</div>
+          <p><b>組立除法</b>（くみたてじょほう）を使います。これは、3次式を1次式で割るときに、係数だけを取り出して計算できる便利な方法です。</p>
+          <p>まず <span class="m"><i>P</i>(<i>x</i>)</span> の係数を順に書き出しましょう。</p>
+          <span class="formula">1,　−(<i>k</i>−2),　−(<i>k</i>−3),　2<i>k</i>＋6</span>
+          <p>割る式 <span class="m"><i>x</i> ＋ 2</span> から使う数は、<span class="m"><i>x</i> ＋ 2 ＝ 0</span> となる <span class="m"><i>x</i> ＝ −2</span> です。表の左に <span class="m">−2</span> を書きます。</p>
+        </div>
+
+        <div class="step hint">
+          <div class="stag">ヒント 2</div>
+          <p>表の計算を始めます。まず、上段の先頭の <span class="m">1</span> を、そのまま下段におろします。</p>
+          <p>次に、<span class="m">−2 × 1 ＝ −2</span> を、2列目の中段に書きます。（表の2列目が埋まりました）</p>
+        </div>
+
+        <div class="step hint">
+          <div class="stag">ヒント 3</div>
+          <p>2列目を<b>縦に足します</b>。</p>
+          <span class="formula">−(<i>k</i>−2) ＋ (−2) ＝ −<i>k</i> ＋ 2 − 2 ＝ −<i>k</i></span>
+          <p>これが商の <span class="m"><i>x</i></span> の係数になります。下段の2列目に <span class="m">−<i>k</i></span> と書きます。</p>
+        </div>
+
+        <div class="step hint">
+          <div class="stag">ヒント 4</div>
+          <p>同じ作業を3列目でも行います。まず <span class="m">−2 × (−<i>k</i>) ＝ 2<i>k</i></span> を中段に書きます。</p>
+          <p>そして縦に足します。</p>
+          <span class="formula">−(<i>k</i>−3) ＋ 2<i>k</i> ＝ −<i>k</i> ＋ 3 ＋ 2<i>k</i> ＝ <i>k</i> ＋ 3</span>
+          <p>下段の3列目は <span class="m"><i>k</i> ＋ 3</span> です。</p>
+        </div>
+
+        <div class="step hint">
+          <div class="stag">ヒント 5</div>
+          <p>最後の列です。<span class="m">−2 × (<i>k</i>＋3) ＝ −2<i>k</i> − 6</span> を中段に書きます。</p>
+          <p>そして縦に足します。</p>
+          <span class="formula">(2<i>k</i> ＋ 6) ＋ (−2<i>k</i> − 6) ＝ 0</span>
+          <p>この最後の値が<b>余り</b>です。余りが <span class="m">0</span> になりましたね。</p>
+        </div>
+
+        <div class="step answer">
+          <div class="stag">答え</div>
+          <p>下段に並んだ <span class="m">1, −<i>k</i>, <i>k</i>＋3</span> が商の係数です。商は、割られる式より<b>次数が1つ下がる</b>ので、2次式になります。</p>
+          <p class="ans-main">商　<span class="m"><i>x</i>² − <i>k</i><i>x</i> ＋ <i>k</i> ＋ 3</span>，　余り　<span class="m">0</span></p>
+          <p class="mini">余りが0ということは、<span class="m"><i>P</i>(<i>x</i>)</span> は <span class="m"><i>x</i> ＋ 2</span> で割り切れる、つまり因数分解できるということです。(2)で使います。</p>
+        </div>
+      </section>
+
+      <!-- ================= (2) ================= -->
+      <section class="panel" id="panel-1">
+        <div class="card qbox">
+          <div class="qhead"><span class="qno">(2)</span><span class="qpts">7点</span></div>
+          <p>方程式 <span class="m"><i>P</i>(<i>x</i>) ＝ 0</span> が異なる実数解をちょうど2個もつような <span class="m"><i>k</i></span> の値を求めよ。</p>
+        </div>
+
+        <div class="card viz">
+          <div class="vtitle">場合分けの樹形図（ヒントを開くと枝が伸びます）</div>
+          <svg viewBox="0 0 640 296" role="img" aria-label="異なる実数解がちょうど2個になる場合分けの樹形図">
+            <!-- 根 -->
+            <rect x="150" y="8" width="340" height="46" rx="10" fill="var(--surface2)" stroke="var(--line)" stroke-width="1.5"/>
+            <text x="320" y="37" text-anchor="middle" font-size="16.5" fill="var(--ink)">異なる実数解がちょうど2個</text>
+            <!-- 枝 -->
+            <g data-step="2">
+              <path d="M320 54 L320 74 M320 74 L165 74 L165 96 M320 74 L475 74 L475 96" fill="none" stroke="var(--ink-soft)" stroke-width="1.8"/>
+              <rect x="25" y="96" width="280" height="62" rx="10" fill="var(--hint-bg)" stroke="var(--hint-line)" stroke-width="1.5"/>
+              <text x="165" y="122" text-anchor="middle" font-size="16" fill="var(--ink)">場合(i)　①が重解をもつ</text>
+              <text x="165" y="146" text-anchor="middle" font-size="13.5" fill="var(--ink-soft)">（その重解は −2 でない）</text>
+              <rect x="335" y="96" width="280" height="62" rx="10" fill="var(--hint-bg)" stroke="var(--hint-line)" stroke-width="1.5"/>
+              <text x="475" y="122" text-anchor="middle" font-size="16" fill="var(--ink)">場合(ii)　①が x＝−2 を解にもつ</text>
+              <text x="475" y="146" text-anchor="middle" font-size="13.5" fill="var(--ink-soft)">（もう1つの解は −2 と異なる）</text>
+            </g>
+            <!-- 葉 (i) -->
+            <g data-step="4">
+              <path d="M165 158 L165 178 M165 178 L90 178 L90 198 M165 178 L240 178 L240 198" fill="none" stroke="var(--ink-soft)" stroke-width="1.8"/>
+              <rect x="15" y="198" width="150" height="56" rx="10" fill="var(--ans-bg)" stroke="var(--ans-line)" stroke-width="1.5"/>
+              <text x="90" y="223" text-anchor="middle" font-size="16" fill="var(--ink)">k ＝ −2</text>
+              <text x="90" y="245" text-anchor="middle" font-size="13" fill="var(--ink-soft)">重解は −1</text>
+              <rect x="180" y="198" width="150" height="56" rx="10" fill="var(--ans-bg)" stroke="var(--ans-line)" stroke-width="1.5"/>
+              <text x="255" y="223" text-anchor="middle" font-size="16" fill="var(--ink)">k ＝ 6</text>
+              <text x="255" y="245" text-anchor="middle" font-size="13" fill="var(--ink-soft)">重解は 3</text>
+            </g>
+            <!-- 葉 (ii) -->
+            <g data-step="6">
+              <path d="M475 158 L475 198" fill="none" stroke="var(--ink-soft)" stroke-width="1.8"/>
+              <rect x="380" y="198" width="190" height="56" rx="10" fill="var(--ans-bg)" stroke="var(--ans-line)" stroke-width="1.5"/>
+              <text x="475" y="223" text-anchor="middle" font-size="16" fill="var(--ink)">k ＝ −7/3</text>
+              <text x="475" y="245" text-anchor="middle" font-size="13" fill="var(--ink-soft)">もう1つの解は −1/3</text>
+            </g>
+            <!-- まとめ -->
+            <g data-step="7">
+              <text x="320" y="286" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--ans-tag)">答えは3つ： k ＝ −7/3, −2, 6</text>
+            </g>
+          </svg>
+        </div>
+
+        <div class="step hint">
+          <div class="stag">ヒント 1</div>
+          <p>(1)の結果を使います。余りが0だったので、<span class="m"><i>P</i>(<i>x</i>)</span> は次のように<b>因数分解</b>できます。</p>
+          <span class="formula"><i>P</i>(<i>x</i>) ＝ (<i>x</i> ＋ 2)(<i>x</i>² − <i>k</i><i>x</i> ＋ <i>k</i> ＋ 3)</span>
+        </div>
+
+        <div class="step hint">
+          <div class="stag">ヒント 2</div>
+          <p>方程式 <span class="m"><i>P</i>(<i>x</i>) ＝ 0</span> の解は、<span class="m"><i>x</i> ＝ −2</span> と、次の2次方程式の解です。</p>
+          <span class="formula"><i>x</i>² − <i>k</i><i>x</i> ＋ <i>k</i> ＋ 3 ＝ 0　……①</span>
+          <p>全体で「異なる実数解がちょうど2個」になるのは、次の<b>2つの場合</b>です（上の樹形図を見てください）。</p>
+          <p>場合(i)：①が<b>重解</b>（解が1つに重なること）をもち、その重解が <span class="m">−2</span> でない場合。<br />場合(ii)：①が <span class="m"><i>x</i> ＝ −2</span> を解にもち、もう1つの解が <span class="m">−2</span> と異なる場合。</p>
+        </div>
+
+        <div class="step hint">
+          <div class="stag">ヒント 3</div>
+          <p>場合(i)を調べます。2次方程式が重解をもつ条件は、<b>判別式</b> <span class="m"><i>D</i> ＝ 0</span> でしたね。</p>
+          <span class="formula"><i>D</i> ＝ (−<i>k</i>)² − 4·1·(<i>k</i> ＋ 3) ＝ <i>k</i>² − 4<i>k</i> − 12 ＝ (<i>k</i> ＋ 2)(<i>k</i> − 6)</span>
+          <p><span class="m"><i>D</i> ＝ 0</span> とすると、<span class="m"><i>k</i> ＝ −2, 6</span> が候補になります。</p>
+        </div>
+
+        <div class="step hint">
+          <div class="stag">ヒント 4</div>
+          <p>候補が本当に使えるか、重解を求めて確かめます。</p>
+          <p><span class="m"><i>k</i> ＝ −2</span> のとき ① は <span class="m"><i>x</i>² ＋ 2<i>x</i> ＋ 1 ＝ (<i>x</i> ＋ 1)² ＝ 0</span> となり、重解は <span class="m">−1</span>。<br /><span class="m"><i>k</i> ＝ 6</span> のとき ① は <span class="m"><i>x</i>² − 6<i>x</i> ＋ 9 ＝ (<i>x</i> − 3)² ＝ 0</span> となり、重解は <span class="m">3</span>。</p>
+          <p>どちらも <span class="m">−2</span> と異なるので、解は「<span class="m">−2</span> と重解」の2個になり、<span class="ok">両方とも適します</span>。</p>
+        </div>
+
+        <div class="step hint">
+          <div class="stag">ヒント 5</div>
+          <p>場合(ii)を調べます。①が <span class="m"><i>x</i> ＝ −2</span> を解にもつということは、①に <span class="m"><i>x</i> ＝ −2</span> を<b>代入すると成り立つ</b>ということです。</p>
+          <span class="formula">(−2)² − <i>k</i>(−2) ＋ <i>k</i> ＋ 3 ＝ 4 ＋ 2<i>k</i> ＋ <i>k</i> ＋ 3 ＝ 3<i>k</i> ＋ 7 ＝ 0</span>
+          <p>よって <span class="m"><i>k</i> ＝ −<span class="frac"><span class="fnum">7</span><span class="fden">3</span></span></span> が候補になります。</p>
+        </div>
+
+        <div class="step hint">
+          <div class="stag">ヒント 6</div>
+          <p><span class="m"><i>k</i> ＝ −<span class="frac"><span class="fnum">7</span><span class="fden">3</span></span></span> のとき、もう1つの解が <span class="m">−2</span> と異なるか確かめます。①に代入して整理すると</p>
+          <span class="formula">3<i>x</i>² ＋ 7<i>x</i> ＋ 2 ＝ (3<i>x</i> ＋ 1)(<i>x</i> ＋ 2) ＝ 0</span>
+          <p>となるので、①の解は <span class="m"><i>x</i> ＝ −<span class="frac"><span class="fnum">1</span><span class="fden">3</span></span>, −2</span> です。全体の異なる実数解は <span class="m">−2, −<span class="frac"><span class="fnum">1</span><span class="fden">3</span></span></span> の2個になるので、<span class="ok">適します</span>。</p>
+        </div>
+
+        <div class="step answer">
+          <div class="stag">答え</div>
+          <p>場合(i)と場合(ii)を合わせます。</p>
+          <p class="ans-main"><span class="m"><i>k</i> ＝ −<span class="frac"><span class="fnum">7</span><span class="fden">3</span></span>, −2, 6</span></p>
+        </div>
+      </section>
+
+      <!-- ================= (3) ================= -->
+      <section class="panel" id="panel-2">
+        <div class="card qbox">
+          <div class="qhead"><span class="qno">(3)</span><span class="qpts">8点</span></div>
+          <p><span class="m"><i>k</i></span> は(2)で求めた値以外の実数値をとるものとする。方程式 <span class="m"><i>P</i>(<i>x</i>) ＝ 0</span> の3つの解の実部をそれぞれ <span class="m"><i>p</i>, <i>q</i>, <i>r</i></span> とするとき、<span class="m"><i>p</i>² ＋ <i>q</i>² ＋ <i>r</i>² ＝ 7</span> を満たす <span class="m"><i>k</i></span> の値を求めよ。</p>
+          <p class="mini" style="font-size:13.5px;color:var(--ink-soft)">※「実部」とは、複素数 <span class="m"><i>a</i> ＋ <i>b</i><i>i</i></span> の <span class="m"><i>a</i></span> の部分のこと。実数解なら、その数そのものが実部です。</p>
+        </div>
+
+        <div class="card viz">
+          <div class="vtitle">k の数直線：範囲と候補のチェック（ヒントを開くと印が増えます）</div>
+          <svg viewBox="0 0 620 216" role="img" aria-label="kの数直線。Dが0以上と0未満の範囲と候補値の適否">
+            <!-- D>=0 範囲 -->
+            <g data-step="3">
+              <line x1="50" y1="95" x2="170" y2="95" stroke="var(--accent)" stroke-width="7" stroke-linecap="round" opacity="0.55"/>
+              <line x1="490" y1="95" x2="570" y2="95" stroke="var(--accent)" stroke-width="7" stroke-linecap="round" opacity="0.55"/>
+              <text x="92" y="56" text-anchor="middle" font-size="14" fill="var(--accent)" font-weight="bold">D ≧ 0（実数解）</text>
+              <text x="528" y="56" text-anchor="middle" font-size="14" fill="var(--accent)" font-weight="bold">D ≧ 0</text>
+            </g>
+            <!-- D<0 範囲 -->
+            <g data-step="7">
+              <line x1="170" y1="95" x2="490" y2="95" stroke="#d97c1e" stroke-width="7" stroke-linecap="round" opacity="0.55"/>
+              <text x="330" y="142" text-anchor="middle" font-size="14" fill="#d97c1e" font-weight="bold">D ＜ 0（虚数解）　−2 ＜ k ＜ 6</text>
+            </g>
+            <!-- 軸 -->
+            <line x1="40" y1="95" x2="580" y2="95" stroke="var(--ink)" stroke-width="1.8"/>
+            <path d="M580 95 l-10 -5 v10 z" fill="var(--ink)"/>
+            <text x="586" y="100" font-size="15" font-style="italic" fill="var(--ink)">k</text>
+            <!-- 目盛り: x(k)=50+(k+5)*40 -->
+            <g font-size="12.5" fill="var(--ink-soft)" text-anchor="middle">
+              <line x1="90" y1="90" x2="90" y2="100" stroke="var(--ink)"/><text x="90" y="117">−4</text>
+              <line x1="130" y1="90" x2="130" y2="100" stroke="var(--ink)"/><text x="130" y="117">−3</text>
+              <line x1="170" y1="90" x2="170" y2="100" stroke="var(--ink)"/><text x="170" y="117">−2</text>
+              <line x1="210" y1="90" x2="210" y2="100" stroke="var(--ink)"/><text x="210" y="117">−1</text>
+              <line x1="250" y1="90" x2="250" y2="100" stroke="var(--ink)"/><text x="250" y="117">0</text>
+              <line x1="290" y1="90" x2="290" y2="100" stroke="var(--ink)"/><text x="290" y="117">1</text>
+              <line x1="330" y1="90" x2="330" y2="100" stroke="var(--ink)"/><text x="330" y="117">2</text>
+              <line x1="370" y1="90" x2="370" y2="100" stroke="var(--ink)"/><text x="370" y="117">3</text>
+              <line x1="410" y1="90" x2="410" y2="100" stroke="var(--ink)"/><text x="410" y="117">4</text>
+              <line x1="450" y1="90" x2="450" y2="100" stroke="var(--ink)"/><text x="450" y="117">5</text>
+              <line x1="490" y1="90" x2="490" y2="100" stroke="var(--ink)"/><text x="490" y="117">6</text>
+              <line x1="530" y1="90" x2="530" y2="100" stroke="var(--ink)"/><text x="530" y="117">7</text>
+            </g>
+            <!-- (2)の値 除外マーク: -7/3=157, -2=170, 6=490 -->
+            <g data-step="6">
+              <g stroke="var(--ng)" stroke-width="2.4">
+                <path d="M152 90 l10 10 M162 90 l-10 10"/>
+                <path d="M165 90 l10 10 M175 90 l-10 10"/>
+                <path d="M485 90 l10 10 M495 90 l-10 10"/>
+              </g>
+              <text x="310" y="196" text-anchor="middle" font-size="13.5" fill="var(--ng)" font-weight="bold">× は (2) で求めた値 −7/3, −2, 6（この問題では除く）</text>
+            </g>
+            <!-- 候補 1-√10=164（軸の上にずらして表示） -->
+            <g data-step="6">
+              <line x1="164" y1="80" x2="164" y2="90" stroke="var(--ans-line)" stroke-width="1.4"/>
+              <circle cx="164" cy="72" r="5.5" fill="var(--ans-bg)" stroke="var(--ans-line)" stroke-width="2.4"/>
+              <text x="222" y="66" text-anchor="middle" font-size="14.5" fill="var(--ans-tag)" font-weight="bold">1−√10 ○ 適する</text>
+            </g>
+            <!-- 候補 1+√10=417 -->
+            <g data-step="6">
+              <path d="M412 90 l10 10 M422 90 l-10 10" stroke="var(--ng)" stroke-width="2.4"/>
+              <text x="417" y="66" text-anchor="middle" font-size="14.5" fill="var(--ng)" font-weight="bold">1＋√10 × 不適</text>
+            </g>
+            <!-- 候補 -√6=152（軸の下にずらして表示） -->
+            <g data-step="8">
+              <line x1="152" y1="102" x2="152" y2="118" stroke="var(--ng)" stroke-width="1.2"/>
+              <path d="M147 120 l10 10 M157 120 l-10 10" stroke="var(--ng)" stroke-width="2.4"/>
+              <text x="118" y="172" text-anchor="middle" font-size="14.5" fill="var(--ng)" font-weight="bold">−√6 × 不適</text>
+              <path d="M148 132 L132 156" stroke="var(--ng)" stroke-width="1.2"/>
+            </g>
+            <!-- 候補 √6=348 -->
+            <g data-step="8">
+              <circle cx="348" cy="95" r="5.5" fill="var(--ans-bg)" stroke="var(--ans-line)" stroke-width="2.4"/>
+              <text x="380" y="172" text-anchor="middle" font-size="14.5" fill="var(--ans-tag)" font-weight="bold">√6 ○ 適する</text>
+              <path d="M351 103 L364 156" stroke="var(--ans-line)" stroke-width="1.2"/>
+            </g>
+          </svg>
+        </div>
+
+        <div class="step hint">
+          <div class="stag">ヒント 1</div>
+          <p>3つの解のうち1つは、いつでも <span class="m"><i>x</i> ＝ −2</span> です（因数 <span class="m"><i>x</i> ＋ 2</span> から出てくる解）。</p>
+          <p>この解の実部を <span class="m"><i>r</i> ＝ −2</span> としましょう。残りの2つの解の実部が <span class="m"><i>p</i>, <i>q</i></span> です。</p>
+        </div>
+
+        <div class="step hint">
+          <div class="stag">ヒント 2</div>
+          <p>残りの2解を <span class="m"><i>α</i>, <i>β</i></span> とします。これらは ① <span class="m"><i>x</i>² − <i>k</i><i>x</i> ＋ <i>k</i> ＋ 3 ＝ 0</span> の解です。</p>
+          <p><b>解と係数の関係</b>を使うと、解そのものを求めなくても「和」と「積」が分かります。</p>
+          <span class="formula"><i>α</i> ＋ <i>β</i> ＝ <i>k</i>,　<i>αβ</i> ＝ <i>k</i> ＋ 3</span>
+        </div>
+
+        <div class="step hint">
+          <div class="stag">ヒント 3</div>
+          <p>まず、①が<b>実数解をもつ場合</b>（判別式 <span class="m"><i>D</i> ≧ 0</span> の場合）を考えます。上の数直線の青い部分です。</p>
+          <p>解が実数なら、実部は解そのものなので、<span class="m"><i>p</i> ＝ <i>α</i>, <i>q</i> ＝ <i>β</i></span> です。</p>
+        </div>
+
+        <div class="step hint">
+          <div class="stag">ヒント 4</div>
+          <p><span class="m"><i>p</i>² ＋ <i>q</i>² ＋ <i>r</i>²</span> を、ヒント2の「和」と「積」で書き換えます。<span class="m"><i>α</i>² ＋ <i>β</i>² ＝ (<i>α</i>＋<i>β</i>)² − 2<i>αβ</i></span> という変形がポイントです。</p>
+          <span class="formula"><i>p</i>² ＋ <i>q</i>² ＋ <i>r</i>² ＝ (<i>α</i>＋<i>β</i>)² − 2<i>αβ</i> ＋ (−2)² ＝ <i>k</i>² − 2(<i>k</i> ＋ 3) ＋ 4 ＝ <i>k</i>² − 2<i>k</i> − 2</span>
+        </div>
+
+        <div class="step hint">
+          <div class="stag">ヒント 5</div>
+          <p>これが <span class="m">7</span> になるときを求めます。</p>
+          <span class="formula"><i>k</i>² − 2<i>k</i> − 2 ＝ 7　→　<i>k</i>² − 2<i>k</i> − 9 ＝ 0</span>
+          <p>解の公式を使うと、候補は <span class="m"><i>k</i> ＝ 1 ± <span class="sqrt">10</span></span> の2つです。ただし、まだ「答え」と決めつけず、次のヒントで<b>範囲のチェック</b>をします。</p>
+        </div>
+
+        <div class="step hint">
+          <div class="stag">ヒント 6</div>
+          <p>この問題では、<span class="m"><i>k</i></span> は <span class="m"><i>D</i> ≧ 0</span>（<span class="m"><i>k</i> ≦ −2</span> または <span class="m">6 ≦ <i>k</i></span>）を満たし、さらに(2)で求めた値 <span class="m">−<span class="frac"><span class="fnum">7</span><span class="fden">3</span></span>, −2, 6</span> は<b>除きます</b>。使える範囲は</p>
+          <span class="formula"><i>k</i> ＜ −<span class="frac"><span class="fnum">7</span><span class="fden">3</span></span>,　−<span class="frac"><span class="fnum">7</span><span class="fden">3</span></span> ＜ <i>k</i> ＜ −2,　6 ＜ <i>k</i></span>
+          <p>です（数直線の印を見てください）。</p>
+          <p><span class="m">1 ＋ <span class="sqrt">10</span> ≒ 4.16</span> は範囲の外なので <span class="ng">不適 ×</span>。<br /><span class="m">1 − <span class="sqrt">10</span> ≒ −2.16</span> は <span class="m">−<span class="frac"><span class="fnum">7</span><span class="fden">3</span></span> ＜ <i>k</i> ＜ −2</span> の中にあるので <span class="ok">適します ○</span>。</p>
+        </div>
+
+        <div class="step hint">
+          <div class="stag">ヒント 7</div>
+          <p>次に、①が<b>虚数解をもつ場合</b>（<span class="m"><i>D</i> ＜ 0</span>、つまり <span class="m">−2 ＜ <i>k</i> ＜ 6</span>）を考えます。数直線のオレンジの部分です。</p>
+          <p>このとき①の解は <span class="m"><i>x</i> ＝ <span class="frac"><span class="fnum"><i>k</i> ± <span class="sqrt">−<i>D</i></span> <i>i</i></span><span class="fden">2</span></span></span> という形で、<b>実部はどちらも <span class="m"><span class="frac"><span class="fnum"><i>k</i></span><span class="fden">2</span></span></span></b> になります。</p>
+          <p class="mini">虚数解は「実部 ± 虚部<i>i</i>」のペアで現れます。<i>i</i> のついていない部分が実部です。</p>
+        </div>
+
+        <div class="step hint">
+          <div class="stag">ヒント 8</div>
+          <p><span class="m"><i>p</i> ＝ <i>q</i> ＝ <span class="frac"><span class="fnum"><i>k</i></span><span class="fden">2</span></span></span> として、条件の式に代入します。</p>
+          <span class="formula"><i>p</i>² ＋ <i>q</i>² ＋ <i>r</i>² ＝ (<span class="frac"><span class="fnum"><i>k</i></span><span class="fden">2</span></span>)² ＋ (<span class="frac"><span class="fnum"><i>k</i></span><span class="fden">2</span></span>)² ＋ (−2)² ＝ <span class="frac"><span class="fnum"><i>k</i>²</span><span class="fden">2</span></span> ＋ 4 ＝ 7</span>
+          <p>よって <span class="m"><i>k</i>² ＝ 6</span>、候補は <span class="m"><i>k</i> ＝ ±<span class="sqrt">6</span></span> です。</p>
+          <p>範囲 <span class="m">−2 ＜ <i>k</i> ＜ 6</span> に入るのは <span class="m"><span class="sqrt">6</span> ≒ 2.45</span> だけで、<span class="m">−<span class="sqrt">6</span> ≒ −2.45</span> は範囲の外なので <span class="ng">不適 ×</span> です。</p>
+        </div>
+
+        <div class="step answer">
+          <div class="stag">答え</div>
+          <p>実数解の場合と虚数解の場合を合わせます。</p>
+          <p class="ans-main"><span class="m"><i>k</i> ＝ 1 − <span class="sqrt">10</span>, <span class="sqrt">6</span></span></p>
+        </div>
+      </section>
+
+      <!-- 操作バー -->
+      <div class="action-bar">
+        <div class="dots" id="dots" aria-hidden="true"></div>
+        <div class="bar-btns">
+          <button type="button" class="next-btn" id="nextBtn">次へ：ヒント1を開く</button>
+          <button type="button" class="reset-btn" id="resetBtn">最初からやり直す</button>
+        </div>
+        <div class="bar-msg" id="barMsg"></div>
+      </div>
+
+      <footer>
+        <a href="moshi-b-2024.html">← 2024年11月記述模試 トップに戻る</a>
+        <a href="moshi.html">← 模試解説の一覧に戻る</a>
+        <a class="portal-btn" href="index.html">Nanryo mathematics portal に戻る</a>
+      </footer>
+
+    </div>
+
+    <script>
+      (function(){
+        var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+        var panels = Array.prototype.slice.call(document.querySelectorAll('.panel'));
+        var stepsPer = panels.map(function(p){ return p.querySelectorAll('.step').length; });
+        var hintsPer = panels.map(function(p){ return p.querySelectorAll('.step.hint').length; });
+        var totalAll = stepsPer.reduce(function(a,b){ return a+b; }, 0);
+        var revealed = [0,0,0];
+        var active = 0;
+
+        var nextBtn = document.getElementById('nextBtn');
+        var resetBtn = document.getElementById('resetBtn');
+        var dotsEl = document.getElementById('dots');
+        var barMsg = document.getElementById('barMsg');
+        var ofill = document.getElementById('ofill');
+        var ocount = document.getElementById('ocount');
+
+        function render(){
+          tabs.forEach(function(t,i){ t.classList.toggle('active', i===active); });
+          panels.forEach(function(p,i){ p.classList.toggle('active', i===active); });
+
+          panels.forEach(function(p, pi){
+            var steps = p.querySelectorAll('.step');
+            steps.forEach(function(s, si){ s.classList.toggle('show', si < revealed[pi]); });
+            var vizEls = p.querySelectorAll('[data-step]');
+            vizEls.forEach(function(el){
+              var need = parseInt(el.getAttribute('data-step'), 10);
+              el.classList.toggle('on', revealed[pi] >= need);
+            });
+            var st = document.getElementById('status-' + pi);
+            if (revealed[pi] === 0){ st.textContent = '未着手'; st.className = 'tstatus'; }
+            else if (revealed[pi] >= stepsPer[pi]){ st.textContent = '完了 ✓'; st.className = 'tstatus done'; }
+            else { st.textContent = 'ヒント ' + Math.min(revealed[pi], hintsPer[pi]) + ' / ' + hintsPer[pi] + ' を開きました'; st.className = 'tstatus'; }
+          });
+
+          // ドット（現在のタブ分）
+          dotsEl.innerHTML = '';
+          for (var i = 0; i < stepsPer[active]; i++){
+            var d = document.createElement('span');
+            d.className = 'dot' + (i === stepsPer[active]-1 ? ' ansdot' : '') + (i < revealed[active] ? ' filled' : '');
+            dotsEl.appendChild(d);
+          }
+
+          // 次へボタン
+          var r = revealed[active], total = stepsPer[active], hints = hintsPer[active];
+          if (r < hints){
+            nextBtn.disabled = false;
+            nextBtn.textContent = '次へ：ヒント' + (r+1) + 'を開く';
+            barMsg.textContent = r === 0 ? 'まずは自分で考えてみよう。困ったらヒントを開いてね。' : 'ヒントはあと ' + (total - r) + ' ステップ（答えを含む）です。';
+          } else if (r === hints){
+            nextBtn.disabled = false;
+            nextBtn.textContent = '次へ：答えを見る';
+            barMsg.textContent = 'ヒントは全部開きました。最後に答えを確認しましょう。';
+          } else {
+            if (active < panels.length - 1){
+              nextBtn.disabled = false;
+              nextBtn.textContent = '次の小問 (' + (active+2) + ') へ進む';
+              barMsg.textContent = 'この小問は完了です！おつかれさま。';
+            } else {
+              nextBtn.disabled = true;
+              nextBtn.textContent = '全部の問題が終わりました';
+              barMsg.textContent = '大問3は完了です！おつかれさま。';
+            }
+          }
+
+          // 全体進捗
+          var done = revealed.reduce(function(a,b){ return a+b; }, 0);
+          ofill.style.width = (totalAll ? (done/totalAll*100) : 0) + '%';
+          ocount.textContent = 'ステップ ' + done + ' / ' + totalAll + ' を開きました';
+        }
+
+        nextBtn.addEventListener('click', function(){
+          if (revealed[active] < stepsPer[active]){
+            revealed[active]++;
+            render();
+            var steps = panels[active].querySelectorAll('.step');
+            var el = steps[revealed[active]-1];
+            if (el){ el.scrollIntoView({block:'nearest', behavior:'smooth'}); }
+          } else if (active < panels.length - 1){
+            active++;
+            render();
+            window.scrollTo({top: 0, behavior: 'smooth'});
+          }
+        });
+
+        resetBtn.addEventListener('click', function(){
+          revealed[active] = 0;
+          render();
+          panels[active].scrollIntoView({block:'start', behavior:'smooth'});
+        });
+
+        tabs.forEach(function(t, i){
+          t.addEventListener('click', function(){
+            active = i;
+            render();
+          });
+        });
+
+        render();
+      })();
+    </script>
+  </body>
+</html>

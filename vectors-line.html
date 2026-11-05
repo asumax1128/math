@@ -1,0 +1,551 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:," />
+    <title>数学C 研究 直線のベクトル方程式の応用 自習ページ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Serif+JP:wght@700;900&family=STIX+Two+Math&display=swap" rel="stylesheet" />
+    <style>
+      :root{
+        --bg:#f4f7f5;
+        --surface:#ffffff;
+        --surface2:#eef4f1;
+        --ink:#1d2a26;
+        --ink-soft:#43554e;
+        --line:#cfddd6;
+        --accent:#0e7a5f;
+        --accent-deep:#0a5c48;
+        --accent-soft:#e2f2ec;
+        --blue:#1f6fb4;
+        --orange:#d96c1e;
+        --hint-bg:#fff6cf;
+        --hint-line:#e3c84e;
+        --hint-ink:#4d4210;
+        --ans-bg:#e6f6ea;
+        --ans-line:#4caf6d;
+        --ans-ink:#14401f;
+        --bar-bg:rgba(255,255,255,.94);
+        --shadow:0 2px 10px rgba(20,50,40,.08);
+        --arrow-img:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 12' preserveAspectRatio='none'%3E%3Cpath d='M2 6 H90 M82 1.5 L91 6 L82 10.5' stroke='%231d2a26' stroke-width='2.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      }
+      @media (prefers-color-scheme: dark){
+        :root{
+          --bg:#101714;
+          --surface:#1a2420;
+          --surface2:#22302a;
+          --ink:#e8f0ec;
+          --ink-soft:#b3c4bc;
+          --line:#3a4a43;
+          --accent:#3cb894;
+          --accent-deep:#8fd8c0;
+          --accent-soft:#1d332b;
+          --blue:#6cb2e8;
+          --orange:#f09a4e;
+          --hint-bg:#3d3617;
+          --hint-line:#a68e2e;
+          --hint-ink:#f5e9bd;
+          --ans-bg:#17301e;
+          --ans-line:#3f9957;
+          --ans-ink:#c9eed2;
+          --bar-bg:rgba(20,28,24,.94);
+          --shadow:0 2px 10px rgba(0,0,0,.4);
+          --arrow-img:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 12' preserveAspectRatio='none'%3E%3Cpath d='M2 6 H90 M82 1.5 L91 6 L82 10.5' stroke='%23e8f0ec' stroke-width='2.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+        }
+      }
+      *{box-sizing:border-box}
+      html{scroll-behavior:smooth}
+      @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} *{transition:none!important} }
+      body{
+        margin:0; background:var(--bg); color:var(--ink);
+        font-family:"Noto Sans JP",system-ui,-apple-system,"Hiragino Kaku Gothic ProN",sans-serif;
+        line-height:1.85; font-size:16px;
+        padding-bottom:118px;
+      }
+      .wrap{max-width:780px;margin:0 auto;padding:0 16px 8px}
+
+      /* ---------- ヘッダー ---------- */
+      header{padding:26px 0 6px}
+      .badge{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:700;font-size:13px;
+        padding:4px 12px;border-radius:999px;letter-spacing:.04em;
+      }
+      @media (prefers-color-scheme: dark){ .badge{color:#0c1712} }
+      h1{
+        font-family:"Noto Serif JP",serif;font-weight:900;font-size:34px;line-height:1.3;
+        margin:12px 0 4px;letter-spacing:.02em;
+      }
+      .page-meta{color:var(--ink-soft);font-size:14px;font-weight:500}
+      .page-meta b{color:var(--accent-deep)}
+
+      /* ---------- 使い方 ---------- */
+      .howto{
+        background:var(--accent-soft);border:1.5px solid var(--accent);border-radius:14px;
+        padding:14px 18px;margin:18px 0 26px;box-shadow:var(--shadow);
+      }
+      .howto h2{margin:0 0 6px;font-size:16px;color:var(--accent-deep)}
+      .howto ol{margin:0;padding-left:1.4em}
+      .howto li{margin:2px 0}
+      .howto .next-word{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:700;border-radius:6px;
+        padding:0 8px;font-size:.92em;
+      }
+      @media (prefers-color-scheme: dark){ .howto .next-word{color:#0c1712} }
+
+      /* ---------- セクション見出し ---------- */
+      .sec-head{display:flex;align-items:center;gap:10px;margin:34px 0 12px}
+      .sec-tag{
+        background:var(--ink);color:var(--bg);font-weight:900;font-size:14px;border-radius:8px;
+        padding:3px 10px;white-space:nowrap;
+      }
+      .sec-head h2{font-size:21px;margin:0;font-weight:900}
+      .sec-head .pno{margin-left:auto;color:var(--ink-soft);font-size:13px;white-space:nowrap}
+
+      .card{
+        background:var(--surface);border:1px solid var(--line);border-radius:14px;
+        padding:18px 18px 8px;margin:0 0 18px;box-shadow:var(--shadow);
+      }
+      .card p{margin:0 0 12px}
+      .def{
+        background:var(--surface2);border-radius:10px;padding:12px 16px;margin:0 0 14px;
+      }
+      .def p:last-child{margin-bottom:0}
+      .key{font-weight:900;color:var(--accent-deep)}
+      figure{margin:6px 0 14px}
+      figure svg{width:100%;height:auto;display:block}
+      figcaption{font-size:13.5px;color:var(--ink-soft);text-align:center;margin-top:6px;line-height:1.6}
+      .figbox{background:var(--surface2);border-radius:12px;padding:12px 10px 6px}
+
+      /* ---------- 数式・矢印表記 ---------- */
+      .v{
+        display:inline-block;position:relative;padding-top:.5em;line-height:1.1;
+        font-family:"STIX Two Math","Noto Sans JP",sans-serif;
+        font-weight:700;font-style:italic;white-space:nowrap;
+      }
+      .v::before{
+        content:"";position:absolute;top:.02em;left:-.04em;right:-.04em;height:.34em;
+        background-image:var(--arrow-img);background-repeat:no-repeat;background-size:100% 100%;
+      }
+      .formula{
+        text-align:center;font-size:19px;font-weight:700;letter-spacing:.03em;
+        background:var(--surface2);border-radius:10px;padding:12px 8px;margin:0 0 14px;
+      }
+      .abs{font-weight:400}
+      sub{font-size:.72em}
+      /* 数式フォント（TeX風）：英数字・記号は STIX Two Math、日本語字形は Noto Sans JP にフォールバック */
+      .card p,.card li,figcaption{
+        font-family:"STIX Two Math","Noto Sans JP",sans-serif;
+      }
+
+      /* ---------- 問題カード（ヒント式） ---------- */
+      .prob{border:2px solid var(--line);transition:border-color .2s}
+      .prob.active{border-color:var(--accent)}
+      .prob-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+      .prob-tag{
+        font-weight:900;font-size:14px;border-radius:8px;padding:3px 12px;color:#fff;background:var(--blue);
+      }
+      .prob-tag.ren{background:#c2452d}
+      .prob-tag.kai{background:var(--accent)}
+      .prob-tag.hat{background:#7a4fa3}
+      @media (prefers-color-scheme: dark){ .prob-tag{color:#0d141b} .prob-tag.ren{color:#1c0f0a} .prob-tag.kai{color:#0c1712} .prob-tag.hat{color:#150d1f} }
+      .prob-state{margin-left:auto;font-size:13px;font-weight:700;color:var(--ink-soft)}
+      .dots{display:flex;gap:6px;align-items:center}
+      .dot{width:11px;height:11px;border-radius:50%;border:2px solid var(--ink-soft);background:transparent}
+      .dot.on{background:var(--accent);border-color:var(--accent)}
+      .dot.ans.on{background:#2f9e4f;border-color:#2f9e4f}
+      .prob-q{font-weight:700;font-size:16.5px;margin:0 0 10px}
+
+      .step{display:none;margin:0 0 12px;border-radius:12px;padding:12px 16px 4px;scroll-margin-bottom:130px}
+      .step.show{display:block;animation:pop .25s ease}
+      @keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+      .step h3{margin:0 0 6px;font-size:14px;font-weight:900;letter-spacing:.05em}
+      .step p{margin:0 0 10px}
+      .hint{background:var(--hint-bg);border:1.5px solid var(--hint-line);color:var(--hint-ink)}
+      .hint h3{color:inherit}
+      .deriv{background:var(--surface2);border:1.5px solid var(--line);color:var(--ink)}
+      .deriv .formula{background:var(--surface)}
+      .answer{background:var(--ans-bg);border:1.5px solid var(--ans-line);color:var(--ans-ink)}
+      .answer .big{font-size:18px;font-weight:900;text-align:center;margin:4px 0 10px}
+      .note{font-size:14px;border-top:1px dashed currentColor;padding-top:8px;margin-top:2px}
+      .prob-done{
+        display:none;text-align:center;font-weight:900;color:var(--accent-deep);
+        padding:2px 0 12px;font-size:15px;
+      }
+      .prob-done.show{display:block}
+
+      /* ---------- まとめ ---------- */
+      .summary{border:2px solid var(--accent);background:var(--accent-soft)}
+      .summary h2{margin:0 0 8px;font-size:18px;color:var(--accent-deep)}
+      .summary ul{margin:0;padding-left:1.3em}
+      .summary li{margin:4px 0}
+
+      /* ---------- フッター ---------- */
+      footer{margin:30px 0 10px;text-align:center}
+      .back-btn{
+        display:inline-block;text-decoration:none;font-weight:700;color:var(--ink);
+        border:2px solid var(--line);background:var(--surface);border-radius:12px;padding:12px 26px;
+      }
+      .foot-note{color:var(--ink-soft);font-size:13px;margin-top:12px}
+
+      /* ---------- 下部固定バー ---------- */
+      .ctrl-bar{
+        position:fixed;left:0;right:0;bottom:0;z-index:50;background:var(--bar-bg);
+        backdrop-filter:blur(8px);border-top:1.5px solid var(--line);
+        padding:10px 14px calc(10px + env(safe-area-inset-bottom));
+      }
+      .ctrl-inner{max-width:780px;margin:0 auto}
+      .ctrl-label{font-size:13px;font-weight:700;color:var(--ink-soft);margin:0 0 8px;text-align:center}
+      .ctrl-label b{color:var(--accent-deep)}
+      .ctrl-btns{display:flex;gap:10px}
+      .btn{
+        font-family:inherit;cursor:pointer;border-radius:12px;font-weight:900;border:2px solid var(--line);
+        background:var(--surface);color:var(--ink);padding:12px 14px;font-size:15px;
+      }
+      .btn-next{
+        flex:1;background:var(--accent);border-color:var(--accent);color:#fff;font-size:18px;padding:12px;
+      }
+      @media (prefers-color-scheme: dark){ .btn-next{color:#0c1712} }
+      .btn-next:disabled{background:var(--surface2);border-color:var(--line);color:var(--ink-soft);cursor:default}
+      .btn:active{transform:scale(.98)}
+
+      /* SVG内の文字・線 */
+      .svg-txt{font-family:"STIX Two Math","Noto Sans JP",sans-serif;font-weight:700;fill:var(--ink)}
+      .svg-txt-soft{font-family:"STIX Two Math","Noto Sans JP",sans-serif;fill:var(--ink-soft)}
+      .grid-line{stroke:var(--line);stroke-width:1}
+      .axis-line{stroke:var(--ink-soft);stroke-width:1.6}
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+
+      <!-- ================= ヘッダー ================= -->
+      <header>
+        <span class="badge">数学C　第1章　平面上のベクトル　研究</span>
+        <h1>直線のベクトル方程式の応用</h1>
+        <p class="page-meta">教科書 <b>p.46</b>　｜　第2節 ベクトルと図形</p>
+      </header>
+
+      <!-- ================= 使い方 ================= -->
+      <section class="howto" aria-label="使い方">
+        <h2>このページの使い方（自習の流れ）</h2>
+        <ol>
+          <li><b>解説</b>を読んで、「係数の和＝1」の使い方を確認する</li>
+          <li><b>例</b>を追う ― 下の <span class="next-word">次へ</span> で解き方を1ステップずつ開く</li>
+          <li><b>発展</b>に挑戦 ― 同じ考え方で、長さの比まで求めてみよう</li>
+        </ol>
+      </section>
+
+      <!-- ================= 解説 ================= -->
+      <div class="sec-head">
+        <span class="sec-tag">解説</span>
+        <h2>使える形に言い換える</h2>
+        <span class="pno">教科書 p.46</span>
+      </div>
+
+      <section class="card">
+        <p>「7 図形のベクトルによる表示」で学んだことを思い出そう。△OABにおいて、点Pが<span class="key">直線AB上</span>にあるのは、次の形に書けるときだった。</p>
+        <div class="def">
+          <p class="formula" style="margin-bottom:8px">点Pが直線AB上にある　⇔　<span class="v">OP</span> ＝ s <span class="v">OA</span> ＋ t <span class="v">OB</span>　かつ　s ＋ t ＝ 1</p>
+          <p style="margin:0">係数 s、t の<b>和が1</b>になることが、「直線の上にある」ことの目印になる。</p>
+        </div>
+        <figure>
+          <div class="figbox">
+            <svg viewBox="0 0 520 300" role="img" aria-label="三角形OABの図。点Pは辺ABの上にあり、OPは s OA + t OB（s+t=1）と表せる">
+              <polygon points="80,250 440,250 200,60" fill="var(--accent-soft)"></polygon>
+              <line x1="80" y1="250" x2="440" y2="250" stroke="var(--ink)" stroke-width="2.5"></line>
+              <line x1="80" y1="250" x2="200" y2="60" stroke="var(--ink)" stroke-width="2.5"></line>
+              <line x1="200" y1="60" x2="440" y2="250" stroke="var(--accent)" stroke-width="3.5"></line>
+              <line x1="80" y1="250" x2="296" y2="136" stroke="var(--orange)" stroke-width="2.5" stroke-dasharray="6 5"></line>
+              <circle cx="80" cy="250" r="4.5" fill="var(--ink)"></circle>
+              <circle cx="440" cy="250" r="4.5" fill="var(--ink)"></circle>
+              <circle cx="200" cy="60" r="4.5" fill="var(--ink)"></circle>
+              <circle cx="296" cy="136" r="5.5" fill="var(--orange)"></circle>
+              <text x="58" y="274" class="svg-txt" font-size="20">O</text>
+              <text x="450" y="274" class="svg-txt" font-size="20">A</text>
+              <text x="192" y="42" class="svg-txt" font-size="20">B</text>
+              <text x="306" y="128" class="svg-txt" font-size="20" fill="var(--orange)">P</text>
+              <text x="330" y="215" class="svg-txt-soft" font-size="15">直線AB</text>
+            </svg>
+          </div>
+          <figcaption>点Pが直線AB上にあるとき、<span class="v" style="padding-top:.4em">OP</span> の係数の和は必ず1になる。</figcaption>
+        </figure>
+        <p>この「和＝1」は、<span class="key">交点の問題</span>で威力を発揮する。交点Pは2本の直線の両方の上にあるから、解き方はこうなる。</p>
+        <div class="def">
+          <p style="margin:0 0 8px"><b>交点の速い解き方</b></p>
+          <p style="margin:0">① <span class="v">OP</span> ＝ x <span class="v">OA</span> ＋ y <span class="v">OB</span> と置く<br />
+          ② もう一方の直線に合わせた形に<b>書き換えて</b>、「係数の和＝1」を<b>2通り</b>作る<br />
+          ③ 2つの式を<b>連立</b>して x、y を求める</p>
+        </div>
+        <p>「6 ベクトルの図形への応用」では係数を比較して交点を求めたが、この方法なら式が2本立つだけなので、ずっと速く解ける。次の例で実際にやってみよう。</p>
+      </section>
+
+      <!-- ================= 例 ================= -->
+      <div class="sec-head">
+        <span class="sec-tag">例</span>
+        <h2>応用例題4を解き直す</h2>
+        <span class="pno">教科書 p.38・p.46</span>
+      </div>
+
+      <section class="card prob active" id="prob-rei" data-flow="rei" data-label="例：交点Pの位置ベクトル" data-kind="step" data-done-label="解答を表示済み" data-last-label="答えを見る ▶">
+        <div class="prob-head">
+          <span class="prob-tag">例</span>
+          <div class="dots" aria-hidden="true">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span>
+          </div>
+          <span class="prob-state">ステップ 0 / 4</span>
+        </div>
+        <p class="prob-q">△OABにおいて、辺OAを 1：1 に内分する点（中点）をC、辺OBを 2：1 に内分する点をDとし、線分ADと線分BCの交点をPとする。<span class="v">OP</span> を <span class="v">OA</span>、<span class="v">OB</span> で表せ。</p>
+        <figure>
+          <div class="figbox">
+            <svg viewBox="0 0 520 340" role="img" aria-label="三角形OABの図。CはOAの中点、DはOBを2対1に内分する点。線分ADと線分BCが点Pで交わる">
+              <polygon points="70,290 450,290 180,60" fill="var(--accent-soft)"></polygon>
+              <!-- 三角形の辺 -->
+              <line x1="70" y1="290" x2="450" y2="290" stroke="var(--ink)" stroke-width="2.5"></line>
+              <line x1="70" y1="290" x2="180" y2="60" stroke="var(--ink)" stroke-width="2.5"></line>
+              <line x1="180" y1="60" x2="450" y2="290" stroke="var(--ink)" stroke-width="2.5"></line>
+              <!-- AD と BC -->
+              <line x1="450" y1="290" x2="143" y2="137" stroke="var(--blue)" stroke-width="3"></line>
+              <line x1="180" y1="60" x2="260" y2="290" stroke="var(--orange)" stroke-width="3"></line>
+              <!-- 点 -->
+              <circle cx="70" cy="290" r="4.5" fill="var(--ink)"></circle>
+              <circle cx="450" cy="290" r="4.5" fill="var(--ink)"></circle>
+              <circle cx="180" cy="60" r="4.5" fill="var(--ink)"></circle>
+              <circle cx="260" cy="290" r="5" fill="var(--blue)"></circle>
+              <circle cx="143" cy="137" r="5" fill="var(--orange)"></circle>
+              <circle cx="220" cy="175" r="6" fill="#c2452d"></circle>
+              <!-- ラベル -->
+              <text x="46" y="314" class="svg-txt" font-size="20">O</text>
+              <text x="460" y="314" class="svg-txt" font-size="20">A</text>
+              <text x="172" y="42" class="svg-txt" font-size="20">B</text>
+              <text x="252" y="318" class="svg-txt" font-size="18" fill="var(--blue)">C</text>
+              <text x="112" y="130" class="svg-txt" font-size="18" fill="var(--orange)">D</text>
+              <text x="232" y="168" class="svg-txt" font-size="19" fill="#c2452d">P</text>
+              <text x="330" y="252" class="svg-txt-soft" font-size="14">AD</text>
+              <text x="196" y="238" class="svg-txt-soft" font-size="14">BC</text>
+            </svg>
+          </div>
+          <figcaption>CはOAの中点、DはOBを 2：1 に内分する点。2本の線分AD、BCの交点がP。</figcaption>
+        </figure>
+        <p>38ページの応用例題4と同じ問題を、「係数の和＝1」を2通り作る方法で解き直してみよう。下の <b>次へ</b> で1ステップずつ進めるよ。</p>
+
+        <div class="step deriv">
+          <h3>ステップ 1 ― まず OP を x、y で置く</h3>
+          <p>交点Pの位置ベクトルを、未知数 x、y を使って置くのが出発点だ。</p>
+          <p class="formula"><span class="v">OP</span> ＝ x <span class="v">OA</span> ＋ y <span class="v">OB</span>　とおく</p>
+          <p>あとは、Pが直線ADの上と直線BCの上の<b>両方</b>にあることを使って、x と y の式を2本作る。</p>
+        </div>
+        <div class="step deriv">
+          <h3>ステップ 2 ― 直線ADに合わせる（式①）</h3>
+          <p>DはOBを 2：1 に内分する点だから、<span class="v">OD</span> ＝ (2/3) <span class="v">OB</span>、つまり <span class="v">OB</span> ＝ <b>(3/2) <span class="v">OD</span></b> と書き換えられる。これをステップ1の式に入れると</p>
+          <p class="formula"><span class="v">OP</span> ＝ x <span class="v">OA</span> ＋ (3/2)y <span class="v">OD</span></p>
+          <p>これは「AとDで表した形」だから、Pが直線AD上にある条件は、係数の和＝1。よって</p>
+          <p class="formula">x ＋ (3/2)y ＝ 1　……①</p>
+        </div>
+        <div class="step deriv">
+          <h3>ステップ 3 ― 直線BCに合わせる（式②）</h3>
+          <p>今度はCを使う。CはOAの中点だから、<span class="v">OA</span> ＝ <b>2 <span class="v">OC</span></b> と書き換えられる。ステップ1の式に入れると</p>
+          <p class="formula"><span class="v">OP</span> ＝ 2x <span class="v">OC</span> ＋ y <span class="v">OB</span></p>
+          <p>これは「CとBで表した形」だから、Pが直線BC上にある条件は、やはり係数の和＝1。よって</p>
+          <p class="formula">2x ＋ y ＝ 1　……②</p>
+        </div>
+        <div class="step answer">
+          <h3>ステップ 4 ― ①と②を連立して解く</h3>
+          <p class="big"><span class="v">OP</span> ＝ (1/4) <span class="v">OA</span> ＋ (1/2) <span class="v">OB</span></p>
+          <p>① x＋(3/2)y＝1 と ② 2x＋y＝1 を連立すると、x＝<b>1/4</b>、y＝<b>1/2</b> と求まる。ステップ1の置き方に戻せば、答えは上の通り。</p>
+          <p class="note"><b>確認：</b>これは「6 ベクトルの図形への応用」で<b>係数比較</b>をして求めた応用例題4の答えと一致する。解き方が短くなった分、計算ミスも減らせるね。</p>
+        </div>
+        <p class="prob-done">例 クリア！　書き換え→「和＝1」×2→連立、の流れを覚えよう。</p>
+      </section>
+
+      <!-- ================= 発展 ================= -->
+      <div class="sec-head">
+        <span class="sec-tag">発展</span>
+        <h2>線分OPの延長とABの交点</h2>
+        <span class="pno">教科書 p.46</span>
+      </div>
+
+      <section class="card prob" id="prob-hatten" data-flow="hatten" data-label="発展：OP：PE を求める" data-kind="step" data-done-label="解答を表示済み" data-last-label="答えを見る ▶">
+        <div class="prob-head">
+          <span class="prob-tag hat">発展</span>
+          <div class="dots" aria-hidden="true">
+            <span class="dot"></span><span class="dot"></span><span class="dot ans"></span>
+          </div>
+          <span class="prob-state">ステップ 0 / 3</span>
+        </div>
+        <p class="prob-q">線分OPの延長と線分ABの交点をEとするとき、OP：PE を求めよ。</p>
+        <figure>
+          <div class="figbox">
+            <svg viewBox="0 0 520 340" role="img" aria-label="三角形OABの図。Oから交点Pを通る直線を延長すると、辺AB上の点Eに届く">
+              <polygon points="70,290 450,290 180,60" fill="var(--accent-soft)"></polygon>
+              <line x1="70" y1="290" x2="450" y2="290" stroke="var(--ink)" stroke-width="2.5"></line>
+              <line x1="70" y1="290" x2="180" y2="60" stroke="var(--ink)" stroke-width="2.5"></line>
+              <line x1="180" y1="60" x2="450" y2="290" stroke="var(--ink)" stroke-width="2.5"></line>
+              <!-- AD と BC（薄く） -->
+              <line x1="450" y1="290" x2="143" y2="137" stroke="var(--line)" stroke-width="2"></line>
+              <line x1="180" y1="60" x2="260" y2="290" stroke="var(--line)" stroke-width="2"></line>
+              <!-- O-P-E の直線 -->
+              <line x1="70" y1="290" x2="220" y2="175" stroke="var(--orange)" stroke-width="3"></line>
+              <line x1="220" y1="175" x2="270" y2="137" stroke="var(--orange)" stroke-width="3" stroke-dasharray="7 5"></line>
+              <circle cx="70" cy="290" r="4.5" fill="var(--ink)"></circle>
+              <circle cx="450" cy="290" r="4.5" fill="var(--ink)"></circle>
+              <circle cx="180" cy="60" r="4.5" fill="var(--ink)"></circle>
+              <circle cx="220" cy="175" r="5.5" fill="#c2452d"></circle>
+              <circle cx="270" cy="137" r="5.5" fill="var(--orange)"></circle>
+              <text x="46" y="314" class="svg-txt" font-size="20">O</text>
+              <text x="460" y="314" class="svg-txt" font-size="20">A</text>
+              <text x="172" y="42" class="svg-txt" font-size="20">B</text>
+              <text x="200" y="200" class="svg-txt" font-size="18" fill="#c2452d">P</text>
+              <text x="280" y="130" class="svg-txt" font-size="19" fill="var(--orange)">E</text>
+            </svg>
+          </div>
+          <figcaption>OPをそのまま延長すると、辺ABと点Eで交わる。Eも「直線AB上の点」だから、和＝1が使える。</figcaption>
+        </figure>
+        <p>例で求めた <span class="v">OP</span> ＝ (1/4) <span class="v">OA</span> ＋ (1/2) <span class="v">OB</span> を使うよ。下の <b>次へ</b> で進めよう。</p>
+
+        <div class="step deriv">
+          <h3>ステップ 1 ― OE を k 倍で置く</h3>
+          <p>Eは直線OP上にあるから、<span class="v">OE</span> は <span class="v">OP</span> の実数倍で書ける。倍率を k として</p>
+          <p class="formula"><span class="v">OE</span> ＝ k <span class="v">OP</span> ＝ (k/4) <span class="v">OA</span> ＋ (k/2) <span class="v">OB</span></p>
+          <p>k が分かれば、OPとPEの比が決まる。</p>
+        </div>
+        <div class="step deriv">
+          <h3>ステップ 2 ― Eは直線AB上 → 和＝1</h3>
+          <p>点Eは直線AB上にあるから、<span class="v">OE</span> の係数の和は1になる。よって</p>
+          <p class="formula">(k/4) ＋ (k/2) ＝ 1</p>
+          <p>これを解くと、(3/4)k＝1 だから k＝<b>4/3</b>。</p>
+        </div>
+        <div class="step answer">
+          <h3>ステップ 3 ― 比に直す</h3>
+          <p class="big">OP：PE ＝ 3：1</p>
+          <p><span class="v">OE</span> ＝ (4/3) <span class="v">OP</span> だから、OEはOPの (4/3) 倍。PE ＝ OE − OP ＝ (1/3) OP となるので</p>
+          <p class="formula" style="background:transparent">OP：PE ＝ 1：(1/3) ＝ <b>3：1</b></p>
+          <p class="note"><b>ポイント：</b>「直線AB上の点」という条件を、ここでも係数の和＝1に翻訳しただけ。例と同じ道具がそのまま使える。</p>
+        </div>
+        <p class="prob-done">発展 クリア！　この項はこれで完了だよ。</p>
+      </section>
+
+      <!-- ================= まとめ ================= -->
+      <section class="card summary">
+        <h2>この項のポイント</h2>
+        <ul>
+          <li><b>交点は「係数の和＝1」を2通り作って連立するのが最速。</b><span class="v" style="padding-top:.4em">OP</span> ＝ x <span class="v" style="padding-top:.4em">OA</span> ＋ y <span class="v" style="padding-top:.4em">OB</span> と置き、2本の直線それぞれに合わせた形に書き換える。</li>
+          <li><b>書き換えのコツは「内分する点のベクトルに直す」こと。</b>例：DがOBを 2：1 に内分するなら <span class="v" style="padding-top:.4em">OB</span> ＝ (3/2) <span class="v" style="padding-top:.4em">OD</span>、CがOAの中点なら <span class="v" style="padding-top:.4em">OA</span> ＝ 2 <span class="v" style="padding-top:.4em">OC</span>。</li>
+          <li><b>比の問題にも同じ道具が使える。</b>延長上の点も「直線上の点」として、係数の和＝1で倍率を求めればよい。</li>
+        </ul>
+      </section>
+
+      <!-- ================= フッター ================= -->
+      <footer>
+        <a class="back-btn" href="vectors.html" id="backToTop">← トップページに戻る</a>
+        <a class="back-btn" href="index.html" id="backToPortal" style="margin-left:10px">← Nanryo mathematics portal に戻る</a>
+        <p class="foot-note">数学C 第1章 平面上のベクトル ｜ 研究 直線のベクトル方程式の応用（教科書 p.46）</p>
+      </footer>
+    </div>
+
+    <!-- ================= 下部固定バー ================= -->
+    <div class="ctrl-bar">
+      <div class="ctrl-inner">
+        <p class="ctrl-label">いまの課題：<b id="ctrlLabel">例：交点Pの位置ベクトル</b>　―　「次へ」で1ステップずつ開こう</p>
+        <div class="ctrl-btns">
+          <button class="btn" id="btnReset" type="button">最初からやり直す</button>
+          <button class="btn btn-next" id="btnNext" type="button">次へ ▶</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      (function(){
+        "use strict";
+
+        /* ---------- 段階表示フロー ---------- */
+        var flows = {};   // flowId -> {root, steps, dots, stateEl, doneEl, idx, label, kind, stepTotal, doneLabel, lastLabel}
+        var order = ['rei', 'hatten'];
+        var activeId = 'rei';
+
+        function registerFlow(root){
+          var id = root.getAttribute('data-flow');
+          var steps = Array.prototype.slice.call(root.querySelectorAll(':scope > .step'));
+          var head = root.querySelector(':scope > .prob-head');
+          var dots = head ? Array.prototype.slice.call(head.querySelectorAll('.dot')) : [];
+          var stateEl = head ? head.querySelector('.prob-state') : null;
+          var doneEl = root.querySelector(':scope > .prob-done');
+          flows[id] = {
+            id: id, root: root, steps: steps, dots: dots, stateEl: stateEl,
+            doneEl: doneEl, idx: 0, label: root.getAttribute('data-label') || id,
+            kind: root.getAttribute('data-kind') || 'step',
+            stepTotal: steps.length,
+            doneLabel: root.getAttribute('data-done-label') || '解答を表示済み',
+            lastLabel: root.getAttribute('data-last-label') || '答えを見る ▶'
+          };
+        }
+        order.forEach(function(id){
+          registerFlow(document.querySelector('[data-flow="' + id + '"]'));
+        });
+
+        var btnNext = document.getElementById('btnNext');
+        var btnReset = document.getElementById('btnReset');
+        var ctrlLabel = document.getElementById('ctrlLabel');
+
+        function refreshFlow(f){
+          f.steps.forEach(function(s, i){ s.classList.toggle('show', i < f.idx); });
+          f.dots.forEach(function(d, i){ d.classList.toggle('on', i < f.idx); });
+          if (f.stateEl){
+            f.stateEl.textContent = f.idx >= f.stepTotal
+              ? f.doneLabel
+              : 'ステップ ' + f.idx + ' / ' + f.stepTotal;
+          }
+          if (f.doneEl) f.doneEl.classList.toggle('show', f.idx >= f.steps.length);
+        }
+        function refreshBar(){
+          var f = flows[activeId];
+          ctrlLabel.textContent = f.label;
+          order.forEach(function(id){
+            flows[id].root.classList.toggle('active', id === activeId);
+          });
+          if (f.idx >= f.steps.length){
+            btnNext.disabled = true;
+            btnNext.textContent = 'ぜんぶ開いたよ ✓';
+          } else if (f.idx === f.stepTotal - 1){
+            btnNext.disabled = false;
+            btnNext.textContent = f.lastLabel;
+          } else {
+            btnNext.disabled = false;
+            btnNext.textContent = '次へ ▶（ステップ ' + (f.idx + 1) + '）';
+          }
+        }
+        function setActive(id){
+          activeId = id;
+          refreshBar();
+        }
+
+        btnNext.addEventListener('click', function(){
+          var f = flows[activeId];
+          if (f.idx >= f.steps.length) return;
+          f.idx += 1;
+          refreshFlow(f);
+          refreshBar();
+          var shown = f.steps[f.idx - 1];
+          if (shown) shown.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        });
+        btnReset.addEventListener('click', function(){
+          var f = flows[activeId];
+          f.idx = 0;
+          refreshFlow(f);
+          refreshBar();
+          f.root.scrollIntoView({ block: 'start', behavior: 'smooth' });
+        });
+
+        /* カードを触ったら、その課題を操作対象にする */
+        order.forEach(function(id){
+          flows[id].root.addEventListener('click', function(){ setActive(id); });
+        });
+
+        Object.keys(flows).forEach(function(id){ refreshFlow(flows[id]); });
+        refreshBar();
+      })();
+    </script>
+  </body>
+</html>
