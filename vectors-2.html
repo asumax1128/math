@@ -1,0 +1,1900 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:," />
+    <title>数学C 2 ベクトルの演算 自習ページ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Serif+JP:wght@700;900&display=swap" rel="stylesheet" />
+    <style>
+      :root{
+        --bg:#f4f7f5;
+        --surface:#ffffff;
+        --surface2:#eef4f1;
+        --ink:#1d2a26;
+        --ink-soft:#43554e;
+        --line:#cfddd6;
+        --accent:#0e7a5f;
+        --accent-deep:#0a5c48;
+        --accent-soft:#e2f2ec;
+        --blue:#1f6fb4;
+        --orange:#d96c1e;
+        --red:#c2452d;
+        --hint-bg:#fff6cf;
+        --hint-line:#e3c84e;
+        --hint-ink:#4d4210;
+        --ans-bg:#e6f6ea;
+        --ans-line:#4caf6d;
+        --ans-ink:#14401f;
+        --bar-bg:rgba(255,255,255,.94);
+        --shadow:0 2px 10px rgba(20,50,40,.08);
+        --arrow-img:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 12' preserveAspectRatio='none'%3E%3Cpath d='M2 6 H90 M82 1.5 L91 6 L82 10.5' stroke='%231d2a26' stroke-width='2.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      }
+      @media (prefers-color-scheme: dark){
+        :root{
+          --bg:#101714;
+          --surface:#1a2420;
+          --surface2:#22302a;
+          --ink:#e8f0ec;
+          --ink-soft:#b3c4bc;
+          --line:#3a4a43;
+          --accent:#3cb894;
+          --accent-deep:#8fd8c0;
+          --accent-soft:#1d332b;
+          --blue:#6cb2e8;
+          --orange:#f09a4e;
+          --red:#f0836b;
+          --hint-bg:#3d3617;
+          --hint-line:#a68e2e;
+          --hint-ink:#f5e9bd;
+          --ans-bg:#17301e;
+          --ans-line:#3f9957;
+          --ans-ink:#c9eed2;
+          --bar-bg:rgba(20,28,24,.94);
+          --shadow:0 2px 10px rgba(0,0,0,.4);
+          --arrow-img:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 12' preserveAspectRatio='none'%3E%3Cpath d='M2 6 H90 M82 1.5 L91 6 L82 10.5' stroke='%23e8f0ec' stroke-width='2.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+        }
+      }
+      *{box-sizing:border-box}
+      html{scroll-behavior:smooth}
+      @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} *{transition:none!important} }
+      body{
+        margin:0; background:var(--bg); color:var(--ink);
+        font-family:"Noto Sans JP",system-ui,-apple-system,"Hiragino Kaku Gothic ProN",sans-serif;
+        line-height:1.85; font-size:16px;
+        padding-bottom:118px;
+      }
+      .wrap{max-width:780px;margin:0 auto;padding:0 16px 8px}
+
+      header{padding:26px 0 6px}
+      .badge{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:700;font-size:13px;
+        padding:4px 12px;border-radius:999px;letter-spacing:.04em;
+      }
+      @media (prefers-color-scheme: dark){ .badge{color:#0c1712} }
+      h1{
+        font-family:"Noto Serif JP",serif;font-weight:900;font-size:34px;line-height:1.3;
+        margin:12px 0 4px;letter-spacing:.02em;
+      }
+      .page-meta{color:var(--ink-soft);font-size:14px;font-weight:500}
+      .page-meta b{color:var(--accent-deep)}
+
+      .howto{
+        background:var(--accent-soft);border:1.5px solid var(--accent);border-radius:14px;
+        padding:14px 18px;margin:18px 0 26px;box-shadow:var(--shadow);
+      }
+      .howto h2{margin:0 0 6px;font-size:16px;color:var(--accent-deep)}
+      .howto ol{margin:0;padding-left:1.4em}
+      .howto li{margin:2px 0}
+      .howto .next-word{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:700;border-radius:6px;
+        padding:0 8px;font-size:.92em;
+      }
+      @media (prefers-color-scheme: dark){ .howto .next-word{color:#0c1712} }
+
+      .sec-head{display:flex;align-items:center;gap:10px;margin:34px 0 12px}
+      .sec-tag{
+        background:var(--ink);color:var(--bg);font-weight:900;font-size:14px;border-radius:8px;
+        padding:3px 10px;white-space:nowrap;
+      }
+      .sec-head h2{font-size:21px;margin:0;font-weight:900}
+      .sec-head .pno{margin-left:auto;color:var(--ink-soft);font-size:13px;white-space:nowrap}
+
+      .card{
+        background:var(--surface);border:1px solid var(--line);border-radius:14px;
+        padding:18px 18px 8px;margin:0 0 18px;box-shadow:var(--shadow);
+      }
+      .card p{margin:0 0 12px}
+      .def{
+        background:var(--surface2);border-radius:10px;padding:12px 16px;margin:0 0 14px;
+      }
+      .def p:last-child{margin-bottom:0}
+      .key{font-weight:900;color:var(--accent-deep)}
+      figure{margin:6px 0 14px}
+      figure svg{width:100%;height:auto;display:block}
+      figcaption{font-size:13.5px;color:var(--ink-soft);text-align:center;margin-top:6px;line-height:1.6}
+      .figbox{background:var(--surface2);border-radius:12px;padding:12px 10px 6px}
+
+      .slider-row{display:flex;align-items:center;gap:12px;margin:4px 4px 10px}
+      .slider-row label{font-weight:700;font-size:14px;white-space:nowrap}
+      input[type=range]{flex:1;accent-color:var(--accent);height:32px}
+      .slider-state{font-weight:700;color:var(--accent-deep);text-align:center;font-size:15px;margin:0 0 10px}
+
+      /* 図の段階表示ボタン */
+      .stage-btns{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:10px 0 2px}
+      .stage-btn{
+        font-family:inherit;font-size:13.5px;font-weight:700;cursor:pointer;
+        border:2px solid var(--line);background:var(--surface);color:var(--ink);
+        border-radius:999px;padding:4px 14px;
+      }
+      .stage-btn.on{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+      .stage-btn:active{transform:scale(.97)}
+
+      /* 色の凡例 */
+      .legend{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;font-size:13.5px;font-weight:700;margin:2px 0 8px}
+      .legend span::before{content:"";display:inline-block;width:22px;height:5px;border-radius:3px;margin-right:6px;vertical-align:middle}
+      .legend .lg-a::before{background:var(--accent)}
+      .legend .lg-b::before{background:var(--blue)}
+      .legend .lg-r::before{background:var(--red)}
+
+      .v{
+        display:inline-block;position:relative;padding-top:.5em;line-height:1.1;
+        font-weight:700;font-style:normal;white-space:nowrap;
+      }
+      .v::before{
+        content:"";position:absolute;top:.02em;left:-.04em;right:-.04em;height:.34em;
+        background-image:var(--arrow-img);background-repeat:no-repeat;background-size:100% 100%;
+      }
+      .formula{
+        text-align:center;font-size:19px;font-weight:700;letter-spacing:.03em;
+        background:var(--surface2);border-radius:10px;padding:12px 8px;margin:0 0 14px;
+      }
+      .abs{font-weight:400}
+      .fr{white-space:nowrap}
+      .fr sup,.fr sub{font-size:.68em}
+
+      .prob{border:2px solid var(--line);transition:border-color .2s}
+      .prob.active{border-color:var(--accent)}
+      .prob-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+      .prob-tag{
+        font-weight:900;font-size:14px;border-radius:8px;padding:3px 12px;color:#fff;background:var(--blue);
+      }
+      .prob-tag.ren{background:#c2452d}
+      @media (prefers-color-scheme: dark){ .prob-tag{color:#0d141b} .prob-tag.ren{color:#ffe9e2} }
+      .prob-state{margin-left:auto;font-size:13px;font-weight:700;color:var(--ink-soft)}
+      .dots{display:flex;gap:6px;align-items:center}
+      .dot{width:11px;height:11px;border-radius:50%;border:2px solid var(--ink-soft);background:transparent}
+      .dot.on{background:var(--accent);border-color:var(--accent)}
+      .dot.ans.on{background:#2f9e4f;border-color:#2f9e4f}
+      .prob-q{font-weight:700;font-size:16.5px;margin:0 0 10px}
+
+      .step{display:none;margin:0 0 12px;border-radius:12px;padding:12px 16px 4px;scroll-margin-bottom:130px}
+      .step.show{display:block;animation:pop .25s ease}
+      @keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+      .step h3{margin:0 0 6px;font-size:14px;font-weight:900;letter-spacing:.05em}
+      .step p{margin:0 0 10px}
+      .hint{background:var(--hint-bg);border:1.5px solid var(--hint-line);color:var(--hint-ink)}
+      .hint h3{color:inherit}
+      .answer{background:var(--ans-bg);border:1.5px solid var(--ans-line);color:var(--ans-ink)}
+      .answer .big{font-size:18px;font-weight:900;text-align:center;margin:4px 0 10px}
+      .note{font-size:14px;border-top:1px dashed currentColor;padding-top:8px;margin-top:2px}
+      .prob-done{
+        display:none;text-align:center;font-weight:900;color:var(--accent-deep);
+        padding:2px 0 12px;font-size:15px;
+      }
+      .prob-done.show{display:block}
+
+      .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}
+      .tab{
+        font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;
+        border:2px solid var(--line);background:var(--surface);color:var(--ink);
+        border-radius:999px;padding:6px 18px;
+      }
+      .tab[aria-selected=true]{background:var(--accent);border-color:var(--accent);color:#fff}
+      @media (prefers-color-scheme: dark){ .tab[aria-selected=true]{color:#0c1712} }
+      .tabpanel{display:none}
+      .tabpanel.show{display:block}
+
+      .summary{border:2px solid var(--accent);background:var(--accent-soft)}
+      .summary h2{margin:0 0 8px;font-size:18px;color:var(--accent-deep)}
+      .summary ul{margin:0;padding-left:1.3em}
+      .summary li{margin:4px 0}
+
+      footer{margin:30px 0 10px;text-align:center}
+      .back-btn{
+        display:inline-block;text-decoration:none;font-weight:700;color:var(--ink);
+        border:2px solid var(--line);background:var(--surface);border-radius:12px;padding:12px 26px;
+      }
+      .foot-note{color:var(--ink-soft);font-size:13px;margin-top:12px}
+
+      .ctrl-bar{
+        position:fixed;left:0;right:0;bottom:0;z-index:50;background:var(--bar-bg);
+        backdrop-filter:blur(8px);border-top:1.5px solid var(--line);
+        padding:10px 14px calc(10px + env(safe-area-inset-bottom));
+      }
+      .ctrl-inner{max-width:780px;margin:0 auto}
+      .ctrl-label{font-size:13px;font-weight:700;color:var(--ink-soft);margin:0 0 8px;text-align:center}
+      .ctrl-label b{color:var(--accent-deep)}
+      .ctrl-btns{display:flex;gap:10px}
+      .btn{
+        font-family:inherit;cursor:pointer;border-radius:12px;font-weight:900;border:2px solid var(--line);
+        background:var(--surface);color:var(--ink);padding:12px 14px;font-size:15px;
+      }
+      .btn-next{
+        flex:1;background:var(--accent);border-color:var(--accent);color:#fff;font-size:18px;padding:12px;
+      }
+      @media (prefers-color-scheme: dark){ .btn-next{color:#0c1712} }
+      .btn-next:disabled{background:var(--surface2);border-color:var(--line);color:var(--ink-soft);cursor:default}
+      .btn:active{transform:scale(.98)}
+
+      .svg-txt{font-family:"Noto Sans JP",sans-serif;font-weight:700;fill:var(--ink)}
+      .svg-txt-soft{font-family:"Noto Sans JP",sans-serif;fill:var(--ink-soft)}
+      .grid-line{stroke:var(--line);stroke-width:1}
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+
+      <!-- ================= ヘッダー ================= -->
+      <header>
+        <span class="badge">数学C　第1章　平面上のベクトル</span>
+        <h1>2　ベクトルの演算</h1>
+        <p class="page-meta">教科書 <b>p.10〜15</b>　｜　第1節 ベクトルとその演算</p>
+      </header>
+
+      <!-- ================= 使い方 ================= -->
+      <section class="howto" aria-label="使い方">
+        <h2>このページの使い方（自習の流れ）</h2>
+        <ol>
+          <li><b>解説</b>を読んで、図でイメージをつかむ（図の下のボタンで作図の手順を1つずつ表示できるよ）</li>
+          <li><b>例題</b>をヒントで解く ― 分からなければ下の <span class="next-word">次へ</span> でヒントを1つずつ開く</li>
+          <li><b>練習問題</b>に挑戦 ― 答えは最後のヒントのあとに出てくるよ</li>
+        </ol>
+      </section>
+
+      <!-- ================= 解説A 加法 ================= -->
+      <div class="sec-head">
+        <span class="sec-tag">解説 A</span>
+        <h2>ベクトルの加法</h2>
+        <span class="pno">教科書 p.10〜11</span>
+      </div>
+
+      <section class="card">
+        <div class="def">
+          <p><span class="v">a</span>＝<span class="v">AB</span>、<span class="v">BC</span>＝<span class="v">b</span> となる点Cをとると、<span class="v">AC</span> を <span class="v">a</span> と <span class="v">b</span> の<span class="key">和</span>といい、<span class="v">a</span>＋<span class="v">b</span> と書く。</p>
+          <p>つまり、<b><span class="v">b</span> の始点を <span class="v">a</span> の終点につないで</b>、最初の始点から最後の終点へ引いた矢印が和になる。</p>
+        </div>
+        <p class="formula"><span class="v">AB</span>＋<span class="v">BC</span>＝<span class="v">AC</span>　（つないで、始点から終点へ）</p>
+        <figure class="figstage" id="fig-add-tri">
+          <div class="figbox">
+            <svg viewBox="0 0 520 280" role="img" aria-label="ベクトルの和をつなぐ方法で表した三角形の図">
+              <defs>
+                <marker id="at-a" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"></path></marker>
+                <marker id="at-b" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--blue)"></path></marker>
+                <marker id="at-r" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--red)"></path></marker>
+              </defs>
+              <!-- a: A(70,220) -> B(260,220) -->
+              <line x1="70" y1="220" x2="252" y2="220" stroke="var(--accent)" stroke-width="4" marker-end="url(#at-a)"></line>
+              <circle cx="70" cy="220" r="4.5" fill="var(--ink)"></circle>
+              <text x="56" y="248" class="svg-txt" font-size="18">A</text>
+              <text x="160" y="248" text-anchor="middle" class="svg-txt" font-size="16" fill="var(--accent-deep)"><tspan font-style="italic">a</tspan>→</text>
+              <!-- b: B(260,220) -> C(360,80) -->
+              <g class="stg1" style="display:none">
+                <line x1="260" y1="214" x2="354" y2="88" stroke="var(--blue)" stroke-width="4" marker-end="url(#at-b)"></line>
+                <circle cx="260" cy="220" r="4.5" fill="var(--ink)"></circle>
+                <text x="272" y="248" class="svg-txt" font-size="18">B</text>
+                <text x="330" y="140" class="svg-txt" font-size="16" fill="var(--blue)"><tspan font-style="italic">b</tspan>→</text>
+              </g>
+              <!-- a+b: A -> C -->
+              <g class="stg2" style="display:none">
+                <line x1="76" y1="212" x2="352" y2="86" stroke="var(--red)" stroke-width="4.5" marker-end="url(#at-r)"></line>
+                <circle cx="360" cy="80" r="4.5" fill="var(--ink)"></circle>
+                <text x="370" y="74" class="svg-txt" font-size="18">C</text>
+                <text x="180" y="120" class="svg-txt" font-size="16" fill="var(--red)"><tspan font-style="italic">a</tspan>→＋<tspan font-style="italic">b</tspan>→</text>
+              </g>
+            </svg>
+          </div>
+          <div class="stage-btns" role="group" aria-label="図の段階表示">
+            <button type="button" class="stage-btn on" data-stage="0">① <tspan style="font-style:italic">a</tspan>→ だけ</button>
+            <button type="button" class="stage-btn" data-stage="1">② <tspan style="font-style:italic">b</tspan>→ をつなぐ</button>
+            <button type="button" class="stage-btn" data-stage="2">③ 和を表示</button>
+          </div>
+          <figcaption>和の作り方：<span class="v" style="padding-top:.4em">a</span> の終点に <span class="v" style="padding-top:.4em">b</span> の始点をつなぎ、AからCへまっすぐ引く。</figcaption>
+        </figure>
+        <div class="legend" aria-hidden="true">
+          <span class="lg-a"><i>a</i>→</span><span class="lg-b"><i>b</i>→</span><span class="lg-r"><i>a</i>→＋<i>b</i>→</span>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="def">
+          <p><span class="key">平行四辺形の方法</span>：始点をそろえた2つのベクトルで平行四辺形を作ると、その<b>対角線</b>が和になる。</p>
+          <p>平行四辺形ABCDでは <span class="v">AD</span>＝<span class="v">BC</span> だから、つなぐ方法と合わせると次のようになる。</p>
+        </div>
+        <p class="formula"><span class="v">AB</span>＋<span class="v">AD</span>＝<span class="v">AC</span>　（対角線）</p>
+        <figure class="figstage" id="fig-add-para">
+          <div class="figbox">
+            <svg viewBox="0 0 520 280" role="img" aria-label="平行四辺形の対角線がベクトルの和になる図">
+              <defs>
+                <marker id="ap-a" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"></path></marker>
+                <marker id="ap-b" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--blue)"></path></marker>
+                <marker id="ap-r" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--red)"></path></marker>
+              </defs>
+              <!-- A(80,225) B(300,225) D(150,80) C(370,80) -->
+              <line x1="80" y1="225" x2="292" y2="225" stroke="var(--accent)" stroke-width="4" marker-end="url(#ap-a)"></line>
+              <line x1="86" y1="218" x2="144" y2="88" stroke="var(--blue)" stroke-width="4" marker-end="url(#ap-b)"></line>
+              <circle cx="80" cy="225" r="4.5" fill="var(--ink)"></circle>
+              <text x="60" y="252" class="svg-txt" font-size="18">A</text>
+              <text x="190" y="252" text-anchor="middle" class="svg-txt" font-size="15" fill="var(--accent-deep)"><tspan font-style="italic">AB</tspan>→</text>
+              <text x="86" y="150" class="svg-txt" font-size="15" fill="var(--blue)"><tspan font-style="italic">AD</tspan>→</text>
+              <g class="stg1" style="display:none">
+                <line x1="300" y1="218" x2="362" y2="88" stroke="var(--blue)" stroke-width="3" stroke-dasharray="7 5" marker-end="url(#ap-b)"></line>
+                <line x1="158" y1="80" x2="362" y2="80" stroke="var(--accent)" stroke-width="3" stroke-dasharray="7 5" marker-end="url(#ap-a)"></line>
+                <circle cx="300" cy="225" r="4.5" fill="var(--ink)"></circle>
+                <circle cx="150" cy="80" r="4.5" fill="var(--ink)"></circle>
+                <text x="308" y="252" class="svg-txt" font-size="18">B</text>
+                <text x="128" y="66" class="svg-txt" font-size="18">D</text>
+                <text x="330" y="140" class="svg-txt-soft" font-size="13.5"><tspan font-style="italic">BC</tspan>→（＝<tspan font-style="italic">AD</tspan>→）</text>
+              </g>
+              <g class="stg2" style="display:none">
+                <line x1="88" y1="217" x2="362" y2="86" stroke="var(--red)" stroke-width="4.5" marker-end="url(#ap-r)"></line>
+                <circle cx="370" cy="80" r="4.5" fill="var(--ink)"></circle>
+                <text x="380" y="66" class="svg-txt" font-size="18">C</text>
+                <text x="215" y="128" class="svg-txt" font-size="15" fill="var(--red)">対角線 <tspan font-style="italic">AC</tspan>→ ＝ 和</text>
+              </g>
+            </svg>
+          </div>
+          <div class="stage-btns" role="group" aria-label="図の段階表示">
+            <button type="button" class="stage-btn on" data-stage="0">① 2辺だけ</button>
+            <button type="button" class="stage-btn" data-stage="1">② 平行四辺形を完成</button>
+            <button type="button" class="stage-btn" data-stage="2">③ 対角線＝和</button>
+          </div>
+          <figcaption>始点Aをそろえた <span class="v" style="padding-top:.4em">AB</span> と <span class="v" style="padding-top:.4em">AD</span> で平行四辺形を作ると、対角線 <span class="v" style="padding-top:.4em">AC</span> が和になる。</figcaption>
+        </figure>
+        <div class="def">
+          <p><span class="key">加法の性質</span>（数の足し算と同じ法則が成り立つ）</p>
+          <p>交換法則：<span class="v">a</span>＋<span class="v">b</span>＝<span class="v">b</span>＋<span class="v">a</span><br />
+          結合法則：(<span class="v">a</span>＋<span class="v">b</span>)＋<span class="v">c</span>＝<span class="v">a</span>＋(<span class="v">b</span>＋<span class="v">c</span>)</p>
+          <p>結合法則があるので、かっこを省略して <span class="v">a</span>＋<span class="v">b</span>＋<span class="v">c</span> と書くことができる。</p>
+        </div>
+      </section>
+
+      <!-- 例2 -->
+      <section class="card prob" data-flow="ex2" data-label="例2">
+        <div class="prob-head">
+          <span class="prob-tag">例 2</span>
+          <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+          <span class="prob-state">ヒント 0 / 2</span>
+        </div>
+        <p class="prob-q">次の式を簡単にせよ。　<span class="v">AB</span>＋<span class="v">BC</span>＋<span class="v">CD</span></p>
+        <div class="step hint">
+          <h3>ヒント 1 ― まず前の2つだけを見る</h3>
+          <p>最初の2つ <span class="v">AB</span>＋<span class="v">BC</span> に注目しよう。Bでつながっているね。解説Aの公式 <span class="v">AB</span>＋<span class="v">BC</span>＝<span class="v">AC</span> がそのまま使える。</p>
+          <p>だから、式は <span class="v">AC</span>＋<span class="v">CD</span> と書き換えられる。</p>
+        </div>
+        <div class="step hint">
+          <h3>ヒント 2 ― もう一度、同じことをする</h3>
+          <p><span class="v">AC</span>＋<span class="v">CD</span> は、Cでつながっている。今度は「AからDへ」1本にまとめられるはず。何になるか書いてみよう。</p>
+        </div>
+        <div class="step answer">
+          <h3>解答</h3>
+          <p class="big"><span class="v">AB</span>＋<span class="v">BC</span>＋<span class="v">CD</span>＝<span class="v">AD</span></p>
+          <p><span class="v">AB</span>＋<span class="v">BC</span>＝<span class="v">AC</span>、続けて <span class="v">AC</span>＋<span class="v">CD</span>＝<span class="v">AD</span>。</p>
+          <p class="note"><b>コツ：</b>矢印を全部つないだら、答えは「<b>最初の始点 → 最後の終点</b>」。途中の文字は消えていくイメージでOK。</p>
+        </div>
+        <p class="prob-done">例2 クリア！　次は練習3の証明に挑戦しよう。</p>
+      </section>
+
+      <!-- 練習3 -->
+      <section class="card prob" data-flow="ren3" data-label="練習3">
+        <div class="prob-head">
+          <span class="prob-tag ren">練習 3</span>
+          <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+          <span class="prob-state">ヒント 0 / 3</span>
+        </div>
+        <p class="prob-q">次の等式を示せ。　<span class="v">AB</span>＋<span class="v">BD</span>＋<span class="v">CA</span>＝<span class="v">CD</span></p>
+        <div class="step hint">
+          <h3>ヒント 1 ― 左辺の前の2つをまとめる</h3>
+          <p>まず <span class="v">AB</span>＋<span class="v">BD</span> だけを見る。Bでつながっているから、1本にまとめられる。左辺は「（その1本）＋<span class="v">CA</span>」という形になるはずだ。</p>
+        </div>
+        <div class="step hint">
+          <h3>ヒント 2 ― つながらないときは順序を入れ替える</h3>
+          <p>ヒント1の結果は <span class="v">AD</span>＋<span class="v">CA</span>。でも D と C ではつながらないね。</p>
+          <p>ここで<b>交換法則</b>を使う。<span class="v">AD</span>＋<span class="v">CA</span>＝<span class="v">CA</span>＋<span class="v">AD</span> と順序を入れ替えると、Aでつながる形になる。</p>
+        </div>
+        <div class="step hint">
+          <h3>ヒント 3 ― 最後に1本にまとめる</h3>
+          <p><span class="v">CA</span>＋<span class="v">AD</span> は A でつながっている。「最初の始点C → 最後の終点D」で、右辺と同じ1本になるはずだ。</p>
+        </div>
+        <div class="step answer">
+          <h3>解答（証明）</h3>
+          <p class="big"><span class="v">AB</span>＋<span class="v">BD</span>＋<span class="v">CA</span>＝<span class="v">CD</span></p>
+          <p>（左辺）＝<span class="v">AD</span>＋<span class="v">CA</span>　（前の2つをまとめた）<br />
+          ＝<span class="v">CA</span>＋<span class="v">AD</span>　（交換法則）<br />
+          ＝<span class="v">CD</span>＝（右辺）</p>
+          <p class="note"><b>証明の型：</b>「つなげる → つながらなければ交換法則で入れ替える → つなげる」。この流れを覚えよう。</p>
+        </div>
+        <p class="prob-done">練習3 クリア！　次は練習2で、実際に和を図示してみよう。</p>
+      </section>
+
+      <!-- 練習2 -->
+      <section class="card prob" id="prob-ren2">
+        <div class="prob-head">
+          <span class="prob-tag ren">練習 2</span>
+          <span class="prob-state">下のタブで小問を選んでね</span>
+        </div>
+        <p class="prob-q">次の <span class="v">a</span>、<span class="v">b</span> について、<span class="v">a</span>＋<span class="v">b</span> を図示せよ。図の下のボタンで、作図の手順を1つずつ表示できるよ。（成分は「右へ＋、上へ＋」で表す）</p>
+        <div class="tabs" role="tablist" aria-label="練習2の小問">
+          <button class="tab" role="tab" data-tab="ren2-1" aria-selected="true">(1)</button>
+          <button class="tab" role="tab" data-tab="ren2-2" aria-selected="false">(2)</button>
+          <button class="tab" role="tab" data-tab="ren2-3" aria-selected="false">(3)</button>
+          <button class="tab" role="tab" data-tab="ren2-4" aria-selected="false">(4)</button>
+        </div>
+
+        <!-- 練習2 (1) -->
+        <div class="tabpanel show" id="panel-ren2-1" data-flow="ren2-1" data-label="練習2 (1)">
+          <div class="prob-head">
+            <span class="prob-q" style="margin:0">(1)　<span class="v">a</span>（右4, 上2）、<span class="v">b</span>（右−1, 上2）</span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 2</span>
+          </div>
+          <figure class="figstage">
+            <div class="figbox">
+              <svg viewBox="0 0 560 320" role="img" aria-label="練習2(1)の方眼図。aは右4上2、bは左1上2">
+                <defs>
+                  <pattern id="gp-r21" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="var(--line)" stroke-width="1"></path></pattern>
+                  <marker id="r21-a" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"></path></marker>
+                  <marker id="r21-b" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--blue)"></path></marker>
+                  <marker id="r21-r" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--red)"></path></marker>
+                </defs>
+                <rect x="40" y="40" width="480" height="240" fill="url(#gp-r21)"></rect>
+                <line x1="80" y1="240" x2="232" y2="164" stroke="var(--accent)" stroke-width="4" marker-end="url(#r21-a)"></line>
+                <line x1="80" y1="240" x2="48" y2="168" stroke="var(--blue)" stroke-width="3" marker-end="url(#r21-b)"></line>
+                <circle cx="80" cy="240" r="4.5" fill="var(--ink)"></circle>
+                <text x="66" y="266" class="svg-txt" font-size="14">始点</text>
+                <text x="170" y="186" class="svg-txt" font-size="15" fill="var(--accent-deep)"><tspan font-style="italic">a</tspan>→</text>
+                <text x="18" y="150" class="svg-txt" font-size="15" fill="var(--blue)"><tspan font-style="italic">b</tspan>→</text>
+                <g class="stg1" style="display:none">
+                  <line x1="40" y1="160" x2="200" y2="80" stroke="var(--ink-soft)" stroke-width="1.8" stroke-dasharray="6 5"></line>
+                  <line x1="240" y1="160" x2="208" y2="88" stroke="var(--blue)" stroke-width="4" marker-end="url(#r21-b)"></line>
+                  <text x="252" y="130" class="svg-txt" font-size="14" fill="var(--blue)"><tspan font-style="italic">b</tspan>→ をつないだ</text>
+                </g>
+                <g class="stg2" style="display:none">
+                  <line x1="86" y1="232" x2="194" y2="88" stroke="var(--red)" stroke-width="4.5" marker-end="url(#r21-r)"></line>
+                  <text x="120" y="120" class="svg-txt" font-size="15" fill="var(--red)"><tspan font-style="italic">a</tspan>→＋<tspan font-style="italic">b</tspan>→</text>
+                  <text x="212" y="66" class="svg-txt" font-size="14">成分 (3, 4)</text>
+                </g>
+              </svg>
+            </div>
+            <div class="stage-btns" role="group" aria-label="図の段階表示">
+              <button type="button" class="stage-btn on" data-stage="0">① もとの図</button>
+              <button type="button" class="stage-btn" data-stage="1">② つなぐ</button>
+              <button type="button" class="stage-btn" data-stage="2">③ 和の矢印</button>
+            </div>
+            <figcaption>緑が <span class="v" style="padding-top:.4em">a</span>、青が <span class="v" style="padding-top:.4em">b</span>、赤が和 <span class="v" style="padding-top:.4em">a</span>＋<span class="v" style="padding-top:.4em">b</span>。</figcaption>
+          </figure>
+          <div class="step hint">
+            <h3>ヒント 1 ― まず <span class="v">a</span> の終点を確認する</h3>
+            <p>図の「② つなぐ」ボタンを押す前に、自分で予想しよう。<span class="v">a</span> は始点から「右へ4マス、上へ2マス」。その終点の位置を指で押さえてみて。</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 2 ― <span class="v">b</span> を平行移動してつなぐ</h3>
+            <p><span class="v">b</span> は「左へ1マス、上へ2マス」の矢印。この形のまま平行移動して、始点を <span class="v">a</span> の終点に重ねる。つないだ先の終点がどこに来るか、図の「②」で確かめよう。</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (1)</h3>
+            <p class="big"><span class="v">a</span>＋<span class="v">b</span> の成分は (3, 4)</p>
+            <p><b>作図の手順：</b>① <span class="v">a</span> を描く　② <span class="v">a</span> の終点に <span class="v">b</span> をつなぐ　③ 始点から最後の終点へ矢印を引く（図の「③ 和の矢印」）。</p>
+            <p>成分で確かめると、右へは 4＋(−1)＝3、上へは 2＋2＝4。和の矢印は「右3、上4」になっているはずだ。</p>
+          </div>
+          <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
+        </div>
+
+        <!-- 練習2 (2) -->
+        <div class="tabpanel" id="panel-ren2-2" data-flow="ren2-2" data-label="練習2 (2)">
+          <div class="prob-head">
+            <span class="prob-q" style="margin:0">(2)　<span class="v">a</span>（右3, 上1）、<span class="v">b</span>（右2, 上−2）</span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 2</span>
+          </div>
+          <figure class="figstage">
+            <div class="figbox">
+              <svg viewBox="0 0 560 320" role="img" aria-label="練習2(2)の方眼図。aは右3上1、bは右2下2">
+                <defs>
+                  <pattern id="gp-r22" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="var(--line)" stroke-width="1"></path></pattern>
+                  <marker id="r22-a" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"></path></marker>
+                  <marker id="r22-b" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--blue)"></path></marker>
+                  <marker id="r22-r" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--red)"></path></marker>
+                </defs>
+                <rect x="40" y="40" width="480" height="240" fill="url(#gp-r22)"></rect>
+                <line x1="80" y1="120" x2="192" y2="84" stroke="var(--accent)" stroke-width="4" marker-end="url(#r22-a)"></line>
+                <line x1="80" y1="120" x2="152" y2="192" stroke="var(--blue)" stroke-width="3" marker-end="url(#r22-b)"></line>
+                <circle cx="80" cy="120" r="4.5" fill="var(--ink)"></circle>
+                <text x="66" y="102" class="svg-txt" font-size="14">始点</text>
+                <text x="130" y="84" class="svg-txt" font-size="15" fill="var(--accent-deep)"><tspan font-style="italic">a</tspan>→</text>
+                <text x="128" y="222" class="svg-txt" font-size="15" fill="var(--blue)"><tspan font-style="italic">b</tspan>→</text>
+                <g class="stg1" style="display:none">
+                  <line x1="160" y1="200" x2="280" y2="160" stroke="var(--ink-soft)" stroke-width="1.8" stroke-dasharray="6 5"></line>
+                  <line x1="200" y1="80" x2="272" y2="152" stroke="var(--blue)" stroke-width="4" marker-end="url(#r22-b)"></line>
+                  <text x="252" y="66" class="svg-txt" font-size="14" fill="var(--blue)"><tspan font-style="italic">b</tspan>→ をつないだ</text>
+                </g>
+                <g class="stg2" style="display:none">
+                  <line x1="86" y1="126" x2="272" y2="154" stroke="var(--red)" stroke-width="4.5" marker-end="url(#r22-r)"></line>
+                  <text x="150" y="160" class="svg-txt" font-size="15" fill="var(--red)"><tspan font-style="italic">a</tspan>→＋<tspan font-style="italic">b</tspan>→</text>
+                  <text x="290" y="146" class="svg-txt" font-size="14">成分 (5, −1)</text>
+                </g>
+              </svg>
+            </div>
+            <div class="stage-btns" role="group" aria-label="図の段階表示">
+              <button type="button" class="stage-btn on" data-stage="0">① もとの図</button>
+              <button type="button" class="stage-btn" data-stage="1">② つなぐ</button>
+              <button type="button" class="stage-btn" data-stage="2">③ 和の矢印</button>
+            </div>
+            <figcaption>今度は <span class="v" style="padding-top:.4em">b</span> が右下向き（上−2＝下へ2）。つなぐ向きに注意。</figcaption>
+          </figure>
+          <div class="step hint">
+            <h3>ヒント 1 ― まず <span class="v">a</span> の終点を確認する</h3>
+            <p><span class="v">a</span> は始点から「右へ3マス、上へ1マス」。その終点を指で押さえよう。ここが <span class="v">b</span> をつなぐ場所になる。</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 2 ― <span class="v">b</span> は「右へ2、下へ2」</h3>
+            <p><span class="v">b</span> の成分（右2, 上−2）は、「右へ2マス、下へ2マス」という意味。この形のまま <span class="v">a</span> の終点につないでみよう。図の「②」で確認してね。</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (2)</h3>
+            <p class="big"><span class="v">a</span>＋<span class="v">b</span> の成分は (5, −1)</p>
+            <p><b>作図の手順：</b>① <span class="v">a</span> を描く　② <span class="v">a</span> の終点に <span class="v">b</span> をつなぐ　③ 始点から最後の終点へ矢印を引く（図の「③ 和の矢印」）。</p>
+            <p>成分で確かめると、右へは 3＋2＝5、上へは 1＋(−2)＝−1。和の矢印は「右5、下1」になっているはずだ。</p>
+          </div>
+          <p class="prob-done">(2) クリア！　次の小問のタブを開いてみよう。</p>
+        </div>
+
+        <!-- 練習2 (3) -->
+        <div class="tabpanel" id="panel-ren2-3" data-flow="ren2-3" data-label="練習2 (3)">
+          <div class="prob-head">
+            <span class="prob-q" style="margin:0">(3)　<span class="v">a</span>（右4, 上2）、<span class="v">b</span>（右3, 上−2）※始点が同じ</span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 2</span>
+          </div>
+          <figure class="figstage">
+            <div class="figbox">
+              <svg viewBox="0 0 560 320" role="img" aria-label="練習2(3)の方眼図。aとbは始点が同じで、aは右4上2、bは右3下2">
+                <defs>
+                  <pattern id="gp-r23" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="var(--line)" stroke-width="1"></path></pattern>
+                  <marker id="r23-a" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"></path></marker>
+                  <marker id="r23-b" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--blue)"></path></marker>
+                  <marker id="r23-r" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--red)"></path></marker>
+                </defs>
+                <rect x="40" y="40" width="480" height="240" fill="url(#gp-r23)"></rect>
+                <line x1="80" y1="160" x2="232" y2="84" stroke="var(--accent)" stroke-width="4" marker-end="url(#r23-a)"></line>
+                <line x1="80" y1="160" x2="192" y2="232" stroke="var(--blue)" stroke-width="3" marker-end="url(#r23-b)"></line>
+                <circle cx="80" cy="160" r="4.5" fill="var(--ink)"></circle>
+                <text x="52" y="146" class="svg-txt" font-size="14">始点</text>
+                <text x="160" y="104" class="svg-txt" font-size="15" fill="var(--accent-deep)"><tspan font-style="italic">a</tspan>→</text>
+                <text x="150" y="226" class="svg-txt" font-size="15" fill="var(--blue)"><tspan font-style="italic">b</tspan>→</text>
+                <g class="stg1" style="display:none">
+                  <line x1="200" y1="240" x2="360" y2="160" stroke="var(--ink-soft)" stroke-width="1.8" stroke-dasharray="6 5"></line>
+                  <line x1="240" y1="80" x2="352" y2="152" stroke="var(--blue)" stroke-width="4" marker-end="url(#r23-b)"></line>
+                  <text x="262" y="66" class="svg-txt" font-size="14" fill="var(--blue)"><tspan font-style="italic">b</tspan>→ を <tspan font-style="italic">a</tspan>→ の終点へ</text>
+                </g>
+                <g class="stg2" style="display:none">
+                  <line x1="88" y1="160" x2="350" y2="160" stroke="var(--red)" stroke-width="4.5" marker-end="url(#r23-r)"></line>
+                  <text x="200" y="146" class="svg-txt" font-size="15" fill="var(--red)"><tspan font-style="italic">a</tspan>→＋<tspan font-style="italic">b</tspan>→</text>
+                  <text x="368" y="146" class="svg-txt" font-size="14">成分 (7, 0)</text>
+                </g>
+              </svg>
+            </div>
+            <div class="stage-btns" role="group" aria-label="図の段階表示">
+              <button type="button" class="stage-btn on" data-stage="0">① もとの図</button>
+              <button type="button" class="stage-btn" data-stage="1">② つなぐ</button>
+              <button type="button" class="stage-btn" data-stage="2">③ 和の矢印</button>
+            </div>
+            <figcaption>始点が同じときは、平行四辺形の対角線として和を見ることもできる（解説Aの2つ目の図）。</figcaption>
+          </figure>
+          <div class="step hint">
+            <h3>ヒント 1 ― 始点が同じでも、やることは同じ</h3>
+            <p>この問題では <span class="v">a</span> と <span class="v">b</span> の始点がそろっている。でも和の作り方は同じ：<span class="v">b</span> を平行移動して、<span class="v">a</span> の終点につなげばよい。</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 2 ― つないだ先を成分で予想する</h3>
+            <p><span class="v">a</span> の終点は「右4、上2」の場所。そこから <span class="v">b</span>（右3、下2）を進むと、始点から見て「右は 4＋3、下と上で 2−2」。終点の高さが始点と同じになることに気づいたかな？</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (3)</h3>
+            <p class="big"><span class="v">a</span>＋<span class="v">b</span> の成分は (7, 0)</p>
+            <p><b>作図の手順：</b>① <span class="v">a</span> を描く　② <span class="v">a</span> の終点に <span class="v">b</span> をつなぐ　③ 始点から最後の終点へ矢印を引く（図の「③ 和の矢印」）。</p>
+            <p>成分では、右へは 4＋3＝7、上へは 2＋(−2)＝0。だから和は「右へ7、上へ0」の<b>真横の矢印</b>になる。平行四辺形の対角線として見ても同じ答えになるよ。</p>
+          </div>
+          <p class="prob-done">(3) クリア！　次の小問のタブを開いてみよう。</p>
+        </div>
+
+        <!-- 練習2 (4) -->
+        <div class="tabpanel" id="panel-ren2-4" data-flow="ren2-4" data-label="練習2 (4)">
+          <div class="prob-head">
+            <span class="prob-q" style="margin:0">(4)　<span class="v">a</span>（右2, 上3）、<span class="v">b</span>（右2, 上2）</span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 2</span>
+          </div>
+          <figure class="figstage">
+            <div class="figbox">
+              <svg viewBox="0 0 560 320" role="img" aria-label="練習2(4)の方眼図。aは右2上3、bは右2上2">
+                <defs>
+                  <pattern id="gp-r24" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="var(--line)" stroke-width="1"></path></pattern>
+                  <marker id="r24-a" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"></path></marker>
+                  <marker id="r24-b" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--blue)"></path></marker>
+                  <marker id="r24-r" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--red)"></path></marker>
+                </defs>
+                <rect x="40" y="40" width="480" height="240" fill="url(#gp-r24)"></rect>
+                <line x1="120" y1="240" x2="192" y2="128" stroke="var(--accent)" stroke-width="4" marker-end="url(#r24-a)"></line>
+                <line x1="120" y1="240" x2="192" y2="168" stroke="var(--blue)" stroke-width="3" marker-end="url(#r24-b)"></line>
+                <circle cx="120" cy="240" r="4.5" fill="var(--ink)"></circle>
+                <text x="92" y="266" class="svg-txt" font-size="14">始点</text>
+                <text x="128" y="128" class="svg-txt" font-size="15" fill="var(--accent-deep)"><tspan font-style="italic">a</tspan>→</text>
+                <text x="204" y="196" class="svg-txt" font-size="15" fill="var(--blue)"><tspan font-style="italic">b</tspan>→</text>
+                <g class="stg1" style="display:none">
+                  <line x1="200" y1="160" x2="280" y2="40" stroke="var(--ink-soft)" stroke-width="1.8" stroke-dasharray="6 5"></line>
+                  <line x1="200" y1="120" x2="272" y2="48" stroke="var(--blue)" stroke-width="4" marker-end="url(#r24-b)"></line>
+                  <text x="238" y="104" class="svg-txt" font-size="14" fill="var(--blue)"><tspan font-style="italic">b</tspan>→ をつないだ</text>
+                </g>
+                <g class="stg2" style="display:none">
+                  <line x1="126" y1="232" x2="272" y2="48" stroke="var(--red)" stroke-width="4.5" marker-end="url(#r24-r)"></line>
+                  <text x="150" y="180" class="svg-txt" font-size="15" fill="var(--red)"><tspan font-style="italic">a</tspan>→＋<tspan font-style="italic">b</tspan>→</text>
+                  <text x="290" y="36" class="svg-txt" font-size="14">成分 (4, 5)</text>
+                </g>
+              </svg>
+            </div>
+            <div class="stage-btns" role="group" aria-label="図の段階表示">
+              <button type="button" class="stage-btn on" data-stage="0">① もとの図</button>
+              <button type="button" class="stage-btn" data-stage="1">② つなぐ</button>
+              <button type="button" class="stage-btn" data-stage="2">③ 和の矢印</button>
+            </div>
+            <figcaption>2本とも右上向き。和はもっと長い右上向きの矢印になる。</figcaption>
+          </figure>
+          <div class="step hint">
+            <h3>ヒント 1 ― まず <span class="v">a</span> の終点を確認する</h3>
+            <p><span class="v">a</span> は「右へ2マス、上へ3マス」。終点を指で押さえて、そこから <span class="v">b</span> をつなぐイメージを持とう。</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 2 ― <span class="v">b</span> は「右へ2、上へ2」</h3>
+            <p><span class="v">a</span> の終点から、右へ2マス、上へ2マス進んだ場所が、つないだ先の終点。始点からは合計で「右へ何マス、上へ何マス」になるか、先に計算で予想してから図の「②」「③」で確かめよう。</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (4)</h3>
+            <p class="big"><span class="v">a</span>＋<span class="v">b</span> の成分は (4, 5)</p>
+            <p><b>作図の手順：</b>① <span class="v">a</span> を描く　② <span class="v">a</span> の終点に <span class="v">b</span> をつなぐ　③ 始点から最後の終点へ矢印を引く（図の「③ 和の矢印」）。</p>
+            <p>成分では、右へは 2＋2＝4、上へは 3＋2＝5。和の矢印は「右4、上5」になっているはずだ。</p>
+          </div>
+          <p class="prob-done">(4) クリア！　練習2はこれで終わり。次は解説Bへ進もう。</p>
+        </div>
+      </section>
+
+      <!-- ================= 解説B 零ベクトル ================= -->
+      <div class="sec-head">
+        <span class="sec-tag">解説 B</span>
+        <h2>零ベクトル</h2>
+        <span class="pno">教科書 p.11</span>
+      </div>
+
+      <section class="card">
+        <div class="def">
+          <p><b>大きさが0</b>のベクトルを<span class="key">零ベクトル</span>といい、<span class="v">0</span> と書く。</p>
+          <p>始点と終点が同じ点Aのとき、<span class="v">AA</span>＝<span class="v">0</span> と考える。零ベクトルについては、<b>向きは考えない</b>。</p>
+        </div>
+        <p class="formula"><span class="v">a</span>＋(−<span class="v">a</span>)＝<span class="v">0</span>　　<span class="v">a</span>＋<span class="v">0</span>＝<span class="v">a</span></p>
+        <p>あるベクトルとその逆ベクトルを足すと、行って戻ってくるので<b>元の場所に戻る</b>。つまり大きさ0の零ベクトルになる。また、零ベクトルを足してもベクトルは変わらない（数の 0 と同じ役目）。</p>
+      </section>
+
+      <!-- 練習4 -->
+      <section class="card prob" data-flow="ren4" data-label="練習4">
+        <div class="prob-head">
+          <span class="prob-tag ren">練習 4</span>
+          <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+          <span class="prob-state">ヒント 0 / 3</span>
+        </div>
+        <p class="prob-q">次の等式を示せ。　<span class="v">AB</span>＋<span class="v">BC</span>＋<span class="v">CA</span>＝<span class="v">0</span></p>
+        <div class="step hint">
+          <h3>ヒント 1 ― 前の2つをまとめる</h3>
+          <p>まず <span class="v">AB</span>＋<span class="v">BC</span> を1本にしよう。Bでつながっているから、例2と同じやり方で「AからCへ」の1本になる。</p>
+        </div>
+        <div class="step hint">
+          <h3>ヒント 2 ― 残りの <span class="v">CA</span> との関係を見る</h3>
+          <p>式は <span class="v">AC</span>＋<span class="v">CA</span> になった。<span class="v">CA</span> は <span class="v">AC</span> と比べて、大きさはどう？　向きはどう？　「1 ベクトル」で習った言葉で言うと、<span class="v">CA</span> は <span class="v">AC</span> の何だったかな。</p>
+        </div>
+        <div class="step hint">
+          <h3>ヒント 3 ― 解説Bの性質を使う</h3>
+          <p><span class="v">CA</span>＝−<span class="v">AC</span>（逆ベクトル）。つまりこの式は「あるベクトル＋その逆ベクトル」の形。解説Bの公式 <span class="v">a</span>＋(−<span class="v">a</span>)＝<span class="v">0</span> が使える。</p>
+        </div>
+        <div class="step answer">
+          <h3>解答（証明）</h3>
+          <p class="big"><span class="v">AB</span>＋<span class="v">BC</span>＋<span class="v">CA</span>＝<span class="v">0</span></p>
+          <p>（左辺）＝<span class="v">AC</span>＋<span class="v">CA</span>　（前の2つをまとめた）<br />
+          ＝<span class="v">AC</span>＋(−<span class="v">AC</span>)　（<span class="v">CA</span> は <span class="v">AC</span> の逆ベクトル）<br />
+          ＝<span class="v">0</span>＝（右辺）</p>
+          <p class="note"><b>イメージ：</b>A→B→C→A と一周すると出発点に戻る。移動の合計は0、というのがこの等式の意味だよ。</p>
+        </div>
+        <p class="prob-done">練習4 クリア！　次は解説C「減法」へ進もう。</p>
+      </section>
+
+      <!-- ================= 解説C 減法 ================= -->
+      <div class="sec-head">
+        <span class="sec-tag">解説 C</span>
+        <h2>ベクトルの減法</h2>
+        <span class="pno">教科書 p.12</span>
+      </div>
+
+      <section class="card">
+        <div class="def">
+          <p><span class="v">b</span>＋<span class="v">c</span>＝<span class="v">a</span> を満たすベクトル <span class="v">c</span> を、<span class="v">a</span> と <span class="v">b</span> の<span class="key">差</span>といい、<span class="v">a</span>−<span class="v">b</span> と書く。「<span class="v">b</span> に何を足したら <span class="v">a</span> になるか」というベクトルが差である。</p>
+        </div>
+        <p>差を図で考えるときは、<b>始点をそろえる</b>のがコツ。点Oを始点としてそろえると、次の公式が成り立つ。</p>
+        <p class="formula"><span class="v">OA</span>−<span class="v">OB</span>＝<span class="v">BA</span>　　<span class="v">AB</span>＝<span class="v">OB</span>−<span class="v">OA</span>　（終点 − 始点）</p>
+        <figure class="figstage" id="fig-sub">
+          <div class="figbox">
+            <svg viewBox="0 0 520 290" role="img" aria-label="始点をそろえた差の図。OAからOBを引くとBAになる">
+              <defs>
+                <marker id="sb-a" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"></path></marker>
+                <marker id="sb-b" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--blue)"></path></marker>
+                <marker id="sb-r" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--red)"></path></marker>
+              </defs>
+              <!-- O(70,240) A(360,80) B(330,230) -->
+              <line x1="70" y1="240" x2="352" y2="86" stroke="var(--accent)" stroke-width="4" marker-end="url(#sb-a)"></line>
+              <line x1="70" y1="240" x2="322" y2="230" stroke="var(--blue)" stroke-width="4" marker-end="url(#sb-b)"></line>
+              <circle cx="70" cy="240" r="4.5" fill="var(--ink)"></circle>
+              <text x="48" y="266" class="svg-txt" font-size="18">O</text>
+              <text x="215" y="140" class="svg-txt" font-size="15" fill="var(--accent-deep)"><tspan font-style="italic">OA</tspan>→</text>
+              <text x="185" y="262" class="svg-txt" font-size="15" fill="var(--blue)"><tspan font-style="italic">OB</tspan>→</text>
+              <g class="stg1" style="display:none">
+                <line x1="330" y1="222" x2="356" y2="90" stroke="var(--red)" stroke-width="4.5" marker-end="url(#sb-r)"></line>
+                <circle cx="360" cy="80" r="4.5" fill="var(--ink)"></circle>
+                <circle cx="330" cy="230" r="4.5" fill="var(--ink)"></circle>
+                <text x="372" y="74" class="svg-txt" font-size="18">A</text>
+                <text x="342" y="256" class="svg-txt" font-size="18">B</text>
+                <text x="368" y="160" class="svg-txt" font-size="15" fill="var(--red)"><tspan font-style="italic">BA</tspan>→</text>
+              </g>
+            </svg>
+          </div>
+          <div class="stage-btns" role="group" aria-label="図の段階表示">
+            <button type="button" class="stage-btn on" data-stage="0">① 始点をそろえる</button>
+            <button type="button" class="stage-btn" data-stage="1">② 終点同士を結ぶ</button>
+          </div>
+          <figcaption>差は「<b>引く側の終点Bから、引かれる側の終点Aへ</b>」の矢印。始点Oは消えて、<span class="v" style="padding-top:.4em">BA</span> だけが残る。</figcaption>
+        </figure>
+        <div class="def">
+          <p><span class="key">差の性質</span>：差は「逆ベクトルを足すこと」と同じ。</p>
+          <p><span class="v">a</span>−<span class="v">b</span>＝<span class="v">a</span>＋(−<span class="v">b</span>)　　<span class="v">a</span>−<span class="v">a</span>＝<span class="v">0</span></p>
+          <p>だから差の作図は、<b>−<span class="v">b</span> を作って <span class="v">a</span> につなぐ</b>、という加法のやり方でもできる。</p>
+        </div>
+      </section>
+
+      <!-- 練習5 -->
+      <section class="card prob" id="prob-ren5">
+        <div class="prob-head">
+          <span class="prob-tag ren">練習 5</span>
+          <span class="prob-state">下のタブで小問を選んでね</span>
+        </div>
+        <p class="prob-q">練習2と同じ <span class="v">a</span>、<span class="v">b</span> について、今度は <span class="v">a</span>−<span class="v">b</span> を図示せよ。</p>
+        <div class="tabs" role="tablist" aria-label="練習5の小問">
+          <button class="tab" role="tab" data-tab="ren5-1" aria-selected="true">(1)</button>
+          <button class="tab" role="tab" data-tab="ren5-2" aria-selected="false">(2)</button>
+          <button class="tab" role="tab" data-tab="ren5-3" aria-selected="false">(3)</button>
+          <button class="tab" role="tab" data-tab="ren5-4" aria-selected="false">(4)</button>
+        </div>
+
+        <!-- 練習5 (1) -->
+        <div class="tabpanel show" id="panel-ren5-1" data-flow="ren5-1" data-label="練習5 (1)">
+          <div class="prob-head">
+            <span class="prob-q" style="margin:0">(1)　<span class="v">a</span>（右4, 上2）、<span class="v">b</span>（右−1, 上2）</span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 2</span>
+          </div>
+          <figure class="figstage">
+            <div class="figbox">
+              <svg viewBox="0 0 560 320" role="img" aria-label="練習5(1)の方眼図。aからbを引く">
+                <defs>
+                  <pattern id="gp-r51" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="var(--line)" stroke-width="1"></path></pattern>
+                  <marker id="r51-a" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"></path></marker>
+                  <marker id="r51-b" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--blue)"></path></marker>
+                  <marker id="r51-r" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--red)"></path></marker>
+                </defs>
+                <rect x="40" y="40" width="480" height="240" fill="url(#gp-r51)"></rect>
+                <line x1="80" y1="200" x2="232" y2="124" stroke="var(--accent)" stroke-width="4" marker-end="url(#r51-a)"></line>
+                <line x1="80" y1="200" x2="48" y2="128" stroke="var(--blue)" stroke-width="3" marker-end="url(#r51-b)"></line>
+                <circle cx="80" cy="200" r="4.5" fill="var(--ink)"></circle>
+                <text x="66" y="226" class="svg-txt" font-size="14">始点</text>
+                <text x="160" y="146" class="svg-txt" font-size="15" fill="var(--accent-deep)"><tspan font-style="italic">a</tspan>→</text>
+                <text x="18" y="110" class="svg-txt" font-size="15" fill="var(--blue)"><tspan font-style="italic">b</tspan>→</text>
+                <g class="stg1" style="display:none">
+                  <line x1="240" y1="120" x2="272" y2="192" stroke="var(--blue)" stroke-width="4" marker-end="url(#r51-b)"></line>
+                  <text x="262" y="110" class="svg-txt" font-size="14" fill="var(--blue)">−<tspan font-style="italic">b</tspan>→ をつないだ</text>
+                </g>
+                <g class="stg2" style="display:none">
+                  <line x1="88" y1="200" x2="268" y2="200" stroke="var(--red)" stroke-width="4.5" marker-end="url(#r51-r)"></line>
+                  <text x="150" y="188" class="svg-txt" font-size="15" fill="var(--red)"><tspan font-style="italic">a</tspan>→−<tspan font-style="italic">b</tspan>→</text>
+                  <text x="290" y="188" class="svg-txt" font-size="14">成分 (5, 0)</text>
+                </g>
+              </svg>
+            </div>
+            <div class="stage-btns" role="group" aria-label="図の段階表示">
+              <button type="button" class="stage-btn on" data-stage="0">① もとの図</button>
+              <button type="button" class="stage-btn" data-stage="1">② −b→ をつなぐ</button>
+              <button type="button" class="stage-btn" data-stage="2">③ 差の矢印</button>
+            </div>
+            <figcaption>差は <span class="v" style="padding-top:.4em">a</span>＋(−<span class="v" style="padding-top:.4em">b</span>) と考えて、加法と同じ「つなぐ」作図で描く。</figcaption>
+          </figure>
+          <div class="step hint">
+            <h3>ヒント 1 ― まず −<span class="v">b</span> の成分を計算する</h3>
+            <p>差は <span class="v">a</span>−<span class="v">b</span>＝<span class="v">a</span>＋(−<span class="v">b</span>) と直して考える。<span class="v">b</span>（右−1, 上2）の逆ベクトル −<span class="v">b</span> は、符号を両方とも反対にして（右1, 上−2）＝「右へ1、下へ2」になる。</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 2 ― −<span class="v">b</span> を <span class="v">a</span> の終点につなぐ</h3>
+            <p>あとは加法と同じ。<span class="v">a</span> の終点（右4、上2の場所）から「右へ1、下へ2」進む。始点から見た合計の成分を計算で予想してから、図の「②」「③」で確かめよう。</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (1)</h3>
+            <p class="big"><span class="v">a</span>−<span class="v">b</span> の成分は (5, 0)</p>
+            <p><b>作図の手順：</b>① <span class="v">a</span> を描く　② −<span class="v">b</span>（右1, 下2）を <span class="v">a</span> の終点につなぐ　③ 始点から最後の終点へ矢印を引く（図の「③ 差の矢印」）。</p>
+            <p>成分では、右へは 4−(−1)＝5、上へは 2−2＝0。差は「右へ5、上へ0」の<b>真横の矢印</b>になる。</p>
+          </div>
+          <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
+        </div>
+
+        <!-- 練習5 (2) -->
+        <div class="tabpanel" id="panel-ren5-2" data-flow="ren5-2" data-label="練習5 (2)">
+          <div class="prob-head">
+            <span class="prob-q" style="margin:0">(2)　<span class="v">a</span>（右3, 上1）、<span class="v">b</span>（右2, 上−2）</span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 2</span>
+          </div>
+          <figure class="figstage">
+            <div class="figbox">
+              <svg viewBox="0 0 560 320" role="img" aria-label="練習5(2)の方眼図。aからbを引く">
+                <defs>
+                  <pattern id="gp-r52" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="var(--line)" stroke-width="1"></path></pattern>
+                  <marker id="r52-a" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"></path></marker>
+                  <marker id="r52-b" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--blue)"></path></marker>
+                  <marker id="r52-r" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--red)"></path></marker>
+                </defs>
+                <rect x="40" y="40" width="480" height="240" fill="url(#gp-r52)"></rect>
+                <line x1="160" y1="200" x2="272" y2="164" stroke="var(--accent)" stroke-width="4" marker-end="url(#r52-a)"></line>
+                <line x1="160" y1="200" x2="232" y2="272" stroke="var(--blue)" stroke-width="3" marker-end="url(#r52-b)"></line>
+                <circle cx="160" cy="200" r="4.5" fill="var(--ink)"></circle>
+                <text x="132" y="188" class="svg-txt" font-size="14">始点</text>
+                <text x="205" y="164" class="svg-txt" font-size="15" fill="var(--accent-deep)"><tspan font-style="italic">a</tspan>→</text>
+                <text x="212" y="262" class="svg-txt" font-size="15" fill="var(--blue)"><tspan font-style="italic">b</tspan>→</text>
+                <g class="stg1" style="display:none">
+                  <line x1="280" y1="160" x2="208" y2="88" stroke="var(--blue)" stroke-width="4" marker-end="url(#r52-b)"></line>
+                  <text x="286" y="120" class="svg-txt" font-size="14" fill="var(--blue)">−<tspan font-style="italic">b</tspan>→ をつないだ</text>
+                </g>
+                <g class="stg2" style="display:none">
+                  <line x1="166" y1="192" x2="194" y2="88" stroke="var(--red)" stroke-width="4.5" marker-end="url(#r52-r)"></line>
+                  <text x="120" y="120" class="svg-txt" font-size="15" fill="var(--red)"><tspan font-style="italic">a</tspan>→−<tspan font-style="italic">b</tspan>→</text>
+                  <text x="212" y="66" class="svg-txt" font-size="14">成分 (1, 3)</text>
+                </g>
+              </svg>
+            </div>
+            <div class="stage-btns" role="group" aria-label="図の段階表示">
+              <button type="button" class="stage-btn on" data-stage="0">① もとの図</button>
+              <button type="button" class="stage-btn" data-stage="1">② −b→ をつなぐ</button>
+              <button type="button" class="stage-btn" data-stage="2">③ 差の矢印</button>
+            </div>
+            <figcaption><span class="v" style="padding-top:.4em">b</span> は右下向き。その逆ベクトル −<span class="v" style="padding-top:.4em">b</span> は左上向きになる。</figcaption>
+          </figure>
+          <div class="step hint">
+            <h3>ヒント 1 ― まず −<span class="v">b</span> の成分を計算する</h3>
+            <p><span class="v">b</span>（右2, 上−2）の符号を両方とも反対にすると、−<span class="v">b</span> は（右−2, 上2）＝「左へ2、上へ2」。向きが真逆になることを確認しよう。</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 2 ― −<span class="v">b</span> を <span class="v">a</span> の終点につなぐ</h3>
+            <p><span class="v">a</span> の終点から「左へ2、上へ2」進む。始点からの合計は、右へは 3−2、上へは 1＋2。答えの成分を予想してから図で確かめよう。</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (2)</h3>
+            <p class="big"><span class="v">a</span>−<span class="v">b</span> の成分は (1, 3)</p>
+            <p><b>作図の手順：</b>① <span class="v">a</span> を描く　② −<span class="v">b</span>（左2, 上2）を <span class="v">a</span> の終点につなぐ　③ 始点から最後の終点へ矢印を引く（図の「③ 差の矢印」）。</p>
+            <p>成分では、右へは 3−2＝1、上へは 1−(−2)＝3。差は「右1、上3」の矢印になる。</p>
+          </div>
+          <p class="prob-done">(2) クリア！　次の小問のタブを開いてみよう。</p>
+        </div>
+
+        <!-- 練習5 (3) -->
+        <div class="tabpanel" id="panel-ren5-3" data-flow="ren5-3" data-label="練習5 (3)">
+          <div class="prob-head">
+            <span class="prob-q" style="margin:0">(3)　<span class="v">a</span>（右4, 上2）、<span class="v">b</span>（右3, 上−2）</span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 2</span>
+          </div>
+          <figure class="figstage">
+            <div class="figbox">
+              <svg viewBox="0 0 560 320" role="img" aria-label="練習5(3)の方眼図。aからbを引く">
+                <defs>
+                  <pattern id="gp-r53" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="var(--line)" stroke-width="1"></path></pattern>
+                  <marker id="r53-a" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"></path></marker>
+                  <marker id="r53-b" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--blue)"></path></marker>
+                  <marker id="r53-r" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--red)"></path></marker>
+                </defs>
+                <rect x="40" y="40" width="480" height="240" fill="url(#gp-r53)"></rect>
+                <line x1="160" y1="200" x2="312" y2="124" stroke="var(--accent)" stroke-width="4" marker-end="url(#r53-a)"></line>
+                <line x1="160" y1="200" x2="272" y2="272" stroke="var(--blue)" stroke-width="3" marker-end="url(#r53-b)"></line>
+                <circle cx="160" cy="200" r="4.5" fill="var(--ink)"></circle>
+                <text x="132" y="188" class="svg-txt" font-size="14">始点</text>
+                <text x="225" y="146" class="svg-txt" font-size="15" fill="var(--accent-deep)"><tspan font-style="italic">a</tspan>→</text>
+                <text x="252" y="262" class="svg-txt" font-size="15" fill="var(--blue)"><tspan font-style="italic">b</tspan>→</text>
+                <g class="stg1" style="display:none">
+                  <line x1="320" y1="120" x2="208" y2="48" stroke="var(--blue)" stroke-width="4" marker-end="url(#r53-b)"></line>
+                  <text x="300" y="66" class="svg-txt" font-size="14" fill="var(--blue)">−<tspan font-style="italic">b</tspan>→ をつないだ</text>
+                </g>
+                <g class="stg2" style="display:none">
+                  <line x1="166" y1="192" x2="194" y2="48" stroke="var(--red)" stroke-width="4.5" marker-end="url(#r53-r)"></line>
+                  <text x="96" y="110" class="svg-txt" font-size="15" fill="var(--red)"><tspan font-style="italic">a</tspan>→−<tspan font-style="italic">b</tspan>→</text>
+                  <text x="212" y="30" class="svg-txt" font-size="14">成分 (1, 4)</text>
+                </g>
+              </svg>
+            </div>
+            <div class="stage-btns" role="group" aria-label="図の段階表示">
+              <button type="button" class="stage-btn on" data-stage="0">① もとの図</button>
+              <button type="button" class="stage-btn" data-stage="1">② −b→ をつなぐ</button>
+              <button type="button" class="stage-btn" data-stage="2">③ 差の矢印</button>
+            </div>
+            <figcaption>練習2(3)と同じ <span class="v" style="padding-top:.4em">a</span>、<span class="v" style="padding-top:.4em">b</span>。和と差で答えがどう変わるか見比べよう。</figcaption>
+          </figure>
+          <div class="step hint">
+            <h3>ヒント 1 ― まず −<span class="v">b</span> の成分を計算する</h3>
+            <p><span class="v">b</span>（右3, 上−2）の符号を両方とも反対にすると、−<span class="v">b</span> は（右−3, 上2）＝「左へ3、上へ2」。</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 2 ― −<span class="v">b</span> を <span class="v">a</span> の終点につなぐ</h3>
+            <p><span class="v">a</span> の終点から「左へ3、上へ2」。始点からの合計は、右へは 4−3、上へは 2＋2。練習2(3)の和（7, 0）と比べると、符号1つで答えが大きく変わるね。</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (3)</h3>
+            <p class="big"><span class="v">a</span>−<span class="v">b</span> の成分は (1, 4)</p>
+            <p><b>作図の手順：</b>① <span class="v">a</span> を描く　② −<span class="v">b</span>（左3, 上2）を <span class="v">a</span> の終点につなぐ　③ 始点から最後の終点へ矢印を引く（図の「③ 差の矢印」）。</p>
+            <p>成分では、右へは 4−3＝1、上へは 2−(−2)＝4。差は「右1、上4」の矢印になる。</p>
+          </div>
+          <p class="prob-done">(3) クリア！　次の小問のタブを開いてみよう。</p>
+        </div>
+
+        <!-- 練習5 (4) -->
+        <div class="tabpanel" id="panel-ren5-4" data-flow="ren5-4" data-label="練習5 (4)">
+          <div class="prob-head">
+            <span class="prob-q" style="margin:0">(4)　<span class="v">a</span>（右2, 上3）、<span class="v">b</span>（右2, 上2）</span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 2</span>
+          </div>
+          <figure class="figstage">
+            <div class="figbox">
+              <svg viewBox="0 0 560 320" role="img" aria-label="練習5(4)の方眼図。aからbを引く">
+                <defs>
+                  <pattern id="gp-r54" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="var(--line)" stroke-width="1"></path></pattern>
+                  <marker id="r54-a" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"></path></marker>
+                  <marker id="r54-b" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--blue)"></path></marker>
+                  <marker id="r54-r" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--red)"></path></marker>
+                </defs>
+                <rect x="40" y="40" width="480" height="240" fill="url(#gp-r54)"></rect>
+                <line x1="160" y1="160" x2="232" y2="48" stroke="var(--accent)" stroke-width="4" marker-end="url(#r54-a)"></line>
+                <line x1="160" y1="160" x2="232" y2="88" stroke="var(--blue)" stroke-width="3" marker-end="url(#r54-b)"></line>
+                <circle cx="160" cy="160" r="4.5" fill="var(--ink)"></circle>
+                <text x="118" y="150" class="svg-txt" font-size="14">始点</text>
+                <text x="170" y="86" class="svg-txt" font-size="15" fill="var(--accent-deep)"><tspan font-style="italic">a</tspan>→</text>
+                <text x="246" y="118" class="svg-txt" font-size="15" fill="var(--blue)"><tspan font-style="italic">b</tspan>→</text>
+                <g class="stg1" style="display:none">
+                  <line x1="240" y1="40" x2="168" y2="112" stroke="var(--blue)" stroke-width="4" marker-end="url(#r54-b)"></line>
+                  <text x="252" y="60" class="svg-txt" font-size="14" fill="var(--blue)">−<tspan font-style="italic">b</tspan>→ をつないだ</text>
+                </g>
+                <g class="stg2" style="display:none">
+                  <line x1="160" y1="152" x2="160" y2="128" stroke="var(--red)" stroke-width="4.5" marker-end="url(#r54-r)"></line>
+                  <text x="176" y="146" class="svg-txt" font-size="15" fill="var(--red)"><tspan font-style="italic">a</tspan>→−<tspan font-style="italic">b</tspan>→</text>
+                  <text x="176" y="122" class="svg-txt" font-size="14">成分 (0, 1)</text>
+                </g>
+              </svg>
+            </div>
+            <div class="stage-btns" role="group" aria-label="図の段階表示">
+              <button type="button" class="stage-btn on" data-stage="0">① もとの図</button>
+              <button type="button" class="stage-btn" data-stage="1">② −b→ をつなぐ</button>
+              <button type="button" class="stage-btn" data-stage="2">③ 差の矢印</button>
+            </div>
+            <figcaption>2本の矢印が似ていると、差はとても短い矢印になる。</figcaption>
+          </figure>
+          <div class="step hint">
+            <h3>ヒント 1 ― まず −<span class="v">b</span> の成分を計算する</h3>
+            <p><span class="v">b</span>（右2, 上2）の符号を両方とも反対にすると、−<span class="v">b</span> は（右−2, 上−2）＝「左へ2、下へ2」。</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 2 ― −<span class="v">b</span> を <span class="v">a</span> の終点につなぐ</h3>
+            <p><span class="v">a</span> の終点から「左へ2、下へ2」戻ると、始点のほぼ真上に来る。右への移動は 2−2＝0 になるのがポイントだ。</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (4)</h3>
+            <p class="big"><span class="v">a</span>−<span class="v">b</span> の成分は (0, 1)</p>
+            <p><b>作図の手順：</b>① <span class="v">a</span> を描く　② −<span class="v">b</span>（左2, 下2）を <span class="v">a</span> の終点につなぐ　③ 始点から最後の終点へ矢印を引く（図の「③ 差の矢印」）。</p>
+            <p>成分では、右へは 2−2＝0、上へは 3−2＝1。差は「右0、上1」の<b>真上の短い矢印</b>になる。</p>
+          </div>
+          <p class="prob-done">(4) クリア！　練習5はこれで終わり。次は解説Dへ進もう。</p>
+        </div>
+      </section>
+
+      <!-- ================= 解説D 実数倍 ================= -->
+      <div class="sec-head">
+        <span class="sec-tag">解説 D</span>
+        <h2>ベクトルの実数倍</h2>
+        <span class="pno">教科書 p.13</span>
+      </div>
+
+      <section class="card">
+        <div class="def">
+          <p><span class="v">a</span>≠<span class="v">0</span>、kを実数とするとき、ベクトル k<span class="v">a</span> を次のように定める。</p>
+          <p>・k＞0 のとき：<span class="v">a</span> と<b>同じ向き</b>で、大きさが <span class="v">a</span> の <b>k倍</b><br />
+          ・k＜0 のとき：<span class="v">a</span> と<b>反対向き</b>で、大きさが <span class="v">a</span> の <b>|k|倍</b><br />
+          ・k＝0 のとき：k<span class="v">a</span>＝<span class="v">0</span></p>
+        </div>
+        <p class="formula">1<span class="v">a</span>＝<span class="v">a</span>　　(−1)<span class="v">a</span>＝−<span class="v">a</span>　　0<span class="v">a</span>＝<span class="v">0</span>　　k<span class="v">0</span>＝<span class="v">0</span></p>
+        <figure>
+          <div class="figbox">
+            <svg viewBox="0 0 520 300" role="img" aria-label="a、2a、マイナス2aを並べた図">
+              <defs>
+                <marker id="sc-a" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"></path></marker>
+                <marker id="sc-b" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--blue)"></path></marker>
+              </defs>
+              <line x1="70" y1="86" x2="172" y2="52" stroke="var(--accent)" stroke-width="4" marker-end="url(#sc-a)"></line>
+              <circle cx="70" cy="86" r="4" fill="var(--ink)"></circle>
+              <text x="230" y="66" class="svg-txt" font-size="16" fill="var(--accent-deep)"><tspan font-style="italic">a</tspan>→（もとの向き・大きさ）</text>
+              <line x1="70" y1="176" x2="282" y2="106" stroke="var(--accent)" stroke-width="4" marker-end="url(#sc-a)"></line>
+              <circle cx="70" cy="176" r="4" fill="var(--ink)"></circle>
+              <text x="330" y="140" class="svg-txt" font-size="16" fill="var(--accent-deep)">2<tspan font-style="italic">a</tspan>→（同じ向き・2倍）</text>
+              <line x1="290" y1="216" x2="78" y2="282" stroke="var(--blue)" stroke-width="4" marker-end="url(#sc-b)"></line>
+              <circle cx="290" cy="216" r="4" fill="var(--ink)"></circle>
+              <text x="300" y="262" class="svg-txt" font-size="16" fill="var(--blue)">−2<tspan font-style="italic">a</tspan>→（反対向き・2倍）</text>
+            </svg>
+          </div>
+          <figcaption>実数倍は「向き（符号）」と「大きさ（絶対値）」の2点で決まる。</figcaption>
+        </figure>
+        <p><b>ためしてみよう。</b>下のスライダーで k の値を変えて、k<span class="v">a</span> の向きと大きさがどう変わるか確かめよう。k が負になると向きが反転し、k＝0 では点（零ベクトル）になるよ。</p>
+        <div class="slider-row">
+          <label for="kRange">k の値</label>
+          <input type="range" id="kRange" min="-2" max="2" value="1" step="0.5" aria-label="実数倍の係数kを変えるスライダー" />
+        </div>
+        <figure>
+          <div class="figbox">
+            <svg viewBox="0 0 520 220" role="img" aria-label="スライダーで係数kを変えられる実数倍ベクトルの図">
+              <defs>
+                <marker id="sc-k" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"></path></marker>
+              </defs>
+              <line x1="60" y1="200" x2="460" y2="20" stroke="var(--line)" stroke-width="2" stroke-dasharray="7 6"></line>
+              <line x1="260" y1="110" x2="360" y2="65" stroke="var(--ink-soft)" stroke-width="2.5" stroke-dasharray="4 4"></line>
+              <line id="kLine" x1="260" y1="110" x2="360" y2="65" stroke="var(--accent)" stroke-width="4.5" marker-end="url(#sc-k)"></line>
+              <circle cx="260" cy="110" r="5" fill="var(--ink)"></circle>
+              <circle id="kDot" cx="360" cy="65" r="4.5" fill="var(--accent)"></circle>
+              <text x="252" y="140" class="svg-txt-soft" font-size="13.5">始点</text>
+              <text id="kLabel" x="368" y="52" class="svg-txt" font-size="16" fill="var(--accent-deep)">1<tspan font-style="italic">a</tspan>→</text>
+            </svg>
+          </div>
+        </figure>
+        <p class="slider-state" id="kState">k＝1：a→ と同じ向きで、大きさは1倍（＝a→ そのもの）</p>
+      </section>
+
+      <!-- 例3 -->
+      <section class="card prob" data-flow="ex3" data-label="例3">
+        <div class="prob-head">
+          <span class="prob-tag">例 3</span>
+          <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+          <span class="prob-state">ヒント 0 / 2</span>
+        </div>
+        <p class="prob-q">線分ABを1：2に内分する点C、3：1に外分する点Dについて、<span class="v">CB</span>＝2<span class="v">AC</span>、<span class="v">DB</span>＝−<span class="fr"><sup>1</sup>/<sub>3</sub></span><span class="v">AD</span> となる理由を考えよう。</p>
+        <figure>
+          <div class="figbox">
+            <svg viewBox="0 0 520 300" role="img" aria-label="内分点Cと外分点Dの配置図">
+              <text x="20" y="34" class="svg-txt" font-size="14">内分：A―C―B（AC：CB＝1：2）</text>
+              <line x1="40" y1="100" x2="490" y2="100" stroke="var(--ink-soft)" stroke-width="2"></line>
+              <line x1="80" y1="66" x2="200" y2="66" stroke="var(--line)" stroke-width="2"></line>
+              <line x1="200" y1="66" x2="440" y2="66" stroke="var(--line)" stroke-width="2"></line>
+              <text x="140" y="56" text-anchor="middle" class="svg-txt-soft" font-size="14">1</text>
+              <text x="320" y="56" text-anchor="middle" class="svg-txt-soft" font-size="14">2</text>
+              <circle cx="80" cy="100" r="4.5" fill="var(--ink)"></circle>
+              <circle cx="200" cy="100" r="4.5" fill="var(--accent)"></circle>
+              <circle cx="440" cy="100" r="4.5" fill="var(--ink)"></circle>
+              <text x="80" y="128" text-anchor="middle" class="svg-txt" font-size="17">A</text>
+              <text x="200" y="128" text-anchor="middle" class="svg-txt" font-size="17" fill="var(--accent-deep)">C</text>
+              <text x="440" y="128" text-anchor="middle" class="svg-txt" font-size="17">B</text>
+              <text x="20" y="196" class="svg-txt" font-size="14">外分：A―B―D（AD：DB＝3：1）</text>
+              <line x1="30" y1="252" x2="500" y2="252" stroke="var(--ink-soft)" stroke-width="2"></line>
+              <line x1="60" y1="222" x2="450" y2="222" stroke="var(--line)" stroke-width="2"></line>
+              <text x="255" y="212" text-anchor="middle" class="svg-txt-soft" font-size="14">AD 全体で 3</text>
+              <line x1="320" y1="272" x2="450" y2="272" stroke="var(--line)" stroke-width="2"></line>
+              <text x="385" y="292" text-anchor="middle" class="svg-txt-soft" font-size="14">DB は 1</text>
+              <circle cx="60" cy="252" r="4.5" fill="var(--ink)"></circle>
+              <circle cx="320" cy="252" r="4.5" fill="var(--ink)"></circle>
+              <circle cx="450" cy="252" r="4.5" fill="var(--blue)"></circle>
+              <text x="60" y="292" text-anchor="middle" class="svg-txt" font-size="17">A</text>
+              <text x="320" y="292" text-anchor="middle" class="svg-txt" font-size="17">B</text>
+              <text x="466" y="258" class="svg-txt" font-size="17" fill="var(--blue)">D</text>
+            </svg>
+          </div>
+          <figcaption>上の配置：Cは線分の内側。下の配置：DはBの外側（延長線上）。</figcaption>
+        </figure>
+        <div class="step hint">
+          <h3>ヒント 1 ― 内分の <span class="v">CB</span> と <span class="v">AC</span> を比べる</h3>
+          <p>上の図で、CからBへの矢印 <span class="v">CB</span> と、AからCへの矢印 <span class="v">AC</span> を見よう。</p>
+          <p>・向き：どちらも右向き（AからBへ進む方向）で<b>同じ</b><br />・長さ：AC：CB＝1：2 だから、CBはACの<b>何倍</b>の長さかな？</p>
+        </div>
+        <div class="step hint">
+          <h3>ヒント 2 ― 外分の <span class="v">DB</span> と <span class="v">AD</span> を比べる</h3>
+          <p>下の図で、DからBへの矢印 <span class="v">DB</span> は左向き、AからDへの矢印 <span class="v">AD</span> は右向き。つまり<b>向きは反対</b>だ。</p>
+          <p>長さは AD：DB＝3：1 だから、DBはADの <span class="fr"><sup>1</sup>/<sub>3</sub></span> 倍。「反対向きで <span class="fr"><sup>1</sup>/<sub>3</sub></span> 倍」を実数倍の言葉で書くと、係数はいくつになるかな？</p>
+        </div>
+        <div class="step answer">
+          <h3>解答</h3>
+          <p class="big"><span class="v">CB</span>＝2<span class="v">AC</span>　　<span class="v">DB</span>＝−<span class="fr"><sup>1</sup>/<sub>3</sub></span><span class="v">AD</span></p>
+          <p><b><span class="v">CB</span> について：</b><span class="v">AC</span> と同じ向きで、大きさは2倍。だから <span class="v">CB</span>＝2<span class="v">AC</span>。</p>
+          <p><b><span class="v">DB</span> について：</b><span class="v">AD</span> と反対向きで、大きさは <span class="fr"><sup>1</sup>/<sub>3</sub></span> 倍。だから <span class="v">DB</span>＝−<span class="fr"><sup>1</sup>/<sub>3</sub></span><span class="v">AD</span>。</p>
+          <p class="note"><b>見分ける手順：</b>①向きが同じか反対か（→符号）　②長さは何倍か（→絶対値）。この2つを順に決めれば、実数倍の式が書ける。</p>
+        </div>
+        <p class="prob-done">例3 クリア！　次は練習6で、係数を自分で求めてみよう。</p>
+      </section>
+
+      <!-- 練習6 -->
+      <section class="card prob" data-flow="ren6" data-label="練習6">
+        <div class="prob-head">
+          <span class="prob-tag ren">練習 6</span>
+          <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+          <span class="prob-state">ヒント 0 / 3</span>
+        </div>
+        <p class="prob-q">例3の点C、Dについて、次の（　）をうめよ。<br />
+        (1) <span class="v">AC</span>＝（　）<span class="v">AB</span>　　(2) <span class="v">AD</span>＝（　）<span class="v">AB</span>　　(3) <span class="v">BC</span>＝（　）<span class="v">AB</span></p>
+        <div class="step hint">
+          <h3>ヒント 1 ― (1) <span class="v">AC</span> と <span class="v">AB</span> を比べる</h3>
+          <p>向き：<span class="v">AC</span> も <span class="v">AB</span> も右向きで同じ。長さ：ABは AC：CB＝1：2 の全体だから、ACの3つ分。つまり AC は AB の何分のいくつかな？</p>
+        </div>
+        <div class="step hint">
+          <h3>ヒント 2 ― (2) <span class="v">AD</span> と <span class="v">AB</span> を比べる</h3>
+          <p>向き：どちらも右向きで同じ。長さ：AD：DB＝3：1 のとき、AB＝AD−DB だから、ABは「3−1＝2」の長さ。ADは「3」の長さ。では AD は AB の何倍かな？（3÷2 を計算してみよう）</p>
+        </div>
+        <div class="step hint">
+          <h3>ヒント 3 ― (3) <span class="v">BC</span> と <span class="v">AB</span> を比べる</h3>
+          <p>まず矢印の向きに注目しよう。<span class="v">BC</span> は「BからCへ」向かう矢印だ。図で A―C―B の並びを見ると、CはBより左側にあるから、<span class="v">BC</span> は左向きになる。<span class="v">AB</span>（AからBへ）は右向きだから、2つは<b>反対向き</b>だね。</p>
+          <p>長さ：BCはABのうち「2」の部分、AB全体は「3」。BC は AB の何分のいくつで、反対向きのとき係数の符号はどうなるかな？</p>
+        </div>
+        <div class="step answer">
+          <h3>解答</h3>
+          <p class="big">(1) <span class="fr"><sup>1</sup>/<sub>3</sub></span>　　(2) <span class="fr"><sup>3</sup>/<sub>2</sub></span>　　(3) −<span class="fr"><sup>2</sup>/<sub>3</sub></span></p>
+          <p>(1) <span class="v">AC</span> は <span class="v">AB</span> と同じ向きで <span class="fr"><sup>1</sup>/<sub>3</sub></span> 倍。<br />
+          (2) <span class="v">AD</span> は <span class="v">AB</span> と同じ向きで <span class="fr"><sup>3</sup>/<sub>2</sub></span> 倍（ABが2、ADが3の長さ）。<br />
+          (3) <span class="v">BC</span> は <span class="v">AB</span> と反対向きで <span class="fr"><sup>2</sup>/<sub>3</sub></span> 倍。だから係数は −<span class="fr"><sup>2</sup>/<sub>3</sub></span>。</p>
+          <p class="note">(1)(2)は <span class="v">AB</span> と同じ向きだから係数は正、(3)の <span class="v">BC</span> は反対向きだから係数は負になる。例3と同じく、「向き → 符号、長さ → 大きさ」の順で決めよう。</p>
+        </div>
+        <p class="prob-done">練習6 クリア！　次は練習7で、実数倍を含んだ作図に挑戦しよう。</p>
+      </section>
+
+      <!-- 練習7 -->
+      <section class="card prob" id="prob-ren7">
+        <div class="prob-head">
+          <span class="prob-tag ren">練習 7</span>
+          <span class="prob-state">下のタブで小問を選んでね</span>
+        </div>
+        <p class="prob-q">方眼の図の <span class="v">a</span>（右1, 上1）、<span class="v">b</span>（右2, 上−1）について、次のベクトルを図示せよ。</p>
+        <div class="tabs" role="tablist" aria-label="練習7の小問">
+          <button class="tab" role="tab" data-tab="ren7-1" aria-selected="true">(1) 2a→</button>
+          <button class="tab" role="tab" data-tab="ren7-2" aria-selected="false">(2) −2b→</button>
+          <button class="tab" role="tab" data-tab="ren7-3" aria-selected="false">(3) 2a→＋b→</button>
+          <button class="tab" role="tab" data-tab="ren7-4" aria-selected="false">(4) a→−2b→</button>
+        </div>
+
+        <!-- 練習7 (1) -->
+        <div class="tabpanel show" id="panel-ren7-1" data-flow="ren7-1" data-label="練習7 (1)">
+          <div class="prob-head">
+            <span class="prob-q" style="margin:0">(1)　2<span class="v">a</span></span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 2</span>
+          </div>
+          <figure class="figstage">
+            <div class="figbox">
+              <svg viewBox="0 0 560 320" role="img" aria-label="練習7(1)の方眼図。2aを描く">
+                <defs>
+                  <pattern id="gp-r71" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="var(--line)" stroke-width="1"></path></pattern>
+                  <marker id="r71-a" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"></path></marker>
+                </defs>
+                <rect x="40" y="40" width="480" height="240" fill="url(#gp-r71)"></rect>
+                <line x1="80" y1="240" x2="112" y2="208" stroke="var(--accent)" stroke-width="3" marker-end="url(#r71-a)"></line>
+                <circle cx="80" cy="240" r="4.5" fill="var(--ink)"></circle>
+                <text x="60" y="266" class="svg-txt" font-size="14">始点</text>
+                <text x="126" y="200" class="svg-txt" font-size="15" fill="var(--accent-deep)"><tspan font-style="italic">a</tspan>→</text>
+                <g class="stg1" style="display:none">
+                  <line x1="80" y1="240" x2="152" y2="168" stroke="var(--accent)" stroke-width="4.5" marker-end="url(#r71-a)"></line>
+                  <text x="128" y="226" class="svg-txt" font-size="15" fill="var(--accent-deep)">2<tspan font-style="italic">a</tspan>→</text>
+                </g>
+                <g class="stg2" style="display:none">
+                  <line x1="80" y1="240" x2="160" y2="240" stroke="var(--ink-soft)" stroke-width="1.8" stroke-dasharray="6 5"></line>
+                  <line x1="160" y1="240" x2="160" y2="160" stroke="var(--ink-soft)" stroke-width="1.8" stroke-dasharray="6 5"></line>
+                  <text x="176" y="150" class="svg-txt" font-size="14">成分 (2, 2)</text>
+                </g>
+              </svg>
+            </div>
+            <div class="stage-btns" role="group" aria-label="図の段階表示">
+              <button type="button" class="stage-btn on" data-stage="0">① <tspan style="font-style:italic">a</tspan>→</button>
+              <button type="button" class="stage-btn" data-stage="1">② 2倍に伸ばす</button>
+              <button type="button" class="stage-btn" data-stage="2">③ 成分で確認</button>
+            </div>
+            <figcaption>係数2は正だから、向きは <span class="v" style="padding-top:.4em">a</span> と同じで長さだけ2倍。</figcaption>
+          </figure>
+          <div class="step hint">
+            <h3>ヒント 1 ― 向きと大きさを決める</h3>
+            <p>係数 2 は正の数。だから 2<span class="v">a</span> は <span class="v">a</span> と<b>同じ向き</b>で、大きさは<b>2倍</b>。図で <span class="v">a</span> をそのまま2つ分つなげた長さになる。</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 2 ― 成分でも計算しておく</h3>
+            <p><span class="v">a</span> の成分は（右1, 上1）。2倍すると成分も2倍になって（右2, 上2）。始点から「右へ2マス、上へ2マス」の場所が終点になるはずだ。</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (1)</h3>
+            <p class="big">2<span class="v">a</span> の成分は (2, 2)</p>
+            <p><b>作図の手順：</b>① <span class="v">a</span> を描く　② 同じ向きに2倍の長さまで伸ばす（図の「② 2倍に伸ばす」）。終点は始点から（右2, 上2）の場所になる。</p>
+          </div>
+          <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
+        </div>
+
+        <!-- 練習7 (2) -->
+        <div class="tabpanel" id="panel-ren7-2" data-flow="ren7-2" data-label="練習7 (2)">
+          <div class="prob-head">
+            <span class="prob-q" style="margin:0">(2)　−2<span class="v">b</span></span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 2</span>
+          </div>
+          <figure class="figstage">
+            <div class="figbox">
+              <svg viewBox="0 0 560 320" role="img" aria-label="練習7(2)の方眼図。マイナス2bを描く">
+                <defs>
+                  <pattern id="gp-r72" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="var(--line)" stroke-width="1"></path></pattern>
+                  <marker id="r72-b" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--blue)"></path></marker>
+                </defs>
+                <rect x="40" y="40" width="480" height="240" fill="url(#gp-r72)"></rect>
+                <line x1="280" y1="240" x2="352" y2="272" stroke="var(--blue)" stroke-width="3" marker-end="url(#r72-b)"></line>
+                <circle cx="280" cy="240" r="4.5" fill="var(--ink)"></circle>
+                <text x="256" y="226" class="svg-txt" font-size="14">始点</text>
+                <text x="330" y="240" class="svg-txt" font-size="15" fill="var(--blue)"><tspan font-style="italic">b</tspan>→</text>
+                <g class="stg1" style="display:none">
+                  <line x1="280" y1="240" x2="128" y2="168" stroke="var(--blue)" stroke-width="4.5" marker-end="url(#r72-b)"></line>
+                  <text x="170" y="186" class="svg-txt" font-size="15" fill="var(--blue)">−2<tspan font-style="italic">b</tspan>→</text>
+                </g>
+                <g class="stg2" style="display:none">
+                  <line x1="280" y1="240" x2="120" y2="240" stroke="var(--ink-soft)" stroke-width="1.8" stroke-dasharray="6 5"></line>
+                  <line x1="120" y1="240" x2="120" y2="160" stroke="var(--ink-soft)" stroke-width="1.8" stroke-dasharray="6 5"></line>
+                  <text x="60" y="140" class="svg-txt" font-size="14">成分 (−4, 2)</text>
+                </g>
+              </svg>
+            </div>
+            <div class="stage-btns" role="group" aria-label="図の段階表示">
+              <button type="button" class="stage-btn on" data-stage="0">① <tspan style="font-style:italic">b</tspan>→</button>
+              <button type="button" class="stage-btn" data-stage="1">② 反対向きに2倍</button>
+              <button type="button" class="stage-btn" data-stage="2">③ 成分で確認</button>
+            </div>
+            <figcaption>係数 −2 は負だから、向きは <span class="v" style="padding-top:.4em">b</span> と反対で、大きさは2倍。</figcaption>
+          </figure>
+          <div class="step hint">
+            <h3>ヒント 1 ― 向きと大きさを決める</h3>
+            <p>係数 −2 は負の数。だから −2<span class="v">b</span> は <span class="v">b</span> と<b>反対向き</b>で、大きさは <b>|−2|＝2倍</b>。「反対向き」と「2倍」の両方を忘れずに。</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 2 ― 成分でも計算しておく</h3>
+            <p><span class="v">b</span> の成分は（右2, 上−1）。−2倍すると（右−4, 上2）＝「左へ4マス、上へ2マス」。始点からその場所が終点になるはずだ。</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (2)</h3>
+            <p class="big">−2<span class="v">b</span> の成分は (−4, 2)</p>
+            <p><b>作図の手順：</b>① <span class="v">b</span> を描く　② 向きを反対にして（左下→右上の矢印を逆に）、2倍の長さに伸ばす（図の「② 反対向きに2倍」）。終点は始点から（左4, 上2）の場所になる。</p>
+          </div>
+          <p class="prob-done">(2) クリア！　次の小問のタブを開いてみよう。</p>
+        </div>
+
+        <!-- 練習7 (3) -->
+        <div class="tabpanel" id="panel-ren7-3" data-flow="ren7-3" data-label="練習7 (3)">
+          <div class="prob-head">
+            <span class="prob-q" style="margin:0">(3)　2<span class="v">a</span>＋<span class="v">b</span></span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 2</span>
+          </div>
+          <figure class="figstage">
+            <div class="figbox">
+              <svg viewBox="0 0 560 320" role="img" aria-label="練習7(3)の方眼図。2aとbの和を描く">
+                <defs>
+                  <pattern id="gp-r73" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="var(--line)" stroke-width="1"></path></pattern>
+                  <marker id="r73-a" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"></path></marker>
+                  <marker id="r73-b" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--blue)"></path></marker>
+                  <marker id="r73-r" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--red)"></path></marker>
+                </defs>
+                <rect x="40" y="40" width="480" height="240" fill="url(#gp-r73)"></rect>
+                <line x1="80" y1="240" x2="112" y2="208" stroke="var(--accent)" stroke-width="3" marker-end="url(#r73-a)"></line>
+                <line x1="80" y1="240" x2="152" y2="272" stroke="var(--blue)" stroke-width="3" marker-end="url(#r73-b)"></line>
+                <circle cx="80" cy="240" r="4.5" fill="var(--ink)"></circle>
+                <text x="52" y="226" class="svg-txt" font-size="14">始点</text>
+                <text x="124" y="196" class="svg-txt" font-size="15" fill="var(--accent-deep)"><tspan font-style="italic">a</tspan>→</text>
+                <text x="140" y="296" class="svg-txt" font-size="15" fill="var(--blue)"><tspan font-style="italic">b</tspan>→</text>
+                <g class="stg1" style="display:none">
+                  <line x1="80" y1="240" x2="152" y2="168" stroke="var(--accent)" stroke-width="4" marker-end="url(#r73-a)"></line>
+                  <line x1="160" y1="160" x2="232" y2="192" stroke="var(--blue)" stroke-width="4" marker-end="url(#r73-b)"></line>
+                  <text x="110" y="150" class="svg-txt" font-size="14" fill="var(--accent-deep)">2<tspan font-style="italic">a</tspan>→</text>
+                  <text x="196" y="150" class="svg-txt" font-size="14" fill="var(--blue)"><tspan font-style="italic">b</tspan>→ をつないだ</text>
+                </g>
+                <g class="stg2" style="display:none">
+                  <line x1="86" y1="232" x2="232" y2="194" stroke="var(--red)" stroke-width="4.5" marker-end="url(#r73-r)"></line>
+                  <text x="130" y="216" class="svg-txt" font-size="15" fill="var(--red)">2<tspan font-style="italic">a</tspan>→＋<tspan font-style="italic">b</tspan>→</text>
+                  <text x="248" y="186" class="svg-txt" font-size="14">成分 (4, 1)</text>
+                </g>
+              </svg>
+            </div>
+            <div class="stage-btns" role="group" aria-label="図の段階表示">
+              <button type="button" class="stage-btn on" data-stage="0">① もとの図</button>
+              <button type="button" class="stage-btn" data-stage="1">② 2a→ を描いて b→ をつなぐ</button>
+              <button type="button" class="stage-btn" data-stage="2">③ 和の矢印</button>
+            </div>
+            <figcaption>まず 2<span class="v" style="padding-top:.4em">a</span> を作り、次に加法の「つなぐ」を行う、2段構えの作図。</figcaption>
+          </figure>
+          <div class="step hint">
+            <h3>ヒント 1 ― まず 2<span class="v">a</span> だけを作る</h3>
+            <p>いきなり和を考えず、順番に。2<span class="v">a</span> は (1) で作った通り、成分（右2, 上2）の矢印。これを始点から描くのが第一歩。</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 2 ― 2<span class="v">a</span> の終点に <span class="v">b</span> をつなぐ</h3>
+            <p>あとは加法と同じ。<span class="v">b</span>（右2, 下1）を 2<span class="v">a</span> の終点につなぐ。合計の成分は、右へは 2＋2、上へは 2＋(−1)。予想してから図で確かめよう。</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (3)</h3>
+            <p class="big">2<span class="v">a</span>＋<span class="v">b</span> の成分は (4, 1)</p>
+            <p><b>作図の手順：</b>① 2<span class="v">a</span>（右2, 上2）を描く　② その終点に <span class="v">b</span>（右2, 下1）をつなぐ　③ 始点から最後の終点へ矢印を引く（図の「③ 和の矢印」）。成分の合計は（2＋2, 2−1）＝(4, 1)。</p>
+          </div>
+          <p class="prob-done">(3) クリア！　次の小問のタブを開いてみよう。</p>
+        </div>
+
+        <!-- 練習7 (4) -->
+        <div class="tabpanel" id="panel-ren7-4" data-flow="ren7-4" data-label="練習7 (4)">
+          <div class="prob-head">
+            <span class="prob-q" style="margin:0">(4)　<span class="v">a</span>−2<span class="v">b</span></span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 2</span>
+          </div>
+          <figure class="figstage">
+            <div class="figbox">
+              <svg viewBox="0 0 560 320" role="img" aria-label="練習7(4)の方眼図。aから2bを引く">
+                <defs>
+                  <pattern id="gp-r74" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="var(--line)" stroke-width="1"></path></pattern>
+                  <marker id="r74-a" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"></path></marker>
+                  <marker id="r74-b" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--blue)"></path></marker>
+                  <marker id="r74-r" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--red)"></path></marker>
+                </defs>
+                <rect x="40" y="40" width="480" height="240" fill="url(#gp-r74)"></rect>
+                <line x1="240" y1="240" x2="272" y2="208" stroke="var(--accent)" stroke-width="3" marker-end="url(#r74-a)"></line>
+                <line x1="240" y1="240" x2="312" y2="272" stroke="var(--blue)" stroke-width="3" marker-end="url(#r74-b)"></line>
+                <circle cx="240" cy="240" r="4.5" fill="var(--ink)"></circle>
+                <text x="212" y="226" class="svg-txt" font-size="14">始点</text>
+                <text x="284" y="196" class="svg-txt" font-size="15" fill="var(--accent-deep)"><tspan font-style="italic">a</tspan>→</text>
+                <text x="300" y="296" class="svg-txt" font-size="15" fill="var(--blue)"><tspan font-style="italic">b</tspan>→</text>
+                <g class="stg1" style="display:none">
+                  <line x1="280" y1="200" x2="128" y2="128" stroke="var(--blue)" stroke-width="4" marker-end="url(#r74-b)"></line>
+                  <text x="150" y="110" class="svg-txt" font-size="14" fill="var(--blue)">−2<tspan font-style="italic">b</tspan>→ をつないだ</text>
+                </g>
+                <g class="stg2" style="display:none">
+                  <line x1="234" y1="232" x2="128" y2="128" stroke="var(--red)" stroke-width="4.5" marker-end="url(#r74-r)"></line>
+                  <text x="150" y="206" class="svg-txt" font-size="15" fill="var(--red)"><tspan font-style="italic">a</tspan>→−2<tspan font-style="italic">b</tspan>→</text>
+                  <text x="60" y="106" class="svg-txt" font-size="14">成分 (−3, 3)</text>
+                </g>
+              </svg>
+            </div>
+            <div class="stage-btns" role="group" aria-label="図の段階表示">
+              <button type="button" class="stage-btn on" data-stage="0">① もとの図</button>
+              <button type="button" class="stage-btn" data-stage="1">② −2b→ をつなぐ</button>
+              <button type="button" class="stage-btn" data-stage="2">③ 差の矢印</button>
+            </div>
+            <figcaption>差は <span class="v" style="padding-top:.4em">a</span>＋(−2<span class="v" style="padding-top:.4em">b</span>) と直して考える。(2) で作った −2<span class="v" style="padding-top:.4em">b</span> がそのまま使える。</figcaption>
+          </figure>
+          <div class="step hint">
+            <h3>ヒント 1 ― −2<span class="v">b</span> の成分を用意する</h3>
+            <p><span class="v">a</span>−2<span class="v">b</span>＝<span class="v">a</span>＋(−2<span class="v">b</span>) と直す。−2<span class="v">b</span> は (2) で求めた通り、成分（右−4, 上2）＝「左へ4、上へ2」の矢印だ。</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 2 ― <span class="v">a</span> の終点に −2<span class="v">b</span> をつなぐ</h3>
+            <p><span class="v">a</span> の終点（右1、上1の場所）から「左へ4、上へ2」進む。始点からの合計は、右へは 1−4、上へは 1＋2。終点が始点より左に来ることに注意しよう。</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (4)</h3>
+            <p class="big"><span class="v">a</span>−2<span class="v">b</span> の成分は (−3, 3)</p>
+            <p><b>作図の手順：</b>① <span class="v">a</span>（右1, 上1）を描く　② その終点に −2<span class="v">b</span>（左4, 上2）をつなぐ　③ 始点から最後の終点へ矢印を引く（図の「③ 差の矢印」）。成分の合計は（1−4, 1＋2）＝(−3, 3)。</p>
+          </div>
+          <p class="prob-done">(4) クリア！　練習7はこれで終わり。次は解説Eへ進もう。</p>
+        </div>
+      </section>
+
+      <!-- ================= 解説E 計算 ================= -->
+      <div class="sec-head">
+        <span class="sec-tag">解説 E</span>
+        <h2>ベクトルの計算</h2>
+        <span class="pno">教科書 p.14</span>
+      </div>
+
+      <section class="card">
+        <div class="def">
+          <p><span class="key">実数倍の性質</span>（k、l は実数）</p>
+          <p>① k(l<span class="v">a</span>)＝(kl)<span class="v">a</span><br />
+          ② (k＋l)<span class="v">a</span>＝k<span class="v">a</span>＋l<span class="v">a</span><br />
+          ③ k(<span class="v">a</span>＋<span class="v">b</span>)＝k<span class="v">a</span>＋k<span class="v">b</span></p>
+        </div>
+        <p>これらの性質のおかげで、ベクトルの式は<b>文字式とまったく同じように計算できる</b>。かっこを外し（③）、同じベクトルの項を係数でまとめる（②）、という手順で整理しよう。</p>
+      </section>
+
+      <!-- 例4 -->
+      <section class="card prob" id="prob-ex4">
+        <div class="prob-head">
+          <span class="prob-tag">例 4</span>
+          <span class="prob-state">下のタブで小問を選んでね</span>
+        </div>
+        <p class="prob-q">次の式を簡単にせよ。</p>
+        <div class="tabs" role="tablist" aria-label="例4の小問">
+          <button class="tab" role="tab" data-tab="ex4-1" aria-selected="true">(1)</button>
+          <button class="tab" role="tab" data-tab="ex4-2" aria-selected="false">(2)</button>
+        </div>
+
+        <div class="tabpanel show" id="panel-ex4-1" data-flow="ex4-1" data-label="例4 (1)">
+          <div class="prob-head">
+            <span class="prob-q" style="margin:0">(1)　3<span class="v">a</span>＋4<span class="v">a</span>−2<span class="v">a</span></span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 1</span>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 1 ― 係数だけを集める</h3>
+            <p>3つの項はすべて <span class="v">a</span> の実数倍。性質② (k＋l)<span class="v">a</span>＝k<span class="v">a</span>＋l<span class="v">a</span> の逆向きを使えば、係数だけの計算 (3＋4−2)<span class="v">a</span> にまとめられる。3＋4−2 を計算してみよう。</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (1)</h3>
+            <p class="big">3<span class="v">a</span>＋4<span class="v">a</span>−2<span class="v">a</span>＝5<span class="v">a</span></p>
+            <p>係数を集めて (3＋4−2)<span class="v">a</span>＝5<span class="v">a</span>。文字式で 3x＋4x−2x＝5x とするのとまったく同じだ。</p>
+          </div>
+          <p class="prob-done">(1) クリア！　(2) のタブも開いてみよう。</p>
+        </div>
+
+        <div class="tabpanel" id="panel-ex4-2" data-flow="ex4-2" data-label="例4 (2)">
+          <div class="prob-head">
+            <span class="prob-q" style="margin:0">(2)　2(<span class="v">a</span>＋5<span class="v">b</span>)＋3(2<span class="v">a</span>−<span class="v">b</span>)</span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 2</span>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 1 ― まずかっこを外す</h3>
+            <p>性質③ k(<span class="v">a</span>＋<span class="v">b</span>)＝k<span class="v">a</span>＋k<span class="v">b</span> を使って、かっこの外の数を<b>中の全部の項に掛ける</b>。</p>
+            <p>2(<span class="v">a</span>＋5<span class="v">b</span>)＝2<span class="v">a</span>＋10<span class="v">b</span>、3(2<span class="v">a</span>−<span class="v">b</span>)＝6<span class="v">a</span>−3<span class="v">b</span> になる。</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 2 ― 同じベクトル同士を集める</h3>
+            <p>式は 2<span class="v">a</span>＋10<span class="v">b</span>＋6<span class="v">a</span>−3<span class="v">b</span> になった。<span class="v">a</span> の係数 2 と 6、<span class="v">b</span> の係数 10 と −3 を、それぞれ別々に計算しよう。</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (2)</h3>
+            <p class="big">2(<span class="v">a</span>＋5<span class="v">b</span>)＋3(2<span class="v">a</span>−<span class="v">b</span>)＝8<span class="v">a</span>＋7<span class="v">b</span></p>
+            <p>＝2<span class="v">a</span>＋10<span class="v">b</span>＋6<span class="v">a</span>−3<span class="v">b</span>＝(2＋6)<span class="v">a</span>＋(10−3)<span class="v">b</span>＝8<span class="v">a</span>＋7<span class="v">b</span>。</p>
+            <p class="note"><b>手順：</b>①かっこを外す → ② <span class="v">a</span> 同士、<span class="v">b</span> 同士で係数を集める。違うベクトルの項は絶対に混ぜないこと。</p>
+          </div>
+          <p class="prob-done">(2) クリア！　次は練習8で自分で計算してみよう。</p>
+        </div>
+      </section>
+
+      <!-- 練習8 -->
+      <section class="card prob" id="prob-ren8">
+        <div class="prob-head">
+          <span class="prob-tag ren">練習 8</span>
+          <span class="prob-state">下のタブで小問を選んでね</span>
+        </div>
+        <p class="prob-q">次の式を簡単にせよ。</p>
+        <div class="tabs" role="tablist" aria-label="練習8の小問">
+          <button class="tab" role="tab" data-tab="ren8-1" aria-selected="true">(1)</button>
+          <button class="tab" role="tab" data-tab="ren8-2" aria-selected="false">(2)</button>
+          <button class="tab" role="tab" data-tab="ren8-3" aria-selected="false">(3)</button>
+          <button class="tab" role="tab" data-tab="ren8-4" aria-selected="false">(4)</button>
+        </div>
+
+        <div class="tabpanel show" id="panel-ren8-1" data-flow="ren8-1" data-label="練習8 (1)">
+          <div class="prob-head">
+            <span class="prob-q" style="margin:0">(1)　<span class="v">a</span>＋3<span class="v">a</span>−2<span class="v">a</span></span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 2</span>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 1 ― 最初の <span class="v">a</span> は「1<span class="v">a</span>」</h3>
+            <p>係数が書かれていない <span class="v">a</span> は、1<span class="v">a</span> のこと（解説Dの 1<span class="v">a</span>＝<span class="v">a</span>）。だから係数は 1、3、−2 の3つだ。</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 2 ― 係数を計算する</h3>
+            <p>1＋3−2 を計算すると係数が決まる。その数を <span class="v">a</span> の前に書けば完成だ。</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (1)</h3>
+            <p class="big"><span class="v">a</span>＋3<span class="v">a</span>−2<span class="v">a</span>＝2<span class="v">a</span></p>
+            <p>(1＋3−2)<span class="v">a</span>＝2<span class="v">a</span>。</p>
+          </div>
+          <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
+        </div>
+
+        <div class="tabpanel" id="panel-ren8-2" data-flow="ren8-2" data-label="練習8 (2)">
+          <div class="prob-head">
+            <span class="prob-q" style="margin:0">(2)　3<span class="v">a</span>＋7<span class="v">b</span>−5<span class="v">a</span>−2<span class="v">b</span></span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 2</span>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 1 ― <span class="v">a</span> の項だけを集める</h3>
+            <p>まず <span class="v">a</span> の項 3<span class="v">a</span> と −5<span class="v">a</span> だけを見る。係数は 3−5 で計算できる。符号が負になることに注意。</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 2 ― 次に <span class="v">b</span> の項を集める</h3>
+            <p><span class="v">b</span> の項は 7<span class="v">b</span> と −2<span class="v">b</span>。係数は 7−2 で計算できる。ヒント1の結果と並べて書けば完成だ。</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (2)</h3>
+            <p class="big">3<span class="v">a</span>＋7<span class="v">b</span>−5<span class="v">a</span>−2<span class="v">b</span>＝−2<span class="v">a</span>＋5<span class="v">b</span></p>
+            <p><span class="v">a</span>：(3−5)<span class="v">a</span>＝−2<span class="v">a</span>、<span class="v">b</span>：(7−2)<span class="v">b</span>＝5<span class="v">b</span>。別々のベクトルは別々に計算するのがルールだ。</p>
+          </div>
+          <p class="prob-done">(2) クリア！　次の小問のタブを開いてみよう。</p>
+        </div>
+
+        <div class="tabpanel" id="panel-ren8-3" data-flow="ren8-3" data-label="練習8 (3)">
+          <div class="prob-head">
+            <span class="prob-q" style="margin:0">(3)　3(2<span class="v">a</span>＋<span class="v">b</span>)＋4(<span class="v">a</span>−2<span class="v">b</span>)</span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 2</span>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 1 ― かっこを1つずつ外す</h3>
+            <p>例4(2)と同じ手順。まず 3(2<span class="v">a</span>＋<span class="v">b</span>)＝6<span class="v">a</span>＋3<span class="v">b</span>。次に 4(<span class="v">a</span>−2<span class="v">b</span>) は、4を <span class="v">a</span> と −2<span class="v">b</span> の両方に掛ける。−2<span class="v">b</span> に 4 を掛けると何になるか、符号に注意して計算しよう。</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 2 ― 係数を集める</h3>
+            <p>かっこを外すと 6<span class="v">a</span>＋3<span class="v">b</span>＋4<span class="v">a</span>−8<span class="v">b</span> になる。<span class="v">a</span> は 6＋4、<span class="v">b</span> は 3−8。それぞれ計算してみよう。</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (3)</h3>
+            <p class="big">3(2<span class="v">a</span>＋<span class="v">b</span>)＋4(<span class="v">a</span>−2<span class="v">b</span>)＝10<span class="v">a</span>−5<span class="v">b</span></p>
+            <p>＝6<span class="v">a</span>＋3<span class="v">b</span>＋4<span class="v">a</span>−8<span class="v">b</span>＝(6＋4)<span class="v">a</span>＋(3−8)<span class="v">b</span>＝10<span class="v">a</span>−5<span class="v">b</span>。</p>
+          </div>
+          <p class="prob-done">(3) クリア！　次の小問のタブを開いてみよう。</p>
+        </div>
+
+        <div class="tabpanel" id="panel-ren8-4" data-flow="ren8-4" data-label="練習8 (4)">
+          <div class="prob-head">
+            <span class="prob-q" style="margin:0">(4)　2(<span class="v">a</span>−3<span class="v">b</span>)−3(3<span class="v">a</span>−2<span class="v">b</span>)</span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 2</span>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 1 ― 後ろのかっこの符号に注意</h3>
+            <p>−3(3<span class="v">a</span>−2<span class="v">b</span>) は、<b>−3 を中の全部に掛ける</b>。だから −3×3<span class="v">a</span>＝−9<span class="v">a</span>、−3×(−2<span class="v">b</span>)＝＋6<span class="v">b</span> になる。「マイナス×マイナス＝プラス」を忘れずに。</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 2 ― 係数を集めると、消える項がある</h3>
+            <p>かっこを外すと 2<span class="v">a</span>−6<span class="v">b</span>−9<span class="v">a</span>＋6<span class="v">b</span>。<span class="v">b</span> の係数は −6＋6＝0、つまり <span class="v">b</span> の項は消える。<span class="v">a</span> の係数だけ計算すれば完成だ。</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (4)</h3>
+            <p class="big">2(<span class="v">a</span>−3<span class="v">b</span>)−3(3<span class="v">a</span>−2<span class="v">b</span>)＝−7<span class="v">a</span></p>
+            <p>＝2<span class="v">a</span>−6<span class="v">b</span>−9<span class="v">a</span>＋6<span class="v">b</span>＝(2−9)<span class="v">a</span>＋(−6＋6)<span class="v">b</span>＝−7<span class="v">a</span>＋0<span class="v">b</span>＝−7<span class="v">a</span>。</p>
+            <p class="note">係数が0になった項は書かない（0<span class="v">b</span>＝<span class="v">0</span> だから）。これも文字式と同じルールだ。</p>
+          </div>
+          <p class="prob-done">(4) クリア！　練習8はこれで終わり。次は解説Fへ進もう。</p>
+        </div>
+      </section>
+
+      <!-- ================= 解説F 平行 ================= -->
+      <div class="sec-head">
+        <span class="sec-tag">解説 F</span>
+        <h2>ベクトルの平行</h2>
+        <span class="pno">教科書 p.15</span>
+      </div>
+
+      <section class="card">
+        <div class="def">
+          <p><span class="v">0</span> でない2つのベクトル <span class="v">a</span>、<span class="v">b</span> は、<b>向きが同じか反対のとき平行</b>であるといい、<span class="v">a</span>∥<span class="v">b</span> と書く。</p>
+          <p><span class="key">平行条件</span>：<span class="v">a</span>∥<span class="v">b</span> であるのは、<span class="v">b</span>＝k<span class="v">a</span> となる実数 k があるときに限る（k＞0 なら同じ向き、k＜0 なら反対向き）。</p>
+          <p>また、<b>大きさが1のベクトル</b>を<span class="key">単位ベクトル</span>という。</p>
+        </div>
+        <figure>
+          <div class="figbox">
+            <svg viewBox="0 0 520 190" role="img" aria-label="平行なベクトルの組と、平行でないベクトルの図">
+              <defs>
+                <marker id="pl-a" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"></path></marker>
+                <marker id="pl-b" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--blue)"></path></marker>
+              </defs>
+              <line x1="30" y1="70" x2="490" y2="70" stroke="var(--line)" stroke-width="2" stroke-dasharray="7 6"></line>
+              <line x1="50" y1="70" x2="140" y2="70" stroke="var(--accent)" stroke-width="4" marker-end="url(#pl-a)"></line>
+              <line x1="180" y1="70" x2="360" y2="70" stroke="var(--accent)" stroke-width="4" marker-end="url(#pl-a)"></line>
+              <line x1="470" y1="70" x2="395" y2="70" stroke="var(--accent)" stroke-width="4" marker-end="url(#pl-a)"></line>
+              <text x="95" y="52" text-anchor="middle" class="svg-txt" font-size="15" fill="var(--accent-deep)"><tspan font-style="italic">a</tspan>→</text>
+              <text x="270" y="52" text-anchor="middle" class="svg-txt" font-size="15" fill="var(--accent-deep)">2<tspan font-style="italic">a</tspan>→</text>
+              <text x="432" y="52" text-anchor="middle" class="svg-txt" font-size="15" fill="var(--accent-deep)">−<tspan font-style="italic">a</tspan>→</text>
+              <text x="260" y="102" text-anchor="middle" class="svg-txt-soft" font-size="14">同じ直線上（同じ向き・反対向き）→ すべて <tspan font-style="italic">a</tspan>→ と平行</text>
+              <line x1="170" y1="160" x2="250" y2="128" stroke="var(--blue)" stroke-width="4" marker-end="url(#pl-b)"></line>
+              <text x="262" y="140" class="svg-txt" font-size="15" fill="var(--blue)"><tspan font-style="italic">b</tspan>→</text>
+              <text x="395" y="168" text-anchor="middle" class="svg-txt-soft" font-size="14">向きが違う → 平行でない</text>
+            </svg>
+          </div>
+          <figcaption>平行かどうかは「実数倍で書けるか」と同じこと。長さが違っても、反対向きでも、平行であることに変わりはない。</figcaption>
+        </figure>
+      </section>
+
+      <!-- 例5 -->
+      <section class="card prob" data-flow="ex5" data-label="例5">
+        <div class="prob-head">
+          <span class="prob-tag">例 5</span>
+          <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+          <span class="prob-state">ヒント 0 / 2</span>
+        </div>
+        <p class="prob-q"><span class="abs">|</span><span class="v">a</span><span class="abs">|</span>＝2 のとき、<span class="v">a</span> と平行で大きさが1のベクトルを、<span class="v">a</span> を使って表そう。</p>
+        <div class="step hint">
+          <h3>ヒント 1 ― 平行だから「k<span class="v">a</span>」の形になる</h3>
+          <p>求めるベクトルは <span class="v">a</span> と平行だから、平行条件より k<span class="v">a</span> と書ける。あとは大きさの条件から k を決めるだけだ。</p>
+          <p>k<span class="v">a</span> の大きさは |k|×<span class="abs">|</span><span class="v">a</span><span class="abs">|</span>＝|k|×2。これが1に等しいと置くと、|k| はいくつになるかな？</p>
+        </div>
+        <div class="step hint">
+          <h3>ヒント 2 ― k には2通りの符号がある</h3>
+          <p>|k|＝<span class="fr"><sup>1</sup>/<sub>2</sub></span> だから、k＝<span class="fr"><sup>1</sup>/<sub>2</sub></span> または k＝−<span class="fr"><sup>1</sup>/<sub>2</sub></span>。k が正なら <span class="v">a</span> と同じ向き、負なら反対向き。どちらのベクトルも「平行で大きさ1」を満たすので、答えは2つある。</p>
+        </div>
+        <div class="step answer">
+          <h3>解答</h3>
+          <p class="big"><span class="fr"><sup>1</sup>/<sub>2</sub></span><span class="v">a</span>　と　−<span class="fr"><sup>1</sup>/<sub>2</sub></span><span class="v">a</span></p>
+          <p>求めるベクトルを k<span class="v">a</span> とすると、大きさは |k|×2＝1 より |k|＝<span class="fr"><sup>1</sup>/<sub>2</sub></span>。よって k＝±<span class="fr"><sup>1</sup>/<sub>2</sub></span> で、答えは2つある。</p>
+          <p class="note">大きさ1のベクトル＝単位ベクトル。<span class="v">a</span> の向きの単位ベクトルは、この問題の答えのうち正の係数の方だ。</p>
+        </div>
+        <p class="prob-done">例5 クリア！　最後は練習9に挑戦しよう。</p>
+      </section>
+
+      <!-- 練習9 -->
+      <section class="card prob" id="prob-ren9">
+        <div class="prob-head">
+          <span class="prob-tag ren">練習 9</span>
+          <span class="prob-state">下のタブで小問を選んでね</span>
+        </div>
+        <p class="prob-q">次のベクトルを求めよ。</p>
+        <div class="tabs" role="tablist" aria-label="練習9の小問">
+          <button class="tab" role="tab" data-tab="ren9-1" aria-selected="true">(1)</button>
+          <button class="tab" role="tab" data-tab="ren9-2" aria-selected="false">(2)</button>
+        </div>
+
+        <div class="tabpanel show" id="panel-ren9-1" data-flow="ren9-1" data-label="練習9 (1)">
+          <div class="prob-head">
+            <span class="prob-q" style="margin:0">(1)　単位ベクトル <span class="v">e</span> と平行で、大きさが4のベクトルを <span class="v">e</span> で表せ</span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 2</span>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 1 ― 平行だから「k<span class="v">e</span>」の形になる</h3>
+            <p>求めるベクトルは <span class="v">e</span> と平行だから k<span class="v">e</span> と書ける。<span class="v">e</span> は単位ベクトルで大きさは1。だから k<span class="v">e</span> の大きさは |k|×1＝|k| になる。</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 2 ― 大きさの条件から k を決める</h3>
+            <p>大きさが4だから |k|＝4。k には正と負の2通りがある（同じ向きと反対向き）。例5と同じパターンだ。</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (1)</h3>
+            <p class="big">4<span class="v">e</span>　と　−4<span class="v">e</span></p>
+            <p>k<span class="v">e</span> の大きさは |k|。|k|＝4 より k＝±4。同じ向きの 4<span class="v">e</span> と、反対向きの −4<span class="v">e</span> の2つが答えになる。</p>
+          </div>
+          <p class="prob-done">(1) クリア！　(2) のタブも開いてみよう。</p>
+        </div>
+
+        <div class="tabpanel" id="panel-ren9-2" data-flow="ren9-2" data-label="練習9 (2)">
+          <div class="prob-head">
+            <span class="prob-q" style="margin:0">(2)　<span class="abs">|</span><span class="v">a</span><span class="abs">|</span>＝3 のとき、<span class="v">a</span> と同じ向きの単位ベクトルを <span class="v">a</span> で表せ</span>
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
+            <span class="prob-state">ヒント 0 / 2</span>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 1 ― 「同じ向き」だから k は正</h3>
+            <p>求めるベクトルは <span class="v">a</span> と平行だから k<span class="v">a</span> と書ける。しかも「同じ向き」と指定されているので、k は<b>正の数</b>だけを考えればよい（答えは1つ）。</p>
+          </div>
+          <div class="step hint">
+            <h3>ヒント 2 ― 大きさが1になる k を求める</h3>
+            <p>単位ベクトルだから大きさは1。k<span class="v">a</span> の大きさは k×<span class="abs">|</span><span class="v">a</span><span class="abs">|</span>＝k×3（k＞0）。これが1に等しいと置いて、k を求めよう。</p>
+          </div>
+          <div class="step answer">
+            <h3>解答 (2)</h3>
+            <p class="big"><span class="fr"><sup>1</sup>/<sub>3</sub></span><span class="v">a</span></p>
+            <p>k×3＝1 より k＝<span class="fr"><sup>1</sup>/<sub>3</sub></span>。つまり、<span class="v">a</span> を自分の大きさ3で割る（<span class="fr"><sup>1</sup>/<sub>3</sub></span> 倍する）と、同じ向きの単位ベクトルになる。</p>
+            <p class="note"><b>一般の形：</b><span class="v">a</span> と同じ向きの単位ベクトルは <span class="fr"><sup>1</sup>/<sub>|a→|</sub></span> <span class="v">a</span>。大きさで割って長さを1にする、という意味だね。</p>
+          </div>
+          <p class="prob-done">(2) クリア！　練習9まで終わったら、下のまとめで全体を確認しよう。</p>
+        </div>
+      </section>
+
+      <!-- ================= まとめ ================= -->
+      <section class="card summary">
+        <h2>この項のポイント</h2>
+        <ul>
+          <li><b>和は「つなぐ」</b>：<span class="v">a</span> の終点に <span class="v">b</span> の始点をつなぎ、最初の始点から最後の終点へ。<span class="v">AB</span>＋<span class="v">BC</span>＝<span class="v">AC</span>。始点をそろえたときは平行四辺形の対角線。</li>
+          <li><b>差は「始点をそろえて終点同士」</b>：<span class="v">OA</span>−<span class="v">OB</span>＝<span class="v">BA</span>、<span class="v">AB</span>＝<span class="v">OB</span>−<span class="v">OA</span>（終点−始点）。作図では <span class="v">a</span>−<span class="v">b</span>＝<span class="v">a</span>＋(−<span class="v">b</span>) と直してつなぐ。</li>
+          <li><b>零ベクトル</b>：<span class="v">a</span>＋(−<span class="v">a</span>)＝<span class="v">0</span>、<span class="v">a</span>＋<span class="v">0</span>＝<span class="v">a</span>。一周して戻る式は0になる。</li>
+          <li><b>実数倍は「向きと大きさ」</b>：k＞0 で同じ向き、k＜0 で反対向き、大きさは |k| 倍。係数は「符号＝向き、絶対値＝倍率」。</li>
+          <li><b>計算は文字式と同じ</b>：かっこを外し、同じベクトルの項を係数でまとめる。</li>
+          <li><b>平行条件</b>：<span class="v">a</span>∥<span class="v">b</span> ⇔ <span class="v">b</span>＝k<span class="v">a</span> となる実数 k がある。大きさ1のベクトルが単位ベクトル。</li>
+        </ul>
+      </section>
+
+      <!-- ================= フッター ================= -->
+      <footer>
+        <a class="back-btn" href="vectors.html" id="backToTop">← トップページに戻る</a>
+        <p class="foot-note">数学C 第1章 平面上のベクトル ｜ 2 ベクトルの演算（教科書 p.10〜15）</p>
+      </footer>
+    </div>
+
+    <!-- ================= 下部固定バー ================= -->
+    <div class="ctrl-bar">
+      <div class="ctrl-inner">
+        <p class="ctrl-label">いまの課題：<b id="ctrlLabel">例2</b>　―　「次へ」でヒントを1つずつ開こう</p>
+        <div class="ctrl-btns">
+          <button class="btn" id="btnReset" type="button">最初からやり直す</button>
+          <button class="btn btn-next" id="btnNext" type="button">次へ ▶</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      (function(){
+        "use strict";
+
+        /* ---------- 実数倍スライダー（SVG属性の更新のみ） ---------- */
+        var kRange = document.getElementById('kRange');
+        if (kRange){
+          var kLine = document.getElementById('kLine');
+          var kDot = document.getElementById('kDot');
+          var kLabel = document.getElementById('kLabel');
+          var kState = document.getElementById('kState');
+          function fmt(n){ return (n % 1 === 0) ? String(n.toFixed(0)) : String(n); }
+          function applyK(){
+            var k = parseFloat(kRange.value);
+            var ex = 260 + 100 * k, ey = 110 - 45 * k;
+            kLine.setAttribute('x2', ex); kLine.setAttribute('y2', ey);
+            kDot.setAttribute('cx', ex); kDot.setAttribute('cy', ey);
+            kLabel.setAttribute('x', k >= 0 ? ex + 10 : ex - 66);
+            kLabel.setAttribute('y', ey - 12);
+            kLabel.textContent = fmt(k) + 'a→';
+            if (k === 0){
+              kLine.style.display = 'none';
+              kState.textContent = 'k＝0：長さ0の点、つまり零ベクトル 0→ になる';
+            } else if (k === 1){
+              kLine.style.display = '';
+              kState.textContent = 'k＝1：a→ と同じ向きで、大きさは1倍（＝a→ そのもの）';
+            } else if (k > 0){
+              kLine.style.display = '';
+              kState.textContent = 'k＝' + fmt(k) + '：a→ と同じ向きで、大きさは' + fmt(k) + '倍';
+            } else {
+              kLine.style.display = '';
+              kState.textContent = 'k＝' + fmt(k) + '：a→ と反対向きで、大きさは' + fmt(-k) + '倍';
+            }
+          }
+          kRange.addEventListener('input', applyK);
+          applyK();
+        }
+
+        /* ---------- 図の段階表示 ---------- */
+        document.addEventListener('click', function(ev){
+          var btn = ev.target.closest ? ev.target.closest('.stage-btn') : null;
+          if (!btn) return;
+          var fig = btn.closest('.figstage');
+          if (!fig) return;
+          var n = parseInt(btn.getAttribute('data-stage'), 10);
+          Array.prototype.forEach.call(fig.querySelectorAll('.stg1'), function(g){
+            g.style.display = n >= 1 ? '' : 'none';
+          });
+          Array.prototype.forEach.call(fig.querySelectorAll('.stg2'), function(g){
+            g.style.display = n >= 2 ? '' : 'none';
+          });
+          Array.prototype.forEach.call(fig.querySelectorAll('.stage-btn'), function(b){
+            b.classList.toggle('on', b === btn);
+          });
+        });
+
+        /* ---------- ヒント式フロー（汎用） ---------- */
+        var flows = {};
+        var activeId = null;
+
+        function registerFlow(root){
+          var id = root.getAttribute('data-flow');
+          var steps = Array.prototype.slice.call(root.querySelectorAll(':scope > .step'));
+          var head = root.querySelector(':scope > .prob-head');
+          var dots = head ? Array.prototype.slice.call(head.querySelectorAll('.dot')) : [];
+          var stateEl = head ? head.querySelector('.prob-state') : null;
+          var doneEl = root.querySelector(':scope > .prob-done');
+          flows[id] = {
+            id: id, root: root, steps: steps, dots: dots, stateEl: stateEl,
+            doneEl: doneEl, idx: 0, label: root.getAttribute('data-label') || id,
+            hintTotal: steps.filter(function(s){ return s.classList.contains('hint'); }).length
+          };
+          if (!activeId) activeId = id;
+        }
+        Array.prototype.forEach.call(document.querySelectorAll('[data-flow]'), registerFlow);
+
+        var btnNext = document.getElementById('btnNext');
+        var btnReset = document.getElementById('btnReset');
+        var ctrlLabel = document.getElementById('ctrlLabel');
+
+        function refreshFlow(f){
+          f.steps.forEach(function(s, i){ s.classList.toggle('show', i < f.idx); });
+          f.dots.forEach(function(d, i){ d.classList.toggle('on', i < f.idx); });
+          if (f.stateEl){
+            if (f.idx === 0) f.stateEl.textContent = 'ヒント 0 / ' + f.hintTotal;
+            else if (f.idx <= f.hintTotal) f.stateEl.textContent = 'ヒント ' + f.idx + ' / ' + f.hintTotal;
+            else f.stateEl.textContent = '解答を表示済み';
+          }
+          if (f.doneEl) f.doneEl.classList.toggle('show', f.idx >= f.steps.length);
+        }
+        function refreshBar(){
+          var f = flows[activeId];
+          if (!f) return;
+          ctrlLabel.textContent = f.label;
+          if (f.idx >= f.steps.length){
+            btnNext.disabled = true;
+            btnNext.textContent = 'ぜんぶ開いたよ ✓';
+          } else if (f.idx === f.hintTotal){
+            btnNext.disabled = false;
+            btnNext.textContent = '解答を見る ▶';
+          } else {
+            btnNext.disabled = false;
+            btnNext.textContent = '次へ ▶（ヒント ' + (f.idx + 1) + '）';
+          }
+          Array.prototype.forEach.call(document.querySelectorAll('.prob'), function(card){
+            card.classList.toggle('active', card === f.root || card.contains(f.root));
+          });
+        }
+        function setActive(id){
+          if (!flows[id]) return;
+          activeId = id;
+          refreshBar();
+        }
+
+        btnNext.addEventListener('click', function(){
+          var f = flows[activeId];
+          if (!f || f.idx >= f.steps.length) return;
+          f.idx += 1;
+          refreshFlow(f);
+          refreshBar();
+          var shown = f.steps[f.idx - 1];
+          if (shown) shown.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        });
+        btnReset.addEventListener('click', function(){
+          var f = flows[activeId];
+          if (!f) return;
+          f.idx = 0;
+          refreshFlow(f);
+          refreshBar();
+          f.root.scrollIntoView({ block: 'start', behavior: 'smooth' });
+        });
+
+        /* カードを触ったら、その課題（表示中のタブ）を操作対象にする */
+        Array.prototype.forEach.call(document.querySelectorAll('.prob'), function(card){
+          card.addEventListener('click', function(){
+            if (card.getAttribute('data-flow')){
+              setActive(card.getAttribute('data-flow'));
+            } else {
+              var visible = card.querySelector('.tabpanel.show');
+              if (visible) setActive(visible.getAttribute('data-flow'));
+            }
+          });
+        });
+
+        /* ---------- タブ切り替え（汎用） ---------- */
+        Array.prototype.forEach.call(document.querySelectorAll('.tab'), function(tab){
+          tab.addEventListener('click', function(){
+            var card = tab.closest('.prob');
+            if (!card) return;
+            Array.prototype.forEach.call(card.querySelectorAll('.tab'), function(t){
+              t.setAttribute('aria-selected', t === tab ? 'true' : 'false');
+            });
+            var target = tab.getAttribute('data-tab');
+            Array.prototype.forEach.call(card.querySelectorAll('.tabpanel'), function(p){
+              p.classList.toggle('show', p.id === 'panel-' + target);
+            });
+            setActive(target);
+          });
+        });
+
+        Object.keys(flows).forEach(function(id){ refreshFlow(flows[id]); });
+        refreshBar();
+      })();
+    </script>
+  </body>
+</html>
