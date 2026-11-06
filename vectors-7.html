@@ -230,6 +230,43 @@
       .svg-txt{font-family:"STIX Two Math","Noto Sans JP",sans-serif;font-weight:700;fill:var(--ink)}
       .svg-txt-soft{font-family:"STIX Two Math","Noto Sans JP",sans-serif;fill:var(--ink-soft)}
       .grid-line{stroke:var(--line);stroke-width:1}
+
+      /* ===== 広い画面（PC・タブレット横画面）だけ2段組み：左＝問題文と図（sticky）、右＝ヒント欄 ===== */
+      @media (min-width:1024px){
+        .wrap{max-width:1560px;padding:0 28px 8px}
+        .ctrl-inner{max-width:1560px}
+        /* 解説カードの図は読みやすい大きさに抑えて中央寄せ */
+        section.card:not(.prob) figure{max-width:940px;margin-left:auto;margin-right:auto}
+
+        .prob{
+          display:grid;
+          grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);
+          column-gap:30px;align-items:start;
+        }
+        .prob>.prob-head{grid-column:1/-1}
+        /* 左カラム：問題文＋図。右カラムが伸びても図が常に見えるよう sticky */
+        .qside{
+          grid-column:1;grid-row:2/span 3;min-width:0;
+          position:sticky;top:14px;
+        }
+        .qside figure{margin-top:0}
+
+        /* 右カラム（ヒント・解答）は内部だけスクロール */
+        .prob>.steps-wrap{
+          grid-column:2;min-height:0;
+          max-height:calc(100vh - 235px);overflow-y:auto;
+          padding:2px 6px 2px 2px;
+        }
+        .prob>.prob-done{grid-column:2}
+
+        /* タブ式小問：タブと小問パネルを右カラムへ */
+        .prob>.tabs{grid-column:2;margin-top:2px}
+        .prob>.tabpanel{grid-column:2;min-width:0}
+        .prob>.tabpanel .steps-wrap{
+          min-height:0;max-height:calc(100vh - 345px);overflow-y:auto;
+          padding:2px 6px 2px 2px;
+        }
+      }
     </style>
   </head>
   <body>
@@ -316,6 +353,7 @@
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 4</span>
         </div>
+        <div class="qside">
         <p class="prob-q"><span class="v">p</span>＝<span class="v">a</span>＋t<span class="v">d</span> において、t が次の値をとるとき、点Pはどこにあるか。下の「次へ」を押すたびに、図に点が1つずつ打たれるよ。<br />(1) t＝1　(2) t＝0　(3) t＝4　(4) t＝−2</p>
         <figure>
           <div class="figbox">
@@ -351,6 +389,7 @@
           </div>
           <figcaption>目盛り1つが <span class="v" style="padding-top:.4em">d</span> 1つ分の長さ。点Aの目盛りが t＝0 で、右へ行くほど t が増える。</figcaption>
         </figure>
+        </div>
         <div class="step hint">
           <h3>(1) t＝1 ― <span class="v">d</span> を1つ分進む</h3>
           <p><span class="v">p</span>＝<span class="v">a</span>＋1・<span class="v">d</span> だから、<span class="v">AP</span>＝<span class="v">d</span>。</p>
@@ -389,6 +428,7 @@
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 4</span>
         </div>
+        <div class="qside">
         <p class="prob-q">点 A(1, 4) を通り、<span class="v">d</span>＝(2, 3) に平行な直線の媒介変数表示を求めよ。また、媒介変数 t を消去した式で表せ。</p>
         <figure>
           <div class="figbox">
@@ -413,6 +453,7 @@
           </div>
           <figcaption>点A(1, 4) を通り、方向ベクトル <span class="v" style="padding-top:.4em">d</span>＝(2, 3)（右に2、上に3）に平行な直線。方眼1目盛りが1。</figcaption>
         </figure>
+        </div>
         <div class="step hint">
           <h3>ヒント 1 ― まず x の式だけ書く</h3>
           <p>媒介変数表示の型は x＝x<sub>1</sub>＋lt、y＝y<sub>1</sub>＋mt だった。ここでは x<sub>1</sub>＝1、l＝2（方向ベクトルの x 成分）だ。</p>
@@ -450,6 +491,7 @@
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 4</span>
         </div>
+        <div class="qside">
         <p class="prob-q">点 A(2, −1) を通り、<span class="v">d</span>＝(−4, 3) に平行な直線を媒介変数表示せよ。また、媒介変数を消去した式で表せ。</p>
         <figure>
           <div class="figbox">
@@ -474,6 +516,7 @@
           </div>
           <figcaption>方向ベクトル (−4, 3) は「左に4、上に3」。直線は右下がりに見えるが、向きは <span class="v" style="padding-top:.4em">d</span> の矢印の向き（左上）でも、その反対（右下）でも同じ直線だ。</figcaption>
         </figure>
+        </div>
         <div class="step hint">
           <h3>ヒント 1 ― x の式：x<sub>1</sub>＝2、l＝−4 を入れる</h3>
           <p>型は x＝x<sub>1</sub>＋lt。点Aの x 座標は 2、方向ベクトルの x 成分は −4 だ。</p>
@@ -559,6 +602,7 @@
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 4</span>
         </div>
+        <div class="qside">
         <p class="prob-q"><span class="v">p</span>＝(1−t)<span class="v">a</span>＋t<span class="v">b</span> において、t が次の値をとるとき、点Pはどこにあるか。「次へ」を押すたびに、図に点が1つずつ打たれるよ。<br />(1) t＝1　(2) t＝2　(3) t＝−1　(4) t＝<span class="fr"><sup>1</sup>/<sub>2</sub></span></p>
         <figure>
           <div class="figbox">
@@ -590,6 +634,7 @@
           </div>
           <figcaption>目盛りは t の値。Aが t＝0、Bが t＝1 で、目盛り1つ分が <span class="v" style="padding-top:.4em">AB</span> 1つ分の長さ。</figcaption>
         </figure>
+        </div>
         <div class="step hint">
           <h3>(1) t＝1 ― 係数を計算すると <span class="v">b</span> だけが残る</h3>
           <p>t＝1 を代入すると、<span class="v">p</span>＝(1−1)<span class="v">a</span>＋1・<span class="v">b</span>＝<span class="v">b</span>。</p>
@@ -628,6 +673,7 @@
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 4</span>
         </div>
+        <div class="qside">
         <p class="prob-q">△OABにおいて、<span class="v">OP</span>＝s<span class="v">OA</span>＋t<span class="v">OB</span>、s＋t＝2、s≧0、t≧0 を満たす点Pの存在範囲を求めよ。</p>
         <figure>
           <div class="figbox">
@@ -656,6 +702,7 @@
           </div>
           <figcaption>A' は辺OAを2倍に伸ばした点（OA'＝2OA）で、Aは OA' の中点。B' も同様。赤い線分A'B' が、点Pの存在範囲の候補だ。</figcaption>
         </figure>
+        </div>
         <div class="step hint">
           <h3>ヒント 1 ― s＋t＝2 を「＝1」の形に直す</h3>
           <p>解説Bで使える形は「係数の和が1」だった。いまは s＋t＝2 だから、両辺を2で割ってみよう。</p>
@@ -696,6 +743,7 @@
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
+        <div class="qside">
         <p class="prob-q">△OABにおいて、<span class="v">OP</span>＝s<span class="v">OA</span>＋t<span class="v">OB</span>、s＋t＝<span class="fr"><sup>1</sup>/<sub>2</sub></span>、s≧0、t≧0 を満たす点Pの存在範囲を求めよ。</p>
         <figure>
           <div class="figbox">
@@ -719,6 +767,7 @@
           </div>
           <figcaption>A' はOAの中点、B' はOBの中点。赤い線分A'B'（中点連結の線分）が存在範囲の候補だ。</figcaption>
         </figure>
+        </div>
         <div class="step hint">
           <h3>ヒント 1 ― s＋t＝<span class="fr"><sup>1</sup>/<sub>2</sub></span> を「＝1」の形に直す</h3>
           <p>応用例題6と同じ発想だ。両辺を2倍すると</p>
@@ -812,7 +861,9 @@
           <span class="prob-tag ren">練習 38</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
+        <div class="qside">
         <p class="prob-q">次の点Aを通り、ベクトル <span class="v">n</span> に垂直な直線の方程式を求めよ。</p>
+        </div>
         <div class="tabs" role="tablist" aria-label="練習38の小問">
           <button class="tab" role="tab" data-tab="ren38-1" aria-selected="true">(1) A(3, 4)、n→＝(1, 2)</button>
           <button class="tab" role="tab" data-tab="ren38-2" aria-selected="false">(2) A(−1, 2)、n→＝(3, −4)</button>
@@ -877,7 +928,9 @@
           <span class="prob-tag ren">練習 39</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
+        <div class="qside">
         <p class="prob-q">次の直線の法線ベクトルを1つ示せ。</p>
+        </div>
         <div class="tabs" role="tablist" aria-label="練習39の小問">
           <button class="tab" role="tab" data-tab="ren39-1" aria-selected="true">(1) 3x−2y＋5＝0</button>
           <button class="tab" role="tab" data-tab="ren39-2" aria-selected="false">(2) y＝−2x＋3</button>
@@ -1065,6 +1118,17 @@
             var parent = steps[0].parentNode;
             for (var i = steps.length - 1; i >= 1; i--){
               parent.insertBefore(steps[i], steps[0]);
+            }
+          }
+          /* ステップ群をラッパーに移す（広い画面では右カラムとして内部スクロールさせるため）。
+             ラッパー内でもDOM順（新しいものほど上）はそのまま保持する。 */
+          if (steps.length){
+            var sparent = steps[0].parentNode;
+            var swrap = document.createElement('div');
+            swrap.className = 'steps-wrap';
+            sparent.insertBefore(swrap, steps[steps.length - 1]);
+            for (var j = steps.length - 1; j >= 0; j--){
+              swrap.appendChild(steps[j]);
             }
           }
           var head = root.querySelector(':scope > .prob-head');

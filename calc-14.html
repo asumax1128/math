@@ -237,6 +237,31 @@
       .svg-txt{font-family:"STIX Two Math","Noto Sans JP",sans-serif;font-weight:700;fill:var(--ink)}
       .svg-txt-soft{font-family:"STIX Two Math","Noto Sans JP",sans-serif;fill:var(--ink-soft)}
       .axis-line{stroke:var(--ink);stroke-width:2}
+
+      /* ---------- 広い画面（1024px以上）：2段組み ---------- */
+      @media (min-width:1024px){
+        .wrap{max-width:1560px}
+        .ctrl-inner{max-width:1560px}
+        .card.prob{
+          display:grid;
+          grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);
+          column-gap:26px;
+          align-items:start;
+        }
+        /* 左カラム：問題文・図（stickyで固定表示） */
+        .flow-left{
+          position:sticky;top:14px;min-width:0;align-self:start;
+        }
+        /* 右カラム：ヒント・解答（あふれたら内部だけスクロール） */
+        .flow-right{
+          position:sticky;top:14px;min-width:0;align-self:start;
+          max-height:calc(100vh - 150px);
+          overflow-y:auto;
+          padding-right:6px;
+          scrollbar-gutter:stable;
+        }
+        .flow-right .step:last-child{margin-bottom:4px}
+      }
     </style>
   </head>
   <body>
@@ -822,6 +847,30 @@
         }
         Array.prototype.forEach.call(document.querySelectorAll('[data-flow]'), registerFlow);
         activeId = flowOrder[0];
+
+        /* ---------- 広い画面用：課題カード内を左右カラムに振り分け ----------
+           左カラム＝見出し・問題文・図、右カラム＝ヒント／解答ステップ
+           （タブ式小問のカードでは、タブと小問パネルを右カラムに置く）。
+           フローの登録（要素参照の取得とステップ並びの逆転）が済んだあとに包むので、
+           進捗管理やヒントの積み上がり方は従来どおり。
+           1024px未満では包んだ div は通常のブロックとして並ぶため、表示は従来どおり。 */
+        Array.prototype.slice.call(document.querySelectorAll('.card.prob')).forEach(function(card){
+          var left = document.createElement('div');
+          left.className = 'flow-left';
+          var right = document.createElement('div');
+          right.className = 'flow-right';
+          Array.prototype.slice.call(card.childNodes).forEach(function(node){
+            if (node.nodeType !== 1){ right.appendChild(node); return; }
+            if (node.classList.contains('step') || node.classList.contains('prob-done') ||
+                node.classList.contains('tabs') || node.classList.contains('tabpanel')){
+              right.appendChild(node);
+            } else {
+              left.appendChild(node);
+            }
+          });
+          card.appendChild(left);
+          card.appendChild(right);
+        });
 
         var btnNext = document.getElementById('btnNext');
         var btnReset = document.getElementById('btnReset');

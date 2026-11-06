@@ -154,6 +154,7 @@
       .dot.on{background:var(--accent);border-color:var(--accent)}
       .dot.ans.on{background:#2f9e4f;border-color:#2f9e4f}
       .prob-q{font-weight:700;font-size:16.5px;margin:0 0 10px}
+      .steps-wrap{display:flex;flex-direction:column}
 
       .step{display:none;margin:0 0 12px;border-radius:12px;padding:12px 16px 4px;scroll-margin-bottom:130px}
       .step.show{display:block;animation:pop .25s ease}
@@ -213,6 +214,35 @@
       .svg-txt-soft{font-family:"Noto Sans JP",sans-serif;fill:var(--ink-soft)}
       .grid-line{stroke:var(--line);stroke-width:1}
       .axis-line{stroke:var(--ink-soft);stroke-width:1.6}
+
+      /* ---------- 広い画面（PC・タブレット横画面）：2段組み ---------- */
+      @media (min-width:1024px){
+        .wrap{max-width:1560px;padding:0 28px 8px}
+        .ctrl-inner{max-width:1560px}
+        /* 解説カードの図は読みやすい大きさに抑えて中央寄せ */
+        section.card:not(.prob) figure{max-width:940px;margin-left:auto;margin-right:auto}
+
+        .prob{
+          display:grid;
+          grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);
+          column-gap:30px;align-items:start;
+        }
+        .prob>.prob-head{grid-column:1/-1}
+        /* 左カラム：問題文＋図。右カラムが伸びても図が常に見えるよう sticky */
+        .qside{
+          grid-column:1;grid-row:2/span 3;min-width:0;
+          position:sticky;top:14px;
+        }
+        .qside figure{margin-top:0}
+
+        /* 右カラム：ヒント・解答は内部だけスクロール */
+        .prob>.steps-wrap{
+          grid-column:2;min-height:0;
+          max-height:calc(100vh - 235px);overflow-y:auto;
+          padding:2px 6px 2px 2px;
+        }
+        .prob>.prob-done{grid-column:2}
+      }
     </style>
   </head>
   <body>
@@ -250,6 +280,7 @@
           </div>
           <span class="prob-state">ステップ 0 / 4</span>
         </div>
+        <div class="qside">
         <p>△OABにおいて、<span class="v">OA</span>＝<span class="v">a</span>、<span class="v">OB</span>＝<span class="v">b</span> とする。このとき、△OABの面積 S を、ベクトル <span class="v">a</span>、<span class="v">b</span> で表してみよう。また、∠AOB＝θ（0°＜θ＜180°）とする。</p>
         <figure>
           <div class="figbox">
@@ -280,6 +311,7 @@
           <figcaption>△OAB。<span class="v" style="padding-top:.4em">OA</span>＝<span class="v" style="padding-top:.4em">a</span>、<span class="v" style="padding-top:.4em">OB</span>＝<span class="v" style="padding-top:.4em">b</span>、2辺の間の角がθ。</figcaption>
         </figure>
         <p>公式がどうやって出てくるか、下の <b>次へ</b> で1ステップずつ追ってみよう。</p>
+        </div>
 
         <div class="step deriv">
           <h3>ステップ 1 ― 数学Iの面積公式から出発</h3>
@@ -323,7 +355,9 @@
           </div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
+        <div class="qside">
         <p class="prob-q">△OABについて、｜<span class="v">OA</span>｜＝4、｜<span class="v">OB</span>｜＝5、<span class="v">OA</span>・<span class="v">OB</span>＝−10 のとき、△OABの面積を求めよ。</p>
+        </div>
 
         <div class="step hint">
           <h3>ヒント 1 ― 使う公式を書き出す</h3>
@@ -366,7 +400,9 @@
           </div>
           <span class="prob-state">ステップ 0 / 4</span>
         </div>
+        <div class="qside">
         <p>公式①において、<span class="v">a</span>＝（a<sub>1</sub>, a<sub>2</sub>）、<span class="v">b</span>＝（b<sub>1</sub>, b<sub>2</sub>）であるとする。このとき、ルートの中身 ｜<span class="v">a</span>｜²｜<span class="v">b</span>｜²−（<span class="v">a</span>・<span class="v">b</span>）² が、成分だけできれいに表せる。下の <b>次へ</b> で計算の流れを追ってみよう。</p>
+        </div>
 
         <div class="step deriv">
           <h3>ステップ 1 ― 3つの量を成分で書き直す</h3>
@@ -408,6 +444,7 @@
           </div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
+        <div class="qside">
         <p class="prob-q">次の3点を頂点とする三角形の面積を求めよ。<br />O（0, 0）,　A（4, 1）,　B（2, −1）</p>
         <figure>
           <div class="figbox">
@@ -448,6 +485,7 @@
           </div>
           <figcaption>3点 O（0, 0）、A（4, 1）、B（2, −1）を結んだ三角形。原点Oから出る2辺がカギになる。</figcaption>
         </figure>
+        </div>
 
         <div class="step hint">
           <h3>ヒント 1 ― Oから出る2つのベクトルの成分を書く</h3>
@@ -523,6 +561,16 @@
             var stepParent = steps[0].parentNode;
             for (var si = steps.length - 1; si >= 1; si--){
               stepParent.insertBefore(steps[si], steps[0]);
+            }
+          }
+          /* ステップ群をラッパーに移す（広い画面では右カラムとして内部スクロールさせるため）。
+             並び順は逆転済みのDOM順のまま維持する。 */
+          if (steps.length && steps[0].parentNode){
+            var wrap = document.createElement('div');
+            wrap.className = 'steps-wrap';
+            steps[0].parentNode.insertBefore(wrap, steps[steps.length - 1]);
+            for (var wi = steps.length - 1; wi >= 0; wi--){
+              wrap.appendChild(steps[wi]);
             }
           }
           var head = root.querySelector(':scope > .prob-head');

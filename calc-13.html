@@ -228,6 +228,43 @@
       /* SVG内の文字・線 */
       .svg-txt{font-family:"STIX Two Math","Noto Sans JP",sans-serif;font-weight:700;fill:var(--ink)}
       .svg-txt-soft{font-family:"STIX Two Math","Noto Sans JP",sans-serif;fill:var(--ink-soft)}
+
+      /* ===== 広い画面（1024px以上）：課題カードの2段組み（数学C「1 ベクトル」サンプルと同形式） ===== */
+      @media (min-width:1024px){
+        .wrap{max-width:1560px;padding:0 28px 8px}
+        .ctrl-inner{max-width:1560px}
+        /* 解説カードの図は読みやすい大きさに抑えて中央寄せ */
+        section.card:not(.prob) figure{max-width:940px;margin-left:auto;margin-right:auto}
+
+        .prob{
+          display:grid;
+          grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);
+          column-gap:30px;align-items:start;
+        }
+        .prob>.prob-head{grid-column:1/-1}
+        /* 左カラム：問題文＋図。右カラムが伸びても図が常に見えるよう sticky */
+        .qside{
+          grid-column:1;grid-row:2/span 3;min-width:0;
+          position:sticky;top:14px;
+        }
+        .qside figure{margin-top:0}
+
+        /* 直接フロー：右カラム（ヒント・解答）は内部だけスクロール */
+        .prob>.steps-wrap{
+          grid-column:2;min-height:0;
+          max-height:calc(100vh - 235px);overflow-y:auto;
+          padding:2px 6px 2px 2px;
+        }
+        .prob>.prob-done{grid-column:2}
+
+        /* タブ式フロー：タブと小問パネルを右カラムへ */
+        .prob>.tabs{grid-column:2;margin-top:2px}
+        .prob>.tabpanel{grid-column:2;min-width:0}
+        .prob>.tabpanel .steps-wrap{
+          min-height:0;max-height:calc(100vh - 345px);overflow-y:auto;
+          padding:2px 6px 2px 2px;
+        }
+      }
     </style>
   </head>
   <body>
@@ -317,8 +354,10 @@
           </div>
           <span class="prob-state">ヒント 0 / 4</span>
         </div>
+        <div class="qside">
         <p class="prob-q">次の不定積分を求めよう。</p>
         <p class="formula left">(1)　∫4x<sup>2</sup> dx　　　(2)　∫(3x<sup>2</sup>−5x＋2) dx</p>
+        </div>
 
         <div class="step hint">
           <h3>ヒント 1 ― (1) は性質1「定数倍」を使う</h3>
@@ -368,7 +407,9 @@
           <span class="prob-tag ren">練習 25</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
+        <div class="qside">
         <p class="prob-q">次の不定積分を求めよ。</p>
+        </div>
 
         <div class="tabs" role="tablist" aria-label="練習25の小問">
           <button class="tab" role="tab" data-tab="ren25-1" aria-selected="true">(1)</button>
@@ -514,8 +555,10 @@
           </div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
+        <div class="qside">
         <p class="prob-q">次の不定積分を求めよう。</p>
         <p class="formula left">(1)　∫t dt　　　(2)　∫(y＋1)(y−2) dy</p>
+        </div>
 
         <div class="step hint">
           <h3>ヒント 1 ― 積分する変数は「d の後ろの文字」</h3>
@@ -557,7 +600,9 @@
           <span class="prob-tag ren">練習 26</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
+        <div class="qside">
         <p class="prob-q">次の不定積分を求めよ。</p>
+        </div>
 
         <div class="tabs" role="tablist" aria-label="練習26の小問">
           <button class="tab" role="tab" data-tab="ren26-1" aria-selected="true">(1)</button>
@@ -639,7 +684,9 @@
           </div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
+        <div class="qside">
         <p class="prob-q">F′(x) ＝ 6x<sup>2</sup> − 2x で、F(1) ＝ 2 を満たす関数 F(x) を求めよう。</p>
+        </div>
 
         <div class="step hint">
           <h3>ヒント 1 ― まず積分して、F(x) の形を出す</h3>
@@ -683,7 +730,9 @@
           </div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
+        <div class="qside">
         <p class="prob-q">F′(x) ＝ 3x<sup>2</sup> − 4 で、F(−1) ＝ 5 を満たす関数 F(x) を求めよ。</p>
+        </div>
 
         <div class="step hint">
           <h3>ヒント 1 ― まず積分して、F(x) の形を出す</h3>
@@ -762,6 +811,14 @@
         function registerFlow(root){
           var id = root.getAttribute('data-flow');
           var steps = Array.prototype.slice.call(root.querySelectorAll(':scope > .step'));
+          /* ステップ群をラッパーに移す（広い画面で右カラムだけをスクロールさせるため）。
+             並び順の仕組みは従来どおり：開いたステップをラッパーの先頭へ移す */
+          if (steps.length){
+            var wrap = document.createElement('div');
+            wrap.className = 'steps-wrap';
+            root.insertBefore(wrap, steps[0]);
+            steps.forEach(function(s){ wrap.appendChild(s); });
+          }
           var head = root.querySelector(':scope > .prob-head');
           var dots = head ? Array.prototype.slice.call(head.querySelectorAll('.dot')) : [];
           var stateEl = head ? head.querySelector('.prob-state') : null;
@@ -836,8 +893,9 @@
           if (shown){
             /* 新しく開いたステップは、積み上がったステップの一番上へ移動する
                （図・問題文のすぐ下に、常に最新のヒント・解答が来るように） */
-            var firstStep = f.root.querySelector(':scope > .step');
-            if (firstStep && firstStep !== shown) f.root.insertBefore(shown, firstStep);
+            var wrap = shown.parentNode;
+            var firstStep = wrap ? wrap.querySelector(':scope > .step') : null;
+            if (firstStep && firstStep !== shown) wrap.insertBefore(shown, firstStep);
             shown.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
           }
         });

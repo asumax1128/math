@@ -229,6 +229,52 @@
       .svg-txt{font-family:"STIX Two Math","Noto Sans JP",sans-serif;font-weight:700;fill:var(--ink)}
       .svg-txt-soft{font-family:"STIX Two Math","Noto Sans JP",sans-serif;fill:var(--ink-soft)}
       .axis-line{stroke:var(--ink-soft);stroke-width:1.8}
+
+      /* ---------- 広い画面（PC・タブレット横画面）では2段組み ---------- */
+      @media (min-width:1024px){
+        .wrap{max-width:1560px;padding:0 28px 8px}
+        .ctrl-inner{max-width:1560px}
+        /* 解説カードの図は読みやすい大きさに抑えて中央寄せ */
+        section.card:not(.prob) figure{max-width:940px;margin-left:auto;margin-right:auto}
+
+        .prob{
+          display:grid;
+          grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);
+          column-gap:30px;align-items:start;
+        }
+        .prob>.prob-head{grid-column:1/-1}
+        /* 左カラム：問題文＋図。右カラムが伸びても図が常に見えるよう sticky */
+        .qside{
+          grid-column:1;grid-row:2/span 3;min-width:0;
+          position:sticky;top:14px;
+        }
+        .qside figure{margin-top:0}
+
+        /* 右カラム（ヒント・解答）は内部だけスクロール */
+        #prob-intro .steps-wrap,#prob-kaisetsuA .steps-wrap,
+        #prob-rei19 .steps-wrap,#prob-koushiki2 .steps-wrap,
+        #prob-reidai8 .steps-wrap{
+          grid-column:2;min-height:0;
+          max-height:calc(100vh - 235px);overflow-y:auto;
+          padding:2px 6px 2px 2px;
+        }
+        #prob-intro .prob-done,#prob-kaisetsuA .prob-done,
+        #prob-rei19 .prob-done,#prob-koushiki2 .prob-done,
+        #prob-reidai8 .prob-done{grid-column:2}
+
+        /* 練習35・練習36：タブと小問パネルを右カラムへ */
+        #prob-ren35 .tabs,#prob-ren36 .tabs{grid-column:2;margin-top:2px}
+        #prob-ren35 .tabpanel,#prob-ren36 .tabpanel{grid-column:2;min-width:0}
+        #prob-ren35 .tabpanel .steps-wrap,#prob-ren36 .tabpanel .steps-wrap{
+          min-height:0;max-height:calc(100vh - 345px);overflow-y:auto;
+          padding:2px 6px 2px 2px;
+        }
+        /* タブ式課題：左カラムには選択中の小問の見出しと図だけを表示する
+           （見出しと図はJSで .qside へ移され、タブ切り替えで .on が付け替わる） */
+        .prob .qside .qpart{display:none}
+        .prob .qside .qpart.on{display:block}
+        .prob .qside .prob-head.qpart.on{display:flex}
+      }
     </style>
   </head>
   <body>
@@ -266,6 +312,7 @@
           </div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
+        <div class="qside">
         <p class="prob-q">直線 <i>y</i>＝<i>x</i>＋1 と <i>x</i>軸、および直線 <i>x</i>＝<i>t</i>（<i>t</i>＞0）で囲まれた台形の面積を <i>S</i>(<i>t</i>) とする。<i>S</i>(<i>t</i>) を微分するとどうなるか、ヒントを開きながら確かめよう。</p>
         <figure>
           <div class="figbox">
@@ -306,6 +353,7 @@
           </div>
           <figcaption>右端の位置 <i>t</i> を動かすと、台形の面積 <i>S</i>(<i>t</i>) が変わる。この「面積の変わり方」に注目するのがこの項の出発点。</figcaption>
         </figure>
+        </div>
 
         <div class="step hint">
           <h3>ヒント 1 ― まず台形の面積を <i>t</i> の式で表す</h3>
@@ -349,6 +397,7 @@
           </div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
+        <div class="qside">
         <p class="prob-q">放物線 <i>y</i>＝<i>x</i><sup>2</sup> と <i>x</i>軸、直線 <i>x</i>＝<i>t</i> で囲まれた部分の面積を <i>S</i>(<i>t</i>) とする。導入では直線だったが、曲線でも <i>S</i>′(<i>t</i>)＝<i>t</i><sup>2</sup> になることを、長方形で「はさむ」考え方で確かめよう。</p>
         <figure>
           <div class="figbox">
@@ -396,6 +445,7 @@
           </div>
           <figcaption>右端を <i>t</i> から <i>t</i>＋<i>h</i> へ少し広げると、面積は細長い部分だけ増える。この増えた部分を、2つの長方形ではさむのがポイント。</figcaption>
         </figure>
+        </div>
 
         <div class="step hint">
           <h3>ヒント 1 ― 面積関数 <i>S</i>(<i>t</i>) を考える</h3>
@@ -454,6 +504,7 @@
           </div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
+        <div class="qside">
         <p class="prob-q">放物線 <i>y</i>＝<i>x</i><sup>2</sup>＋1 と <i>x</i>軸、および直線 <i>x</i>＝1、<i>x</i>＝2 で囲まれた部分の面積 <i>S</i> を求めよ。</p>
         <figure>
           <div class="figbox">
@@ -489,6 +540,7 @@
           </div>
           <figcaption>放物線 <i>y</i>＝<i>x</i><sup>2</sup>＋1 は、どこでも <i>x</i>軸より上にある。囲まれた部分は <i>x</i>＝1 から <i>x</i>＝2 までの帯のような形。</figcaption>
         </figure>
+        </div>
 
         <div class="step hint">
           <h3>ヒント 1 ― 公式（1）が使えるか確認する</h3>
@@ -526,7 +578,9 @@
           <span class="prob-tag ren">練習 35</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
+        <div class="qside">
         <p class="prob-q">次の曲線や直線で囲まれた部分の面積 <i>S</i> を求めよ。</p>
+        </div>
 
         <div class="tabs" role="tablist" aria-label="練習35の小問">
           <button class="tab" role="tab" data-tab="ren35-1" aria-selected="true">(1) <i>y</i>＝<i>x</i><sup>2</sup></button>
@@ -669,6 +723,7 @@
           </div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
+        <div class="qside">
         <p class="prob-q">グラフが <i>x</i>軸より<b>下</b>にあるとき、そのまま積分すると値は負になってしまう。面積は正の数のはずなのに、どうすればよいか、図で考えよう。</p>
         <figure>
           <div class="figbox">
@@ -712,6 +767,7 @@
           </div>
           <figcaption>下にある部分を <i>x</i>軸について「パタン」と折り返すと、<i>x</i>軸の上に来て、公式（1）が使える形になる。</figcaption>
         </figure>
+        </div>
 
         <div class="step hint">
           <h3>ヒント 1 ― そのまま積分すると何が起こるか</h3>
@@ -747,6 +803,7 @@
           </div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
+        <div class="qside">
         <p class="prob-q">放物線 <i>y</i>＝<i>x</i><sup>2</sup>−4 と <i>x</i>軸で囲まれた部分の面積 <i>S</i> を求めよ。</p>
         <figure>
           <div class="figbox">
@@ -782,6 +839,7 @@
           </div>
           <figcaption>放物線と <i>x</i>軸で囲まれた部分は、<i>x</i>軸より<b>下</b>にある。公式（2）の出番だ。</figcaption>
         </figure>
+        </div>
 
         <div class="step hint">
           <h3>ヒント 1 ― まず交点（区間）を求める</h3>
@@ -821,7 +879,9 @@
           <span class="prob-tag ren">練習 36</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
+        <div class="qside">
         <p class="prob-q">次の放物線と <i>x</i>軸で囲まれた部分の面積 <i>S</i> を求めよ。</p>
+        </div>
 
         <div class="tabs" role="tablist" aria-label="練習36の小問">
           <button class="tab" role="tab" data-tab="ren36-1" aria-selected="true">(1) <i>y</i>＝<i>x</i><sup>2</sup>−1</button>
@@ -1033,6 +1093,14 @@
         function registerFlow(root){
           var id = root.getAttribute('data-flow');
           var steps = Array.prototype.slice.call(root.querySelectorAll(':scope > .step'));
+          /* ステップ群をラッパー（.steps-wrap）に移す。広い画面では右カラムとして
+             内部だけスクロールさせるための入れ物で、狭い画面では通常の縦並びのまま。 */
+          if (steps.length){
+            var wrap = document.createElement('div');
+            wrap.className = 'steps-wrap';
+            root.insertBefore(wrap, steps[0]);
+            steps.forEach(function(s){ wrap.appendChild(s); });
+          }
           /* 表示順だけを逆転させる：新しく開くヒント（と解答）が、すでに開いているものの上に来るように、
              ステップ要素の並びをDOM上で逆順にしておく（中身・開示順の管理は従来どおり） */
           if (steps.length > 1){
@@ -1072,8 +1140,13 @@
         function refreshFlow(f){
           f.steps.forEach(function(s, i){ s.classList.toggle('show', i < f.idx); });
           f.dots.forEach(function(d, i){ d.classList.toggle('on', i < f.idx); });
-          f.root.querySelectorAll('.stg').forEach(function(el){
-            el.style.opacity = (f.idx >= parseInt(el.getAttribute('data-stage'), 10)) ? '1' : '0';
+          /* SVGの段階表示：図が左カラム（.qside）へ移されている場合も対象に含める */
+          var stgScopes = [f.root].concat(f.sideParts || []);
+          stgScopes.forEach(function(sc){
+            if (!sc) return;
+            sc.querySelectorAll('.stg').forEach(function(el){
+              el.style.opacity = (f.idx >= parseInt(el.getAttribute('data-stage'), 10)) ? '1' : '0';
+            });
           });
           if (f.stateEl){
             if (f.idx === 0) f.stateEl.textContent = 'ヒント 0 / ' + f.hintTotal;
@@ -1132,6 +1205,52 @@
           });
         });
 
+        /* ---------- タブ式課題：広い画面では小問の見出し・図を左カラム（.qside）へ移す ---------- */
+        var tabCards = [];
+        document.querySelectorAll('.prob').forEach(function(card){
+          var qside = card.querySelector(':scope > .qside');
+          if (!qside || !card.querySelector(':scope > .tabs')) return;
+          var items = [];
+          card.querySelectorAll(':scope > .tabpanel').forEach(function(panel){
+            var head = panel.querySelector(':scope > .prob-head');
+            var fig = panel.querySelector(':scope > figure');
+            [head, fig].forEach(function(el){ if (el) el.classList.add('qpart'); });
+            var f = flows[panel.getAttribute('data-flow')];
+            if (f) f.sideParts = [head, fig];
+            items.push({ panel: panel, head: head, fig: fig, id: panel.getAttribute('data-flow') });
+          });
+          tabCards.push({ card: card, qside: qside, items: items });
+        });
+        function syncQside(tc){
+          var shown = tc.card.querySelector('.tabpanel.show');
+          var activeFlow = shown ? shown.getAttribute('data-flow') : null;
+          tc.items.forEach(function(it){
+            var on = it.id === activeFlow;
+            if (it.head) it.head.classList.toggle('on', on);
+            if (it.fig) it.fig.classList.toggle('on', on);
+          });
+        }
+        var wideMq = window.matchMedia('(min-width: 1024px)');
+        function applyTabLayout(){
+          var wide = wideMq.matches;
+          tabCards.forEach(function(tc){
+            tc.items.forEach(function(it){
+              if (wide){
+                if (it.head && it.head.parentNode !== tc.qside) tc.qside.appendChild(it.head);
+                if (it.fig && it.fig.parentNode !== tc.qside) tc.qside.appendChild(it.fig);
+              } else {
+                var anchor = it.panel.querySelector(':scope > .steps-wrap') || it.panel.querySelector(':scope > .prob-done');
+                if (it.head && it.head.parentNode !== it.panel) it.panel.insertBefore(it.head, anchor);
+                if (it.fig && it.fig.parentNode !== it.panel) it.panel.insertBefore(it.fig, anchor);
+              }
+            });
+            syncQside(tc);
+          });
+        }
+        if (wideMq.addEventListener) wideMq.addEventListener('change', applyTabLayout);
+        else if (wideMq.addListener) wideMq.addListener(applyTabLayout);
+        applyTabLayout();
+
         /* ---------- タブ切り替え（汎用） ---------- */
         document.querySelectorAll('.tab').forEach(function(tab){
           tab.addEventListener('click', function(){
@@ -1144,6 +1263,7 @@
               p.classList.toggle('show', p.getAttribute('data-flow') === target);
             });
             setActive(target);
+            tabCards.forEach(syncQside);
           });
         });
 

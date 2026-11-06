@@ -207,6 +207,34 @@
       .svg-txt{font-family:"STIX Two Math","Noto Sans JP",sans-serif;font-weight:700;fill:var(--ink)}
       .svg-txt-soft{font-family:"STIX Two Math","Noto Sans JP",sans-serif;fill:var(--ink-soft)}
       .grid-line{stroke:var(--line);stroke-width:1}
+
+      /* ---------- 広い画面（PC・タブレット横画面）：2段組み ---------- */
+      @media (min-width:1024px){
+        .wrap{max-width:1560px;padding:0 28px 8px}
+        .ctrl-inner{max-width:1560px}
+
+        .prob{
+          display:grid;
+          grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);
+          column-gap:30px;align-items:start;
+        }
+        .prob>.prob-head{grid-column:1/-1}
+        /* 左カラム：問題文＋図。右カラムが伸びても図が常に見えるよう sticky */
+        .qside{
+          grid-column:1;grid-row:2/span 3;min-width:0;
+          position:sticky;top:14px;
+        }
+        .qside figure{margin-top:0}
+        .qside .prob-q{margin-bottom:0}
+
+        /* 右カラム：ヒント・解答はこの中だけがスクロールする */
+        .prob>.steps-wrap{
+          grid-column:2;min-height:0;
+          max-height:calc(100vh - 235px);overflow-y:auto;
+          padding:2px 6px 2px 2px;
+        }
+        .prob>.prob-done{grid-column:2}
+      }
     </style>
   </head>
   <body>
@@ -244,7 +272,9 @@
           </div>
           <span class="prob-state">ステップ 0 / 4</span>
         </div>
+        <div class="qside">
         <p class="prob-q">0 &lt; <i>M</i> &lt; 1 の小数 <i>M</i> について、「小数第何位に初めて 0 でない数字が現れるか」を、常用対数 log<sub>10</sub><i>M</i> で調べる方法を、一段ずつ確認しよう。下の「次へ」で進めてね。</p>
+        </div>
 
         <div class="step hint">
           <h3>ステップ 1 ― まず「位取り」の図で意味を確認する</h3>
@@ -344,7 +374,9 @@
           </div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
+        <div class="qside">
         <p class="prob-q">(1/3)<sup>30</sup> を小数で表したとき、小数第何位に初めて 0 でない数字が現れるか。ただし、log<sub>10</sub>3 ＝ 0.4771 とする。</p>
+        </div>
 
         <div class="step hint">
           <h3>ヒント 1 ― まず log<sub>10</sub> をとる</h3>
@@ -389,7 +421,9 @@
           </div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
+        <div class="qside">
         <p class="prob-q">(1/2)<sup>20</sup> を小数で表したとき、小数第何位に初めて 0 でない数字が現れるか。ただし、log<sub>10</sub>2 ＝ 0.3010 とする。</p>
+        </div>
 
         <div class="step hint">
           <h3>ヒント 1 ― まず log<sub>10</sub> をとる</h3>
@@ -466,10 +500,21 @@
           var dots = head ? Array.prototype.slice.call(head.querySelectorAll('.dot')) : [];
           var stateEl = head ? head.querySelector('.prob-state') : null;
           var doneEl = root.querySelector(':scope > .prob-done');
+          /* ステップ群をラッパーに移す。広い画面ではこのラッパーが右カラムになり、
+             中だけがスクロールする（狭い画面では通常の縦並びのまま）。 */
+          var wrap = null;
+          if (steps.length){
+            wrap = document.createElement('div');
+            wrap.className = 'steps-wrap';
+            root.insertBefore(wrap, steps[0]);
+            steps.forEach(function(s){ wrap.appendChild(s); });
+          }
           /* 新しいヒントほど上に積む：ステップの並びを DOM 上で逆順にする。
              表示順だけの変更で、中身や進捗計算は配列 steps の順序どおり動く。 */
-          for (var r = steps.length - 1; r >= 0; r--){
-            root.insertBefore(steps[r], doneEl);
+          if (wrap){
+            for (var r = steps.length - 1; r >= 0; r--){
+              wrap.appendChild(steps[r]);
+            }
           }
           flows[id] = {
             id: id, root: root, steps: steps, dots: dots, stateEl: stateEl,

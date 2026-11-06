@@ -124,6 +124,8 @@
       /* ---------- problem card ---------- */
       .problem { display: none; }
       .problem.active { display: block; }
+      /* 広い画面での2段組み用ラッパー（狭い画面ではレイアウトに影響しない） */
+      .flow-left, .flow-right { display: contents; }
       .qcard {
         background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
         box-shadow: var(--shadow); padding: 20px 20px 16px; margin-bottom: 14px;
@@ -304,6 +306,36 @@
       .back-top .bt-main { font-weight: 900; font-size: 16px; display: block; line-height: 1.4; }
       .back-top .bt-sub { font-size: 13px; color: var(--muted); display: block; line-height: 1.5; }
       footer { margin-top: 16px; border-top: 1px solid var(--line); padding-top: 12px; font-size: 12.5px; color: var(--muted); }
+
+      /* ---------- 広い画面（PC・タブレット横画面）だけの2段組み ---------- */
+      @media (min-width: 1024px) {
+        .wrap { max-width: 1560px; }
+        .problem.active {
+          display: grid;
+          grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+          gap: 24px;
+          align-items: start;
+        }
+        /* 左カラム：問題文と図。画面内に sticky で固定し、あふれたら左カラム内だけスクロール */
+        .flow-left {
+          display: block;
+          position: sticky;
+          top: 16px;
+          max-height: calc(100vh - 32px);
+          overflow-y: auto;
+          overflow-x: hidden;
+          padding: 2px 8px 2px 2px;
+        }
+        /* 右カラム：ヒント・解答と操作バー。高さが画面を超えたら右カラム内だけスクロール */
+        .flow-right {
+          display: block;
+          max-height: calc(100vh - 32px);
+          overflow-y: auto;
+          overflow-x: hidden;
+          padding: 2px 8px 2px 2px;
+        }
+        .flow-right .controls { bottom: 8px; }
+      }
     </style>
   </head>
   <body>
@@ -337,6 +369,7 @@
 
       <!-- ================= (1) 商を求める ================= -->
       <section class="problem active" id="s1">
+        <div class="flow-left">
         <div class="qcard">
           <div class="q-head">
             <span class="q-num">B3</span><span class="q-title">(1) P(x) を x+1 で割った商</span>
@@ -379,7 +412,9 @@
         </div>
 
         <p class="think-note">文字 <span class="m"><i>k</i></span> が入っていて難しそうに見えるけど、やることは普通の割り算とまったく同じだよ。</p>
+        </div><!-- /.flow-left -->
 
+        <div class="flow-right">
         <div class="stages">
           <article class="stage hint" hidden>
             <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">先に「割り切れるか」だけ確かめる</span></div>
@@ -436,10 +471,12 @@
           <button class="next-btn" type="button"></button>
           <button class="reset-btn" type="button" hidden>最初からやり直す</button>
         </div>
+        </div><!-- /.flow-right -->
       </section>
 
       <!-- ================= (2) 異なる3つの実数解 ================= -->
       <section class="problem" id="s2">
+        <div class="flow-left">
         <div class="qcard">
           <div class="q-head">
             <span class="q-num">B3</span><span class="q-title">(2) 異なる3つの実数解をもつ条件</span>
@@ -542,7 +579,9 @@
         </div>
 
         <p class="think-note">(1) の因数分解が、そのままここでの道具になる。「異なる3つ」という言葉を、条件に翻訳するところから始めよう。</p>
+        </div><!-- /.flow-left -->
 
+        <div class="flow-right">
         <div class="stages">
           <article class="stage hint" hidden>
             <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">(1) を使う：解は「−1 と ① の解」</span></div>
@@ -615,10 +654,12 @@
           <button class="next-btn" type="button"></button>
           <button class="reset-btn" type="button" hidden>最初からやり直す</button>
         </div>
+        </div><!-- /.flow-right -->
       </section>
 
       <!-- ================= (3) 解が範囲に入る条件 ================= -->
       <section class="problem" id="s3">
+        <div class="flow-left">
         <div class="qcard">
           <div class="q-head">
             <span class="q-num">B3</span><span class="q-title">(3) すべての解が −2 &lt; x &lt; 1 を満たす条件</span>
@@ -735,7 +776,9 @@
         </div>
 
         <p class="think-note">主役は ① の2つの解 <span class="m"><i>s</i></span>，<span class="m"><i>t</i></span> の「位置」。式の条件に翻訳するのが仕事だよ。</p>
+        </div><!-- /.flow-left -->
 
+        <div class="flow-right">
         <div class="stages">
           <article class="stage hint" hidden>
             <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">問題を翻訳する：カギは ① の2解 <i>s</i>, <i>t</i></span></div>
@@ -797,6 +840,7 @@
           <button class="next-btn" type="button"></button>
           <button class="reset-btn" type="button" hidden>最初からやり直す</button>
         </div>
+        </div><!-- /.flow-right -->
       </section>
 
       <a class="back-top" href="moshi-b.html">

@@ -234,6 +234,28 @@
       .svg-txt-soft{font-family:"STIX Two Math","Noto Sans JP",sans-serif;fill:var(--ink-soft)}
       .axis-line{stroke:var(--ink);stroke-width:2}
       .range-line{stroke:var(--accent);stroke-width:6;stroke-linecap:round}
+
+      /* ---------- 広い画面（PC・タブレット横画面）：2段組み ---------- */
+      @media (min-width:1024px){
+        .wrap{max-width:1560px}
+        .ctrl-inner{max-width:1560px}
+        section.prob[data-flow],
+        .prob:not([data-flow]),
+        .tabpanel.show{
+          display:grid;
+          grid-template-columns:minmax(0,2fr) minmax(0,3fr);
+          column-gap:30px;
+          align-items:start;
+        }
+        .col-left{position:sticky;top:18px;min-width:0}
+        .col-right{min-width:0}
+        [data-flow] > .col-right{
+          max-height:calc(100vh - 200px);
+          overflow-y:auto;
+          padding:2px 8px 2px 2px;
+          scrollbar-gutter:stable;
+        }
+      }
     </style>
   </head>
   <body>
@@ -1124,6 +1146,30 @@
       (function(){
         "use strict";
 
+        /* ---------- 広い画面用：各課題を左（問題文・図）／右（ヒント・解答）の入れ物に振り分ける ----------
+           狭い画面では入れ物は通常のブロックとして並ぶため、表示は従来通りになる */
+        function splitColumns(root, isRight){
+          var left = document.createElement('div'); left.className = 'col-left';
+          var right = document.createElement('div'); right.className = 'col-right';
+          var toRight = false;
+          Array.prototype.slice.call(root.childNodes).forEach(function(node){
+            if (node.nodeType === 1 && isRight(node)) toRight = true;
+            (toRight ? right : left).appendChild(node);
+          });
+          root.appendChild(left);
+          root.appendChild(right);
+        }
+        Array.prototype.forEach.call(document.querySelectorAll('[data-flow]'), function(root){
+          splitColumns(root, function(el){
+            return el.classList.contains('step') || el.classList.contains('prob-done');
+          });
+        });
+        Array.prototype.forEach.call(document.querySelectorAll('.prob:not([data-flow])'), function(card){
+          splitColumns(card, function(el){
+            return el.classList.contains('tabs') || el.classList.contains('tabpanel');
+          });
+        });
+
         /* ---------- ヒント式フロー ---------- */
         var flows = {};   // flowId -> {root, steps, dots, stateEl, doneEl, idx, label, hintTotal}
         var flowOrder = [];
@@ -1131,11 +1177,11 @@
 
         function registerFlow(root){
           var id = root.getAttribute('data-flow');
-          var steps = Array.prototype.slice.call(root.querySelectorAll(':scope > .step'));
-          var head = root.querySelector(':scope > .prob-head');
+          var steps = Array.prototype.slice.call(root.querySelectorAll('.step'));
+          var head = root.querySelector('.prob-head');
           var dots = head ? Array.prototype.slice.call(head.querySelectorAll('.dot')) : [];
           var stateEl = head ? head.querySelector('.prob-state') : null;
-          var doneEl = root.querySelector(':scope > .prob-done');
+          var doneEl = root.querySelector('.prob-done');
           flows[id] = {
             id: id, root: root, steps: steps, dots: dots, stateEl: stateEl,
             doneEl: doneEl, idx: 0, label: root.getAttribute('data-label') || id,
@@ -1199,8 +1245,9 @@
           if (shown){
             /* 新しく開いたヒント・解答は、すでに開いているものの「上」に積む。
                図・問題文のすぐ下に最新のものが来るよう、先頭のステップの前へ移動する。 */
-            var firstStep = f.root.querySelector(':scope > .step');
-            if (firstStep && firstStep !== shown) f.root.insertBefore(shown, firstStep);
+            var parent = shown.parentNode;
+            var firstStep = parent ? parent.querySelector('.step') : null;
+            if (parent && firstStep && firstStep !== shown) parent.insertBefore(shown, firstStep);
             shown.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
           }
         });
@@ -1209,8 +1256,8 @@
           f.idx = 0;
           /* 積み替えで変わったステップの並びを元の順序に戻しておく（全て非表示になるので見た目は変わらない） */
           f.steps.forEach(function(s){
-            if (f.doneEl) f.root.insertBefore(s, f.doneEl);
-            else f.root.appendChild(s);
+            if (f.doneEl && f.doneEl.parentNode) f.doneEl.parentNode.insertBefore(s, f.doneEl);
+            else if (s.parentNode) s.parentNode.appendChild(s);
           });
           refreshFlow(f);
           refreshBar();

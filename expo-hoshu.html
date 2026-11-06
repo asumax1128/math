@@ -247,6 +247,41 @@
       .glabel{font-family:"STIX Two Math","Noto Sans JP",sans-serif;font-weight:700;fill:var(--ink)}
       .glabel.base{fill:var(--ink-soft)}
       .glabel.asym{fill:var(--orange)}
+
+      /* ---------- 広い画面（1024px以上）：課題カードの2段組み ---------- */
+      /* ラッパー自体は通常幅ではレイアウトに影響しない（display:contents） */
+      .steps-wrap{display:contents}
+      @media (min-width:1024px){
+        .wrap{max-width:1560px;padding:0 28px 8px}
+        .ctrl-inner{max-width:1560px}
+
+        .prob{
+          display:grid;
+          grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);
+          column-gap:30px;align-items:start;
+        }
+        .prob>.prob-head{grid-column:1/-1}
+        /* 左カラム：問題文。右カラムが伸びても常に見えるよう sticky */
+        .prob>.prob-q{
+          grid-column:1;grid-row:2/span 4;min-width:0;
+          position:sticky;top:14px;
+        }
+        /* 右カラム：ヒント・解答は内部だけスクロール */
+        .steps-wrap{
+          display:block;grid-column:2;min-width:0;
+          max-height:calc(100vh - 235px);overflow-y:auto;
+          padding:2px 6px 2px 2px;
+        }
+        .prob>.steps-wrap{grid-row:2}
+        .prob>.prob-done{grid-column:2}
+
+        /* タブ式の課題：タブと小問パネルを右カラムへ */
+        .prob>.tabs{grid-column:2;margin-top:2px}
+        .prob>.tabpanel{grid-column:2;min-width:0}
+        .tabpanel .steps-wrap{
+          max-height:calc(100vh - 345px);
+        }
+      }
     </style>
   </head>
   <body>
@@ -1128,6 +1163,14 @@
         function registerFlow(root){
           var id = root.getAttribute('data-flow');
           var steps = Array.prototype.slice.call(root.querySelectorAll(':scope > .step'));
+          /* ステップ群をラッパーに移す（広い画面では右カラムとして内部スクロールさせるため。
+             通常幅では display:contents でレイアウトに影響しない） */
+          if (steps.length){
+            var wrapEl = document.createElement('div');
+            wrapEl.className = 'steps-wrap';
+            root.insertBefore(wrapEl, steps[0]);
+            steps.forEach(function(s){ wrapEl.appendChild(s); });
+          }
           var head = root.querySelector(':scope > .prob-head');
           var dots = head ? Array.prototype.slice.call(head.querySelectorAll('.dot')) : [];
           var stateEl = head ? head.querySelector('.prob-state') : null;
@@ -1153,7 +1196,7 @@
              （図・問題文のすぐ下に常に最新のヒント／解答が来るように） */
           if (f.idx > 0){
             var latest = f.steps[f.idx - 1];
-            var firstStep = f.root.querySelector(':scope > .step');
+            var firstStep = f.root.querySelector('.step');
             if (latest && firstStep && firstStep !== latest){
               latest.parentNode.insertBefore(latest, firstStep);
             }

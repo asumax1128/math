@@ -194,6 +194,10 @@
       [data-flow] > .prob-head{order:1}
       [data-flow] > .prob-q{order:2}
       [data-flow] > .prob-done{order:999}
+      /* 広い画面の2段組み用ラッパー（狭い画面では従来どおりの縦並びを保つ） */
+      [data-flow] > .qside{order:2}
+      [data-flow] > .steps-wrap{order:3}
+      .steps-wrap{display:flex;flex-direction:column;min-width:0}
 
       /* ---------- まとめ ---------- */
       .summary{border:2px solid var(--accent);background:var(--accent-soft)}
@@ -236,6 +240,43 @@
       /* SVG内の文字・線 */
       .svg-txt{font-family:"STIX Two Math","Noto Sans JP",sans-serif;font-weight:700;fill:var(--ink)}
       .svg-txt-soft{font-family:"STIX Two Math","Noto Sans JP",sans-serif;fill:var(--ink-soft)}
+
+      /* ---------- 広い画面（PC・タブレット横画面）：2段組み ---------- */
+      @media (min-width:1024px){
+        .wrap{max-width:1560px;padding:0 28px 8px}
+        .ctrl-inner{max-width:1560px}
+        /* 解説カードの図は読みやすい大きさに抑えて中央寄せ */
+        section.card:not(.prob) figure{max-width:940px;margin-left:auto;margin-right:auto}
+
+        .prob{
+          display:grid;
+          grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);
+          column-gap:30px;align-items:start;
+        }
+        .prob>.prob-head{grid-column:1/-1}
+        /* 左カラム：問題文＋図。右カラムが伸びても図が常に見えるよう sticky */
+        .qside{
+          grid-column:1;grid-row:2/span 3;min-width:0;
+          position:sticky;top:14px;
+        }
+        .qside figure{margin-top:0}
+
+        /* 右カラム（単独課題）：ヒント・解答は内部だけスクロール */
+        .prob>.steps-wrap{
+          grid-column:2;min-width:0;min-height:0;
+          max-height:calc(100vh - 235px);overflow-y:auto;
+          padding:2px 6px 2px 2px;
+        }
+        .prob>.prob-done{grid-column:2}
+
+        /* 右カラム（タブ式課題）：タブと小問パネルを右カラムへ */
+        .prob>.tabs{grid-column:2;margin-top:2px}
+        .prob>.tabpanel{grid-column:2;min-width:0}
+        .tabpanel .steps-wrap{
+          min-height:0;max-height:calc(100vh - 345px);overflow-y:auto;
+          padding:2px 6px 2px 2px;
+        }
+      }
     </style>
   </head>
   <body>
@@ -872,9 +913,33 @@
         var order = [];
         var activeId = null;
 
+        /* 広い画面の2段組み用：問題文と図を左カラム（.qside）にまとめる
+           （狭い画面では素のブロック要素として従来どおり縦に並ぶ） */
+        function buildQside(root){
+          var parts = Array.prototype.slice.call(root.children).filter(function(el){
+            return el.classList.contains('prob-q') || el.tagName === 'FIGURE';
+          });
+          if (!parts.length) return;
+          var qside = document.createElement('div');
+          qside.className = 'qside';
+          root.insertBefore(qside, parts[0]);
+          parts.forEach(function(el){ qside.appendChild(el); });
+        }
+
         function registerFlow(root){
           var id = root.getAttribute('data-flow');
           var steps = Array.prototype.slice.call(root.querySelectorAll(':scope > .step'));
+          /* ステップ群をラッパーに移す。
+             広い画面ではこのラッパーが右カラムとなり、内部だけがスクロールする */
+          if (steps.length){
+            var wrap = document.createElement('div');
+            wrap.className = 'steps-wrap';
+            root.insertBefore(wrap, steps[0]);
+            steps.forEach(function(s){ wrap.appendChild(s); });
+          }
+          /* 単独課題（カード自体がフロー）のときだけ、問題文＋図を左カラムにまとめる
+             （タブ式の小問パネルは右カラム内にあるので対象外） */
+          if (root.tagName === 'SECTION') buildQside(root);
           var head = root.querySelector(':scope > .prob-head');
           var dots = head ? Array.prototype.slice.call(head.querySelectorAll('.dot')) : [];
           var stateEl = head ? head.querySelector('.prob-state') : null;
@@ -888,6 +953,8 @@
           order.push(id);
         }
         Array.prototype.slice.call(document.querySelectorAll('[data-flow]')).forEach(registerFlow);
+        /* タブ式課題の外側カード（フロー本体ではない）も、問題文＋図を左カラムにまとめる */
+        Array.prototype.slice.call(document.querySelectorAll('.prob:not([data-flow])')).forEach(buildQside);
         activeId = order[0];
 
         var btnNext = document.getElementById('btnNext');

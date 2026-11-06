@@ -145,6 +145,10 @@
       .prob-q{font-weight:700;font-size:16.5px;margin:0 0 10px}
       .prob-q .sub{font-weight:700}
 
+      /* ステップ群のラッパー（狭い画面では display:contents で従来どおり表示し、
+         広い画面でのみ右カラムとして独立させる） */
+      .steps-wrap{display:contents}
+
       .step{display:none;margin:0 0 12px;border-radius:12px;padding:12px 16px 4px;scroll-margin-bottom:170px}
       .step.show{display:block;animation:pop .25s ease}
       @keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
@@ -228,6 +232,48 @@
       .svg-txt-soft{font-family:"STIX Two Math","Noto Sans JP",sans-serif;fill:var(--ink-soft)}
       .grid-line{stroke:var(--line);stroke-width:1}
       .axis-line{stroke:var(--ink-soft);stroke-width:1.6}
+
+      /* ---------- 広い画面（PC・タブレット横画面）：2段組み ---------- */
+      @media (min-width:1024px){
+        .wrap{max-width:1560px;padding:0 28px 8px}
+        .ctrl-inner{max-width:1560px}
+        /* 解説カードの図は読みやすい大きさに抑えて中央寄せ */
+        section.card:not(.prob) figure{max-width:940px;margin-left:auto;margin-right:auto}
+
+        .prob{
+          display:grid;
+          grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);
+          column-gap:30px;align-items:start;
+        }
+        .prob>.prob-head{grid-column:1/-1}
+        /* 左カラム：問題文＋図。右カラムが伸びても図が常に見えるよう sticky */
+        .qside{
+          grid-column:1;grid-row:2/span 3;min-width:0;
+          position:sticky;top:14px;
+        }
+        .qside figure{margin-top:0}
+
+        /* 例題3・応用例題1・練習14：右カラム（ヒント・解答）は内部だけスクロール */
+        #prob-ex3 .steps-wrap,
+        #prob-ouyou1 .steps-wrap,
+        #prob-ren14 .steps-wrap{
+          display:block;grid-column:2;min-height:0;
+          max-height:calc(100vh - 235px);overflow-y:auto;
+          padding:2px 6px 2px 2px;
+        }
+        #prob-ex3 .prob-done,
+        #prob-ouyou1 .prob-done,
+        #prob-ren14 .prob-done{grid-column:2}
+
+        /* 練習13：タブと小問パネルを右カラムへ */
+        #prob-ren13 .tabs{grid-column:2;margin-top:2px}
+        #prob-ren13 .tabpanel{grid-column:2;min-width:0}
+        #prob-ren13 .tabpanel .steps-wrap{
+          display:block;min-height:0;
+          max-height:calc(100vh - 345px);overflow-y:auto;
+          padding:2px 6px 2px 2px;
+        }
+      }
     </style>
   </head>
   <body>
@@ -312,6 +358,7 @@
           </div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
+        <div class="qside">
         <p class="prob-q">曲線 <i>y</i>＝−<i>x</i><sup>2</sup>＋4<i>x</i> のグラフ上の点 A(1, 3) における接線 ℓ の方程式を求めよ。</p>
         <p>（1）まず接線の傾き <i>m</i> を求め、（2）次に方程式を求める、という順に考えよう。</p>
         <figure>
@@ -361,6 +408,7 @@
           </div>
           <figcaption>放物線と点A(1, 3)。接線 ℓ は、解答を開いたときに表示されるよ。</figcaption>
         </figure>
+        </div>
 
         <div class="step hint">
           <h3>ヒント 1 ― （1）傾きは「微分係数」</h3>
@@ -400,7 +448,9 @@
           <span class="prob-tag ren">練習 13</span>
           <span class="prob-state" id="ren13-state">下のタブで小問を選んでね</span>
         </div>
+        <div class="qside">
         <p class="prob-q">曲線 <i>y</i>＝2<i>x</i><sup>2</sup>−4<i>x</i>＋3 のグラフ上の点 A(2, 3) における接線について、次の問いに答えよ。</p>
+        </div>
 
         <div class="tabs" role="tablist" aria-label="練習13の小問">
           <button class="tab" role="tab" data-tab="ren13-1" aria-selected="true">(1) 接線の傾き</button>
@@ -493,6 +543,7 @@
           </div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
+        <div class="qside">
         <p class="prob-q">曲線 <i>y</i>＝<i>x</i><sup>2</sup>＋3 のグラフに、点 C(1, 0) から引いた接線の方程式を求めよ。</p>
         <p>点Cは、<i>x</i>＝1 のとき <i>y</i>＝1<sup>2</sup>＋3＝4≠0 だから、<b>グラフ上にない点</b>である。解説Bの「型」を使う問題だ。</p>
         <figure>
@@ -548,6 +599,7 @@
           </div>
           <figcaption>放物線と、グラフ上にない点C(1, 0)。点Cから引ける接線は2本あり、解答を開いたときに表示されるよ。</figcaption>
         </figure>
+        </div>
 
         <div class="step hint">
           <h3>ヒント 1 ― ステップ1：接点を <i>a</i> とおく</h3>
@@ -589,7 +641,9 @@
           </div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
+        <div class="qside">
         <p class="prob-q">曲線 <i>y</i>＝<i>x</i><sup>2</sup>−2<i>x</i>＋4 のグラフに、原点 O から引いた接線の方程式をすべて求めよ。</p>
+        </div>
 
         <div class="step hint">
           <h3>ヒント 1 ― まず「原点はグラフ上にあるか」を確認</h3>
@@ -671,6 +725,17 @@
             var anchor = steps[steps.length - 1].nextSibling;
             for (var i = steps.length - 1; i >= 0; i--){
               root.insertBefore(steps[i], anchor);
+            }
+          }
+          /* 広い画面の2段組み用に、ステップ群を .steps-wrap でまとめる。
+             並べ替え後のDOM順序（新しいものほど上）のまま移動するので、
+             狭い画面の表示（display:contents）も積み上がり方も変わらない。 */
+          if (steps.length){
+            var wrap = document.createElement('div');
+            wrap.className = 'steps-wrap';
+            root.insertBefore(wrap, steps[steps.length - 1]);
+            for (var j = steps.length - 1; j >= 0; j--){
+              wrap.appendChild(steps[j]);
             }
           }
           var head = root.querySelector(':scope > .prob-head');

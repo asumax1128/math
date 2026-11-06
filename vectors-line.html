@@ -216,6 +216,25 @@
       .svg-txt-soft{font-family:"STIX Two Math","Noto Sans JP",sans-serif;fill:var(--ink-soft)}
       .grid-line{stroke:var(--line);stroke-width:1}
       .axis-line{stroke:var(--ink-soft);stroke-width:1.6}
+
+      /* ---------- 広い画面（PC・タブレット横画面）：2段組み ---------- */
+      @media (min-width:1024px){
+        .wrap{max-width:1560px}
+        .ctrl-inner{max-width:1560px}
+        .prob{display:flex;flex-wrap:wrap;column-gap:30px;align-items:flex-start}
+        .prob-head{flex:0 0 100%}
+        .prob-main{
+          flex:1 1 0;min-width:0;
+          position:sticky;top:16px;
+        }
+        .steps-col{
+          flex:1 1 0;min-width:0;
+          max-height:calc(100vh - 150px);
+          overflow-y:auto;
+          padding-right:6px;
+          scrollbar-gutter:stable;
+        }
+      }
     </style>
   </head>
   <body>
@@ -297,6 +316,7 @@
           </div>
           <span class="prob-state">ステップ 0 / 4</span>
         </div>
+        <div class="prob-main">
         <p class="prob-q">△OABにおいて、辺OAを 1：1 に内分する点（中点）をC、辺OBを 2：1 に内分する点をDとし、線分ADと線分BCの交点をPとする。<span class="v">OP</span> を <span class="v">OA</span>、<span class="v">OB</span> で表せ。</p>
         <figure>
           <div class="figbox">
@@ -330,7 +350,9 @@
           <figcaption>CはOAの中点、DはOBを 2：1 に内分する点。2本の線分AD、BCの交点がP。</figcaption>
         </figure>
         <p>38ページの応用例題4と同じ問題を、「係数の和＝1」を2通り作る方法で解き直してみよう。下の <b>次へ</b> で1ステップずつ進めるよ。</p>
+        </div>
 
+        <div class="steps-col">
         <div class="step deriv">
           <h3>ステップ 1 ― まず OP を x、y で置く</h3>
           <p>交点Pの位置ベクトルを、未知数 x、y を使って置くのが出発点だ。</p>
@@ -358,6 +380,7 @@
           <p class="note"><b>確認：</b>これは「6 ベクトルの図形への応用」で<b>係数比較</b>をして求めた応用例題4の答えと一致する。解き方が短くなった分、計算ミスも減らせるね。</p>
         </div>
         <p class="prob-done">例 クリア！　書き換え→「和＝1」×2→連立、の流れを覚えよう。</p>
+        </div>
       </section>
 
       <!-- ================= 発展 ================= -->
@@ -375,6 +398,7 @@
           </div>
           <span class="prob-state">ステップ 0 / 3</span>
         </div>
+        <div class="prob-main">
         <p class="prob-q">線分OPの延長と線分ABの交点をEとするとき、OP：PE を求めよ。</p>
         <figure>
           <div class="figbox">
@@ -404,7 +428,9 @@
           <figcaption>OPをそのまま延長すると、辺ABと点Eで交わる。Eも「直線AB上の点」だから、和＝1が使える。</figcaption>
         </figure>
         <p>例で求めた <span class="v">OP</span> ＝ (1/4) <span class="v">OA</span> ＋ (1/2) <span class="v">OB</span> を使うよ。下の <b>次へ</b> で進めよう。</p>
+        </div>
 
+        <div class="steps-col">
         <div class="step deriv">
           <h3>ステップ 1 ― OE を k 倍で置く</h3>
           <p>Eは直線OP上にあるから、<span class="v">OE</span> は <span class="v">OP</span> の実数倍で書ける。倍率を k として</p>
@@ -425,6 +451,7 @@
           <p class="note"><b>ポイント：</b>「直線AB上の点」という条件を、ここでも係数の和＝1に翻訳しただけ。例と同じ道具がそのまま使える。</p>
         </div>
         <p class="prob-done">発展 クリア！　この項はこれで完了だよ。</p>
+        </div>
       </section>
 
       <!-- ================= まとめ ================= -->
@@ -467,7 +494,7 @@
 
         function registerFlow(root){
           var id = root.getAttribute('data-flow');
-          var steps = Array.prototype.slice.call(root.querySelectorAll(':scope > .step'));
+          var steps = Array.prototype.slice.call(root.querySelectorAll('.step'));
           /* 新しく開くステップほど上に表示する：ステップのDOM順を逆転させる
              （表示判定は元の配列順のままなので、進捗ドットやステップ数表示は変わらない） */
           if (steps.length > 1){
@@ -479,7 +506,7 @@
           var head = root.querySelector(':scope > .prob-head');
           var dots = head ? Array.prototype.slice.call(head.querySelectorAll('.dot')) : [];
           var stateEl = head ? head.querySelector('.prob-state') : null;
-          var doneEl = root.querySelector(':scope > .prob-done');
+          var doneEl = root.querySelector('.prob-done');
           flows[id] = {
             id: id, root: root, steps: steps, dots: dots, stateEl: stateEl,
             doneEl: doneEl, idx: 0, label: root.getAttribute('data-label') || id,

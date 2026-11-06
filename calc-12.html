@@ -136,6 +136,10 @@
         .step.on { animation: none; }
       }
       .step + .step { border-top: 1px dashed var(--line); margin-top: 10px; }
+      /* 2番目以降のステップの入れ物（広い画面では右カラムになる）。
+         狭い画面では従来どおり縦に積み上がるよう flex column にする */
+      .steps-wrap { display: flex; flex-direction: column; min-width: 0; }
+      .steps-wrap > .step:first-child { border-top: 1px dashed var(--line); margin-top: 10px; }
       .step p { margin: 6px 0; }
       .step-label { font-size: 13px; font-weight: 700; letter-spacing: .05em; margin: 0 0 4px; }
       .hint { background: var(--hint-bg); border: 1px solid var(--hint-line); border-radius: 10px; padding: 12px 16px 8px; margin-top: 10px; }
@@ -237,6 +241,31 @@
         .ctrl-progress { flex: 1 1 100%; }
         .ctrl .reset { margin-left: auto; }
         .ctrl button { padding: 7px 14px; font-size: 14px; }
+      }
+
+      /* ---------- 広い画面（PC・タブレット横画面）：2段組み ---------- */
+      @media (min-width:1024px){
+        .wrap{max-width:1560px;padding:20px 28px 8px}
+        .ctrl-inner{max-width:1560px}
+
+        .card{
+          display:grid;
+          grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);
+          column-gap:30px;align-items:start;
+        }
+        .card-head{grid-column:1/-1}
+        /* 左カラム：問題文＋図（最初のステップ）。右カラムが伸びても常に見えるよう sticky */
+        .card>.step{
+          grid-column:1;grid-row:2/span 2;min-width:0;
+          position:sticky;top:14px;
+        }
+        /* 右カラム：ヒント・解答。はみ出す場合はこの中だけがスクロールする */
+        .card>.steps-wrap{
+          grid-column:2;min-width:0;min-height:0;
+          max-height:calc(100vh - 235px);overflow-y:auto;
+          padding:2px 6px 2px 2px;
+        }
+        .card>.next-btn{grid-column:2}
       }
     </style>
   </head>
@@ -571,6 +600,15 @@
           revealed.push(1);
           // 最初のステップ（問題・図）は見出しの直下に固定する
           if (steps[0]) steps[0].style.order = '-999';
+          // 2番目以降のステップ（ヒント・解答）をラッパーに移す
+          // （広い画面で右カラムだけをスクロールさせるため）。
+          // 積み上がり方（新しいものほど上）は従来どおり order で保たれる
+          if (steps.length > 1) {
+            var wrap = document.createElement('div');
+            wrap.className = 'steps-wrap';
+            sec.insertBefore(wrap, steps[1]);
+            steps.slice(1).forEach(function (st) { wrap.appendChild(st); });
+          }
           var dotsBox = sec.querySelector('[data-dots]');
           steps.forEach(function () {
             var d = document.createElement('span');

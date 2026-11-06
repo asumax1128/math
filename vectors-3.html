@@ -175,6 +175,9 @@
       .dot.ans.on{background:#2f9e4f;border-color:#2f9e4f}
       .prob-q{font-weight:700;font-size:16.5px;margin:0 0 10px}
 
+      /* ヒントの積み上げ：新しく開いたものほど上に表示（図・問題文のすぐ下に最新のヒント） */
+      .steps-wrap{display:flex;flex-direction:column-reverse}
+
       .step{display:none;margin:0 0 12px;border-radius:12px;padding:12px 16px 4px;scroll-margin-bottom:130px}
       .step.show{display:block;animation:pop .25s ease}
       @keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
@@ -237,6 +240,43 @@
       .svg-txt{font-family:"STIX Two Math","Noto Sans JP",sans-serif;font-weight:700;fill:var(--ink)}
       .svg-txt-soft{font-family:"STIX Two Math","Noto Sans JP",sans-serif;fill:var(--ink-soft)}
       .grid-line{stroke:var(--line);stroke-width:1}
+
+      /* ---------- 広い画面（1024px以上）：課題カードの2段組み ---------- */
+      @media (min-width:1024px){
+        .wrap{max-width:1560px;padding:0 28px 8px}
+        .ctrl-inner{max-width:1560px}
+        /* 解説カードの図は読みやすい大きさに抑えて中央寄せ */
+        section.card:not(.prob) figure{max-width:940px;margin-left:auto;margin-right:auto}
+
+        .prob{
+          display:grid;
+          grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);
+          column-gap:30px;align-items:start;
+        }
+        .prob>.prob-head{grid-column:1/-1}
+        /* 左カラム：問題文＋図。右カラムが伸びても図が常に見えるよう sticky */
+        .qside{
+          grid-column:1;grid-row:2/span 3;min-width:0;
+          position:sticky;top:14px;
+        }
+        .qside figure{margin-top:0}
+
+        /* 単独フロー：右カラム（ヒント・解答）は内部だけスクロール */
+        .prob>.steps-wrap{
+          grid-column:2;min-width:0;min-height:0;
+          max-height:calc(100vh - 235px);overflow-y:auto;
+          padding:2px 6px 2px 2px;
+        }
+        .prob>.prob-done{grid-column:2}
+
+        /* タブ式フロー：タブと小問パネルを右カラムへ */
+        .prob .tabs{grid-column:2;margin-top:2px}
+        .prob .tabpanel{grid-column:2;min-width:0}
+        .prob .tabpanel .steps-wrap{
+          min-height:0;max-height:calc(100vh - 345px);overflow-y:auto;
+          padding:2px 6px 2px 2px;
+        }
+      }
     </style>
   </head>
   <body>
@@ -348,6 +388,7 @@
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
+        <div class="qside">
         <p class="prob-q">右の図のベクトル <span class="v">a</span> の成分表示と大きさを求めよ。</p>
         <figure>
           <div class="figbox">
@@ -378,6 +419,7 @@
           </div>
           <figcaption><span class="v" style="padding-top:.4em">a</span> の始点は (1, 3)、終点は (4, 5) の位置にある。成分は「始点の座標」ではなく「移動の量」で決まるよ。</figcaption>
         </figure>
+        </div>
         <div class="step hint">
           <h3>ヒント 1 ― 始点から終点までの「移動」を数える</h3>
           <p>成分は、始点から終点まで<b>右へ何マス、上へ何マス</b>進むかで決まる。図で指を始点に置いて、まず横方向だけ数えてみよう。終点は始点より右へ3マスの位置にある。</p>
@@ -403,6 +445,7 @@
           <span class="prob-tag ren">練習 11</span>
           <span class="prob-state">下のタブでベクトルを選んでね</span>
         </div>
+        <div class="qside">
         <p class="prob-q">右の図のベクトル <span class="v">b</span>、<span class="v">c</span>、<span class="v">d</span>、<span class="v">e</span> を、それぞれ成分表示せよ。また、各ベクトルの大きさを求めよ。（<span class="v">a</span> は例6で求めた (3, 2)）</p>
         <figure>
           <div class="figbox">
@@ -449,6 +492,7 @@
           </div>
           <figcaption>読み取り方はいつも同じ：<b>右へ進んだマス数がx成分（左なら負）、上へ進んだマス数がy成分（下なら負）</b>。大きさは √(x成分<sup>2</sup>＋y成分<sup>2</sup>)。</figcaption>
         </figure>
+        </div>
         <div class="tabs" role="tablist" aria-label="練習11のベクトル">
           <button class="tab" role="tab" data-tab="ren11-b" aria-selected="true"><span class="v">b</span></button>
           <button class="tab" role="tab" data-tab="ren11-c" aria-selected="false"><span class="v">c</span></button>
@@ -624,7 +668,9 @@
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
+        <div class="qside">
         <p class="prob-q"><span class="v">a</span>＝(1, 5)、<span class="v">b</span>＝(3, −4) のとき、2<span class="v">a</span>＋3<span class="v">b</span> を成分表示せよ。</p>
+        </div>
         <div class="step hint">
           <h3>ヒント 1 ― まず 2<span class="v">a</span> と 3<span class="v">b</span> を別々に計算する</h3>
           <p>実数倍は「両方の成分に掛ける」。2<span class="v">a</span>＝2(1, 5) は、x成分 1×2、y成分 5×2 を計算して (2, 10)。</p>
@@ -649,7 +695,9 @@
           <span class="prob-tag ren">練習 12</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
+        <div class="qside">
         <p class="prob-q"><span class="v">a</span>＝(3, −1)、<span class="v">b</span>＝(−4, 2) のとき、次のベクトルを成分表示せよ。</p>
+        </div>
         <div class="tabs" role="tablist" aria-label="練習12の小問">
           <button class="tab" role="tab" data-tab="ren12-1" aria-selected="true">(1)</button>
           <button class="tab" role="tab" data-tab="ren12-2" aria-selected="false">(2)</button>
@@ -795,6 +843,7 @@
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
+        <div class="qside">
         <p class="prob-q"><span class="v">a</span>＝(1, 2)、<span class="v">b</span>＝(1, −1) とする。<span class="v">c</span>＝(5, 4) を、適当な実数 s、t を用いて s<span class="v">a</span>＋t<span class="v">b</span> の形に表せ。</p>
         <figure>
           <div class="figbox">
@@ -836,6 +885,7 @@
           </div>
           <figcaption><span class="v" style="padding-top:.4em">c</span> は、s<span class="v" style="padding-top:.4em">a</span> と t<span class="v" style="padding-top:.4em">b</span> を2辺とする平行四辺形の対角線。s と t は「<span class="v" style="padding-top:.4em">a</span> 方向に何倍、<span class="v" style="padding-top:.4em">b</span> 方向に何倍進むか」を表す数になる。</figcaption>
         </figure>
+        </div>
         <div class="step hint">
           <h3>ヒント 1 ― s<span class="v">a</span>＋t<span class="v">b</span> を成分で書く</h3>
           <p>まず s<span class="v">a</span>＝s(1, 2)＝(s, 2s)、t<span class="v">b</span>＝t(1, −1)＝(t, −t) と計算する。</p>
@@ -866,7 +916,9 @@
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
+        <div class="qside">
         <p class="prob-q"><span class="v">a</span>＝(2, 1)、<span class="v">b</span>＝(−1, 3) とする。<span class="v">c</span>＝(8, −3) を、適当な実数 s、t を用いて s<span class="v">a</span>＋t<span class="v">b</span> の形に表せ。</p>
+        </div>
         <div class="step hint">
           <h3>ヒント 1 ― s<span class="v">a</span>＋t<span class="v">b</span> を成分で書く</h3>
           <p>例題1と同じ手順。s<span class="v">a</span>＝s(2, 1)＝(2s, s)、t<span class="v">b</span>＝t(−1, 3)＝(−t, 3t)。</p>
@@ -897,6 +949,7 @@
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
+        <div class="qside">
         <p class="prob-q">2つのベクトル <span class="v">a</span>＝(1, 3)、<span class="v">b</span>＝(−2, x) が平行になるように、x の値を定めよ。</p>
         <figure>
           <div class="figbox">
@@ -918,6 +971,7 @@
           </div>
           <figcaption>平行とは「向きが同じか、ちょうど反対」ということ。<span class="v" style="padding-top:.4em">b</span> が <span class="v" style="padding-top:.4em">a</span> の実数倍になっていれば、2本は平行になる。</figcaption>
         </figure>
+        </div>
         <div class="step hint">
           <h3>ヒント 1 ― 平行の条件は「<span class="v">b</span>＝k<span class="v">a</span> となる実数 k がある」</h3>
           <p>2つのベクトルが平行なのは、片方がもう片方の実数倍になっているとき、そのときに限る。つまり、<span class="v">b</span>＝k<span class="v">a</span> となる実数 k が存在すれば平行だ（k が正なら同じ向き、負なら反対向き）。</p>
@@ -948,7 +1002,9 @@
           <span class="prob-tag ren">練習 14</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
+        <div class="qside">
         <p class="prob-q">次の2つのベクトルが平行になるように、x の値を定めよ。</p>
+        </div>
         <div class="tabs" role="tablist" aria-label="練習14の小問">
           <button class="tab" role="tab" data-tab="ren14-1" aria-selected="true">(1)</button>
           <button class="tab" role="tab" data-tab="ren14-2" aria-selected="false">(2)</button>
@@ -1074,7 +1130,9 @@
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
+        <div class="qside">
         <p class="prob-q">2点 A(2, 3)、B(5, 1) について、<span class="v">AB</span> を成分表示し、<span class="abs">|</span><span class="v">AB</span><span class="abs">|</span> を求めよ。</p>
+        </div>
         <div class="step hint">
           <h3>ヒント 1 ― 成分は「終点B − 始点A」</h3>
           <p><span class="v">AB</span>＝(Bのx座標 − Aのx座標, Bのy座標 − Aのy座標) だから、x成分は 5−2、y成分は 1−3 を計算する。y成分は引く数の方が大きいので、負になるよ。</p>
@@ -1098,7 +1156,9 @@
           <span class="prob-tag ren">練習 15</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
+        <div class="qside">
         <p class="prob-q">次の2点A、Bについて、<span class="v">AB</span> を成分表示し、<span class="abs">|</span><span class="v">AB</span><span class="abs">|</span> を求めよ。</p>
+        </div>
         <div class="tabs" role="tablist" aria-label="練習15の小問">
           <button class="tab" role="tab" data-tab="ren15-1" aria-selected="true">(1)</button>
           <button class="tab" role="tab" data-tab="ren15-2" aria-selected="false">(2)</button>
@@ -1159,6 +1219,7 @@
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
+        <div class="qside">
         <p class="prob-q">4点 A(1, 2)、B(4, 1)、C(5, 3)、D(x, y) を頂点とする四角形ABCDが平行四辺形になるように、x、y の値を定めよ。</p>
         <figure>
           <div class="figbox">
@@ -1199,6 +1260,7 @@
           </div>
           <figcaption>平行四辺形では、向かい合う辺 <span class="v" style="padding-top:.4em">AD</span> と <span class="v" style="padding-top:.4em">BC</span> が「同じ向き・同じ長さ」になる。つまり <span class="v" style="padding-top:.4em">AD</span>＝<span class="v" style="padding-top:.4em">BC</span> というベクトルの等式が使える（図のDは答えの位置に描いてある）。</figcaption>
         </figure>
+        </div>
         <div class="step hint">
           <h3>ヒント 1 ― 平行四辺形の条件は <span class="v">AD</span>＝<span class="v">BC</span></h3>
           <p>四角形ABCDを A→B→C→D の順にたどると、向かい合う辺は AB と DC、AD と BC。平行四辺形になるのは、向かい合う辺のベクトルが等しいとき、たとえば <span class="v">AD</span>＝<span class="v">BC</span> のときだ。</p>
@@ -1228,7 +1290,9 @@
           <span class="prob-tag ren">練習 16</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
+        <div class="qside">
         <p class="prob-q">4点 A(1, 1)、B(4, 0)、C(5, 2)、D(x, y) を頂点とする次の四角形が平行四辺形になるように、x、y の値を定めよ。</p>
+        </div>
         <div class="tabs" role="tablist" aria-label="練習16の小問">
           <button class="tab" role="tab" data-tab="ren16-1" aria-selected="true">(1) 四角形ABCD</button>
           <button class="tab" role="tab" data-tab="ren16-2" aria-selected="false">(2) 四角形ACBD</button>
@@ -1405,11 +1469,12 @@
         function registerFlow(root){
           var id = root.getAttribute('data-flow');
           var steps = Array.prototype.slice.call(root.querySelectorAll(':scope > .step'));
-          /* 表示順の変更：ステップのDOM順を逆転させ、新しく開くヒント（と解答）ほど
-             上に積み上がるようにする。steps配列の論理順（ヒント1→2→…→解答）は
-             そのままなので、進捗ドット・状態表示・ボタンの動作は変わらない。 */
-          for (var k = steps.length - 1; k > 0; k--){
-            steps[0].parentNode.insertBefore(steps[k], steps[0]);
+          /* ステップ群をラッパーに移し、column-reverse で「新しいものほど上」に並べる */
+          if (steps.length){
+            var wrap = document.createElement('div');
+            wrap.className = 'steps-wrap';
+            root.insertBefore(wrap, steps[0]);
+            steps.forEach(function(s){ wrap.appendChild(s); });
           }
           var head = root.querySelector(':scope > .prob-head');
           var dots = head ? Array.prototype.slice.call(head.querySelectorAll('.dot')) : [];
