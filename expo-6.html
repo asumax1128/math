@@ -1022,6 +1022,15 @@
         function registerFlow(root){
           var id = root.getAttribute('data-flow');
           var steps = Array.prototype.slice.call(root.querySelectorAll(':scope > .step'));
+          /* 表示順の反転：ステップ要素をDOM上で逆順に並べ替え、新しく開いたヒント（と解答）が
+             すでに開いているヒントの「上」に積み上がるようにする（図・問題文のすぐ下が常に最新）。
+             steps 配列自体は元の順序のまま保持するので、進捗ドット・状態表示・ボタンの動作は従来どおり。 */
+          if (steps.length > 1){
+            var anchor = steps[0];
+            for (var i = steps.length - 1; i > 0; i--){
+              root.insertBefore(steps[i], anchor);
+            }
+          }
           var head = root.querySelector(':scope > .prob-head');
           var dots = head ? Array.prototype.slice.call(head.querySelectorAll('.dot')) : [];
           var stateEl = head ? head.querySelector('.prob-state') : null;

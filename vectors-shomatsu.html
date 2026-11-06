@@ -1300,6 +1300,15 @@
             doneEl: doneEl, idx: 0, label: root.getAttribute('data-label') || id,
             hintTotal: steps.filter(function(s){ return s.classList.contains('hint'); }).length
           };
+          /* 新しく開くヒント（と解答）ほど上に表示されるよう、ステップのDOM順を逆にする。
+             表示・非表示の判定は steps 配列（元の順序）の要素に対して行うので、
+             進捗ドット・状態表示・ボタンの動作は従来どおり。 */
+          if (steps.length > 1){
+            var anchor = steps[steps.length - 1].nextSibling;
+            for (var r = steps.length - 1; r >= 0; r--){
+              root.insertBefore(steps[r], anchor);
+            }
+          }
           if (!activeId) activeId = id;
         }
         Array.prototype.forEach.call(document.querySelectorAll('[data-flow]'), registerFlow);

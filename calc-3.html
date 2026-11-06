@@ -799,6 +799,14 @@
         function registerFlow(root){
           var id = root.getAttribute('data-flow');
           var steps = Array.prototype.slice.call(root.querySelectorAll(':scope > .step'));
+          /* 新しいヒントほど上に表示する：ステップのDOM順を逆転させる（中身は変更しない） */
+          if (steps.length > 1){
+            var stepParent = steps[0].parentNode;
+            var afterSteps = steps[steps.length - 1].nextSibling;
+            for (var ri = steps.length - 1; ri >= 0; ri--){
+              stepParent.insertBefore(steps[ri], afterSteps);
+            }
+          }
           var head = root.querySelector(':scope > .prob-head');
           var dots = head ? Array.prototype.slice.call(head.querySelectorAll('.dot')) : [];
           var stateEl = head ? head.querySelector('.prob-state') : null;

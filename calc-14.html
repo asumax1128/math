@@ -812,6 +812,13 @@
           };
           steps.forEach(function(s, i){ if (s.classList.contains('answer')) flows[id].answerIdx = i; });
           flowOrder.push(id);
+          /* 新しく開くヒント・解答が「上」に積み上がるよう、ステップ要素の並びを逆転させる。
+             steps 配列（論理順）・ドット・進捗表示は従来どおりで、見た目の表示順だけが変わる。 */
+          if (steps.length > 1 && steps[0].parentNode){
+            var parent = steps[0].parentNode;
+            var after = steps[steps.length - 1].nextSibling;
+            for (var i = steps.length - 1; i >= 0; i--) parent.insertBefore(steps[i], after);
+          }
         }
         Array.prototype.forEach.call(document.querySelectorAll('[data-flow]'), registerFlow);
         activeId = flowOrder[0];

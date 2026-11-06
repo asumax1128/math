@@ -664,6 +664,15 @@
         function registerFlow(root){
           var id = root.getAttribute('data-flow');
           var steps = Array.prototype.slice.call(root.querySelectorAll(':scope > .step'));
+          /* 表示順の逆転：ステップ要素をDOM上で逆順に並べ替え、
+             新しく開いたヒント・解答ほど上（図・問題文のすぐ下）に表示する。
+             steps配列の順序（進捗管理用）は元のまま変えない。 */
+          if (steps.length > 1){
+            var anchor = steps[steps.length - 1].nextSibling;
+            for (var i = steps.length - 1; i >= 0; i--){
+              root.insertBefore(steps[i], anchor);
+            }
+          }
           var head = root.querySelector(':scope > .prob-head');
           var dots = head ? Array.prototype.slice.call(head.querySelectorAll('.dot')) : [];
           var stateEl = head ? head.querySelector('.prob-state') : null;

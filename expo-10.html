@@ -168,6 +168,12 @@
       }
       .prob-done.show{display:block}
 
+      /* ヒントの積み上がり：新しく開いたヒント・解答ほど上に表示する（最新のものが図・問題文のすぐ下に来る） */
+      [data-flow]{display:flex;flex-direction:column}
+      .tabpanel[data-flow]{display:none}
+      .tabpanel[data-flow].show{display:flex}
+      [data-flow] > .prob-done{order:999}
+
       /* 対数表の抜粋テーブル */
       table.comp{border-collapse:collapse;margin:4px auto 12px;font-size:15px}
       table.comp th,table.comp td{border:1px solid var(--line);padding:3px 10px;text-align:center}
@@ -901,7 +907,10 @@
         var ctrlLabel = document.getElementById('ctrlLabel');
 
         function refreshFlow(f){
-          f.steps.forEach(function(s, i){ s.classList.toggle('show', i < f.idx); });
+          f.steps.forEach(function(s, i){
+            s.classList.toggle('show', i < f.idx);
+            s.style.order = String(f.steps.length - i);
+          });
           f.dots.forEach(function(d, i){ d.classList.toggle('on', i < f.idx); });
           if (f.stateEl){
             if (f.idx === 0) f.stateEl.textContent = 'ヒント 0 / ' + f.hintTotal;

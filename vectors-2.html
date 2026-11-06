@@ -176,6 +176,8 @@
       .dot.ans.on{background:#2f9e4f;border-color:#2f9e4f}
       .prob-q{font-weight:700;font-size:16.5px;margin:0 0 10px}
 
+      /* ヒントの積み上げ：新しく開いたものほど上に表示（図・問題文のすぐ下に最新のヒント） */
+      .steps-wrap{display:flex;flex-direction:column-reverse}
       .step{display:none;margin:0 0 12px;border-radius:12px;padding:12px 16px 4px;scroll-margin-bottom:130px}
       .step.show{display:block;animation:pop .25s ease}
       @keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
@@ -2105,6 +2107,13 @@
         function registerFlow(root){
           var id = root.getAttribute('data-flow');
           var steps = Array.prototype.slice.call(root.querySelectorAll(':scope > .step'));
+          /* ステップ群をラッパーに移し、column-reverse で「新しいものほど上」に並べる */
+          if (steps.length){
+            var wrap = document.createElement('div');
+            wrap.className = 'steps-wrap';
+            root.insertBefore(wrap, steps[0]);
+            steps.forEach(function(s){ wrap.appendChild(s); });
+          }
           var head = root.querySelector(':scope > .prob-head');
           var dots = head ? Array.prototype.slice.call(head.querySelectorAll('.dot')) : [];
           var stateEl = head ? head.querySelector('.prob-state') : null;

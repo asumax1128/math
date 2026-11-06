@@ -1128,6 +1128,14 @@
           var dots = head ? Array.prototype.slice.call(head.querySelectorAll('.dot')) : [];
           var stateEl = head ? head.querySelector('.prob-state') : null;
           var doneEl = root.querySelector(':scope > .prob-done');
+          /* 表示順の逆転：ステップの DOM 並びを逆順に組み替え、新しく開くヒント（と解答）ほど
+             上に積み上がるようにする。図・問題文のすぐ下に常に最新のヒントが来る。
+             steps 配列自体は論理順（ヒント1→…→解答）のままなので、ドット・進捗・
+             ボタン文言・リセットの動作は従来どおり。 */
+          for (var r = steps.length - 1; r >= 0; r--){
+            if (doneEl) root.insertBefore(steps[r], doneEl);
+            else root.appendChild(steps[r]);
+          }
           flows[id] = {
             id: id, root: root, steps: steps, dots: dots, stateEl: stateEl,
             doneEl: doneEl, idx: 0, label: root.getAttribute('data-label') || id,

@@ -112,7 +112,11 @@
 
       /* パネル */
       .panel{display:none;}
-      .panel.active{display:block;}
+      .panel.active{display:flex;flex-direction:column;}
+      /* ヒントは新しいものほど上に積む：問題文・図を先頭に固定し、ステップの並びはJSで逆順の order を付ける */
+      .panel .qbox{order:1;}
+      .panel .viz{order:2;}
+      .panel .step{order:3;}
       .qbox{padding:16px 18px;margin-bottom:14px;}
       .qbox .qhead{display:flex;align-items:baseline;gap:10px;margin-bottom:6px;}
       .qbox .qno{font-family:"STIX Two Math",serif;font-size:21px;font-weight:700;}
@@ -605,6 +609,16 @@
         var totalAll = stepsPer.reduce(function(a,b){ return a+b; }, 0);
         var revealed = [0,0,0];
         var active = 0;
+
+        // ヒント／解答カードの表示順を逆転させる（新しいものほど上）。
+        // DOM順・中身・開く順序は変えず、flex の order だけで見た目の並びを入れ替える。
+        // 解答（最後のステップ）が一番上、ヒント1が一番下になる。
+        panels.forEach(function(p){
+          var steps = p.querySelectorAll('.step');
+          steps.forEach(function(s, si){
+            s.style.order = String(3 + (steps.length - 1 - si));
+          });
+        });
 
         var nextBtn = document.getElementById('nextBtn');
         var resetBtn = document.getElementById('resetBtn');

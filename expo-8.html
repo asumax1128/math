@@ -817,6 +817,14 @@
         function registerFlow(root){
           var id = root.getAttribute('data-flow');
           var steps = Array.prototype.slice.call(root.querySelectorAll(':scope > .step'));
+          /* ステップの並びを逆転させる：新しく開くヒント・解答ほど上に表示され、
+             図・問題文のすぐ下に最新のステップが来るようにする（中身は変更しない） */
+          if (steps.length > 1){
+            var firstStep = steps[0];
+            for (var si = steps.length - 1; si >= 1; si--){
+              root.insertBefore(steps[si], firstStep);
+            }
+          }
           var head = root.querySelector(':scope > .prob-head');
           var dots = head ? Array.prototype.slice.call(head.querySelectorAll('.dot')) : [];
           var stateEl = head ? head.querySelector('.prob-state') : null;

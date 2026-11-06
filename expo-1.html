@@ -188,7 +188,12 @@
       .tab[aria-selected=true]{background:var(--accent);border-color:var(--accent);color:#fff}
       @media (prefers-color-scheme: dark){ .tab[aria-selected=true]{color:#0c1712} }
       .tabpanel{display:none}
-      .tabpanel.show{display:block}
+      .tabpanel.show{display:flex;flex-direction:column}
+      [data-flow]{display:flex;flex-direction:column}
+      .tabpanel:not(.show){display:none}
+      [data-flow] > .prob-head{order:1}
+      [data-flow] > .prob-q{order:2}
+      [data-flow] > .prob-done{order:999}
 
       /* ---------- まとめ ---------- */
       .summary{border:2px solid var(--accent);background:var(--accent-soft)}
@@ -893,7 +898,11 @@
         var cards = Array.prototype.slice.call(document.querySelectorAll('.prob'));
 
         function refreshFlow(f){
-          f.steps.forEach(function(s, i){ s.classList.toggle('show', i < f.idx); });
+          f.steps.forEach(function(s, i){
+            s.classList.toggle('show', i < f.idx);
+            /* 新しいヒントほど上に来るよう、ステップの表示順を逆転させる */
+            s.style.order = String(10 + (f.steps.length - i));
+          });
           f.dots.forEach(function(d, i){ d.classList.toggle('on', i < f.idx); });
           if (f.stateEl){
             var unit = (f.id === 'k2') ? 'ステップ' : 'ヒント';

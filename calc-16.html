@@ -1033,6 +1033,13 @@
         function registerFlow(root){
           var id = root.getAttribute('data-flow');
           var steps = Array.prototype.slice.call(root.querySelectorAll(':scope > .step'));
+          /* 表示順だけを逆転させる：新しく開くヒント（と解答）が、すでに開いているものの上に来るように、
+             ステップ要素の並びをDOM上で逆順にしておく（中身・開示順の管理は従来どおり） */
+          if (steps.length > 1){
+            var stepParent = steps[0].parentNode;
+            var anchor = steps[steps.length - 1].nextSibling;
+            steps.slice().reverse().forEach(function(s){ stepParent.insertBefore(s, anchor); });
+          }
           var head = root.querySelector(':scope > .prob-head');
           var dots = head ? Array.prototype.slice.call(head.querySelectorAll('.dot')) : [];
           var stateEl = head ? head.querySelector('.prob-state') : null;

@@ -694,6 +694,18 @@
         Array.prototype.slice.call(document.querySelectorAll('[data-flow]')).forEach(registerFlow);
         activeId = order[0];
 
+        /* ヒントの積み上げ方を逆にする：ステップ要素の並び順だけを逆順にしておく。
+           こうすると、新しく開いたヒント（や解答）が常に一番上＝図・問題文のすぐ下に来る。
+           中身・進捗・段階表示のロジックは従来どおり（f.steps は元の順序のまま使う）。 */
+        order.forEach(function(id){
+          var f = flows[id];
+          if (!f.steps.length) return;
+          var first = f.steps[0];
+          for (var i = f.steps.length - 1; i >= 1; i--){
+            first.parentNode.insertBefore(f.steps[i], first);
+          }
+        });
+
         var btnNext = document.getElementById('btnNext');
         var btnReset = document.getElementById('btnReset');
         var ctrlLabel = document.getElementById('ctrlLabel');

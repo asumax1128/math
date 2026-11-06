@@ -662,6 +662,14 @@
         function registerFlow(root){
           var id = root.getAttribute('data-flow');
           var steps = Array.prototype.slice.call(root.querySelectorAll(':scope > .step'));
+          /* 新しく開くヒント・解答が上に積み上がるよう、ステップをDOM上で逆順に並べ替える */
+          if (steps.length > 1){
+            var parent = steps[0].parentNode;
+            var anchor = steps[0];
+            for (var si = steps.length - 1; si >= 1; si--){
+              parent.insertBefore(steps[si], anchor);
+            }
+          }
           var head = root.querySelector(':scope > .prob-head');
           var dots = head ? Array.prototype.slice.call(head.querySelectorAll('.dot')) : [];
           var stateEl = head ? head.querySelector('.prob-state') : null;

@@ -800,6 +800,16 @@
         function registerFlow(root){
           var id = root.getAttribute('data-flow');
           var steps = Array.prototype.slice.call(root.querySelectorAll(':scope > .step'));
+          /* 新しく開くヒント（と解答）が一番上に来るよう、ステップの並びをDOM上で逆転させる。
+             f.steps の配列順（ヒント1→2→…→解答）はそのままなので、進捗ドットや
+             ボタンの文言・動作はこれまで通り。 */
+          if (steps.length > 1){
+            var stepParent = steps[0].parentNode;
+            var stepAnchor = steps[0];
+            for (var si = steps.length - 1; si > 0; si--){
+              stepParent.insertBefore(steps[si], stepAnchor);
+            }
+          }
           var head = root.querySelector(':scope > .prob-head');
           var dots = head ? Array.prototype.slice.call(head.querySelectorAll('.dot')) : [];
           var stateEl = head ? head.querySelector('.prob-state') : null;

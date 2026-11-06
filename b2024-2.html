@@ -650,12 +650,15 @@
         function renderPanel(i) {
           var box = document.getElementById("steps-" + i);
           box.innerHTML = "";
-          TABS[i].steps.slice(0, revealed[i]).forEach(function (s) {
+          // 新しく開いたヒント・解答ほど上に来るよう、逆順に並べる
+          var shown = TABS[i].steps.slice(0, revealed[i]);
+          for (var k = shown.length - 1; k >= 0; k--) {
+            var s = shown[k];
             var d = document.createElement("div");
             d.className = "card " + (s.type === "answer" ? "ans-card" : "hint-card");
             d.innerHTML = '<div class="chead">' + s.head + "</div>" + s.body;
             box.appendChild(d);
-          });
+          }
           document.getElementById("empty-" + i).style.display = revealed[i] === 0 ? "" : "none";
           if (i === 0) updateNL1(revealed[0] >= 3);
         }
@@ -710,8 +713,8 @@
           renderPanel(cur);
           updateControls();
           var box = document.getElementById("steps-" + cur);
-          var last = box.lastElementChild;
-          if (last) last.scrollIntoView({ behavior: "smooth", block: "nearest" });
+          var newest = box.firstElementChild;
+          if (newest) newest.scrollIntoView({ behavior: "smooth", block: "nearest" });
         });
 
         resetBtn.addEventListener("click", function () {

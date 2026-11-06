@@ -516,6 +516,15 @@
         function registerFlow(root){
           var id = root.getAttribute('data-flow');
           var steps = Array.prototype.slice.call(root.querySelectorAll(':scope > .step'));
+          /* 新しく開くヒント・解答ほど「上」に積み上がるよう、ステップの並びを逆転させる。
+             非表示のステップは場所を取らないので、開いたものだけが新しい順に上から並ぶ。
+             表示の制御（.show の付け外し）は従来どおり steps の順序で行う。 */
+          if (steps.length > 1 && steps[0].parentNode){
+            var stepParent = steps[0].parentNode;
+            for (var si = steps.length - 1; si >= 1; si--){
+              stepParent.insertBefore(steps[si], steps[0]);
+            }
+          }
           var head = root.querySelector(':scope > .prob-head');
           var dots = head ? Array.prototype.slice.call(head.querySelectorAll('.dot')) : [];
           var stateEl = head ? head.querySelector('.prob-state') : null;

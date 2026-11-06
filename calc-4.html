@@ -1018,6 +1018,16 @@
         function registerFlow(root){
           var id = root.getAttribute('data-flow');
           var steps = Array.prototype.slice.call(root.querySelectorAll(':scope > .step'));
+          /* ヒントの積み上がり順を逆にする：ステップのDOM順を逆転させ、
+             新しく開いたヒント（と解答）ほど上＝図・問題文のすぐ下に来るようにする。
+             steps配列そのものは元の論理順のまま保持し、表示順だけを変える。 */
+          if (steps.length > 1){
+            var stepParent = steps[0].parentNode;
+            var afterLast = steps[steps.length - 1].nextSibling;
+            for (var si = steps.length - 1; si >= 0; si--){
+              stepParent.insertBefore(steps[si], afterLast);
+            }
+          }
           var head = root.querySelector(':scope > .prob-head');
           var dots = head ? Array.prototype.slice.call(head.querySelectorAll('.dot')) : [];
           var stateEl = head ? head.querySelector('.prob-state') : null;

@@ -1196,11 +1196,22 @@
           refreshFlow(f);
           refreshBar();
           var shown = f.steps[f.idx - 1];
-          if (shown) shown.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+          if (shown){
+            /* 新しく開いたヒント・解答は、すでに開いているものの「上」に積む。
+               図・問題文のすぐ下に最新のものが来るよう、先頭のステップの前へ移動する。 */
+            var firstStep = f.root.querySelector(':scope > .step');
+            if (firstStep && firstStep !== shown) f.root.insertBefore(shown, firstStep);
+            shown.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+          }
         });
         btnReset.addEventListener('click', function(){
           var f = flows[activeId];
           f.idx = 0;
+          /* 積み替えで変わったステップの並びを元の順序に戻しておく（全て非表示になるので見た目は変わらない） */
+          f.steps.forEach(function(s){
+            if (f.doneEl) f.root.insertBefore(s, f.doneEl);
+            else f.root.appendChild(s);
+          });
           refreshFlow(f);
           refreshBar();
           var card = f.root.closest ? f.root.closest('.prob') : null;

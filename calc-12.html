@@ -111,8 +111,9 @@
         box-shadow: var(--shadow);
         padding: 20px 20px 16px;
         margin-bottom: 20px;
+        display: flex; flex-direction: column;
       }
-      .card-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+      .card-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; order: -1000; }
       .tag {
         font-size: 12.5px; font-weight: 700; letter-spacing: .06em;
         padding: 2px 10px; border-radius: 999px; color: #fff;
@@ -144,6 +145,7 @@
 
       .next-btn {
         margin-top: 14px;
+        align-self: flex-start;
         font: inherit; font-weight: 700; font-size: 15px;
         color: var(--accent); background: var(--accent-soft);
         border: 1.5px solid var(--accent); border-radius: 999px;
@@ -567,6 +569,8 @@
           stepsList.push(steps);
           totalSteps += steps.length;
           revealed.push(1);
+          // 最初のステップ（問題・図）は見出しの直下に固定する
+          if (steps[0]) steps[0].style.order = '-999';
           var dotsBox = sec.querySelector('[data-dots]');
           steps.forEach(function () {
             var d = document.createElement('span');
@@ -622,7 +626,10 @@
 
         function reveal(i) {
           if (revealed[i] < stepsList[i].length) {
-            stepsList[i][revealed[i]].classList.add('on');
+            var st = stepsList[i][revealed[i]];
+            st.classList.add('on');
+            // 新しく開くステップほど上（問題のすぐ下）に表示する
+            st.style.order = String(-revealed[i]);
             revealed[i]++;
             if (sections[i].id === 'sec-r23' && revealed[i] === stepsList[i].length) {
               judgeR23();

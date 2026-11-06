@@ -833,7 +833,13 @@
           refreshFlow(f);
           refreshBar();
           var shown = f.steps[f.idx - 1];
-          if (shown) shown.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+          if (shown){
+            /* 新しく開いたステップは、積み上がったステップの一番上へ移動する
+               （図・問題文のすぐ下に、常に最新のヒント・解答が来るように） */
+            var firstStep = f.root.querySelector(':scope > .step');
+            if (firstStep && firstStep !== shown) f.root.insertBefore(shown, firstStep);
+            shown.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+          }
         });
         btnReset.addEventListener('click', function(){
           var f = flows[activeId];

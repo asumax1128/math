@@ -1498,6 +1498,15 @@
             doneEl: doneEl, idx: 0, label: root.getAttribute('data-label') || id,
             hintTotal: steps.filter(function(s){ return s.classList.contains('hint'); }).length
           };
+          /* 新しく開いたヒント（と解答）が上に積み上がるよう、ステップのDOM順を逆転させる。
+             steps 配列は論理順（ヒント1→…→解答）のままなので、進捗・ドット・リセットの動作は変わらない */
+          if (steps.length > 1){
+            var stepParent = steps[0].parentNode;
+            var firstStep = steps[0];
+            for (var si = steps.length - 1; si >= 1; si--){
+              stepParent.insertBefore(steps[si], firstStep);
+            }
+          }
           if (!activeId) activeId = id;
         }
         Array.prototype.forEach.call(document.querySelectorAll('[data-flow]'), registerFlow);

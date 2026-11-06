@@ -934,6 +934,12 @@
           var dots = head ? Array.prototype.slice.call(head.querySelectorAll('.dot')) : [];
           var stateEl = head ? head.querySelector('.prob-state') : null;
           var doneEl = root.querySelector(':scope > .prob-done');
+          /* 新しいヒントほど上に積む：ステップのDOM順を逆転させる（中身・進捗・idxの論理順はそのまま） */
+          if (steps.length > 1) {
+            var stepParent = steps[0].parentNode;
+            var stepRef = doneEl || null;
+            steps.slice().reverse().forEach(function (s) { stepParent.insertBefore(s, stepRef); });
+          }
           flows[id] = {
             id: id, root: root, steps: steps, dots: dots, stateEl: stateEl,
             doneEl: doneEl, idx: 0, label: root.getAttribute('data-label') || id,

@@ -712,6 +712,14 @@
         document.querySelectorAll(".panel").forEach(function (panel) {
           var id = panel.getAttribute("data-part");
           var steps = Array.prototype.slice.call(panel.querySelectorAll(".step"));
+          /* Reverse the steps' DOM order (answer first, hint 1 last) so a
+             newly revealed step appears ABOVE the ones already open,
+             directly under the problem / figure. The steps array keeps
+             the logical order for progress, dots and the Next button. */
+          var statusEl = panel.querySelector("[data-part-status]");
+          steps.slice().reverse().forEach(function (step) {
+            panel.insertBefore(step, statusEl);
+          });
           parts[id] = {
             id: id,
             panel: panel,

@@ -468,6 +468,14 @@
         function registerFlow(root){
           var id = root.getAttribute('data-flow');
           var steps = Array.prototype.slice.call(root.querySelectorAll(':scope > .step'));
+          /* 新しく開くステップほど上に表示する：ステップのDOM順を逆転させる
+             （表示判定は元の配列順のままなので、進捗ドットやステップ数表示は変わらない） */
+          if (steps.length > 1){
+            var stepParent = steps[0].parentNode;
+            for (var si = steps.length - 1; si > 0; si--){
+              stepParent.insertBefore(steps[si], steps[0]);
+            }
+          }
           var head = root.querySelector(':scope > .prob-head');
           var dots = head ? Array.prototype.slice.call(head.querySelectorAll('.dot')) : [];
           var stateEl = head ? head.querySelector('.prob-state') : null;

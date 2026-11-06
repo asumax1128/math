@@ -806,6 +806,17 @@
         }
         Array.prototype.slice.call(document.querySelectorAll('[data-flow]')).forEach(registerFlow);
 
+        /* 開いたヒント・解答は「上」に積む：各フローのステップ要素の並びを逆転させる。
+           中身や進捗管理（flows の steps 配列）は元の順序のまま。DOM の並びだけを
+           逆にすることで、新しく開いたものほど図・問題文のすぐ下に表示される。 */
+        Object.keys(flows).forEach(function(id){
+          var f = flows[id];
+          if (f.steps.length < 2) return;
+          var parent = f.steps[0].parentNode;
+          var anchor = f.steps[0];
+          f.steps.slice().reverse().forEach(function(s){ parent.insertBefore(s, anchor); });
+        });
+
         var btnNext = document.getElementById('btnNext');
         var btnReset = document.getElementById('btnReset');
         var ctrlLabel = document.getElementById('ctrlLabel');

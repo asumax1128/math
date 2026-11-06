@@ -873,6 +873,12 @@
         function registerFlow(root){
           var id = root.getAttribute('data-flow');
           var steps = Array.prototype.slice.call(root.querySelectorAll(':scope > .step'));
+          /* 新しく開くステップほど上に表示されるよう、ステップの並びを逆順にしておく
+             （図・問題文のすぐ下に常に最新のヒント・解答が来る） */
+          if (steps.length > 1){
+            var anchor = steps[0];
+            for (var i = steps.length - 1; i >= 1; i--) root.insertBefore(steps[i], anchor);
+          }
           var head = root.querySelector(':scope > .prob-head');
           var dots = head ? Array.prototype.slice.call(head.querySelectorAll('.dot')) : [];
           var stateEl = head ? head.querySelector('.prob-state') : null;

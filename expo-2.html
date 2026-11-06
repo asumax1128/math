@@ -1037,6 +1037,11 @@
           var dots = head ? Array.prototype.slice.call(head.querySelectorAll('.dot')) : [];
           var stateEl = head ? head.querySelector('.prob-state') : null;
           var doneEl = root.querySelector(':scope > .prob-done');
+          /* 新しく開くヒント（と解答）が上に積み上がるよう、ステップの並びを逆転させる。
+             steps 配列自体は論理順（ヒント1→ヒント2→…→解答）のままなので、
+             進捗ドット・状態表示・「次へ」の文言は従来どおり動く。
+             視覚的には最新のステップが問題文のすぐ下に来る。 */
+          steps.slice().reverse().forEach(function(s){ root.insertBefore(s, doneEl); });
           flows[id] = {
             id: id, root: root, steps: steps, dots: dots, stateEl: stateEl,
             doneEl: doneEl, idx: 0, label: root.getAttribute('data-label') || id,

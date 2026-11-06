@@ -1059,6 +1059,14 @@
         function registerFlow(root){
           var id = root.getAttribute('data-flow');
           var steps = Array.prototype.slice.call(root.querySelectorAll(':scope > .step'));
+          /* 表示順だけを逆転させる：新しく開くヒント・解答が、開いているものの「上」に積み上がる。
+             steps 配列（論理順：ヒント1→…→解答）はそのまま保持し、進捗・ドット・ボタンの動作は変えない。 */
+          if (steps.length > 1){
+            var parent = steps[0].parentNode;
+            for (var i = steps.length - 1; i >= 1; i--){
+              parent.insertBefore(steps[i], steps[0]);
+            }
+          }
           var head = root.querySelector(':scope > .prob-head');
           var dots = head ? Array.prototype.slice.call(head.querySelectorAll('.dot')) : [];
           var stateEl = head ? head.querySelector('.prob-state') : null;

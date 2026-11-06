@@ -842,6 +842,15 @@
             doneEl: doneEl, idx: 0, label: root.getAttribute('data-label') || id,
             hintTotal: steps.filter(function(s){ return s.classList.contains('hint'); }).length
           };
+          /* 新しく開くヒント・解答が、すでに開いているものの「上」に積み上がるよう、
+             ステップ要素の並びだけを逆順にする（中身・進行ロジックは従来どおり） */
+          if (steps.length > 1){
+            var parent = steps[0].parentNode;
+            var after = steps[steps.length - 1].nextSibling;
+            var frag = document.createDocumentFragment();
+            steps.slice().reverse().forEach(function(s){ frag.appendChild(s); });
+            parent.insertBefore(frag, after);
+          }
         }
         registerFlow(document.getElementById('prob-k1'));
         registerFlow(document.getElementById('prob-ex5'));

@@ -556,6 +556,15 @@
           var dots = head ? Array.prototype.slice.call(head.querySelectorAll('.dot')) : [];
           var stateEl = head ? head.querySelector('.prob-state') : null;
           var doneEl = root.querySelector(':scope > .prob-done');
+          /* 新しいヒントほど上に表示する：ステップのDOM順を逆転させる（中身・進捗・ボタンの動作は変更しない） */
+          if (steps.length > 1) {
+            var detachedSteps = steps.slice();
+            detachedSteps.forEach(function(s){ if (s.parentNode === root) root.removeChild(s); });
+            for (var ri = detachedSteps.length - 1; ri >= 0; ri--) {
+              if (doneEl) root.insertBefore(detachedSteps[ri], doneEl);
+              else root.appendChild(detachedSteps[ri]);
+            }
+          }
           var kind = root.getAttribute('data-kind') || 'hint';
           flows[id] = {
             id: id, root: root, steps: steps, dots: dots, stateEl: stateEl,

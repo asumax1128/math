@@ -724,6 +724,16 @@
         function registerFlow(root){
           var id = root.getAttribute('data-flow');
           var steps = Array.prototype.slice.call(root.querySelectorAll(':scope > .step'));
+          /* 新しく開いたヒント・解答が、すでに開いているものの「上」に積み上がるよう、
+             ステップ要素の表示順（DOM順）だけを逆転させる。
+             steps 配列自体は論理順（ヒント1→2→…→解答）のままなので、
+             進捗ドット・状態表示・「次へ」の動作は従来どおり。 */
+          if (steps.length > 1){
+            var anchor = steps[0];
+            for (var k = steps.length - 1; k >= 1; k--){
+              anchor.parentNode.insertBefore(steps[k], anchor);
+            }
+          }
           var head = root.querySelector(':scope > .prob-head');
           var dots = head ? Array.prototype.slice.call(head.querySelectorAll('.dot')) : [];
           var stateEl = head ? head.querySelector('.prob-state') : null;
