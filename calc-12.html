@@ -191,6 +191,12 @@
       .choice.ok .mark { color: var(--ans-tag); }
       .choice.ng .mark { color: var(--ng); }
       .verdict { font-weight: 700; margin-top: 8px; }
+      .judge-btn {
+        font: inherit; font-weight: 700; cursor: pointer;
+        color: var(--accent); background: var(--surface);
+        border: 1.5px solid var(--accent); border-radius: 999px;
+        padding: 8px 18px; margin-top: 6px;
+      }
 
       /* ---------- figures ---------- */
       figure { margin: 12px 0 6px; text-align: center; }
@@ -402,7 +408,9 @@
             <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span class="m">x<sup>3</sup> + 2x</span><span class="mark"></span></button>
             <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span class="m">x<sup>3</sup> − 4</span><span class="mark"></span></button>
           </div>
-          <p>選んだら、「次へ」でヒントを開いて確かめていきましょう。</p>
+          <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
+          <button class="judge-btn" id="r23-check" type="button">答え合わせ（ヒントを見ずに判定）</button>
+          <p class="verdict" id="r23-verdict-early"></p>
         </div>
 
         <div class="step hint">
@@ -670,7 +678,7 @@
             st.style.order = String(-revealed[i]);
             revealed[i]++;
             if (sections[i].id === 'sec-r23' && revealed[i] === stepsList[i].length) {
-              judgeR23();
+              judgeR23('r23-verdict');
             }
             update();
           }
@@ -703,6 +711,7 @@
             c.querySelector('.mark').textContent = '';
           });
           document.getElementById('r23-verdict').textContent = '';
+          document.getElementById('r23-verdict-early').textContent = '';
           update();
           window.scrollTo({ top: 0, behavior: 'auto' });
         });
@@ -714,11 +723,16 @@
           c.addEventListener('click', function () {
             c.classList.toggle('sel');
             var secIdx = sections.indexOf(document.getElementById('sec-r23'));
-            if (revealed[secIdx] >= stepsList[secIdx].length) judgeR23();
+            if (revealed[secIdx] >= stepsList[secIdx].length) judgeR23('r23-verdict');
           });
         });
 
-        function judgeR23() {
+        var checkBtn = document.getElementById('r23-check');
+        if (checkBtn) {
+          checkBtn.addEventListener('click', function () { judgeR23('r23-verdict-early'); });
+        }
+
+        function judgeR23(targetId) {
           var selected = {};
           choices.forEach(function (c) {
             if (c.classList.contains('sel')) selected[c.getAttribute('data-choice')] = true;
@@ -736,12 +750,14 @@
               mark.textContent = '×';
             }
           });
-          var verdict = document.getElementById('r23-verdict');
+          var verdict = document.getElementById(targetId);
           var names = { 1: '①', 2: '②', 3: '③', 4: '④' };
           var picked = Object.keys(selected).map(function (k) { return names[k]; });
           var isCorrect = picked.length === 2 && selected[2] && selected[4];
           if (picked.length === 0) {
-            verdict.textContent = '答えは ② と ④ です。選択肢を選んでから見直すと、自分の考えと比べられます。';
+            verdict.textContent = (targetId === 'r23-verdict-early')
+              ? 'まず上の選択肢を選んでから、答え合わせを押しましょう。'
+              : '答えは ② と ④ です。選択肢を選んでから見直すと、自分の考えと比べられます。';
           } else if (isCorrect) {
             verdict.textContent = 'あなたの選択（' + picked.join('・') + '）は正解です。';
           } else {
