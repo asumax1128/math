@@ -116,12 +116,15 @@
     <div class="controls">
       <div class="ctl-group">
         <span class="ctl-label">幅</span>
-        <button data-width="30" class="wbtn-yoru">30分</button>
-        <button data-width="20" class="wbtn-yoru">20分</button>
-        <button data-width="10" class="wbtn-yoru">10分</button>
-        <button data-width="5" class="wbtn-yoru">5分</button>
-        <button data-width="3" class="wbtn-yoru">3分</button>
-        <button data-width="1" class="wbtn-yoru">1分</button>
+        <button data-widx="0" class="wbtn-yoru">30分</button>
+        <button data-widx="1" class="wbtn-yoru">20分</button>
+        <button data-widx="2" class="wbtn-yoru">10分</button>
+        <button data-widx="3" class="wbtn-yoru">5分</button>
+        <button data-widx="4" class="wbtn-yoru">3分</button>
+        <button data-widx="5" class="wbtn-yoru">1分</button>
+        <button data-widx="6" class="wbtn-yoru">30秒</button>
+        <button data-widx="7" class="wbtn-yoru">10秒</button>
+        <button data-widx="8" class="wbtn-yoru">1秒</button>
       </div>
       <button class="next" id="next-yoru">次へ：長方形で見積もる（30分幅）▶</button>
       <div class="ctl-group">
@@ -164,12 +167,15 @@
     <div class="controls">
       <div class="ctl-group">
         <span class="ctl-label">幅</span>
-        <button data-width="30" class="wbtn-ena">30分</button>
-        <button data-width="20" class="wbtn-ena">20分</button>
-        <button data-width="10" class="wbtn-ena">10分</button>
-        <button data-width="5" class="wbtn-ena">5分</button>
-        <button data-width="3" class="wbtn-ena">3分</button>
-        <button data-width="1" class="wbtn-ena">1分</button>
+        <button data-widx="0" class="wbtn-ena">30分</button>
+        <button data-widx="1" class="wbtn-ena">20分</button>
+        <button data-widx="2" class="wbtn-ena">10分</button>
+        <button data-widx="3" class="wbtn-ena">5分</button>
+        <button data-widx="4" class="wbtn-ena">3分</button>
+        <button data-widx="5" class="wbtn-ena">1分</button>
+        <button data-widx="6" class="wbtn-ena">30秒</button>
+        <button data-widx="7" class="wbtn-ena">10秒</button>
+        <button data-widx="8" class="wbtn-ena">1秒</button>
       </div>
       <button class="next" id="next-ena">次へ：長方形で見積もる（30分幅）▶</button>
       <div class="ctl-group">
@@ -190,13 +196,15 @@
 <script>
 (function(){
   "use strict";
-  var WIDTHS=[30,20,10,5,3,1];
+  var WIDTHS=[{v:30,label:'30分'},{v:20,label:'20分'},{v:10,label:'10分'},{v:5,label:'5分'},{v:3,label:'3分'},{v:1,label:'1分'},{v:0.5,label:'30秒'},{v:1/6,label:'10秒'},{v:1/60,label:'1秒'}];
   var NS="http://www.w3.org/2000/svg";
   var L=95, R=1130, T=36, B=520;
 
   function fmt(x){
-    var r=Math.round(x*10)/10;
-    return (r%1===0) ? String(r) : r.toFixed(1);
+    var r=Math.round(x*100)/100;
+    var str=r.toFixed(2);
+    if(str.indexOf('.')>=0){ str=str.replace(/0+$/,'').replace(/\.$/,''); }
+    return str;
   }
 
   function makeSqueezer(key, pace, total, ymax){
@@ -245,15 +253,37 @@
       while(gUnder.firstChild) gUnder.removeChild(gUnder.firstChild);
       while(gOver.firstChild) gOver.removeChild(gOver.firstChild);
       underRects=[]; overRects=[];
-      var n=120/w;
+      var n=Math.round(120/w);
+      state._pathMode = n>240;
+      gOver.style.transition=''; gUnder.style.transition='';
+      gOver.style.opacity=''; gUnder.style.opacity='';
+      if(state._pathMode){
+        // 本数が多すぎる幅（30秒・10秒・1秒）は、階段状のパス1本で描く（軽量・見た目は同じ）
+        var st=Math.ceil(n/1000);
+        function stepPath(isOver){
+          var d='M'+X(0).toFixed(1)+','+B+' ';
+          for(var j=0;j*st<n;j++){
+            var i=j*st;
+            var h=isOver?Math.max(pace(i*w),pace((i+1)*w)):Math.min(pace(i*w),pace((i+1)*w));
+            var x0=X(i*w), x1=X(Math.min(n,(j+1)*st)*w);
+            d+='L'+x0.toFixed(1)+','+Y(h).toFixed(1)+' L'+x1.toFixed(1)+','+Y(h).toFixed(1)+' ';
+          }
+          return d+'L'+X(120).toFixed(1)+','+B+' Z';
+        }
+        gOver.appendChild(el('path',{d:stepPath(true),'class':'rect-over'}));
+        gUnder.appendChild(el('path',{d:stepPath(false),'class':'rect-under'}));
+        gOver.style.opacity='0'; gUnder.style.opacity='0';
+        applyMode();
+        return;
+      }
       for(var i=0;i<n;i++){
         var x0=X(i*w), x1=X((i+1)*w);
-        var a=pace(i*w), b=pace((i+1)*w);
+        var pa=pace(i*w), pb=pace((i+1)*w);
         var ro=el('rect',{x:x0, y:Y(0), width:Math.max(0,(x1-x0)-1.5), height:0,'class':'rect-over'});
-        ro.dataset.target=Math.max(a,b);
+        ro.dataset.target=Math.max(pa,pb);
         gOver.appendChild(ro); overRects.push(ro);
         var ru=el('rect',{x:x0, y:Y(0), width:Math.max(0,(x1-x0)-1.5), height:0,'class':'rect-under'});
-        ru.dataset.target=Math.min(a,b);
+        ru.dataset.target=Math.min(pa,pb);
         gUnder.appendChild(ru); underRects.push(ru);
       }
       applyMode();
@@ -263,6 +293,11 @@
       gOver.style.display  = (state.mode==='both'||state.mode==='over')  ? '' : 'none';
     }
     function animate(){
+      if(state._pathMode){
+        gOver.style.transition='opacity .35s'; gUnder.style.transition='opacity .35s';
+        requestAnimationFrame(function(){ gOver.style.opacity='1'; gUnder.style.opacity='1'; });
+        return;
+      }
       if(animId) cancelAnimationFrame(animId);
       var start=null, dur=450;
       var targets=[];
@@ -307,16 +342,16 @@
         nextBtn.textContent='次へ：長方形で見積もる（30分幅）▶';
         return;
       }
-      var w=WIDTHS[state.wi];
+      var w=WIDTHS[state.wi].v;
       var sm=sums(w);
       uv.textContent=fmt(sm.under)+'問'; ov.textContent=fmt(sm.over)+'問';
       uv.classList.remove('q'); ov.classList.remove('q');
       gapEl.innerHTML=
-        '長方形の幅 <b>'+w+'分</b>：差は <b>'+fmt(sm.over-sm.under)+'問</b>'+
+        '長方形の幅 <b>'+WIDTHS[state.wi].label+'</b>：差は <b>'+fmt(sm.over-sm.under)+'問</b>'+
         (state.revealed ? ' ― 本当の合計 <b>'+total+'問</b> は、この間にある' :
          (state.wi===WIDTHS.length-1 ? ' ― ここまで細かくすると、本当の合計にかなり迫ってくる' : ' ― 幅を細かくすると、差は縮まっていく'));
       document.querySelectorAll('.wbtn-'+key).forEach(function(b){
-        b.classList.toggle('active', parseInt(b.dataset.width,10)===w);
+        b.classList.toggle('active', parseInt(b.dataset.widx,10)===state.wi);
       });
       nextBtn.disabled = state.wi>=WIDTHS.length-1;
       nextBtn.textContent='次へ：幅を細かくする ▶';
@@ -326,7 +361,7 @@
 
     document.querySelectorAll('.wbtn-'+key).forEach(function(b){
       b.addEventListener('click', function(){
-        state.wi=WIDTHS.indexOf(parseInt(b.dataset.width,10)); render();
+        state.wi=parseInt(b.dataset.widx,10); render();
       });
     });
     document.querySelectorAll('.mbtn-'+key).forEach(function(b){
