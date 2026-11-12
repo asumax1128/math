@@ -125,12 +125,43 @@
       .formula{
         text-align:center;font-size:19px;font-weight:700;letter-spacing:.03em;
         background:var(--surface2);border-radius:10px;padding:12px 8px;margin:0 0 14px;
+      }
+      /* 数式は本文・問題文・ヒント文のインライン部分も含め、すべて STIX Two Math で表示する。
+         STIX Two Math に無い日本語グリフは Noto Sans JP にフォールバックするので、
+         日本語の本文フォントは従来どおりになる */
+      p,li,.prob-q,.formula,.page-meta,figcaption,table.comp,.step,.note,.prob-done,.sec-head h2{
         font-family:"STIX Two Math","Noto Sans JP",sans-serif;
       }
-      .card p,.card li,figcaption,table.comp{
-        font-family:"STIX Two Math","Noto Sans JP",sans-serif;
+      i,.frac,sub,sup,.key{
+        font-family:"STIX Two Math",serif;
       }
+      i{font-style:italic}
       sub,sup{font-size:.7em;line-height:0}
+
+      /* ---------- 定積分の記号 ∫（大きく、上下限を右の上下に分けて表示） ---------- */
+      .int{
+        display:inline-flex;align-items:stretch;vertical-align:-.42em;
+        margin:0 .16em 0 .04em;line-height:1;white-space:nowrap;
+      }
+      .int-sym{
+        font-family:"STIX Two Math",serif;font-style:normal;font-weight:400;
+        font-size:1.68em;line-height:1;display:flex;align-items:center;
+      }
+      .int-solo{font-size:1.68em;line-height:1;vertical-align:-.42em}
+      .lims{
+        display:inline-flex;flex-direction:column;justify-content:space-between;
+        margin-left:.12em;padding:.10em 0;line-height:1;
+        font-family:"STIX Two Math",serif;
+      }
+      .lim-up,.lim-lo{
+        display:block;font-size:.70em;line-height:1.05;font-weight:700;
+        font-family:"STIX Two Math",serif;white-space:nowrap;
+      }
+      .lim-up{align-self:flex-start}
+      .lim-lo{align-self:flex-start}
+      /* 評価括弧 [F(x)] の上下限も同じ縦積みでそろえる */
+      .brk-lims{height:1.5em;vertical-align:-.52em;margin-left:.08em;padding:.06em 0}
+      .brk-lims .lim-up,.brk-lims .lim-lo{font-size:.68em}
       .frac{
         display:inline-flex;flex-direction:column;text-align:center;vertical-align:middle;
         margin:0 .12em;line-height:1.2;font-size:.84em;font-weight:700;
@@ -279,16 +310,16 @@
       <section class="howto" aria-label="使い方">
         <h2>このページの使い方（自習の流れ）</h2>
         <ol>
-          <li><b>解説</b>を「次へ」で1ステップずつ読み進めて、定積分の意味をつかむ</li>
-          <li><b>例・例題</b>をヒントで解く ― 分からなければ下の <span class="next-word">次へ</span> でヒントを1つずつ開く</li>
+          <li>まず<b>解説A</b>を、下の <span class="next-word">次へ</span> でステップを1つずつ開きながら読んで、定積分の値が原始関数の「差」で決まることをつかむ</li>
+          <li><b>例・例題</b>を、下の <span class="next-word">次へ</span> でヒントを1つずつ開きながら解いて、定積分の計算の型をつかむ</li>
           <li><b>練習問題</b>に挑戦 ― 答えは最後のヒントのあとに出てくるよ</li>
         </ol>
       </section>
 
       <!-- ================= 解説A ================= -->
       <div class="sec-head">
-        <span class="sec-tag">解説 A</span>
-        <h2>定積分 ― 原始関数の「差」で値が決まる</h2>
+        <span class="sec-tag">解説</span>
+        <h2>解説 A　定積分 ― 原始関数の『差』で値が決まる</h2>
         <span class="pno">教科書 p.206〜207</span>
       </div>
 
@@ -300,79 +331,38 @@
           </div>
           <span class="prob-state">ステップ 0 / 4</span>
         </div>
-        <p class="prob-q">関数 <i>f</i>(<i>x</i>)＝2<i>x</i> について、原始関数の差 F(3)−F(1) を計算してみよう。下の <b>次へ</b> で1ステップずつ進めてね。</p>
-        <figure>
-          <div class="figbox">
-            <svg viewBox="0 0 520 268" role="img" aria-label="直線 y＝2x のグラフ。xが1から3までの部分とx軸の間の領域が塗られている">
-              <defs>
-                <marker id="ah-axA" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                  <path d="M0,0 L10,5 L0,10 z" fill="var(--ink)"></path>
-                </marker>
-              </defs>
-              <!-- 塗りつぶし領域：x=1..3, 0<=y<=2x （原点(80,216), 1目盛 x=104px, y=24px） -->
-              <polygon points="184,216 392,216 392,72 184,168" fill="var(--accent-soft)" stroke="none"></polygon>
-              <!-- 軸 -->
-              <line x1="40" y1="216" x2="500" y2="216" class="axis-line" marker-end="url(#ah-axA)"></line>
-              <line x1="80" y1="248" x2="80" y2="16" class="axis-line" marker-end="url(#ah-axA)"></line>
-              <!-- 直線 y=2x -->
-              <line x1="80" y1="216" x2="444" y2="24" stroke="var(--blue)" stroke-width="3"></line>
-              <!-- 破線：x=1, x=3 -->
-              <line x1="184" y1="216" x2="184" y2="168" stroke="var(--ink-soft)" stroke-width="1.6" stroke-dasharray="5 4"></line>
-              <line x1="392" y1="216" x2="392" y2="72" stroke="var(--ink-soft)" stroke-width="1.6" stroke-dasharray="5 4"></line>
-              <circle cx="184" cy="168" r="4" fill="var(--blue)"></circle>
-              <circle cx="392" cy="72" r="4" fill="var(--blue)"></circle>
-              <text x="184" y="240" text-anchor="middle" class="svg-txt" font-size="16">1</text>
-              <text x="392" y="240" text-anchor="middle" class="svg-txt" font-size="16">3</text>
-              <text x="66" y="240" text-anchor="middle" class="svg-txt" font-size="16">O</text>
-              <text x="492" y="240" text-anchor="middle" class="svg-txt" font-size="16" font-style="italic">x</text>
-              <text x="94" y="30" class="svg-txt" font-size="16" font-style="italic">y</text>
-              <text x="398" y="52" class="svg-txt" font-size="16" fill="var(--blue)">y＝2x</text>
-              <text x="288" y="196" text-anchor="middle" class="svg-txt" font-size="14.5" fill="var(--accent-deep)">この部分の面積のような量</text>
-            </svg>
-          </div>
-          <figcaption>直線 y＝2x と x 軸、x＝1、x＝3 で囲まれた部分。この量を、原始関数の「差」で求めるのが定積分だ。</figcaption>
-        </figure>
+        <p class="prob-q">関数 <i>f</i>(<i>x</i>)＝2<i>x</i> を例に、定積分の値がどうやって決まるかを、順を追って見ていこう。</p>
 
         <div class="step stage">
-          <h3>ステップ 1 ― まず原始関数を用意する</h3>
-          <p><i>f</i>(<i>x</i>)＝2<i>x</i> の原始関数は、前回学んだように</p>
-          <p class="formula">F(<i>x</i>) = <i>x</i><sup>2</sup> + C （C は積分定数）</p>
-          <p>困ったことに、C は<b>どんな数でもよい</b>ので、原始関数は1つに決まらない。ところが、次のステップで「差」をとると、この C がきれいに消えてしまうんだ。</p>
+          <h3>ステップ 1 ― 原始関数を用意する</h3>
+          <p>微分すると <i>f</i>(<i>x</i>) になる関数を、<i>f</i>(<i>x</i>) の<b>原始関数</b>といい、F(<i>x</i>) と書く。</p>
+          <p><i>x</i><sup>2</sup> を微分すると 2<i>x</i> になるから、<i>f</i>(<i>x</i>)＝2<i>x</i> の原始関数の1つは <i>x</i><sup>2</sup> だ。定数を微分すると 0 になるので、積分定数 C を使うと、原始関数は一般に次のように書ける。</p>
+          <p class="formula">F(<i>x</i>)＝<i>x</i><sup>2</sup>＋C　（C は積分定数）</p>
+          <p>C の値によって原始関数は無数にあるけれど、このあと「差」をとると C が消えて、値は1つに決まる。それをステップ2・3で確かめよう。</p>
         </div>
         <div class="step stage">
-          <h3>ステップ 2 ― x＝3 と x＝1 を代入する</h3>
-          <p>F(<i>x</i>)＝<i>x</i><sup>2</sup>＋C に、<i>x</i>＝3 と <i>x</i>＝1 をそれぞれ代入すると</p>
-          <p class="formula">F(3) = 3<sup>2</sup> + C = 9 + C， F(1) = 1<sup>2</sup> + C = 1 + C</p>
-          <p>どちらにも C がついたままだ。ここから差をとってみよう。</p>
+          <h3>ステップ 2 ― <i>x</i>＝3 と <i>x</i>＝1 を代入する</h3>
+          <p>用意した原始関数 F(<i>x</i>)＝<i>x</i><sup>2</sup>＋C に、<i>x</i>＝3 と <i>x</i>＝1 をそれぞれ代入する。</p>
+          <p class="formula">F(3)＝3<sup>2</sup>＋C＝9＋C</p>
+          <p class="formula">F(1)＝1<sup>2</sup>＋C＝1＋C</p>
+          <p>どちらの値にも、同じ C がついたまま残っていることに注目しよう。</p>
         </div>
         <div class="step stage">
-          <h3>ステップ 3 ― 差をとると C が消える！</h3>
-          <p class="formula">F(3)−F(1) = (9 + <span class="cancel">C</span>)−(1 + <span class="cancel">C</span>) = 9−1 = 8</p>
-          <p>C は引き算で<b>ちょうど打ち消し合う</b>。だから、C にどんな数を入れても、差 F(3)−F(1) の値は <b>8</b> でいつも同じになる。</p>
-          <p>つまり<b>原始関数の差は、C の取り方によらず1つの値に決まる</b>。この「決まった値」に名前をつけたものが、次で学ぶ定積分だ。</p>
+          <h3>ステップ 3 ― 差をとると C が消える</h3>
+          <p>2つの値の差 F(3)−F(1) を計算すると…</p>
+          <p class="formula">F(3)−F(1)＝(9＋C)−(1＋C)＝9−1＋C−C＝8</p>
+          <p>C−C＝0 になって、<span class="key">積分定数 C が消える</span>。だからこの差は、C の取り方によらず 8 と1つに決まるんだ。</p>
         </div>
         <div class="step stage">
           <h3>ステップ 4 ― 定積分の定義と用語</h3>
-          <p>関数 <i>f</i>(<i>x</i>) の原始関数の1つを F(<i>x</i>) とするとき、差 F(<i>b</i>)−F(<i>a</i>) を、<i>f</i>(<i>x</i>) の <b><i>a</i> から <i>b</i> までの<span class="key">定積分</span></b>といい、次のように書く。</p>
-          <p class="formula">∫<sub><i>a</i></sub><sup><i>b</i></sup> <i>f</i>(<i>x</i>)<i>dx</i> = [F(<i>x</i>)]<sub><i>a</i></sub><sup><i>b</i></sup> = F(<i>b</i>)−F(<i>a</i>)</p>
-          <figure>
-            <div class="figbox">
-              <svg viewBox="0 0 520 150" role="img" aria-label="定積分の記号：下端aと上端bの位置を示す図">
-                <text x="196" y="118" text-anchor="middle" class="svg-txt" font-size="96">∫</text>
-                <text x="222" y="52" class="svg-txt" font-size="26" font-style="italic">b</text>
-                <text x="222" y="128" class="svg-txt" font-size="26" font-style="italic">a</text>
-                <text x="252" y="102" class="svg-txt" font-size="30" font-style="italic">f(x) dx</text>
-                <line x1="238" y1="44" x2="330" y2="44" stroke="var(--orange)" stroke-width="2"></line>
-                <line x1="238" y1="116" x2="330" y2="116" stroke="var(--blue)" stroke-width="2"></line>
-                <text x="338" y="50" class="svg-txt" font-size="16" fill="var(--orange)">上端（上の数 b）</text>
-                <text x="338" y="122" class="svg-txt" font-size="16" fill="var(--blue)">下端（下の数 a）</text>
-              </svg>
-            </div>
-            <figcaption>∫ の右上につく数が<b>上端</b>、右下につく数が<b>下端</b>。計算は「上端を代入した値 − 下端を代入した値」だ。</figcaption>
-          </figure>
-          <p>さっきの計算は、定積分の記号で書くと ∫<sub>1</sub><sup>3</sup> 2<i>x dx</i>＝[<i>x</i><sup>2</sup>]<sub>1</sub><sup>3</sup>＝9−1＝8 となる。積分定数 C は差をとると消えるので、定積分の計算では <b>C＝0 の原始関数</b>（いちばん簡単なもの）を使ってよい。</p>
+          <p>この「原始関数の差」を記号で書いたものが<b>定積分</b>だ。一般に、F(<i>x</i>) を <i>f</i>(<i>x</i>) の原始関数として、次のように定義する。</p>
+          <p class="formula"><span class="int"><span class="int-sym">∫</span><span class="lims"><span class="lim-up"><i>b</i></span><span class="lim-lo"><i>a</i></span></span></span> <i>f</i>(<i>x</i>)<i>dx</i>＝[F(<i>x</i>)]<span class="lims brk-lims"><span class="lim-up"><i>b</i></span><span class="lim-lo"><i>a</i></span></span>＝F(<i>b</i>)−F(<i>a</i>)</p>
+          <p>記号 <span class="int-solo">∫</span> は積分を表す記号で、<i>dx</i> は「<i>x</i> について積分する」という意味だ。∫ の右上に書いた <i>b</i> を<b>上端</b>、右下に書いた <i>a</i> を<b>下端</b>という。</p>
+          <p>[F(<i>x</i>)]<span class="lims brk-lims"><span class="lim-up"><i>b</i></span><span class="lim-lo"><i>a</i></span></span> という書き方は、「F(上端)−F(下端) を計算せよ」という合図だよ。</p>
+          <p>ステップ3で見たとおり、差をとると C は消える。だから計算のときは、<span class="key">C＝0 の原始関数を使ってよい</span>。この例では F(<i>x</i>)＝<i>x</i><sup>2</sup> として計算できる。</p>
+          <p class="formula"><span class="int"><span class="int-sym">∫</span><span class="lims"><span class="lim-up">3</span><span class="lim-lo">1</span></span></span> 2<i>x dx</i>＝[<i>x</i><sup>2</sup>]<span class="lims brk-lims"><span class="lim-up">3</span><span class="lim-lo">1</span></span>＝3<sup>2</sup>−1<sup>2</sup>＝9−1＝8</p>
         </div>
-        <p class="prob-done">解説A クリア！　定積分は「原始関数の差」。次は例15で計算の型を確認しよう。</p>
+        <p class="prob-done">解説A クリア！　次は例15で、実際に定積分を計算してみよう。</p>
       </section>
 
       <!-- ================= 例15 ================= -->
@@ -391,7 +381,7 @@
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <p class="prob-q">次の定積分を求めよ。</p>
-        <p class="formula">∫<sub>1</sub><sup>2</sup> <i>x</i><sup>2</sup><i>dx</i></p>
+        <p class="formula"><span class="int"><span class="int-sym">∫</span><span class="lims"><span class="lim-up">2</span><span class="lim-lo">1</span></span></span> <i>x</i><sup>2</sup><i>dx</i></p>
 
         <div class="step hint">
           <h3>ヒント 1 ― まず原始関数</h3>
@@ -401,14 +391,14 @@
         <div class="step hint">
           <h3>ヒント 2 ― 代入して差をとる</h3>
           <p>原始関数は <span class="frac"><span><i>x</i><sup>3</sup></span><span>3</span></span> だ。これを使って</p>
-          <p class="formula">[<span class="frac"><span><i>x</i><sup>3</sup></span><span>3</span></span>]<sub>1</sub><sup>2</sup> = <span class="frac"><span>2<sup>3</sup></span><span>3</span></span>−<span class="frac"><span>1<sup>3</sup></span><span>3</span></span></p>
+          <p class="formula">[<span class="frac"><span><i>x</i><sup>3</sup></span><span>3</span></span>]<span class="lims brk-lims"><span class="lim-up">2</span><span class="lim-lo">1</span></span>＝<span class="frac"><span>2<sup>3</sup></span><span>3</span></span>−<span class="frac"><span>1<sup>3</sup></span><span>3</span></span></p>
           <p>あとは 2<sup>3</sup>＝8、1<sup>3</sup>＝1 を計算するだけだ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
-          <p class="big">∫<sub>1</sub><sup>2</sup> <i>x</i><sup>2</sup><i>dx</i> = <span class="frac"><span>7</span><span>3</span></span></p>
-          <p>∫<sub>1</sub><sup>2</sup> <i>x</i><sup>2</sup><i>dx</i>＝[<span class="frac"><span><i>x</i><sup>3</sup></span><span>3</span></span>]<sub>1</sub><sup>2</sup>＝<span class="frac"><span>8</span><span>3</span></span>−<span class="frac"><span>1</span><span>3</span></span>＝<span class="frac"><span>7</span><span>3</span></span>。</p>
-          <p class="note"><b>書き方の型：</b>[　] の右下に下端、右上に上端を小さく書く。[F(<i>x</i>)]<sub>a</sub><sup>b</sup> は「F(<i>b</i>)−F(<i>a</i>) を計算せよ」という合図だよ。</p>
+          <p class="big"><span class="int"><span class="int-sym">∫</span><span class="lims"><span class="lim-up">2</span><span class="lim-lo">1</span></span></span> <i>x</i><sup>2</sup><i>dx</i>＝<span class="frac"><span>7</span><span>3</span></span></p>
+          <p><span class="int"><span class="int-sym">∫</span><span class="lims"><span class="lim-up">2</span><span class="lim-lo">1</span></span></span> <i>x</i><sup>2</sup><i>dx</i>＝[<span class="frac"><span><i>x</i><sup>3</sup></span><span>3</span></span>]<span class="lims brk-lims"><span class="lim-up">2</span><span class="lim-lo">1</span></span>＝<span class="frac"><span>8</span><span>3</span></span>−<span class="frac"><span>1</span><span>3</span></span>＝<span class="frac"><span>7</span><span>3</span></span>。</p>
+          <p class="note"><b>書き方の型：</b>[　] の右下に下端、右上に上端を小さく書く。[F(<i>x</i>)]<span class="lims brk-lims"><span class="lim-up">b</span><span class="lim-lo">a</span></span> は「F(<i>b</i>)−F(<i>a</i>) を計算せよ」という合図だよ。</p>
         </div>
         <p class="prob-done">例15 クリア！　次は練習28で同じ型を繰り返そう。</p>
       </section>
@@ -436,7 +426,7 @@
         <!-- (1) -->
         <div class="tabpanel show" id="panel-ren28-1" data-flow="ren28-1" data-label="練習28 (1)">
           <div class="prob-head">
-            <span class="prob-q" style="margin:0">(1)　∫<sub>1</sub><sup>3</sup> <i>x dx</i></span>
+            <span class="prob-q" style="margin:0">(1)　<span class="int"><span class="int-sym">∫</span><span class="lims"><span class="lim-up">3</span><span class="lim-lo">1</span></span></span> <i>x dx</i></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
@@ -447,13 +437,13 @@
           <div class="step hint">
             <h3>ヒント 2 ― 上端 3、下端 1 を代入</h3>
             <p>原始関数は <span class="frac"><span><i>x</i><sup>2</sup></span><span>2</span></span> だ。</p>
-            <p class="formula">[<span class="frac"><span><i>x</i><sup>2</sup></span><span>2</span></span>]<sub>1</sub><sup>3</sup> = <span class="frac"><span>3<sup>2</sup></span><span>2</span></span>−<span class="frac"><span>1<sup>2</sup></span><span>2</span></span></p>
+            <p class="formula">[<span class="frac"><span><i>x</i><sup>2</sup></span><span>2</span></span>]<span class="lims brk-lims"><span class="lim-up">3</span><span class="lim-lo">1</span></span>＝<span class="frac"><span>3<sup>2</sup></span><span>2</span></span>−<span class="frac"><span>1<sup>2</sup></span><span>2</span></span></p>
             <p>3<sup>2</sup>＝9、1<sup>2</sup>＝1。差を計算してみよう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (1)</h3>
             <p class="big">4</p>
-            <p>∫<sub>1</sub><sup>3</sup> <i>x dx</i>＝[<span class="frac"><span><i>x</i><sup>2</sup></span><span>2</span></span>]<sub>1</sub><sup>3</sup>＝<span class="frac"><span>9</span><span>2</span></span>−<span class="frac"><span>1</span><span>2</span></span>＝<span class="frac"><span>8</span><span>2</span></span>＝4。</p>
+            <p><span class="int"><span class="int-sym">∫</span><span class="lims"><span class="lim-up">3</span><span class="lim-lo">1</span></span></span> <i>x dx</i>＝[<span class="frac"><span><i>x</i><sup>2</sup></span><span>2</span></span>]<span class="lims brk-lims"><span class="lim-up">3</span><span class="lim-lo">1</span></span>＝<span class="frac"><span>9</span><span>2</span></span>−<span class="frac"><span>1</span><span>2</span></span>＝<span class="frac"><span>8</span><span>2</span></span>＝4。</p>
           </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
@@ -461,7 +451,7 @@
         <!-- (2) -->
         <div class="tabpanel" id="panel-ren28-2" data-flow="ren28-2" data-label="練習28 (2)">
           <div class="prob-head">
-            <span class="prob-q" style="margin:0">(2)　∫<sub>−1</sub><sup>2</sup> <i>x</i><sup>2</sup><i>dx</i></span>
+            <span class="prob-q" style="margin:0">(2)　<span class="int"><span class="int-sym">∫</span><span class="lims"><span class="lim-up">2</span><span class="lim-lo">−1</span></span></span> <i>x</i><sup>2</sup><i>dx</i></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
@@ -471,13 +461,13 @@
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 下端 −1 の代入に注意</h3>
-            <p class="formula">[<span class="frac"><span><i>x</i><sup>3</sup></span><span>3</span></span>]<sub>−1</sub><sup>2</sup> = <span class="frac"><span>2<sup>3</sup></span><span>3</span></span>−<span class="frac"><span>(−1)<sup>3</sup></span><span>3</span></span></p>
+            <p class="formula">[<span class="frac"><span><i>x</i><sup>3</sup></span><span>3</span></span>]<span class="lims brk-lims"><span class="lim-up">2</span><span class="lim-lo">−1</span></span>＝<span class="frac"><span>2<sup>3</sup></span><span>3</span></span>−<span class="frac"><span>(−1)<sup>3</sup></span><span>3</span></span></p>
             <p>(−1)<sup>3</sup>＝−1 だから、引く数は<b>負の数</b>になる。「負の数を引く」とどうなるか、符号に気をつけて計算しよう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (2)</h3>
             <p class="big">3</p>
-            <p>∫<sub>−1</sub><sup>2</sup> <i>x</i><sup>2</sup><i>dx</i>＝[<span class="frac"><span><i>x</i><sup>3</sup></span><span>3</span></span>]<sub>−1</sub><sup>2</sup>＝<span class="frac"><span>8</span><span>3</span></span>−(−<span class="frac"><span>1</span><span>3</span></span>)＝<span class="frac"><span>9</span><span>3</span></span>＝3。</p>
+            <p><span class="int"><span class="int-sym">∫</span><span class="lims"><span class="lim-up">2</span><span class="lim-lo">−1</span></span></span> <i>x</i><sup>2</sup><i>dx</i>＝[<span class="frac"><span><i>x</i><sup>3</sup></span><span>3</span></span>]<span class="lims brk-lims"><span class="lim-up">2</span><span class="lim-lo">−1</span></span>＝<span class="frac"><span>8</span><span>3</span></span>−(−<span class="frac"><span>1</span><span>3</span></span>)＝<span class="frac"><span>9</span><span>3</span></span>＝3。</p>
             <p class="note"><b>ここが大事：</b>下端が負の数のときは、代入した値が負になることがある。「−（負の数）＝＋」の符号処理を、かっこをつけて丁寧に書くのがミスを防ぐコツだよ。</p>
           </div>
           <p class="prob-done">(2) クリア！　最後の小問 (3) は少しひねった問題だよ。</p>
@@ -486,7 +476,7 @@
         <!-- (3) -->
         <div class="tabpanel" id="panel-ren28-3" data-flow="ren28-3" data-label="練習28 (3)">
           <div class="prob-head">
-            <span class="prob-q" style="margin:0">(3)　∫<sub>3</sub><sup>0</sup> 2<i>dx</i></span>
+            <span class="prob-q" style="margin:0">(3)　<span class="int"><span class="int-sym">∫</span><span class="lims"><span class="lim-up">0</span><span class="lim-lo">3</span></span></span> 2<i>dx</i></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
@@ -498,13 +488,13 @@
           <div class="step hint">
             <h3>ヒント 2 ― そのまま型どおりに代入する</h3>
             <p>上端は 0、下端は 3。順番を入れ替えたりせず、型どおり「F(上端)−F(下端)」で計算する。</p>
-            <p class="formula">[2<i>x</i>]<sub>3</sub><sup>0</sup> = 2×0−2×3</p>
+            <p class="formula">[2<i>x</i>]<span class="lims brk-lims"><span class="lim-up">0</span><span class="lim-lo">3</span></span>＝2×0−2×3</p>
             <p>2×0＝0、2×3＝6。差はいくつになるかな？</p>
           </div>
           <div class="step answer">
             <h3>解答 (3)</h3>
             <p class="big">−6</p>
-            <p>∫<sub>3</sub><sup>0</sup> 2<i>dx</i>＝[2<i>x</i>]<sub>3</sub><sup>0</sup>＝0−6＝−6。</p>
+            <p><span class="int"><span class="int-sym">∫</span><span class="lims"><span class="lim-up">0</span><span class="lim-lo">3</span></span></span> 2<i>dx</i>＝[2<i>x</i>]<span class="lims brk-lims"><span class="lim-up">0</span><span class="lim-lo">3</span></span>＝0−6＝−6。</p>
             <p class="note"><b>ここが大事：</b>この問題は<b>上端（0）＜下端（3）</b>。「F(上端)−F(下端)」の差が負になるので、<b>定積分の値は負になることもある</b>。下端・上端を勝手に入れ替えてはいけないよ。</p>
           </div>
           <p class="prob-done">(3) クリア！　練習28 おつかれさま。次は例題7で、式が長くなった場合の計算を見よう。</p>
@@ -533,7 +523,7 @@
         <!-- (1) -->
         <div class="tabpanel show" id="panel-ex7-1" data-flow="ex7-1" data-label="例題7 (1)">
           <div class="prob-head">
-            <span class="prob-q" style="margin:0">(1)　∫<sub>0</sub><sup>1</sup> (−<i>x</i><sup>2</sup>＋3<i>x</i>)<i>dx</i></span>
+            <span class="prob-q" style="margin:0">(1)　<span class="int"><span class="int-sym">∫</span><span class="lims"><span class="lim-up">1</span><span class="lim-lo">0</span></span></span> (−<i>x</i><sup>2</sup>＋3<i>x</i>)<i>dx</i></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
@@ -549,13 +539,13 @@
           </div>
           <div class="step hint">
             <h3>ヒント 3 ― F(1) を計算して通分する</h3>
-            <p class="formula">F(1) = −<span class="frac"><span>1</span><span>3</span></span> + <span class="frac"><span>3</span><span>2</span></span></p>
+            <p class="formula">F(1)＝−<span class="frac"><span>1</span><span>3</span></span>＋<span class="frac"><span>3</span><span>2</span></span></p>
             <p>分母 3 と 2 の最小公倍数 6 で通分して、差を計算してみよう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (1)</h3>
             <p class="big"><span class="frac"><span>7</span><span>6</span></span></p>
-            <p>∫<sub>0</sub><sup>1</sup> (−<i>x</i><sup>2</sup>＋3<i>x</i>)<i>dx</i>＝[−<span class="frac"><span><i>x</i><sup>3</sup></span><span>3</span></span>＋<span class="frac"><span>3</span><span>2</span></span><i>x</i><sup>2</sup>]<sub>0</sub><sup>1</sup>＝(−<span class="frac"><span>1</span><span>3</span></span>＋<span class="frac"><span>3</span><span>2</span></span>)−0＝−<span class="frac"><span>2</span><span>6</span></span>＋<span class="frac"><span>9</span><span>6</span></span>＝<span class="frac"><span>7</span><span>6</span></span>。</p>
+            <p><span class="int"><span class="int-sym">∫</span><span class="lims"><span class="lim-up">1</span><span class="lim-lo">0</span></span></span> (−<i>x</i><sup>2</sup>＋3<i>x</i>)<i>dx</i>＝[−<span class="frac"><span><i>x</i><sup>3</sup></span><span>3</span></span>＋<span class="frac"><span>3</span><span>2</span></span><i>x</i><sup>2</sup>]<span class="lims brk-lims"><span class="lim-up">1</span><span class="lim-lo">0</span></span>＝(−<span class="frac"><span>1</span><span>3</span></span>＋<span class="frac"><span>3</span><span>2</span></span>)−0＝−<span class="frac"><span>2</span><span>6</span></span>＋<span class="frac"><span>9</span><span>6</span></span>＝<span class="frac"><span>7</span><span>6</span></span>。</p>
           </div>
           <p class="prob-done">(1) クリア！　(2) は積の形から始まる問題だよ。</p>
         </div>
@@ -563,7 +553,7 @@
         <!-- (2) -->
         <div class="tabpanel" id="panel-ex7-2" data-flow="ex7-2" data-label="例題7 (2)">
           <div class="prob-head">
-            <span class="prob-q" style="margin:0">(2)　∫<sub>−1</sub><sup>2</sup> (<i>x</i>＋4)(<i>x</i>−2)<i>dx</i></span>
+            <span class="prob-q" style="margin:0">(2)　<span class="int"><span class="int-sym">∫</span><span class="lims"><span class="lim-up">2</span><span class="lim-lo">−1</span></span></span> (<i>x</i>＋4)(<i>x</i>−2)<i>dx</i></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
@@ -575,19 +565,19 @@
           <div class="step hint">
             <h3>ヒント 2 ― 展開して原始関数を作る</h3>
             <p>展開すると <i>x</i><sup>2</sup>＋2<i>x</i>−8 になる。項ごとに原始関数を作ると</p>
-            <p class="formula">F(<i>x</i>) = <span class="frac"><span><i>x</i><sup>3</sup></span><span>3</span></span> + <i>x</i><sup>2</sup>−8<i>x</i></p>
+            <p class="formula">F(<i>x</i>)＝<span class="frac"><span><i>x</i><sup>3</sup></span><span>3</span></span>＋<i>x</i><sup>2</sup>−8<i>x</i></p>
             <p>あとは F(2) と F(−1) を別々に計算して、差をとるだけだ。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 3 ― F(2) と F(−1) を別々に計算する</h3>
-            <p class="formula">F(2) = <span class="frac"><span>8</span><span>3</span></span> + 4−16 = −<span class="frac"><span>28</span><span>3</span></span></p>
-            <p class="formula">F(−1) = −<span class="frac"><span>1</span><span>3</span></span> + 1 + 8 = <span class="frac"><span>26</span><span>3</span></span></p>
+            <p class="formula">F(2)＝<span class="frac"><span>8</span><span>3</span></span>＋4−16＝−<span class="frac"><span>28</span><span>3</span></span></p>
+            <p class="formula">F(−1)＝−<span class="frac"><span>1</span><span>3</span></span>＋1＋8＝<span class="frac"><span>26</span><span>3</span></span></p>
             <p>最後に F(2)−F(−1) を計算する。「−（正の数）」の処理に注意してね。</p>
           </div>
           <div class="step answer">
             <h3>解答 (2)</h3>
             <p class="big">−18</p>
-            <p>∫<sub>−1</sub><sup>2</sup> (<i>x</i>＋4)(<i>x</i>−2)<i>dx</i>＝∫<sub>−1</sub><sup>2</sup> (<i>x</i><sup>2</sup>＋2<i>x</i>−8)<i>dx</i>＝[<span class="frac"><span><i>x</i><sup>3</sup></span><span>3</span></span>＋<i>x</i><sup>2</sup>−8<i>x</i>]<sub>−1</sub><sup>2</sup>＝(−<span class="frac"><span>28</span><span>3</span></span>)−<span class="frac"><span>26</span><span>3</span></span>＝−<span class="frac"><span>54</span><span>3</span></span>＝−18。</p>
+            <p><span class="int"><span class="int-sym">∫</span><span class="lims"><span class="lim-up">2</span><span class="lim-lo">−1</span></span></span> (<i>x</i>＋4)(<i>x</i>−2)<i>dx</i>＝<span class="int"><span class="int-sym">∫</span><span class="lims"><span class="lim-up">2</span><span class="lim-lo">−1</span></span></span> (<i>x</i><sup>2</sup>＋2<i>x</i>−8)<i>dx</i>＝[<span class="frac"><span><i>x</i><sup>3</sup></span><span>3</span></span>＋<i>x</i><sup>2</sup>−8<i>x</i>]<span class="lims brk-lims"><span class="lim-up">2</span><span class="lim-lo">−1</span></span>＝(−<span class="frac"><span>28</span><span>3</span></span>)−<span class="frac"><span>26</span><span>3</span></span>＝−<span class="frac"><span>54</span><span>3</span></span>＝−18。</p>
             <p class="note"><b>計算のコツ：</b>式が長いときは、F(上端) と F(下端) を<b>別々の行で先に計算</b>してから差をとると、符号ミスがぐっと減るよ。</p>
           </div>
           <p class="prob-done">(2) クリア！　例題7 の型を練習29で練習しよう。</p>
@@ -616,7 +606,7 @@
         <!-- (1) -->
         <div class="tabpanel show" id="panel-ren29-1" data-flow="ren29-1" data-label="練習29 (1)">
           <div class="prob-head">
-            <span class="prob-q" style="margin:0">(1)　∫<sub>0</sub><sup>2</sup> (<i>x</i><sup>2</sup>＋4<i>x</i>−5)<i>dx</i></span>
+            <span class="prob-q" style="margin:0">(1)　<span class="int"><span class="int-sym">∫</span><span class="lims"><span class="lim-up">2</span><span class="lim-lo">0</span></span></span> (<i>x</i><sup>2</sup>＋4<i>x</i>−5)<i>dx</i></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
@@ -628,13 +618,13 @@
           <div class="step hint">
             <h3>ヒント 2 ― F(2) を計算する（F(0)＝0）</h3>
             <p>F(<i>x</i>)＝<span class="frac"><span><i>x</i><sup>3</sup></span><span>3</span></span>＋2<i>x</i><sup>2</sup>−5<i>x</i> だ。下端は 0 だから F(0)＝0 で、求めるのは F(2) だけ。</p>
-            <p class="formula">F(2) = <span class="frac"><span>2<sup>3</sup></span><span>3</span></span> + 2×2<sup>2</sup>−5×2</p>
+            <p class="formula">F(2)＝<span class="frac"><span>2<sup>3</sup></span><span>3</span></span>＋2×2<sup>2</sup>−5×2</p>
             <p>2<sup>3</sup>＝8、2×2<sup>2</sup>＝8、5×2＝10 を代入して計算してみよう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (1)</h3>
             <p class="big"><span class="frac"><span>2</span><span>3</span></span></p>
-            <p>∫<sub>0</sub><sup>2</sup> (<i>x</i><sup>2</sup>＋4<i>x</i>−5)<i>dx</i>＝[<span class="frac"><span><i>x</i><sup>3</sup></span><span>3</span></span>＋2<i>x</i><sup>2</sup>−5<i>x</i>]<sub>0</sub><sup>2</sup>＝(<span class="frac"><span>8</span><span>3</span></span>＋8−10)−0＝<span class="frac"><span>8</span><span>3</span></span>−2＝<span class="frac"><span>2</span><span>3</span></span>。</p>
+            <p><span class="int"><span class="int-sym">∫</span><span class="lims"><span class="lim-up">2</span><span class="lim-lo">0</span></span></span> (<i>x</i><sup>2</sup>＋4<i>x</i>−5)<i>dx</i>＝[<span class="frac"><span><i>x</i><sup>3</sup></span><span>3</span></span>＋2<i>x</i><sup>2</sup>−5<i>x</i>]<span class="lims brk-lims"><span class="lim-up">2</span><span class="lim-lo">0</span></span>＝(<span class="frac"><span>8</span><span>3</span></span>＋8−10)−0＝<span class="frac"><span>8</span><span>3</span></span>−2＝<span class="frac"><span>2</span><span>3</span></span>。</p>
           </div>
           <p class="prob-done">(1) クリア！　(2) は積の形の問題だよ。</p>
         </div>
@@ -642,7 +632,7 @@
         <!-- (2) -->
         <div class="tabpanel" id="panel-ren29-2" data-flow="ren29-2" data-label="練習29 (2)">
           <div class="prob-head">
-            <span class="prob-q" style="margin:0">(2)　∫<sub>2</sub><sup>3</sup> (<i>x</i>−2)(<i>x</i>−3)<i>dx</i></span>
+            <span class="prob-q" style="margin:0">(2)　<span class="int"><span class="int-sym">∫</span><span class="lims"><span class="lim-up">3</span><span class="lim-lo">2</span></span></span> (<i>x</i>−2)(<i>x</i>−3)<i>dx</i></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
@@ -654,13 +644,13 @@
           <div class="step hint">
             <h3>ヒント 2 ― 原始関数を作って、両端を別々に計算</h3>
             <p>展開すると <i>x</i><sup>2</sup>−5<i>x</i>＋6 で、原始関数は F(<i>x</i>)＝<span class="frac"><span><i>x</i><sup>3</sup></span><span>3</span></span>−<span class="frac"><span>5</span><span>2</span></span><i>x</i><sup>2</sup>＋6<i>x</i>。</p>
-            <p class="formula">F(3) = 9−<span class="frac"><span>45</span><span>2</span></span> + 18， F(2) = <span class="frac"><span>8</span><span>3</span></span>−10 + 12</p>
+            <p class="formula">F(3)＝9−<span class="frac"><span>45</span><span>2</span></span>＋18，　F(2)＝<span class="frac"><span>8</span><span>3</span></span>−10＋12</p>
             <p>それぞれを分数に直してから、F(3)−F(2) を計算してみよう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (2)</h3>
             <p class="big">−<span class="frac"><span>1</span><span>6</span></span></p>
-            <p>∫<sub>2</sub><sup>3</sup> (<i>x</i>−2)(<i>x</i>−3)<i>dx</i>＝∫<sub>2</sub><sup>3</sup> (<i>x</i><sup>2</sup>−5<i>x</i>＋6)<i>dx</i>＝[<span class="frac"><span><i>x</i><sup>3</sup></span><span>3</span></span>−<span class="frac"><span>5</span><span>2</span></span><i>x</i><sup>2</sup>＋6<i>x</i>]<sub>2</sub><sup>3</sup>＝<span class="frac"><span>9</span><span>2</span></span>−<span class="frac"><span>14</span><span>3</span></span>＝<span class="frac"><span>27</span><span>6</span></span>−<span class="frac"><span>28</span><span>6</span></span>＝−<span class="frac"><span>1</span><span>6</span></span>。</p>
+            <p><span class="int"><span class="int-sym">∫</span><span class="lims"><span class="lim-up">3</span><span class="lim-lo">2</span></span></span> (<i>x</i>−2)(<i>x</i>−3)<i>dx</i>＝<span class="int"><span class="int-sym">∫</span><span class="lims"><span class="lim-up">3</span><span class="lim-lo">2</span></span></span> (<i>x</i><sup>2</sup>−5<i>x</i>＋6)<i>dx</i>＝[<span class="frac"><span><i>x</i><sup>3</sup></span><span>3</span></span>−<span class="frac"><span>5</span><span>2</span></span><i>x</i><sup>2</sup>＋6<i>x</i>]<span class="lims brk-lims"><span class="lim-up">3</span><span class="lim-lo">2</span></span>＝<span class="frac"><span>9</span><span>2</span></span>−<span class="frac"><span>14</span><span>3</span></span>＝<span class="frac"><span>27</span><span>6</span></span>−<span class="frac"><span>28</span><span>6</span></span>＝−<span class="frac"><span>1</span><span>6</span></span>。</p>
             <p class="note"><b>なぜ負になるの？</b>2＜<i>x</i>＜3 では (<i>x</i>−2) は正、(<i>x</i>−3) は負だから、積 (<i>x</i>−2)(<i>x</i>−3) は<b>負</b>の値ばかりをとる。関数の値が負の区間では、定積分も負になるんだ（次の項「定積分と面積」で詳しく学ぶよ）。</p>
           </div>
           <p class="prob-done">(2) クリア！　練習29 おつかれさま。次は変数が x でない定積分だ。</p>
@@ -683,7 +673,7 @@
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <p class="prob-q">次の定積分を求めよ。</p>
-        <p class="formula">∫<sub>0</sub><sup>1</sup> (<i>t</i><sup>2</sup>−4<i>t</i>)<i>dt</i></p>
+        <p class="formula"><span class="int"><span class="int-sym">∫</span><span class="lims"><span class="lim-up">1</span><span class="lim-lo">0</span></span></span> (<i>t</i><sup>2</sup>−4<i>t</i>)<i>dt</i></p>
 
         <div class="step hint">
           <h3>ヒント 1 ― 変数が t でも、やることは同じ</h3>
@@ -692,14 +682,14 @@
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 上端 1、下端 0 を代入</h3>
-          <p class="formula">[<span class="frac"><span><i>t</i><sup>3</sup></span><span>3</span></span>−2<i>t</i><sup>2</sup>]<sub>0</sub><sup>1</sup> = (<span class="frac"><span>1</span><span>3</span></span>−2)−0</p>
+          <p class="formula">[<span class="frac"><span><i>t</i><sup>3</sup></span><span>3</span></span>−2<i>t</i><sup>2</sup>]<span class="lims brk-lims"><span class="lim-up">1</span><span class="lim-lo">0</span></span>＝(<span class="frac"><span>1</span><span>3</span></span>−2)−0</p>
           <p><span class="frac"><span>1</span><span>3</span></span>−2 を計算してみよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
-          <p class="big">∫<sub>0</sub><sup>1</sup> (<i>t</i><sup>2</sup>−4<i>t</i>)<i>dt</i> = −<span class="frac"><span>5</span><span>3</span></span></p>
-          <p>∫<sub>0</sub><sup>1</sup> (<i>t</i><sup>2</sup>−4<i>t</i>)<i>dt</i>＝[<span class="frac"><span><i>t</i><sup>3</sup></span><span>3</span></span>−2<i>t</i><sup>2</sup>]<sub>0</sub><sup>1</sup>＝<span class="frac"><span>1</span><span>3</span></span>−2＝−<span class="frac"><span>5</span><span>3</span></span>。</p>
-          <p class="note"><b>ここが大事：</b>積分の変数は「仮の文字」。∫<sub>0</sub><sup>1</sup> (<i>x</i><sup>2</sup>−4<i>x</i>)<i>dx</i> と書いても値は同じ −<span class="frac"><span>5</span><span>3</span></span> になる。定積分の答えは<b>数</b>であって、文字は残らないんだ。</p>
+          <p class="big"><span class="int"><span class="int-sym">∫</span><span class="lims"><span class="lim-up">1</span><span class="lim-lo">0</span></span></span> (<i>t</i><sup>2</sup>−4<i>t</i>)<i>dt</i>＝−<span class="frac"><span>5</span><span>3</span></span></p>
+          <p><span class="int"><span class="int-sym">∫</span><span class="lims"><span class="lim-up">1</span><span class="lim-lo">0</span></span></span> (<i>t</i><sup>2</sup>−4<i>t</i>)<i>dt</i>＝[<span class="frac"><span><i>t</i><sup>3</sup></span><span>3</span></span>−2<i>t</i><sup>2</sup>]<span class="lims brk-lims"><span class="lim-up">1</span><span class="lim-lo">0</span></span>＝<span class="frac"><span>1</span><span>3</span></span>−2＝−<span class="frac"><span>5</span><span>3</span></span>。</p>
+          <p class="note"><b>ここが大事：</b>積分の変数は「仮の文字」。<span class="int"><span class="int-sym">∫</span><span class="lims"><span class="lim-up">1</span><span class="lim-lo">0</span></span></span> (<i>x</i><sup>2</sup>−4<i>x</i>)<i>dx</i> と書いても値は同じ −<span class="frac"><span>5</span><span>3</span></span> になる。定積分の答えは<b>数</b>であって、文字は残らないんだ。</p>
         </div>
         <p class="prob-done">例16 クリア！　最後は練習30で、変数が t や y の問題に挑戦しよう。</p>
       </section>
@@ -726,7 +716,7 @@
         <!-- (1) -->
         <div class="tabpanel show" id="panel-ren30-1" data-flow="ren30-1" data-label="練習30 (1)">
           <div class="prob-head">
-            <span class="prob-q" style="margin:0">(1)　∫<sub>−1</sub><sup>2</sup> (−3<i>t</i><sup>2</sup>＋<i>t</i>＋1)<i>dt</i></span>
+            <span class="prob-q" style="margin:0">(1)　<span class="int"><span class="int-sym">∫</span><span class="lims"><span class="lim-up">2</span><span class="lim-lo">−1</span></span></span> (−3<i>t</i><sup>2</sup>＋<i>t</i>＋1)<i>dt</i></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
@@ -738,13 +728,13 @@
           <div class="step hint">
             <h3>ヒント 2 ― F(2) と F(−1) を別々に計算する</h3>
             <p>F(<i>t</i>)＝−<i>t</i><sup>3</sup>＋<span class="frac"><span><i>t</i><sup>2</sup></span><span>2</span></span>＋<i>t</i> だ。</p>
-            <p class="formula">F(2) = −8 + <span class="frac"><span>4</span><span>2</span></span> + 2， F(−1) = 1 + <span class="frac"><span>1</span><span>2</span></span>−1</p>
+            <p class="formula">F(2)＝−8＋<span class="frac"><span>4</span><span>2</span></span>＋2，　F(−1)＝1＋<span class="frac"><span>1</span><span>2</span></span>−1</p>
             <p>(−1)<sup>3</sup>＝−1 だから、−(−1)<sup>3</sup> は +1 になることに注意。2つを計算して、差をとってみよう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (1)</h3>
             <p class="big">−<span class="frac"><span>9</span><span>2</span></span></p>
-            <p>∫<sub>−1</sub><sup>2</sup> (−3<i>t</i><sup>2</sup>＋<i>t</i>＋1)<i>dt</i>＝[−<i>t</i><sup>3</sup>＋<span class="frac"><span><i>t</i><sup>2</sup></span><span>2</span></span>＋<i>t</i>]<sub>−1</sub><sup>2</sup>＝(−8＋2＋2)−(1＋<span class="frac"><span>1</span><span>2</span></span>−1)＝−4−<span class="frac"><span>1</span><span>2</span></span>＝−<span class="frac"><span>9</span><span>2</span></span>。</p>
+            <p><span class="int"><span class="int-sym">∫</span><span class="lims"><span class="lim-up">2</span><span class="lim-lo">−1</span></span></span> (−3<i>t</i><sup>2</sup>＋<i>t</i>＋1)<i>dt</i>＝[−<i>t</i><sup>3</sup>＋<span class="frac"><span><i>t</i><sup>2</sup></span><span>2</span></span>＋<i>t</i>]<span class="lims brk-lims"><span class="lim-up">2</span><span class="lim-lo">−1</span></span>＝(−8＋2＋2)−(1＋<span class="frac"><span>1</span><span>2</span></span>−1)＝−4−<span class="frac"><span>1</span><span>2</span></span>＝−<span class="frac"><span>9</span><span>2</span></span>。</p>
           </div>
           <p class="prob-done">(1) クリア！　(2) は変数 y の問題だよ。</p>
         </div>
@@ -752,7 +742,7 @@
         <!-- (2) -->
         <div class="tabpanel" id="panel-ren30-2" data-flow="ren30-2" data-label="練習30 (2)">
           <div class="prob-head">
-            <span class="prob-q" style="margin:0">(2)　∫<sub>−1</sub><sup>1</sup> 2(<i>y</i>＋3)(<i>y</i>−2)<i>dy</i></span>
+            <span class="prob-q" style="margin:0">(2)　<span class="int"><span class="int-sym">∫</span><span class="lims"><span class="lim-up">1</span><span class="lim-lo">−1</span></span></span> 2(<i>y</i>＋3)(<i>y</i>−2)<i>dy</i></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
@@ -764,13 +754,13 @@
           <div class="step hint">
             <h3>ヒント 2 ― 原始関数を作って両端を計算する</h3>
             <p>展開すると 2<i>y</i><sup>2</sup>＋2<i>y</i>−12 で、原始関数は F(<i>y</i>)＝<span class="frac"><span>2</span><span>3</span></span><i>y</i><sup>3</sup>＋<i>y</i><sup>2</sup>−12<i>y</i>。</p>
-            <p class="formula">F(1) = <span class="frac"><span>2</span><span>3</span></span> + 1−12， F(−1) = −<span class="frac"><span>2</span><span>3</span></span> + 1 + 12</p>
+            <p class="formula">F(1)＝<span class="frac"><span>2</span><span>3</span></span>＋1−12，　F(−1)＝−<span class="frac"><span>2</span><span>3</span></span>＋1＋12</p>
             <p>下端 −1 の代入では、(−1)<sup>3</sup>＝−1、(−1)<sup>2</sup>＝1、−12×(−1)＝+12 と、符号が項ごとに変わる。1項ずつ丁寧に計算しよう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (2)</h3>
             <p class="big">−<span class="frac"><span>68</span><span>3</span></span></p>
-            <p>∫<sub>−1</sub><sup>1</sup> 2(<i>y</i>＋3)(<i>y</i>−2)<i>dy</i>＝∫<sub>−1</sub><sup>1</sup> (2<i>y</i><sup>2</sup>＋2<i>y</i>−12)<i>dy</i>＝[<span class="frac"><span>2</span><span>3</span></span><i>y</i><sup>3</sup>＋<i>y</i><sup>2</sup>−12<i>y</i>]<sub>−1</sub><sup>1</sup>＝(<span class="frac"><span>2</span><span>3</span></span>＋1−12)−(−<span class="frac"><span>2</span><span>3</span></span>＋1＋12)＝(−<span class="frac"><span>31</span><span>3</span></span>)−<span class="frac"><span>37</span><span>3</span></span>＝−<span class="frac"><span>68</span><span>3</span></span>。</p>
+            <p><span class="int"><span class="int-sym">∫</span><span class="lims"><span class="lim-up">1</span><span class="lim-lo">−1</span></span></span> 2(<i>y</i>＋3)(<i>y</i>−2)<i>dy</i>＝<span class="int"><span class="int-sym">∫</span><span class="lims"><span class="lim-up">1</span><span class="lim-lo">−1</span></span></span> (2<i>y</i><sup>2</sup>＋2<i>y</i>−12)<i>dy</i>＝[<span class="frac"><span>2</span><span>3</span></span><i>y</i><sup>3</sup>＋<i>y</i><sup>2</sup>−12<i>y</i>]<span class="lims brk-lims"><span class="lim-up">1</span><span class="lim-lo">−1</span></span>＝(<span class="frac"><span>2</span><span>3</span></span>＋1−12)−(−<span class="frac"><span>2</span><span>3</span></span>＋1＋12)＝(−<span class="frac"><span>31</span><span>3</span></span>)−<span class="frac"><span>37</span><span>3</span></span>＝−<span class="frac"><span>68</span><span>3</span></span>。</p>
           </div>
           <p class="prob-done">(2) クリア！　このページの問題は全部終わり。よくがんばったね。</p>
         </div>
@@ -780,7 +770,7 @@
       <section class="card summary">
         <h2>この項のポイント</h2>
         <ul>
-          <li><b>定積分の定義</b>：∫<sub><i>a</i></sub><sup><i>b</i></sup> <i>f</i>(<i>x</i>)<i>dx</i>＝[F(<i>x</i>)]<sub><i>a</i></sub><sup><i>b</i></sup>＝F(<i>b</i>)−F(<i>a</i>)。原始関数の差は、積分定数 C の取り方によらず1つに決まる。</li>
+          <li><b>定積分の定義</b>：<span class="int"><span class="int-sym">∫</span><span class="lims"><span class="lim-up"><i>b</i></span><span class="lim-lo"><i>a</i></span></span></span> <i>f</i>(<i>x</i>)<i>dx</i>＝[F(<i>x</i>)]<span class="lims brk-lims"><span class="lim-up"><i>b</i></span><span class="lim-lo"><i>a</i></span></span>＝F(<i>b</i>)−F(<i>a</i>)。原始関数の差は、積分定数 C の取り方によらず1つに決まる。</li>
           <li><b>計算の型は2段階</b>：(1) 項ごとに原始関数を作る（積の形なら先に展開）。(2) 上端・下端を代入して差をとる。</li>
           <li><b>下端・上端の順番は絶対</b>：上端＜下端のときや、関数の値が負の区間では、定積分は<b>負の値</b>になることがある。勝手に入れ替えない。</li>
           <li><b>符号ミス対策</b>：F(上端) と F(下端) は別々の行で先に計算し、下端が負のときは代入にかっこをつける。</li>

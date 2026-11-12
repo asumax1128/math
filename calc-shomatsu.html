@@ -129,14 +129,60 @@
       }
       .formula{
         text-align:center;font-size:19px;font-weight:700;letter-spacing:.03em;
+        font-family:"STIX Two Math","Noto Sans JP",sans-serif;
         background:var(--surface2);border-radius:10px;padding:12px 8px;margin:0 0 14px;
       }
-      .fr{white-space:nowrap}
-      .fr sup,.fr sub{font-size:.68em}
-      sub,sup{font-size:.72em}
-      .card p,.card li,figcaption{
+      /* 分数は縦組みのまま維持（分子を上・分母を下に置く既存の .fr 構造は変更しない） */
+      .fr{white-space:nowrap;font-family:"STIX Two Math","Noto Sans JP",sans-serif}
+      .fr sup,.fr sub{font-size:.68em;font-family:"STIX Two Math","Noto Sans JP",sans-serif}
+      sub,sup{font-size:.72em;font-family:"STIX Two Math","Noto Sans JP",sans-serif}
+      /* ===== 数式フォントの徹底：本文・問題文・ヒント文・表・見出しなど
+         ページ内のすべてのテキストで、数式・変数・数字・記号は STIX Two Math で表示する。
+         STIX Two Math に無い日本語（かな・漢字）は次の Noto Sans JP にフォールバックするので、
+         本文の日本語フォントは従来どおり変わらない。 ===== */
+      body,.wrap,.ctrl-bar,
+      .card p,.card li,.card h3,figcaption,
+      .prob-q,.prob-state,.prob-done,.step p,.step h3,.answer .big,.note,
+      .howto,.howto h2,.howto li,.page-meta,.sec-head h2,.sec-tag,.pno,
+      .tbl,.tbl th,.tbl td,.def,.def p,.summary,.summary h2,.summary li,
+      .tab,.btn,.ctrl-label,.foot-note,.badge,header h1{
         font-family:"STIX Two Math","Noto Sans JP",sans-serif;
       }
+      /* イタリックの変数表記は数式フォントのイタリックに統一する */
+      i,em,var,.math-i{
+        font-family:"STIX Two Math","Noto Sans JP",sans-serif;font-style:italic;
+      }
+      /* ===== 積分記号の可読化（投影でも判読できる大きさと上下限の分離） =====
+         積分記号は本文の約1.65倍。上端は右上、下端は右下に、
+         縦に大きく離して配置する。不定積分（上下限なし）も同じ大きさ。 */
+      .int{
+        display:inline-flex;align-items:center;vertical-align:middle;
+        line-height:1;white-space:nowrap;margin:0 .14em 0 .06em;
+        font-family:"STIX Two Math","Noto Sans JP",sans-serif;
+      }
+      .int-sym{
+        display:inline-block;font-size:1.65em;line-height:1;font-weight:400;
+        font-style:normal;font-family:"STIX Two Math",sans-serif;
+        transform:translateY(-.04em);
+      }
+      .int-lims{
+        display:inline-flex;flex-direction:column;justify-content:space-between;
+        align-self:stretch;min-height:2.15em;padding:.12em 0 .12em .14em;
+        font-size:.76em;line-height:1;font-weight:700;
+        font-family:"STIX Two Math","Noto Sans JP",sans-serif;
+      }
+      .int-lims .int-up,.int-lims .int-low{display:block;line-height:1;white-space:nowrap}
+      .int-lims .int-up{text-align:left}
+      .int-lims .int-low{text-align:left}
+      .int-lims sup,.int-lims sub{font-size:.85em}
+      /* 原始関数の評価 [ … ] の上下限も、積分と同じく上下に離して表示する */
+      .eval-lims{
+        display:inline-flex;flex-direction:column;justify-content:space-between;
+        vertical-align:middle;min-height:2em;padding:.1em 0 .1em .1em;margin-right:.08em;
+        font-size:.76em;line-height:1;font-weight:700;
+        font-family:"STIX Two Math","Noto Sans JP",sans-serif;
+      }
+      .eval-lims .int-up,.eval-lims .int-low{display:block;line-height:1;white-space:nowrap}
 
       .prob{border:2px solid var(--line);transition:border-color .2s}
       .prob.active{border-color:var(--accent)}
@@ -624,7 +670,7 @@
         <!-- A6 (1) -->
         <div class="tabpanel show" id="panel-a6-1" data-flow="a6-1" data-label="A6 (1)">
           <div class="prob-head">
-            <span class="prob-q" style="margin:0">(1)　∫<sub>−2</sub><sup>2</sup> (2x−3)<sup>2</sup> dx</span>
+            <span class="prob-q" style="margin:0">(1)　<span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">2</span><span class="int-low">−2</span></span></span> (2x−3)<sup>2</sup> dx</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
@@ -641,7 +687,7 @@
           <div class="step answer">
             <h3>解答 (1)</h3>
             <p class="big"><span class="fr"><sup>172</sup>/<sub>3</sub></span></p>
-            <p>∫<sub>−2</sub><sup>2</sup> (2x−3)<sup>2</sup> dx＝∫<sub>−2</sub><sup>2</sup> (4x<sup>2</sup>−12x＋9) dx＝[<span class="fr"><sup>4</sup>/<sub>3</sub></span>x<sup>3</sup>−6x<sup>2</sup>＋9x]<sub>−2</sub><sup>2</sup>＝<span class="fr"><sup>14</sup>/<sub>3</sub></span>−(−<span class="fr"><sup>158</sup>/<sub>3</sub></span>)＝<span class="fr"><sup>172</sup>/<sub>3</sub></span>。</p>
+            <p><span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">2</span><span class="int-low">−2</span></span></span> (2x−3)<sup>2</sup> dx＝<span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">2</span><span class="int-low">−2</span></span></span> (4x<sup>2</sup>−12x＋9) dx＝[<span class="fr"><sup>4</sup>/<sub>3</sub></span>x<sup>3</sup>−6x<sup>2</sup>＋9x]<span class="eval-lims"><span class="int-up">2</span><span class="int-low">−2</span></span>＝<span class="fr"><sup>14</sup>/<sub>3</sub></span>−(−<span class="fr"><sup>158</sup>/<sub>3</sub></span>)＝<span class="fr"><sup>172</sup>/<sub>3</sub></span>。</p>
           </div>
           <p class="prob-done">(1) クリア！　(2) は区間の対称性が使える問題。タブを切り替えよう。</p>
         </div>
@@ -649,24 +695,24 @@
         <!-- A6 (2) -->
         <div class="tabpanel" id="panel-a6-2" data-flow="a6-2" data-label="A6 (2)">
           <div class="prob-head">
-            <span class="prob-q" style="margin:0">(2)　∫<sub>−√2</sub><sup>√2</sup> (t<sup>2</sup>−2) dt</span>
+            <span class="prob-q" style="margin:0">(2)　<span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">√2</span><span class="int-low">−√2</span></span></span> (t<sup>2</sup>−2) dt</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― 偶関数と対称な区間に気づく</h3>
             <p>被積分関数 t<sup>2</sup>−2 は、t を −t に変えても同じになる<b>偶関数</b>だ。そして積分区間も −√2 から √2 まで、0 を中心に対称になっている。</p>
-            <p>このとき ∫<sub>−√2</sub><sup>√2</sup> (t<sup>2</sup>−2) dt＝2∫<sub>0</sub><sup>√2</sup> (t<sup>2</sup>−2) dt と直せる。まずこの形に書き直そう。</p>
+            <p>このとき <span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">√2</span><span class="int-low">−√2</span></span></span> (t<sup>2</sup>−2) dt＝2<span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">√2</span><span class="int-low">0</span></span></span> (t<sup>2</sup>−2) dt と直せる。まずこの形に書き直そう。</p>
           </div>
           <div class="step hint">
-            <h3>ヒント 2 ― ∫<sub>0</sub><sup>√2</sup> を計算する</h3>
+            <h3>ヒント 2 ― <span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">√2</span><span class="int-low">0</span></span></span> を計算する</h3>
             <p>原始関数は <span class="fr"><sup>t<sup>3</sup></sup>/<sub>3</sub></span>−2t。上端 t＝√2 を代入しよう。</p>
             <p>ここで (√2)<sup>3</sup>＝2√2 になることがポイントだ。その値を代入して、中身を整理してみよう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (2)</h3>
             <p class="big">−<span class="fr"><sup>8√2</sup>/<sub>3</sub></span></p>
-            <p>∫<sub>−√2</sub><sup>√2</sup> (t<sup>2</sup>−2) dt＝2[<span class="fr"><sup>t<sup>3</sup></sup>/<sub>3</sub></span>−2t]<sub>0</sub><sup>√2</sup>＝2(<span class="fr"><sup>2√2</sup>/<sub>3</sub></span>−2√2)＝2・(−<span class="fr"><sup>4√2</sup>/<sub>3</sub></span>)＝−<span class="fr"><sup>8√2</sup>/<sub>3</sub></span>。</p>
+            <p><span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">√2</span><span class="int-low">−√2</span></span></span> (t<sup>2</sup>−2) dt＝2[<span class="fr"><sup>t<sup>3</sup></sup>/<sub>3</sub></span>−2t]<span class="eval-lims"><span class="int-up">√2</span><span class="int-low">0</span></span>＝2(<span class="fr"><sup>2√2</sup>/<sub>3</sub></span>−2√2)＝2・(−<span class="fr"><sup>4√2</sup>/<sub>3</sub></span>)＝−<span class="fr"><sup>8√2</sup>/<sub>3</sub></span>。</p>
             <p class="note"><b>答えが負になるわけ：</b>−√2＜t＜√2 では t<sup>2</sup>−2＜0 で、グラフは t 軸の下側にある。定積分は符号つきだから、負の値になるのが自然だ。</p>
           </div>
           <p class="prob-done">(2) クリア！　A6はこれで終わり。次はA7、定積分で表された関数の極値だ。</p>
@@ -681,11 +727,11 @@
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
         <div class="qside">
-        <p class="prob-q">関数 f(x)＝∫<sub>1</sub><sup>x</sup> (t−1)(t−2) dt の極値を求めよ。</p>
+        <p class="prob-q">関数 f(x)＝<span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">x</span><span class="int-low">1</span></span></span> (t−1)(t−2) dt の極値を求めよ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 1 ― f′(x) は「中身の t を x に変えたもの」</h3>
-          <p>定積分 ∫<sub>a</sub><sup>x</sup> g(t) dt を x で微分すると、g(x) がそのまま返ってくる（定積分と微分法の関係）。</p>
+          <p>定積分 <span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">x</span><span class="int-low">a</span></span></span> g(t) dt を x で微分すると、g(x) がそのまま返ってくる（定積分と微分法の関係）。</p>
           <p>だから f′(x) は、(t−1)(t−2) の t を x に置き換えた式になる。まず f′(x) を書こう。</p>
         </div>
         <div class="step hint">
@@ -696,13 +742,13 @@
         <div class="step hint">
           <h3>ヒント 3 ― 極値を、もとの定積分で計算する</h3>
           <p>f(1) は積分区間が 1 から 1 なので、値は 0 だ（計算しなくてよい）。</p>
-          <p>f(2)＝∫<sub>1</sub><sup>2</sup> (t−1)(t−2) dt は、被積分関数を t<sup>2</sup>−3t＋2 と展開してから積分しよう。</p>
+          <p>f(2)＝<span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">2</span><span class="int-low">1</span></span></span> (t−1)(t−2) dt は、被積分関数を t<sup>2</sup>−3t＋2 と展開してから積分しよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
           <p class="big">極大値 0（x＝1）、極小値 −<span class="fr"><sup>1</sup>/<sub>6</sub></span>（x＝2）</p>
           <p>f′(x)＝(x−1)(x−2) より、x＝1 で極大、x＝2 で極小になる。</p>
-          <p>f(1)＝∫<sub>1</sub><sup>1</sup> (t−1)(t−2) dt＝0。f(2)＝∫<sub>1</sub><sup>2</sup> (t<sup>2</sup>−3t＋2) dt＝[<span class="fr"><sup>t<sup>3</sup></sup>/<sub>3</sub></span>−<span class="fr"><sup>3</sup>/<sub>2</sub></span>t<sup>2</sup>＋2t]<sub>1</sub><sup>2</sup>＝<span class="fr"><sup>2</sup>/<sub>3</sub></span>−<span class="fr"><sup>5</sup>/<sub>6</sub></span>＝−<span class="fr"><sup>1</sup>/<sub>6</sub></span>。</p>
+          <p>f(1)＝<span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">1</span><span class="int-low">1</span></span></span> (t−1)(t−2) dt＝0。f(2)＝<span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">2</span><span class="int-low">1</span></span></span> (t<sup>2</sup>−3t＋2) dt＝[<span class="fr"><sup>t<sup>3</sup></sup>/<sub>3</sub></span>−<span class="fr"><sup>3</sup>/<sub>2</sub></span>t<sup>2</sup>＋2t]<span class="eval-lims"><span class="int-up">2</span><span class="int-low">1</span></span>＝<span class="fr"><sup>2</sup>/<sub>3</sub></span>−<span class="fr"><sup>5</sup>/<sub>6</sub></span>＝−<span class="fr"><sup>1</sup>/<sub>6</sub></span>。</p>
         </div>
         <p class="prob-done">A7 クリア！　次はA8、面積の問題だ。</p>
       </section>
@@ -765,18 +811,18 @@
           <div class="step hint">
             <h3>ヒント 2 ― まず「放物線と y＝4 で囲まれた部分」全体を考える</h3>
             <p>いったん y＝0 のことは忘れて、上の直線 y＝4 と放物線で囲まれた部分（図に色がついた部分）の面積を考える。</p>
-            <p>面積は「上の式 − 下の式」の積分で、∫<sub>−1</sub><sup>4</sup> {4−(x<sup>2</sup>−3x)} dx と表せる。この式を立てよう。</p>
+            <p>面積は「上の式 − 下の式」の積分で、<span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">4</span><span class="int-low">−1</span></span></span> {4−(x<sup>2</sup>−3x)} dx と表せる。この式を立てよう。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 3 ― x 軸より下にはみ出した部分を引く</h3>
             <p>ただし今の部分には、x 軸より下にはみ出した部分（0≦x≦3 のところ、図の赤い部分）が含まれている。そこは直線 y＝0 とも囲まれた部分には<b>入らない</b>。</p>
-            <p>はみ出しの面積 ∫<sub>0</sub><sup>3</sup> {0−(x<sup>2</sup>−3x)} dx を別に計算して、全体から引く式にしよう。</p>
+            <p>はみ出しの面積 <span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">3</span><span class="int-low">0</span></span></span> {0−(x<sup>2</sup>−3x)} dx を別に計算して、全体から引く式にしよう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (1)</h3>
             <p class="big"><span class="fr"><sup>49</sup>/<sub>3</sub></span></p>
-            <p>放物線と y＝4 で囲まれた部分は ∫<sub>−1</sub><sup>4</sup> {4−(x<sup>2</sup>−3x)} dx＝[−<span class="fr"><sup>x<sup>3</sup></sup>/<sub>3</sub></span>＋<span class="fr"><sup>3</sup>/<sub>2</sub></span>x<sup>2</sup>＋4x]<sub>−1</sub><sup>4</sup>＝<span class="fr"><sup>125</sup>/<sub>6</sub></span>。</p>
-            <p>x 軸より下の部分は ∫<sub>0</sub><sup>3</sup> {0−(x<sup>2</sup>−3x)} dx＝[−<span class="fr"><sup>x<sup>3</sup></sup>/<sub>3</sub></span>＋<span class="fr"><sup>3</sup>/<sub>2</sub></span>x<sup>2</sup>]<sub>0</sub><sup>3</sup>＝<span class="fr"><sup>9</sup>/<sub>2</sub></span>。</p>
+            <p>放物線と y＝4 で囲まれた部分は <span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">4</span><span class="int-low">−1</span></span></span> {4−(x<sup>2</sup>−3x)} dx＝[−<span class="fr"><sup>x<sup>3</sup></sup>/<sub>3</sub></span>＋<span class="fr"><sup>3</sup>/<sub>2</sub></span>x<sup>2</sup>＋4x]<span class="eval-lims"><span class="int-up">4</span><span class="int-low">−1</span></span>＝<span class="fr"><sup>125</sup>/<sub>6</sub></span>。</p>
+            <p>x 軸より下の部分は <span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">3</span><span class="int-low">0</span></span></span> {0−(x<sup>2</sup>−3x)} dx＝[−<span class="fr"><sup>x<sup>3</sup></sup>/<sub>3</sub></span>＋<span class="fr"><sup>3</sup>/<sub>2</sub></span>x<sup>2</sup>]<span class="eval-lims"><span class="int-up">3</span><span class="int-low">0</span></span>＝<span class="fr"><sup>9</sup>/<sub>2</sub></span>。</p>
             <p>よって求める面積は <span class="fr"><sup>125</sup>/<sub>6</sub></span>−<span class="fr"><sup>9</sup>/<sub>2</sub></span>＝<span class="fr"><sup>125</sup>/<sub>6</sub></span>−<span class="fr"><sup>27</sup>/<sub>6</sub></span>＝<span class="fr"><sup>98</sup>/<sub>6</sub></span>＝<span class="fr"><sup>49</sup>/<sub>3</sub></span>。</p>
           </div>
           <p class="prob-done">(1) クリア！　(2) は直線が2本とも斜めの問題。境界のたどり方がカギだ。タブを切り替えよう。</p>
@@ -829,14 +875,14 @@
           </div>
           <div class="step hint">
             <h3>ヒント 3 ― 「大きくとって、はみ出しを引く」式を立てる</h3>
-            <p>まず y＝2x と放物線の間を 0 から 5 まで積分する： ∫<sub>0</sub><sup>5</sup> {2x−(x<sup>2</sup>−3x)} dx。</p>
-            <p>ただし 0≦x≦2 の範囲では、放物線は y＝−x より下まで潜っていて、その分（図の赤い部分）が余分に入っている。∫<sub>0</sub><sup>2</sup> {−x−(x<sup>2</sup>−3x)} dx を引く式にしよう。</p>
+            <p>まず y＝2x と放物線の間を 0 から 5 まで積分する： <span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">5</span><span class="int-low">0</span></span></span> {2x−(x<sup>2</sup>−3x)} dx。</p>
+            <p>ただし 0≦x≦2 の範囲では、放物線は y＝−x より下まで潜っていて、その分（図の赤い部分）が余分に入っている。<span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">2</span><span class="int-low">0</span></span></span> {−x−(x<sup>2</sup>−3x)} dx を引く式にしよう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (2)</h3>
             <p class="big"><span class="fr"><sup>39</sup>/<sub>2</sub></span></p>
-            <p>第1項： ∫<sub>0</sub><sup>5</sup> {2x−(x<sup>2</sup>−3x)} dx＝∫<sub>0</sub><sup>5</sup> (−x<sup>2</sup>＋5x) dx＝[−<span class="fr"><sup>x<sup>3</sup></sup>/<sub>3</sub></span>＋<span class="fr"><sup>5</sup>/<sub>2</sub></span>x<sup>2</sup>]<sub>0</sub><sup>5</sup>＝−<span class="fr"><sup>125</sup>/<sub>3</sub></span>＋<span class="fr"><sup>125</sup>/<sub>2</sub></span>＝<span class="fr"><sup>125</sup>/<sub>6</sub></span>。</p>
-            <p>第2項： ∫<sub>0</sub><sup>2</sup> {−x−(x<sup>2</sup>−3x)} dx＝∫<sub>0</sub><sup>2</sup> (−x<sup>2</sup>＋2x) dx＝[−<span class="fr"><sup>x<sup>3</sup></sup>/<sub>3</sub></span>＋x<sup>2</sup>]<sub>0</sub><sup>2</sup>＝−<span class="fr"><sup>8</sup>/<sub>3</sub></span>＋4＝<span class="fr"><sup>4</sup>/<sub>3</sub></span>。</p>
+            <p>第1項： <span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">5</span><span class="int-low">0</span></span></span> {2x−(x<sup>2</sup>−3x)} dx＝<span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">5</span><span class="int-low">0</span></span></span> (−x<sup>2</sup>＋5x) dx＝[−<span class="fr"><sup>x<sup>3</sup></sup>/<sub>3</sub></span>＋<span class="fr"><sup>5</sup>/<sub>2</sub></span>x<sup>2</sup>]<span class="eval-lims"><span class="int-up">5</span><span class="int-low">0</span></span>＝−<span class="fr"><sup>125</sup>/<sub>3</sub></span>＋<span class="fr"><sup>125</sup>/<sub>2</sub></span>＝<span class="fr"><sup>125</sup>/<sub>6</sub></span>。</p>
+            <p>第2項： <span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">2</span><span class="int-low">0</span></span></span> {−x−(x<sup>2</sup>−3x)} dx＝<span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">2</span><span class="int-low">0</span></span></span> (−x<sup>2</sup>＋2x) dx＝[−<span class="fr"><sup>x<sup>3</sup></sup>/<sub>3</sub></span>＋x<sup>2</sup>]<span class="eval-lims"><span class="int-up">2</span><span class="int-low">0</span></span>＝−<span class="fr"><sup>8</sup>/<sub>3</sub></span>＋4＝<span class="fr"><sup>4</sup>/<sub>3</sub></span>。</p>
             <p>よって求める面積は <span class="fr"><sup>125</sup>/<sub>6</sub></span>−<span class="fr"><sup>4</sup>/<sub>3</sub></span>＝<span class="fr"><sup>125</sup>/<sub>6</sub></span>−<span class="fr"><sup>8</sup>/<sub>6</sub></span>＝<span class="fr"><sup>117</sup>/<sub>6</sub></span>＝<span class="fr"><sup>39</sup>/<sub>2</sub></span>。</p>
           </div>
           <p class="prob-done">(2) クリア！　A8はこれで終わり。章末問題A 全8問制覇だ。次は章末問題B、応用編に入ろう。</p>
@@ -985,27 +1031,27 @@
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
         <div class="qside">
-        <p class="prob-q">等式 f(x)＝x<sup>2</sup>＋2∫<sub>0</sub><sup>1</sup> f(t) dt を満たす関数 f(x) を求めよ。</p>
+        <p class="prob-q">等式 f(x)＝x<sup>2</sup>＋2<span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">1</span><span class="int-low">0</span></span></span> f(t) dt を満たす関数 f(x) を求めよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― ∫<sub>0</sub><sup>1</sup> f(t) dt は「ただの数」と見る</h3>
-          <p>積分区間が 0 から 1 で固定されているから、∫<sub>0</sub><sup>1</sup> f(t) dt は x を含まない定数だ。</p>
+          <h3>ヒント 1 ― <span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">1</span><span class="int-low">0</span></span></span> f(t) dt は「ただの数」と見る</h3>
+          <p>積分区間が 0 から 1 で固定されているから、<span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">1</span><span class="int-low">0</span></span></span> f(t) dt は x を含まない定数だ。</p>
           <p>この値を a とおこう。すると等式は f(x)＝x<sup>2</sup>＋2a と書ける。まずこれをノートに書く。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― a の定義に戻って、方程式を作る</h3>
-          <p>a の定義は a＝∫<sub>0</sub><sup>1</sup> f(t) dt だった。右辺の f(t) に、いま得た f(t)＝t<sup>2</sup>＋2a を代入しよう。</p>
-          <p>a＝∫<sub>0</sub><sup>1</sup> (t<sup>2</sup>＋2a) dt という、a だけの方程式ができる。</p>
+          <p>a の定義は a＝<span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">1</span><span class="int-low">0</span></span></span> f(t) dt だった。右辺の f(t) に、いま得た f(t)＝t<sup>2</sup>＋2a を代入しよう。</p>
+          <p>a＝<span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">1</span><span class="int-low">0</span></span></span> (t<sup>2</sup>＋2a) dt という、a だけの方程式ができる。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 3 ― 積分を計算して、a を解く</h3>
-          <p>∫<sub>0</sub><sup>1</sup> t<sup>2</sup> dt と ∫<sub>0</sub><sup>1</sup> 2a dt を分けて計算する（a は定数だから、2a の積分は 2a・1 だ）。</p>
+          <p><span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">1</span><span class="int-low">0</span></span></span> t<sup>2</sup> dt と <span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">1</span><span class="int-low">0</span></span></span> 2a dt を分けて計算する（a は定数だから、2a の積分は 2a・1 だ）。</p>
           <p>出てきた方程式を a について解き、f(x)＝x<sup>2</sup>＋2a に戻そう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
           <p class="big">f(x)＝x<sup>2</sup>−<span class="fr"><sup>2</sup>/<sub>3</sub></span></p>
-          <p>∫<sub>0</sub><sup>1</sup> f(t) dt＝a とおくと f(x)＝x<sup>2</sup>＋2a。このとき a＝∫<sub>0</sub><sup>1</sup> (t<sup>2</sup>＋2a) dt＝[<span class="fr"><sup>t<sup>3</sup></sup>/<sub>3</sub></span>＋2at]<sub>0</sub><sup>1</sup>＝<span class="fr"><sup>1</sup>/<sub>3</sub></span>＋2a。</p>
+          <p><span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">1</span><span class="int-low">0</span></span></span> f(t) dt＝a とおくと f(x)＝x<sup>2</sup>＋2a。このとき a＝<span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">1</span><span class="int-low">0</span></span></span> (t<sup>2</sup>＋2a) dt＝[<span class="fr"><sup>t<sup>3</sup></sup>/<sub>3</sub></span>＋2at]<span class="eval-lims"><span class="int-up">1</span><span class="int-low">0</span></span>＝<span class="fr"><sup>1</sup>/<sub>3</sub></span>＋2a。</p>
           <p>よって a＝<span class="fr"><sup>1</sup>/<sub>3</sub></span>＋2a から a＝−<span class="fr"><sup>1</sup>/<sub>3</sub></span>。したがって f(x)＝x<sup>2</sup>＋2・(−<span class="fr"><sup>1</sup>/<sub>3</sub></span>)＝x<sup>2</sup>−<span class="fr"><sup>2</sup>/<sub>3</sub></span>。</p>
         </div>
         <p class="prob-done">B12 クリア！　次はB13、面積の公式を使う問題だ。</p>
@@ -1103,8 +1149,8 @@
           <h3>解答</h3>
           <p class="big"><span class="fr"><sup>16</sup>/<sub>3</sub></span></p>
           <p>接点を (t, t<sup>2</sup>−2t＋4) とすると接線は y＝(2t−2)x−t<sup>2</sup>＋4。原点を通るから −t<sup>2</sup>＋4＝0、t＝±2。接線は t＝2 のとき y＝2x、t＝−2 のとき y＝−6x。</p>
-          <p>左側： ∫<sub>−2</sub><sup>0</sup> {(x<sup>2</sup>−2x＋4)−(−6x)} dx＝∫<sub>−2</sub><sup>0</sup> (x＋2)<sup>2</sup> dx＝[<span class="fr"><sup>(x＋2)<sup>3</sup></sup>/<sub>3</sub></span>]<sub>−2</sub><sup>0</sup>＝<span class="fr"><sup>8</sup>/<sub>3</sub></span>。</p>
-          <p>右側： ∫<sub>0</sub><sup>2</sup> {(x<sup>2</sup>−2x＋4)−2x} dx＝∫<sub>0</sub><sup>2</sup> (x−2)<sup>2</sup> dx＝[<span class="fr"><sup>(x−2)<sup>3</sup></sup>/<sub>3</sub></span>]<sub>0</sub><sup>2</sup>＝<span class="fr"><sup>8</sup>/<sub>3</sub></span>。</p>
+          <p>左側： <span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">0</span><span class="int-low">−2</span></span></span> {(x<sup>2</sup>−2x＋4)−(−6x)} dx＝<span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">0</span><span class="int-low">−2</span></span></span> (x＋2)<sup>2</sup> dx＝[<span class="fr"><sup>(x＋2)<sup>3</sup></sup>/<sub>3</sub></span>]<span class="eval-lims"><span class="int-up">0</span><span class="int-low">−2</span></span>＝<span class="fr"><sup>8</sup>/<sub>3</sub></span>。</p>
+          <p>右側： <span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">2</span><span class="int-low">0</span></span></span> {(x<sup>2</sup>−2x＋4)−2x} dx＝<span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">2</span><span class="int-low">0</span></span></span> (x−2)<sup>2</sup> dx＝[<span class="fr"><sup>(x−2)<sup>3</sup></sup>/<sub>3</sub></span>]<span class="eval-lims"><span class="int-up">2</span><span class="int-low">0</span></span>＝<span class="fr"><sup>8</sup>/<sub>3</sub></span>。</p>
           <p>よって求める面積は <span class="fr"><sup>8</sup>/<sub>3</sub></span>＋<span class="fr"><sup>8</sup>/<sub>3</sub></span>＝<span class="fr"><sup>16</sup>/<sub>3</sub></span>。</p>
         </div>
         <p class="prob-done">B14 クリア！　最後はB15（研究）、誤りの指摘問題だ。</p>
@@ -1121,7 +1167,7 @@
         <div class="qside">
         <p class="prob-q">曲線 y＝x(x＋1)(x−1) と x 軸で囲まれた部分の面積について、次の計算は誤っている。その理由を説明し、正しい面積を求めよ。</p>
         <div class="def">
-          <p>〔誤った計算〕 曲線と x 軸の交点は −1, 0, 1 だから<br />S＝∫<sub>−1</sub><sup>0</sup> (x<sup>3</sup>−x) dx＋∫<sub>0</sub><sup>1</sup> (x<sup>3</sup>−x) dx<br />＝[<span class="fr"><sup>x<sup>4</sup></sup>/<sub>4</sub></span>−<span class="fr"><sup>x<sup>2</sup></sup>/<sub>2</sub></span>]<sub>−1</sub><sup>0</sup>＋[<span class="fr"><sup>x<sup>4</sup></sup>/<sub>4</sub></span>−<span class="fr"><sup>x<sup>2</sup></sup>/<sub>2</sub></span>]<sub>0</sub><sup>1</sup>＝<span class="fr"><sup>1</sup>/<sub>4</sub></span>＋(−<span class="fr"><sup>1</sup>/<sub>4</sub></span>)＝0</p>
+          <p>〔誤った計算〕 曲線と x 軸の交点は −1, 0, 1 だから<br />S＝<span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">0</span><span class="int-low">−1</span></span></span> (x<sup>3</sup>−x) dx＋<span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">1</span><span class="int-low">0</span></span></span> (x<sup>3</sup>−x) dx<br />＝[<span class="fr"><sup>x<sup>4</sup></sup>/<sub>4</sub></span>−<span class="fr"><sup>x<sup>2</sup></sup>/<sub>2</sub></span>]<span class="eval-lims"><span class="int-up">0</span><span class="int-low">−1</span></span>＋[<span class="fr"><sup>x<sup>4</sup></sup>/<sub>4</sub></span>−<span class="fr"><sup>x<sup>2</sup></sup>/<sub>2</sub></span>]<span class="eval-lims"><span class="int-up">1</span><span class="int-low">0</span></span>＝<span class="fr"><sup>1</sup>/<sub>4</sub></span>＋(−<span class="fr"><sup>1</sup>/<sub>4</sub></span>)＝0</p>
         </div>
         <figure class="figbox">
           <svg viewBox="0 0 560 300" role="img" aria-label="曲線 y＝x³−x のグラフ">
@@ -1161,13 +1207,13 @@
         <div class="step hint">
           <h3>ヒント 3 ― 正しい面積の式を立てる</h3>
           <p>面積はいつも0以上でなければならない。下側の部分については、定積分の符号を反転させて足すのが正しい。</p>
-          <p>つまり S＝∫<sub>−1</sub><sup>0</sup> (x<sup>3</sup>−x) dx − ∫<sub>0</sub><sup>1</sup> (x<sup>3</sup>−x) dx と直す。2つの部分を別々に計算しよう。</p>
+          <p>つまり S＝<span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">0</span><span class="int-low">−1</span></span></span> (x<sup>3</sup>−x) dx − <span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">1</span><span class="int-low">0</span></span></span> (x<sup>3</sup>−x) dx と直す。2つの部分を別々に計算しよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
           <p class="big">正しい面積は <span class="fr"><sup>1</sup>/<sub>2</sub></span></p>
           <p><b>誤りの指摘：</b>0≦x≦1 の部分は x 軸の<b>下側</b>にあり、その定積分は負の値 −<span class="fr"><sup>1</sup>/<sub>4</sub></span> になる。それをそのまま面積として加えたため、上側の面積 <span class="fr"><sup>1</sup>/<sub>4</sub></span> と打ち消し合って 0 になってしまった。定積分は符号つきの量で、面積そのものではない、というのが誤りの原因だ。</p>
-          <p><b>正しい計算：</b>S＝∫<sub>−1</sub><sup>0</sup> (x<sup>3</sup>−x) dx − ∫<sub>0</sub><sup>1</sup> (x<sup>3</sup>−x) dx＝<span class="fr"><sup>1</sup>/<sub>4</sub></span>−(−<span class="fr"><sup>1</sup>/<sub>4</sub></span>)＝<span class="fr"><sup>1</sup>/<sub>4</sub></span>＋<span class="fr"><sup>1</sup>/<sub>4</sub></span>＝<span class="fr"><sup>1</sup>/<sub>2</sub></span>。</p>
+          <p><b>正しい計算：</b>S＝<span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">0</span><span class="int-low">−1</span></span></span> (x<sup>3</sup>−x) dx − <span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">1</span><span class="int-low">0</span></span></span> (x<sup>3</sup>−x) dx＝<span class="fr"><sup>1</sup>/<sub>4</sub></span>−(−<span class="fr"><sup>1</sup>/<sub>4</sub></span>)＝<span class="fr"><sup>1</sup>/<sub>4</sub></span>＋<span class="fr"><sup>1</sup>/<sub>4</sub></span>＝<span class="fr"><sup>1</sup>/<sub>2</sub></span>。</p>
         </div>
         <p class="prob-done">B15 クリア！　章末問題 全15問、これで制覇だ。下のまとめで章全体を振り返ろう。</p>
       </section>
@@ -1179,7 +1225,7 @@
           <li><b>微分は「展開する」か「形に気づく」か：</b>積の形はまず展開（A1 (1)）。でも (x−2)(x<sup>2</sup>＋2x＋4)＝x<sup>3</sup>−8 のような和と差の積は、公式に気づくと一瞬（A1 (2)）。手を動かす前に、形を眺める癖をつけよう。</li>
           <li><b>接線の問題は f′ が主役：</b>傾きは f′(接点の x)（A2・B14）。「ℓ に平行」は f′(x)＝傾き の方程式、「原点を通る」は接線の式に (0, 0) を代入することに翻訳する。</li>
           <li><b>増減表がすべての土台：</b>極値・共有点の個数・不等式の証明は、増減表から極大値と極小値を読み取る問題に帰着する（A3・A5・B10）。文字が入ったら、解の大小関係で場合分け（A3）。「常に増加」は f′≧0 ⇔ 判別式≦0（B9）。</li>
-          <li><b>定積分は符号つきの量：</b>∫<sub>1</sub><sup>x</sup> を微分すると中身が返ってくる（A7）、区間が固定された ∫<sub>0</sub><sup>1</sup> f(t) dt は定数として a とおく（B12）。そして面積にするときは、x 軸の下側の部分を必ず反転させる（A8・B15）。</li>
+          <li><b>定積分は符号つきの量：</b><span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">x</span><span class="int-low">1</span></span></span> を微分すると中身が返ってくる（A7）、区間が固定された <span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">1</span><span class="int-low">0</span></span></span> f(t) dt は定数として a とおく（B12）。そして面積にするときは、x 軸の下側の部分を必ず反転させる（A8・B15）。</li>
           <li><b>面積は「上 − 下」を区間ごとに：</b>交点で区間を区切り（A8・B14）、はみ出しは引く。2交点で囲まれた放物線の面積は公式（差）<sup>3</sup>/6 が使える（B13・B14 の平方への整理もこの仲間）。</li>
         </ul>
       </section>

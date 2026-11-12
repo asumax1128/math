@@ -161,6 +161,27 @@
       /* ---------- math ---------- */
       .m { font-family: "STIX Two Math", "STIX Two Text", serif; font-size: 1.08em; white-space: nowrap; }
       .m sup, .m sub { font-size: .68em; }
+      /* 積分記号は本文の約1.5〜1.8倍に拡大して投影でも判読できるようにする。
+         .m 内では 1.08em × 1.62 ≒ 1.75倍、.formula 内では 1.25em × 1.38 ≒ 1.73倍 */
+      .int {
+        font-family: "STIX Two Math", "STIX Two Text", serif;
+        font-size: 1.62em; line-height: 1;
+        display: inline-block; vertical-align: -0.24em;
+        margin: 0 .02em;
+      }
+      .formula .int { font-size: 1.38em; vertical-align: -0.20em; }
+      .step-label .int { font-size: 1.55em; vertical-align: -0.22em; }
+      /* 定積分の上下限：積分記号の右に上限（上段）と下限（下段）を
+         はっきり分かれた2段で置くための組み（.dint の中に .int と .lims を入れ、
+         .lims の中に .lim-up＝上限と .lim-lo＝下限をこの順で置く） */
+      .dint { display: inline-flex; align-items: center; vertical-align: middle; white-space: nowrap; }
+      .dint > .int { margin-right: 0; }
+      .dint .lims {
+        display: inline-flex; flex-direction: column; justify-content: space-between;
+        align-self: stretch; font-size: .68em; line-height: 1.05;
+        margin-left: .06em; margin-right: .16em; padding: .10em 0;
+      }
+      .dint .lim-up, .dint .lim-lo { display: block; }
       .formula {
         font-family: "STIX Two Math", "STIX Two Text", serif;
         font-size: 1.25em; text-align: center;
@@ -191,12 +212,6 @@
       .choice.ok .mark { color: var(--ans-tag); }
       .choice.ng .mark { color: var(--ng); }
       .verdict { font-weight: 700; margin-top: 8px; }
-      .judge-btn {
-        font: inherit; font-weight: 700; cursor: pointer;
-        color: var(--accent); background: var(--surface);
-        border: 1.5px solid var(--accent); border-radius: 999px;
-        padding: 8px 18px; margin-top: 6px;
-      }
 
       /* ---------- figures ---------- */
       figure { margin: 12px 0 6px; text-align: center; }
@@ -322,7 +337,7 @@
         <div class="step">
           <p>原始関数は <span class="m">x<sup>2</sup></span> だけではありません。<span class="m">x<sup>2</sup> + 3</span> や <span class="m">x<sup>2</sup> − 5</span> を微分してみると、</p>
           <p class="formula">(x<sup>2</sup> + 3)′ = 2x,　　(x<sup>2</sup> − 5)′ = 2x</p>
-          <p>定数の部分は微分すると 0 になって消えるので、どちらも <span class="m">2x</span> の原始関数です。<strong>違いは定数の部分だけ</strong>です。</p>
+          <p>定数の部分は微分すると <span class="m">0</span> になって消えるので、どちらも <span class="m">2x</span> の原始関数です。<strong>違いは定数の部分だけ</strong>です。</p>
           <figure>
             <svg viewBox="0 0 320 215" role="img" aria-label="yイコールxの2乗、yイコールxの2乗プラス3、yイコールxの2乗マイナス5の3本の放物線。形は同じで上下にずれている">
               <line class="svg-grid" x1="40" y1="123" x2="280" y2="123" stroke-dasharray="0" opacity="0"/>
@@ -356,9 +371,9 @@
         <div class="step answer">
           <p class="step-label">まとめ ― 不定積分の記号</p>
           <p><span class="m">f(x)</span> の原始関数全体を <span class="m">f(x)</span> の<strong>不定積分</strong>といい、記号で</p>
-          <p class="formula">∫ f(x) dx = F(x) + C</p>
+          <p class="formula"><span class="int">∫</span> f(x) dx = F(x) + C</p>
           <p>と表します。不定積分を求めることを、<span class="m">f(x)</span> を<strong>積分する</strong>といいます。</p>
-          <p>たとえば <span class="m">2x</span> を積分すると、<span class="m">∫ 2x dx = x<sup>2</sup> + C</span> となります。</p>
+          <p>たとえば <span class="m">2x</span> を積分すると、<span class="m"><span class="int">∫</span> 2x dx = x<sup>2</sup> + C</span> となります。</p>
         </div>
 
         <button class="next-btn" data-next type="button">次へ</button>
@@ -368,7 +383,7 @@
       <section class="card" data-sec data-kind="example">
         <div class="card-head">
           <span class="tag example">例11</span>
-          <h2>2x の原始関数</h2>
+          <h2><span class="m">2x</span> の原始関数</h2>
           <div class="dots" data-dots aria-hidden="true"></div>
         </div>
 
@@ -396,7 +411,7 @@
       <section class="card" data-sec data-kind="practice" id="sec-r23">
         <div class="card-head">
           <span class="tag practice">練習23</span>
-          <h2>3x² の原始関数を選ぼう</h2>
+          <h2><span class="m">3x<sup>2</sup></span> の原始関数を選ぼう</h2>
           <div class="dots" data-dots aria-hidden="true"></div>
         </div>
 
@@ -408,9 +423,7 @@
             <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span class="m">x<sup>3</sup> + 2x</span><span class="mark"></span></button>
             <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span class="m">x<sup>3</sup> − 4</span><span class="mark"></span></button>
           </div>
-          <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
-          <button class="judge-btn" id="r23-check" type="button">答え合わせ（ヒントを見ずに判定）</button>
-          <p class="verdict" id="r23-verdict-early"></p>
+          <p>選んだら、「次へ」でヒントを開いて確かめていきましょう。</p>
         </div>
 
         <div class="step hint">
@@ -451,33 +464,33 @@
 
         <div class="step on">
           <p>次の不定積分を求めてみましょう。</p>
-          <p class="formula">∫ 1 dx,　　∫ x dx,　　∫ x<sup>2</sup> dx</p>
+          <p class="formula"><span class="int">∫</span> 1 dx,　　<span class="int">∫</span> x dx,　　<span class="int">∫</span> x<sup>2</sup> dx</p>
           <p>いずれも、「微分すると元の関数になるもの」を探すことがポイントです。</p>
         </div>
 
         <div class="step hint">
-          <p class="step-label">ヒント1 ― ∫ 1 dx</p>
+          <p class="step-label">ヒント1 ― <span class="m"><span class="int">∫</span> 1 dx</span></p>
           <p>微分すると <span class="m">1</span> になる関数は <span class="m">x</span> です（<span class="m">(x)′ = 1</span>）。よって</p>
-          <p class="formula">∫ 1 dx = x + C</p>
+          <p class="formula"><span class="int">∫</span> 1 dx = x + C</p>
         </div>
 
         <div class="step hint">
-          <p class="step-label">ヒント2 ― ∫ x dx</p>
+          <p class="step-label">ヒント2 ― <span class="m"><span class="int">∫</span> x dx</span></p>
           <p><span class="m">(x<sup>2</sup>)′ = 2x</span> です。<span class="m">2x</span> の係数 <span class="m">2</span> を消すために <span class="m"><span class="frac"><span class="num">1</span><span class="den">2</span></span></span> をかけると、<span class="m">(<span class="frac"><span class="num">1</span><span class="den">2</span></span>x<sup>2</sup>)′ = x</span> となります。よって</p>
-          <p class="formula">∫ x dx = <span class="frac"><span class="num">1</span><span class="den">2</span></span>x<sup>2</sup> + C</p>
+          <p class="formula"><span class="int">∫</span> x dx = <span class="frac"><span class="num">1</span><span class="den">2</span></span>x<sup>2</sup> + C</p>
         </div>
 
         <div class="step hint">
-          <p class="step-label">ヒント3 ― ∫ x² dx</p>
+          <p class="step-label">ヒント3 ― <span class="m"><span class="int">∫</span> x<sup>2</sup> dx</span></p>
           <p>同じように、<span class="m">(x<sup>3</sup>)′ = 3x<sup>2</sup></span> の係数 <span class="m">3</span> を <span class="m"><span class="frac"><span class="num">1</span><span class="den">3</span></span></span> で消すと、<span class="m">(<span class="frac"><span class="num">1</span><span class="den">3</span></span>x<sup>3</sup>)′ = x<sup>2</sup></span> となります。よって</p>
-          <p class="formula">∫ x<sup>2</sup> dx = <span class="frac"><span class="num">1</span><span class="den">3</span></span>x<sup>3</sup> + C</p>
+          <p class="formula"><span class="int">∫</span> x<sup>2</sup> dx = <span class="frac"><span class="num">1</span><span class="den">3</span></span>x<sup>3</sup> + C</p>
         </div>
 
         <div class="step answer">
           <p class="step-label">解答</p>
-          <p class="formula">∫ 1 dx = x + C</p>
-          <p class="formula">∫ x dx = <span class="frac"><span class="num">1</span><span class="den">2</span></span>x<sup>2</sup> + C</p>
-          <p class="formula">∫ x<sup>2</sup> dx = <span class="frac"><span class="num">1</span><span class="den">3</span></span>x<sup>3</sup> + C</p>
+          <p class="formula"><span class="int">∫</span> 1 dx = x + C</p>
+          <p class="formula"><span class="int">∫</span> x dx = <span class="frac"><span class="num">1</span><span class="den">2</span></span>x<sup>2</sup> + C</p>
+          <p class="formula"><span class="int">∫</span> x<sup>2</sup> dx = <span class="frac"><span class="num">1</span><span class="den">3</span></span>x<sup>3</sup> + C</p>
           <p><span class="check">✓ 確認</span>　答えを微分すると元に戻ります：
             <span class="m">(x + C)′ = 1</span>、<span class="m">(<span class="frac"><span class="num">1</span><span class="den">2</span></span>x<sup>2</sup> + C)′ = x</span>、<span class="m">(<span class="frac"><span class="num">1</span><span class="den">3</span></span>x<sup>3</sup> + C)′ = x<sup>2</sup></span>。
             このように、<strong>微分と積分は互いに逆の計算</strong>です。</p>
@@ -494,7 +507,7 @@
               <path class="arrow-line" d="M 208 82 L 138 82" />
               <polygon points="132,82 142,77 142,87" fill="var(--accent)" />
               <text class="svg-txt-jp" x="170" y="104" text-anchor="middle">積分</text>
-              <text class="svg-txt" x="170" y="124" text-anchor="middle" font-size="12.5">∫ f(x) dx = F(x) + C</text>
+              <text class="svg-txt" x="170" y="124" text-anchor="middle" font-size="12.5"><tspan font-size="19" dy="2">∫</tspan><tspan dy="-2"> f(x) dx = F(x) + C</tspan></text>
             </svg>
             <figcaption>微分と積分は互いに逆の計算</figcaption>
           </figure>
@@ -507,7 +520,7 @@
       <section class="card" data-sec data-kind="explain">
         <div class="card-head">
           <span class="tag explain">解説</span>
-          <h2>公式 ― xⁿ の不定積分</h2>
+          <h2>公式 ― <span class="m">x<sup>n</sup></span> の不定積分</h2>
           <div class="dots" data-dots aria-hidden="true"></div>
         </div>
 
@@ -518,18 +531,18 @@
 
         <div class="step">
           <p>例12の結果を並べます（<span class="m">1</span> は <span class="m">x<sup>0</sup></span> と見ます）。</p>
-          <p class="formula">∫ x<sup>0</sup> dx = x + C</p>
-          <p class="formula">∫ x<sup>1</sup> dx = <span class="frac"><span class="num">1</span><span class="den">2</span></span>x<sup>2</sup> + C</p>
-          <p class="formula">∫ x<sup>2</sup> dx = <span class="frac"><span class="num">1</span><span class="den">3</span></span>x<sup>3</sup> + C</p>
-          <p>右辺を見ると、<strong>指数が 1 増えて</strong>いて、係数には<strong>増えた後の指数で割った</strong>分数がついています。</p>
+          <p class="formula"><span class="int">∫</span> x<sup>0</sup> dx = x + C</p>
+          <p class="formula"><span class="int">∫</span> x<sup>1</sup> dx = <span class="frac"><span class="num">1</span><span class="den">2</span></span>x<sup>2</sup> + C</p>
+          <p class="formula"><span class="int">∫</span> x<sup>2</sup> dx = <span class="frac"><span class="num">1</span><span class="den">3</span></span>x<sup>3</sup> + C</p>
+          <p>右辺を見ると、<strong>指数が <span class="m">1</span> 増えて</strong>いて、係数には<strong>増えた後の指数で割った</strong>分数がついています。</p>
           <p>たとえば <span class="m">x<sup>2</sup></span> の積分では、指数 <span class="m">2</span> が <span class="m">3</span> に増え、係数は <span class="m"><span class="frac"><span class="num">1</span><span class="den">3</span></span></span> になっています。</p>
         </div>
 
         <div class="step answer">
           <p class="step-label">公式</p>
-          <p><span class="m">n</span> が 0 または正の整数のとき、次の公式が成り立ちます。</p>
-          <p class="formula">∫ x<sup>n</sup> dx = <span class="frac"><span class="num">1</span><span class="den">n + 1</span></span>x<sup>n+1</sup> + C</p>
-          <p>「指数を 1 増やして、その指数で割る」と覚えましょう。</p>
+          <p><span class="m">n</span> が <span class="m">0</span> または正の整数のとき、次の公式が成り立ちます。</p>
+          <p class="formula"><span class="int">∫</span> x<sup>n</sup> dx = <span class="frac"><span class="num">1</span><span class="den">n + 1</span></span>x<sup>n+1</sup> + C</p>
+          <p>「指数を <span class="m">1</span> 増やして、その指数で割る」と覚えましょう。</p>
         </div>
 
         <button class="next-btn" data-next type="button">次へ</button>
@@ -544,8 +557,8 @@
         </div>
 
         <div class="step on">
-          <p>（1）公式 <span class="m">∫ x<sup>n</sup> dx = <span class="frac"><span class="num">1</span><span class="den">n + 1</span></span>x<sup>n+1</sup> + C</span> が成り立つことを、<strong>右辺を微分して</strong>確かめましょう。</p>
-          <p>（2）公式を使って、<span class="m">∫ x<sup>3</sup> dx</span> を求めましょう。</p>
+          <p>（1）公式 <span class="m"><span class="int">∫</span> x<sup>n</sup> dx = <span class="frac"><span class="num">1</span><span class="den">n + 1</span></span>x<sup>n+1</sup> + C</span> が成り立つことを、<strong>右辺を微分して</strong>確かめましょう。</p>
+          <p>（2）公式を使って、<span class="m"><span class="int">∫</span> x<sup>3</sup> dx</span> を求めましょう。</p>
         </div>
 
         <div class="step hint">
@@ -561,7 +574,7 @@
 
         <div class="step hint">
           <p class="step-label">ヒント3 ― （2）の方針</p>
-          <p><span class="m">∫ x<sup>3</sup> dx</span> は、公式の <span class="m">n</span> に <span class="m">3</span> を当てはめたものです。指数は <span class="m">3 + 1 = 4</span> になり、係数はその <span class="m">4</span> で割ります。</p>
+          <p><span class="m"><span class="int">∫</span> x<sup>3</sup> dx</span> は、公式の <span class="m">n</span> に <span class="m">3</span> を当てはめたものです。指数は <span class="m">3 + 1 = 4</span> になり、係数はその <span class="m">4</span> で割ります。</p>
         </div>
 
         <div class="step answer">
@@ -570,7 +583,7 @@
           <p class="formula">(<span class="frac"><span class="num">1</span><span class="den">n + 1</span></span>x<sup>n+1</sup> + C)′ = <span class="frac"><span class="num">1</span><span class="den">n + 1</span></span> · (n + 1)x<sup>n</sup> = x<sup>n</sup></p>
           <p>となり、左辺の <span class="m">x<sup>n</sup></span> と一致します。よって、右辺は <span class="m">x<sup>n</sup></span> の原始関数であり、公式が成り立ちます。</p>
           <p>（2）公式に <span class="m">n = 3</span> を当てはめて</p>
-          <p class="formula">∫ x<sup>3</sup> dx = <span class="frac"><span class="num">1</span><span class="den">4</span></span>x<sup>4</sup> + C</p>
+          <p class="formula"><span class="int">∫</span> x<sup>3</sup> dx = <span class="frac"><span class="num">1</span><span class="den">4</span></span>x<sup>4</sup> + C</p>
         </div>
 
         <button class="next-btn" data-next type="button">次へ</button>
@@ -678,7 +691,7 @@
             st.style.order = String(-revealed[i]);
             revealed[i]++;
             if (sections[i].id === 'sec-r23' && revealed[i] === stepsList[i].length) {
-              judgeR23('r23-verdict');
+              judgeR23();
             }
             update();
           }
@@ -711,7 +724,6 @@
             c.querySelector('.mark').textContent = '';
           });
           document.getElementById('r23-verdict').textContent = '';
-          document.getElementById('r23-verdict-early').textContent = '';
           update();
           window.scrollTo({ top: 0, behavior: 'auto' });
         });
@@ -723,16 +735,11 @@
           c.addEventListener('click', function () {
             c.classList.toggle('sel');
             var secIdx = sections.indexOf(document.getElementById('sec-r23'));
-            if (revealed[secIdx] >= stepsList[secIdx].length) judgeR23('r23-verdict');
+            if (revealed[secIdx] >= stepsList[secIdx].length) judgeR23();
           });
         });
 
-        var checkBtn = document.getElementById('r23-check');
-        if (checkBtn) {
-          checkBtn.addEventListener('click', function () { judgeR23('r23-verdict-early'); });
-        }
-
-        function judgeR23(targetId) {
+        function judgeR23() {
           var selected = {};
           choices.forEach(function (c) {
             if (c.classList.contains('sel')) selected[c.getAttribute('data-choice')] = true;
@@ -750,18 +757,16 @@
               mark.textContent = '×';
             }
           });
-          var verdict = document.getElementById(targetId);
+          var verdict = document.getElementById('r23-verdict');
           var names = { 1: '①', 2: '②', 3: '③', 4: '④' };
           var picked = Object.keys(selected).map(function (k) { return names[k]; });
           var isCorrect = picked.length === 2 && selected[2] && selected[4];
           if (picked.length === 0) {
-            verdict.textContent = (targetId === 'r23-verdict-early')
-              ? 'まず上の選択肢を選んでから、答え合わせを押しましょう。'
-              : '答えは ② と ④ です。選択肢を選んでから見直すと、自分の考えと比べられます。';
+            verdict.textContent = '答えは ② と ④ です。選択肢を選んでから見直すと、自分の考えと比べられます。';
           } else if (isCorrect) {
             verdict.textContent = 'あなたの選択（' + picked.join('・') + '）は正解です。';
           } else {
-            verdict.textContent = 'あなたの選択は ' + picked.join('・') + ' でした。答えは ② と ④ です。違ったものは、微分するとどこが 3x² にならないか、ヒント2・ヒント3で確かめ直してみましょう。';
+            verdict.innerHTML = 'あなたの選択は ' + picked.join('・') + ' でした。答えは ② と ④ です。違ったものは、微分するとどこが <span class="m">3x<sup>2</sup></span> にならないか、ヒント2・ヒント3で確かめ直してみましょう。';
           }
         }
 
