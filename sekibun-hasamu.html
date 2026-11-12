@@ -8,23 +8,31 @@
 <link href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap" rel="stylesheet">
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
-  html { scroll-behavior:smooth; }
+  html,body { height:100%; }
   body {
     font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif;
     background:#fdfdf8; color:#1f2937;
+    display:flex; flex-direction:column; height:100vh; overflow:hidden;
   }
   .math { font-family:"STIX Two Math",serif; }
-  section.panel { min-height:100vh; display:flex; flex-direction:column; }
-  section.panel + section.panel { border-top:6px solid #e5e7eb; }
+  .tabbar {
+    display:flex; align-items:center; gap:12px; padding:10px 18px 2px;
+  }
+  .tabbar .tab-label { font-size:20px; font-weight:700; color:#4b5563; }
+  .tabbar button {
+    font-family:inherit; font-size:24px; font-weight:800; cursor:pointer;
+    border:3px solid #d1d5db; background:#fff; color:#6b7280;
+    padding:8px 30px; border-radius:14px; transition:all .15s;
+  }
+  .tabbar button.active { background:#111827; color:#fff; border-color:#111827; }
+  .panels { flex:1; position:relative; min-height:0; }
+  section.panel { position:absolute; inset:0; display:flex; flex-direction:column; }
+  section.panel.hidden { display:none; }
   header {
-    padding:12px 28px 4px; display:flex; align-items:baseline; gap:18px; flex-wrap:wrap;
+    padding:6px 28px 4px; display:flex; align-items:baseline; gap:18px; flex-wrap:wrap;
   }
-  header h1 { font-size:30px; font-weight:800; letter-spacing:.02em; }
+  header h1 { font-size:29px; font-weight:800; letter-spacing:.02em; }
   header .sub { font-size:19px; color:#4b5563; }
-  header .jump {
-    margin-left:auto; font-size:19px; font-weight:700; color:#1d4ed8;
-    text-decoration:none; border:3px solid #bfdbfe; border-radius:12px; padding:6px 16px; background:#eff6ff;
-  }
   main { flex:1; display:flex; flex-direction:column; padding:2px 18px 0; min-height:0; }
   .graphwrap { flex:1; min-height:0; }
   svg { width:100%; height:100%; display:block; }
@@ -55,29 +63,36 @@
   }
   .ctl-group { display:flex; align-items:center; gap:8px; flex-wrap:wrap; justify-content:center; }
   .ctl-label { font-size:20px; font-weight:700; color:#4b5563; margin-right:2px; }
-  button {
+  .controls button {
     font-family:inherit; font-size:23px; font-weight:700; cursor:pointer;
     border:3px solid #d1d5db; background:#fff; color:#374151;
     padding:10px 20px; border-radius:14px; transition:all .15s;
   }
-  button:hover { border-color:#9ca3af; }
-  button.active { background:#111827; color:#fff; border-color:#111827; }
-  button.mode-under.active { background:#1d4ed8; border-color:#1d4ed8; }
-  button.mode-over.active { background:#dc2626; border-color:#dc2626; }
-  button.next { background:#f59e0b; border-color:#f59e0b; color:#fff; font-size:26px; padding:12px 28px; }
-  button.next:disabled { background:#e5e7eb; border-color:#e5e7eb; color:#9ca3af; cursor:default; }
-  button.reveal { background:#16a34a; border-color:#16a34a; color:#fff; }
-  button.reveal.shown { background:#fff; color:#15803d; }
+  .controls button:hover { border-color:#9ca3af; }
+  .controls button.active { background:#111827; color:#fff; border-color:#111827; }
+  .controls button.mode-under.active { background:#1d4ed8; border-color:#1d4ed8; }
+  .controls button.mode-over.active { background:#dc2626; border-color:#dc2626; }
+  .controls button.next { background:#f59e0b; border-color:#f59e0b; color:#fff; font-size:26px; padding:12px 28px; }
+  .controls button.next:disabled { background:#e5e7eb; border-color:#e5e7eb; color:#9ca3af; cursor:default; }
+  .controls button.reveal { background:#16a34a; border-color:#16a34a; color:#fff; }
+  .controls button.reveal.shown { background:#fff; color:#15803d; }
   .hint-line { text-align:center; font-size:16px; color:#9ca3af; padding-bottom:10px; }
 </style>
 </head>
 <body>
 
+<div class="tabbar">
+  <span class="tab-label">グラフ</span>
+  <button id="tab-yoru" class="active">夜型エンジン型</button>
+  <button id="tab-ena">エナドリ型</button>
+</div>
+
+<div class="panels">
+
 <section class="panel" id="panel-yoru">
   <header>
     <h1>夜型エンジン型 ― 長方形ではさむ</h1>
     <div class="sub">ペース（10分あたり何問）× 時間（分）＝ 解いた問題の数　／　曲線の下の面積が「合計」</div>
-    <a class="jump" href="#panel-ena">↓ エナドリ型へ</a>
   </header>
   <main>
     <div class="graphwrap"><svg id="graph-yoru" viewBox="0 0 1160 600" preserveAspectRatio="xMidYMid meet" aria-label="夜型エンジン型のペース曲線と長方形"></svg></div>
@@ -118,15 +133,14 @@
       <button class="reveal" id="reveal-yoru">本当の合計は？</button>
       <button id="blank-yoru">空白に戻す</button>
     </div>
-    <div class="hint-line">キーボード：→ 幅を細かく　← 幅を粗く（画面に出ている方のグラフに効きます）</div>
+    <div class="hint-line">キーボード：→ 幅を細かく　← 幅を粗く</div>
   </main>
 </section>
 
-<section class="panel" id="panel-ena">
+<section class="panel hidden" id="panel-ena">
   <header>
     <h1>エナドリ型 ― 長方形ではさむ</h1>
     <div class="sub">最初に一気に加速して、あとは失速していくタイプ　／　曲線の下の面積が「合計」</div>
-    <a class="jump" href="#panel-yoru">↑ 夜型エンジン型へ</a>
   </header>
   <main>
     <div class="graphwrap"><svg id="graph-ena" viewBox="0 0 1160 600" preserveAspectRatio="xMidYMid meet" aria-label="エナドリ型のペース曲線と長方形"></svg></div>
@@ -167,9 +181,11 @@
       <button class="reveal" id="reveal-ena">本当の合計は？</button>
       <button id="blank-ena">空白に戻す</button>
     </div>
-    <div class="hint-line">キーボード：→ 幅を細かく　← 幅を粗く（画面に出ている方のグラフに効きます）</div>
+    <div class="hint-line">キーボード：→ 幅を細かく　← 幅を粗く</div>
   </main>
 </section>
+
+</div>
 
 <script>
 (function(){
@@ -359,14 +375,25 @@
   // エナドリ型：最初 11 から失速して 1 へ（本当の合計 52問）
   function paceEna(t){ var u=t/120; return 1 + 10*(1-u)*(1-u); }
 
-  var yoru=makeSqueezer('yoru', paceYoru, 60, 10);
-  var ena =makeSqueezer('ena',  paceEna,  52, 12);
+  var squeezers={
+    yoru: makeSqueezer('yoru', paceYoru, 60, 10),
+    ena:  makeSqueezer('ena',  paceEna,  52, 12)
+  };
+  var activeKey='yoru';
+
+  function switchGraph(key){
+    activeKey=key;
+    ['yoru','ena'].forEach(function(k){
+      document.getElementById('panel-'+k).classList.toggle('hidden', k!==key);
+      document.getElementById('tab-'+k).classList.toggle('active', k===key);
+    });
+  }
+  document.getElementById('tab-yoru').addEventListener('click', function(){ switchGraph('yoru'); });
+  document.getElementById('tab-ena').addEventListener('click', function(){ switchGraph('ena'); });
 
   document.addEventListener('keydown', function(e){
-    if(e.key!=='ArrowRight' && e.key!=='ArrowLeft') return;
-    var enaTop=document.getElementById('panel-ena').getBoundingClientRect().top;
-    var active = (enaTop < window.innerHeight/2) ? ena : yoru;
-    if(e.key==='ArrowRight') active.finer(); else active.coarser();
+    if(e.key==='ArrowRight') squeezers[activeKey].finer();
+    if(e.key==='ArrowLeft') squeezers[activeKey].coarser();
   });
 })();
 </script>
