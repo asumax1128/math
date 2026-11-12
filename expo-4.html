@@ -59,7 +59,7 @@
       @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} *{transition:none!important;animation:none!important} }
       body{
         margin:0; background:var(--bg); color:var(--ink);
-        font-family:"Noto Sans JP",system-ui,-apple-system,"Hiragino Kaku Gothic ProN",sans-serif;
+        font-family:"STIX Two Math","Noto Sans JP",system-ui,-apple-system,"Hiragino Kaku Gothic ProN",sans-serif;
         line-height:1.85; font-size:16px;
         padding-bottom:118px;
       }
@@ -148,9 +148,14 @@
       }
       .frac .num{border-bottom:1.6px solid currentColor;padding:0 .22em}
       .frac .den{padding:0 .22em}
-      .card p,.card li,figcaption,table.tbl,.slider-state{
+      .card p,.card li,figcaption,table.tbl,.slider-state,
+      .howto,.howto li,.page-meta,.sec-head h2,.prob-q,.prob-state,
+      .step h3,.step p,.summary,.summary li,.summary h2,.def p,
+      .formula,.frac,sup,sub,.tab,.mini-btn,.slider-row label,.slider-ticks,
+      .ctrl-label,.ctrl-label b,.foot-note,.back-btn,.next-btn,.prob-done{
         font-family:"STIX Two Math","Noto Sans JP",sans-serif;
       }
+      .math-var{font-family:"STIX Two Math","Noto Sans JP",sans-serif;font-style:italic}
       sup{font-size:.68em}
 
       /* ---------- 対応表 ---------- */
@@ -220,6 +225,12 @@
         display:inline-block;text-decoration:none;font-weight:700;color:var(--ink);
         border:2px solid var(--line);background:var(--surface);border-radius:12px;padding:12px 26px;
       }
+      .next-btn{
+        display:block;text-decoration:none;font-weight:900;font-size:18px;text-align:center;
+        color:#fff;background:var(--accent);border:2px solid var(--accent);border-radius:12px;
+        padding:16px 26px;margin:0 auto 14px;max-width:560px;box-shadow:var(--shadow);
+      }
+      @media (prefers-color-scheme: dark){ .next-btn{color:#0c1712} }
       .foot-note{color:var(--ink-soft);font-size:13px;margin-top:12px}
 
       /* ---------- 下部固定バー ---------- */
@@ -824,6 +835,7 @@
 
       <!-- ================= フッター ================= -->
       <footer>
+        <a class="next-btn" href="expo-5.html">次へ：指数関数（2）方程式・不等式 →</a>
         <div class="foot-btns">
           <a class="back-btn" href="expo.html">← 数学II 第5章 自習ページトップに戻る</a>
           <a class="back-btn" href="index.html">Nanryo mathematics portal に戻る</a>
@@ -1167,6 +1179,88 @@
 
         Object.keys(flows).forEach(function(id){ refreshFlow(flows[id]); });
         refreshBar();
+      })();
+    </script>
+    <script>
+      (function(){
+        "use strict";
+        /* インライン数式の変数を STIX Two Math のイタリックで表示する。
+           文章の内容は変えず、変数の文字だけを span.math-var で包む。
+           英字の連続も一律には除外しない：ax・ap・aq のように変数が
+           隣り合う並びは、数式文脈の変数として1文字ずつ包む。
+           （数学II の「II」や Nanryo mathematics portal のような英単語は対象外。） */
+        function hasSkipAncestor(node){
+          var p = node.parentNode;
+          while (p && p !== document.body){
+            var name = (p.nodeName || '').toLowerCase();
+            if (name === 'script' || name === 'style' || name === 'svg') return true;
+            if (p.classList && (p.classList.contains('math-var') || p.classList.contains('sec-tag') || p.classList.contains('badge') || p.classList.contains('pno'))) return true;
+            p = p.parentNode;
+          }
+          return false;
+        }
+        function processText(node){
+          var text = node.nodeValue;
+          var frags = [], last = 0, changed = false;
+          var re = /[A-Za-z]+/g, m, run, start, end, after, isVar, j, span;
+          while ((m = re.exec(text)) !== null){
+            run = m[0]; start = m.index; end = start + run.length;
+            after = end < text.length ? text.charAt(end) : '';
+            isVar = false;
+            if (run.length === 1){
+              isVar = after !== '.'; /* p.156 のようなページ略記は変数ではない */
+            } else if (run.length === 2 && run === run.toLowerCase()){
+              isVar = true; /* ax・ap・aq のような変数の並び（1文字ずつ包む） */
+            }
+            if (!isVar) continue;
+            changed = true;
+            if (start > last) frags.push(document.createTextNode(text.slice(last, start)));
+            for (j = 0; j < run.length; j++){
+              span = document.createElement('span');
+              span.className = 'math-var';
+              span.textContent = run.charAt(j);
+              frags.push(span);
+            }
+            last = end;
+          }
+          if (!changed) return;
+          if (last < text.length) frags.push(document.createTextNode(text.slice(last)));
+          var parent = node.parentNode;
+          frags.forEach(function(n){ parent.insertBefore(n, node); });
+          parent.removeChild(node);
+        }
+        function italicizeVars(root){
+          var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+            acceptNode: function(n){
+              if (!n.nodeValue || !/[A-Za-z]/.test(n.nodeValue)) return NodeFilter.FILTER_REJECT;
+              if (hasSkipAncestor(n)) return NodeFilter.FILTER_REJECT;
+              return NodeFilter.FILTER_ACCEPT;
+            }
+          });
+          var nodes = [];
+          while (walker.nextNode()) nodes.push(walker.currentNode);
+          nodes.forEach(processText);
+        }
+        italicizeVars(document.body);
+
+        /* スライダー操作などで動的に書き換わるキャプションは、
+           書き換えのたびに変数のイタリックを再適用する。 */
+        var captionIds = ['sliderState', 'ex3State'];
+        var observer = new MutationObserver(function(){
+          observer.disconnect();
+          captionIds.forEach(function(id){
+            var cap = document.getElementById(id);
+            if (cap) italicizeVars(cap);
+          });
+          observeCaptions();
+        });
+        function observeCaptions(){
+          captionIds.forEach(function(id){
+            var cap = document.getElementById(id);
+            if (cap) observer.observe(cap, { childList: true, subtree: true, characterData: true });
+          });
+        }
+        observeCaptions();
       })();
     </script>
 <script>

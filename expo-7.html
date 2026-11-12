@@ -59,7 +59,7 @@
       @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} *{transition:none!important} }
       body{
         margin:0; background:var(--bg); color:var(--ink);
-        font-family:"Noto Sans JP",system-ui,-apple-system,"Hiragino Kaku Gothic ProN",sans-serif;
+        font-family:"STIX Two Math","Noto Sans JP",system-ui,-apple-system,"Hiragino Kaku Gothic ProN",sans-serif;
         line-height:1.85; font-size:16px;
         padding-bottom:132px;
       }
@@ -122,11 +122,15 @@
         text-align:center;font-size:19px;font-weight:700;letter-spacing:.03em;
         background:var(--surface2);border-radius:10px;padding:12px 8px;margin:0 0 14px;
       }
-      /* 数式フォント（TeX風）：英数字・記号は STIX Two Math、日本語字形は Noto Sans JP にフォールバック */
-      .card p,.card li,.formula,figcaption{
+      /* 数式フォント（TeX風）：本文全体で英数字・記号は STIX Two Math、日本語字形は Noto Sans JP にフォールバック */
+      body,.card p,.card li,.formula,figcaption,.prob-q,.prop-body,.prop-body .cond,
+      .step p,.step h3,.answer .big,.summary li,.summary h2,.howto,.howto li,
+      .sec-head h2,.page-meta,.prob-state,.ctrl-label,.overall-text,.foot-note{
         font-family:"STIX Two Math","Noto Sans JP",sans-serif;
       }
-      sub,sup{font-size:.68em}
+      /* 変数（英字）は TeX 風にイタリックで表示する */
+      .mvar{font-family:"STIX Two Math","Noto Sans JP",sans-serif;font-style:italic}
+      sub,sup{font-size:.68em;font-family:"STIX Two Math","Noto Sans JP",sans-serif}
 
       /* 分数（縦組み） */
       .frac{
@@ -214,6 +218,13 @@
         display:inline-block;text-decoration:none;font-weight:700;color:var(--ink);
         border:2px solid var(--line);background:var(--surface);border-radius:12px;padding:12px 26px;
       }
+      .next-btn{
+        display:block;text-decoration:none;font-weight:900;font-size:18px;text-align:center;
+        color:#fff;background:var(--accent);border:2px solid var(--accent);border-radius:12px;
+        padding:16px 26px;margin:0 auto 14px;max-width:560px;box-shadow:var(--shadow);
+      }
+      @media (prefers-color-scheme: dark){ .next-btn{color:#0c1712} }
+      .next-btn:active{transform:scale(.98)}
       .foot-note{color:var(--ink-soft);font-size:13px;margin-top:12px}
 
       /* ---------- 下部固定バー ---------- */
@@ -980,6 +991,7 @@
 
       <!-- ================= フッター ================= -->
       <footer>
+        <a class="next-btn" href="expo-8.html">次へ：対数関数（1）グラフと特徴 →</a>
         <div class="foot-btns">
           <a class="back-btn" href="expo.html">← 数学II 第5章 自習ページトップに戻る</a>
           <a class="back-btn" href="index.html">Nanryo mathematics portal に戻る</a>
@@ -1139,6 +1151,40 @@
 
         Object.keys(flows).forEach(function(id){ refreshFlow(flows[id]); });
         refreshBar();
+      })();
+    </script>
+<script>
+      (function(){
+        "use strict";
+        /* インライン数式の変数（英字）を TeX 風にイタリック表示にする。
+           英字のまとまりが1〜2文字のものだけを変数とみなし、"log" などの
+           関数名（3文字以上）や数字・演算子には手を付けない。 */
+        var re = /[A-Za-z]+/g;
+        function wrapVar(node){
+          var text = node.nodeValue;
+          if (!/[A-Za-z]/.test(text)) return;
+          re.lastIndex = 0;
+          var frag = null, last = 0, m;
+          while ((m = re.exec(text)) !== null){
+            if (m[0].length > 2) continue;
+            if (!frag) frag = document.createDocumentFragment();
+            if (m.index > last) frag.appendChild(document.createTextNode(text.slice(last, m.index)));
+            var s = document.createElement('span');
+            s.className = 'mvar';
+            s.textContent = m[0];
+            frag.appendChild(s);
+            last = m.index + m[0].length;
+          }
+          if (!frag) return;
+          if (last < text.length) frag.appendChild(document.createTextNode(text.slice(last)));
+          node.parentNode.replaceChild(frag, node);
+        }
+        Array.prototype.slice.call(document.querySelectorAll('.card')).forEach(function(card){
+          var walker = document.createTreeWalker(card, NodeFilter.SHOW_TEXT);
+          var nodes = [];
+          while (walker.nextNode()) nodes.push(walker.currentNode);
+          nodes.forEach(wrapVar);
+        });
       })();
     </script>
 <script>

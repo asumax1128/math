@@ -59,7 +59,7 @@
       @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} *{transition:none!important} }
       body{
         margin:0; background:var(--bg); color:var(--ink);
-        font-family:"Noto Sans JP",system-ui,-apple-system,"Hiragino Kaku Gothic ProN",sans-serif;
+        font-family:"STIX Two Math","Noto Sans JP",system-ui,-apple-system,"Hiragino Kaku Gothic ProN",sans-serif;
         line-height:1.85; font-size:16px;
         padding-bottom:118px;
       }
@@ -120,12 +120,26 @@
 
       /* ---------- 数式 ---------- */
       .formula{
+        font-family:"STIX Two Math","Noto Sans JP",sans-serif;
         text-align:center;font-size:19px;font-weight:700;letter-spacing:.03em;
         background:var(--surface2);border-radius:10px;padding:12px 8px;margin:0 0 14px;
         line-height:1.9;
       }
-      .card p,.card li,figcaption,table.comp{
+      /* 本文全体（問題文・ヒント文・まとめ・使い方等）で STIX Two Math を最優先にし、
+         日本語グリフは Noto Sans JP にフォールバックさせる */
+      body,.card p,.card li,.card h2,.card h3,figcaption,table.comp,
+      .howto,.howto h2,.howto li,.summary,.summary h2,.summary li,
+      .prob-q,.prob-q .sub,.step,.step p,.step h3,.def,.def p,
+      .kenkyu,.kenkyu p,.note,.answer .big,.answer .chain,
+      .prob-state,.prob-done,.ctrl-label,.foot-note,.page-meta,
+      .tab,.btn,sup,sub,.box-num{
         font-family:"STIX Two Math","Noto Sans JP",sans-serif;
+      }
+      /* 変数（ラテン文字）は STIX Two Math のイタリックで表示する。
+         数字・演算子・分数の表記は現行のまま変えない */
+      .math-var{
+        font-family:"STIX Two Math","Noto Sans JP",sans-serif;
+        font-style:italic;
       }
       sup.ri{font-size:.62em;line-height:0;font-weight:700}
       .box-num{
@@ -204,6 +218,13 @@
         display:inline-block;text-decoration:none;font-weight:700;color:var(--ink);
         border:2px solid var(--line);background:var(--surface);border-radius:12px;padding:12px 26px;
       }
+      .next-btn{
+        display:block;text-decoration:none;font-weight:900;font-size:18px;text-align:center;
+        color:#fff;background:var(--accent);border:2px solid var(--accent);border-radius:12px;
+        padding:16px 26px;margin:0 auto 14px;max-width:560px;box-shadow:var(--shadow);
+      }
+      @media (prefers-color-scheme: dark){ .next-btn{color:#0c1712} }
+      .next-btn:active{transform:scale(.99)}
       .foot-note{color:var(--ink-soft);font-size:13px;margin-top:12px}
 
       /* ---------- 下部固定バー ---------- */
@@ -854,6 +875,7 @@
 
       <!-- ================= フッター ================= -->
       <footer>
+        <a class="next-btn" href="expo-4.html">次へ：指数関数（1）グラフと特徴 →</a>
         <div class="foot-btns">
           <a class="back-btn" href="expo.html">← 数学II 第5章 自習ページトップに戻る</a>
           <a class="back-btn" href="index.html">Nanryo mathematics portal に戻る</a>
@@ -1017,6 +1039,49 @@
 
         Object.keys(flows).forEach(function(id){ refreshFlow(flows[id]); });
         refreshBar();
+      })();
+    </script>
+    <script>
+      /* インライン数式の変数（ラテン文字）だけを .math-var で包み、
+         STIX Two Math のイタリックで表示する。テキスト内容・分数・演算子は変更しない。
+         対象はカード・使い方に加え、まとめ（.summary）・研究（.kenkyu）・
+         脚注（.foot-note）・ページ情報（.page-meta）・節見出し（.sec-head）など
+         カード外の本文ブロックも含め、ページ内のすべての本文を網羅する。
+         SVG 内の文字は対象外。 */
+      (function(){
+        "use strict";
+        var roots = document.querySelectorAll('.card, .howto, .summary, .kenkyu, .foot-note, .page-meta, .sec-head');
+        Array.prototype.forEach.call(roots, function(root){
+          var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+            acceptNode: function(node){
+              if (!/[A-Za-z]/.test(node.nodeValue)) return NodeFilter.FILTER_REJECT;
+              var p = node.parentNode;
+              while (p && p !== root){
+                if (p.nodeName && (p.nodeName.toLowerCase() === 'svg' || p.nodeName.toLowerCase() === 'script' || p.nodeName.toLowerCase() === 'style')) return NodeFilter.FILTER_REJECT;
+                p = p.parentNode;
+              }
+              return NodeFilter.FILTER_ACCEPT;
+            }
+          });
+          var nodes = [];
+          while (walker.nextNode()) nodes.push(walker.currentNode);
+          nodes.forEach(function(node){
+            var parts = node.nodeValue.split(/([A-Za-z]+)/);
+            if (parts.length < 2) return;
+            var frag = document.createDocumentFragment();
+            parts.forEach(function(part, i){
+              if (i % 2 === 1){
+                var span = document.createElement('span');
+                span.className = 'math-var';
+                span.textContent = part;
+                frag.appendChild(span);
+              } else if (part){
+                frag.appendChild(document.createTextNode(part));
+              }
+            });
+            node.parentNode.replaceChild(frag, node);
+          });
+        });
       })();
     </script>
 <script>
