@@ -80,7 +80,7 @@
   <div class="numbers">
     <div class="num-box">
       <div class="num-label blue">小さく見積もる（内側の長方形）</div>
-      <div class="num-value blue math" id="underVal">48問</div>
+      <div class="num-value blue math" id="underVal">？？</div>
     </div>
     <div class="ineq math">&lt;</div>
     <div class="num-box">
@@ -90,9 +90,9 @@
     <div class="ineq math">&lt;</div>
     <div class="num-box">
       <div class="num-label red">大きく見積もる（外側の長方形）</div>
-      <div class="num-value red math" id="overVal">72</div>
+      <div class="num-value red math" id="overVal">？？</div>
     </div>
-    <div class="gap-note" id="gapNote">長方形の幅 <b>30分</b>：差は <b>24問</b> ― まだだいぶ幅がある</div>
+    <div class="gap-note" id="gapNote">まずは、自分のやり方で見積もってみよう</div>
   </div>
   <div class="controls">
     <div class="ctl-group">
@@ -110,6 +110,7 @@
       <button data-mode="over" class="mbtn mode-over">大きく</button>
     </div>
     <button class="reveal" id="revealBtn">本当の合計は？</button>
+    <button id="blankBtn">空白に戻す</button>
   </div>
   <div class="hint-line">キーボード：→ 幅を細かく　← 幅を粗く</div>
 </main>
@@ -120,7 +121,7 @@
   function pace(t){ var u=t/120; return 1 + 8*(3*u*u - 2*u*u*u); }
 
   var WIDTHS=[30,20,10,5];
-  var state={ wi:0, mode:"both", revealed:false };
+  var state={ wi:-1, mode:"both", revealed:false };
 
   var svg=document.getElementById('graph');
   var NS="http://www.w3.org/2000/svg";
@@ -219,16 +220,42 @@
   }
 
   function render(){
+    var uv=document.getElementById('underVal'), ov=document.getElementById('overVal');
+    var nextBtn=document.getElementById('nextBtn');
+    if(state.wi<0){
+      // 配布プリントと同じ空白：曲線だけ、長方形も数字も出さない
+      while(gUnder.firstChild) gUnder.removeChild(gUnder.firstChild);
+      while(gOver.firstChild) gOver.removeChild(gOver.firstChild);
+      underRects=[]; overRects=[];
+      uv.textContent='？？'; ov.textContent='？？';
+      uv.classList.add('q'); ov.classList.add('q');
+      document.getElementById('gapNote').innerHTML = state.revealed
+        ? '本当の合計は <b>60問</b>（曲線の下の面積）'
+        : 'まずは、自分のやり方で見積もってみよう';
+      document.querySelectorAll('.wbtn').forEach(function(b){ b.classList.remove('active'); });
+      nextBtn.disabled=false;
+      nextBtn.textContent='次へ：長方形で見積もる（30分幅）▶';
+      return;
+    }
     var w=WIDTHS[state.wi];
-    var s=sums(w);
-    document.getElementById('underVal').textContent=s.under+'問';
-    document.getElementById('overVal').textContent=s.over+'問';
-    var gap=s.over-s.under;
+    var sm=sums(w);
+    uv.textContent=sm.under+'問'; ov.textContent=sm.over+'問';
+    uv.classList.remove('q'); ov.classList.remove('q');
+    var gap=sm.over-sm.under;
     document.getElementById('gapNote').innerHTML=
       '長方形の幅 <b>'+w+'分</b>：差は <b>'+gap+'問</b>'+
       (state.revealed ? ' ― 本当の合計 <b>60問</b> は、この間にある' :
        (state.wi===WIDTHS.length-1 ? ' ― ここまで細かくすると、かなり迫ってくる' : ' ― 幅を細かくすると、差は縮まっていく'));
     document.querySelectorAll('.wbtn').forEach(function(b){
+      b.classList.toggle('active', parseInt(b.dataset.width,10)===w);
+    });
+    nextBtn.disabled = state.wi>=WIDTHS.length-1;
+    nextBtn.textContent='次へ：幅を細かくする ▶';
+    buildRects(w);
+    animate();
+  }
+
+  document.querySelectorAll('.wbtn').forEach(function(b){
       b.classList.toggle('active', parseInt(b.dataset.width,10)===w);
     });
     document.getElementById('nextBtn').disabled = state.wi>=WIDTHS.length-1;
@@ -266,9 +293,21 @@
     }
     render();
   });
+  document.getElementById('blankBtn').addEventListener('click', function(){
+    state.wi=-1;
+    if(state.revealed){
+      state.revealed=false;
+      var tv=document.getElementById('trueVal');
+      tv.textContent='？？'; tv.classList.add('q'); tv.classList.remove('green');
+      areaPath.style.display='none';
+      var btn=document.getElementById('revealBtn');
+      btn.textContent='本当の合計は？'; btn.classList.remove('shown');
+    }
+    render();
+  });
   document.addEventListener('keydown', function(e){
     if(e.key==='ArrowRight' && state.wi<WIDTHS.length-1){ state.wi++; render(); }
-    if(e.key==='ArrowLeft' && state.wi>0){ state.wi--; render(); }
+    if(e.key==='ArrowLeft' && state.wi>=0){ state.wi--; render(); }
   });
 
   render();
