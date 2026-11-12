@@ -3,23 +3,28 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>長方形ではさむ ― 夜型エンジン型（積分の導入）</title>
+<title>長方形ではさむ ― 夜型エンジン型・エナドリ型（積分の導入）</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap" rel="stylesheet">
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
-  html,body { height:100%; }
+  html { scroll-behavior:smooth; }
   body {
     font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif;
-    background:#fdfdf8; color:#1f2937; display:flex; flex-direction:column;
-    height:100vh; overflow:hidden;
+    background:#fdfdf8; color:#1f2937;
   }
   .math { font-family:"STIX Two Math",serif; }
+  section.panel { min-height:100vh; display:flex; flex-direction:column; }
+  section.panel + section.panel { border-top:6px solid #e5e7eb; }
   header {
-    padding:10px 28px 4px; display:flex; align-items:baseline; gap:18px; flex-wrap:wrap;
+    padding:12px 28px 4px; display:flex; align-items:baseline; gap:18px; flex-wrap:wrap;
   }
   header h1 { font-size:30px; font-weight:800; letter-spacing:.02em; }
   header .sub { font-size:19px; color:#4b5563; }
+  header .jump {
+    margin-left:auto; font-size:19px; font-weight:700; color:#1d4ed8;
+    text-decoration:none; border:3px solid #bfdbfe; border-radius:12px; padding:6px 16px; background:#eff6ff;
+  }
   main { flex:1; display:flex; flex-direction:column; padding:2px 18px 0; min-height:0; }
   .graphwrap { flex:1; min-height:0; }
   svg { width:100%; height:100%; display:block; }
@@ -46,263 +51,323 @@
   .gap-note b { color:#111827; }
   .controls {
     display:flex; align-items:center; justify-content:center; gap:14px;
-    padding:12px 16px 16px; flex-wrap:wrap;
+    padding:12px 16px 14px; flex-wrap:wrap;
   }
-  .ctl-group { display:flex; align-items:center; gap:8px; }
+  .ctl-group { display:flex; align-items:center; gap:8px; flex-wrap:wrap; justify-content:center; }
   .ctl-label { font-size:20px; font-weight:700; color:#4b5563; margin-right:2px; }
   button {
     font-family:inherit; font-size:23px; font-weight:700; cursor:pointer;
     border:3px solid #d1d5db; background:#fff; color:#374151;
-    padding:10px 22px; border-radius:14px; transition:all .15s;
+    padding:10px 20px; border-radius:14px; transition:all .15s;
   }
   button:hover { border-color:#9ca3af; }
   button.active { background:#111827; color:#fff; border-color:#111827; }
   button.mode-under.active { background:#1d4ed8; border-color:#1d4ed8; }
   button.mode-over.active { background:#dc2626; border-color:#dc2626; }
-  button.next { background:#f59e0b; border-color:#f59e0b; color:#fff; font-size:26px; padding:12px 30px; }
+  button.next { background:#f59e0b; border-color:#f59e0b; color:#fff; font-size:26px; padding:12px 28px; }
   button.next:disabled { background:#e5e7eb; border-color:#e5e7eb; color:#9ca3af; cursor:default; }
   button.reveal { background:#16a34a; border-color:#16a34a; color:#fff; }
   button.reveal.shown { background:#fff; color:#15803d; }
-  .hint-line { text-align:center; font-size:16px; color:#9ca3af; padding-bottom:8px; }
+  .hint-line { text-align:center; font-size:16px; color:#9ca3af; padding-bottom:10px; }
 </style>
 </head>
 <body>
-<header>
-  <h1>夜型エンジン型 ― 長方形ではさむ</h1>
-  <div class="sub">ペース（10分あたり何問）× 時間（分）＝ 解いた問題の数　／　曲線の下の面積が「合計」</div>
-</header>
-<main>
-  <div class="graphwrap">
-    <svg id="graph" viewBox="0 0 1160 600" preserveAspectRatio="xMidYMid meet" aria-label="夜型エンジン型のペース曲線と長方形">
-      <!-- JSで描画 -->
-    </svg>
-  </div>
-  <div class="numbers">
-    <div class="num-box">
-      <div class="num-label blue">小さく見積もる（内側の長方形）</div>
-      <div class="num-value blue math" id="underVal">？？</div>
+
+<section class="panel" id="panel-yoru">
+  <header>
+    <h1>夜型エンジン型 ― 長方形ではさむ</h1>
+    <div class="sub">ペース（10分あたり何問）× 時間（分）＝ 解いた問題の数　／　曲線の下の面積が「合計」</div>
+    <a class="jump" href="#panel-ena">↓ エナドリ型へ</a>
+  </header>
+  <main>
+    <div class="graphwrap"><svg id="graph-yoru" viewBox="0 0 1160 600" preserveAspectRatio="xMidYMid meet" aria-label="夜型エンジン型のペース曲線と長方形"></svg></div>
+    <div class="numbers">
+      <div class="num-box">
+        <div class="num-label blue">小さく見積もる（内側の長方形）</div>
+        <div class="num-value blue math" id="under-yoru">？？</div>
+      </div>
+      <div class="ineq math">&lt;</div>
+      <div class="num-box">
+        <div class="num-label green">本当の合計</div>
+        <div class="num-value q math" id="true-yoru">？？</div>
+      </div>
+      <div class="ineq math">&lt;</div>
+      <div class="num-box">
+        <div class="num-label red">大きく見積もる（外側の長方形）</div>
+        <div class="num-value red math" id="over-yoru">？？</div>
+      </div>
+      <div class="gap-note" id="gap-yoru">まずは、自分のやり方で見積もってみよう</div>
     </div>
-    <div class="ineq math">&lt;</div>
-    <div class="num-box">
-      <div class="num-label green">本当の合計</div>
-      <div class="num-value q math" id="trueVal">？？</div>
+    <div class="controls">
+      <div class="ctl-group">
+        <span class="ctl-label">幅</span>
+        <button data-width="30" class="wbtn-yoru">30分</button>
+        <button data-width="20" class="wbtn-yoru">20分</button>
+        <button data-width="10" class="wbtn-yoru">10分</button>
+        <button data-width="5" class="wbtn-yoru">5分</button>
+        <button data-width="3" class="wbtn-yoru">3分</button>
+        <button data-width="1" class="wbtn-yoru">1分</button>
+      </div>
+      <button class="next" id="next-yoru">次へ：長方形で見積もる（30分幅）▶</button>
+      <div class="ctl-group">
+        <span class="ctl-label">表示</span>
+        <button data-mode="both" class="mbtn-yoru active">両方ではさむ</button>
+        <button data-mode="under" class="mbtn-yoru mode-under">小さく</button>
+        <button data-mode="over" class="mbtn-yoru mode-over">大きく</button>
+      </div>
+      <button class="reveal" id="reveal-yoru">本当の合計は？</button>
+      <button id="blank-yoru">空白に戻す</button>
     </div>
-    <div class="ineq math">&lt;</div>
-    <div class="num-box">
-      <div class="num-label red">大きく見積もる（外側の長方形）</div>
-      <div class="num-value red math" id="overVal">？？</div>
+    <div class="hint-line">キーボード：→ 幅を細かく　← 幅を粗く（画面に出ている方のグラフに効きます）</div>
+  </main>
+</section>
+
+<section class="panel" id="panel-ena">
+  <header>
+    <h1>エナドリ型 ― 長方形ではさむ</h1>
+    <div class="sub">最初に一気に加速して、あとは失速していくタイプ　／　曲線の下の面積が「合計」</div>
+    <a class="jump" href="#panel-yoru">↑ 夜型エンジン型へ</a>
+  </header>
+  <main>
+    <div class="graphwrap"><svg id="graph-ena" viewBox="0 0 1160 600" preserveAspectRatio="xMidYMid meet" aria-label="エナドリ型のペース曲線と長方形"></svg></div>
+    <div class="numbers">
+      <div class="num-box">
+        <div class="num-label blue">小さく見積もる（内側の長方形）</div>
+        <div class="num-value blue math" id="under-ena">？？</div>
+      </div>
+      <div class="ineq math">&lt;</div>
+      <div class="num-box">
+        <div class="num-label green">本当の合計</div>
+        <div class="num-value q math" id="true-ena">？？</div>
+      </div>
+      <div class="ineq math">&lt;</div>
+      <div class="num-box">
+        <div class="num-label red">大きく見積もる（外側の長方形）</div>
+        <div class="num-value red math" id="over-ena">？？</div>
+      </div>
+      <div class="gap-note" id="gap-ena">まずは、自分のやり方で見積もってみよう</div>
     </div>
-    <div class="gap-note" id="gapNote">まずは、自分のやり方で見積もってみよう</div>
-  </div>
-  <div class="controls">
-    <div class="ctl-group">
-      <span class="ctl-label">幅</span>
-      <button data-width="30" class="wbtn active">30分</button>
-      <button data-width="20" class="wbtn">20分</button>
-      <button data-width="10" class="wbtn">10分</button>
-      <button data-width="5" class="wbtn">5分</button>
+    <div class="controls">
+      <div class="ctl-group">
+        <span class="ctl-label">幅</span>
+        <button data-width="30" class="wbtn-ena">30分</button>
+        <button data-width="20" class="wbtn-ena">20分</button>
+        <button data-width="10" class="wbtn-ena">10分</button>
+        <button data-width="5" class="wbtn-ena">5分</button>
+        <button data-width="3" class="wbtn-ena">3分</button>
+        <button data-width="1" class="wbtn-ena">1分</button>
+      </div>
+      <button class="next" id="next-ena">次へ：長方形で見積もる（30分幅）▶</button>
+      <div class="ctl-group">
+        <span class="ctl-label">表示</span>
+        <button data-mode="both" class="mbtn-ena active">両方ではさむ</button>
+        <button data-mode="under" class="mbtn-ena mode-under">小さく</button>
+        <button data-mode="over" class="mbtn-ena mode-over">大きく</button>
+      </div>
+      <button class="reveal" id="reveal-ena">本当の合計は？</button>
+      <button id="blank-ena">空白に戻す</button>
     </div>
-    <button class="next" id="nextBtn">次へ：幅を細かくする ▶</button>
-    <div class="ctl-group">
-      <span class="ctl-label">表示</span>
-      <button data-mode="both" class="mbtn active">両方ではさむ</button>
-      <button data-mode="under" class="mbtn mode-under">小さく</button>
-      <button data-mode="over" class="mbtn mode-over">大きく</button>
-    </div>
-    <button class="reveal" id="revealBtn">本当の合計は？</button>
-    <button id="blankBtn">空白に戻す</button>
-  </div>
-  <div class="hint-line">キーボード：→ 幅を細かく　← 幅を粗く</div>
-</main>
+    <div class="hint-line">キーボード：→ 幅を細かく　← 幅を粗く（画面に出ている方のグラフに効きます）</div>
+  </main>
+</section>
+
 <script>
 (function(){
   "use strict";
-  // プリント3枚目と同じ曲線：ペースは S字に 1 → 9（問/10分）、120分、本当の合計は 60問
-  function pace(t){ var u=t/120; return 1 + 8*(3*u*u - 2*u*u*u); }
-
-  var WIDTHS=[30,20,10,5];
-  var state={ wi:-1, mode:"both", revealed:false };
-
-  var svg=document.getElementById('graph');
+  var WIDTHS=[30,20,10,5,3,1];
   var NS="http://www.w3.org/2000/svg";
-  // プロット領域
-  var L=95, R=1130, T=36, B=520; // x: 0..120分, y: ペース 0..10
-  function X(t){ return L + (R-L)*t/120; }
-  function Y(p){ return B - (B-T)*p/10; }
+  var L=95, R=1130, T=36, B=520;
 
-  function el(name, attrs){
-    var e=document.createElementNS(NS,name);
-    for(var k in attrs) e.setAttribute(k, attrs[k]);
-    return e;
+  function fmt(x){
+    var r=Math.round(x*10)/10;
+    return (r%1===0) ? String(r) : r.toFixed(1);
   }
 
-  // 静的部分（格子・軸・ラベル・曲線）
-  var gGrid=el('g',{}), gArea=el('g',{}), gOver=el('g',{}), gUnder=el('g',{}), gCurve=el('g',{});
-  svg.appendChild(gGrid); svg.appendChild(gArea); svg.appendChild(gOver); svg.appendChild(gUnder); svg.appendChild(gCurve);
-
-  for(var p=0;p<=10;p+=2){
-    gGrid.appendChild(el('line',{x1:L,y1:Y(p),x2:R,y2:Y(p),'class':'grid'}));
-    var tx=el('text',{x:L-12,y:Y(p)+7,'text-anchor':'end','class':'tick-label math'}); tx.textContent=p; gGrid.appendChild(tx);
-  }
-  for(var t=0;t<=120;t+=20){
-    gGrid.appendChild(el('line',{x1:X(t),y1:T,x2:X(t),y2:B,'class':'grid'}));
-    var tt=el('text',{x:X(t),y:B+34,'text-anchor':'middle','class':'tick-label math'}); tt.textContent=t; gGrid.appendChild(tt);
-  }
-  gGrid.appendChild(el('line',{x1:L,y1:B,x2:R,y2:B,'class':'axis'}));
-  gGrid.appendChild(el('line',{x1:L,y1:T,x2:L,y2:B,'class':'axis'}));
-  var yl=el('text',{x:L-58,y:T-12,'class':'axis-label'}); yl.textContent='ペース（問/10分）'; gGrid.appendChild(yl);
-  var xl=el('text',{x:R,y:B+34,'text-anchor':'end','class':'axis-label'}); xl.textContent=''; gGrid.appendChild(xl);
-  var xl2=el('text',{x:(L+R)/2,y:B+66,'text-anchor':'middle','class':'axis-label'}); xl2.textContent='時間（分）'; gGrid.appendChild(xl2);
-
-  // 曲線パス
-  var d='', N=120;
-  for(var i=0;i<=N;i++){ var tt2=i; d+=(i===0?'M':'L')+X(tt2).toFixed(1)+','+Y(pace(tt2)).toFixed(1)+' '; }
-  gCurve.appendChild(el('path',{d:d,'class':'curve'}));
-
-  // 本当の面積（曲線の下）
-  var areaD=d+'L'+X(120)+','+B+' L'+X(0)+','+B+' Z';
-  var areaPath=el('path',{d:areaD,'class':'truearea'});
-  areaPath.style.display='none';
-  gArea.appendChild(areaPath);
-
-  var underRects=[], overRects=[], animId=null;
-
-  function sums(w){
-    var n=120/w, u=0, o=0;
-    for(var i=0;i<n;i++){ u+=pace(i*w); o+=pace((i+1)*w); }
-    return { under: Math.round(u*w/10), over: Math.round(o*w/10) };
-  }
-
-  function buildRects(w){
-    while(gUnder.firstChild) gUnder.removeChild(gUnder.firstChild);
-    while(gOver.firstChild) gOver.removeChild(gOver.firstChild);
-    underRects=[]; overRects=[];
-    var n=120/w;
-    for(var i=0;i<n;i++){
-      var x0=X(i*w), x1=X((i+1)*w);
-      var ro=el('rect',{x:x0, y:Y(0), width:Math.max(0,(x1-x0)-1.5), height:0,'class':'rect-over'});
-      ro.dataset.target=pace((i+1)*w);
-      gOver.appendChild(ro); overRects.push(ro);
-      var ru=el('rect',{x:x0, y:Y(0), width:Math.max(0,(x1-x0)-1.5), height:0,'class':'rect-under'});
-      ru.dataset.target=pace(i*w);
-      gUnder.appendChild(ru); underRects.push(ru);
+  function makeSqueezer(key, pace, total, ymax){
+    var state={ wi:-1, mode:"both", revealed:false };
+    var svg=document.getElementById('graph-'+key);
+    function X(t){ return L + (R-L)*t/120; }
+    function Y(p){ return B - (B-T)*p/ymax; }
+    function el(name, attrs){
+      var e=document.createElementNS(NS,name);
+      for(var k in attrs) e.setAttribute(k, attrs[k]);
+      return e;
     }
-    applyMode();
-  }
-
-  function applyMode(){
-    var m=state.mode;
-    gUnder.style.display = (m==='both'||m==='under') ? '' : 'none';
-    gOver.style.display  = (m==='both'||m==='over')  ? '' : 'none';
-  }
-
-  function animate(){
-    if(animId) cancelAnimationFrame(animId);
-    var start=null, dur=550;
-    var targets=[];
-    overRects.forEach(function(r){ targets.push({r:r, h:parseFloat(r.dataset.target), delay:0}); });
-    underRects.forEach(function(r,i){ targets.push({r:r, h:parseFloat(r.dataset.target), delay:i*35}); });
-    function frame(ts){
-      if(!start) start=ts;
-      var done=true;
-      targets.forEach(function(o){
-        var k=(ts-start-o.delay)/dur;
-        if(k<0){ k=0; }
-        if(k<1) done=false; else k=1;
-        var e=1-Math.pow(1-k,3);
-        var hh=o.h*e;
-        o.r.setAttribute('y', Y(hh));
-        o.r.setAttribute('height', B-Y(hh));
-      });
-      if(!done) animId=requestAnimationFrame(frame);
+    var gGrid=el('g',{}), gArea=el('g',{}), gOver=el('g',{}), gUnder=el('g',{}), gCurve=el('g',{});
+    svg.appendChild(gGrid); svg.appendChild(gArea); svg.appendChild(gOver); svg.appendChild(gUnder); svg.appendChild(gCurve);
+    for(var p=0;p<=ymax;p+=2){
+      gGrid.appendChild(el('line',{x1:L,y1:Y(p),x2:R,y2:Y(p),'class':'grid'}));
+      var tx=el('text',{x:L-12,y:Y(p)+7,'text-anchor':'end','class':'tick-label math'}); tx.textContent=p; gGrid.appendChild(tx);
     }
-    animId=requestAnimationFrame(frame);
-  }
+    for(var t=0;t<=120;t+=20){
+      gGrid.appendChild(el('line',{x1:X(t),y1:T,x2:X(t),y2:B,'class':'grid'}));
+      var tt=el('text',{x:X(t),y:B+34,'text-anchor':'middle','class':'tick-label math'}); tt.textContent=t; gGrid.appendChild(tt);
+    }
+    gGrid.appendChild(el('line',{x1:L,y1:B,x2:R,y2:B,'class':'axis'}));
+    gGrid.appendChild(el('line',{x1:L,y1:T,x2:L,y2:B,'class':'axis'}));
+    var yl=el('text',{x:L-58,y:T-12,'class':'axis-label'}); yl.textContent='ペース（問/10分）'; gGrid.appendChild(yl);
+    var xl2=el('text',{x:(L+R)/2,y:B+66,'text-anchor':'middle','class':'axis-label'}); xl2.textContent='時間（分）'; gGrid.appendChild(xl2);
 
-  function render(){
-    var uv=document.getElementById('underVal'), ov=document.getElementById('overVal');
-    var nextBtn=document.getElementById('nextBtn');
-    if(state.wi<0){
-      // 配布プリントと同じ空白：曲線だけ、長方形も数字も出さない
+    var d='', N=120;
+    for(var i=0;i<=N;i++){ d+=(i===0?'M':'L')+X(i).toFixed(1)+','+Y(pace(i)).toFixed(1)+' '; }
+    gCurve.appendChild(el('path',{d:d,'class':'curve'}));
+    var areaPath=el('path',{d:d+'L'+X(120)+','+B+' L'+X(0)+','+B+' Z','class':'truearea'});
+    areaPath.style.display='none';
+    gArea.appendChild(areaPath);
+
+    var underRects=[], overRects=[], animId=null;
+
+    function sums(w){
+      var n=120/w, u=0, o=0;
+      for(var i=0;i<n;i++){
+        var a=pace(i*w), b=pace((i+1)*w);
+        u+=Math.min(a,b); o+=Math.max(a,b);
+      }
+      return { under: u*w/10, over: o*w/10 };
+    }
+    function buildRects(w){
       while(gUnder.firstChild) gUnder.removeChild(gUnder.firstChild);
       while(gOver.firstChild) gOver.removeChild(gOver.firstChild);
       underRects=[]; overRects=[];
-      uv.textContent='？？'; ov.textContent='？？';
-      uv.classList.add('q'); ov.classList.add('q');
-      document.getElementById('gapNote').innerHTML = state.revealed
-        ? '本当の合計は <b>60問</b>（曲線の下の面積）'
-        : 'まずは、自分のやり方で見積もってみよう';
-      document.querySelectorAll('.wbtn').forEach(function(b){ b.classList.remove('active'); });
-      nextBtn.disabled=false;
-      nextBtn.textContent='次へ：長方形で見積もる（30分幅）▶';
-      return;
+      var n=120/w;
+      for(var i=0;i<n;i++){
+        var x0=X(i*w), x1=X((i+1)*w);
+        var a=pace(i*w), b=pace((i+1)*w);
+        var ro=el('rect',{x:x0, y:Y(0), width:Math.max(0,(x1-x0)-1.5), height:0,'class':'rect-over'});
+        ro.dataset.target=Math.max(a,b);
+        gOver.appendChild(ro); overRects.push(ro);
+        var ru=el('rect',{x:x0, y:Y(0), width:Math.max(0,(x1-x0)-1.5), height:0,'class':'rect-under'});
+        ru.dataset.target=Math.min(a,b);
+        gUnder.appendChild(ru); underRects.push(ru);
+      }
+      applyMode();
     }
-    var w=WIDTHS[state.wi];
-    var sm=sums(w);
-    uv.textContent=sm.under+'問'; ov.textContent=sm.over+'問';
-    uv.classList.remove('q'); ov.classList.remove('q');
-    var gap=sm.over-sm.under;
-    document.getElementById('gapNote').innerHTML=
-      '長方形の幅 <b>'+w+'分</b>：差は <b>'+gap+'問</b>'+
-      (state.revealed ? ' ― 本当の合計 <b>60問</b> は、この間にある' :
-       (state.wi===WIDTHS.length-1 ? ' ― ここまで細かくすると、かなり迫ってくる' : ' ― 幅を細かくすると、差は縮まっていく'));
-    document.querySelectorAll('.wbtn').forEach(function(b){
-      b.classList.toggle('active', parseInt(b.dataset.width,10)===w);
+    function applyMode(){
+      gUnder.style.display = (state.mode==='both'||state.mode==='under') ? '' : 'none';
+      gOver.style.display  = (state.mode==='both'||state.mode==='over')  ? '' : 'none';
+    }
+    function animate(){
+      if(animId) cancelAnimationFrame(animId);
+      var start=null, dur=450;
+      var targets=[];
+      overRects.forEach(function(r,i){ targets.push({r:r, h:parseFloat(r.dataset.target), delay:i*(400/Math.max(1,overRects.length))}); });
+      underRects.forEach(function(r,i){ targets.push({r:r, h:parseFloat(r.dataset.target), delay:i*(400/Math.max(1,underRects.length))}); });
+      function frame(ts){
+        if(!start) start=ts;
+        var done=true;
+        targets.forEach(function(o){
+          var k=(ts-start-o.delay)/dur;
+          if(k<0) k=0;
+          if(k<1) done=false; else k=1;
+          var e=1-Math.pow(1-k,3);
+          var hh=o.h*e;
+          o.r.setAttribute('y', Y(hh));
+          o.r.setAttribute('height', B-Y(hh));
+        });
+        if(!done) animId=requestAnimationFrame(frame);
+      }
+      animId=requestAnimationFrame(frame);
+    }
+
+    var uv=document.getElementById('under-'+key),
+        ov=document.getElementById('over-'+key),
+        tv=document.getElementById('true-'+key),
+        gapEl=document.getElementById('gap-'+key),
+        nextBtn=document.getElementById('next-'+key),
+        revealBtn=document.getElementById('reveal-'+key);
+
+    function render(){
+      if(state.wi<0){
+        while(gUnder.firstChild) gUnder.removeChild(gUnder.firstChild);
+        while(gOver.firstChild) gOver.removeChild(gOver.firstChild);
+        underRects=[]; overRects=[];
+        uv.textContent='？？'; ov.textContent='？？';
+        uv.classList.add('q'); ov.classList.add('q');
+        gapEl.innerHTML = state.revealed
+          ? '本当の合計は <b>'+total+'問</b>（曲線の下の面積）'
+          : 'まずは、自分のやり方で見積もってみよう';
+        document.querySelectorAll('.wbtn-'+key).forEach(function(b){ b.classList.remove('active'); });
+        nextBtn.disabled=false;
+        nextBtn.textContent='次へ：長方形で見積もる（30分幅）▶';
+        return;
+      }
+      var w=WIDTHS[state.wi];
+      var sm=sums(w);
+      uv.textContent=fmt(sm.under)+'問'; ov.textContent=fmt(sm.over)+'問';
+      uv.classList.remove('q'); ov.classList.remove('q');
+      gapEl.innerHTML=
+        '長方形の幅 <b>'+w+'分</b>：差は <b>'+fmt(sm.over-sm.under)+'問</b>'+
+        (state.revealed ? ' ― 本当の合計 <b>'+total+'問</b> は、この間にある' :
+         (state.wi===WIDTHS.length-1 ? ' ― ここまで細かくすると、本当の合計にかなり迫ってくる' : ' ― 幅を細かくすると、差は縮まっていく'));
+      document.querySelectorAll('.wbtn-'+key).forEach(function(b){
+        b.classList.toggle('active', parseInt(b.dataset.width,10)===w);
+      });
+      nextBtn.disabled = state.wi>=WIDTHS.length-1;
+      nextBtn.textContent='次へ：幅を細かくする ▶';
+      buildRects(w);
+      animate();
+    }
+
+    document.querySelectorAll('.wbtn-'+key).forEach(function(b){
+      b.addEventListener('click', function(){
+        state.wi=WIDTHS.indexOf(parseInt(b.dataset.width,10)); render();
+      });
     });
-    nextBtn.disabled = state.wi>=WIDTHS.length-1;
-    nextBtn.textContent='次へ：幅を細かくする ▶';
-    buildRects(w);
-    animate();
+    document.querySelectorAll('.mbtn-'+key).forEach(function(b){
+      b.addEventListener('click', function(){
+        state.mode=b.dataset.mode;
+        document.querySelectorAll('.mbtn-'+key).forEach(function(x){ x.classList.toggle('active', x===b); });
+        applyMode();
+      });
+    });
+    nextBtn.addEventListener('click', function(){
+      if(state.wi<WIDTHS.length-1){ state.wi++; render(); }
+    });
+    revealBtn.addEventListener('click', function(){
+      state.revealed=!state.revealed;
+      if(state.revealed){
+        tv.textContent=total+'問'; tv.classList.remove('q'); tv.classList.add('green');
+        areaPath.style.display='';
+        revealBtn.textContent='本当の合計をかくす'; revealBtn.classList.add('shown');
+      }else{
+        tv.textContent='？？'; tv.classList.add('q'); tv.classList.remove('green');
+        areaPath.style.display='none';
+        revealBtn.textContent='本当の合計は？'; revealBtn.classList.remove('shown');
+      }
+      render();
+    });
+    document.getElementById('blank-'+key).addEventListener('click', function(){
+      state.wi=-1;
+      if(state.revealed){
+        state.revealed=false;
+        tv.textContent='？？'; tv.classList.add('q'); tv.classList.remove('green');
+        areaPath.style.display='none';
+        revealBtn.textContent='本当の合計は？'; revealBtn.classList.remove('shown');
+      }
+      render();
+    });
+
+    render();
+    return {
+      finer: function(){ if(state.wi<WIDTHS.length-1){ state.wi++; render(); } },
+      coarser: function(){ if(state.wi>=0){ state.wi--; render(); } }
+    };
   }
 
-  document.querySelectorAll('.wbtn').forEach(function(b){
-    b.addEventListener('click', function(){
-      state.wi=WIDTHS.indexOf(parseInt(b.dataset.width,10)); render();
-    });
-  });
-  document.querySelectorAll('.mbtn').forEach(function(b){
-    b.addEventListener('click', function(){
-      state.mode=b.dataset.mode;
-      document.querySelectorAll('.mbtn').forEach(function(x){ x.classList.toggle('active', x===b); });
-      applyMode();
-    });
-  });
-  document.getElementById('nextBtn').addEventListener('click', function(){
-    if(state.wi<WIDTHS.length-1){ state.wi++; render(); }
-  });
-  document.getElementById('revealBtn').addEventListener('click', function(){
-    state.revealed=!state.revealed;
-    var tv=document.getElementById('trueVal');
-    var btn=document.getElementById('revealBtn');
-    if(state.revealed){
-      tv.textContent='60問'; tv.classList.remove('q'); tv.classList.add('green');
-      areaPath.style.display='';
-      btn.textContent='本当の合計をかくす'; btn.classList.add('shown');
-    }else{
-      tv.textContent='？？'; tv.classList.add('q'); tv.classList.remove('green');
-      areaPath.style.display='none';
-      btn.textContent='本当の合計は？'; btn.classList.remove('shown');
-    }
-    render();
-  });
-  document.getElementById('blankBtn').addEventListener('click', function(){
-    state.wi=-1;
-    if(state.revealed){
-      state.revealed=false;
-      var tv=document.getElementById('trueVal');
-      tv.textContent='？？'; tv.classList.add('q'); tv.classList.remove('green');
-      areaPath.style.display='none';
-      var btn=document.getElementById('revealBtn');
-      btn.textContent='本当の合計は？'; btn.classList.remove('shown');
-    }
-    render();
-  });
-  document.addEventListener('keydown', function(e){
-    if(e.key==='ArrowRight' && state.wi<WIDTHS.length-1){ state.wi++; render(); }
-    if(e.key==='ArrowLeft' && state.wi>=0){ state.wi--; render(); }
-  });
+  // 夜型エンジン型：S字に 1 → 9 へ上がる（プリント3枚目と同じ曲線、本当の合計 60問）
+  function paceYoru(t){ var u=t/120; return 1 + 8*(3*u*u - 2*u*u*u); }
+  // エナドリ型：最初 11 から失速して 1 へ（本当の合計 52問）
+  function paceEna(t){ var u=t/120; return 1 + 10*(1-u)*(1-u); }
 
-  render();
+  var yoru=makeSqueezer('yoru', paceYoru, 60, 10);
+  var ena =makeSqueezer('ena',  paceEna,  52, 12);
+
+  document.addEventListener('keydown', function(e){
+    if(e.key!=='ArrowRight' && e.key!=='ArrowLeft') return;
+    var enaTop=document.getElementById('panel-ena').getBoundingClientRect().top;
+    var active = (enaTop < window.innerHeight/2) ? ena : yoru;
+    if(e.key==='ArrowRight') active.finer(); else active.coarser();
+  });
 })();
 </script>
 <!-- Nanryo portal アクセス集計ビーコン（全ページ共通・</body>直前に挿入） -->
