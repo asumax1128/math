@@ -59,7 +59,7 @@
       @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} *{transition:none!important;animation:none!important} }
       body{
         margin:0; background:var(--bg); color:var(--ink);
-        font-family:"Noto Sans JP",system-ui,-apple-system,"Hiragino Kaku Gothic ProN",sans-serif;
+        font-family:"STIX Two Math","Noto Sans JP",system-ui,-apple-system,"Hiragino Kaku Gothic ProN",sans-serif;
         line-height:1.85; font-size:16px;
         padding-bottom:150px;
       }
@@ -139,9 +139,17 @@
         line-height:1.02;margin:0 .08em;
       }
       .limd .lim-b{font-size:.6em;font-weight:700}
-      .card p,.card li,figcaption,.slider-state{
+      .card p,.card li,figcaption,.slider-state,
+      .formula,.calc,.frac,.limd,
+      .prob-q,.prob-q .sub,.step p,.step h3,.answer .big,.note,
+      .howto,.howto li,.howto h2,.def,.def p,
+      .summary,.summary li,.summary h2,
+      .page-meta,.sec-head h2,.prob-state,.prob-done,
+      .tab,.btn,.ctrl-label,.foot-note,figcaption{
         font-family:"STIX Two Math","Noto Sans JP",sans-serif;
       }
+      /* 変数はイタリックで表示する（JSが英字の変数を .mvar で包む） */
+      .mvar{font-style:italic}
       sup{font-size:.68em}
 
       /* ---------- 問題カード（ヒント式） ---------- */
@@ -205,6 +213,14 @@
         display:inline-block;text-decoration:none;font-weight:700;color:var(--ink);
         border:2px solid var(--line);background:var(--surface);border-radius:12px;padding:12px 26px;
       }
+      .next-sec{margin:0 0 14px}
+      .next-btn{
+        display:block;text-decoration:none;font-weight:900;font-size:18px;color:#fff;
+        background:var(--accent);border:2px solid var(--accent);border-radius:12px;
+        padding:16px 20px;box-shadow:var(--shadow);
+      }
+      @media (prefers-color-scheme: dark){ .next-btn{color:#0c1712} }
+      .next-btn:active{transform:scale(.99)}
       .foot-note{color:var(--ink-soft);font-size:13px;margin-top:12px}
 
       /* ---------- 下部固定バー ---------- */
@@ -816,6 +832,9 @@
 
       <!-- ================= フッター ================= -->
       <footer>
+        <div class="next-sec">
+          <a class="next-btn" href="calc-4.html">次へ：導関数とその計算（2）関数の微分 →</a>
+        </div>
         <div class="foot-btns">
           <a class="back-btn" href="calc.html">← 数学II 第6章 自習ページトップに戻る</a>
           <a class="back-btn" href="index.html">Nanryo mathematics portal に戻る</a>
@@ -974,6 +993,46 @@
 
         Object.keys(flows).forEach(function(id){ refreshFlow(flows[id]); });
         refreshBar();
+      })();
+    </script>
+<script>
+      /* 変数のイタリック化：本文中の英字（変数）を .mvar で包む。lim は立体のまま。
+         分数（.frac）・極限（.limd）の構造や数字・演算子には触れない。 */
+      (function(){
+        "use strict";
+        var scope = document.querySelectorAll('.card p, .card li, .card .prob-q, .card .tab, .summary li, figcaption, .formula, .calc, .answer .big, .sec-head h2, .def, .note');
+        var seen = [];
+        function alreadyDone(node){ return seen.indexOf(node) !== -1; }
+        Array.prototype.forEach.call(scope, function(el){
+          var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, {
+            acceptNode: function(node){
+              if (!/[A-Za-z]/.test(node.nodeValue)) return NodeFilter.FILTER_REJECT;
+              var p = node.parentNode;
+              if (!p || p.nodeName === 'I' || p.nodeName === 'SCRIPT' || p.nodeName === 'STYLE') return NodeFilter.FILTER_REJECT;
+              if (p.closest && p.closest('svg')) return NodeFilter.FILTER_REJECT;
+              return NodeFilter.FILTER_ACCEPT;
+            }
+          });
+          var targets = [];
+          var n;
+          while ((n = walker.nextNode())){ if (!alreadyDone(n)){ seen.push(n); targets.push(n); } }
+          targets.forEach(function(node){
+            var parts = node.nodeValue.split(/([A-Za-z]+)/);
+            if (parts.length < 2) return;
+            var frag = document.createDocumentFragment();
+            parts.forEach(function(part){
+              if (/^[A-Za-z]+$/.test(part) && part !== 'lim'){
+                var i = document.createElement('i');
+                i.className = 'mvar';
+                i.textContent = part;
+                frag.appendChild(i);
+              } else if (part){
+                frag.appendChild(document.createTextNode(part));
+              }
+            });
+            node.parentNode.replaceChild(frag, node);
+          });
+        });
       })();
     </script>
 <script>

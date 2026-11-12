@@ -61,7 +61,7 @@
       @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} *{transition:none!important} }
       body{
         margin:0; background:var(--bg); color:var(--ink);
-        font-family:"Noto Sans JP",system-ui,-apple-system,"Hiragino Kaku Gothic ProN",sans-serif;
+        font-family:"STIX Two Math","Noto Sans JP",system-ui,-apple-system,"Hiragino Kaku Gothic ProN",sans-serif;
         line-height:1.85; font-size:16px;
         padding-bottom:132px;
       }
@@ -143,10 +143,14 @@
       }
       .frac>span{padding:0 .22em}
       .frac>span:first-child{border-bottom:1.6px solid currentColor}
-      /* 数式フォント（TeX風）：英数字・記号は STIX Two Math、日本語字形は Noto Sans JP にフォールバック */
-      .card p,.card li,figcaption,table.comp{
+      /* 数式フォント（TeX風）：本文全体を STIX Two Math 最優先とし、
+         STIX Two Math に無い日本語グリフは Noto Sans JP にフォールバックする。
+         数式ブロックだけでなく、問題文・ヒント文・まとめ等の中のインライン数式もすべて対象 */
+      .card p,.card li,.prob-q,.step,.summary,.howto,figcaption,table.comp{
         font-family:"STIX Two Math","Noto Sans JP",sans-serif;
       }
+      /* 変数は STIX Two Math のイタリックで表示する */
+      i{font-family:"STIX Two Math",serif;font-style:italic}
 
       /* ---------- 問題カード（ヒント式） ---------- */
       .prob{border:2px solid var(--line);transition:border-color .2s}
@@ -209,6 +213,14 @@
         display:inline-block;text-decoration:none;font-weight:700;color:var(--ink);
         border:2px solid var(--line);background:var(--surface);border-radius:12px;padding:12px 26px;
       }
+      .next-sec{margin:30px 0 0;text-align:center}
+      .next-btn{
+        display:inline-block;text-decoration:none;font-weight:900;font-size:17px;color:#fff;
+        background:var(--accent);border:2px solid var(--accent);border-radius:12px;
+        padding:14px 30px;box-shadow:var(--shadow);max-width:100%;
+      }
+      @media (prefers-color-scheme: dark){ .next-btn{color:#0c1712} }
+      .next-btn:active{transform:scale(.98)}
       .foot-note{color:var(--ink-soft);font-size:13px;margin-top:12px}
 
       /* ---------- 下部固定バー ---------- */
@@ -303,9 +315,9 @@
           </div>
           <span class="prob-state">ヒント 0 / 4</span>
         </div>
-        <p>関数 f(x) の<b>導関数 f′(x) を求めること</b>を、f(x) を <span class="key">微分する</span> という。前の項では、導関数の定義</p>
-        <p class="formula">f′(x) ＝ lim<sub>h→0</sub> <span class="frac"><span>f(x＋h) − f(x)</span><span>h</span></span></p>
-        <p>を使って、y＝x<sup>2</sup> などを微分した。ここでは、もっと複雑な関数を微分するための<b>性質</b>を学ぶ。まず図で「微分する」ことの意味を確認しよう。下の <b>次へ</b> を押すと、説明が1段ずつ進むよ。</p>
+        <p>関数 <i>f</i>(<i>x</i>) の<b>導関数 <i>f</i>′(<i>x</i>) を求めること</b>を、<i>f</i>(<i>x</i>) を <span class="key">微分する</span> という。前の項では、導関数の定義</p>
+        <p class="formula"><i>f</i>′(<i>x</i>) ＝ lim<sub><i>h</i>→0</sub> <span class="frac"><span><i>f</i>(<i>x</i>＋<i>h</i>) − <i>f</i>(<i>x</i>)</span><span><i>h</i></span></span></p>
+        <p>を使って、<i>y</i>＝<i>x</i><sup>2</sup> などを微分した。ここでは、もっと複雑な関数を微分するための<b>性質</b>を学ぶ。まず図で「微分する」ことの意味を確認しよう。下の <b>次へ</b> を押すと、説明が1段ずつ進むよ。</p>
         <figure>
           <div class="figbox">
             <svg viewBox="0 0 520 302" role="img" aria-label="放物線 y＝x の2乗 のグラフ。x＝1 の点での接線（傾き2）と、x＝−1 の点での接線（傾き−2）が段階的に表示され、導関数が各点での接線の傾きを表すことを示す図">
@@ -351,44 +363,44 @@
               </g>
             </svg>
           </div>
-          <figcaption>「微分する」とは、グラフ上の各点での接線の傾きを、x の関数として表すこと。</figcaption>
+          <figcaption>「微分する」とは、グラフ上の各点での接線の傾きを、<i>x</i> の関数として表すこと。</figcaption>
         </figure>
 
         </div>
         <div class="flow-right">
         <div class="step hint">
           <h3>つづき 1 ― 「微分する」の意味</h3>
-          <p>導関数 f′(x) は、<b>x の値が決まれば、その点での接線の傾きを返す関数</b>だった。たとえば y＝x<sup>2</sup> では、x＝1 の点での接線の傾きは 2（図のオレンジの接線）。</p>
-          <p>このように、<b>関数から導関数を求める操作</b>を「<b>微分する</b>」という。「y＝x<sup>2</sup> を微分すると y′＝2x」のように使う言葉だよ。</p>
+          <p>導関数 <i>f</i>′(<i>x</i>) は、<b><i>x</i> の値が決まれば、その点での接線の傾きを返す関数</b>だった。たとえば <i>y</i>＝<i>x</i><sup>2</sup> では、<i>x</i>＝1 の点での接線の傾きは 2（図のオレンジの接線）。</p>
+          <p>このように、<b>関数から導関数を求める操作</b>を「<b>微分する</b>」という。「<i>y</i>＝<i>x</i><sup>2</sup> を微分すると <i>y</i>′＝2<i>x</i>」のように使う言葉だよ。</p>
         </div>
         <div class="step hint">
           <h3>つづき 2 ― 点ごとに傾きが違う</h3>
-          <p>x＝−1 の点では、接線の傾きは −2（図の青い接線）。x＝1 では 2、x＝−1 では −2 のように、<b>傾きは x に応じて変わる</b>。その変化の仕方をまとめたものが導関数で、y＝x<sup>2</sup> の場合は f′(x)＝2x になる（x＝1 → 2、x＝−1 → −2 と確かめられるね）。</p>
+          <p><i>x</i>＝−1 の点では、接線の傾きは −2（図の青い接線）。<i>x</i>＝1 では 2、<i>x</i>＝−1 では −2 のように、<b>傾きは <i>x</i> に応じて変わる</b>。その変化の仕方をまとめたものが導関数で、<i>y</i>＝<i>x</i><sup>2</sup> の場合は <i>f</i>′(<i>x</i>)＝2<i>x</i> になる（<i>x</i>＝1 → 2、<i>x</i>＝−1 → −2 と確かめられるね）。</p>
           <p>では、定数倍や和の関数はどう微分すればよいだろう？　まず定義から計算して確かめてみよう。</p>
         </div>
         <div class="step hint">
-          <h3>つづき 3 ― y＝2x<sup>3</sup> を定義から微分する</h3>
-          <p>f(x)＝2x<sup>3</sup> として、定義にあてはめる。(x＋h)<sup>3</sup>＝x<sup>3</sup>＋3x<sup>2</sup>h＋3xh<sup>2</sup>＋h<sup>3</sup> を使うよ。</p>
-          <p class="formula left">f′(x) ＝ lim<sub>h→0</sub> <span class="frac"><span>2(x＋h)<sup>3</sup> − 2x<sup>3</sup></span><span>h</span></span></p>
-          <p class="formula left">　　　＝ lim<sub>h→0</sub> <span class="frac"><span>2(3x<sup>2</sup>h＋3xh<sup>2</sup>＋h<sup>3</sup>)</span><span>h</span></span></p>
-          <p class="formula left">　　　＝ lim<sub>h→0</sub> (6x<sup>2</sup>＋6xh＋2h<sup>2</sup>) ＝ <b>6x<sup>2</sup></b></p>
-          <p>結果は 6x<sup>2</sup>。これは「x<sup>3</sup> を微分した 3x<sup>2</sup> の <b>2倍</b>」になっているね。つまり、<b>定数倍はそのまま残して、中身を微分すればよい</b>ことが分かる。</p>
+          <h3>つづき 3 ― <i>y</i>＝2<i>x</i><sup>3</sup> を定義から微分する</h3>
+          <p><i>f</i>(<i>x</i>)＝2<i>x</i><sup>3</sup> として、定義にあてはめる。(<i>x</i>＋<i>h</i>)<sup>3</sup>＝<i>x</i><sup>3</sup>＋3<i>x</i><sup>2</sup><i>h</i>＋3<i>xh</i><sup>2</sup>＋<i>h</i><sup>3</sup> を使うよ。</p>
+          <p class="formula left"><i>f</i>′(<i>x</i>) ＝ lim<sub><i>h</i>→0</sub> <span class="frac"><span>2(<i>x</i>＋<i>h</i>)<sup>3</sup> − 2<i>x</i><sup>3</sup></span><span><i>h</i></span></span></p>
+          <p class="formula left">　　　＝ lim<sub><i>h</i>→0</sub> <span class="frac"><span>2(3<i>x</i><sup>2</sup><i>h</i>＋3<i>xh</i><sup>2</sup>＋<i>h</i><sup>3</sup>)</span><span><i>h</i></span></span></p>
+          <p class="formula left">　　　＝ lim<sub><i>h</i>→0</sub> (6<i>x</i><sup>2</sup>＋6<i>xh</i>＋2<i>h</i><sup>2</sup>) ＝ <b>6<i>x</i><sup>2</sup></b></p>
+          <p>結果は 6<i>x</i><sup>2</sup>。これは「<i>x</i><sup>3</sup> を微分した 3<i>x</i><sup>2</sup> の <b>2倍</b>」になっているね。つまり、<b>定数倍はそのまま残して、中身を微分すればよい</b>ことが分かる。</p>
         </div>
         <div class="step hint">
-          <h3>つづき 4 ― y＝x<sup>3</sup>＋x<sup>2</sup> を定義から微分する</h3>
-          <p>f(x)＝x<sup>3</sup>＋x<sup>2</sup> とする。(x＋h)<sup>2</sup>＝x<sup>2</sup>＋2xh＋h<sup>2</sup> も使って、定義にあてはめる。</p>
-          <p class="formula left">f(x＋h) − f(x) ＝ {(x＋h)<sup>3</sup>＋(x＋h)<sup>2</sup>} − (x<sup>3</sup>＋x<sup>2</sup>)</p>
-          <p class="formula left">　　　　　　＝ (3x<sup>2</sup>h＋3xh<sup>2</sup>＋h<sup>3</sup>) ＋ (2xh＋h<sup>2</sup>)</p>
-          <p class="formula left">f′(x) ＝ lim<sub>h→0</sub> <span class="frac"><span>f(x＋h) − f(x)</span><span>h</span></span> ＝ lim<sub>h→0</sub> {3x<sup>2</sup>＋2x ＋ (3x＋1)h ＋ h<sup>2</sup>} ＝ <b>3x<sup>2</sup>＋2x</b></p>
-          <p>結果は 3x<sup>2</sup>＋2x。これは「x<sup>3</sup> の微分 3x<sup>2</sup>」と「x<sup>2</sup> の微分 2x」の<b>和</b>になっている。つまり、<b>和は項ごとに分けて微分すればよい</b>ことが分かる。</p>
+          <h3>つづき 4 ― <i>y</i>＝<i>x</i><sup>3</sup>＋<i>x</i><sup>2</sup> を定義から微分する</h3>
+          <p><i>f</i>(<i>x</i>)＝<i>x</i><sup>3</sup>＋<i>x</i><sup>2</sup> とする。(<i>x</i>＋<i>h</i>)<sup>2</sup>＝<i>x</i><sup>2</sup>＋2<i>xh</i>＋<i>h</i><sup>2</sup> も使って、定義にあてはめる。</p>
+          <p class="formula left"><i>f</i>(<i>x</i>＋<i>h</i>) − <i>f</i>(<i>x</i>) ＝ {(<i>x</i>＋<i>h</i>)<sup>3</sup>＋(<i>x</i>＋<i>h</i>)<sup>2</sup>} − (<i>x</i><sup>3</sup>＋<i>x</i><sup>2</sup>)</p>
+          <p class="formula left">　　　　　　＝ (3<i>x</i><sup>2</sup><i>h</i>＋3<i>xh</i><sup>2</sup>＋<i>h</i><sup>3</sup>) ＋ (2<i>xh</i>＋<i>h</i><sup>2</sup>)</p>
+          <p class="formula left"><i>f</i>′(<i>x</i>) ＝ lim<sub><i>h</i>→0</sub> <span class="frac"><span><i>f</i>(<i>x</i>＋<i>h</i>) − <i>f</i>(<i>x</i>)</span><span><i>h</i></span></span> ＝ lim<sub><i>h</i>→0</sub> {3<i>x</i><sup>2</sup>＋2<i>x</i> ＋ (3<i>x</i>＋1)<i>h</i> ＋ <i>h</i><sup>2</sup>} ＝ <b>3<i>x</i><sup>2</sup>＋2<i>x</i></b></p>
+          <p>結果は 3<i>x</i><sup>2</sup>＋2<i>x</i>。これは「<i>x</i><sup>3</sup> の微分 3<i>x</i><sup>2</sup>」と「<i>x</i><sup>2</sup> の微分 2<i>x</i>」の<b>和</b>になっている。つまり、<b>和は項ごとに分けて微分すればよい</b>ことが分かる。</p>
         </div>
         <div class="step answer">
           <h3>まとめ ― 導関数の性質</h3>
-          <p>定義からの計算で確かめたことが、一般に次の性質として成り立つ。k を定数とする。</p>
-          <p class="formula">{k f(x)}′ ＝ k f′(x)</p>
-          <p class="formula">{f(x)＋g(x)}′ ＝ f′(x)＋g′(x)</p>
-          <p class="formula">{f(x)−g(x)}′ ＝ f′(x)−g′(x)</p>
-          <p>言葉で言うと：<b>定数倍はそのまま残す</b>、<b>和・差は項ごとに分けて微分する</b>。この性質と、(x<sup>n</sup>)′＝n x<sup>n−1</sup>、定数の微分は 0、という前の項の結果を組み合わせれば、多項式はすべて微分できるよ。</p>
+          <p>定義からの計算で確かめたことが、一般に次の性質として成り立つ。<i>k</i> を定数とする。</p>
+          <p class="formula">{<i>k</i> <i>f</i>(<i>x</i>)}′ ＝ <i>k</i> <i>f</i>′(<i>x</i>)</p>
+          <p class="formula">{<i>f</i>(<i>x</i>)＋<i>g</i>(<i>x</i>)}′ ＝ <i>f</i>′(<i>x</i>)＋<i>g</i>′(<i>x</i>)</p>
+          <p class="formula">{<i>f</i>(<i>x</i>)−<i>g</i>(<i>x</i>)}′ ＝ <i>f</i>′(<i>x</i>)−<i>g</i>′(<i>x</i>)</p>
+          <p>言葉で言うと：<b>定数倍はそのまま残す</b>、<b>和・差は項ごとに分けて微分する</b>。この性質と、(<i>x</i><sup><i>n</i></sup>)′＝<i>n</i> <i>x</i><sup><i>n</i>−1</sup>、定数の微分は 0、という前の項の結果を組み合わせれば、多項式はすべて微分できるよ。</p>
         </div>
         <p class="prob-done">解説B おわり！　次は例6で、性質を使って計算しよう。</p>
       </div>
@@ -411,62 +423,62 @@
         </div>
         <div class="flow-right">
         <div class="tabs" role="tablist" aria-label="例6の小問">
-          <button class="tab" role="tab" data-tab="ex6-1" aria-selected="true">(1) y＝3x<sup>2</sup>−4x＋2</button>
+          <button class="tab" role="tab" data-tab="ex6-1" aria-selected="true">(1) <i>y</i>＝3<i>x</i><sup>2</sup>−4<i>x</i>＋2</button>
           <button class="tab" role="tab" data-tab="ex6-2" aria-selected="false">(2) 分数の係数</button>
         </div>
 
         <div class="tabpanel show" id="panel-ex6-1" data-flow="ex6-1" data-label="例6 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　y＝3x<sup>2</sup>−4x＋2</span>
+            <span class="sub prob-q" style="margin:0">(1)　<i>y</i>＝3<i>x</i><sup>2</sup>−4<i>x</i>＋2</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― 項ごとに分けて考える</h3>
-            <p>性質「和・差は項ごとに分けて微分する」を使う。y は <b>3x<sup>2</sup></b>、<b>−4x</b>、<b>2</b> の3つの項からできている。この3つを1つずつ微分して、あとで並べよう。</p>
+            <p>性質「和・差は項ごとに分けて微分する」を使う。<i>y</i> は <b>3<i>x</i><sup>2</sup></b>、<b>−4<i>x</i></b>、<b>2</b> の3つの項からできている。この3つを1つずつ微分して、あとで並べよう。</p>
             <p>なお、最後の項 2 は定数だから、微分すると <b>0</b> になるよ。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 各項を微分する</h3>
-            <p>定数倍はそのまま残して、(x<sup>n</sup>)′＝n x<sup>n−1</sup> を使う。</p>
-            <p class="formula left">(3x<sup>2</sup>)′ ＝ 3・2x ＝ 6x</p>
-            <p class="formula left">(−4x)′ ＝ −4　，　(2)′ ＝ 0</p>
+            <p>定数倍はそのまま残して、(<i>x</i><sup><i>n</i></sup>)′＝<i>n</i> <i>x</i><sup><i>n</i>−1</sup> を使う。</p>
+            <p class="formula left">(3<i>x</i><sup>2</sup>)′ ＝ 3・2<i>x</i> ＝ 6<i>x</i></p>
+            <p class="formula left">(−4<i>x</i>)′ ＝ −4　，　(2)′ ＝ 0</p>
             <p>3つの結果を、元の順番どおりに並べてみよう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (1)</h3>
-            <p class="big">y′ ＝ 6x − 4</p>
-            <p>y′ ＝ (3x<sup>2</sup>)′ − (4x)′ ＋ (2)′ ＝ 6x − 4 ＋ 0 ＝ 6x − 4。定数項は消える、というのがポイントだよ。</p>
+            <p class="big"><i>y</i>′ ＝ 6<i>x</i> − 4</p>
+            <p><i>y</i>′ ＝ (3<i>x</i><sup>2</sup>)′ − (4<i>x</i>)′ ＋ (2)′ ＝ 6<i>x</i> − 4 ＋ 0 ＝ 6<i>x</i> − 4。定数項は消える、というのがポイントだよ。</p>
           </div>
           <p class="prob-done">(1) クリア！　(2) のタブも開いてみよう。</p>
         </div>
 
         <div class="tabpanel" id="panel-ex6-2" data-flow="ex6-2" data-label="例6 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　y＝<span class="frac"><span>2</span><span>3</span></span>x<sup>3</sup> − <span class="frac"><span>5</span><span>2</span></span>x<sup>2</sup> ＋ 5x</span>
+            <span class="sub prob-q" style="margin:0">(2)　<i>y</i>＝<span class="frac"><span>2</span><span>3</span></span><i>x</i><sup>3</sup> − <span class="frac"><span>5</span><span>2</span></span><i>x</i><sup>2</sup> ＋ 5<i>x</i></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― 分数の係数も「定数倍」</h3>
-            <p>係数が分数でも、やり方は (1) と同じ。<span class="frac"><span>2</span><span>3</span></span> や <span class="frac"><span>5</span><span>2</span></span> も定数だから、<b>そのまま残して x の部分だけを微分</b>すればよい。項は3つ：<span class="frac"><span>2</span><span>3</span></span>x<sup>3</sup>、−<span class="frac"><span>5</span><span>2</span></span>x<sup>2</sup>、5x だね。</p>
+            <p>係数が分数でも、やり方は (1) と同じ。<span class="frac"><span>2</span><span>3</span></span> や <span class="frac"><span>5</span><span>2</span></span> も定数だから、<b>そのまま残して <i>x</i> の部分だけを微分</b>すればよい。項は3つ：<span class="frac"><span>2</span><span>3</span></span><i>x</i><sup>3</sup>、−<span class="frac"><span>5</span><span>2</span></span><i>x</i><sup>2</sup>、5<i>x</i> だね。</p>
           </div>
           <div class="step hint">
-            <h3>ヒント 2 ― x<sup>3</sup> の項を微分する</h3>
-            <p>まず最初の項だけ計算しよう。係数 <span class="frac"><span>2</span><span>3</span></span> は残して、(x<sup>3</sup>)′＝3x<sup>2</sup> を使う。</p>
-            <p class="formula left">(<span class="frac"><span>2</span><span>3</span></span>x<sup>3</sup>)′ ＝ <span class="frac"><span>2</span><span>3</span></span>・3x<sup>2</sup> ＝ 2x<sup>2</sup></p>
+            <h3>ヒント 2 ― <i>x</i><sup>3</sup> の項を微分する</h3>
+            <p>まず最初の項だけ計算しよう。係数 <span class="frac"><span>2</span><span>3</span></span> は残して、(<i>x</i><sup>3</sup>)′＝3<i>x</i><sup>2</sup> を使う。</p>
+            <p class="formula left">(<span class="frac"><span>2</span><span>3</span></span><i>x</i><sup>3</sup>)′ ＝ <span class="frac"><span>2</span><span>3</span></span>・3<i>x</i><sup>2</sup> ＝ 2<i>x</i><sup>2</sup></p>
             <p><span class="frac"><span>2</span><span>3</span></span>・3＝2 と、分数がきれいに約分できるね。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 3 ― 残り2つの項を微分する</h3>
-            <p class="formula left">(−<span class="frac"><span>5</span><span>2</span></span>x<sup>2</sup>)′ ＝ −<span class="frac"><span>5</span><span>2</span></span>・2x ＝ −5x</p>
-            <p class="formula left">(5x)′ ＝ 5</p>
-            <p>ここでも <span class="frac"><span>5</span><span>2</span></span>・2＝5 と約分できた。3つの結果（2x<sup>2</sup>、−5x、5）を順に並べよう。</p>
+            <p class="formula left">(−<span class="frac"><span>5</span><span>2</span></span><i>x</i><sup>2</sup>)′ ＝ −<span class="frac"><span>5</span><span>2</span></span>・2<i>x</i> ＝ −5<i>x</i></p>
+            <p class="formula left">(5<i>x</i>)′ ＝ 5</p>
+            <p>ここでも <span class="frac"><span>5</span><span>2</span></span>・2＝5 と約分できた。3つの結果（2<i>x</i><sup>2</sup>、−5<i>x</i>、5）を順に並べよう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (2)</h3>
-            <p class="big">y′ ＝ 2x<sup>2</sup> − 5x ＋ 5</p>
-            <p>項ごとに分けると、y′ ＝ (<span class="frac"><span>2</span><span>3</span></span>x<sup>3</sup>)′ − (<span class="frac"><span>5</span><span>2</span></span>x<sup>2</sup>)′ ＋ (5x)′ ＝ 2x<sup>2</sup> − 5x ＋ 5。分数の係数は、指数の数と約分されることが多いよ。</p>
+            <p class="big"><i>y</i>′ ＝ 2<i>x</i><sup>2</sup> − 5<i>x</i> ＋ 5</p>
+            <p>項ごとに分けると、<i>y</i>′ ＝ (<span class="frac"><span>2</span><span>3</span></span><i>x</i><sup>3</sup>)′ − (<span class="frac"><span>5</span><span>2</span></span><i>x</i><sup>2</sup>)′ ＋ (5<i>x</i>)′ ＝ 2<i>x</i><sup>2</sup> − 5<i>x</i> ＋ 5。分数の係数は、指数の数と約分されることが多いよ。</p>
           </div>
           <p class="prob-done">(2) クリア！　次は練習8で、8問まとめて練習しよう。</p>
         </div>
@@ -502,186 +514,186 @@
 
         <div class="tabpanel show" id="panel-ren8-1" data-flow="ren8-1" data-label="練習8 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　y＝4x<sup>2</sup>＋3x−4</span>
+            <span class="sub prob-q" style="margin:0">(1)　<i>y</i>＝4<i>x</i><sup>2</sup>＋3<i>x</i>−4</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― 項は3つ、定数項は消える</h3>
-            <p>項は 4x<sup>2</sup>、3x、−4 の3つ。項ごとに分けて微分しよう。定数項 −4 を微分すると 0 になるよ。</p>
+            <p>項は 4<i>x</i><sup>2</sup>、3<i>x</i>、−4 の3つ。項ごとに分けて微分しよう。定数項 −4 を微分すると 0 になるよ。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 各項を計算する</h3>
-            <p class="formula left">(4x<sup>2</sup>)′ ＝ 4・2x ＝ □x　，　(3x)′ ＝ 3</p>
+            <p class="formula left">(4<i>x</i><sup>2</sup>)′ ＝ 4・2<i>x</i> ＝ □<i>x</i>　，　(3<i>x</i>)′ ＝ 3</p>
             <p>□ に入る数を考えて、2つの結果を並べよう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (1)</h3>
-            <p class="big">y′ ＝ 8x ＋ 3</p>
+            <p class="big"><i>y</i>′ ＝ 8<i>x</i> ＋ 3</p>
           </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
 
         <div class="tabpanel" id="panel-ren8-2" data-flow="ren8-2" data-label="練習8 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　y＝2x<sup>3</sup>−5x＋1</span>
+            <span class="sub prob-q" style="margin:0">(2)　<i>y</i>＝2<i>x</i><sup>3</sup>−5<i>x</i>＋1</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― 項ごとに分ける</h3>
-            <p>項は 2x<sup>3</sup>、−5x、1 の3つ。(x<sup>3</sup>)′＝3x<sup>2</sup> を使う項があるね。定数項 1 は微分すると 0 だよ。</p>
+            <p>項は 2<i>x</i><sup>3</sup>、−5<i>x</i>、1 の3つ。(<i>x</i><sup>3</sup>)′＝3<i>x</i><sup>2</sup> を使う項があるね。定数項 1 は微分すると 0 だよ。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 各項を計算する</h3>
-            <p class="formula left">(2x<sup>3</sup>)′ ＝ 2・3x<sup>2</sup> ＝ □x<sup>2</sup>　，　(−5x)′ ＝ −5</p>
+            <p class="formula left">(2<i>x</i><sup>3</sup>)′ ＝ 2・3<i>x</i><sup>2</sup> ＝ □<i>x</i><sup>2</sup>　，　(−5<i>x</i>)′ ＝ −5</p>
             <p>□ を埋めて、結果を並べよう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (2)</h3>
-            <p class="big">y′ ＝ 6x<sup>2</sup> − 5</p>
+            <p class="big"><i>y</i>′ ＝ 6<i>x</i><sup>2</sup> − 5</p>
           </div>
           <p class="prob-done">(2) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
 
         <div class="tabpanel" id="panel-ren8-3" data-flow="ren8-3" data-label="練習8 (3)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(3)　y＝−3x<sup>2</sup>＋x−2</span>
+            <span class="sub prob-q" style="margin:0">(3)　<i>y</i>＝−3<i>x</i><sup>2</sup>＋<i>x</i>−2</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― マイナスの係数に注意</h3>
-            <p>項は −3x<sup>2</sup>、x、−2 の3つ。係数 −3 はそのまま残して微分するよ。また、x は 1・x と同じで、(x)′＝1 だね。</p>
+            <p>項は −3<i>x</i><sup>2</sup>、<i>x</i>、−2 の3つ。係数 −3 はそのまま残して微分するよ。また、<i>x</i> は 1・<i>x</i> と同じで、(<i>x</i>)′＝1 だね。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 各項を計算する</h3>
-            <p class="formula left">(−3x<sup>2</sup>)′ ＝ −3・2x ＝ −□x　，　(x)′ ＝ 1</p>
+            <p class="formula left">(−3<i>x</i><sup>2</sup>)′ ＝ −3・2<i>x</i> ＝ −□<i>x</i>　，　(<i>x</i>)′ ＝ 1</p>
             <p>符号を落とさないように、2つの結果を並べよう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (3)</h3>
-            <p class="big">y′ ＝ −6x ＋ 1</p>
+            <p class="big"><i>y</i>′ ＝ −6<i>x</i> ＋ 1</p>
           </div>
           <p class="prob-done">(3) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
 
         <div class="tabpanel" id="panel-ren8-4" data-flow="ren8-4" data-label="練習8 (4)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(4)　y＝−x<sup>2</sup>−x＋3</span>
+            <span class="sub prob-q" style="margin:0">(4)　<i>y</i>＝−<i>x</i><sup>2</sup>−<i>x</i>＋3</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="step hint">
-            <h3>ヒント 1 ― −x<sup>2</sup> は係数 −1</h3>
-            <p>−x<sup>2</sup> は「−1・x<sup>2</sup>」のこと。係数 −1 を残して微分しよう。同じく −x は係数 −1 の x だよ。</p>
+            <h3>ヒント 1 ― −<i>x</i><sup>2</sup> は係数 −1</h3>
+            <p>−<i>x</i><sup>2</sup> は「−1・<i>x</i><sup>2</sup>」のこと。係数 −1 を残して微分しよう。同じく −<i>x</i> は係数 −1 の <i>x</i> だよ。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 各項を計算する</h3>
-            <p class="formula left">(−x<sup>2</sup>)′ ＝ −1・2x ＝ □　，　(−x)′ ＝ −1</p>
+            <p class="formula left">(−<i>x</i><sup>2</sup>)′ ＝ −1・2<i>x</i> ＝ □　，　(−<i>x</i>)′ ＝ −1</p>
             <p>定数項 3 は 0 になる。□ を埋めて結果を並べよう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (4)</h3>
-            <p class="big">y′ ＝ −2x − 1</p>
+            <p class="big"><i>y</i>′ ＝ −2<i>x</i> − 1</p>
           </div>
           <p class="prob-done">(4) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
 
         <div class="tabpanel" id="panel-ren8-5" data-flow="ren8-5" data-label="練習8 (5)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(5)　y＝x<sup>3</sup>＋2x<sup>2</sup>−3x</span>
+            <span class="sub prob-q" style="margin:0">(5)　<i>y</i>＝<i>x</i><sup>3</sup>＋2<i>x</i><sup>2</sup>−3<i>x</i></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― 定数項のない3つの項</h3>
-            <p>項は x<sup>3</sup>、2x<sup>2</sup>、−3x の3つで、定数項はない。各項に (x<sup>n</sup>)′＝n x<sup>n−1</sup> を使おう。</p>
+            <p>項は <i>x</i><sup>3</sup>、2<i>x</i><sup>2</sup>、−3<i>x</i> の3つで、定数項はない。各項に (<i>x</i><sup><i>n</i></sup>)′＝<i>n</i> <i>x</i><sup><i>n</i>−1</sup> を使おう。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 各項を計算する</h3>
-            <p class="formula left">(x<sup>3</sup>)′ ＝ 3x<sup>2</sup>　，　(2x<sup>2</sup>)′ ＝ □x　，　(−3x)′ ＝ −3</p>
+            <p class="formula left">(<i>x</i><sup>3</sup>)′ ＝ 3<i>x</i><sup>2</sup>　，　(2<i>x</i><sup>2</sup>)′ ＝ □<i>x</i>　，　(−3<i>x</i>)′ ＝ −3</p>
             <p>□ を埋めて、3つの結果を次数の高い順に並べよう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (5)</h3>
-            <p class="big">y′ ＝ 3x<sup>2</sup> ＋ 4x − 3</p>
+            <p class="big"><i>y</i>′ ＝ 3<i>x</i><sup>2</sup> ＋ 4<i>x</i> − 3</p>
           </div>
           <p class="prob-done">(5) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
 
         <div class="tabpanel" id="panel-ren8-6" data-flow="ren8-6" data-label="練習8 (6)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(6)　y＝−2x<sup>3</sup>−x<sup>2</sup>＋6x−2</span>
+            <span class="sub prob-q" style="margin:0">(6)　<i>y</i>＝−2<i>x</i><sup>3</sup>−<i>x</i><sup>2</sup>＋6<i>x</i>−2</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― 項が4つある</h3>
-            <p>項は −2x<sup>3</sup>、−x<sup>2</sup>、6x、−2 の4つ。−x<sup>2</sup> の係数は −1、定数項 −2 は微分すると 0 だよ。1つずつていねいに計算しよう。</p>
+            <p>項は −2<i>x</i><sup>3</sup>、−<i>x</i><sup>2</sup>、6<i>x</i>、−2 の4つ。−<i>x</i><sup>2</sup> の係数は −1、定数項 −2 は微分すると 0 だよ。1つずつていねいに計算しよう。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 各項を計算する</h3>
-            <p class="formula left">(−2x<sup>3</sup>)′ ＝ −2・3x<sup>2</sup> ＝ −□x<sup>2</sup>　，　(−x<sup>2</sup>)′ ＝ −2x　，　(6x)′ ＝ 6</p>
+            <p class="formula left">(−2<i>x</i><sup>3</sup>)′ ＝ −2・3<i>x</i><sup>2</sup> ＝ −□<i>x</i><sup>2</sup>　，　(−<i>x</i><sup>2</sup>)′ ＝ −2<i>x</i>　，　(6<i>x</i>)′ ＝ 6</p>
             <p>□ を埋めて、3つの結果を並べよう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (6)</h3>
-            <p class="big">y′ ＝ −6x<sup>2</sup> − 2x ＋ 6</p>
+            <p class="big"><i>y</i>′ ＝ −6<i>x</i><sup>2</sup> − 2<i>x</i> ＋ 6</p>
           </div>
           <p class="prob-done">(6) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
 
         <div class="tabpanel" id="panel-ren8-7" data-flow="ren8-7" data-label="練習8 (7)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(7)　y＝<span class="frac"><span>4</span><span>3</span></span>x<sup>3</sup>＋<span class="frac"><span>3</span><span>4</span></span>x<sup>2</sup>−<span class="frac"><span>1</span><span>2</span></span>x</span>
+            <span class="sub prob-q" style="margin:0">(7)　<i>y</i>＝<span class="frac"><span>4</span><span>3</span></span><i>x</i><sup>3</sup>＋<span class="frac"><span>3</span><span>4</span></span><i>x</i><sup>2</sup>−<span class="frac"><span>1</span><span>2</span></span><i>x</i></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― 分数の係数はそのまま残す</h3>
-            <p>例6 (2) と同じパターン。係数の分数は定数だから残して、x の部分だけを微分する。項は3つあるよ。</p>
+            <p>例6 (2) と同じパターン。係数の分数は定数だから残して、<i>x</i> の部分だけを微分する。項は3つあるよ。</p>
           </div>
           <div class="step hint">
-            <h3>ヒント 2 ― x<sup>3</sup> の項を計算する</h3>
-            <p class="formula left">(<span class="frac"><span>4</span><span>3</span></span>x<sup>3</sup>)′ ＝ <span class="frac"><span>4</span><span>3</span></span>・3x<sup>2</sup> ＝ □x<sup>2</sup></p>
+            <h3>ヒント 2 ― <i>x</i><sup>3</sup> の項を計算する</h3>
+            <p class="formula left">(<span class="frac"><span>4</span><span>3</span></span><i>x</i><sup>3</sup>)′ ＝ <span class="frac"><span>4</span><span>3</span></span>・3<i>x</i><sup>2</sup> ＝ □<i>x</i><sup>2</sup></p>
             <p><span class="frac"><span>4</span><span>3</span></span>・3 を約分するとどうなるか、考えてみよう。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 3 ― 残り2つの項を計算する</h3>
-            <p class="formula left">(<span class="frac"><span>3</span><span>4</span></span>x<sup>2</sup>)′ ＝ <span class="frac"><span>3</span><span>4</span></span>・2x ＝ <span class="frac"><span>3</span><span>2</span></span>x　，　(−<span class="frac"><span>1</span><span>2</span></span>x)′ ＝ −<span class="frac"><span>1</span><span>2</span></span></p>
-            <p>x<sup>2</sup> の項は <span class="frac"><span>3</span><span>4</span></span>・2＝<span class="frac"><span>6</span><span>4</span></span>＝<span class="frac"><span>3</span><span>2</span></span> と約分できる。3つの結果を並べよう。</p>
+            <p class="formula left">(<span class="frac"><span>3</span><span>4</span></span><i>x</i><sup>2</sup>)′ ＝ <span class="frac"><span>3</span><span>4</span></span>・2<i>x</i> ＝ <span class="frac"><span>3</span><span>2</span></span><i>x</i>　，　(−<span class="frac"><span>1</span><span>2</span></span><i>x</i>)′ ＝ −<span class="frac"><span>1</span><span>2</span></span></p>
+            <p><i>x</i><sup>2</sup> の項は <span class="frac"><span>3</span><span>4</span></span>・2＝<span class="frac"><span>6</span><span>4</span></span>＝<span class="frac"><span>3</span><span>2</span></span> と約分できる。3つの結果を並べよう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (7)</h3>
-            <p class="big">y′ ＝ 4x<sup>2</sup> ＋ <span class="frac"><span>3</span><span>2</span></span>x − <span class="frac"><span>1</span><span>2</span></span></p>
+            <p class="big"><i>y</i>′ ＝ 4<i>x</i><sup>2</sup> ＋ <span class="frac"><span>3</span><span>2</span></span><i>x</i> − <span class="frac"><span>1</span><span>2</span></span></p>
           </div>
           <p class="prob-done">(7) クリア！　最後の小問のタブを開いてみよう。</p>
         </div>
 
         <div class="tabpanel" id="panel-ren8-8" data-flow="ren8-8" data-label="練習8 (8)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(8)　y＝−<span class="frac"><span>1</span><span>3</span></span>x<sup>3</sup>−<span class="frac"><span>3</span><span>2</span></span>x<sup>2</sup>−<span class="frac"><span>1</span><span>2</span></span>
+            <span class="sub prob-q" style="margin:0">(8)　<i>y</i>＝−<span class="frac"><span>1</span><span>3</span></span><i>x</i><sup>3</sup>−<span class="frac"><span>3</span><span>2</span></span><i>x</i><sup>2</sup>−<span class="frac"><span>1</span><span>2</span></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― 最後の項は定数</h3>
-            <p>最後の項 −<span class="frac"><span>1</span><span>2</span></span> は x を含まない定数だから、微分すると 0 になる。残りの2項を、分数の係数を残して微分しよう。</p>
+            <p>最後の項 −<span class="frac"><span>1</span><span>2</span></span> は <i>x</i> を含まない定数だから、微分すると 0 になる。残りの2項を、分数の係数を残して微分しよう。</p>
           </div>
           <div class="step hint">
-            <h3>ヒント 2 ― x<sup>3</sup> の項を計算する</h3>
-            <p class="formula left">(−<span class="frac"><span>1</span><span>3</span></span>x<sup>3</sup>)′ ＝ −<span class="frac"><span>1</span><span>3</span></span>・3x<sup>2</sup> ＝ □x<sup>2</sup></p>
+            <h3>ヒント 2 ― <i>x</i><sup>3</sup> の項を計算する</h3>
+            <p class="formula left">(−<span class="frac"><span>1</span><span>3</span></span><i>x</i><sup>3</sup>)′ ＝ −<span class="frac"><span>1</span><span>3</span></span>・3<i>x</i><sup>2</sup> ＝ □<i>x</i><sup>2</sup></p>
             <p>−<span class="frac"><span>1</span><span>3</span></span>・3 の符号と値に注意しよう。</p>
           </div>
           <div class="step hint">
-            <h3>ヒント 3 ― x<sup>2</sup> の項を計算する</h3>
-            <p class="formula left">(−<span class="frac"><span>3</span><span>2</span></span>x<sup>2</sup>)′ ＝ −<span class="frac"><span>3</span><span>2</span></span>・2x ＝ □x</p>
+            <h3>ヒント 3 ― <i>x</i><sup>2</sup> の項を計算する</h3>
+            <p class="formula left">(−<span class="frac"><span>3</span><span>2</span></span><i>x</i><sup>2</sup>)′ ＝ −<span class="frac"><span>3</span><span>2</span></span>・2<i>x</i> ＝ □<i>x</i></p>
             <p>□ を埋めて、2つの結果を並べよう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (8)</h3>
-            <p class="big">y′ ＝ −x<sup>2</sup> − 3x</p>
+            <p class="big"><i>y</i>′ ＝ −<i>x</i><sup>2</sup> − 3<i>x</i></p>
           </div>
           <p class="prob-done">(8) クリア！　練習8 全小問が終わったら、例題1へ進もう。</p>
         </div>
@@ -702,7 +714,7 @@
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
-        <p class="prob-q">関数 y＝x(x＋1)(x−2) を微分せよ。</p>
+        <p class="prob-q">関数 <i>y</i>＝<i>x</i>(<i>x</i>＋1)(<i>x</i>−2) を微分せよ。</p>
         </div>
         <div class="flow-right">
         <div class="step hint">
@@ -712,21 +724,21 @@
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 後ろの2つのかっこを展開する</h3>
-          <p>まず (x＋1)(x−2) だけを展開しよう。</p>
-          <p class="formula left">(x＋1)(x−2) ＝ x<sup>2</sup> − 2x ＋ x − 2 ＝ x<sup>2</sup> − □x − 2</p>
-          <p>□ を埋めてみよう（−2x ＋ x をまとめるとどうなる？）。</p>
+          <p>まず (<i>x</i>＋1)(<i>x</i>−2) だけを展開しよう。</p>
+          <p class="formula left">(<i>x</i>＋1)(<i>x</i>−2) ＝ <i>x</i><sup>2</sup> − 2<i>x</i> ＋ <i>x</i> − 2 ＝ <i>x</i><sup>2</sup> − □<i>x</i> − 2</p>
+          <p>□ を埋めてみよう（−2<i>x</i> ＋ <i>x</i> をまとめるとどうなる？）。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 3 ― x をかけて展開を終える</h3>
-          <p class="formula left">y ＝ x(x<sup>2</sup> − x − 2) ＝ x<sup>3</sup> − □ − 2x</p>
-          <p>x・x<sup>2</sup>＝x<sup>3</sup>、x・(−x)＝□、x・(−2)＝−2x のように、x を各項にかける。□ には x の2乗の項が入るよ。</p>
+          <h3>ヒント 3 ― <i>x</i> をかけて展開を終える</h3>
+          <p class="formula left"><i>y</i> ＝ <i>x</i>(<i>x</i><sup>2</sup> − <i>x</i> − 2) ＝ <i>x</i><sup>3</sup> − □ − 2<i>x</i></p>
+          <p><i>x</i>・<i>x</i><sup>2</sup>＝<i>x</i><sup>3</sup>、<i>x</i>・(−<i>x</i>)＝□、<i>x</i>・(−2)＝−2<i>x</i> のように、<i>x</i> を各項にかける。□ には <i>x</i> の2乗の項が入るよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
           <p>まず展開すると</p>
-          <p class="formula">y ＝ x(x<sup>2</sup> − x − 2) ＝ x<sup>3</sup> − x<sup>2</sup> − 2x</p>
+          <p class="formula"><i>y</i> ＝ <i>x</i>(<i>x</i><sup>2</sup> − <i>x</i> − 2) ＝ <i>x</i><sup>3</sup> − <i>x</i><sup>2</sup> − 2<i>x</i></p>
           <p>これを項ごとに微分して</p>
-          <p class="big">y′ ＝ 3x<sup>2</sup> − 2x − 2</p>
+          <p class="big"><i>y</i>′ ＝ 3<i>x</i><sup>2</sup> − 2<i>x</i> − 2</p>
           <p class="note"><b>ポイント：</b>積の形の関数は、<b>まず展開して多項式に直してから</b>微分する。</p>
         </div>
         <p class="prob-done">例題1 クリア！　次は練習9で同じタイプを練習しよう。</p>
@@ -758,93 +770,93 @@
 
         <div class="tabpanel show" id="panel-ren9-1" data-flow="ren9-1" data-label="練習9 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　y＝(x＋2)(x＋3)</span>
+            <span class="sub prob-q" style="margin:0">(1)　<i>y</i>＝(<i>x</i>＋2)(<i>x</i>＋3)</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― まず展開する</h3>
-            <p>例題1と同じく、積の形だからまず展開する。(x＋2)(x＋3) は、x の項が 3x ＋ 2x になる分配法則で展開しよう。</p>
+            <p>例題1と同じく、積の形だからまず展開する。(<i>x</i>＋2)(<i>x</i>＋3) は、<i>x</i> の項が 3<i>x</i> ＋ 2<i>x</i> になる分配法則で展開しよう。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 展開の結果を確認する</h3>
-            <p class="formula left">y ＝ x<sup>2</sup> ＋ □x ＋ 6</p>
+            <p class="formula left"><i>y</i> ＝ <i>x</i><sup>2</sup> ＋ □<i>x</i> ＋ 6</p>
             <p>□＝3＋2 を計算して展開を完成させ、それから項ごとに微分しよう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (1)</h3>
-            <p>y ＝ (x＋2)(x＋3) ＝ x<sup>2</sup>＋5x＋6 だから</p>
-            <p class="big">y′ ＝ 2x ＋ 5</p>
+            <p><i>y</i> ＝ (<i>x</i>＋2)(<i>x</i>＋3) ＝ <i>x</i><sup>2</sup>＋5<i>x</i>＋6 だから</p>
+            <p class="big"><i>y</i>′ ＝ 2<i>x</i> ＋ 5</p>
           </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
 
         <div class="tabpanel" id="panel-ren9-2" data-flow="ren9-2" data-label="練習9 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　y＝3(x−2)<sup>2</sup></span>
+            <span class="sub prob-q" style="margin:0">(2)　<i>y</i>＝3(<i>x</i>−2)<sup>2</sup></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="step hint">
-            <h3>ヒント 1 ― (x−2)<sup>2</sup> を展開する</h3>
-            <p>2乗の展開公式 (a−b)<sup>2</sup>＝a<sup>2</sup>−2ab＋b<sup>2</sup> を使うと、(x−2)<sup>2</sup>＝x<sup>2</sup>−4x＋4。そのあと、全体に 3 をかけよう。</p>
+            <h3>ヒント 1 ― (<i>x</i>−2)<sup>2</sup> を展開する</h3>
+            <p>2乗の展開公式 (<i>a</i>−<i>b</i>)<sup>2</sup>＝<i>a</i><sup>2</sup>−2<i>ab</i>＋<i>b</i><sup>2</sup> を使うと、(<i>x</i>−2)<sup>2</sup>＝<i>x</i><sup>2</sup>−4<i>x</i>＋4。そのあと、全体に 3 をかけよう。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 3 をかけて多項式にする</h3>
-            <p class="formula left">y ＝ 3(x<sup>2</sup> − 4x ＋ 4) ＝ 3x<sup>2</sup> − □x ＋ 12</p>
+            <p class="formula left"><i>y</i> ＝ 3(<i>x</i><sup>2</sup> − 4<i>x</i> ＋ 4) ＝ 3<i>x</i><sup>2</sup> − □<i>x</i> ＋ 12</p>
             <p>□ を埋めて展開を完成させ、項ごとに微分しよう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (2)</h3>
-            <p>y ＝ 3(x−2)<sup>2</sup> ＝ 3x<sup>2</sup>−12x＋12 だから</p>
-            <p class="big">y′ ＝ 6x − 12</p>
+            <p><i>y</i> ＝ 3(<i>x</i>−2)<sup>2</sup> ＝ 3<i>x</i><sup>2</sup>−12<i>x</i>＋12 だから</p>
+            <p class="big"><i>y</i>′ ＝ 6<i>x</i> − 12</p>
           </div>
           <p class="prob-done">(2) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
 
         <div class="tabpanel" id="panel-ren9-3" data-flow="ren9-3" data-label="練習9 (3)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(3)　y＝x(x＋2)(x−2)</span>
+            <span class="sub prob-q" style="margin:0">(3)　<i>y</i>＝<i>x</i>(<i>x</i>＋2)(<i>x</i>−2)</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="step hint">
-            <h3>ヒント 1 ― (x＋2)(x−2) は和と差の積</h3>
-            <p>後ろの2つは「和と差の積」の公式 (a＋b)(a−b)＝a<sup>2</sup>−b<sup>2</sup> が使える形だよ。(x＋2)(x−2)＝x<sup>2</sup>−□ になる。□ に入る数を考えよう。</p>
+            <h3>ヒント 1 ― (<i>x</i>＋2)(<i>x</i>−2) は和と差の積</h3>
+            <p>後ろの2つは「和と差の積」の公式 (<i>a</i>＋<i>b</i>)(<i>a</i>−<i>b</i>)＝<i>a</i><sup>2</sup>−<i>b</i><sup>2</sup> が使える形だよ。(<i>x</i>＋2)(<i>x</i>−2)＝<i>x</i><sup>2</sup>−□ になる。□ に入る数を考えよう。</p>
           </div>
           <div class="step hint">
-            <h3>ヒント 2 ― x をかけて展開を終える</h3>
-            <p class="formula left">y ＝ x(x<sup>2</sup> − 4) ＝ x<sup>3</sup> − □x</p>
+            <h3>ヒント 2 ― <i>x</i> をかけて展開を終える</h3>
+            <p class="formula left"><i>y</i> ＝ <i>x</i>(<i>x</i><sup>2</sup> − 4) ＝ <i>x</i><sup>3</sup> − □<i>x</i></p>
             <p>□ を埋めて、それから微分しよう。残る項は2つだけだね。</p>
           </div>
           <div class="step answer">
             <h3>解答 (3)</h3>
-            <p>y ＝ x(x＋2)(x−2) ＝ x(x<sup>2</sup>−4) ＝ x<sup>3</sup>−4x だから</p>
-            <p class="big">y′ ＝ 3x<sup>2</sup> − 4</p>
+            <p><i>y</i> ＝ <i>x</i>(<i>x</i>＋2)(<i>x</i>−2) ＝ <i>x</i>(<i>x</i><sup>2</sup>−4) ＝ <i>x</i><sup>3</sup>−4<i>x</i> だから</p>
+            <p class="big"><i>y</i>′ ＝ 3<i>x</i><sup>2</sup> − 4</p>
           </div>
           <p class="prob-done">(3) クリア！　最後の小問のタブを開いてみよう。</p>
         </div>
 
         <div class="tabpanel" id="panel-ren9-4" data-flow="ren9-4" data-label="練習9 (4)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(4)　y＝2x(x＋1)(x−3)</span>
+            <span class="sub prob-q" style="margin:0">(4)　<i>y</i>＝2<i>x</i>(<i>x</i>＋1)(<i>x</i>−3)</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― かっこの積を先に展開する</h3>
-            <p>まず (x＋1)(x−3) だけを展開しよう。x の項は −3x ＋ x になるね。2x は最後にまとめてかけるのが楽だよ。</p>
+            <p>まず (<i>x</i>＋1)(<i>x</i>−3) だけを展開しよう。<i>x</i> の項は −3<i>x</i> ＋ <i>x</i> になるね。2<i>x</i> は最後にまとめてかけるのが楽だよ。</p>
           </div>
           <div class="step hint">
-            <h3>ヒント 2 ― 2x をかけて展開を終える</h3>
-            <p class="formula left">(x＋1)(x−3) ＝ x<sup>2</sup> − 2x − 3</p>
-            <p class="formula left">y ＝ 2x(x<sup>2</sup> − 2x − 3) ＝ 2x<sup>3</sup> − □x<sup>2</sup> − 6x</p>
+            <h3>ヒント 2 ― 2<i>x</i> をかけて展開を終える</h3>
+            <p class="formula left">(<i>x</i>＋1)(<i>x</i>−3) ＝ <i>x</i><sup>2</sup> − 2<i>x</i> − 3</p>
+            <p class="formula left"><i>y</i> ＝ 2<i>x</i>(<i>x</i><sup>2</sup> − 2<i>x</i> − 3) ＝ 2<i>x</i><sup>3</sup> − □<i>x</i><sup>2</sup> − 6<i>x</i></p>
             <p>□ を埋めて展開を完成させ、項ごとに微分しよう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (4)</h3>
-            <p>y ＝ 2x(x＋1)(x−3) ＝ 2x<sup>3</sup>−4x<sup>2</sup>−6x だから</p>
-            <p class="big">y′ ＝ 6x<sup>2</sup> − 8x − 6</p>
+            <p><i>y</i> ＝ 2<i>x</i>(<i>x</i>＋1)(<i>x</i>−3) ＝ 2<i>x</i><sup>3</sup>−4<i>x</i><sup>2</sup>−6<i>x</i> だから</p>
+            <p class="big"><i>y</i>′ ＝ 6<i>x</i><sup>2</sup> − 8<i>x</i> − 6</p>
           </div>
           <p class="prob-done">(4) クリア！　練習9 全小問が終わったら、例題2へ進もう。</p>
         </div>
@@ -865,7 +877,7 @@
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
-        <p class="prob-q">関数 f(x)＝−x<sup>2</sup>＋4x＋1 について、x＝−1 における微分係数を求めよ。</p>
+        <p class="prob-q">関数 <i>f</i>(<i>x</i>)＝−<i>x</i><sup>2</sup>＋4<i>x</i>＋1 について、<i>x</i>＝−1 における微分係数を求めよ。</p>
         <figure>
           <div class="figbox">
             <svg viewBox="0 0 520 302" role="img" aria-label="放物線 y＝−x の2乗＋4x＋1 のグラフと、x＝−1 の点における接線を示す図。微分係数は、この接線の傾きである">
@@ -899,28 +911,28 @@
               <text x="86" y="272" class="svg-txt-soft" font-size="13.5">(−1，−4)</text>
             </svg>
           </div>
-          <figcaption>x＝−1 における微分係数とは、この点での接線（オレンジ）の傾きのこと。</figcaption>
+          <figcaption><i>x</i>＝−1 における微分係数とは、この点での接線（オレンジ）の傾きのこと。</figcaption>
         </figure>
         </div>
         <div class="flow-right">
         <div class="step hint">
           <h3>ヒント 1 ― 微分係数＝導関数に値を代入したもの</h3>
-          <p>「x＝−1 における微分係数」とは、<b>導関数 f′(x) を求めてから、x＝−1 を代入した値</b> f′(−1) のこと（図では、x＝−1 の点での接線の傾き）。</p>
-          <p>だから手順は2段構え：<b>① まず f(x) を微分して f′(x) を求める　② x＝−1 を代入する</b>。</p>
+          <p>「<i>x</i>＝−1 における微分係数」とは、<b>導関数 <i>f</i>′(<i>x</i>) を求めてから、<i>x</i>＝−1 を代入した値</b> <i>f</i>′(−1) のこと（図では、<i>x</i>＝−1 の点での接線の傾き）。</p>
+          <p>だから手順は2段構え：<b>① まず <i>f</i>(<i>x</i>) を微分して <i>f</i>′(<i>x</i>) を求める　② <i>x</i>＝−1 を代入する</b>。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― まず導関数を求める</h3>
-          <p>f(x)＝−x<sup>2</sup>＋4x＋1 を項ごとに微分しよう。−x<sup>2</sup> の係数は −1 だったね。</p>
-          <p class="formula left">f′(x) ＝ −2x ＋ □</p>
-          <p>□ を埋めたら、次に x＝−1 を代入する式を書いてみよう。</p>
+          <p><i>f</i>(<i>x</i>)＝−<i>x</i><sup>2</sup>＋4<i>x</i>＋1 を項ごとに微分しよう。−<i>x</i><sup>2</sup> の係数は −1 だったね。</p>
+          <p class="formula left"><i>f</i>′(<i>x</i>) ＝ −2<i>x</i> ＋ □</p>
+          <p>□ を埋めたら、次に <i>x</i>＝−1 を代入する式を書いてみよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
           <p>導関数は</p>
-          <p class="formula">f′(x) ＝ −2x ＋ 4</p>
-          <p>x＝−1 を代入すると</p>
-          <p class="big">f′(−1) ＝ −2・(−1) ＋ 4 ＝ 6</p>
-          <p class="note"><b>注意：</b>先に x＝−1 を f(x) に代入してから微分してはいけない。代入後の −4 は定数で、微分すると 0 になってしまう。<b>微分してから代入</b>、の順番が大切だよ。</p>
+          <p class="formula"><i>f</i>′(<i>x</i>) ＝ −2<i>x</i> ＋ 4</p>
+          <p><i>x</i>＝−1 を代入すると</p>
+          <p class="big"><i>f</i>′(−1) ＝ −2・(−1) ＋ 4 ＝ 6</p>
+          <p class="note"><b>注意：</b>先に <i>x</i>＝−1 を <i>f</i>(<i>x</i>) に代入してから微分してはいけない。代入後の −4 は定数で、微分すると 0 になってしまう。<b>微分してから代入</b>、の順番が大切だよ。</p>
         </div>
         <p class="prob-done">例題2 クリア！　次は練習10で同じ手順を練習しよう。</p>
       </div>
@@ -939,81 +951,81 @@
           <span class="prob-tag ren">練習 10</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
-        <p class="prob-q">関数 f(x)＝x<sup>3</sup>−3x<sup>2</sup>＋3 について、次の x の値における微分係数を求めよ。</p>
+        <p class="prob-q">関数 <i>f</i>(<i>x</i>)＝<i>x</i><sup>3</sup>−3<i>x</i><sup>2</sup>＋3 について、次の <i>x</i> の値における微分係数を求めよ。</p>
         </div>
         <div class="flow-right">
         <div class="tabs" role="tablist" aria-label="練習10の小問">
-          <button class="tab" role="tab" data-tab="ren10-1" aria-selected="true">(1) x＝2</button>
-          <button class="tab" role="tab" data-tab="ren10-2" aria-selected="false">(2) x＝0</button>
-          <button class="tab" role="tab" data-tab="ren10-3" aria-selected="false">(3) x＝−2</button>
+          <button class="tab" role="tab" data-tab="ren10-1" aria-selected="true">(1) <i>x</i>＝2</button>
+          <button class="tab" role="tab" data-tab="ren10-2" aria-selected="false">(2) <i>x</i>＝0</button>
+          <button class="tab" role="tab" data-tab="ren10-3" aria-selected="false">(3) <i>x</i>＝−2</button>
         </div>
 
         <div class="tabpanel show" id="panel-ren10-1" data-flow="ren10-1" data-label="練習10 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　x＝2 における微分係数</span>
+            <span class="sub prob-q" style="margin:0">(1)　<i>x</i>＝2 における微分係数</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― まず導関数を求める（3問共通）</h3>
-            <p>例題2と同じ手順：<b>微分してから代入</b>。f(x)＝x<sup>3</sup>−3x<sup>2</sup>＋3 を項ごとに微分すると、f′(x)＝3x<sup>2</sup>−□x になる。□ を埋めよう（定数項 3 は消えるよ）。</p>
+            <p>例題2と同じ手順：<b>微分してから代入</b>。<i>f</i>(<i>x</i>)＝<i>x</i><sup>3</sup>−3<i>x</i><sup>2</sup>＋3 を項ごとに微分すると、<i>f</i>′(<i>x</i>)＝3<i>x</i><sup>2</sup>−□<i>x</i> になる。□ を埋めよう（定数項 3 は消えるよ）。</p>
           </div>
           <div class="step hint">
-            <h3>ヒント 2 ― x＝2 を代入する</h3>
-            <p class="formula left">f′(2) ＝ 3・2<sup>2</sup> − 6・2 ＝ 12 − 12</p>
+            <h3>ヒント 2 ― <i>x</i>＝2 を代入する</h3>
+            <p class="formula left"><i>f</i>′(2) ＝ 3・2<sup>2</sup> − 6・2 ＝ 12 − 12</p>
             <p>この計算の結果が答えだよ。</p>
           </div>
           <div class="step answer">
             <h3>解答 (1)</h3>
-            <p>f′(x)＝3x<sup>2</sup>−6x だから</p>
-            <p class="big">f′(2) ＝ 0</p>
-            <p>微分係数が 0 ということは、x＝2 の点での接線の傾きが 0、つまり接線が水平ということだよ。</p>
+            <p><i>f</i>′(<i>x</i>)＝3<i>x</i><sup>2</sup>−6<i>x</i> だから</p>
+            <p class="big"><i>f</i>′(2) ＝ 0</p>
+            <p>微分係数が 0 ということは、<i>x</i>＝2 の点での接線の傾きが 0、つまり接線が水平ということだよ。</p>
           </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
 
         <div class="tabpanel" id="panel-ren10-2" data-flow="ren10-2" data-label="練習10 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　x＝0 における微分係数</span>
+            <span class="sub prob-q" style="margin:0">(2)　<i>x</i>＝0 における微分係数</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― 導関数は (1) と同じ</h3>
-            <p>導関数は3問共通で、f′(x)＝3x<sup>2</sup>−6x。今回はこの式に x＝0 を代入するだけだよ。</p>
+            <p>導関数は3問共通で、<i>f</i>′(<i>x</i>)＝3<i>x</i><sup>2</sup>−6<i>x</i>。今回はこの式に <i>x</i>＝0 を代入するだけだよ。</p>
           </div>
           <div class="step hint">
-            <h3>ヒント 2 ― x＝0 を代入する</h3>
-            <p class="formula left">f′(0) ＝ 3・0<sup>2</sup> − 6・0</p>
+            <h3>ヒント 2 ― <i>x</i>＝0 を代入する</h3>
+            <p class="formula left"><i>f</i>′(0) ＝ 3・0<sup>2</sup> − 6・0</p>
             <p>どちらの項にも 0 がかかることに注目しよう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (2)</h3>
-            <p class="big">f′(0) ＝ 0</p>
-            <p>x＝0 の点でも接線は水平になる。(1) と答えが同じでも、計算は別々に確かめることが大切だよ。</p>
+            <p class="big"><i>f</i>′(0) ＝ 0</p>
+            <p><i>x</i>＝0 の点でも接線は水平になる。(1) と答えが同じでも、計算は別々に確かめることが大切だよ。</p>
           </div>
           <p class="prob-done">(2) クリア！　最後の小問のタブを開いてみよう。</p>
         </div>
 
         <div class="tabpanel" id="panel-ren10-3" data-flow="ren10-3" data-label="練習10 (3)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(3)　x＝−2 における微分係数</span>
+            <span class="sub prob-q" style="margin:0">(3)　<i>x</i>＝−2 における微分係数</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― マイナスの代入はかっこをつける</h3>
-            <p>導関数 f′(x)＝3x<sup>2</sup>−6x に x＝−2 を代入する。マイナスの数を代入するときは、<b>かっこをつけて</b> (−2)<sup>2</sup>、−6・(−2) のように書くのがミス防止のコツだよ。</p>
+            <p>導関数 <i>f</i>′(<i>x</i>)＝3<i>x</i><sup>2</sup>−6<i>x</i> に <i>x</i>＝−2 を代入する。マイナスの数を代入するときは、<b>かっこをつけて</b> (−2)<sup>2</sup>、−6・(−2) のように書くのがミス防止のコツだよ。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 符号に注意して計算する</h3>
-            <p class="formula left">f′(−2) ＝ 3・(−2)<sup>2</sup> − 6・(−2) ＝ 12 ＋ □</p>
+            <p class="formula left"><i>f</i>′(−2) ＝ 3・(−2)<sup>2</sup> − 6・(−2) ＝ 12 ＋ □</p>
             <p>−6・(−2) はプラスになるね。□ を埋めて合計しよう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (3)</h3>
-            <p class="big">f′(−2) ＝ 24</p>
-            <p>f′(−2)＝3・4＋12＝24。符号のミスが一番多いところだから、かっこをつける習慣をつけよう。</p>
+            <p class="big"><i>f</i>′(−2) ＝ 24</p>
+            <p><i>f</i>′(−2)＝3・4＋12＝24。符号のミスが一番多いところだから、かっこをつける習慣をつけよう。</p>
           </div>
           <p class="prob-done">(3) クリア！　練習10 全小問おわり。下のまとめで確認しよう。</p>
         </div>
@@ -1024,13 +1036,18 @@
       <section class="card summary">
         <h2>この項のポイント</h2>
         <ul>
-          <li><b>微分する：</b>関数 f(x) の導関数 f′(x) を求めること。</li>
-          <li><b>導関数の性質：</b>{k f(x)}′＝k f′(x)（定数倍はそのまま残す）、{f(x)＋g(x)}′＝f′(x)＋g′(x)、{f(x)−g(x)}′＝f′(x)−g′(x)（和・差は項ごとに分ける）。</li>
-          <li><b>多項式の微分：</b>項ごとに (x<sup>n</sup>)′＝n x<sup>n−1</sup> を使い、定数項は 0 になる。分数の係数もそのまま残せばよい。</li>
-          <li><b>積の形：</b>x(x＋1)(x−2) のような関数は、<b>まず展開して多項式に直してから</b>微分する。</li>
-          <li><b>微分係数：</b>x＝a における微分係数は f′(a)。<b>先に微分して f′(x) を求め、それから a を代入する</b>（順番を逆にしない）。</li>
+          <li><b>微分する：</b>関数 <i>f</i>(<i>x</i>) の導関数 <i>f</i>′(<i>x</i>) を求めること。</li>
+          <li><b>導関数の性質：</b>{<i>k</i> <i>f</i>(<i>x</i>)}′＝<i>k</i> <i>f</i>′(<i>x</i>)（定数倍はそのまま残す）、{<i>f</i>(<i>x</i>)＋<i>g</i>(<i>x</i>)}′＝<i>f</i>′(<i>x</i>)＋<i>g</i>′(<i>x</i>)、{<i>f</i>(<i>x</i>)−<i>g</i>(<i>x</i>)}′＝<i>f</i>′(<i>x</i>)−<i>g</i>′(<i>x</i>)（和・差は項ごとに分ける）。</li>
+          <li><b>多項式の微分：</b>項ごとに (<i>x</i><sup><i>n</i></sup>)′＝<i>n</i> <i>x</i><sup><i>n</i>−1</sup> を使い、定数項は 0 になる。分数の係数もそのまま残せばよい。</li>
+          <li><b>積の形：</b><i>x</i>(<i>x</i>＋1)(<i>x</i>−2) のような関数は、<b>まず展開して多項式に直してから</b>微分する。</li>
+          <li><b>微分係数：</b><i>x</i>＝<i>a</i> における微分係数は <i>f</i>′(<i>a</i>)。<b>先に微分して <i>f</i>′(<i>x</i>) を求め、それから <i>a</i> を代入する</b>（順番を逆にしない）。</li>
         </ul>
       </section>
+
+      <!-- ================= 次の節へ ================= -->
+      <div class="next-sec">
+        <a class="next-btn" href="calc-5.html">次へ：導関数とその計算（3）いろいろな関数の導関数 →</a>
+      </div>
 
       <!-- ================= フッター ================= -->
       <footer>
