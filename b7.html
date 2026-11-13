@@ -295,7 +295,57 @@
         }
         .problem .controls { grid-column: 1 / -1; }
       }
-    </style>
+    
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+
+      /* 積分記号は大きめに表示する（元のページの可読化デザインに合わせる） */
+      math .int-op{font-size:1.35em}
+      /* calc-12 世代（.card）と calc-18 世代（.unit）の、図のない問題の全幅化 */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig>.step{position:static !important}
+        .card.nofig>.steps-wrap{max-height:none !important;overflow:visible !important}
+        .unit.nofig{display:block !important}
+        .unit.nofig>.qside{position:static !important}
+        .unit.nofig>.steps-stack{max-height:none !important;overflow:visible !important}
+      }
+</style>
   </head>
   <body>
     <div class="wrap">
@@ -331,17 +381,17 @@
         <div class="qside">
         <div class="qcard">
           <div class="q-head">
-            <span class="q-num">(1)</span><span class="q-title">一般項 a<sub>n</sub> を求める</span>
+            <span class="q-num">(1)</span><span class="q-title">一般項<math><msub><mi>a</mi><mi>n</mi></msub></math> を求める</span>
             <span class="q-points">配点 5点</span>
           </div>
-          <p class="q-body">等差数列 {<span class="m"><i>a<sub>n</sub></i></span>} があり、<span class="m"><i>a</i><sub>1</sub>＋<i>a</i><sub>3</sub>＝−98</span>、<span class="m"><i>a</i><sub>5</sub>＝−34</span> を満たしている。また、数列 {<span class="m"><i>a<sub>n</sub></i></span>} の初項から第 <span class="m"><i>n</i></span> 項までの和を <span class="m"><i>S<sub>n</sub></i></span> とする。</p>
-          <p class="q-body">数列 {<span class="m"><i>a<sub>n</sub></i></span>} の一般項 <span class="m"><i>a<sub>n</sub></i></span> を <span class="m"><i>n</i></span> を用いて表せ。</p>
+          <p class="q-body">等差数列<math><mo>{</mo><msub><mi>a</mi><mi>n</mi></msub><mo>}</mo></math>があり、<math><msub><mi>a</mi><mn>1</mn></msub><mo>+</mo><msub><mi>a</mi><mn>3</mn></msub><mo>=</mo><mo>−</mo><mn>98</mn></math>、<math><msub><mi>a</mi><mn>5</mn></msub><mo>=</mo><mo>−</mo><mn>34</mn></math> を満たしている。また、数列<math><mo>{</mo><msub><mi>a</mi><mi>n</mi></msub><mo>}</mo></math>の初項から第 <math><mi>n</mi></math> 項までの和を <math><msub><mi>S</mi><mi>n</mi></msub></math> とする。</p>
+          <p class="q-body">数列<math><mo>{</mo><msub><mi>a</mi><mi>n</mi></msub><mo>}</mo></math>の一般項 <math><msub><mi>a</mi><mi>n</mi></msub></math> を <math><mi>n</mi></math> を用いて表せ。</p>
         </div>
 
         <div class="viz" id="viz1">
           <p class="viz-title">図で見る ― 最初の5つの項</p>
           <div id="viz-q1"></div>
-          <p class="viz-cap">図：最初の5つの項 <span class="m"><i>a</i><sub>1</sub></span>〜<span class="m"><i>a</i><sub>5</sub></span>。分かっているのは「<span class="m"><i>a</i><sub>1</sub>＋<i>a</i><sub>3</sub>＝−98</span>」と「<span class="m"><i>a</i><sub>5</sub>＝−34</span>」の2つだけ。</p>
+          <p class="viz-cap">図：最初の5つの項 <math><msub><mi>a</mi><mn>1</mn></msub></math>〜<math><msub><mi>a</mi><mn>5</mn></msub></math>。分かっているのは「<math><msub><mi>a</mi><mn>1</mn></msub><mo>+</mo><msub><mi>a</mi><mn>3</mn></msub><mo>=</mo><mo>−</mo><mn>98</mn></math>」と「<math><msub><mi>a</mi><mn>5</mn></msub><mo>=</mo><mo>−</mo><mn>34</mn></math>」の2つだけ。</p>
         </div>
 
         <p class="think-note">図の5つの項を眺めながら進めよう。詰まったら下の「次へ」でヒントを1つ開く。</p>
@@ -349,41 +399,41 @@
 
         <div class="stages">
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">まず部品に名前をつける：初項 <i>a</i> と公差 <i>d</i></span></div>
+            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">まず部品に名前をつける：初項 <math><mi>a</mi></math> と公差 <math><mi>d</mi></math></span></div><p class="cite"><span class="cite-tag">使う定義</span>等差数列の初項と公差 <math><msub><mi>a</mi><mi>n</mi></msub><mo>=</mo><mi>a</mi><mo>+</mo><mrow><mo>(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mi>d</mi></math>。等差数列は初項aと公差dで決まり、第n項はこの形で表される。</p>
             <p>まず、数列の「部品」に名前をつけよう。等差数列は次の2つで決まります。</p>
-            <p>・<b>初項 <span class="m"><i>a</i></span></b> … 最初の数（<span class="m"><i>a</i><sub>1</sub></span> のこと）<br />・<b>公差 <span class="m"><i>d</i></span></b> … 1つ進むごとに増える量</p>
-            <p>図を見てみよう。<span class="m"><i>a</i><sub>3</sub></span> は <span class="m"><i>a</i><sub>1</sub></span> から <span class="m"><i>d</i></span> を<b>2回</b>足したもの、<span class="m"><i>a</i><sub>5</sub></span> は <span class="m"><i>d</i></span> を<b>4回</b>足したものになっています。<span class="m"><i>a</i><sub>2</sub></span>〜<span class="m"><i>a</i><sub>5</sub></span> を <span class="m"><i>a</i></span> と <span class="m"><i>d</i></span> で書き表してみよう。</p>
+            <p>・<b>初項 <math><mi>a</mi></math></b> … 最初の数<math><mo>(</mo><msub><mi>a</mi><mn>1</mn></msub></math> のこと）<br />・<b>公差 <math><mi>d</mi></math></b> … 1つ進むごとに増える量</p>
+            <p>図を見てみよう。<math><msub><mi>a</mi><mn>3</mn></msub></math> は <math><msub><mi>a</mi><mn>1</mn></msub></math> から <math><mi>d</mi></math> を<b>2回</b>足したもの、<math><msub><mi>a</mi><mn>5</mn></msub></math> は <math><mi>d</mi></math> を<b>4回</b>足したものになっています。<math><msub><mi>a</mi><mn>2</mn></msub></math>〜<math><msub><mi>a</mi><mn>5</mn></msub></math> を <math><mi>a</mi></math> と <math><mi>d</mi></math> で書き表してみよう。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">条件を <i>a</i> と <i>d</i> の式に直す</span></div>
-            <p>問題の条件を、<span class="m"><i>a</i></span> と <span class="m"><i>d</i></span> の式に直そう。</p>
-            <div class="formula-line"><span class="m"><i>a</i><sub>1</sub>＋<i>a</i><sub>3</sub>＝−98 → <i>a</i>＋(<i>a</i>＋2<i>d</i>)＝−98 → <b><i>a</i>＋<i>d</i>＝−49</b> … ①</span></div>
-            <div class="formula-line"><span class="m"><i>a</i><sub>5</sub>＝−34 → <b><i>a</i>＋4<i>d</i>＝−34</b> … ②</span></div>
-            <p>未知数が <span class="m"><i>a</i></span> と <span class="m"><i>d</i></span> の2つ、式も2つできたので、連立方程式として解けます。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">条件を <math><mi>a</mi></math> と <math><mi>d</mi></math> の式に直す</span></div><p class="cite"><span class="cite-tag">使う公式</span>等差数列の一般項 <math><mi>a</mi><mo>+</mo><mn>4</mn><mi>d</mi><mo>=</mo><mo>−</mo><mn>34</mn></math>。a3とa5を初項と公差で表して、条件をaとdの式に直す。</p>
+            <p>問題の条件を、<math><mi>a</mi></math> と <math><mi>d</mi></math> の式に直そう。</p>
+            <div class="formula-line"><math><msub><mi>a</mi><mn>1</mn></msub><mo>+</mo><msub><mi>a</mi><mn>3</mn></msub><mo>=</mo><mo>−</mo><mn>98</mn><mo>→</mo><mi>a</mi><mo>+</mo><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mn>2</mn><mi>d</mi><mo>)</mo></mrow><mo>=</mo><mo>−</mo><mn>98</mn><mo>→</mo></math><b><math><mi>a</mi><mo>+</mo><mi>d</mi><mo>=</mo><mo>−</mo><mn>49</mn></math></b><math><mo>…</mo><mo>①</mo></math></div>
+            <div class="formula-line"><math><msub><mi>a</mi><mn>5</mn></msub><mo>=</mo><mo>−</mo><mn>34</mn><mo>→</mo></math><b><math><mi>a</mi><mo>+</mo><mn>4</mn><mi>d</mi><mo>=</mo><mo>−</mo><mn>34</mn></math></b><math><mo>…</mo><mo>②</mo></math></div>
+            <p>未知数が <math><mi>a</mi></math> と <math><mi>d</mi></math> の2つ、式も2つできたので、連立方程式として解けます。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">連立方程式を解いて <i>a</i> と <i>d</i> を出す</span></div>
-            <p>② − ① を計算してみよう。左辺は <span class="m">(<i>a</i>＋4<i>d</i>) − (<i>a</i>＋<i>d</i>)＝<b>3<i>d</i></b></span>、右辺は <span class="m">−34 − (−49)＝<b>15</b></span>。だから <span class="m"><i>d</i>＝5</span> です。</p>
-            <p>次に <span class="m"><i>d</i>＝5</span> を ① に入れると、<span class="m"><i>a</i>＋5＝−49</span> だから <span class="m"><i>a</i>＝−54</span>。図に実際の数が入りました。</p>
-            <p class="mini"><strong>つまずき注意：</strong><span class="m">−34 − (−49)</span> は「マイナスを引く ＝ プラスを足す」ので、<span class="m">−34＋49＝15</span> になります。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">連立方程式を解いて <math><mi>a</mi></math> と <math><mi>d</mi></math> を出す</span></div><p class="cite"><span class="cite-tag">使う性質</span>連立方程式の加減法 <math><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mn>4</mn><mi>d</mi><mo>)</mo></mrow><mo>−</mo><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>d</mi><mo>)</mo></mrow><mo>=</mo></math>。2つの式の差を取るとaが消えて、dだけの式が残る。</p>
+            <p>② − ① を計算してみよう。左辺は <math><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mn>4</mn><mi>d</mi><mo>)</mo></mrow><mo>−</mo><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>d</mi><mo>)</mo></mrow><mo>=</mo></math><b><math><mn>3</mn><mi>d</mi></math></b>、右辺は <math><mo>−</mo><mn>34</mn><mo>−</mo><mrow><mo>(</mo><mo>−</mo><mn>49</mn><mo>)</mo></mrow><mo>=</mo></math><b>15</b>。だから <math><mi>d</mi><mo>=</mo><mn>5</mn></math> です。</p>
+            <p>次に <math><mi>d</mi><mo>=</mo><mn>5</mn></math> を ① に入れると、<math><mi>a</mi><mo>+</mo><mn>5</mn><mo>=</mo><mo>−</mo><mn>49</mn></math> だから <math><mi>a</mi><mo>=</mo><mo>−</mo><mn>54</mn></math>。図に実際の数が入りました。</p>
+            <p class="mini"><strong>つまずき注意：</strong><math><mo>−</mo><mn>34</mn><mo>−</mo><mrow><mo>(</mo><mo>−</mo><mn>49</mn><mo>)</mo></mrow></math> は「マイナスを引く ＝ プラスを足す」ので、<math><mo>−</mo><mn>34</mn><mo>+</mo><mn>49</mn><mo>=</mo><mn>15</mn></math> になります。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">一般項の公式に当てはめる</span></div>
+            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">一般項の公式に当てはめる</span></div><p class="cite"><span class="cite-tag">使う公式</span>等差数列の一般項 <math><msub><mi>a</mi><mi>n</mi></msub><mo>=</mo><mi>a</mi><mo>+</mo><mrow><mo>(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mi>d</mi></math>。求めた初項と公差を一般項の公式に当てはめて、anをnの式で表す。</p>
             <p>最後は一般項の公式に当てはめるだけです。</p>
-            <div class="formula-line"><span class="m"><i>a<sub>n</sub></i>＝<i>a</i>＋(<i>n</i>−1)<i>d</i></span></div>
-            <p><span class="m"><i>a</i>＝−54</span>、<span class="m"><i>d</i>＝5</span> を入れて、<span class="m"><i>a<sub>n</sub></i>＝−54＋(<i>n</i>−1)×5</span> を展開して整理してみよう。</p>
+            <div class="formula-line"><math><msub><mi>a</mi><mi>n</mi></msub><mo>=</mo><mi>a</mi><mo>+</mo><mrow><mo>(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mi>d</mi></math></div>
+            <p><math><mi>a</mi><mo>=</mo><mo>−</mo><mn>54</mn></math>、<math><mi>d</mi><mo>=</mo><mn>5</mn></math> を入れて、<math><msub><mi>a</mi><mi>n</mi></msub><mo>=</mo><mo>−</mo><mn>54</mn><mo>+</mo><mrow><mo>(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mo>×</mo><mn>5</mn></math> を展開して整理してみよう。</p>
           </article>
 
           <article class="stage answer" hidden>
             <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(1) の答え</span></div>
-            <p>検算：<span class="m"><i>a</i><sub>1</sub>＝5−59＝−54</span> ✓、<span class="m"><i>a</i><sub>5</sub>＝25−59＝−34</span> ✓（条件と一致）。初項 −54 から、毎回 5 ずつ増えていく数列です。</p>
+            <p>検算：<math><msub><mi>a</mi><mn>1</mn></msub><mo>=</mo><mn>5</mn><mo>−</mo><mn>59</mn><mo>=</mo><mo>−</mo><mn>54</mn><mo>✓</mo></math>、<math><msub><mi>a</mi><mn>5</mn></msub><mo>=</mo><mn>25</mn><mo>−</mo><mn>59</mn><mo>=</mo><mo>−</mo><mn>34</mn><mo>✓</mo><mo>(</mo></math>条件と一致）。<br>初項 −54 から、毎回 5 ずつ増えていく数列です。</p>
             <div class="ans-line">
-              <span class="ans-chip"><span class="m"><i>a<sub>n</sub></i>＝5<i>n</i>−59</span><span class="pts">5点</span></span>
+              <span class="ans-chip"><math><msub><mi>a</mi><mi>n</mi></msub><mo>=</mo><mn>5</mn><mi>n</mi><mo>−</mo><mn>59</mn></math><span class="pts">5点</span></span>
             </div>
-            <div class="point-box"><span class="pt">ポイント</span>等差数列は「初項 <span class="m"><i>a</i></span> と公差 <span class="m"><i>d</i></span>」の2つで決まる。条件を <span class="m"><i>a</i></span> と <span class="m"><i>d</i></span> の連立方程式に直して解き、一般項の公式 <span class="m"><i>a<sub>n</sub></i>＝<i>a</i>＋(<i>n</i>−1)<i>d</i></span> に当てはめるのが基本の型。</div>
+            <div class="point-box"><span class="pt">ポイント</span><p class="cite"><span class="cite-tag">使う公式</span>等差数列の一般項 <math><msub><mi>a</mi><mi>n</mi></msub><mo>=</mo><mi>a</mi><mo>+</mo><mrow><mo>(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mi>d</mi></math>。条件を初項と公差の連立方程式に直して解くのが、等差数列の基本の型である。</p>等差数列は「初項 <math><mi>a</mi></math> と公差 <math><mi>d</mi></math>」の2つで決まる。条件を <math><mi>a</mi></math> と <math><mi>d</mi></math> の連立方程式に直して解き、一般項の公式 <math><msub><mi>a</mi><mi>n</mi></msub><mo>=</mo><mi>a</mi><mo>+</mo><mrow><mo>(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mi>d</mi></math> に当てはめるのが基本の型。</div>
           </article>
         </div>
 
@@ -400,22 +450,22 @@
         <div class="qside">
         <div class="qcard">
           <div class="q-head">
-            <span class="q-num">(2)</span><span class="q-title">S<sub>n</sub> が最小になる n</span>
+            <span class="q-num">(2)</span><span class="q-title"><math><msub><mi>S</mi><mi>n</mi></msub></math> が最小になる n</span>
             <span class="q-points">配点 7点</span>
           </div>
-          <p class="q-body">等差数列 {<span class="m"><i>a<sub>n</sub></i></span>} があり、<span class="m"><i>a</i><sub>1</sub>＋<i>a</i><sub>3</sub>＝−98</span>、<span class="m"><i>a</i><sub>5</sub>＝−34</span> を満たしている。また、数列 {<span class="m"><i>a<sub>n</sub></i></span>} の初項から第 <span class="m"><i>n</i></span> 項までの和を <span class="m"><i>S<sub>n</sub></i></span> とする。</p>
-          <p class="q-body"><span class="m"><i>S<sub>n</sub></i></span> が最小となる <span class="m"><i>n</i></span> の値と、そのときの <span class="m"><i>S<sub>n</sub></i></span> の値を求めよ。</p>
+          <p class="q-body">等差数列<math><mo>{</mo><msub><mi>a</mi><mi>n</mi></msub><mo>}</mo></math>があり、<math><msub><mi>a</mi><mn>1</mn></msub><mo>+</mo><msub><mi>a</mi><mn>3</mn></msub><mo>=</mo><mo>−</mo><mn>98</mn></math>、<math><msub><mi>a</mi><mn>5</mn></msub><mo>=</mo><mo>−</mo><mn>34</mn></math> を満たしている。また、数列<math><mo>{</mo><msub><mi>a</mi><mi>n</mi></msub><mo>}</mo></math>の初項から第 <math><mi>n</mi></math> 項までの和を <math><msub><mi>S</mi><mi>n</mi></msub></math> とする。</p>
+          <p class="q-body"><math><msub><mi>S</mi><mi>n</mi></msub></math> が最小となる <math><mi>n</mi></math> の値と、そのときの <math><msub><mi>S</mi><mi>n</mi></msub></math> の値を求めよ。</p>
         </div>
 
         <div class="viz" id="viz2">
-          <p class="viz-title">図で見る ― 各項の棒グラフと和 S<sub>n</sub></p>
+          <p class="viz-title">図で見る ― 各項の棒グラフと和<math><msub><mi>S</mi><mi>n</mi></msub></math></p>
           <div id="viz-q2"></div>
-          <p class="viz-cap">図：各項 <span class="m"><i>a<sub>n</sub></i></span> の大きさ（棒グラフ）。<span class="m"><i>S<sub>n</sub></i></span> は、この棒を左から全部足していった合計です。</p>
+          <p class="viz-cap">図：各項 <math><msub><mi>a</mi><mi>n</mi></msub></math> の大きさ（棒グラフ）。<math><msub><mi>S</mi><mi>n</mi></msub></math> は、この棒を左から全部足していった合計です。</p>
           <div class="slider-box" data-min="3" hidden>
             <div class="slider-row">
-              <label for="q2range"><span class="m"><i>n</i></span> を動かして、和の変化を見てみよう</label>
+              <label for="q2range"><math><mi>n</mi></math> を動かして、和の変化を見てみよう</label>
               <input type="range" id="q2range" min="1" max="16" step="1" value="1" />
-              <span class="slider-val" id="q2nval">n ＝ 1</span>
+              <span class="slider-val" id="q2nval"><math><mi>n</mi><mo>=</mo><mn>1</mn></math></span>
             </div>
             <p class="slider-msg" id="q2read"></p>
           </div>
@@ -426,40 +476,44 @@
 
         <div class="stages">
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">足す項の符号で、和の増減が決まる</span></div>
-            <p><span class="m"><i>S<sub>n</sub></i></span> は <span class="m"><i>a</i><sub>1</sub></span> から <span class="m"><i>a<sub>n</sub></i></span> までを<b>全部足した合計</b>です。足す数が<b>マイナスなら合計は減り</b>、<b>プラスなら合計は増えます</b>。</p>
-            <p>だから、まず各項がプラスかマイナスかを調べれば、<span class="m"><i>S<sub>n</sub></i></span> がいつまで減るかが分かります。図の棒に色がつきました（<span class="blue">青＝マイナス</span>、<span class="red">赤＝プラス</span>）。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">足す項の符号で、和の増減が決まる</span></div><p class="cite"><span class="cite-tag">使う性質</span>部分和の増減 <math><msub><mi>S</mi><mi>n</mi></msub></math>。Snに負の項を足すと和は減り、正の項を足すと和は増える。</p>
+            <p><math><msub><mi>S</mi><mi>n</mi></msub></math> は <math><msub><mi>a</mi><mn>1</mn></msub></math> から <math><msub><mi>a</mi><mi>n</mi></msub></math> までを<b>全部足した合計</b>です。<br>足す数が<b>マイナスなら合計は減り</b>、<b>プラスなら合計は増えます</b>。</p>
+            <p>だから、まず各項がプラスかマイナスかを調べれば、<math><msub><mi>S</mi><mi>n</mi></msub></math> がいつまで減るかが分かります。図の棒に色がつきました（<span class="blue">青＝マイナス</span>、<span class="red">赤＝プラス</span>）。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">符号が切り替わる場所を式で確かめる</span></div>
-            <p>符号が切り替わる場所を、式で確かめよう。<span class="m"><i>a<sub>n</sub></i>＝5<i>n</i>−59 ≦ 0</span> を解くと：</p>
-            <div class="formula-line"><span class="m">5<i>n</i> ≦ 59 → <i>n</i> ≦ <span class="frac"><span class="num">59</span><span class="den">5</span></span>＝11.8</span></div>
-            <p>つまり <b><span class="m"><i>a</i><sub>1</sub></span>〜<span class="m"><i>a</i><sub>11</sub></span> はマイナス</b>（最後の <span class="m"><i>a</i><sub>11</sub>＝−4</span>）、<b><span class="m"><i>a</i><sub>12</sub></span> からはプラス</b>（<span class="m"><i>a</i><sub>12</sub>＝1</span>）です。図の境目を確認してみよう。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">符号が切り替わる場所を式で確かめる</span></div><p class="cite"><span class="cite-tag">使う性質</span>項の符号の切り替わり <math><mn>5</mn><mi>n</mi><mo>≦</mo><mn>59</mn><mo>→</mo><mi>n</mi><mo>≦</mo><mfrac><mn>59</mn><mn>5</mn></mfrac><mo>=</mo><mn>11.8</mn></math>。an≦0を解いて、項の符号が負から正に切り替わる境目を求める。</p>
+            <p>符号が切り替わる場所を、式で確かめよう。<math><msub><mi>a</mi><mi>n</mi></msub><mo>=</mo><mn>5</mn><mi>n</mi><mo>−</mo><mn>59</mn><mo>≦</mo><mn>0</mn></math> を解くと：</p>
+            <div class="formula-line"><math><mn>5</mn><mi>n</mi><mo>≦</mo><mn>59</mn><mo>→</mo><mi>n</mi><mo>≦</mo><mfrac><mn>59</mn><mn>5</mn></mfrac><mo>=</mo><mn>11.8</mn></math></div>
+            <p>つまり <b><math><msub><mi>a</mi><mn>1</mn></msub></math>〜<math><msub><mi>a</mi><mn>11</mn></msub></math> はマイナス</b>（最後の <math><msub><mi>a</mi><mn>11</mn></msub><mo>=</mo><mo>−</mo><mn>4</mn><mo>)</mo></math>、<b><math><msub><mi>a</mi><mn>12</mn></msub></math> からはプラス</b><math><mo>(</mo><msub><mi>a</mi><mn>12</mn></msub><mo>=</mo><mn>1</mn><mo>)</mo></math>です。<br>図の境目を確認してみよう。</p>
           </article>
 
           <article class="stage hint" hidden>
             <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">最小になるのは「マイナスを足し終えたところ」</span></div>
-            <p>マイナスの項を足している間、<span class="m"><i>S<sub>n</sub></i></span> は<b>減り続けます</b>。プラスの項を足し始めたら<b>増え始めます</b>。</p>
-            <p>ということは、<span class="m"><i>S<sub>n</sub></i></span> が最小になるのは「マイナスの項を全部足し終えたところ」。それは <span class="m"><i>n</i></span> がいくつのときでしょう。上の図に <span class="m"><i>S<sub>n</sub></i></span> のグラフとスライダーが出たので、<span class="m"><i>n</i></span> を動かして確かめてみよう。</p>
+            <p>マイナスの項を足している間、<math><msub><mi>S</mi><mi>n</mi></msub></math> は<b>減り続けます</b>。プラスの項を足し始めたら<b>増え始めます</b>。</p>
+            <p>ということは、<math><msub><mi>S</mi><mi>n</mi></msub></math> が最小になるのは「マイナスの項を全部足し終えたところ」。それは <math><mi>n</mi></math> がいくつのときでしょう。<br>上の図に <math><msub><mi>S</mi><mi>n</mi></msub></math> のグラフとスライダーが出たので、<math><mi>n</mi></math> を動かして確かめてみよう。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">和の公式で S<sub>11</sub> を計算する</span></div>
-            <p>最小になるのは <span class="m"><i>n</i>＝11</span> のとき。あとは <span class="m"><i>S</i><sub>11</sub></span> を計算するだけです。等差数列の和の公式を使おう。</p>
-            <div class="formula-line"><span class="m"><i>S<sub>n</sub></i>＝<span class="frac"><span class="num"><i>n</i></span><span class="den">2</span></span>{2<i>a</i>＋(<i>n</i>−1)<i>d</i>}</span></div>
-            <p><span class="m"><i>n</i>＝11</span>、<span class="m"><i>a</i>＝−54</span>、<span class="m"><i>d</i>＝5</span> を入れると <span class="m"><i>S</i><sub>11</sub>＝<span class="frac"><span class="num">11</span><span class="den">2</span></span>×{2×(−54)＋10×5}＝<span class="frac"><span class="num">11</span><span class="den">2</span></span>×(−58)</span>。最後の計算をしてみよう。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">和の公式で<math><msub><mi>S</mi><mn>11</mn></msub></math> を計算する</span></div><p class="cite"><span class="cite-tag">使う公式</span>等差数列の和 <math><msub><mi>S</mi><mi>n</mi></msub><mo>=</mo><mfrac><mi>n</mi><mn>2</mn></mfrac><mrow><mo>{</mo><mn>2</mn><mi>a</mi><mo>+</mo><mrow><mo>(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mi>d</mi><mo>}</mo></mrow></math>。初項と公差と項数を和の公式に当てはめて、S11を計算する。</p>
+            <p>最小になるのは <math><mi>n</mi><mo>=</mo><mn>11</mn></math> のとき。あとは <math><msub><mi>S</mi><mn>11</mn></msub></math> を計算するだけです。<br>等差数列の和の公式を使おう。</p>
+            <div class="formula-line"><math><msub><mi>S</mi><mi>n</mi></msub><mo>=</mo><mfrac><mi>n</mi><mn>2</mn></mfrac><mrow><mo>{</mo><mn>2</mn><mi>a</mi><mo>+</mo><mrow><mo>(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mi>d</mi><mo>}</mo></mrow></math></div>
+            <p><math><mi>n</mi><mo>=</mo><mn>11</mn></math>、<math><mi>a</mi><mo>=</mo><mo>−</mo><mn>54</mn></math>、<math><mi>d</mi><mo>=</mo><mn>5</mn></math> を入れると <math><msub><mi>S</mi><mn>11</mn></msub><mo>=</mo><mfrac><mn>11</mn><mn>2</mn></mfrac><mo>×</mo><mrow><mo>{</mo><mn>2</mn><mo>×</mo><mrow><mo>(</mo><mo>−</mo><mn>54</mn><mo>)</mo></mrow><mo>+</mo><mn>10</mn><mo>×</mo><mn>5</mn><mo>}</mo></mrow><mo>=</mo><mfrac><mn>11</mn><mn>2</mn></mfrac><mo>×</mo><mrow><mo>(</mo><mo>−</mo><mn>58</mn><mo>)</mo></mrow></math>。最後の計算をしてみよう。</p>
           </article>
 
           <article class="stage answer" hidden>
-            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(2) の答え</span></div>
-            <p><span class="m"><i>S</i><sub>11</sub>＝<span class="frac"><span class="num">11</span><span class="den">2</span></span>×(−58)＝11×(−29)＝−319</span>。</p>
-            <p><b>別解の見方：</b><span class="m"><i>S<sub>n</sub></i>＝<span class="frac"><span class="num">1</span><span class="den">2</span></span><i>n</i>(5<i>n</i>−113)</span> を <span class="m"><i>n</i></span> の2次関数とみると、平方完成した頂点は <span class="m"><i>n</i>＝11.3</span>。<span class="m"><i>n</i></span> は自然数なので、頂点に最も近い <span class="m"><i>n</i>＝11</span> で最小になります。</p>
+            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(2) の答え</span></div><p class="cite"><span class="cite-tag">使う公式</span>等差数列の和 <math displaystyle="true"><msub><mi>S</mi><mn>11</mn></msub><mo>=</mo><mfrac><mn>11</mn><mn>2</mn></mfrac><mo>×</mo><mrow><mo>(</mo><mo>−</mo><mn>58</mn><mo>)</mo></mrow></math>。最小を与えるn=11を和の公式に入れて、S11の値を出す。</p>
+            <div class="chain-crow">
+<div class="crow"><math displaystyle="true"><msub><mi>S</mi><mn>11</mn></msub><mo>=</mo><mfrac><mn>11</mn><mn>2</mn></mfrac><mo>×</mo><mrow><mo>(</mo><mo>−</mo><mn>58</mn><mo>)</mo></mrow></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msub><mi>S</mi><mn>11</mn></msub></mphantom><mo>=</mo><mn>11</mn><mo>×</mo><mrow><mo>(</mo><mo>−</mo><mn>29</mn><mo>)</mo></mrow></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msub><mi>S</mi><mn>11</mn></msub></mphantom><mo>=</mo><mo>−</mo><mn>319</mn></math></div>
+</div>。
+            <p><b>別解の見方：</b><math><msub><mi>S</mi><mi>n</mi></msub><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mi>n</mi><mrow><mo>(</mo><mn>5</mn><mi>n</mi><mo>−</mo><mn>113</mn><mo>)</mo></mrow></math> を <math><mi>n</mi></math> の2次関数とみると、平方完成した頂点は <math><mi>n</mi><mo>=</mo><mn>11.3</mn></math>。<math><mi>n</mi></math> は自然数なので、<br>頂点に最も近い <math><mi>n</mi><mo>=</mo><mn>11</mn></math> で最小になります。</p>
             <div class="ans-line">
-              <span class="ans-chip"><span class="m"><i>n</i>＝11</span></span>
-              <span class="ans-chip"><span class="m"><i>S<sub>n</sub></i></span> の最小値 −319<span class="pts">7点</span></span>
+              <span class="ans-chip"><math><mi>n</mi><mo>=</mo><mn>11</mn></math></span>
+              <span class="ans-chip"><math><msub><mi>S</mi><mi>n</mi></msub></math> の最小値 −319<span class="pts">7点</span></span>
             </div>
-            <div class="point-box"><span class="pt">ポイント</span><span class="m"><i>S<sub>n</sub></i></span> が減るか増えるかは、足す項の符号で決まる。<span class="m"><i>a<sub>n</sub></i> ≦ 0</span> の間は減り続けるので、符号が切り替わる境目が最小の場所になる。</div>
+            <div class="point-box"><span class="pt">ポイント</span><p class="cite"><span class="cite-tag">使う性質</span>和の増減と項の符号 <math><msub><mi>a</mi><mi>n</mi></msub><mo>≦</mo><mn>0</mn></math>。足す項が負の間は和が減り続けるので、符号の境目が最小の場所になる。</p><math><msub><mi>S</mi><mi>n</mi></msub></math> が減るか増えるかは、足す項の符号で決まる。<math><msub><mi>a</mi><mi>n</mi></msub><mo>≦</mo><mn>0</mn></math> の間は減り続けるので、符号が切り替わる境目が最小の場所になる。</div>
           </article>
         </div>
 
@@ -476,69 +530,69 @@
         <div class="qside">
         <div class="qcard">
           <div class="q-head">
-            <span class="q-num">(3)</span><span class="q-title">|S<sub>n</sub>| が最小になる N と、絶対値の和</span>
+            <span class="q-num">(3)</span><span class="q-title"><math><mo>|</mo><msub><mi>S</mi><mi>n</mi></msub><mo>|</mo></math>が最小になる N と、絶対値の和</span>
             <span class="q-points">配点 8点</span>
           </div>
-          <p class="q-body">等差数列 {<span class="m"><i>a<sub>n</sub></i></span>} があり、<span class="m"><i>a</i><sub>1</sub>＋<i>a</i><sub>3</sub>＝−98</span>、<span class="m"><i>a</i><sub>5</sub>＝−34</span> を満たしている。また、数列 {<span class="m"><i>a<sub>n</sub></i></span>} の初項から第 <span class="m"><i>n</i></span> 項までの和を <span class="m"><i>S<sub>n</sub></i></span> とする。</p>
-          <p class="q-body"><span class="m"><i>S<sub>n</sub></i></span> の絶対値 <span class="m">|<i>S<sub>n</sub></i>|</span> が最小となる <span class="m"><i>n</i></span> の値を <span class="m"><i>N</i></span> とするとき、<span class="m"><i>N</i></span> の値を求めよ。また、<span class="sum"><span class="su">N</span><span class="sm">Σ</span><span class="sl">k＝1</span></span>|<span class="m"><i>a<sub>k</sub></i></span>| の値を求めよ。</p>
+          <p class="q-body">等差数列<math><mo>{</mo><msub><mi>a</mi><mi>n</mi></msub><mo>}</mo></math>があり、<math><msub><mi>a</mi><mn>1</mn></msub><mo>+</mo><msub><mi>a</mi><mn>3</mn></msub><mo>=</mo><mo>−</mo><mn>98</mn></math>、<math><msub><mi>a</mi><mn>5</mn></msub><mo>=</mo><mo>−</mo><mn>34</mn></math> を満たしている。また、数列<math><mo>{</mo><msub><mi>a</mi><mi>n</mi></msub><mo>}</mo></math>の初項から第 <math><mi>n</mi></math> 項までの和を <math><msub><mi>S</mi><mi>n</mi></msub></math> とする。</p>
+          <p class="q-body"><math><msub><mi>S</mi><mi>n</mi></msub></math> の絶対値 <math><mo>|</mo><msub><mi>S</mi><mi>n</mi></msub><mo>|</mo></math> が最小となる <math><mi>n</mi></math> の値を <math><mi>N</mi></math> とするとき、<math><mi>N</mi></math> の値を求めよ。また、<math><msubsup><mo>Σ</mo><mrow><mi>k</mi><mo>=</mo><mn>1</mn></mrow><mi>N</mi></msubsup><mrow><mo>|</mo><msub><mi>a</mi><mi>k</mi></msub><mo>|</mo></mrow></math>の値を求めよ。</p>
         </div>
 
         <div class="viz" id="viz3">
-          <p class="viz-title">図で見る ― S<sub>n</sub> のグラフと |S<sub>n</sub>|</p>
+          <p class="viz-title">図で見る<math><mo>―</mo><msub><mi>S</mi><mi>n</mi></msub></math> のグラフと<math><mo>|</mo><msub><mi>S</mi><mi>n</mi></msub><mo>|</mo></math></p>
           <div id="viz-q3"></div>
-          <p class="viz-cap">図：<span class="m"><i>S<sub>n</sub></i></span> のグラフを <span class="m"><i>n</i>＝26</span> まで広げたもの。(2) で見た下向きの谷が、右側で 0 に戻ってきます。</p>
+          <p class="viz-cap">図：<math><msub><mi>S</mi><mi>n</mi></msub></math> のグラフを <math><mi>n</mi><mo>=</mo><mn>26</mn></math> まで広げたもの。(2) で見た下向きの谷が、右側で 0 に戻ってきます。</p>
           <div class="subviz viz-hidden" id="viz-q3b"></div>
         </div>
 
-        <p class="think-note">まずは <span class="m"><i>S<sub>n</sub></i></span> のグラフ全体を眺めよう。詰まったら下の「次へ」でヒントを1つ開く。</p>
+        <p class="think-note">まずは <math><msub><mi>S</mi><mi>n</mi></msub></math> のグラフ全体を眺めよう。詰まったら下の「次へ」でヒントを1つ開く。</p>
         </div>
 
         <div class="stages">
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">S<sub>n</sub> を式で表し、0 になる <i>n</i> を探す</span></div>
-            <p>まず <span class="m"><i>S<sub>n</sub></i></span> を <span class="m"><i>n</i></span> の式で表そう。(2) の和の公式に <span class="m"><i>a</i>＝−54</span>、<span class="m"><i>d</i>＝5</span> を入れると：</p>
-            <div class="formula-line"><span class="m"><i>S<sub>n</sub></i>＝<span class="frac"><span class="num"><i>n</i></span><span class="den">2</span></span>{2×(−54)＋(<i>n</i>−1)×5}＝<span class="frac"><span class="num">1</span><span class="den">2</span></span><i>n</i>(5<i>n</i>−113)</span></div>
-            <p><span class="m">|<i>S<sub>n</sub></i>|</span> が小さいのは、<b><span class="m"><i>S<sub>n</sub></i></span> が 0 に近いとき</b>です。まず <span class="m"><i>S<sub>n</sub></i>＝0</span> になる <span class="m"><i>n</i></span> を探そう。図でグラフが横軸と交わる点に印がつきました。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title"><math><msub><mi>S</mi><mi>n</mi></msub></math> を式で表し、0 になる <math><mi>n</mi></math> を探す</span></div><p class="cite"><span class="cite-tag">使う公式</span>等差数列の和 <math><msub><mi>S</mi><mi>n</mi></msub><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mi>n</mi><mrow><mo>(</mo><mn>5</mn><mi>n</mi><mo>−</mo><mn>113</mn><mo>)</mo></mrow></math>。和の公式に初項と公差を入れて、Snをnだけの式で表す。</p>
+            <p>まず <math><msub><mi>S</mi><mi>n</mi></msub></math> を <math><mi>n</mi></math> の式で表そう。(2) の和の公式に <math><mi>a</mi><mo>=</mo><mo>−</mo><mn>54</mn></math>、<math><mi>d</mi><mo>=</mo><mn>5</mn></math> を入れると：</p>
+            <div class="formula-line"><math><msub><mi>S</mi><mi>n</mi></msub><mo>=</mo><mfrac><mi>n</mi><mn>2</mn></mfrac><mrow><mo>{</mo><mn>2</mn><mo>×</mo><mrow><mo>(</mo><mo>−</mo><mn>54</mn><mo>)</mo></mrow><mo>+</mo><mrow><mo>(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mo>×</mo><mn>5</mn><mo>}</mo></mrow><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mi>n</mi><mrow><mo>(</mo><mn>5</mn><mi>n</mi><mo>−</mo><mn>113</mn><mo>)</mo></mrow></math></div>
+            <p><math><mo>|</mo><msub><mi>S</mi><mi>n</mi></msub><mo>|</mo></math> が小さいのは、<b><math><msub><mi>S</mi><mi>n</mi></msub></math> が 0 に近いとき</b>です。まず <math><msub><mi>S</mi><mi>n</mi></msub><mo>=</mo><mn>0</mn></math> になる <math><mi>n</mi></math> を探そう。<br>図でグラフが横軸と交わる点に印がつきました。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">候補は <i>n</i>＝1, 22, 23 の3つ</span></div>
-            <p><span class="m"><span class="frac"><span class="num">1</span><span class="den">2</span></span><i>n</i>(5<i>n</i>−113)＝0</span> となるのは、<span class="m"><i>n</i>＝0</span> と <span class="m"><i>n</i>＝<span class="frac"><span class="num">113</span><span class="den">5</span></span>＝22.6</span> のとき。</p>
-            <p>でも <span class="m"><i>n</i></span> は自然数（1, 2, 3, …）なので、ぴったり 0 にはなりません。0 の近くにある自然数が候補です。左側では <b><span class="m"><i>n</i>＝1</span></b>、右側では 22.6 の前後の <b><span class="m"><i>n</i>＝22</span> と <span class="m"><i>n</i>＝23</span></b>。図が <span class="m">|<i>S<sub>n</sub></i>|</span> の形（横軸より下の部分を上に折り返したもの）に変わり、候補の3点に印がつきました。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">候補は <math><mi>n</mi><mo>=</mo><mn>1</mn><mo>,</mo><mn>22</mn><mo>,</mo><mn>23</mn></math>の3つ</span></div><p class="cite"><span class="cite-tag">使う性質</span>絶対値と0からの近さ <math><mfrac><mn>1</mn><mn>2</mn></mfrac><mi>n</mi><mrow><mo>(</mo><mn>5</mn><mi>n</mi><mo>−</mo><mn>113</mn><mo>)</mo></mrow><mo>=</mo><mn>0</mn></math>。Sn=0となるnを求め、その前後の自然数が|Sn|の最小の候補になる。</p>
+            <p><math><mfrac><mn>1</mn><mn>2</mn></mfrac><mi>n</mi><mrow><mo>(</mo><mn>5</mn><mi>n</mi><mo>−</mo><mn>113</mn><mo>)</mo></mrow><mo>=</mo><mn>0</mn></math> となるのは、<math><mi>n</mi><mo>=</mo><mn>0</mn></math> と <math><mi>n</mi><mo>=</mo><mfrac><mn>113</mn><mn>5</mn></mfrac><mo>=</mo><mn>22.6</mn></math> のとき。</p>
+            <p>でも <math><mi>n</mi></math> は自然数（1, 2, 3, …）なので、ぴったり 0 にはなりません。0 の近くにある自然数が候補です。<br>左側では <b><math><mi>n</mi><mo>=</mo><mn>1</mn></math></b>、右側では 22.6 の前後の <b><math><mi>n</mi><mo>=</mo><mn>22</mn></math> と <math><mi>n</mi><mo>=</mo><mn>23</mn></math></b>。図が <math><mo>|</mo><msub><mi>S</mi><mi>n</mi></msub><mo>|</mo></math> の形（横軸より下の部分を上に折り返したもの）に変わり、候補の3点に印がつきました。</p>
           </article>
 
           <article class="stage hint" hidden>
             <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">候補を全部計算して比べる</span></div>
-            <p>候補は3つだけ。全部計算して比べてみよう。<span class="m"><i>S<sub>n</sub></i>＝<span class="frac"><span class="num">1</span><span class="den">2</span></span><i>n</i>(5<i>n</i>−113)</span> に代入します。</p>
-            <div class="formula-line"><span class="m">|<i>S</i><sub>1</sub>|＝|<span class="frac"><span class="num">1</span><span class="den">2</span></span>×1×(5−113)|＝54</span></div>
-            <div class="formula-line"><span class="m">|<i>S</i><sub>22</sub>|＝|<span class="frac"><span class="num">1</span><span class="den">2</span></span>×22×(110−113)|＝33</span></div>
-            <div class="formula-line"><span class="m">|<i>S</i><sub>23</sub>|＝|<span class="frac"><span class="num">1</span><span class="den">2</span></span>×23×(115−113)|＝23</span></div>
-            <p>一番小さいのはどれでしょう。それが <span class="m"><i>N</i></span> です。</p>
+            <p>候補は3つだけ。全部計算して比べてみよう。<math><msub><mi>S</mi><mi>n</mi></msub><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mi>n</mi><mrow><mo>(</mo><mn>5</mn><mi>n</mi><mo>−</mo><mn>113</mn><mo>)</mo></mrow></math> に代入します。</p>
+            <div class="formula-line"><math><mrow><mo>|</mo><msub><mi>S</mi><mn>1</mn></msub><mo>|</mo></mrow><mo>=</mo><mrow><mo>|</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>×</mo><mn>1</mn><mo>×</mo><mrow><mo>(</mo><mn>5</mn><mo>−</mo><mn>113</mn><mo>)</mo></mrow><mo>|</mo></mrow><mo>=</mo><mn>54</mn></math></div>
+            <div class="formula-line"><math><mrow><mo>|</mo><msub><mi>S</mi><mn>22</mn></msub><mo>|</mo></mrow><mo>=</mo><mrow><mo>|</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>×</mo><mn>22</mn><mo>×</mo><mrow><mo>(</mo><mn>110</mn><mo>−</mo><mn>113</mn><mo>)</mo></mrow><mo>|</mo></mrow><mo>=</mo><mn>33</mn></math></div>
+            <div class="formula-line"><math><mrow><mo>|</mo><msub><mi>S</mi><mn>23</mn></msub><mo>|</mo></mrow><mo>=</mo><mrow><mo>|</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>×</mo><mn>23</mn><mo>×</mo><mrow><mo>(</mo><mn>115</mn><mo>−</mo><mn>113</mn><mo>)</mo></mrow><mo>|</mo></mrow><mo>=</mo><mn>23</mn></math></div>
+            <p>一番小さいのはどれでしょう。それが <math><mi>N</mi></math> です。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">絶対値の和は、符号でグループ分け</span></div>
-            <p>次は <span class="sum"><span class="su">N</span><span class="sm">Σ</span><span class="sl">k＝1</span></span>|<span class="m"><i>a<sub>k</sub></i></span>|、つまり <span class="m">|<i>a</i><sub>1</sub>|＋|<i>a</i><sub>2</sub>|＋…＋|<i>a</i><sub>23</sub>|</span> です。絶対値を外すには、<b>符号でグループ分け</b>します。</p>
-            <p>(2) で調べたとおり、<span class="m"><i>a<sub>k</sub></i></span> は <b><span class="m"><i>k</i> ≦ 11</span> ではマイナス</b>、<b><span class="m"><i>k</i> ≧ 12</span> ではプラス</b>。マイナスの項は、符号をひっくり返してから足します。上の図で2つのグループを確認しよう。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">絶対値の和は、符号でグループ分け</span></div><p class="cite"><span class="cite-tag">使う定義</span>絶対値 <math><msubsup><mo>Σ</mo><mrow><mi>k</mi><mo>=</mo><mn>1</mn></mrow><mi>N</mi></msubsup><mrow><mo>|</mo><msub><mi>a</mi><mi>k</mi></msub><mo>|</mo></mrow></math>。負の項の絶対値は符号を変えた大きさであり、符号ごとに分けて足し合わせる。</p>
+            <p>次は <math><msubsup><mo>Σ</mo><mrow><mi>k</mi><mo>=</mo><mn>1</mn></mrow><mi>N</mi></msubsup><mrow><mo>|</mo><msub><mi>a</mi><mi>k</mi></msub><mo>|</mo></mrow></math>、つまり <math><mrow><mo>|</mo><msub><mi>a</mi><mn>1</mn></msub><mo>|</mo></mrow><mo>+</mo><mrow><mo>|</mo><msub><mi>a</mi><mn>2</mn></msub><mo>|</mo></mrow><mo>+</mo><mo>…</mo><mo>+</mo><mrow><mo>|</mo><msub><mi>a</mi><mn>23</mn></msub><mo>|</mo></mrow></math> です。<br>絶対値を外すには、<b>符号でグループ分け</b>します。</p>
+            <p>(2) で調べたとおり、<math><msub><mi>a</mi><mi>k</mi></msub></math> は <b><math><mi>k</mi><mo>≦</mo><mn>11</mn></math> ではマイナス</b>、<b><math><mi>k</mi><mo>≧</mo><mn>12</mn></math> ではプラス</b>。マイナスの項は、符号をひっくり返してから足します。上の図で2つのグループを確認しよう。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 5</span><span class="stage-title">グループごとに S<sub>n</sub> を使い回して計算する</span></div>
+            <div class="stage-head"><span class="stage-badge">ヒント 5</span><span class="stage-title">グループごとに<math><msub><mi>S</mi><mi>n</mi></msub></math> を使い回して計算する</span></div><p class="cite"><span class="cite-tag">使う性質</span>部分和の差 <math><msub><mi>S</mi><mn>23</mn></msub><mo>−</mo><msub><mi>S</mi><mn>11</mn></msub><mo>=</mo><mn>23</mn><mo>−</mo><mrow><mo>(</mo><mo>−</mo><mn>319</mn><mo>)</mo></mrow><mo>=</mo><mn>342</mn></math>。途中までの和の差を取ると、残りの区間の項だけの合計が得られる。</p>
             <p>グループごとに、(2) までの結果を使って計算しよう。</p>
-            <div class="formula-line"><span class="m">マイナスのグループ（<i>k</i>＝1〜11）：−<i>S</i><sub>11</sub>＝−(−319)＝319</span></div>
-            <div class="formula-line"><span class="m">プラスのグループ（<i>k</i>＝12〜23）：<i>S</i><sub>23</sub>−<i>S</i><sub>11</sub>＝23−(−319)＝342</span></div>
-            <p>「プラスのグループ」は、<span class="m"><i>S</i><sub>23</sub></span>（全部の合計）から <span class="m"><i>S</i><sub>11</sub></span>（マイナス部分の合計）を取り除いたものです。最後に <span class="m">319＋342</span> を計算しよう。</p>
-            <p class="mini"><strong>つまずき注意：</strong>マイナスのグループは、そのまま足すと −319 になってしまいます。<span class="m">|<i>a<sub>k</sub></i>|</span> は長さ（大きさ）なので、符号をひっくり返した 319 が正しい合計です。</p>
+            <div class="formula-line"><span class="m">マイナスのグループ<math><mo>(</mo><mi>k</mi><mo>=</mo><mn>1</mn></math>〜11）：<math><mo>−</mo><msub><mi>S</mi><mn>11</mn></msub><mo>=</mo><mo>−</mo><mrow><mo>(</mo><mo>−</mo><mn>319</mn><mo>)</mo></mrow><mo>=</mo><mn>319</mn></math></span></div>
+            <div class="formula-line"><span class="m">プラスのグループ<math><mo>(</mo><mi>k</mi><mo>=</mo><mn>12</mn></math>〜23）：<math><msub><mi>S</mi><mn>23</mn></msub><mo>−</mo><msub><mi>S</mi><mn>11</mn></msub><mo>=</mo><mn>23</mn><mo>−</mo><mrow><mo>(</mo><mo>−</mo><mn>319</mn><mo>)</mo></mrow><mo>=</mo><mn>342</mn></math></span></div>
+            <p>「プラスのグループ」は、<math><msub><mi>S</mi><mn>23</mn></msub><mo>(</mo></math>全部の合計）から <math><msub><mi>S</mi><mn>11</mn></msub><mo>(</mo></math>マイナス部分の合計）を取り除いたものです。<br>最後に <math><mn>319</mn><mo>+</mo><mn>342</mn></math> を計算しよう。</p>
+            <p class="mini"><strong>つまずき注意：</strong>マイナスのグループは、そのまま足すと −319 になってしまいます。<math><mo>|</mo><msub><mi>a</mi><mi>k</mi></msub><mo>|</mo></math> は長さ（大きさ）なので、符号をひっくり返した 319 が正しい合計です。</p>
           </article>
 
           <article class="stage answer" hidden>
             <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(3) の答え</span></div>
-            <p><span class="m">|<i>S</i><sub>1</sub>|＝54</span>、<span class="m">|<i>S</i><sub>22</sub>|＝33</span>、<span class="m">|<i>S</i><sub>23</sub>|＝23</span> のうち最小は <span class="m">|<i>S</i><sub>23</sub>|＝23</span> だから <span class="m"><i>N</i>＝23</span>。絶対値の和は <span class="m">319＋342＝661</span> です。</p>
+            <p><math><mrow><mo>|</mo><msub><mi>S</mi><mn>1</mn></msub><mo>|</mo></mrow><mo>=</mo><mn>54</mn></math>、<math><mrow><mo>|</mo><msub><mi>S</mi><mn>22</mn></msub><mo>|</mo></mrow><mo>=</mo><mn>33</mn></math>、<math><mrow><mo>|</mo><msub><mi>S</mi><mn>23</mn></msub><mo>|</mo></mrow><mo>=</mo><mn>23</mn></math> のうち最小は <math><mrow><mo>|</mo><msub><mi>S</mi><mn>23</mn></msub><mo>|</mo></mrow><mo>=</mo><mn>23</mn></math> だから <math><mi>N</mi><mo>=</mo><mn>23</mn></math>。<br>絶対値の和は <math><mn>319</mn><mo>+</mo><mn>342</mn><mo>=</mo><mn>661</mn></math> です。</p>
             <div class="ans-line">
-              <span class="ans-chip"><span class="m"><i>N</i>＝23</span></span>
-              <span class="ans-chip"><span class="sum"><span class="su">N</span><span class="sm">Σ</span><span class="sl">k＝1</span></span>|<span class="m"><i>a<sub>k</sub></i></span>|＝661<span class="pts">8点</span></span>
+              <span class="ans-chip"><math><mi>N</mi><mo>=</mo><mn>23</mn></math></span>
+              <span class="ans-chip"><math><msubsup><mo>Σ</mo><mrow><mi>k</mi><mo>=</mo><mn>1</mn></mrow><mi>N</mi></msubsup><mrow><mo>|</mo><msub><mi>a</mi><mi>k</mi></msub><mo>|</mo></mrow><mo>=</mo><mn>661</mn></math><span class="pts">8点</span></span>
             </div>
-            <div class="point-box"><span class="pt">ポイント</span><span class="m">|<i>S<sub>n</sub></i>|</span> の最小は <span class="m"><i>S<sub>n</sub></i>＝0</span> の近くで探す。絶対値の和は符号でグループ分けして、すでに求めた <span class="m"><i>S</i><sub>11</sub></span> と <span class="m"><i>S</i><sub>23</sub></span> を使い回すと速い。</div>
+            <div class="point-box"><span class="pt">ポイント</span><p class="cite"><span class="cite-tag">使う性質</span>絶対値の和の分け方 <math><msub><mi>S</mi><mn>23</mn></msub></math>。符号で分けた各区間の和は、すでに求めた部分和を使って計算できる。</p><math><mo>|</mo><msub><mi>S</mi><mi>n</mi></msub><mo>|</mo></math> の最小は <math><msub><mi>S</mi><mi>n</mi></msub><mo>=</mo><mn>0</mn></math> の近くで探す。絶対値の和は符号でグループ分けして、すでに求めた <math><msub><mi>S</mi><mn>11</mn></msub></math> と <math><msub><mi>S</mi><mn>23</mn></msub></math> を使い回すと速い。</div>
           </article>
         </div>
 
@@ -559,7 +613,7 @@
       <a class="back-top" href="index.html"><span class="arr">←</span>Nanryo mathematics portal に戻る</a>
 
       <footer>
-        数学B B7（配点20点）のヒント式解説。全3問：（1）一般項 5点／（2）S<sub>n</sub> の最小値 7点／（3）|S<sub>n</sub>| の最小と絶対値の和 8点。
+        数学B B7（配点20点）のヒント式解説。全3問：（1）一般項 5点<math><mo>／</mo><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow><msub><mi>S</mi><mi>n</mi></msub></math> の最小値 7点<math><mo>／</mo><mrow><mo>(</mo><mn>3</mn><mo>)</mo></mrow><mrow><mo>|</mo><msub><mi>S</mi><mi>n</mi></msub><mo>|</mo></mrow></math>の最小と絶対値の和 8点。
       </footer>
     </div>
 

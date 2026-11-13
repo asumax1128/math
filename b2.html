@@ -314,7 +314,57 @@
           padding: 2px 6px 2px 2px;
         }
       }
-    </style>
+    
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+
+      /* 積分記号は大きめに表示する（元のページの可読化デザインに合わせる） */
+      math .int-op{font-size:1.35em}
+      /* calc-12 世代（.card）と calc-18 世代（.unit）の、図のない問題の全幅化 */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig>.step{position:static !important}
+        .card.nofig>.steps-wrap{max-height:none !important;overflow:visible !important}
+        .unit.nofig{display:block !important}
+        .unit.nofig>.qside{position:static !important}
+        .unit.nofig>.steps-stack{max-height:none !important;overflow:visible !important}
+      }
+</style>
   </head>
   <body>
     <div class="wrap">
@@ -363,9 +413,9 @@
           </div>
           <div class="defbox">
             <span class="dlabel">条件の定義（［1］共通）</span>
-            実数 <span class="m"><i>x</i></span> に関する条件 <span class="m"><i>p</i></span>，<span class="m"><i>q</i></span> を次のように定める。ただし、<span class="m"><i>a</i></span> は正の定数とする。<br />
-            <span class="m"><i>p</i>：|<i>x</i>−2| &lt; 3</span>　……①<br />
-            <span class="m"><i>q</i>：<i>x</i><sup>2</sup>−<i>ax</i>−2<i>a</i><sup>2</sup> &lt; 0</span>
+            実数 <math><mi>x</mi></math> に関する条件 <math><mi>p</mi><mo>,</mo><mi>q</mi></math> を次のように定める。ただし、<math><mi>a</mi></math> は正の定数とする。<br />
+            <span class="m"><math><mi>p</mi></math>：<math><mrow><mo>|</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>|</mo></mrow><mo>&lt;</mo><mn>3</mn></math></span>　……①<br />
+            <span class="m"><math><mi>q</mi></math>：<math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>ax</mi><mo>−</mo><mn>2</mn><msup><mi>a</mi><mn>2</mn></msup><mo>&lt;</mo><mn>0</mn></math></span>
           </div>
           <p class="q-body">(1) 不等式①を解け。</p>
         </div>
@@ -420,39 +470,39 @@
 
         <div class="stages">
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">まず意味だけ：|<i>x</i>−2| は「2 からの距離」</span></div>
-            <p>絶対値を噛み砕くと、<span class="m">|<i>x</i>−2|</span> は数直線上で<strong>点 <span class="m"><i>x</i></span> と点 2 のあいだの距離</strong>のこと。だから <span class="m">|<i>x</i>−2|&lt;3</span> という式は、「2 から距離 3 より近くにある <span class="m"><i>x</i></span> はどこ？」という問いだね。</p>
-            <p>上の図に、2 から左右へ距離 3 だけ進んだ境目が出た。その<strong>内側</strong>が答えの範囲になる。境目の点そのものは「距離ちょうど 3」だから、<span class="m">&lt;</span>（より小さい）には<strong>含まれない</strong>。白丸は「その点は入らない」という合図だよ。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">まず意味だけ：<math><mo>|</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>|</mo></math>は「2 からの距離」</span></div><p class="cite"><span class="cite-tag">使う定義</span>絶対値と距離 <math><mo>|</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>|</mo></math>。絶対値は数直線上の2点のあいだの距離を表すので、この不等式は中心からの距離の条件として読む。</p>
+            <p>絶対値を噛み砕くと、<math><mo>|</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>|</mo></math> は数直線上で<strong>点 <math><mi>x</mi></math> と点 2 のあいだの距離</strong>のこと。<br>だから <math><mrow><mo>|</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>|</mo></mrow><mo>&lt;</mo><mn>3</mn></math> という式は、「2 から距離 3 より近くにある <math><mi>x</mi></math> はどこ？」という問いだね。</p>
+            <p>上の図に、2 から左右へ距離 3 だけ進んだ境目が出た。<br>その<strong>内側</strong>が答えの範囲になる。境目の点そのものは「距離ちょうど 3」だから、<math><mo>&lt;</mo><mo>(</mo></math>より小さい）には<strong>含まれない</strong>。白丸は「その点は入らない」という合図だよ。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">公式に当てはめる：|<i>X</i>| &lt; <i>c</i> の形で見る</span></div>
+            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">公式に当てはめる：<math><mrow><mo>|</mo><mi>X</mi><mo>|</mo></mrow><mo>&lt;</mo><mi>c</mi></math> の形で見る</span></div><p class="cite"><span class="cite-tag">使う公式</span>絶対値の不等式 <math><mrow><mo>|</mo><mi>X</mi><mo>|</mo></mrow><mo>&lt;</mo><mi>c</mi></math>。絶対値の中身全体を1つの文字と見ると、この形に当てはめて両側の不等式に直せる。</p>
             <p>絶対値の不等式には、決まった解き方がある：</p>
-            <div class="formula-line"><span class="m">|<i>X</i>| &lt; <i>c</i></span> のとき　<span class="m">−<i>c</i> &lt; <i>X</i> &lt; <i>c</i></span>　（<span class="m"><i>c</i></span> は正の数）</div>
-            <p>噛み砕くと「<span class="m"><i>X</i></span> は <span class="m">−<i>c</i></span> と <span class="m"><i>c</i></span> のあいだ」という意味。今回の式では、絶対値の中身 <span class="m"><i>x</i>−2</span> <strong>全体</strong>が <span class="m"><i>X</i></span> の役目をしている。公式にそのまま入れると：</p>
-            <div class="formula-line"><span class="m">−3 &lt; <i>x</i>−2 &lt; 3</span></div>
-            <p>ここまでが山場。あとは真ん中の <span class="m"><i>x</i>−2</span> から「−2」を取りのぞくだけだよ。</p>
-            <p class="mini">つまずき注意：<span class="m">|<i>x</i>−2|</span> の中身は「<span class="m"><i>x</i>−2</span>」全体。<span class="m"><i>x</i></span> だけを <span class="m"><i>X</i></span> と見てしまわないこと。</p>
+            <div class="formula-line"><math><mrow><mo>|</mo><mi>X</mi><mo>|</mo></mrow><mo>&lt;</mo><mi>c</mi></math> のとき　<math><mo>−</mo><mi>c</mi><mo>&lt;</mo><mi>X</mi><mo>&lt;</mo><mi>c</mi></math>　<math><mo>(</mo><mi>c</mi></math> は正の数）</div>
+            <p>噛み砕くと「<math><mi>X</mi></math> は <math><mo>−</mo><mi>c</mi></math> と <math><mi>c</mi></math> のあいだ」という意味。今回の式では、絶対値の中身 <math><mi>x</mi><mo>−</mo><mn>2</mn></math> <strong>全体</strong>が <math><mi>X</mi></math> の役目をしている。公式にそのまま入れると：</p>
+            <div class="formula-line"><math><mo>−</mo><mn>3</mn><mo>&lt;</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>&lt;</mo><mn>3</mn></math></div>
+            <p>ここまでが山場。あとは真ん中の <math><mi>x</mi><mo>−</mo><mn>2</mn></math> から「−2」を取りのぞくだけだよ。<br></p>
+            <p class="mini">つまずき注意：<math><mo>|</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>|</mo></math> の中身は「<math><mi>x</mi><mo>−</mo><mn>2</mn></math>」全体。<math><mi>x</mi></math> だけを <math><mi>X</mi></math> と見てしまわないこと。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">あとは各辺に +2 するだけ</span></div>
-            <p>不等式は、すべての辺に<strong>同じ数を足しても向きは変わらない</strong>。<span class="m">−3 &lt; <i>x</i>−2 &lt; 3</span> の3つの辺すべてに <span class="m">+2</span> をすると：</p>
-            <div class="formula-line"><span class="m">−3+2 &lt; <i>x</i> &lt; 3+2</span></div>
-            <p>最後の計算だけ、自分で仕上げてみよう。答えは「○ <span class="m">&lt; <i>x</i> &lt;</span> ○」の形になるはずだよ。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">あとは各辺に +2 するだけ</span></div><p class="cite"><span class="cite-tag">使う性質</span>不等式の性質 <math><mo>−</mo><mn>3</mn><mo>&lt;</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>&lt;</mo><mn>3</mn></math>。不等式は、すべての辺に同じ数を足しても向きが変わらないので、この式の各辺に同じ数を足して整理する。</p>
+            <p>不等式は、すべての辺に<strong>同じ数を足しても向きは変わらない</strong>。<math><mo>−</mo><mn>3</mn><mo>&lt;</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>&lt;</mo><mn>3</mn></math> の3つの辺すべてに <math><mo>+</mo><mn>2</mn></math> をすると：</p>
+            <div class="formula-line"><math><mo>−</mo><mn>3</mn><mo>+</mo><mn>2</mn><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mn>3</mn><mo>+</mo><mn>2</mn></math></div>
+            <p>最後の計算だけ、自分で仕上げてみよう。答えは「<math><mo>○</mo><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mo>○</mo></math>」の形になるはずだよ。</p>
           </article>
 
           <article class="stage answer" hidden>
-            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(1) の答え</span></div>
+            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(1) の答え</span></div><p class="cite"><span class="cite-tag">使う公式</span>絶対値の不等式 <math><mrow><mo>|</mo><mi>X</mi><mo>|</mo></mrow><mo>&lt;</mo><mi>c</mi></math>。解答では、絶対値の中身全体にこの形を当てはめて両側の不等式に直す。</p>
             <ol class="steps">
-              <li>条件 <span class="m"><i>p</i></span> の不等式を解くと　<span class="m">|<i>x</i>−2| &lt; 3</span></li>
-              <li><span class="m">⟺ −3 &lt; <i>x</i>−2 &lt; 3</span></li>
-              <li>各辺に 2 を加えて　<span class="m">−1 &lt; <i>x</i> &lt; 5</span></li>
+              <li>条件 <math><mi>p</mi></math> の不等式を解くと　<math><mrow><mo>|</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>|</mo></mrow><mo>&lt;</mo><mn>3</mn></math></li>
+              <li><math><mo>⟺</mo><mo>−</mo><mn>3</mn><mo>&lt;</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>&lt;</mo><mn>3</mn></math></li>
+              <li>各辺に 2 を加えて　<math><mo>−</mo><mn>1</mn><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mn>5</mn></math></li>
             </ol>
             <div class="ans-line">
-              <span class="ans-chip"><span class="kana">答</span><span class="m">−1 &lt; <i>x</i> &lt; 5</span><span class="pts">4点</span></span>
+              <span class="ans-chip"><span class="kana">答</span><math><mo>−</mo><mn>1</mn><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mn>5</mn></math><span class="pts">4点</span></span>
             </div>
-            <div class="point-box"><span class="pt">ポイント</span>絶対値の不等式は「中心からの距離」で読むと一気に分かりやすくなる。<span class="m">|<i>x</i>−<i>a</i>| &lt; <i>c</i></span> の答えは、いつも <span class="m"><i>a</i>−<i>c</i> &lt; <i>x</i> &lt; <i>a</i>+<i>c</i></span> の形になる。</div>
+            <div class="point-box"><p class="cite"><span class="cite-tag">使う公式</span>絶対値の不等式 <math><mrow><mo>|</mo><mi>x</mi><mo>−</mo><mi>a</mi><mo>|</mo></mrow><mo>&lt;</mo><mi>c</mi></math>。まとめでも、中心と幅が分かればこの形から答えの範囲をそのまま書き下せることを確認する。</p><span class="pt">ポイント</span>絶対値の不等式は「中心からの距離」で読むと一気に分かりやすくなる。<math><mrow><mo>|</mo><mi>x</mi><mo>−</mo><mi>a</mi><mo>|</mo></mrow><mo>&lt;</mo><mi>c</mi></math> の答えは、いつも <math><mi>a</mi><mo>−</mo><mi>c</mi><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mi>a</mi><mo>+</mo><mi>c</mi></math> の形になる。</div>
           </article>
         </div>
         </div>
@@ -477,11 +527,11 @@
           </div>
           <div class="defbox">
             <span class="dlabel">条件の定義（［1］共通）</span>
-            実数 <span class="m"><i>x</i></span> に関する条件 <span class="m"><i>p</i></span>，<span class="m"><i>q</i></span> を次のように定める。ただし、<span class="m"><i>a</i></span> は正の定数とする。<br />
-            <span class="m"><i>p</i>：|<i>x</i>−2| &lt; 3</span>　……①<br />
-            <span class="m"><i>q</i>：<i>x</i><sup>2</sup>−<i>ax</i>−2<i>a</i><sup>2</sup> &lt; 0</span>
+            実数 <math><mi>x</mi></math> に関する条件 <math><mi>p</mi><mo>,</mo><mi>q</mi></math> を次のように定める。ただし、<math><mi>a</mi></math> は正の定数とする。<br />
+            <span class="m"><math><mi>p</mi></math>：<math><mrow><mo>|</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>|</mo></mrow><mo>&lt;</mo><mn>3</mn></math></span>　……①<br />
+            <span class="m"><math><mi>q</mi></math>：<math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>ax</mi><mo>−</mo><mn>2</mn><msup><mi>a</mi><mn>2</mn></msup><mo>&lt;</mo><mn>0</mn></math></span>
           </div>
-          <p class="q-body">(2) <span class="m"><i>p</i></span> が <span class="m"><i>q</i></span> であるための必要条件であるような <span class="m"><i>a</i></span> のとり得る値の範囲を求めよ。</p>
+          <p class="q-body"><math><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow><mi>p</mi></math> が <math><mi>q</mi></math> であるための必要条件であるような <math><mi>a</mi></math> のとり得る値の範囲を求めよ。</p>
         </div>
 
         <div class="viz" id="viz12">
@@ -523,9 +573,9 @@
           </svg>
           <div class="slider-box" data-min="4" hidden>
             <div class="slider-row">
-              <label for="aSlider2">定数 <span class="m"><i>a</i></span> を動かす</label>
+              <label for="aSlider2">定数 <math><mi>a</mi></math> を動かす</label>
               <input type="range" id="aSlider2" min="0.2" max="3" step="0.1" value="0.6" />
-              <span class="slider-val" id="aVal2">a = 0.6</span>
+              <span class="slider-val" id="aVal2"><math><mi>a</mi><mo>=</mo><mn>0.6</mn></math></span>
             </div>
             <p class="slider-msg" id="aMsg2"></p>
           </div>
@@ -537,24 +587,24 @@
 
         <div class="stages">
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">まず相手の <i>q</i> を解く準備：因数分解</span></div>
-            <p>(2) は <span class="m"><i>p</i></span> と <span class="m"><i>q</i></span> の「範囲比べ」の問題。比べるには、まず <span class="m"><i>q</i></span> の不等式 <span class="m"><i>x</i><sup>2</sup>−<i>ax</i>−2<i>a</i><sup>2</sup>&lt;0</span> が「<span class="m"><i>x</i></span> のどの範囲か」を出さないといけない。そのために、左辺を因数分解する。</p>
-            <p>たすき掛けで探すのは、「かけて <span class="m">−2<i>a</i><sup>2</sup></span>、たして <span class="m">−<i>a</i></span>」になる2つの数。候補を試していくと、<span class="m">+<i>a</i></span> と <span class="m">−2<i>a</i></span> の組がぴったり合う：</p>
-            <div class="formula-line"><span class="m"><i>x</i><sup>2</sup>−<i>ax</i>−2<i>a</i><sup>2</sup> = (<i>x</i>+<i>a</i>)(<i>x</i>−2<i>a</i>)</span><br /><span class="m">確認：(<i>x</i>+<i>a</i>)(<i>x</i>−2<i>a</i>)</span><br /><span class="m">　= <i>x</i><sup>2</sup>−2<i>ax</i>+<i>ax</i>−2<i>a</i><sup>2</sup></span><br /><span class="m">　= <i>x</i><sup>2</sup>−<i>ax</i>−2<i>a</i><sup>2</sup></span>　✓</div>
+            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">まず相手の <math><mi>q</mi></math> を解く準備：因数分解</span></div><p class="cite"><span class="cite-tag">使う公式</span>因数分解 <math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>ax</mi><mo>−</mo><mn>2</mn><msup><mi>a</mi><mn>2</mn></msup><mo>=</mo><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mi>a</mi><mo>)</mo></mrow><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mi>a</mi><mo>)</mo></mrow></math>。2次式の不等式を解く準備として、積の形に直すためにこの因数分解を行う。</p>
+            <p>(2) は <math><mi>p</mi></math> と <math><mi>q</mi></math> の「範囲比べ」の問題。比べるには、まず <math><mi>q</mi></math> の不等式 <math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>ax</mi><mo>−</mo><mn>2</mn><msup><mi>a</mi><mn>2</mn></msup><mo>&lt;</mo><mn>0</mn></math> が「<math><mi>x</mi></math> のどの範囲か」を出さないといけない。<br>そのために、左辺を因数分解する。</p>
+            <p>たすき掛けで探すのは、「かけて <math><mo>−</mo><mn>2</mn><msup><mi>a</mi><mn>2</mn></msup></math>、たして <math><mo>−</mo><mi>a</mi></math>」になる2つの数。候補を試していくと、<math><mo>+</mo><mi>a</mi></math> と <math><mo>−</mo><mn>2</mn><mi>a</mi></math> の組がぴったり合う：</p>
+            <div class="formula-line"><math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>ax</mi><mo>−</mo><mn>2</mn><msup><mi>a</mi><mn>2</mn></msup><mo>=</mo><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mi>a</mi><mo>)</mo></mrow><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mi>a</mi><mo>)</mo></mrow></math><br /><span class="m">確認：<math><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mi>a</mi><mo>)</mo></mrow><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mi>a</mi><mo>)</mo></mrow></math></span><br /><math><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>ax</mi><mo>+</mo><mi>ax</mi><mo>−</mo><mn>2</mn><msup><mi>a</mi><mn>2</mn></msup></math><br /><math><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>ax</mi><mo>−</mo><mn>2</mn><msup><mi>a</mi><mn>2</mn></msup></math>　✓</div>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">2次不等式を解く：答えは「2つの数のあいだ」</span></div>
-            <p><span class="m">(<i>x</i>−α)(<i>x</i>−β)&lt;0</span> の解は、<span class="m">α&lt;β</span> のとき <span class="m">α&lt;<i>x</i>&lt;β</span>。噛み砕くと「かけてマイナスになるのは、2つの数がプラスとマイナスに分かれるときだけで、その境目が α と β だから」だね。</p>
-            <p>今回は <span class="m">α=−<i>a</i></span>、<span class="m">β=2<i>a</i></span> にあたる。どちらが小さいかは、<span class="m"><i>a</i>&gt;0</span> を使って判断する：<span class="m">−<i>a</i>&lt;0&lt;2<i>a</i></span> だから <span class="m">−<i>a</i></span> の方が小さい。よって <span class="m"><i>q</i></span> の範囲は：</p>
-            <div class="formula-line"><span class="m">−<i>a</i> &lt; <i>x</i> &lt; 2<i>a</i></span>　……③</div>
-            <p>上の図の下の段に <span class="m"><i>q</i></span> の範囲が出た。上の段が (1) で求めた <span class="m"><i>p</i></span> の範囲 <span class="m">−1&lt;<i>x</i>&lt;5</span> だよ。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">2次不等式を解く：答えは「2つの数のあいだ」</span></div><p class="cite"><span class="cite-tag">使う性質</span>2次不等式の解 <math><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mi>α</mi><mo>)</mo></mrow><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mi>β</mi><mo>)</mo></mrow><mo>&lt;</mo><mn>0</mn></math>。積が負になるのは2つの因数の符号が分かれるときだけなので、解は2つの境目のあいだになる。</p>
+            <p><math><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mi>α</mi><mo>)</mo></mrow><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mi>β</mi><mo>)</mo></mrow><mo>&lt;</mo><mn>0</mn></math> の解は、<math><mi>α</mi><mo>&lt;</mo><mi>β</mi></math> のとき <math><mi>α</mi><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mi>β</mi></math>。噛み砕くと「かけてマイナスになるのは、2つの数がプラスとマイナスに分かれるときだけで、その境目が α と β だから」だね。<br></p>
+            <p>今回は <math><mi>α</mi><mo>=</mo><mo>−</mo><mi>a</mi></math>、<math><mi>β</mi><mo>=</mo><mn>2</mn><mi>a</mi></math> にあたる。どちらが小さいかは、<math><mi>a</mi><mo>&gt;</mo><mn>0</mn></math> を使って判断する：<math><mo>−</mo><mi>a</mi><mo>&lt;</mo><mn>0</mn><mo>&lt;</mo><mn>2</mn><mi>a</mi></math> だから <math><mo>−</mo><mi>a</mi></math> の方が小さい。よって <math><mi>q</mi></math> の範囲は：</p>
+            <div class="formula-line"><math><mo>−</mo><mi>a</mi><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mn>2</mn><mi>a</mi></math>　……③</div>
+            <p>上の図の下の段に <math><mi>q</mi></math> の範囲が出た。上の段が (1) で求めた <math><mi>p</mi></math> の範囲 <math><mo>−</mo><mn>1</mn><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mn>5</mn></math> だよ。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">「必要条件」の向きを、言葉でほどく</span></div>
-            <p>ここがこの問題の最大の関門。「<span class="m"><i>p</i></span> が <span class="m"><i>q</i></span> であるための必要条件である」とは、こういうこと：</p>
-            <div class="formula-line">「<span class="m"><i>q</i></span> ならば <span class="m"><i>p</i></span>」（<span class="m"><i>q</i> ⟹ <i>p</i></span>）が成り立つ</div>
+            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">「必要条件」の向きを、言葉でほどく</span></div><p class="cite"><span class="cite-tag">使う定義</span>必要条件 <math><mi>q</mi><mo>⟹</mo><mi>p</mi></math>。ある条件が必要条件であるかどうかは、矢印を逆向きにした命題が成り立つかどうかで判断する。</p>
+            <p>ここがこの問題の最大の関門。「<math><mi>p</mi></math> が <math><mi>q</mi></math> であるための必要条件である」とは、こういうこと：</p>
+            <div class="formula-line">「<math><mi>q</mi></math> ならば <math><mi>p</mi></math>」<math><mo>(</mo><mi>q</mi><mo>⟹</mo><mi>p</mi><mo>)</mo></math>が成り立つ</div>
             <div class="figrow">
               <svg viewBox="0 0 300 92" width="300" role="img" aria-label="qならばpの矢印と、集合Qが集合Pに含まれる図">
                 <rect x="6" y="10" width="120" height="72" rx="10" fill="none" style="stroke:var(--blue)" stroke-width="2"></rect>
@@ -568,41 +618,41 @@
                 <text x="160" y="76" font-size="12" style="fill:var(--muted)">Q の範囲は P の範囲の中</text>
               </svg>
               <div>
-                <p>噛み砕くと「<span class="m"><i>q</i></span> が成り立つためには、<span class="m"><i>p</i></span> が成り立っていることが<strong>必要</strong>」。だから矢印は <span class="m"><i>q</i></span> から <span class="m"><i>p</i></span> へ向かう。<span class="m"><i>q</i></span> が言えたら、必ず <span class="m"><i>p</i></span> も言えていないといけない、ということだね。</p>
+                <p>噛み砕くと「<math><mi>q</mi></math> が成り立つためには、<math><mi>p</mi></math> が成り立っていることが<strong>必要</strong>」。だから矢印は <math><mi>q</mi></math> から <math><mi>p</mi></math> へ向かう。<math><mi>q</mi></math> が言えたら、必ず <math><mi>p</mi></math> も言えていないといけない、ということだね。<br></p>
               </div>
             </div>
-            <p class="mini">つまずき注意：「<span class="m"><i>p</i></span> が必要条件」と聞くと <span class="m"><i>p</i> ⟹ <i>q</i></span> と逆にしてしまいがち。必要とされる側（<span class="m"><i>p</i></span>）が、矢印の<strong>先</strong>になるよ。</p>
+            <p class="mini">つまずき注意：「<math><mi>p</mi></math> が必要条件」と聞くと <math><mi>p</mi><mo>⟹</mo><mi>q</mi></math> と逆にしてしまいがち。必要とされる側<math><mo>(</mo><mi>p</mi><mo>)</mo></math>が、矢印の<strong>先</strong>になるよ。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">範囲で考える：<i>q</i> の範囲が <i>p</i> の範囲に「すっぽり入る」</span></div>
-            <p><span class="m"><i>q</i> ⟹ <i>p</i></span> が成り立つということは、範囲で言うと「<span class="m"><i>q</i></span> の範囲（③）が、<span class="m"><i>p</i></span> の範囲（<span class="m">−1&lt;<i>x</i>&lt;5</span>）の中に完全に入っている」ことと同じだね。</p>
-            <p>上の図で、縦の点線が <span class="m"><i>p</i></span> の両端 <span class="m">−1</span> と <span class="m">5</span> の位置。<span class="m"><i>q</i></span> の両端 <span class="m">−<i>a</i></span> と <span class="m">2<i>a</i></span> が、その内側にないといけない。言葉にすると条件はこの2つ：</p>
-            <div class="formula-line">左端：<span class="m">−1 ≦ −<i>a</i></span>　／　右端：<span class="m">2<i>a</i> ≦ 5</span></div>
-            <p>図の下のスライダーで <span class="m"><i>a</i></span> を動かして確かめよう。<span class="m"><i>q</i></span> の範囲が <span class="m"><i>p</i></span> からはみ出す <span class="m"><i>a</i></span> と、収まる <span class="m"><i>a</i></span> の境目を探してみて。</p>
-            <p class="mini">端どうしを比べるときは <span class="m">≦</span> でよい（端がぴったり重なっても「入っている」扱いになる）。ここも大切なポイントだよ。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">範囲で考える：<math><mi>q</mi></math> の範囲が <math><mi>p</mi></math> の範囲に「すっぽり入る」</span></div><p class="cite"><span class="cite-tag">使う性質</span>条件と範囲の包含 <math><mo>−</mo><mi>a</mi><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mn>2</mn><mi>a</mi></math>。命題が成り立つことは、成り立つ範囲がもう一方の範囲に含まれていることと対応するので、両端の位置を比べる。</p>
+            <p><math><mi>q</mi><mo>⟹</mo><mi>p</mi></math> が成り立つということは、範囲で言うと「<math><mi>q</mi></math> の範囲（③）が、<math><mi>p</mi></math> の範囲<math><mo>(</mo><mo>−</mo><mn>1</mn><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mn>5</mn><mo>)</mo></math>の中に完全に入っている」ことと同じだね。<br></p>
+            <p>上の図で、縦の点線が <math><mi>p</mi></math> の両端 <math><mo>−</mo><mn>1</mn></math> と <math><mn>5</mn></math> の位置。<math><mi>q</mi></math> の両端 <math><mo>−</mo><mi>a</mi></math> と <math><mn>2</mn><mi>a</mi></math> が、その内側にないといけない。言葉にすると条件はこの2つ：</p>
+            <div class="formula-line">左端：<math><mo>−</mo><mn>1</mn><mo>≦</mo><mo>−</mo><mi>a</mi></math>　／　右端：<math><mn>2</mn><mi>a</mi><mo>≦</mo><mn>5</mn></math></div>
+            <p>図の下のスライダーで <math><mi>a</mi></math> を動かして確かめよう。<math><mi>q</mi></math> の範囲が <math><mi>p</mi></math> からはみ出す <math><mi>a</mi></math> と、収まる <math><mi>a</mi></math> の境目を探してみて。</p>
+            <p class="mini">端どうしを比べるときは <math><mo>≦</mo></math> でよい（端がぴったり重なっても「入っている」扱いになる）。ここも大切なポイントだよ。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 5</span><span class="stage-title">2本の不等式を解いて、重なるところを取る</span></div>
-            <p>ヒント4の2本を、<span class="m"><i>a</i></span> の不等式に直す。1本目 <span class="m">−1 ≦ −<i>a</i></span> は、両辺に <span class="m">−1</span> をかけると<strong>向きが反対</strong>になって <span class="m"><i>a</i> ≦ 1</span>。2本目 <span class="m">2<i>a</i> ≦ 5</span> は <span class="m"><i>a</i> ≦ <span class="frac"><span class="num">5</span><span class="den">2</span></span></span>。</p>
-            <div class="formula-line"><span class="m"><i>a</i> ≦ 1</span>　かつ　<span class="m"><i>a</i> ≦ <span class="frac"><span class="num">5</span><span class="den">2</span></span></span></div>
-            <p>「かつ」は、両方を満たすところ（重なり）を取るということだから、小さい方の <span class="m"><i>a</i> ≦ 1</span> が残る。あとは問題文の条件 <span class="m"><i>a</i>&gt;0</span> と組み合わせるだけ。最後の1行は自分で書いてみよう。</p>
-            <p class="mini">つまずき注意：<span class="m">−1</span> をかけると不等号の向きが変わる。ここが計算ミスのいちばん多いポイントだよ。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 5</span><span class="stage-title">2本の不等式を解いて、重なるところを取る</span></div><p class="cite"><span class="cite-tag">使う性質</span>不等式の性質 <math><mi>a</mi><mo>≦</mo><mn>1</mn></math>。負の数をかけると不等号の向きが反対になることに注意して、端どうしの条件を定数についての不等式に直す。</p>
+            <p>ヒント4の2本を、<math><mi>a</mi></math> の不等式に直す。1本目 <math><mo>−</mo><mn>1</mn><mo>≦</mo><mo>−</mo><mi>a</mi></math> は、両辺に <math><mo>−</mo><mn>1</mn></math> をかけると<strong>向きが反対</strong>になって <math><mi>a</mi><mo>≦</mo><mn>1</mn></math>。2本目 <math><mn>2</mn><mi>a</mi><mo>≦</mo><mn>5</mn></math> は <math><mi>a</mi><mo>≦</mo><mfrac><mn>5</mn><mn>2</mn></mfrac></math>。</p>
+            <div class="formula-line"><math><mi>a</mi><mo>≦</mo><mn>1</mn></math>　かつ　<math><mi>a</mi><mo>≦</mo><mfrac><mn>5</mn><mn>2</mn></mfrac></math></div>
+            <p>「かつ」は、両方を満たすところ（重なり）を取るということだから、小さい方の <math><mi>a</mi><mo>≦</mo><mn>1</mn></math> が残る。<br>あとは問題文の条件 <math><mi>a</mi><mo>&gt;</mo><mn>0</mn></math> と組み合わせるだけ。最後の1行は自分で書いてみよう。</p>
+            <p class="mini">つまずき注意：<math><mo>−</mo><mn>1</mn></math> をかけると不等号の向きが変わる。ここが計算ミスのいちばん多いポイントだよ。</p>
           </article>
 
           <article class="stage answer" hidden>
-            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(2) の答え</span></div>
+            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(2) の答え</span></div><p class="cite"><span class="cite-tag">使う定義</span>必要条件 <math><mi>q</mi><mo>⟹</mo><mi>p</mi></math>。解答では、この命題が成り立つことを、範囲が含まれるという条件に直して処理する。</p>
             <ol class="steps">
-              <li>条件 <span class="m"><i>q</i></span> の不等式を解くと　<span class="m"><i>x</i><sup>2</sup>−<i>ax</i>−2<i>a</i><sup>2</sup>&lt;0 ⟺ (<i>x</i>+<i>a</i>)(<i>x</i>−2<i>a</i>)&lt;0</span>。<span class="m"><i>a</i>&gt;0</span> より <span class="m">−<i>a</i>&lt;2<i>a</i></span> だから　<span class="m">−<i>a</i>&lt;<i>x</i>&lt;2<i>a</i></span>（③）。</li>
-              <li><span class="m"><i>p</i></span> が <span class="m"><i>q</i></span> であるための必要条件であることは、命題 <span class="m"><i>q</i> ⟹ <i>p</i></span> が真であることと同値。つまり、③の範囲が (1) の範囲 <span class="m">−1&lt;<i>x</i>&lt;5</span> に含まれればよい。</li>
-              <li>したがって　<span class="m">−1 ≦ −<i>a</i></span> かつ <span class="m">2<i>a</i> ≦ 5</span>、すなわち　<span class="m"><i>a</i> ≦ 1</span> かつ <span class="m"><i>a</i> ≦ <span class="frac"><span class="num">5</span><span class="den">2</span></span></span>。共通部分は <span class="m"><i>a</i> ≦ 1</span>。</li>
-              <li><span class="m"><i>a</i>&gt;0</span> より、求める <span class="m"><i>a</i></span> の値の範囲は <span class="m">0&lt;<i>a</i>≦1</span>。</li>
+              <li>条件 <math><mi>q</mi></math> の不等式を解くと　<math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>ax</mi><mo>−</mo><mn>2</mn><msup><mi>a</mi><mn>2</mn></msup><mo>&lt;</mo><mn>0</mn><mo>⟺</mo><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mi>a</mi><mo>)</mo></mrow><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mi>a</mi><mo>)</mo></mrow><mo>&lt;</mo><mn>0</mn></math>。<math><mi>a</mi><mo>&gt;</mo><mn>0</mn></math> より <math><mo>−</mo><mi>a</mi><mo>&lt;</mo><mn>2</mn><mi>a</mi></math> だから　<math><mo>−</mo><mi>a</mi><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mn>2</mn><mi>a</mi><mrow><mo>(</mo><mo>③</mo><mo>)</mo></mrow></math>。</li>
+              <li><math><mi>p</mi></math> が <math><mi>q</mi></math> であるための必要条件であることは、命題 <math><mi>q</mi><mo>⟹</mo><mi>p</mi></math> が真であることと同値。つまり、③の範囲が (1) の範囲 <math><mo>−</mo><mn>1</mn><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mn>5</mn></math> に含まれればよい。</li>
+              <li>したがって　<math><mo>−</mo><mn>1</mn><mo>≦</mo><mo>−</mo><mi>a</mi></math> かつ <math><mn>2</mn><mi>a</mi><mo>≦</mo><mn>5</mn></math>、すなわち　<math><mi>a</mi><mo>≦</mo><mn>1</mn></math> かつ <math><mi>a</mi><mo>≦</mo><mfrac><mn>5</mn><mn>2</mn></mfrac></math>。共通部分は <math><mi>a</mi><mo>≦</mo><mn>1</mn></math>。</li>
+              <li><math><mi>a</mi><mo>&gt;</mo><mn>0</mn></math> より、求める <math><mi>a</mi></math> の値の範囲は <math><mn>0</mn><mo>&lt;</mo><mi>a</mi><mo>≦</mo><mn>1</mn></math>。</li>
             </ol>
             <div class="ans-line">
-              <span class="ans-chip"><span class="kana">答</span><span class="m">0 &lt; <i>a</i> ≦ 1</span><span class="pts">6点</span></span>
+              <span class="ans-chip"><span class="kana">答</span><math><mn>0</mn><mo>&lt;</mo><mi>a</mi><mo>≦</mo><mn>1</mn></math><span class="pts">6点</span></span>
             </div>
-            <div class="point-box"><span class="pt">ポイント</span>「必要条件・十分条件」は、数直線の範囲の図に直すと向きを間違えにくい。<span class="m"><i>p</i></span> が <span class="m"><i>q</i></span> の必要条件 ⇔ <span class="m"><i>q</i></span> の範囲 ⊆ <span class="m"><i>p</i></span> の範囲、と覚えよう。</div>
+            <div class="point-box"><span class="pt">ポイント</span>「必要条件・十分条件」は、数直線の範囲の図に直すと向きを間違えにくい。<math><mi>p</mi></math> が <math><mi>q</mi></math> の必要条件<math><mo>⇔</mo><mi>q</mi></math> の範囲<math><mo>⊆</mo><mi>p</mi></math> の範囲、と覚えよう。</div>
           </article>
         </div>
         </div>
@@ -628,7 +678,7 @@
           <p class="q-body">鋭角三角形 ABC の辺 BC 上（両端を除く）に点 P がある。△ABP の外接円の半径と △ACP の外接円の半径の和が最小となるような点 P はどの位置にあるかを考察する。</p>
           <div class="defbox">
             <span class="dlabel">考察</span>
-            <span class="m">BC=<i>a</i></span>，<span class="m">CA=<i>b</i></span>，<span class="m">AB=<i>c</i></span> とし、△ABP の外接円の半径を <span class="m"><i>R</i><sub>1</sub></span>、△ACP の外接円の半径を <span class="m"><i>R</i><sub>2</sub></span> とする。<span class="m">∠BPA=<i>θ</i></span> とし、正弦定理により <span class="m"><i>R</i><sub>1</sub></span> を <span class="m"><i>c</i></span>，<span class="m">sin<i>θ</i></span> を用いて表すと、<span class="m"><i>R</i><sub>1</sub>=</span><span class="blank" data-kana="ア" data-ans="c/(2sinθ)">ア</span>である。また、同様に <span class="m"><i>R</i><sub>2</sub></span> を <span class="m"><i>b</i></span>，<span class="m">sin<i>θ</i></span> を用いて表すと、<span class="m"><i>R</i><sub>2</sub>=</span><span class="blank" data-kana="イ" data-ans="b/(2sinθ)">イ</span>である。
+            <math><mi>BC</mi><mo>=</mo><mi>a</mi><mo>,</mo><mi>CA</mi><mo>=</mo><mi>b</mi><mo>,</mo><mi>AB</mi><mo>=</mo><mi>c</mi></math> とし、△ABP の外接円の半径を <math><msub><mi>R</mi><mn>1</mn></msub></math>、△ACP の外接円の半径を <math><msub><mi>R</mi><mn>2</mn></msub></math> とする。<math><mo>∠</mo><mi>BPA</mi><mo>=</mo><mi>θ</mi></math> とし、正弦定理により <math><msub><mi>R</mi><mn>1</mn></msub></math> を <math><mi>c</mi><mo>,</mo><mi>sin</mi><mi>θ</mi></math> を用いて表すと、<math><msub><mi>R</mi><mn>1</mn></msub><mo>=</mo></math><span class="blank" data-kana="ア" data-ans="c/(2sinθ)">ア</span>である。また、同様に <math><msub><mi>R</mi><mn>2</mn></msub></math> を <math><mi>b</mi><mo>,</mo><mi>sin</mi><mi>θ</mi></math> を用いて表すと、<math><msub><mi>R</mi><mn>2</mn></msub><mo>=</mo></math><span class="blank" data-kana="イ" data-ans="b/(2sinθ)">イ</span>である。
           </div>
           <p class="q-body">(1) <span class="blank" data-kana="ア" data-ans="c/(2sinθ)">ア</span>，<span class="blank" data-kana="イ" data-ans="b/(2sinθ)">イ</span>を正しくうめよ。</p>
         </div>
@@ -671,29 +721,29 @@
 
         <div class="stages">
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">正弦定理の形を確認：辺 ÷ 向かいの角の sin ＝ 2<i>R</i></span></div>
-            <p><strong>正弦定理</strong>を噛み砕くと、「（辺の長さ）÷（その辺の<strong>向かいの角</strong>の sin）＝ 外接円の直径 <span class="m">2<i>R</i></span>」という関係。まず △ABP だけに注目しよう（図の色つき部分）。</p>
-            <p>辺 <span class="m">AB=<i>c</i></span> の向かいにある角はどれだろう？ 向かいの頂点 P の角、つまり <span class="m">∠BPA</span> だね。これが問題文の <span class="m"><i>θ</i></span> そのもの。だから △ABP ではこの式が立つ：</p>
-            <div class="formula-line"><span class="m"><span class="frac"><span class="num"><i>c</i></span><span class="den">sin<i>θ</i></span></span> = 2<i>R</i><sub>1</sub></span></div>
+            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">正弦定理の形を確認：辺 ÷ 向かいの角の<math><mi>sin</mi><mo>=</mo><mn>2</mn><mi>R</mi></math></span></div><p class="cite"><span class="cite-tag">使う公式</span>正弦定理 <math><mfrac><mi>c</mi><mrow><mi>sin</mi><mi>θ</mi></mrow></mfrac><mo>=</mo><mn>2</mn><msub><mi>R</mi><mn>1</mn></msub></math>。三角形では、辺の長さをその向かいの角の正弦で割ると外接円の直径に等しくなる。</p>
+            <p><strong>正弦定理</strong>を噛み砕くと、「（辺の長さ）÷（その辺の<strong>向かいの角</strong>の<math><mi>sin</mi><mo>)</mo><mo>=</mo></math>外接円の直径 <math><mn>2</mn><mi>R</mi></math>」という関係。まず △ABP だけに注目しよう（図の色つき部分）。</p>
+            <p>辺 <math><mi>AB</mi><mo>=</mo><mi>c</mi></math> の向かいにある角はどれだろう？ 向かいの頂点 P の角、つまり <math><mo>∠</mo><mi>BPA</mi></math> だね。これが問題文の <math><mi>θ</mi></math> そのもの。だから<br> △ABP ではこの式が立つ：</p>
+            <div class="formula-line"><math><mfrac><mi>c</mi><mrow><mi>sin</mi><mi>θ</mi></mrow></mfrac><mo>=</mo><mn>2</mn><msub><mi>R</mi><mn>1</mn></msub></math></div>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title"><i>R</i>₁ だけの式にする（あと1手）</span></div>
-            <p>ヒント1の式は「<span class="m">2<i>R</i><sub>1</sub> ＝ …</span>」の形になっている。知りたいのは <span class="m"><i>R</i><sub>1</sub></span> だから、両辺を 2 で割るだけだね。</p>
-            <div class="formula-line"><span class="m">2<i>R</i><sub>1</sub> = <span class="frac"><span class="num"><i>c</i></span><span class="den">sin<i>θ</i></span></span></span>　→　両辺を 2 で割ると <span class="m"><i>R</i><sub>1</sub> ＝ </span>（ここは自分で）</div>
-            <p>ア の答えを、自分で書いてみよう。分数の形のままで大丈夫で、模範解答では <span class="m"><span class="frac"><span class="num"><i>c</i></span><span class="den">2sin<i>θ</i></span></span></span> のような形で書くよ。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title"><math><mi>R</mi><mo>₁</mo></math>だけの式にする（あと1手）</span></div>
+            <p>ヒント1の式は「<math><mn>2</mn><msub><mi>R</mi><mn>1</mn></msub><mo>=</mo><mo>…</mo></math>」の形になっている。知りたいのは <math><msub><mi>R</mi><mn>1</mn></msub></math> だから、両辺を 2 で割るだけだね。</p>
+            <div class="formula-line"><math><mn>2</mn><msub><mi>R</mi><mn>1</mn></msub><mo>=</mo><mfrac><mi>c</mi><mrow><mi>sin</mi><mi>θ</mi></mrow></mfrac></math>　→　両辺を 2 で割ると <math><msub><mi>R</mi><mn>1</mn></msub><mo>=</mo><mo>(</mo></math>ここは自分で）</div>
+            <p>ア の答えを、自分で書いてみよう。分数の形のままで大丈夫で、模範解答では <math><mfrac><mi>c</mi><mrow><mn>2</mn><mi>sin</mi><mi>θ</mi></mrow></mfrac></math> のような形で書くよ。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">もう一方の △ACP：向かいの角は <i>θ</i> ではない</span></div>
-            <p>次は △ACP（図の色が切り替わった方）。辺 <span class="m">AC=<i>b</i></span> の向かいの角は <span class="m">∠APC</span>。ここで図をよく見て：点 P は直線 BC の上にあるから、<span class="m">∠BPA</span> と <span class="m">∠APC</span> は一直線の上に並んでいて、足すと 180° になる。</p>
-            <div class="formula-line"><span class="m">∠APC = 180° − <i>θ</i></span></div>
+            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">もう一方の △ACP：向かいの角は <math><mi>θ</mi></math> ではない</span></div><p class="cite"><span class="cite-tag">使う性質</span>直線上の隣接角 <math><mo>∠</mo><mi>APC</mi><mo>=</mo><mn>180</mn><mo>°</mo><mo>−</mo><mi>θ</mi></math>。一直線上に並ぶ2つの角の和は半回転の角に等しいので、隣の角はこのように表せる。</p>
+            <p>次は △ACP（図の色が切り替わった方）。辺 <math><mi>AC</mi><mo>=</mo><mi>b</mi></math> の向かいの角は <math><mo>∠</mo><mi>APC</mi></math>。ここで図をよく見て：<br>点 P は直線 BC の上にあるから、<math><mo>∠</mo><mi>BPA</mi></math> と <math><mo>∠</mo><mi>APC</mi></math> は一直線の上に並んでいて、足すと<math><mn>180</mn><mo>°</mo></math>になる。</p>
+            <div class="formula-line"><math><mo>∠</mo><mi>APC</mi><mo>=</mo><mn>180</mn><mo>°</mo><mo>−</mo><mi>θ</mi></math></div>
             <p>正弦定理をそのまま △ACP に使うと、こうなる：</p>
-            <div class="formula-line"><span class="m"><span class="frac"><span class="num"><i>b</i></span><span class="den">sin(180°−<i>θ</i>)</span></span> = 2<i>R</i><sub>2</sub></span></div>
+            <div class="formula-line"><math><mfrac><mi>b</mi><mrow><mi>sin</mi><mrow><mo>(</mo><mn>180</mn><mo>°</mo><mo>−</mo><mi>θ</mi><mo>)</mo></mrow></mrow></mfrac><mo>=</mo><mn>2</mn><msub><mi>R</mi><mn>2</mn></msub></math></div>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">sin(180°−<i>θ</i>) ＝ sin <i>θ</i> に置き換える</span></div>
+            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title"><math><mi>sin</mi><mrow><mo>(</mo><mn>180</mn><mo>°</mo><mo>−</mo><mi>θ</mi><mo>)</mo></mrow><mo>=</mo><mi>sin</mi><mi>θ</mi></math> に置き換える</span></div><p class="cite"><span class="cite-tag">使う公式</span>正弦の補角の性質 <math><mi>sin</mi><mrow><mo>(</mo><mn>180</mn><mo>°</mo><mo>−</mo><mi>θ</mi><mo>)</mo></mrow><mo>=</mo><mi>sin</mi><mi>θ</mi></math>。補角の正弦は元の角の正弦と等しいので、分母に出てきた角をこの公式で置き換える。</p>
             <div class="figrow">
               <svg viewBox="0 0 210 122" width="240" role="img" aria-label="サインのグラフで、θと180°−θの高さが等しいことを示す図">
                 <line x1="20" y1="100" x2="196" y2="100" style="stroke:var(--line-strong)" stroke-width="1.6"></line>
@@ -708,23 +758,23 @@
                 <text x="30" y="24" font-size="11.5" style="fill:var(--muted)">sin</text>
               </svg>
               <div>
-                <p>分母の <span class="m">sin(180°−<i>θ</i>)</span> は、そのままでは イ の形（<span class="m">sin<i>θ</i></span> を使う形）にならない。ここで公式 <span class="m">sin(180°−<i>θ</i>)＝sin<i>θ</i></span> を使う。左のグラフで、<span class="m"><i>θ</i></span> と <span class="m">180°−<i>θ</i></span> は山の左右対称の位置にあって、高さ（sin の値）がまったく同じことが見えるね。</p>
+                <p>分母の <math><mi>sin</mi><mrow><mo>(</mo><mn>180</mn><mo>°</mo><mo>−</mo><mi>θ</mi><mo>)</mo></mrow></math> は、そのままでは イ の形<math><mo>(</mo><mi>sin</mi><mi>θ</mi></math> を使う形）にならない。ここで公式 <math><mi>sin</mi><mrow><mo>(</mo><mn>180</mn><mo>°</mo><mo>−</mo><mi>θ</mi><mo>)</mo></mrow><mo>=</mo><mi>sin</mi><mi>θ</mi></math> を使う。左のグラフで、<math><mi>θ</mi></math> と <math><mn>180</mn><mo>°</mo><mo>−</mo><mi>θ</mi></math> は山の左右対称の位置にあって、高さ（sin の値）がまったく同じことが見えるね。</p>
               </div>
             </div>
-            <p>置き換えると <span class="m">2<i>R</i><sub>2</sub> = <span class="frac"><span class="num"><i>b</i></span><span class="den">sin<i>θ</i></span></span></span>。あとはヒント2と同じく、両辺を 2 で割るだけ。イ も自分で仕上げてみよう。</p>
+            <p>置き換えると <math><mn>2</mn><msub><mi>R</mi><mn>2</mn></msub><mo>=</mo><mfrac><mi>b</mi><mrow><mi>sin</mi><mi>θ</mi></mrow></mfrac></math>。あとはヒント2と同じく、両辺を 2 で割るだけ。<br>イ も自分で仕上げてみよう。</p>
           </article>
 
           <article class="stage answer" hidden>
-            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(1) の答え</span></div>
+            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(1) の答え</span></div><p class="cite"><span class="cite-tag">使う公式</span>正弦定理 <math><mn>2</mn><msub><mi>R</mi><mn>1</mn></msub><mo>=</mo><mfrac><mi>c</mi><mrow><mi>sin</mi><mi>θ</mi></mrow></mfrac></math>。解答では、2つの三角形のそれぞれにこの定理を使って、外接円の半径を表す。</p>
             <ol class="steps">
-              <li>△ABP において、正弦定理により <span class="m">2<i>R</i><sub>1</sub> = <span class="frac"><span class="num"><i>c</i></span><span class="den">sin<i>θ</i></span></span></span>。よって <span class="m"><i>R</i><sub>1</sub> = <span class="frac"><span class="num"><i>c</i></span><span class="den">2sin<i>θ</i></span></span></span>。</li>
-              <li>△ACP において、正弦定理により <span class="m">2<i>R</i><sub>2</sub> = <span class="frac"><span class="num"><i>b</i></span><span class="den">sin(180°−<i>θ</i>)</span></span></span>。<span class="m">sin(180°−<i>θ</i>)＝sin<i>θ</i></span> であるから <span class="m">2<i>R</i><sub>2</sub> = <span class="frac"><span class="num"><i>b</i></span><span class="den">sin<i>θ</i></span></span></span>。よって <span class="m"><i>R</i><sub>2</sub> = <span class="frac"><span class="num"><i>b</i></span><span class="den">2sin<i>θ</i></span></span></span>。</li>
+              <li>△ABP において、正弦定理により <math><mn>2</mn><msub><mi>R</mi><mn>1</mn></msub><mo>=</mo><mfrac><mi>c</mi><mrow><mi>sin</mi><mi>θ</mi></mrow></mfrac></math>。よって <math><msub><mi>R</mi><mn>1</mn></msub><mo>=</mo><mfrac><mi>c</mi><mrow><mn>2</mn><mi>sin</mi><mi>θ</mi></mrow></mfrac></math>。</li>
+              <li>△ACP において、正弦定理により <math><mn>2</mn><msub><mi>R</mi><mn>2</mn></msub><mo>=</mo><mfrac><mi>b</mi><mrow><mi>sin</mi><mrow><mo>(</mo><mn>180</mn><mo>°</mo><mo>−</mo><mi>θ</mi><mo>)</mo></mrow></mrow></mfrac></math>。<math><mi>sin</mi><mrow><mo>(</mo><mn>180</mn><mo>°</mo><mo>−</mo><mi>θ</mi><mo>)</mo></mrow><mo>=</mo><mi>sin</mi><mi>θ</mi></math> であるから <math><mn>2</mn><msub><mi>R</mi><mn>2</mn></msub><mo>=</mo><mfrac><mi>b</mi><mrow><mi>sin</mi><mi>θ</mi></mrow></mfrac></math>。よって <math><msub><mi>R</mi><mn>2</mn></msub><mo>=</mo><mfrac><mi>b</mi><mrow><mn>2</mn><mi>sin</mi><mi>θ</mi></mrow></mfrac></math>。</li>
             </ol>
             <div class="ans-line">
-              <span class="ans-chip"><span class="kana">ア</span><span class="m"><span class="frac"><span class="num"><i>c</i></span><span class="den">2sin<i>θ</i></span></span></span><span class="pts">2点</span></span>
-              <span class="ans-chip"><span class="kana">イ</span><span class="m"><span class="frac"><span class="num"><i>b</i></span><span class="den">2sin<i>θ</i></span></span></span><span class="pts">2点</span></span>
+              <span class="ans-chip"><span class="kana">ア</span><math><mfrac><mi>c</mi><mrow><mn>2</mn><mi>sin</mi><mi>θ</mi></mrow></mfrac></math><span class="pts">2点</span></span>
+              <span class="ans-chip"><span class="kana">イ</span><math><mfrac><mi>b</mi><mrow><mn>2</mn><mi>sin</mi><mi>θ</mi></mrow></mfrac></math><span class="pts">2点</span></span>
             </div>
-            <div class="point-box"><span class="pt">ポイント</span>正弦定理は「使う三角形」と「辺とその向かいの角のペア」をセットで決めるのが型。隣り合う2つの三角形では、直線上の角 <span class="m">180°−<i>θ</i></span> と <span class="m">sin(180°−<i>θ</i>)＝sin<i>θ</i></span> の公式が橋渡しになる。</div>
+            <div class="point-box"><span class="pt">ポイント</span>正弦定理は「使う三角形」と「辺とその向かいの角のペア」をセットで決めるのが型。隣り合う2つの三角形では、直線上の角 <math><mn>180</mn><mo>°</mo><mo>−</mo><mi>θ</mi></math> と <math><mi>sin</mi><mrow><mo>(</mo><mn>180</mn><mo>°</mo><mo>−</mo><mi>θ</mi><mo>)</mo></mrow><mo>=</mo><mi>sin</mi><mi>θ</mi></math> の公式が橋渡しになる。</div>
           </article>
         </div>
         </div>
@@ -747,7 +797,7 @@
             <span class="q-num">［2］</span><span class="q-title">(2) R₁+R₂ が最小となる θ（記述）</span>
             <span class="q-points">配点 6点</span>
           </div>
-          <p class="q-body">(2) 点 P の位置は、<strong>考察</strong>で用いた <span class="m"><i>θ</i></span> の値によって定まる。△ABP の外接円の半径と △ACP の外接円の半径の和 <span class="m"><i>R</i><sub>1</sub>+<i>R</i><sub>2</sub></span> が最小となるような <span class="m"><i>θ</i></span> の値、および <span class="m"><i>R</i><sub>1</sub>+<i>R</i><sub>2</sub></span> の最小値を、求める過程とともに解答欄に記述せよ。ただし、<span class="m"><i>R</i><sub>1</sub>+<i>R</i><sub>2</sub></span> の最小値は考察で用いた <span class="m"><i>b</i></span>，<span class="m"><i>c</i></span> を用いて表せ。</p>
+          <p class="q-body">(2) 点 P の位置は、<strong>考察</strong>で用いた <math><mi>θ</mi></math> の値によって定まる。△ABP の外接円の半径と △ACP の外接円の半径の和 <math><msub><mi>R</mi><mn>1</mn></msub><mo>+</mo><msub><mi>R</mi><mn>2</mn></msub></math> が最小となるような <math><mi>θ</mi></math> の値、および <math><msub><mi>R</mi><mn>1</mn></msub><mo>+</mo><msub><mi>R</mi><mn>2</mn></msub></math> の最小値を、求める過程とともに解答欄に記述せよ。ただし、<math><msub><mi>R</mi><mn>1</mn></msub><mo>+</mo><msub><mi>R</mi><mn>2</mn></msub></math> の最小値は考察で用いた <math><mi>b</mi><mo>,</mo><mi>c</mi></math> を用いて表せ。</p>
         </div>
 
         <div class="viz" id="viz22">
@@ -779,11 +829,11 @@
             <p class="slider-msg" id="pMsg"></p>
           </div>
           <div class="readouts" data-min="2" hidden>
-            <span class="readout"><span class="m"><i>θ</i></span> ＝ <b id="roTheta">―</b></span>
-            <span class="readout"><span class="m">sin<i>θ</i></span> ＝ <b id="roSin">―</b></span>
-            <span class="readout"><span class="m"><i>R</i><sub>1</sub></span> ＝ <b id="roR1">―</b></span>
-            <span class="readout"><span class="m"><i>R</i><sub>2</sub></span> ＝ <b id="roR2">―</b></span>
-            <span class="readout"><span class="m"><i>R</i><sub>1</sub>+<i>R</i><sub>2</sub></span> ＝ <span class="m"><span class="frac"><span class="num"><i>b</i>+<i>c</i></span><span class="den">2</span></span></span> × <b id="roCoef">―</b></span>
+            <span class="readout"><math><mi>θ</mi><mo>=</mo></math><b id="roTheta">―</b></span>
+            <span class="readout"><math><mi>sin</mi><mi>θ</mi><mo>=</mo></math><b id="roSin">―</b></span>
+            <span class="readout"><math><msub><mi>R</mi><mn>1</mn></msub><mo>=</mo></math><b id="roR1">―</b></span>
+            <span class="readout"><math><msub><mi>R</mi><mn>2</mn></msub><mo>=</mo></math><b id="roR2">―</b></span>
+            <span class="readout"><math><msub><mi>R</mi><mn>1</mn></msub><mo>+</mo><msub><mi>R</mi><mn>2</mn></msub><mo>=</mo><mfrac><mrow><mi>b</mi><mo>+</mo><mi>c</mi></mrow><mn>2</mn></mfrac><mo>×</mo></math><b id="roCoef">―</b></span>
           </div>
           <div data-min="4" hidden>
             <p class="viz-title" style="margin-top:16px">グラフで見る ― θ と R₁+R₂ の関係</p>
@@ -792,7 +842,7 @@
               <path id="sumPath" fill="none" style="stroke:var(--accent)" stroke-width="3" stroke-linecap="round"></path>
               <circle id="sumDot" r="6" style="fill:var(--accent);stroke:var(--surface)" stroke-width="2"></circle>
             </svg>
-            <p class="viz-note">縦軸は <span class="m"><i>R</i><sub>1</sub>+<i>R</i><sub>2</sub></span> を、最小値 <span class="m"><span class="frac"><span class="num"><i>b</i>+<i>c</i></span><span class="den">2</span></span></span> を 1 として表したもの。点線が最小値 1 のライン。</p>
+            <p class="viz-note">縦軸は <math><msub><mi>R</mi><mn>1</mn></msub><mo>+</mo><msub><mi>R</mi><mn>2</mn></msub></math> を、最小値 <math><mfrac><mrow><mi>b</mi><mo>+</mo><mi>c</mi></mrow><mn>2</mn></mfrac></math> を 1 として表したもの。点線が最小値 1 のライン。</p>
           </div>
         </div>
         </div>
@@ -802,51 +852,51 @@
 
         <div class="stages">
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">(1) の結果を、まず足し算するだけ</span></div>
-            <p><span class="m"><i>R</i><sub>1</sub>+<i>R</i><sub>2</sub></span> に、(1) で求めた式をそのまま入れると：</p>
-            <div class="formula-line"><span class="m"><i>R</i><sub>1</sub>+<i>R</i><sub>2</sub> = <span class="frac"><span class="num"><i>c</i></span><span class="den">2sin<i>θ</i></span></span> + <span class="frac"><span class="num"><i>b</i></span><span class="den">2sin<i>θ</i></span></span></span></div>
-            <p>2つの分数の<strong>分母が両方とも <span class="m">2sin<i>θ</i></span> で同じ</strong>ことに注目。分母が同じ分数は、分子をそのまま足せるね。次の1行（＝ のあと）は、自分で書いてみよう。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">(1) の結果を、まず足し算するだけ</span></div><p class="cite"><span class="cite-tag">使う性質</span>分母の等しい分数の和 <math><msub><mi>R</mi><mn>1</mn></msub><mo>+</mo><msub><mi>R</mi><mn>2</mn></msub><mo>=</mo><mfrac><mi>c</mi><mrow><mn>2</mn><mi>sin</mi><mi>θ</mi></mrow></mfrac><mo>+</mo><mfrac><mi>b</mi><mrow><mn>2</mn><mi>sin</mi><mi>θ</mi></mrow></mfrac></math>。分母が等しい分数どうしは分子をそのまま足せるので、2つの半径の和を1つの分数にまとめる。</p>
+            <p><math><msub><mi>R</mi><mn>1</mn></msub><mo>+</mo><msub><mi>R</mi><mn>2</mn></msub></math> に、(1) で求めた式をそのまま入れると：</p>
+            <div class="formula-line"><math><msub><mi>R</mi><mn>1</mn></msub><mo>+</mo><msub><mi>R</mi><mn>2</mn></msub><mo>=</mo><mfrac><mi>c</mi><mrow><mn>2</mn><mi>sin</mi><mi>θ</mi></mrow></mfrac><mo>+</mo><mfrac><mi>b</mi><mrow><mn>2</mn><mi>sin</mi><mi>θ</mi></mrow></mfrac></math></div>
+            <p>2つの分数の<strong>分母が両方とも <math><mn>2</mn><mi>sin</mi><mi>θ</mi></math> で同じ</strong>ことに注目。分母が同じ分数は、分子をそのまま足せるね。<br>次の1行（＝ のあと）は、自分で書いてみよう。</p>
           </article>
 
           <article class="stage hint" hidden>
             <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">どれが「定数」で、どれが「変数」か仕分ける</span></div>
-            <p>合体した式 <span class="m"><i>R</i><sub>1</sub>+<i>R</i><sub>2</sub> = <span class="frac"><span class="num"><i>b</i>+<i>c</i></span><span class="den">2sin<i>θ</i></span></span></span> の中で、<span class="m"><i>b</i></span> と <span class="m"><i>c</i></span> は三角形 ABC で決まっている長さだから、点 P を動かしても変わらない（<strong>定数</strong>）。変わるのは <span class="m"><i>θ</i></span> だけだね。</p>
-            <p>上の図にスライダーが出た。点 P を左右に動かして観察しよう：<span class="m"><i>θ</i></span> が変わると2つの外接円の大きさが変わり、<span class="m"><i>R</i><sub>1</sub></span>、<span class="m"><i>R</i><sub>2</sub></span> の読み取り値も連動する。「和が一番小さくなるのは、P がどこにあるときか」を体感してから次へ進もう。</p>
+            <p>合体した式 <math><msub><mi>R</mi><mn>1</mn></msub><mo>+</mo><msub><mi>R</mi><mn>2</mn></msub><mo>=</mo><mfrac><mrow><mi>b</mi><mo>+</mo><mi>c</mi></mrow><mrow><mn>2</mn><mi>sin</mi><mi>θ</mi></mrow></mfrac></math> の中で、<math><mi>b</mi></math> と <math><mi>c</mi></math> は三角形 ABC で決まっている長さだから、点 P を動かしても変わらない（<strong>定数</strong>）。変わるのは <math><mi>θ</mi></math> だけだね。</p>
+            <p>上の図にスライダーが出た。点 P を左右に動かして観察しよう：<br><math><mi>θ</mi></math> が変わると2つの外接円の大きさが変わり、<math><msub><mi>R</mi><mn>1</mn></msub></math>、<math><msub><mi>R</mi><mn>2</mn></msub></math> の読み取り値も連動する。「和が一番小さくなるのは、P がどこにあるときか」を体感してから次へ進もう。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">分数の大小は「分母」で決まる</span></div>
+            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">分数の大小は「分母」で決まる</span></div><p class="cite"><span class="cite-tag">使う性質</span>分数の大小 <math><msub><mi>R</mi><mn>1</mn></msub><mo>+</mo><msub><mi>R</mi><mn>2</mn></msub><mo>=</mo><mfrac><mrow><mi>b</mi><mo>+</mo><mi>c</mi></mrow><mrow><mn>2</mn><mi>sin</mi><mi>θ</mi></mrow></mfrac></math>。分子が正で一定の分数は分母が大きいほど小さくなるので、和の最小化は分母を最大化する問題に帰着する。</p>
             <p>ここで、分数の性質を具体例で確認する。分子が 12 で一定のとき：</p>
-            <div class="formula-line"><span class="m"><span class="frac"><span class="num">12</span><span class="den">2</span></span> = 6</span>　／　<span class="m"><span class="frac"><span class="num">12</span><span class="den">3</span></span> = 4</span>　／　<span class="m"><span class="frac"><span class="num">12</span><span class="den">6</span></span> = 2</span>　→ 分母が大きいほど、値は小さい</div>
-            <p>今回は分子 <span class="m">(<i>b</i>+<i>c</i>)</span> が正の定数で一定。だから <span class="m"><i>R</i><sub>1</sub>+<i>R</i><sub>2</sub></span> を最小にするには、分母 <span class="m">2sin<i>θ</i></span> を<strong>最大</strong>にすればよい。つまりこの問題は、「<strong><span class="m">sin<i>θ</i></span> を最大にする</strong>」問題に置き換わったということだよ。</p>
+            <div class="formula-line"><math><mfrac><mn>12</mn><mn>2</mn></mfrac><mo>=</mo><mn>6</mn></math>　／　<math><mfrac><mn>12</mn><mn>3</mn></mfrac><mo>=</mo><mn>4</mn></math>　／　<math><mfrac><mn>12</mn><mn>6</mn></mfrac><mo>=</mo><mn>2</mn></math>　→ 分母が大きいほど、値は小さい</div>
+            <p>今回は分子 <math><mo>(</mo><mi>b</mi><mo>+</mo><mi>c</mi><mo>)</mo></math> が正の定数で一定。だから <math><msub><mi>R</mi><mn>1</mn></msub><mo>+</mo><msub><mi>R</mi><mn>2</mn></msub></math> を最小にするには、分母 <math><mn>2</mn><mi>sin</mi><mi>θ</mi></math> を<strong>最大</strong>にすればよい。つまりこの問題は、「<strong><math><mi>sin</mi><mi>θ</mi></math> を最大にする</strong>」問題に置き換わったということだよ。<br></p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">sin <i>θ</i> の最大は、<i>θ</i>＝90° のとき</span></div>
-            <p>点 P は辺 BC の上（両端を除く）にあるから、<span class="m"><i>θ</i></span> の範囲は <span class="m">0°&lt;<i>θ</i>&lt;180°</span>。この範囲では <span class="m">0&lt;sin<i>θ</i>≦1</span> で、<span class="m">sin<i>θ</i></span> が最大値 1 をとるのは <span class="m"><i>θ</i>=90°</span> のときだけ（sin のグラフの、山のちょうど頂点）。</p>
-            <p>図の下に、<span class="m"><i>θ</i></span> に対する <span class="m"><i>R</i><sub>1</sub>+<i>R</i><sub>2</sub></span> のグラフが出た。スライダーを動かすと点がグラフの上を動くので、谷の底がちょうど <span class="m"><i>θ</i>=90°</span> のところに来ているのを確認しよう。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title"><math><mi>sin</mi><mi>θ</mi></math> の最大は、<math><mi>θ</mi><mo>=</mo><mn>90</mn><mo>°</mo></math>のとき</span></div><p class="cite"><span class="cite-tag">使う性質</span>正弦の値の範囲 <math><mn>0</mn><mo>&lt;</mo><mi>sin</mi><mi>θ</mi><mo>≦</mo><mn>1</mn></math>。角が半回転の範囲を動くとき正弦はこの範囲にあり、最大値をとる角は1つに決まる。</p>
+            <p>点 P は辺 BC の上（両端を除く）にあるから、<math><mi>θ</mi></math> の範囲は <math><mn>0</mn><mo>°</mo><mo>&lt;</mo><mi>θ</mi><mo>&lt;</mo><mn>180</mn><mo>°</mo></math>。この範囲では <math><mn>0</mn><mo>&lt;</mo><mi>sin</mi><mi>θ</mi><mo>≦</mo><mn>1</mn></math> で、<math><mi>sin</mi><mi>θ</mi></math> が最大値 1 をとるのは <math><mi>θ</mi><mo>=</mo><mn>90</mn><mo>°</mo></math> のときだけ（sin のグラフの、山のちょうど頂点）。<br></p>
+            <p>図の下に、<math><mi>θ</mi></math> に対する <math><msub><mi>R</mi><mn>1</mn></msub><mo>+</mo><msub><mi>R</mi><mn>2</mn></msub></math> のグラフが出た。スライダーを動かすと点がグラフの上を動くので、谷の底がちょうど <math><mi>θ</mi><mo>=</mo><mn>90</mn><mo>°</mo></math> のところに来ているのを確認しよう。</p>
           </article>
 
           <article class="stage hint" hidden>
             <div class="stage-head"><span class="stage-badge">ヒント 5</span><span class="stage-title">記述の組み立て：文章の骨組みを確認する</span></div>
-            <p><span class="m"><i>θ</i>=90°</span>（つまり <span class="m">sin<i>θ</i>=1</span>）を式に代入すると、最小値は <span class="m"><span class="frac"><span class="num"><i>b</i>+<i>c</i></span><span class="den">2·1</span></span> = <span class="frac"><span class="num"><i>b</i>+<i>c</i></span><span class="den">2</span></span></span>。記述では、この流れを文章にする。骨組みはこの4文：</p>
+            <p><math><mi>θ</mi><mo>=</mo><mn>90</mn><mo>°</mo><mo>(</mo></math>つまり <math><mi>sin</mi><mi>θ</mi><mo>=</mo><mn>1</mn><mo>)</mo></math>を式に代入すると、最小値は <math><mfrac><mrow><mi>b</mi><mo>+</mo><mi>c</mi></mrow><mrow><mn>2</mn><mo>·</mo><mn>1</mn></mrow></mfrac><mo>=</mo><mfrac><mrow><mi>b</mi><mo>+</mo><mi>c</mi></mrow><mn>2</mn></mfrac></math>。記述では、この流れを文章にする。骨組みはこの4文：</p>
             <ol class="steps">
-              <li>(1) より <span class="m"><i>R</i><sub>1</sub>+<i>R</i><sub>2</sub> = <span class="frac"><span class="num"><i>b</i>+<i>c</i></span><span class="den">2sin<i>θ</i></span></span></span>。</li>
-              <li><span class="m">0°&lt;<i>θ</i>&lt;180°</span> より <span class="m">0&lt;sin<i>θ</i>≦1</span>。</li>
-              <li>よって <span class="m"><i>R</i><sub>1</sub>+<i>R</i><sub>2</sub></span> が最小となるのは <span class="m">sin<i>θ</i>=1</span>、つまり <span class="m"><i>θ</i>=90°</span> のとき。</li>
-              <li>そのときの最小値は <span class="m"><span class="frac"><span class="num"><i>b</i>+<i>c</i></span><span class="den">2</span></span></span>。</li>
+              <li>(1) より <math><msub><mi>R</mi><mn>1</mn></msub><mo>+</mo><msub><mi>R</mi><mn>2</mn></msub><mo>=</mo><mfrac><mrow><mi>b</mi><mo>+</mo><mi>c</mi></mrow><mrow><mn>2</mn><mi>sin</mi><mi>θ</mi></mrow></mfrac></math>。</li>
+              <li><math><mn>0</mn><mo>°</mo><mo>&lt;</mo><mi>θ</mi><mo>&lt;</mo><mn>180</mn><mo>°</mo></math> より <math><mn>0</mn><mo>&lt;</mo><mi>sin</mi><mi>θ</mi><mo>≦</mo><mn>1</mn></math>。</li>
+              <li>よって <math><msub><mi>R</mi><mn>1</mn></msub><mo>+</mo><msub><mi>R</mi><mn>2</mn></msub></math> が最小となるのは <math><mi>sin</mi><mi>θ</mi><mo>=</mo><mn>1</mn></math>、つまり <math><mi>θ</mi><mo>=</mo><mn>90</mn><mo>°</mo></math> のとき。</li>
+              <li>そのときの最小値は <math><mfrac><mrow><mi>b</mi><mo>+</mo><mi>c</mi></mrow><mn>2</mn></mfrac></math>。</li>
             </ol>
-            <p>ちなみに <span class="m"><i>θ</i>=90°</span> のとき、点 P は「A から辺 BC に下ろした<strong>垂線の足</strong>」の位置にあるよ。最後に、自分の言葉で答案を書いてから解答を開こう。</p>
+            <p>ちなみに <math><mi>θ</mi><mo>=</mo><mn>90</mn><mo>°</mo></math> のとき、点 P は「A から辺 BC に下ろした<strong>垂線の足</strong>」の位置にあるよ。<br>最後に、自分の言葉で答案を書いてから解答を開こう。</p>
           </article>
 
           <article class="stage answer" hidden>
-            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(2) の模範記述</span></div>
-            <div class="formula-line">(1) より　<span class="m"><i>R</i><sub>1</sub>+<i>R</i><sub>2</sub> = <span class="frac"><span class="num"><i>c</i></span><span class="den">2sin<i>θ</i></span></span> + <span class="frac"><span class="num"><i>b</i></span><span class="den">2sin<i>θ</i></span></span> = <span class="frac"><span class="num"><i>b</i>+<i>c</i></span><span class="den">2sin<i>θ</i></span></span></span><br /><span class="m">0°&lt;<i>θ</i>&lt;180°</span> より <span class="m">0&lt;sin<i>θ</i>≦1</span> であるから、<span class="m"><i>R</i><sub>1</sub>+<i>R</i><sub>2</sub></span> が最小となるのは <span class="m">sin<i>θ</i>=1</span>、つまり <span class="m"><i>θ</i>=90°</span> のときである。このとき、<span class="m"><i>R</i><sub>1</sub>+<i>R</i><sub>2</sub></span> の最小値は <span class="m"><span class="frac"><span class="num"><i>b</i>+<i>c</i></span><span class="den">2</span></span></span> である。</div>
+            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(2) の模範記述</span></div><p class="cite"><span class="cite-tag">使う性質</span>正弦の値の範囲 <math><mn>0</mn><mo>&lt;</mo><mi>sin</mi><mi>θ</mi><mo>≦</mo><mn>1</mn></math>。記述では、正弦がこの範囲にあることを使って、和が最小になる角と最小値を結論づける。</p>
+            <div class="formula-line">(1) より　<math><msub><mi>R</mi><mn>1</mn></msub><mo>+</mo><msub><mi>R</mi><mn>2</mn></msub><mo>=</mo><mfrac><mi>c</mi><mrow><mn>2</mn><mi>sin</mi><mi>θ</mi></mrow></mfrac><mo>+</mo><mfrac><mi>b</mi><mrow><mn>2</mn><mi>sin</mi><mi>θ</mi></mrow></mfrac><mo>=</mo><mfrac><mrow><mi>b</mi><mo>+</mo><mi>c</mi></mrow><mrow><mn>2</mn><mi>sin</mi><mi>θ</mi></mrow></mfrac></math><br /><math><mn>0</mn><mo>°</mo><mo>&lt;</mo><mi>θ</mi><mo>&lt;</mo><mn>180</mn><mo>°</mo></math> より <math><mn>0</mn><mo>&lt;</mo><mi>sin</mi><mi>θ</mi><mo>≦</mo><mn>1</mn></math> であるから、<math><msub><mi>R</mi><mn>1</mn></msub><mo>+</mo><msub><mi>R</mi><mn>2</mn></msub></math> が最小となるのは <math><mi>sin</mi><mi>θ</mi><mo>=</mo><mn>1</mn></math>、つまり <math><mi>θ</mi><mo>=</mo><mn>90</mn><mo>°</mo></math> のときである。このとき、<math><msub><mi>R</mi><mn>1</mn></msub><mo>+</mo><msub><mi>R</mi><mn>2</mn></msub></math> の最小値は <math><mfrac><mrow><mi>b</mi><mo>+</mo><mi>c</mi></mrow><mn>2</mn></mfrac></math> である。</div>
             <div class="ans-line">
-              <span class="ans-chip"><span class="kana">θ</span><span class="m">90°</span></span>
-              <span class="ans-chip"><span class="kana">最小値</span><span class="m"><span class="frac"><span class="num"><i>b</i>+<i>c</i></span><span class="den">2</span></span></span><span class="pts">合わせて6点</span></span>
+              <span class="ans-chip"><span class="kana">θ</span><math><mn>90</mn><mo>°</mo></math></span>
+              <span class="ans-chip"><span class="kana">最小値</span><math><mfrac><mrow><mi>b</mi><mo>+</mo><mi>c</mi></mrow><mn>2</mn></mfrac></math><span class="pts">合わせて6点</span></span>
             </div>
-            <div class="point-box"><span class="pt">ポイント</span>「分子が正で一定の分数は、分母が最大のときに最小になる」という見方がカギ。あとは <span class="m">sin<i>θ</i>≦1</span> に帰着させるのが、この問題の記述の型だよ。</div>
+            <div class="point-box"><span class="pt">ポイント</span>「分子が正で一定の分数は、分母が最大のときに最小になる」という見方がカギ。あとは <math><mi>sin</mi><mi>θ</mi><mo>≦</mo><mn>1</mn></math> に帰着させるのが、この問題の記述の型だよ。</div>
           </article>
         </div>
         </div>
