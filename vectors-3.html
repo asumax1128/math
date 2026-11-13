@@ -1784,6 +1784,63 @@
               return false;
             }
             if (!dfsL(0)) { chosenL = { X: candXL[0], Y: candYL[0], A: candAL[0], V: candVL[0] }; }
+            /* 合成ベクトルのラベル a→ は、原点付近に密集する鏃（実寸の三角形）・
+               線分・他のラベルから余裕を取れる位置に置き直す。
+               X・A・Y は上の探索結果をそのまま使い、V だけをここで決める。 */
+            var placedOthersL = [];
+            var okindL = ['X', 'A', 'Y'];
+            for (var oi = 0; oi < okindL.length; oi++) {
+              var obs = boxesL(okindL[oi], chosenL[okindL[oi]][0], chosenL[okindL[oi]][1]);
+              for (var oj = 0; oj < obs.length; oj++) placedOthersL.push(obs[oj]);
+            }
+            function boxDistL(a, b) {
+              var dx = Math.max(b[0] - a[2], a[0] - b[2]);
+              var dy = Math.max(b[1] - a[3], a[1] - b[3]);
+              if (dx < 0) dx = 0;
+              if (dy < 0) dy = 0;
+              return Math.sqrt(dx * dx + dy * dy);
+            }
+            function fitsVL(bs, mTri, mSeg, mBox) {
+              for (var i = 0; i < bs.length; i++) {
+                var b = bs[i];
+                if (b[0] < 2 || b[1] < 2 || b[2] > 518 || b[3] > 378) return false;
+                for (var j = 0; j < statBoxes.length; j++) if (boxDistL(b, statBoxes[j]) < mBox) return false;
+                for (var k = 0; k < placedOthersL.length; k++) if (boxDistL(b, placedOthersL[k]) < mBox) return false;
+                for (var m = 0; m < segsL.length; m++) if (segBoxDL(segsL[m], b) < segsL[m][4] + mSeg) return false;
+                for (var n = 0; n < trisL.length; n++) if (triBoxDL(trisL[n], b) < mTri) return false;
+              }
+              return true;
+            }
+            function ctrVL(cx, cy) { return [cx - wV / 2, cy + 4]; }
+            var candV2L = [chosenL.V];
+            for (var ci2 = 0; ci2 < candVL.length; ci2++) candV2L.push(candVL[ci2]);
+            var tVL = [0.5, 0.35, 0.65, 0.2, 0.8];
+            var dVL = [72, 88, 104];
+            for (var ti = 0; ti < tVL.length; ti++) {
+              for (var si = 0; si < 2; si++) {
+                for (var di = 0; di < dVL.length; di++) {
+                  candV2L.push(vpL(tVL[ti], si === 0 ? 1 : -1, dVL[di]));
+                }
+              }
+            }
+            var extVL = [1.25, 1.5, 1.8, -0.3, -0.55];
+            for (var ei = 0; ei < extVL.length; ei++) {
+              var exx = OX + (ax - OX) * extVL[ei], eyy = OY + (ay - OY) * extVL[ei];
+              candV2L.push(ctrVL(exx, eyy));
+              candV2L.push(ctrVL(exx - uyA * 24, eyy + uxA * 24));
+              candV2L.push(ctrVL(exx + uyA * 24, eyy - uxA * 24));
+            }
+            var tiersVL = [[8, 4, 3], [5, 3, 2], [3, 2, 1]];
+            var foundVL = false;
+            for (var qi = 0; qi < tiersVL.length && !foundVL; qi++) {
+              for (var ri = 0; ri < candV2L.length; ri++) {
+                if (fitsVL(boxesL('V', candV2L[ri][0], candV2L[ri][1]), tiersVL[qi][0], tiersVL[qi][1], tiersVL[qi][2])) {
+                  chosenL.V = candV2L[ri];
+                  foundVL = true;
+                  break;
+                }
+              }
+            }
             cpLabelA.setAttribute('x', chosenL.A[0]);
             cpLabelA.setAttribute('y', chosenL.A[1]);
             cpLabelV.setAttribute('x', chosenL.V[0]);
