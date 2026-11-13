@@ -305,7 +305,45 @@
         .tabcard > .tab-panel{ grid-column:2; grid-row:2; min-width:0; }
         .tabcard .prob{ display:block; }
       }
-    </style>
+    
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+</style>
   </head>
   <body>
     <div class="wrap">
@@ -331,10 +369,10 @@
       <!-- ================= 解説A ================= -->
       <section class="card">
         <h2><span class="tag">解説</span>関数の最大・最小 ― 候補は「極値」と「端の値」</h2>
-        <p>関数 <span class="m">y = f (x)</span> の、区間 <span class="m">a ≦ x ≦ b</span> における最大値・最小値を考えます。グラフをかくと分かるように、最大値・最小値になる場所の候補は、次の2種類しかありません。</p>
+        <p>関数 <math><mi>y</mi><mo>=</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></math> の、区間 <math><mi>a</mi><mo>≦</mo><mi>x</mi><mo>≦</mo><mi>b</mi></math> における最大値・最小値を考えます。<br>グラフをかくと分かるように、<br>最大値・最小値になる場所の候補は、次の2種類しかありません。</p>
         <ol class="steps-num">
           <li><b>極大値・極小値</b>（区間の内側で増減が切りかわる点の値）</li>
-          <li><b>区間の端の値</b> <span class="m">f (a)</span> と <span class="m">f (b)</span></li>
+          <li><b>区間の端の値</b> <math><mi>f</mi><mo>(</mo><mi>a</mi><mo>)</mo></math> と <math><mi>f</mi><mo>(</mo><mi>b</mi><mo>)</mo></math></li>
         </ol>
         <div class="figwrap">
           <svg viewBox="0 0 560 250" width="560" role="img" aria-label="区間における最大値と最小値のイメージ図">
@@ -368,33 +406,35 @@
             <text x="428" y="20" class="svg-sub" font-size="13.5">端の値 f (b)（＝最大値）</text>
           </svg>
         </div>
-        <p>上の図では、最大値は極大値ではなく <b>右端の値</b> <span class="m">f (b)</span> です。このように、<b>極値がそのまま最大値・最小値になるとは限りません</b>。必ず端の値と比べることが大切です。</p>
+        <p>上の図では、最大値は極大値ではなく <b>右端の値</b> <math><mi>f</mi><mo>(</mo><mi>b</mi><mo>)</mo></math> です。<br>このように、<b>極値がそのまま最大値・最小値になるとは限りません</b>。<br>必ず端の値と比べることが大切です。</p>
         <p><b>最大・最小を求める手順</b></p>
         <ol class="steps-num">
-          <li><span class="m">y&prime;</span> を求め、<span class="m">y&prime; = 0</span> となる <span class="m">x</span> を求める。</li>
+          <li><math><mi>y</mi><mi>′</mi></math> を求め、<math><mi>y</mi><mi>′</mi><mo>=</mo><mn>0</mn></math> となる <math><mi>x</mi></math> を求める。</li>
           <li>区間つきの増減表を作り、極大値・極小値を求める。</li>
-          <li>極値と、区間の両端の値 <span class="m">f (a)</span>、<span class="m">f (b)</span> をすべて比べて、いちばん大きいものが最大値、いちばん小さいものが最小値。</li>
+          <li>極値と、区間の両端の値 <math><mi>f</mi><mo>(</mo><mi>a</mi><mo>)</mo></math>、<math><mi>f</mi><mo>(</mo><mi>b</mi><mo>)</mo></math> をすべて比べて、いちばん大きいものが最大値、いちばん小さいものが最小値。</li>
         </ol>
       </section>
 
       <!-- ================= 例題5 ================= -->
       <section class="card prob" id="reidai5">
         <h2><span class="tag">例題 5</span>区間における最大値・最小値</h2>
-        <p class="q">関数 <span class="m">y = &minus;x<sup>3</sup> + 3x<sup>2</sup></span> （<span class="m">&minus;1 ≦ x ≦ 4</span>）の最大値と最小値を求めよ。</p>
+        <p class="q">関数 <math><mi>y</mi><mo>=</mo><mo>−</mo><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>(</mo><mo>−</mo><mn>1</mn><mo>≦</mo><mi>x</mi><mo>≦</mo><mn>4</mn><mo>)</mo></math>の最大値と最小値を求めよ。</p>
         <div class="steps">
           <div class="step">
             <span class="chip">ヒント 1</span>
-            <p>まず微分して <span class="m">y&prime;</span> を求め、因数分解しよう。</p>
-            <p class="big"><span class="m">y&prime; = &minus;3x<sup>2</sup> + 6x = &minus;3x (x &minus; 2)</span></p>
+            <p>まず微分して <math><mi>y</mi><mi>′</mi></math> を求め、因数分解しよう。</p>
+            <p class="cite"><span class="cite-tag">使う公式</span>微分の公式 <math><mo>(</mo><msup><mi>x</mi><mi>n</mi></msup><mo>)</mo><mi>′</mi><mo>=</mo><mi>n</mi><msup><mi>x</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup></math>。和・差は項ごとに微分する。この問題では <math><mo>−</mo><msup><mi>x</mi><mn>3</mn></msup></math> が <math><mo>−</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup></math> に、<math><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup></math> が <math><mn>6</mn><mi>x</mi></math> になるよ。</p>
+            <p class="big"><math display="block"><mi>y</mi><mi>′</mi><mo>=</mo><mo>−</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>6</mn><mi>x</mi><mo>=</mo><mo>−</mo><mn>3</mn><mi>x</mi><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo></math></p>
           </div>
           <div class="step">
             <span class="chip">ヒント 2</span>
-            <p><span class="m">y&prime; = 0</span> となる <span class="m">x</span> を求めよう。これが極値の候補だ。</p>
-            <p class="big"><span class="m">y&prime; = 0</span> のとき <span class="m">x = 0, 2</span></p>
+            <p><math><mi>y</mi><mi>′</mi><mo>=</mo><mn>0</mn></math> となる <math><mi>x</mi></math> を求めよう。これが極値の候補だ。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>積が <math><mn>0</mn></math> になるのは、因数のどれかが <math><mn>0</mn></math> のときだけ：<math><mi>A</mi><mi>B</mi><mo>=</mo><mn>0</mn></math> なら <math><mi>A</mi><mo>=</mo><mn>0</mn></math> または <math><mi>B</mi><mo>=</mo><mn>0</mn></math>。ここでは <math><mo>−</mo><mn>3</mn><mi>x</mi><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo><mo>=</mo><mn>0</mn></math> だから、<math><mi>x</mi><mo>=</mo><mn>0</mn></math> と <math><mi>x</mi><mo>−</mo><mn>2</mn><mo>=</mo><mn>0</mn></math> に分けて考えるよ。</p>
+            <p class="big"><math><mi>y</mi><mi>′</mi><mo>=</mo><mn>0</mn></math> のとき <math><mi>x</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>2</mn></math></p>
           </div>
           <div class="step">
             <span class="chip">ヒント 3</span>
-            <p>区間 <span class="m">&minus;1 ≦ x ≦ 4</span> での増減表を作ろう。両端の値も忘れずに書き込むこと。</p>
+            <p>区間 <math><mo>−</mo><mn>1</mn><mo>≦</mo><mi>x</mi><mo>≦</mo><mn>4</mn></math> での増減表を作ろう。<br>両端の値も忘れずに書き込むこと。</p>
             <div class="tblwrap">
               <table class="tbl">
                 <tr><th>x</th><td>&minus;1</td><td>…</td><td>0</td><td>…</td><td>2</td><td>…</td><td>4</td></tr>
@@ -402,19 +442,21 @@
                 <tr><th>y</th><td>4</td><td class="arr">&#8600;</td><td>0</td><td class="arr">&#8599;</td><td>4</td><td class="arr">&#8600;</td><td>&minus;16</td></tr>
               </table>
             </div>
-            <p>よって、<span class="m">x = 0</span> で極小値 <span class="m">0</span>、<span class="m">x = 2</span> で極大値 <span class="m">4</span> をとる。また端の値は <span class="m">f (&minus;1) = 4</span>、<span class="m">f (4) = &minus;16</span>。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>極大・極小の判定：<math><mi>y</mi><mi>′</mi></math> の符号がプラスからマイナスに変わる点で極大、マイナスからプラスに変わる点で極小になる。増減表では <math><mi>x</mi><mo>=</mo><mn>0</mn></math> でマイナスからプラスへ、<math><mi>x</mi><mo>=</mo><mn>2</mn></math> でプラスからマイナスへ変わっているね。</p>
+            <p>よって、<math><mi>x</mi><mo>=</mo><mn>0</mn></math> で極小値 <math><mn>0</mn></math>、<math><mi>x</mi><mo>=</mo><mn>2</mn></math> で極大値 <math><mn>4</mn></math> をとる。<br>また端の値は <math><mi>f</mi><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo><mo>=</mo><mn>4</mn></math>、<math><mi>f</mi><mo>(</mo><mn>4</mn><mo>)</mo><mo>=</mo><mo>−</mo><mn>16</mn></math>。</p>
           </div>
           <div class="step">
             <span class="chip">ヒント 4</span>
-            <p>グラフで確認しよう。増減表の4つの値 <span class="m">4, 0, 4, &minus;16</span> のうち、いちばん大きいもの・小さいものはどれだろう。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>最大値・最小値は、極値と区間の端の値をすべて比べて決める（解説の手順）。ここで比べる候補は、増減表の <math><mn>4</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>4</mn><mo>,</mo><mo>−</mo><mn>16</mn></math> の4つだよ。</p>
+            <p>グラフで確認しよう。<br>増減表の4つの値 <math><mn>4</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>4</mn><mo>,</mo><mo>−</mo><mn>16</mn></math> のうち、<br>いちばん大きいもの・小さいものはどれだろう。</p>
             <div class="figwrap">
               <svg id="graph-reidai5" viewBox="0 0 600 380" width="600" role="img" aria-label="y イコール マイナス x の3乗 たす 3x の2乗 のグラフ（マイナス1以上4以下）"></svg>
             </div>
           </div>
           <div class="step ans">
             <span class="chip">解答</span>
-            <p class="big"><span class="m">x = &minus;1, 2</span> のとき <b>最大値 <span class="m">4</span></b>、<span class="m">x = 4</span> のとき <b>最小値 <span class="m">&minus;16</span></b></p>
-            <div class="warn"><b>注意：</b><span class="m">x = 0</span> での極小値は <span class="m">0</span> だが、これは最小値ではない。右端 <span class="m">x = 4</span> の値 <span class="m">&minus;16</span> の方が小さい。「極小値＝最小値」とは限らないことが、この問題のポイントだ。</div>
+            <p class="big"><math><mi>x</mi><mo>=</mo><mo>−</mo><mn>1</mn><mo>,</mo><mn>2</mn></math> のとき <b>最大値 <math><mn>4</mn></math></b>、<math><mi>x</mi><mo>=</mo><mn>4</mn></math> のとき <b>最小値 <math><mo>−</mo><mn>16</mn></math></b></p>
+            <div class="warn"><b>注意：</b><math><mi>x</mi><mo>=</mo><mn>0</mn></math> での極小値は <math><mn>0</mn></math> だが、これは最小値ではない。<br>右端 <math><mi>x</mi><mo>=</mo><mn>4</mn></math> の値 <math><mo>−</mo><mn>16</mn></math> の方が小さい。<br>「極小値＝最小値」とは限らないことが、この問題のポイントだ。</div>
           </div>
         </div>
         <div class="controls">
@@ -435,17 +477,19 @@
         </div>
 
         <div class="tab-panel on" id="r19-1">
-          <div class="prob">
-            <p class="q">(1)　<span class="m">y = x<sup>3</sup> + 3x<sup>2</sup></span>　（<span class="m">&minus;3 ≦ x ≦ 2</span>）</p>
+          <div class="nofig prob">
+            <p class="q">(1)　<math><mi>y</mi><mo>=</mo><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup></math>　<math><mo>(</mo><mo>−</mo><mn>3</mn><mo>≦</mo><mi>x</mi><mo>≦</mo><mn>2</mn><mo>)</mo></math></p>
             <div class="steps">
               <div class="step">
                 <span class="chip">ヒント 1</span>
                 <p>微分して因数分解しよう。</p>
-                <p class="big"><span class="m">y&prime; = 3x<sup>2</sup> + 6x = 3x (x + 2)</span></p>
+                <p class="cite"><span class="cite-tag">使う公式</span>微分の公式 <math><mo>(</mo><msup><mi>x</mi><mi>n</mi></msup><mo>)</mo><mi>′</mi><mo>=</mo><mi>n</mi><msup><mi>x</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup></math>。和・差は項ごとに微分する。この問題では <math><msup><mi>x</mi><mn>3</mn></msup></math> が <math><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup></math> に、<math><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup></math> が <math><mn>6</mn><mi>x</mi></math> になるよ。</p>
+            <p class="big"><math display="block"><mi>y</mi><mi>′</mi><mo>=</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>6</mn><mi>x</mi><mo>=</mo><mn>3</mn><mi>x</mi><mo>(</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo></math></p>
               </div>
               <div class="step">
                 <span class="chip">ヒント 2</span>
-                <p><span class="m">y&prime; = 0</span> となるのは <span class="m">x = &minus;2, 0</span>。どちらも区間 <span class="m">&minus;3 ≦ x ≦ 2</span> の内側にある。</p>
+                <p class="cite"><span class="cite-tag">使う性質</span>因数分解した形が <math><mn>0</mn></math> になるのは、因数のどれかが <math><mn>0</mn></math> のときだけ。ここでは <math><mn>3</mn><mi>x</mi><mo>(</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo><mo>=</mo><mn>0</mn></math> だから、<math><mi>x</mi><mo>=</mo><mn>0</mn></math> と <math><mi>x</mi><mo>+</mo><mn>2</mn><mo>=</mo><mn>0</mn></math> に分けて考えるよ。</p>
+            <p><math><mi>y</mi><mi>′</mi><mo>=</mo><mn>0</mn></math> となるのは <math><mi>x</mi><mo>=</mo><mo>−</mo><mn>2</mn><mo>,</mo><mn>0</mn></math>。<br>どちらも区間 <math><mo>−</mo><mn>3</mn><mo>≦</mo><mi>x</mi><mo>≦</mo><mn>2</mn></math> の内側にある。</p>
               </div>
               <div class="step">
                 <span class="chip">ヒント 3</span>
@@ -457,12 +501,13 @@
                     <tr><th>y</th><td>0</td><td class="arr">&#8599;</td><td>4</td><td class="arr">&#8600;</td><td>0</td><td class="arr">&#8599;</td><td>20</td></tr>
                   </table>
                 </div>
-                <p>候補の値は <span class="m">0</span>（左端）、<span class="m">4</span>（極大値）、<span class="m">0</span>（極小値）、<span class="m">20</span>（右端）。いちばん大きいもの・小さいものを選ぼう。</p>
+                <p class="cite"><span class="cite-tag">使う性質</span>最大値・最小値は、極値と区間の端の値をすべて比べて決める（解説の手順）。区間 <math><mo>−</mo><mn>3</mn><mo>≦</mo><mi>x</mi><mo>≦</mo><mn>2</mn></math> のこの問題でも、候補は左端・極大値・極小値・右端の4つの値だよ。</p>
+            <p>候補の値は <math><mn>0</mn><mo>(</mo></math>左端）、<math><mn>4</mn><mo>(</mo></math>極大値）、<math><mn>0</mn><mo>(</mo></math>極小値）、<math><mn>20</mn><mo>(</mo></math>右端）。<br>いちばん大きいもの・小さいものを選ぼう。</p>
               </div>
               <div class="step ans">
                 <span class="chip">解答</span>
-                <p class="big"><span class="m">x = 2</span> のとき <b>最大値 <span class="m">20</span></b>、<span class="m">x = &minus;3, 0</span> のとき <b>最小値 <span class="m">0</span></b></p>
-                <div class="warn"><b>注意：</b>最小値 <span class="m">0</span> をとる場所は、左端 <span class="m">x = &minus;3</span> と極小点 <span class="m">x = 0</span> の2か所ある。両方答えること。</div>
+                <p class="big"><math><mi>x</mi><mo>=</mo><mn>2</mn></math> のとき <b>最大値 <math><mn>20</mn></math></b>、<math><mi>x</mi><mo>=</mo><mo>−</mo><mn>3</mn><mo>,</mo><mn>0</mn></math> のとき <b>最小値 <math><mn>0</mn></math></b></p>
+                <div class="warn"><b>注意：</b>最小値 <math><mn>0</mn></math> をとる場所は、<br>左端 <math><mi>x</mi><mo>=</mo><mo>−</mo><mn>3</mn></math> と極小点 <math><mi>x</mi><mo>=</mo><mn>0</mn></math> の2か所ある。両方答えること。</div>
               </div>
             </div>
             <div class="controls">
@@ -474,17 +519,19 @@
         </div>
 
         <div class="tab-panel" id="r19-2">
-          <div class="prob">
-            <p class="q">(2)　<span class="m">y = &minus;x<sup>3</sup> + 3x + 1</span>　（<span class="m">&minus;2 ≦ x ≦ 2</span>）</p>
+          <div class="nofig prob">
+            <p class="q">(2)　<math><mi>y</mi><mo>=</mo><mo>−</mo><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mn>3</mn><mi>x</mi><mo>+</mo><mn>1</mn></math>　<math><mo>(</mo><mo>−</mo><mn>2</mn><mo>≦</mo><mi>x</mi><mo>≦</mo><mn>2</mn><mo>)</mo></math></p>
             <div class="steps">
               <div class="step">
                 <span class="chip">ヒント 1</span>
                 <p>微分して因数分解しよう。</p>
-                <p class="big"><span class="m">y&prime; = &minus;3x<sup>2</sup> + 3 = &minus;3 (x + 1) (x &minus; 1)</span></p>
+                <p class="cite"><span class="cite-tag">使う公式</span>微分の公式 <math><mo>(</mo><msup><mi>x</mi><mi>n</mi></msup><mo>)</mo><mi>′</mi><mo>=</mo><mi>n</mi><msup><mi>x</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup></math>。和・差は項ごとに微分する。この問題では <math><mo>−</mo><msup><mi>x</mi><mn>3</mn></msup></math> が <math><mo>−</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup></math> に、<math><mn>3</mn><mi>x</mi></math> が <math><mn>3</mn></math> に、定数 <math><mn>1</mn></math> の微分は <math><mn>0</mn></math> になるよ。</p>
+            <p class="big"><math display="block"><mi>y</mi><mi>′</mi><mo>=</mo><mo>−</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>3</mn><mo>=</mo><mo>−</mo><mn>3</mn><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></math></p>
               </div>
               <div class="step">
                 <span class="chip">ヒント 2</span>
-                <p><span class="m">y&prime; = 0</span> となるのは <span class="m">x = &minus;1, 1</span>。増減の符号は、<span class="m">&minus;3x<sup>2</sup></span> の影響で両端側がマイナスになる点に注意。</p>
+                <p class="cite"><span class="cite-tag">使う性質</span>積が <math><mn>0</mn></math> になるのは、因数のどれかが <math><mn>0</mn></math> のときだけ（因数が3つでも同じ）。ここでは <math><mo>−</mo><mn>3</mn><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo><mo>=</mo><mn>0</mn></math> だから、<math><mi>x</mi><mo>+</mo><mn>1</mn><mo>=</mo><mn>0</mn></math> と <math><mi>x</mi><mo>−</mo><mn>1</mn><mo>=</mo><mn>0</mn></math> に分けて考えるよ。</p>
+            <p><math><mi>y</mi><mi>′</mi><mo>=</mo><mn>0</mn></math> となるのは <math><mi>x</mi><mo>=</mo><mo>−</mo><mn>1</mn><mo>,</mo><mn>1</mn></math>。<br>増減の符号は、<math><mo>−</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup></math> の影響で<br>両端側がマイナスになる点に注意。</p>
               </div>
               <div class="step">
                 <span class="chip">ヒント 3</span>
@@ -496,12 +543,13 @@
                     <tr><th>y</th><td>3</td><td class="arr">&#8600;</td><td>&minus;1</td><td class="arr">&#8599;</td><td>3</td><td class="arr">&#8600;</td><td>&minus;1</td></tr>
                   </table>
                 </div>
-                <p>候補の値は <span class="m">3, &minus;1, 3, &minus;1</span>。最大・最小をとる <span class="m">x</span> は、それぞれ2か所ずつありそうだ。</p>
+                <p class="cite"><span class="cite-tag">使う性質</span>最大値・最小値は、極値と区間の端の値をすべて比べて決める（解説の手順）。ここで比べる候補は <math><mn>3</mn><mo>,</mo><mo>−</mo><mn>1</mn><mo>,</mo><mn>3</mn><mo>,</mo><mo>−</mo><mn>1</mn></math> の4つだよ。</p>
+            <p>候補の値は <math><mn>3</mn><mo>,</mo><mo>−</mo><mn>1</mn><mo>,</mo><mn>3</mn><mo>,</mo><mo>−</mo><mn>1</mn></math>。最大・最小をとる <math><mi>x</mi></math> は、<br>それぞれ2か所ずつありそうだ。</p>
               </div>
               <div class="step ans">
                 <span class="chip">解答</span>
-                <p class="big"><span class="m">x = &minus;2, 1</span> のとき <b>最大値 <span class="m">3</span></b>、<span class="m">x = &minus;1, 2</span> のとき <b>最小値 <span class="m">&minus;1</span></b></p>
-                <div class="warn"><b>注意：</b>最大値は左端と極大点、最小値は極小点と右端で、どちらも2か所でとる。端の値を調べ忘れると片方を落としてしまう。</div>
+                <p class="big"><math><mi>x</mi><mo>=</mo><mo>−</mo><mn>2</mn><mo>,</mo><mn>1</mn></math> のとき <b>最大値 <math><mn>3</mn></math></b>、<math><mi>x</mi><mo>=</mo><mo>−</mo><mn>1</mn><mo>,</mo><mn>2</mn></math> のとき <b>最小値 <math><mo>−</mo><mn>1</mn></math></b></p>
+                <div class="warn"><b>注意：</b>最大値は左端と極大点、<br>最小値は極小点と右端で、どちらも2か所でとる。<br>端の値を調べ忘れると片方を落としてしまう。</div>
               </div>
             </div>
             <div class="controls">
@@ -513,17 +561,19 @@
         </div>
 
         <div class="tab-panel" id="r19-3">
-          <div class="prob">
-            <p class="q">(3)　<span class="m">y = x<sup>3</sup> &minus; 6x<sup>2</sup> &minus; 15x</span>　（<span class="m">&minus;2 ≦ x ≦ 2</span>）</p>
+          <div class="nofig prob">
+            <p class="q">(3)　<math><mi>y</mi><mo>=</mo><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>6</mn><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>15</mn><mi>x</mi></math>　<math><mo>(</mo><mo>−</mo><mn>2</mn><mo>≦</mo><mi>x</mi><mo>≦</mo><mn>2</mn><mo>)</mo></math></p>
             <div class="steps">
               <div class="step">
                 <span class="chip">ヒント 1</span>
                 <p>微分して因数分解しよう。</p>
-                <p class="big"><span class="m">y&prime; = 3x<sup>2</sup> &minus; 12x &minus; 15 = 3 (x + 1) (x &minus; 5)</span></p>
+                <p class="cite"><span class="cite-tag">使う公式</span>微分の公式 <math><mo>(</mo><msup><mi>x</mi><mi>n</mi></msup><mo>)</mo><mi>′</mi><mo>=</mo><mi>n</mi><msup><mi>x</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup></math>。和・差は項ごとに微分する。この問題では <math><msup><mi>x</mi><mn>3</mn></msup></math> が <math><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup></math> に、<math><mo>−</mo><mn>6</mn><msup><mi>x</mi><mn>2</mn></msup></math> が <math><mo>−</mo><mn>12</mn><mi>x</mi></math> に、<math><mo>−</mo><mn>15</mn><mi>x</mi></math> が <math><mo>−</mo><mn>15</mn></math> になるよ。</p>
+            <p class="big"><math display="block"><mi>y</mi><mi>′</mi><mo>=</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>12</mn><mi>x</mi><mo>−</mo><mn>15</mn><mo>=</mo><mn>3</mn><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo><mo>(</mo><mi>x</mi><mo>−</mo><mn>5</mn><mo>)</mo></math></p>
               </div>
               <div class="step">
                 <span class="chip">ヒント 2</span>
-                <p><span class="m">y&prime; = 0</span> となるのは <span class="m">x = &minus;1, 5</span>。ただし、考える区間は <span class="m">&minus;2 ≦ x ≦ 2</span> なので、増減表に入れるのは <span class="m">x = &minus;1</span> だけだ（<span class="m">x = 5</span> は区間の外）。</p>
+                <p class="cite"><span class="cite-tag">使う性質</span>極値の候補になるのは、考える区間の中にある <math><mi>y</mi><mi>′</mi><mo>=</mo><mn>0</mn></math> の解だけ。区間 <math><mo>−</mo><mn>2</mn><mo>≦</mo><mi>x</mi><mo>≦</mo><mn>2</mn></math> の外にある解は、増減表に入れないよ。</p>
+            <p><math><mi>y</mi><mi>′</mi><mo>=</mo><mn>0</mn></math> となるのは <math><mi>x</mi><mo>=</mo><mo>−</mo><mn>1</mn><mo>,</mo><mn>5</mn></math>。<br>ただし、考える区間は <math><mo>−</mo><mn>2</mn><mo>≦</mo><mi>x</mi><mo>≦</mo><mn>2</mn></math> なので、<br>増減表に入れるのは <math><mi>x</mi><mo>=</mo><mo>−</mo><mn>1</mn></math> だけだ<math><mo>(</mo><mi>x</mi><mo>=</mo><mn>5</mn></math> は区間の外）。</p>
               </div>
               <div class="step">
                 <span class="chip">ヒント 3</span>
@@ -535,12 +585,13 @@
                     <tr><th>y</th><td>&minus;2</td><td class="arr">&#8599;</td><td>8</td><td class="arr">&#8600;</td><td>&minus;46</td></tr>
                   </table>
                 </div>
-                <p>候補の値は <span class="m">&minus;2</span>（左端）、<span class="m">8</span>（極大値）、<span class="m">&minus;46</span>（右端）の3つ。</p>
+                <p class="cite"><span class="cite-tag">使う性質</span>最大値・最小値は、極値と区間の端の値をすべて比べて決める（解説の手順）。ここで比べる候補は <math><mo>−</mo><mn>2</mn><mo>,</mo><mn>8</mn><mo>,</mo><mo>−</mo><mn>46</mn></math> の3つだよ。</p>
+            <p>候補の値は <math><mo>−</mo><mn>2</mn><mo>(</mo></math>左端）、<math><mn>8</mn><mo>(</mo></math>極大値）、<math><mo>−</mo><mn>46</mn><mo>(</mo></math>右端）の3つ。</p>
               </div>
               <div class="step ans">
                 <span class="chip">解答</span>
-                <p class="big"><span class="m">x = &minus;1</span> のとき <b>最大値 <span class="m">8</span></b>、<span class="m">x = 2</span> のとき <b>最小値 <span class="m">&minus;46</span></b></p>
-                <div class="warn"><b>注意：</b>この区間には極小点がないので、最小値は端の値どうしの勝負になる。右端 <span class="m">f (2) = &minus;46</span> が左端 <span class="m">f (&minus;2) = &minus;2</span> より小さい。</div>
+                <p class="big"><math><mi>x</mi><mo>=</mo><mo>−</mo><mn>1</mn></math> のとき <b>最大値 <math><mn>8</mn></math></b>、<math><mi>x</mi><mo>=</mo><mn>2</mn></math> のとき <b>最小値 <math><mo>−</mo><mn>46</mn></math></b></p>
+                <div class="warn"><b>注意：</b>この区間には極小点がないので、<br>最小値は端の値どうしの勝負になる。<br>右端 <math><mi>f</mi><mo>(</mo><mn>2</mn><mo>)</mo><mo>=</mo><mo>−</mo><mn>46</mn></math> が左端 <math><mi>f</mi><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo><mo>=</mo><mo>−</mo><mn>2</mn></math> より小さい。</div>
               </div>
             </div>
             <div class="controls">
@@ -555,40 +606,42 @@
       <!-- ================= 深める ================= -->
       <section class="card">
         <h2><span class="tag deep">深める</span>2次関数の最小値 ― 平方完成と微分、答えは一致する</h2>
-        <p>関数 <span class="m">y = x<sup>2</sup> &minus; 4x + 2</span> の最小値を、数学Iで学んだ方法と、微分を使う方法の2通りで求めてみよう。違う方法でも、答えは同じになるはずだ。</p>
+        <p>関数 <math><mi>y</mi><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>x</mi><mo>+</mo><mn>2</mn></math> の最小値を、<br>数学Iで学んだ方法と、微分を使う方法の2通りで求めてみよう。<br>違う方法でも、答えは同じになるはずだ。</p>
         <div class="methods">
           <div class="method">
             <h3>方法1　平方完成（数学I）</h3>
-            <p><span class="m">y = x<sup>2</sup> &minus; 4x + 2</span></p>
-            <p>　<span class="m">= (x &minus; 2)<sup>2</sup> &minus; 4 + 2</span></p>
-            <p>　<span class="m">= (x &minus; 2)<sup>2</sup> &minus; 2</span></p>
-            <p><span class="m">(x &minus; 2)<sup>2</sup> ≧ 0</span> だから、<span class="m">x = 2</span> のとき最小値 <span class="m">&minus;2</span> をとる。グラフは頂点 <span class="m">(2, &minus;2)</span> の下に凸の放物線だ。</p>
+            <p><math><mi>y</mi><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>x</mi><mo>+</mo><mn>2</mn></math></p>
+            <p>　<math><mo>=</mo><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>4</mn><mo>+</mo><mn>2</mn></math></p>
+            <p>　<math><mo>=</mo><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>2</mn></math></p>
+            <p class="cite"><span class="cite-tag">使う性質</span>実数の2乗は <math><mn>0</mn></math> 以上で、<math><mn>0</mn></math> になるのは中身が <math><mn>0</mn></math> のときだけ：<math><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>≧</mo><mn>0</mn></math>。だから <math><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup></math> が最小になるのは <math><mi>x</mi><mo>=</mo><mn>2</mn></math> のときだよ。</p>
+            <p><math><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>≧</mo><mn>0</mn></math> だから、<math><mi>x</mi><mo>=</mo><mn>2</mn></math> のとき最小値 <math><mo>−</mo><mn>2</mn></math> をとる。<br>グラフは頂点 <math><mo>(</mo><mn>2</mn><mo>,</mo><mo>−</mo><mn>2</mn><mo>)</mo></math> の下に凸の放物線だ。</p>
           </div>
           <div class="method">
             <h3>方法2　微分（数学II）</h3>
-            <p><span class="m">y&prime; = 2x &minus; 4</span></p>
-            <p><span class="m">y&prime; = 0</span> とすると <span class="m">x = 2</span>。</p>
-            <p><span class="m">x &lt; 2</span> では <span class="m">y&prime; &lt; 0</span>（減少）、<span class="m">x &gt; 2</span> では <span class="m">y&prime; &gt; 0</span>（増加）だから、<span class="m">x = 2</span> で極小になる。</p>
-            <p>その値は <span class="m">y = 2<sup>2</sup> &minus; 4&middot;2 + 2 = &minus;2</span>。</p>
+            <p><math><mi>y</mi><mi>′</mi><mo>=</mo><mn>2</mn><mi>x</mi><mo>−</mo><mn>4</mn></math></p>
+            <p><math><mi>y</mi><mi>′</mi><mo>=</mo><mn>0</mn></math> とすると <math><mi>x</mi><mo>=</mo><mn>2</mn></math>。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>関数の増減と導関数の符号：<math><mi>y</mi><mi>′</mi><mo>&lt;</mo><mn>0</mn></math> の範囲では減少し、<math><mi>y</mi><mi>′</mi><mo>&gt;</mo><mn>0</mn></math> の範囲では増加する。減少から増加へ切りかわる点が極小になるよ。</p>
+            <p><math><mi>x</mi><mo>&lt;</mo><mn>2</mn></math> では <math><mi>y</mi><mi>′</mi><mo>&lt;</mo><mn>0</mn><mo>(</mo></math>減少）、<br><math><mi>x</mi><mo>&gt;</mo><mn>2</mn></math> では <math><mi>y</mi><mi>′</mi><mo>&gt;</mo><mn>0</mn><mo>(</mo></math>増加）だから、<math><mi>x</mi><mo>=</mo><mn>2</mn></math> で極小になる。</p>
+            <p>その値は <math><mi>y</mi><mo>=</mo><msup><mn>2</mn><mn>2</mn></msup><mo>−</mo><mn>4</mn><mo>·</mo><mn>2</mn><mo>+</mo><mn>2</mn><mo>=</mo><mo>−</mo><mn>2</mn></math>。</p>
           </div>
         </div>
         <div class="figwrap">
           <svg id="graph-fukameru" viewBox="0 0 460 300" width="460" role="img" aria-label="y イコール x の2乗 マイナス 4x たす 2 の放物線と頂点 (2, マイナス2)"></svg>
         </div>
         <div class="conclusion">
-          <p><b>確認：</b>どちらの方法でも、<span class="m">x = 2</span> のとき最小値 <span class="m">&minus;2</span> となり、答えが一致した。</p>
-          <p>平方完成は2次関数のための特別な方法だが、微分は3次関数・4次関数にも使える<b>一般的な方法</b>だ。2次関数で両方使えるのは、答え合わせができるよい練習になる。</p>
+          <p><b>確認：</b>どちらの方法でも、<math><mi>x</mi><mo>=</mo><mn>2</mn></math> のとき最小値 <math><mo>−</mo><mn>2</mn></math> となり、答えが一致した。</p>
+          <p>平方完成は2次関数のための特別な方法だが、<br>微分は3次関数・4次関数にも使える<b>一般的な方法</b>だ。<br>2次関数で両方使えるのは、答え合わせができるよい練習になる。</p>
         </div>
       </section>
 
       <!-- ================= 応用例題3 ================= -->
       <section class="card prob" id="oyo3">
         <h2><span class="tag">応用例題 3</span>箱の容積を最大にする</h2>
-        <p class="q">1辺が <span class="m">12 cm</span> の正方形の厚紙がある。その四隅から合同な正方形を切り取り、残りを折り曲げて、ふたのない箱を作る。箱の容積を最大にするには、切り取る正方形の1辺を何 <span class="m">cm</span> にすればよいか。</p>
+        <p class="q">1辺が <math><mn>12</mn><mi>c</mi><mi>m</mi></math> の正方形の厚紙がある。その四隅から合同な正方形を切り取り、残りを折り曲げて、ふたのない箱を作る。箱の容積を最大にするには、切り取る正方形の1辺を何 <math><mi>c</mi><mi>m</mi></math> にすればよいか。</p>
         <div class="steps">
           <div class="step">
             <span class="chip">ヒント 1</span>
-            <p>切り取る正方形の1辺を <span class="m">x cm</span> とする。展開図で、箱の底面と高さがどうなるか確認しよう。</p>
+            <p>切り取る正方形の1辺を <math><mi>x</mi><mi>c</mi><mi>m</mi></math> とする。<br>展開図で、箱の底面と高さがどうなるか確認しよう。</p>
             <div class="figwrap">
               <svg viewBox="0 0 320 320" width="320" role="img" aria-label="1辺12センチメートルの正方形の厚紙の四隅から1辺xの正方形を切り取る展開図">
                 <!-- paper -->
@@ -612,22 +665,29 @@
                 <text x="160" y="222" class="svg-sub" font-size="12.5" text-anchor="middle">（底面の1辺）</text>
               </svg>
             </div>
-            <p>底面は1辺 <span class="m">(12 &minus; 2x) cm</span> の正方形、高さは <span class="m">x cm</span>。底面の1辺が正でなければならないから、<span class="m">x</span> の範囲は <span class="m">0 &lt; x &lt; 6</span>。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>長さは正の数でなければならない。底面の1辺 <math><mo>(</mo><mn>12</mn><mo>−</mo><mn>2</mn><mi>x</mi><mo>)</mo><mi>c</mi><mi>m</mi></math> が正、つまり <math><mn>12</mn><mo>−</mo><mn>2</mn><mi>x</mi><mo>&gt;</mo><mn>0</mn></math> という条件から、<math><mi>x</mi></math> の範囲が決まるよ。</p>
+            <p>底面は1辺 <math><mo>(</mo><mn>12</mn><mo>−</mo><mn>2</mn><mi>x</mi><mo>)</mo><mi>c</mi><mi>m</mi></math> の正方形、<br>高さは <math><mi>x</mi><mi>c</mi><mi>m</mi></math>。底面の1辺が正でなければならないから、<br><math><mi>x</mi></math> の範囲は <math><mn>0</mn><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mn>6</mn></math>。</p>
           </div>
           <div class="step">
             <span class="chip">ヒント 2</span>
-            <p>容積 <span class="m">V cm<sup>3</sup></span> を <span class="m">x</span> の式で表そう。底面積 × 高さだ。</p>
-            <p class="big"><span class="m">V = (12 &minus; 2x)<sup>2</sup> x = 4x<sup>3</sup> &minus; 48x<sup>2</sup> + 144x</span>　（<span class="m">0 &lt; x &lt; 6</span>）</p>
+            <p>容積 <math><mi>V</mi><mi>c</mi><msup><mi>m</mi><mn>3</mn></msup></math> を <math><mi>x</mi></math> の式で表そう。底面積 × 高さだ。</p>
+            <p class="cite"><span class="cite-tag">使う公式</span>直方体の体積は「底面積×高さ」。この箱では底面積が <math><msup><mrow><mo>(</mo><mn>12</mn><mo>−</mo><mn>2</mn><mi>x</mi><mo>)</mo></mrow><mn>2</mn></msup></math>、高さが <math><mi>x</mi></math> だから、容積はその積で表せるよ。</p>
+            <p class="mq-wide big"><math display="block"><mi>V</mi><mo>=</mo><msup><mrow><mo>(</mo><mn>12</mn><mo>−</mo><mn>2</mn><mi>x</mi><mo>)</mo></mrow><mn>2</mn></msup><mi>x</mi><mo>=</mo><mn>4</mn><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>48</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>144</mn><mi>x</mi><mspace width="2em"/><mo>(</mo><mn>0</mn><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mn>6</mn><mo>)</mo></math></p>
+<div class="mq-narrow mq-stack">
+<p class="formula"><math display="block"><mi>V</mi><mo>=</mo><msup><mrow><mo>(</mo><mn>12</mn><mo>−</mo><mn>2</mn><mi>x</mi><mo>)</mo></mrow><mn>2</mn></msup><mi>x</mi><mo>=</mo><mn>4</mn><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>48</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>144</mn><mi>x</mi></math></p>
+<p class="formula"><math display="block"><mo>(</mo><mn>0</mn><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mn>6</mn><mo>)</mo></math></p>
+</div>
           </div>
           <div class="step">
             <span class="chip">ヒント 3</span>
-            <p><span class="m">V</span> を微分して、<span class="m">V&prime; = 0</span> となる <span class="m">x</span> を求めよう。</p>
-            <p class="big"><span class="m">V&prime; = 12x<sup>2</sup> &minus; 96x + 144 = 12 (x &minus; 2) (x &minus; 6)</span></p>
-            <p><span class="m">0 &lt; x &lt; 6</span> の範囲で <span class="m">V&prime; = 0</span> となるのは <span class="m">x = 2</span> のみ（<span class="m">x = 6</span> は範囲の端で、箱ができない）。</p>
+            <p><math><mi>V</mi></math> を微分して、<math><mi>V</mi><mi>′</mi><mo>=</mo><mn>0</mn></math> となる <math><mi>x</mi></math> を求めよう。</p>
+            <p class="cite"><span class="cite-tag">使う公式</span>微分の公式 <math><mo>(</mo><msup><mi>x</mi><mi>n</mi></msup><mo>)</mo><mi>′</mi><mo>=</mo><mi>n</mi><msup><mi>x</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup></math>。和・差は項ごとに微分する。この問題では <math><mn>4</mn><msup><mi>x</mi><mn>3</mn></msup></math> が <math><mn>12</mn><msup><mi>x</mi><mn>2</mn></msup></math> に、<math><mo>−</mo><mn>48</mn><msup><mi>x</mi><mn>2</mn></msup></math> が <math><mo>−</mo><mn>96</mn><mi>x</mi></math> に、<math><mn>144</mn><mi>x</mi></math> が <math><mn>144</mn></math> になるよ。</p>
+            <p class="big"><math display="block"><mi>V</mi><mi>′</mi><mo>=</mo><mn>12</mn><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>96</mn><mi>x</mi><mo>+</mo><mn>144</mn><mo>=</mo><mn>12</mn><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo><mo>(</mo><mi>x</mi><mo>−</mo><mn>6</mn><mo>)</mo></math></p>
+            <p><math><mn>0</mn><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mn>6</mn></math> の範囲で <math><mi>V</mi><mi>′</mi><mo>=</mo><mn>0</mn></math> となるのは <math><mi>x</mi><mo>=</mo><mn>2</mn></math> のみ<math><mo>(</mo><mi>x</mi><mo>=</mo><mn>6</mn></math> は範囲の端で、<br>箱ができない）。</p>
           </div>
           <div class="step">
             <span class="chip">ヒント 4</span>
-            <p>増減表で、<span class="m">x = 2</span> で本当に最大になるか確認しよう。</p>
+            <p>増減表で、<math><mi>x</mi><mo>=</mo><mn>2</mn></math> で本当に最大になるか確認しよう。</p>
             <div class="tblwrap">
               <table class="tbl">
                 <tr><th>x</th><td>0</td><td>…</td><td>2</td><td>…</td><td>6</td></tr>
@@ -635,11 +695,12 @@
                 <tr><th>V</th><td></td><td class="arr">&#8599;</td><td>128</td><td class="arr">&#8600;</td><td></td></tr>
               </table>
             </div>
-            <p><span class="m">V</span> は <span class="m">x = 2</span> まで増加し、その後減少するので、<span class="m">x = 2</span> で最大になる。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>増加から減少へ切りかわる点で、関数は最大になる（<math><mi>V</mi><mi>′</mi></math> の符号がプラスからマイナスへ変わる点）。増減表で、切りかわりが <math><mi>x</mi><mo>=</mo><mn>2</mn></math> にあることを確かめよう。</p>
+            <p><math><mi>V</mi></math> は <math><mi>x</mi><mo>=</mo><mn>2</mn></math> まで増加し、その後減少するので、<math><mi>x</mi><mo>=</mo><mn>2</mn></math> で最大になる。</p>
           </div>
           <div class="step ans">
             <span class="chip">解答</span>
-            <p class="big">切り取る正方形の1辺を <b><span class="m">2 cm</span></b> にすればよい。（そのとき容積は最大で <span class="m">128 cm<sup>3</sup></span>）</p>
+            <p class="big">切り取る正方形の1辺を <b><math><mn>2</mn><mi>c</mi><mi>m</mi></math></b> にすればよい。（そのとき容積は最大で <math><mn>128</mn><mi>c</mi><msup><mi>m</mi><mn>3</mn></msup><mo>)</mo></math></p>
           </div>
         </div>
         <div class="controls">
@@ -652,11 +713,11 @@
       <!-- ================= 練習20 ================= -->
       <section class="card prob" id="renshu20">
         <h2><span class="tag practice">練習 20</span>長方形の厚紙で箱を作る</h2>
-        <p class="q">縦 <span class="m">10 cm</span>、横 <span class="m">16 cm</span> の長方形の厚紙の四隅から合同な正方形を切り取り、ふたのない箱を作る。箱の容積を最大にするには、切り取る正方形の1辺を何 <span class="m">cm</span> にすればよいか。</p>
+        <p class="q">縦 <math><mn>10</mn><mi>c</mi><mi>m</mi></math>、横 <math><mn>16</mn><mi>c</mi><mi>m</mi></math> の長方形の厚紙の四隅から合同な正方形を切り取り、ふたのない箱を作る。箱の容積を最大にするには、切り取る正方形の1辺を何 <math><mi>c</mi><mi>m</mi></math> にすればよいか。</p>
         <div class="steps">
           <div class="step">
             <span class="chip">ヒント 1</span>
-            <p>切り取る正方形の1辺を <span class="m">x cm</span> とする。展開図を見て、底面の縦・横と <span class="m">x</span> の範囲を考えよう。</p>
+            <p>切り取る正方形の1辺を <math><mi>x</mi><mi>c</mi><mi>m</mi></math> とする。<br>展開図を見て、底面の縦・横と <math><mi>x</mi></math> の範囲を考えよう。</p>
             <div class="figwrap">
               <svg viewBox="0 0 380 250" width="380" role="img" aria-label="縦10センチメートル横16センチメートルの長方形の厚紙の四隅から1辺xの正方形を切り取る展開図">
                 <!-- paper -->
@@ -679,18 +740,25 @@
                 <text x="352" y="129" class="svg-txt" font-size="15">10 &minus; 2x</text>
               </svg>
             </div>
-            <p>底面は縦 <span class="m">(10 &minus; 2x) cm</span>、横 <span class="m">(16 &minus; 2x) cm</span>、高さは <span class="m">x cm</span>。短い方の縦が先に 0 になるので、<span class="m">x</span> の範囲は <span class="m">0 &lt; x &lt; 5</span>。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>長さは正の数でなければならない。底面の縦 <math><mo>(</mo><mn>10</mn><mo>−</mo><mn>2</mn><mi>x</mi><mo>)</mo><mi>c</mi><mi>m</mi></math> と横 <math><mo>(</mo><mn>16</mn><mo>−</mo><mn>2</mn><mi>x</mi><mo>)</mo><mi>c</mi><mi>m</mi></math> がどちらも正という条件のうち、先に <math><mn>0</mn></math> になる短い縦の条件 <math><mn>10</mn><mo>−</mo><mn>2</mn><mi>x</mi><mo>&gt;</mo><mn>0</mn></math> が、<math><mi>x</mi></math> の範囲を決めるよ。</p>
+            <p>底面は縦 <math><mo>(</mo><mn>10</mn><mo>−</mo><mn>2</mn><mi>x</mi><mo>)</mo><mi>c</mi><mi>m</mi></math>、横 <math><mo>(</mo><mn>16</mn><mo>−</mo><mn>2</mn><mi>x</mi><mo>)</mo><mi>c</mi><mi>m</mi></math>、高さは <math><mi>x</mi><mi>c</mi><mi>m</mi></math>。<br>短い方の縦が先に 0 になるので、<br><math><mi>x</mi></math> の範囲は <math><mn>0</mn><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mn>5</mn></math>。</p>
           </div>
           <div class="step">
             <span class="chip">ヒント 2</span>
-            <p>容積 <span class="m">V cm<sup>3</sup></span> を <span class="m">x</span> の式で表し、展開しよう。</p>
-            <p class="big"><span class="m">V = x (10 &minus; 2x) (16 &minus; 2x) = 4x<sup>3</sup> &minus; 52x<sup>2</sup> + 160x</span>　（<span class="m">0 &lt; x &lt; 5</span>）</p>
+            <p>容積 <math><mi>V</mi><mi>c</mi><msup><mi>m</mi><mn>3</mn></msup></math> を <math><mi>x</mi></math> の式で表し、展開しよう。</p>
+            <p class="cite"><span class="cite-tag">使う公式</span>直方体の体積は「縦×横×高さ」。この箱では縦 <math><mo>(</mo><mn>10</mn><mo>−</mo><mn>2</mn><mi>x</mi><mo>)</mo></math>、横 <math><mo>(</mo><mn>16</mn><mo>−</mo><mn>2</mn><mi>x</mi><mo>)</mo></math>、高さ <math><mi>x</mi></math> だから、容積は3つの積で表せるよ。</p>
+            <p class="mq-wide big"><math display="block"><mi>V</mi><mo>=</mo><mi>x</mi><mo>(</mo><mn>10</mn><mo>−</mo><mn>2</mn><mi>x</mi><mo>)</mo><mo>(</mo><mn>16</mn><mo>−</mo><mn>2</mn><mi>x</mi><mo>)</mo><mo>=</mo><mn>4</mn><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>52</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>160</mn><mi>x</mi><mspace width="2em"/><mo>(</mo><mn>0</mn><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mn>5</mn><mo>)</mo></math></p>
+<div class="mq-narrow mq-stack">
+<p class="formula" style="font-size:15px"><math display="block"><mi>V</mi><mo>=</mo><mi>x</mi><mo>(</mo><mn>10</mn><mo>−</mo><mn>2</mn><mi>x</mi><mo>)</mo><mo>(</mo><mn>16</mn><mo>−</mo><mn>2</mn><mi>x</mi><mo>)</mo><mo>=</mo><mn>4</mn><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>52</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>160</mn><mi>x</mi></math></p>
+<p class="formula"><math display="block"><mo>(</mo><mn>0</mn><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mn>5</mn><mo>)</mo></math></p>
+</div>
           </div>
           <div class="step">
             <span class="chip">ヒント 3</span>
-            <p>微分して <span class="m">V&prime; = 0</span> を解こう。2次方程式 <span class="m">3x<sup>2</sup> &minus; 26x + 40 = 0</span> は解の公式で解ける（判別式は <span class="m">26<sup>2</sup> &minus; 4&middot;3&middot;40 = 196 = 14<sup>2</sup></span>）。</p>
-            <p class="big"><span class="m">V&prime; = 12x<sup>2</sup> &minus; 104x + 160 = 4 (3x<sup>2</sup> &minus; 26x + 40)</span></p>
-            <p><span class="m">V&prime; = 0</span> の解は <span class="m">x = 2</span> と <span class="m">x = <span class="fr"><span class="num">20</span><span class="den">3</span></span></span>。<span class="m">0 &lt; x &lt; 5</span> の範囲内にあるのは <span class="m">x = 2</span> のみ。</p>
+            <p>微分して <math><mi>V</mi><mi>′</mi><mo>=</mo><mn>0</mn></math> を解こう。<br>2次方程式 <math><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>26</mn><mi>x</mi><mo>+</mo><mn>40</mn><mo>=</mo><mn>0</mn></math> は解の公式で解ける<br>（判別式は <math><msup><mn>26</mn><mn>2</mn></msup><mo>−</mo><mn>4</mn><mo>·</mo><mn>3</mn><mo>·</mo><mn>40</mn><mo>=</mo><mn>196</mn><mo>=</mo><msup><mn>14</mn><mn>2</mn></msup><mo>)</mo></math>。</p>
+            <p class="big"><math display="block"><mi>V</mi><mi>′</mi><mo>=</mo><mn>12</mn><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>104</mn><mi>x</mi><mo>+</mo><mn>160</mn><mo>=</mo><mn>4</mn><mo>(</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>26</mn><mi>x</mi><mo>+</mo><mn>40</mn><mo>)</mo></math></p>
+            <p class="cite"><span class="cite-tag">使う公式</span>2次方程式 <math><mi>a</mi><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>b</mi><mi>x</mi><mo>+</mo><mi>c</mi><mo>=</mo><mn>0</mn></math> の解の公式 <math><mi>x</mi><mo>=</mo><mfrac><mrow><mo>−</mo><mi>b</mi><mo>±</mo><msqrt><mrow><msup><mi>b</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>a</mi><mi>c</mi></mrow></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></math>。ここでは <math><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>26</mn><mi>x</mi><mo>+</mo><mn>40</mn><mo>=</mo><mn>0</mn></math> に <math><mi>a</mi><mo>=</mo><mn>3</mn></math>、<math><mi>b</mi><mo>=</mo><mo>−</mo><mn>26</mn></math>、<math><mi>c</mi><mo>=</mo><mn>40</mn></math> を当てはめるよ。</p>
+            <p><math><mi>V</mi><mi>′</mi><mo>=</mo><mn>0</mn></math> の解は <math><mi>x</mi><mo>=</mo><mn>2</mn></math> と <math><mi>x</mi><mo>=</mo><mfrac><mn>20</mn><mn>3</mn></mfrac></math>。<br><math><mn>0</mn><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mn>5</mn></math> の範囲内にあるのは <math><mi>x</mi><mo>=</mo><mn>2</mn></math> のみ。</p>
           </div>
           <div class="step">
             <span class="chip">ヒント 4</span>
@@ -702,11 +770,12 @@
                 <tr><th>V</th><td></td><td class="arr">&#8599;</td><td>144</td><td class="arr">&#8600;</td><td></td></tr>
               </table>
             </div>
-            <p><span class="m">V</span> は <span class="m">x = 2</span> まで増加し、その後減少するので、<span class="m">x = 2</span> で最大になる。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>増加から減少へ切りかわる点で、関数は最大になる（<math><mi>V</mi><mi>′</mi></math> の符号がプラスからマイナスへ変わる点）。区間 <math><mn>0</mn><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mn>5</mn></math> の増減表で、切りかわりが <math><mi>x</mi><mo>=</mo><mn>2</mn></math> にあることを確かめよう。</p>
+            <p><math><mi>V</mi></math> は <math><mi>x</mi><mo>=</mo><mn>2</mn></math> まで増加し、その後減少するので、<math><mi>x</mi><mo>=</mo><mn>2</mn></math> で最大になる。</p>
           </div>
           <div class="step ans">
             <span class="chip">解答</span>
-            <p class="big">切り取る正方形の1辺を <b><span class="m">2 cm</span></b> にすればよい。（そのとき容積は最大で <span class="m">144 cm<sup>3</sup></span>）</p>
+            <p class="big">切り取る正方形の1辺を <b><math><mn>2</mn><mi>c</mi><mi>m</mi></math></b> にすればよい。（そのとき容積は最大で <math><mn>144</mn><mi>c</mi><msup><mi>m</mi><mn>3</mn></msup><mo>)</mo></math></p>
           </div>
         </div>
         <div class="controls">
@@ -728,7 +797,7 @@
 
     <div class="stickybar">
       <div class="inner">
-        <span class="lbl" id="progress-label">進捗 0 / 27</span>
+        <span class="lbl" id="progress-label">進捗<math><mfrac><mn>0</mn><mn>27</mn></mfrac></math></span>
         <div class="track"><div class="fill" id="progress-fill"></div></div>
         <button type="button" class="reset-btn" id="reset-btn">最初からやり直す</button>
       </div>

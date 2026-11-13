@@ -277,7 +277,45 @@
         .prob-side .step{scroll-margin-bottom:16px}
         .prob-side .tabpanel .step{scroll-margin-bottom:16px}
       }
-    </style>
+    
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+</style>
   </head>
   <body>
     <div class="wrap">
@@ -306,7 +344,7 @@
         <span class="pno">教科書 p.180</span>
       </div>
 
-      <section class="card prob active" id="prob-kc" data-flow="kc" data-label="解説C（微分係数の定義）" data-final="定義" data-unit="ステップ">
+      <section class="nofig card prob active" id="prob-kc" data-flow="kc" data-label="解説C（微分係数の定義）" data-final="定義" data-unit="ステップ">
         <div class="prob-head">
           <span class="prob-tag think">考え方</span>
           <div class="dots" aria-hidden="true">
@@ -316,32 +354,33 @@
         </div>
         <div class="prob-cols">
         <div class="prob-main">
-        <p class="prob-q">前回学んだ「平均変化率」で、増分 <i class="v">h</i> をどんどん 0 に近づけたらどうなるだろう？　そこから生まれる新しい量が、この項の主役だよ。下の「次へ」で1ステップずつ進めよう。</p>
+        <p class="prob-q">前回学んだ「平均変化率」で、増分 <math><mi>h</mi></math> をどんどん 0 に近づけたらどうなるだろう？　そこから生まれる新しい量が、この項の主役だよ。下の「次へ」で1ステップずつ進めよう。</p>
         </div>
         <div class="prob-side">
 
         <div class="step hint">
           <h3>ステップ 1 ― 平均変化率をおさらい</h3>
-          <p>関数 <i class="v">y</i>＝<i class="v">f</i>(<i class="v">x</i>) について、<i class="v">x</i> が <i class="v">a</i> から <i class="v">a</i>＋<i class="v">h</i> まで変わるときの<b>平均変化率</b>は、こうだったね。</p>
-          <p class="formula"><span class="frac"><span class="num"><i class="v">f</i>(<i class="v">a</i>＋<i class="v">h</i>)－<i class="v">f</i>(<i class="v">a</i>)</span><span class="den"><i class="v">h</i></span></span></p>
-          <p><i class="v">h</i> は <i class="v">x</i> の増分（どれだけ進んだか）を表しているよ。</p>
+          <p>関数 <math><mi>y</mi><mo>=</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>について、<br><math><mi>x</mi></math> が <math><mi>a</mi></math> から <math><mi>a</mi><mo>+</mo><mi>h</mi></math> まで変わるときの<b>平均変化率</b>は、こうだったね。</p>
+          <p class="cite"><span class="cite-tag">使う定義</span>平均変化率の定義 <math><mfrac><mrow><mi>f</mi><mo>(</mo><mi>a</mi><mo>+</mo><mi>h</mi><mo>)</mo><mo>−</mo><mi>f</mi><mo>(</mo><mi>a</mi><mo>)</mo></mrow><mi>h</mi></mfrac></math>。<math><mi>x</mi></math> の増分に対する関数の値の増分の割合だよ。このステップでは、まずこの式を確認するんだ。</p>
+          <p class="formula"><math display="block"><mfrac><mrow><mi>f</mi><mo>(</mo><mi>a</mi><mo>+</mo><mi>h</mi><mo>)</mo><mo>−</mo><mi>f</mi><mo>(</mo><mi>a</mi><mo>)</mo></mrow><mi>h</mi></mfrac></math></p>
+          <p><math><mi>h</mi></math> は <math><mi>x</mi></math> の増分（どれだけ進んだか）を表しているよ。</p>
         </div>
         <div class="step hint">
-          <h3>ステップ 2 ― <i class="v">h</i> を 0 に近づける</h3>
-          <p>ここで、<i class="v">h</i> を 0 ではないまま、<b>限りなく 0 に近づける</b>ことを考える。つまり、平均変化率の <b><i class="v">h</i>→0 のときの極限値</b>を調べるんだ。</p>
-          <p class="formula"><span class="limop"><span>lim</span><span class="limsub"><i class="v">h</i>→0</span></span><span class="frac"><span class="num"><i class="v">f</i>(<i class="v">a</i>＋<i class="v">h</i>)－<i class="v">f</i>(<i class="v">a</i>)</span><span class="den"><i class="v">h</i></span></span></p>
-          <p><i class="v">h</i> が小さくなるほど、この値は「<i class="v">x</i>＝<i class="v">a</i> における<b>瞬間の変化の割合</b>」に近づいていくよ。</p>
+          <h3>ステップ<math><mn>2</mn><mo>―</mo><mi>h</mi></math> を 0 に近づける</h3>
+          <p>ここで、<math><mi>h</mi></math> を 0 ではないまま、<b>限りなく 0 に近づける</b>ことを考える。<br>つまり、平均変化率の <b><math><mi>h</mi><mo>→</mo><mn>0</mn></math>のときの極限値</b>を調べるんだ。</p>
+          <p class="formula"><math display="block"><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><mi>f</mi><mo>(</mo><mi>a</mi><mo>+</mo><mi>h</mi><mo>)</mo><mo>−</mo><mi>f</mi><mo>(</mo><mi>a</mi><mo>)</mo></mrow><mi>h</mi></mfrac></math></p>
+          <p><math><mi>h</mi></math> が小さくなるほど、この値は「<math><mi>x</mi><mo>=</mo><mi>a</mi></math> における<b>瞬間の変化の割合</b>」に近づいていくよ。</p>
         </div>
         <div class="step hint">
           <h3>ステップ 3 ― 極限値に名前をつける</h3>
-          <p>この極限値は、<i class="v">a</i> の値が決まれば1つに定まる、大切な量だ。だから、特別な名前と記号がつけられている。次のステップで定義を確認しよう。</p>
+          <p>この極限値は、<math><mi>a</mi></math> の値が決まれば1つに定まる、大切な量だ。<br>だから、特別な名前と記号がつけられている。次のステップで定義を確認しよう。</p>
         </div>
         <div class="step answer">
           <h3>定義 ― 微分係数</h3>
-          <p>関数 <i class="v">f</i>(<i class="v">x</i>) の <b><i class="v">x</i>＝<i class="v">a</i> における微分係数</b>を、次のように定義する。</p>
-          <p class="big"><i class="v">f</i>′(<i class="v">a</i>)＝<span class="limop"><span>lim</span><span class="limsub"><i class="v">h</i>→0</span></span><span class="frac"><span class="num"><i class="v">f</i>(<i class="v">a</i>＋<i class="v">h</i>)－<i class="v">f</i>(<i class="v">a</i>)</span><span class="den"><i class="v">h</i></span></span></p>
-          <p>記号 <i class="v">f</i>′(<i class="v">a</i>) は「エフ・プライム・エー」と読むよ。平均変化率の式で <b><i class="v">h</i>→0 とした極限</b>が、そのまま定義になっているのがポイントだね。</p>
-          <p class="note"><b>注意：</b>分母の <i class="v">h</i> は 0 にはできない（0 でわることはできない）。あくまで「<i class="v">h</i> を 0 に<b>近づけた</b>ときの極限値」だよ。</p>
+          <p>関数 <math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>の <b><math><mi>x</mi><mo>=</mo><mi>a</mi></math> における微分係数</b>を、次のように定義する。</p>
+          <p class="big"><math display="block"><mi>f</mi><mo>′</mo><mo>(</mo><mi>a</mi><mo>)</mo><mo>=</mo><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><mi>f</mi><mo>(</mo><mi>a</mi><mo>+</mo><mi>h</mi><mo>)</mo><mo>−</mo><mi>f</mi><mo>(</mo><mi>a</mi><mo>)</mo></mrow><mi>h</mi></mfrac></math></p>
+          <p>記号 <math><mi>f</mi><mo>′</mo><mo>(</mo><mi>a</mi><mo>)</mo></math>は「エフ・プライム・エー」と読むよ。<br>平均変化率の式で <b><math><mi>h</mi><mo>→</mo><mn>0</mn></math>とした極限</b>が、そのまま定義になっているのがポイントだね。</p>
+          <p class="note"><b>注意：</b>分母の <math><mi>h</mi></math> は 0 にはできない（0 でわることはできない）。<br>あくまで「<math><mi>h</mi></math> を 0 に<b>近づけた</b>ときの極限値」だよ。</p>
         </div>
         <p class="prob-done">定義を確認できたね！　次は例3で、実際に計算してみよう。</p>
         </div>
@@ -355,7 +394,7 @@
         <span class="pno">教科書 p.180</span>
       </div>
 
-      <section class="card prob" id="prob-ex3" data-flow="ex3" data-label="例3">
+      <section class="nofig card prob" id="prob-ex3" data-flow="ex3" data-label="例3">
         <div class="prob-head">
           <span class="prob-tag">例 3</span>
           <div class="dots" aria-hidden="true">
@@ -365,35 +404,38 @@
         </div>
         <div class="prob-cols">
         <div class="prob-main">
-        <p class="prob-q">関数 <i class="v">f</i>(<i class="v">x</i>)＝<i class="v">x</i><sup>2</sup> の <i class="v">x</i>＝3 における微分係数 <i class="v">f</i>′(3) を、定義を使って求めよう。計算は1行ずつ、ヒントで少しずつ進めるよ。</p>
+        <p class="prob-q">関数 <math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup></math> の <math><mi>x</mi><mo>=</mo><mn>3</mn></math>における微分係数 <math><mi>f</mi><mo>′</mo><mo>(</mo><mn>3</mn><mo>)</mo></math>を、定義を使って求めよう。計算は1行ずつ、ヒントで少しずつ進めるよ。</p>
         </div>
         <div class="prob-side">
 
         <div class="step hint">
           <h3>ヒント 1 ― 定義の式に当てはめる</h3>
-          <p>定義 <i class="v">f</i>′(<i class="v">a</i>)＝lim<sub><i class="v">h</i>→0</sub> {<i class="v">f</i>(<i class="v">a</i>＋<i class="v">h</i>)－<i class="v">f</i>(<i class="v">a</i>)}／<i class="v">h</i> に、<i class="v">a</i>＝3、<i class="v">f</i>(<i class="v">x</i>)＝<i class="v">x</i><sup>2</sup> を当てはめると、<i class="v">f</i>(3＋<i class="v">h</i>)＝(3＋<i class="v">h</i>)<sup>2</sup>、<i class="v">f</i>(3)＝3<sup>2</sup>＝9 だから、</p>
-          <p class="formula"><i class="v">f</i>′(3)＝<span class="limop"><span>lim</span><span class="limsub"><i class="v">h</i>→0</span></span><span class="frac"><span class="num">(3＋<i class="v">h</i>)<sup>2</sup>－9</span><span class="den"><i class="v">h</i></span></span></p>
+          <p>定義 <math><mi>f</mi><mo>′</mo><mo>(</mo><mi>a</mi><mo>)</mo><mo>=</mo><msub><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></msub><mo>{</mo><mi>f</mi><mo>(</mo><mi>a</mi><mo>+</mo><mi>h</mi><mo>)</mo><mo>−</mo><mi>f</mi><mo>(</mo><mi>a</mi><mo>)</mo><mo>}</mo><mo>／</mo><mi>h</mi></math> に、<math><mi>a</mi><mo>=</mo><mn>3</mn></math>、<math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup></math> を当てはめると、<br><math><mi>f</mi><mo>(</mo><mn>3</mn><mo>+</mo><mi>h</mi><mo>)</mo><mo>=</mo><msup><mrow><mo>(</mo><mn>3</mn><mo>+</mo><mi>h</mi><mo>)</mo></mrow><mn>2</mn></msup></math>、<math><mi>f</mi><mo>(</mo><mn>3</mn><mo>)</mo><mo>=</mo><msup><mn>3</mn><mn>2</mn></msup><mo>=</mo><mn>9</mn></math>だから、</p>
+          <p class="cite"><span class="cite-tag">使う定義</span>微分係数の定義 <math><mi>f</mi><mo>′</mo><mo>(</mo><mi>a</mi><mo>)</mo><mo>=</mo><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><mi>f</mi><mo>(</mo><mi>a</mi><mo>+</mo><mi>h</mi><mo>)</mo><mo>−</mo><mi>f</mi><mo>(</mo><mi>a</mi><mo>)</mo></mrow><mi>h</mi></mfrac></math>。この問題では <math><mi>a</mi><mo>=</mo><mn>3</mn></math> として、この定義の式に当てはめるよ。</p>
+          <p class="formula"><math display="block"><mi>f</mi><mo>′</mo><mo>(</mo><mn>3</mn><mo>)</mo><mo>=</mo><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><msup><mrow><mo>(</mo><mn>3</mn><mo>+</mo><mi>h</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>9</mn></mrow><mi>h</mi></mfrac></math></p>
           <p>まずは、この形まで書けることが目標だよ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 分子を展開する</h3>
-          <p>分子の (3＋<i class="v">h</i>)<sup>2</sup> を展開してみよう。(3＋<i class="v">h</i>)<sup>2</sup>＝9＋6<i class="v">h</i>＋<i class="v">h</i><sup>2</sup> だから、分子は</p>
-          <p class="formula">(9＋6<i class="v">h</i>＋<i class="v">h</i><sup>2</sup>)－9＝6<i class="v">h</i>＋<i class="v">h</i><sup>2</sup></p>
-          <p>定数項の 9 が消えて、<b><i class="v">h</i> を含む項だけ</b>が残るよ（ここが計算のコツ）。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span>和の2乗の展開 <math><msup><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mi>y</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mi>y</mi><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup></math>。この問題では <math><mi>x</mi><mo>=</mo><mn>3</mn></math>、<math><mi>y</mi><mo>=</mo><mi>h</mi></math> の場合だよ。</p>
+          <p>分子の<math><msup><mrow><mo>(</mo><mn>3</mn><mo>+</mo><mi>h</mi><mo>)</mo></mrow><mn>2</mn></msup></math> を展開してみよう。<math><msup><mrow><mo>(</mo><mn>3</mn><mo>+</mo><mi>h</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>9</mn><mo>+</mo><mn>6</mn><mi>h</mi><mo>+</mo><msup><mi>h</mi><mn>2</mn></msup></math> だから、分子は</p>
+          <p class="formula"><math display="block"><mo>(</mo><mn>9</mn><mo>+</mo><mn>6</mn><mi>h</mi><mo>+</mo><msup><mi>h</mi><mn>2</mn></msup><mo>)</mo><mo>−</mo><mn>9</mn><mo>=</mo><mn>6</mn><mi>h</mi><mo>+</mo><msup><mi>h</mi><mn>2</mn></msup></math></p>
+          <p>定数項の 9 が消えて、<b><math><mi>h</mi></math> を含む項だけ</b>が残るよ（ここが計算のコツ）。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 3 ― <i class="v">h</i> で約分する</h3>
-          <p>分子 6<i class="v">h</i>＋<i class="v">h</i><sup>2</sup> を <i class="v">h</i> でくくると <i class="v">h</i>(6＋<i class="v">h</i>)。分母の <i class="v">h</i> と約分すると、分数は</p>
-          <p class="formula">6＋<i class="v">h</i></p>
-          <p>になるね。あとは、この式で <i class="v">h</i>→0 としたときの極限を考えるだけだよ。</p>
+          <h3>ヒント<math><mn>3</mn><mo>―</mo><mi>h</mi></math> で約分する</h3>
+          <p class="cite"><span class="cite-tag">使う性質</span>約分：<math><mi>h</mi><mo>≠</mo><mn>0</mn></math> のとき、分子と分母を同じ <math><mi>h</mi></math> で割っても分数の値は変わらない。だから <math><mfrac><mrow><mi>h</mi><mo>(</mo><mn>6</mn><mo>+</mo><mi>h</mi><mo>)</mo></mrow><mi>h</mi></mfrac><mo>=</mo><mn>6</mn><mo>+</mo><mi>h</mi></math> と約分できるよ。</p>
+          <p>分子<math><mn>6</mn><mi>h</mi><mo>+</mo><msup><mi>h</mi><mn>2</mn></msup></math> を <math><mi>h</mi></math> でくくると <math><mi>h</mi><mo>(</mo><mn>6</mn><mo>+</mo><mi>h</mi><mo>)</mo></math>。<br>分母の <math><mi>h</mi></math> と約分すると、分数は</p>
+          <p class="formula"><math display="block"><mn>6</mn><mo>+</mo><mi>h</mi></math></p>
+          <p>になるね。あとは、この式で <math><mi>h</mi><mo>→</mo><mn>0</mn></math>としたときの極限を考えるだけだよ。</p>
         </div>
         <div class="step answer">
           <h3>解答 ― 例3</h3>
           <p>計算を全部つなげると、次のようになるよ。</p>
-          <p class="formula left"><i class="v">f</i>′(3)＝<span class="limop"><span>lim</span><span class="limsub"><i class="v">h</i>→0</span></span><span class="frac"><span class="num">(3＋<i class="v">h</i>)<sup>2</sup>－3<sup>2</sup></span><span class="den"><i class="v">h</i></span></span></p>
-          <p class="formula left">　　　＝<span class="limop"><span>lim</span><span class="limsub"><i class="v">h</i>→0</span></span><span class="frac"><span class="num">6<i class="v">h</i>＋<i class="v">h</i><sup>2</sup></span><span class="den"><i class="v">h</i></span></span>＝<span class="limop"><span>lim</span><span class="limsub"><i class="v">h</i>→0</span></span>(6＋<i class="v">h</i>)</p>
-          <p class="big"><i class="v">f</i>′(3)＝6</p>
-          <p><i class="v">h</i>→0 のとき 6＋<i class="v">h</i> は 6 に近づくので、極限値は 6。手順は「<b>定義に当てはめる → 分子を展開する → <i class="v">h</i> で約分する → 極限をとる</b>」の4つだよ。</p>
+          <p class="cite"><span class="cite-tag">使う性質</span>極限の考え方（前のページ）：<math><mi>h</mi></math> を 0 に近づけると <math><mi>h</mi></math> の部分は 0 に近づくから、<math><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mo>(</mo><mn>6</mn><mo>+</mo><mi>h</mi><mo>)</mo><mo>=</mo><mn>6</mn></math> になるよ。</p>
+          <div class="chain-crow"><div class="crow"><math displaystyle="true"><mi>f</mi><mo>′</mo><mo>(</mo><mn>3</mn><mo>)</mo><mo>=</mo><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><msup><mrow><mo>(</mo><mn>3</mn><mo>+</mo><mi>h</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><msup><mn>3</mn><mn>2</mn></msup></mrow><mi>h</mi></mfrac></math></div><div class="crow"><math displaystyle="true"><mphantom><mi>f</mi><mo>′</mo><mo>(</mo><mn>3</mn><mo>)</mo></mphantom><mo>=</mo><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><mn>6</mn><mi>h</mi><mo>+</mo><msup><mi>h</mi><mn>2</mn></msup></mrow><mi>h</mi></mfrac></math></div><div class="crow"><math displaystyle="true"><mphantom><mi>f</mi><mo>′</mo><mo>(</mo><mn>3</mn><mo>)</mo></mphantom><mo>=</mo><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mo>(</mo><mn>6</mn><mo>+</mo><mi>h</mi><mo>)</mo></math></div></div>
+          <p class="big"><math display="block"><mi>f</mi><mo>′</mo><mo>(</mo><mn>3</mn><mo>)</mo><mo>=</mo><mn>6</mn></math></p>
+          <p><math><mi>h</mi><mo>→</mo><mn>0</mn></math>のとき<math><mn>6</mn><mo>+</mo><mi>h</mi></math> は 6 に近づくので、極限値は 6。<br>手順は「<b>定義に当てはめる → 分子を展開する<math><mo>→</mo><mi>h</mi></math> で約分する → 極限をとる</b>」の4つだよ。</p>
         </div>
         <p class="prob-done">例3クリア！　同じ手順で練習3に挑戦しよう。</p>
         </div>
@@ -401,14 +443,14 @@
       </section>
 
       <!-- ================= 練習3 ================= -->
-      <section class="card prob" id="prob-ren3">
+      <section class="nofig card prob" id="prob-ren3">
         <div class="prob-head">
           <span class="prob-tag ren">練習 3</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
         <div class="prob-cols">
         <div class="prob-main">
-        <p class="prob-q">次の関数の、与えられた <i class="v">x</i> の値における微分係数を、定義を使って求めよ。</p>
+        <p class="prob-q">次の関数の、与えられた <math><mi>x</mi></math> の値における微分係数を、定義を使って求めよ。</p>
         </div>
         <div class="prob-side">
         <div class="tabs" role="tablist" aria-label="練習3の小問">
@@ -417,62 +459,79 @@
         </div>
 
         <!-- 練習3 (1) -->
-        <div class="tabpanel show" id="panel-ren3-1" data-flow="ren3-1" data-label="練習3 (1)">
+        <div class="nofig tabpanel show" id="panel-ren3-1" data-flow="ren3-1" data-label="練習3 (1)">
           <div class="prob-head">
-            <span class="prob-q" style="margin:0">(1) <i class="v">f</i>(<i class="v">x</i>)＝<i class="v">x</i><sup>2</sup> の <i class="v">x</i>＝1 における微分係数</span>
+            <span class="prob-q" style="margin:0"><math><mo>(</mo><mn>1</mn><mo>)</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup></math> の <math><mi>x</mi><mo>=</mo><mn>1</mn></math>における微分係数</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― 定義の式に当てはめる</h3>
-            <p>例3と同じ手順だよ。<i class="v">a</i>＝1 だから、<i class="v">f</i>(1＋<i class="v">h</i>)＝(1＋<i class="v">h</i>)<sup>2</sup>、<i class="v">f</i>(1)＝1<sup>2</sup>＝1。まず</p>
-            <p class="formula"><i class="v">f</i>′(1)＝<span class="limop"><span>lim</span><span class="limsub"><i class="v">h</i>→0</span></span><span class="frac"><span class="num">(1＋<i class="v">h</i>)<sup>2</sup>－1</span><span class="den"><i class="v">h</i></span></span></p>
+            <p>例3と同じ手順だよ。<br><math><mi>a</mi><mo>=</mo><mn>1</mn></math>だから、<math><mi>f</mi><mo>(</mo><mn>1</mn><mo>+</mo><mi>h</mi><mo>)</mo><mo>=</mo><msup><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mi>h</mi><mo>)</mo></mrow><mn>2</mn></msup></math>、<math><mi>f</mi><mo>(</mo><mn>1</mn><mo>)</mo><mo>=</mo><msup><mn>1</mn><mn>2</mn></msup><mo>=</mo><mn>1</mn></math>。まず</p>
+            <p class="cite"><span class="cite-tag">使う定義</span>微分係数の定義 <math><mi>f</mi><mo>′</mo><mo>(</mo><mi>a</mi><mo>)</mo><mo>=</mo><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><mi>f</mi><mo>(</mo><mi>a</mi><mo>+</mo><mi>h</mi><mo>)</mo><mo>−</mo><mi>f</mi><mo>(</mo><mi>a</mi><mo>)</mo></mrow><mi>h</mi></mfrac></math>。この問題では <math><mi>a</mi><mo>=</mo><mn>1</mn></math> として、この定義の式に当てはめるよ。</p>
+            <p class="formula"><math display="block"><mi>f</mi><mo>′</mo><mo>(</mo><mn>1</mn><mo>)</mo><mo>=</mo><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><msup><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mi>h</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>1</mn></mrow><mi>h</mi></mfrac></math></p>
             <p>の形を作ろう。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 分子を展開して整理する</h3>
-            <p>(1＋<i class="v">h</i>)<sup>2</sup>＝1＋2<i class="v">h</i>＋<i class="v">h</i><sup>2</sup>。分子から 1 を引くと、定数項が消えて何が残るかな？　<i class="v">h</i> を含む項だけが残るはずだよ。</p>
+            <p class="cite"><span class="cite-tag">使う公式</span>和の2乗の展開 <math><msup><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mi>y</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mi>y</mi><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup></math>。この問題では <math><mi>x</mi><mo>=</mo><mn>1</mn></math>、<math><mi>y</mi><mo>=</mo><mi>h</mi></math> の場合だよ。</p>
+            <p><math><msup><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mi>h</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>1</mn><mo>+</mo><mn>2</mn><mi>h</mi><mo>+</mo><msup><mi>h</mi><mn>2</mn></msup></math>。分子から 1 を引くと、定数項が消えて何が残るかな？　<math><mi>h</mi></math> を含む項だけが残るはずだよ。</p>
           </div>
           <div class="step hint">
-            <h3>ヒント 3 ― <i class="v">h</i> で約分して極限をとる</h3>
-            <p>分子を <i class="v">h</i> でくくって約分すると、「2＋（<i class="v">h</i> を含む項）」の形になるよ。最後に <i class="v">h</i>→0 とすると、その項は消えて…　極限値はいくつになるかな？</p>
+            <h3>ヒント<math><mn>3</mn><mo>―</mo><mi>h</mi></math> で約分して極限をとる</h3>
+            <p class="cite"><span class="cite-tag">使う性質</span>約分：<math><mi>h</mi><mo>≠</mo><mn>0</mn></math> のとき、分子と分母を同じ <math><mi>h</mi></math> で割っても分数の値は変わらない。だから <math><mfrac><mrow><mi>h</mi><mo>(</mo><mn>2</mn><mo>+</mo><mi>h</mi><mo>)</mo></mrow><mi>h</mi></mfrac><mo>=</mo><mn>2</mn><mo>+</mo><mi>h</mi></math> と約分できるよ。</p>
+            <p>分子を <math><mi>h</mi></math> でくくって約分すると、「<math><mn>2</mn><mo>+</mo><mo>(</mo><mi>h</mi></math> を含む項）」の形になるよ。<br>最後に <math><mi>h</mi><mo>→</mo><mn>0</mn></math>とすると、その項は消えて…　極限値はいくつになるかな？</p>
           </div>
           <div class="step answer">
             <h3>解答 (1)</h3>
-            <p class="formula left"><i class="v">f</i>′(1)＝<span class="limop"><span>lim</span><span class="limsub"><i class="v">h</i>→0</span></span><span class="frac"><span class="num">(1＋<i class="v">h</i>)<sup>2</sup>－1</span><span class="den"><i class="v">h</i></span></span>＝<span class="limop"><span>lim</span><span class="limsub"><i class="v">h</i>→0</span></span><span class="frac"><span class="num">2<i class="v">h</i>＋<i class="v">h</i><sup>2</sup></span><span class="den"><i class="v">h</i></span></span>＝<span class="limop"><span>lim</span><span class="limsub"><i class="v">h</i>→0</span></span>(2＋<i class="v">h</i>)</p>
-            <p class="big"><i class="v">f</i>′(1)＝2</p>
-            <p><i class="v">h</i>→0 のとき 2＋<i class="v">h</i> は 2 に近づくので、微分係数は 2 だよ。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>極限の考え方（前のページ）：<math><mi>h</mi></math> を 0 に近づけると <math><mi>h</mi></math> の部分は 0 に近づくから、<math><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mo>(</mo><mn>2</mn><mo>+</mo><mi>h</mi><mo>)</mo><mo>=</mo><mn>2</mn></math> になるよ。</p>
+            <div class="chain-crow formula left">
+<div class="crow"><math displaystyle="true"><mi>f</mi><mo>′</mo><mo>(</mo><mn>1</mn><mo>)</mo><mo>=</mo><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><msup><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mi>h</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>1</mn></mrow><mi>h</mi></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>f</mi><mo>′</mo><mo>(</mo><mn>1</mn><mo>)</mo></mphantom><mo>=</mo><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><mn>2</mn><mi>h</mi><mo>+</mo><msup><mi>h</mi><mn>2</mn></msup></mrow><mi>h</mi></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>f</mi><mo>′</mo><mo>(</mo><mn>1</mn><mo>)</mo></mphantom><mo>=</mo><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mo>(</mo><mn>2</mn><mo>+</mo><mi>h</mi><mo>)</mo></math></div>
+</div>
+            <p class="big"><math display="block"><mi>f</mi><mo>′</mo><mo>(</mo><mn>1</mn><mo>)</mo><mo>=</mo><mn>2</mn></math></p>
+            <p><math><mi>h</mi><mo>→</mo><mn>0</mn></math>のとき<math><mn>2</mn><mo>+</mo><mi>h</mi></math> は 2 に近づくので、微分係数は 2 だよ。</p>
           </div>
           <p class="prob-done">(1) クリア！　次のタブを開いてみよう。</p>
         </div>
 
         <!-- 練習3 (2) -->
-        <div class="tabpanel" id="panel-ren3-2" data-flow="ren3-2" data-label="練習3 (2)">
+        <div class="nofig tabpanel" id="panel-ren3-2" data-flow="ren3-2" data-label="練習3 (2)">
           <div class="prob-head">
-            <span class="prob-q" style="margin:0">(2) <i class="v">f</i>(<i class="v">x</i>)＝3<i class="v">x</i><sup>2</sup> の <i class="v">x</i>＝−2 における微分係数</span>
+            <span class="prob-q" style="margin:0"><math><mo>(</mo><mn>2</mn><mo>)</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup></math> の <math><mi>x</mi><mo>=</mo><mo>−</mo><mn>2</mn></math>における微分係数</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
           <div class="step hint">
-            <h3>ヒント 1 ― まず <i class="v">f</i>(−2) を計算する</h3>
-            <p><i class="v">a</i>＝−2 のときは、符号に注意だよ。<i class="v">f</i>(−2)＝3×(−2)<sup>2</sup>＝3×4＝12。定義に当てはめると、</p>
-            <p class="formula"><i class="v">f</i>′(−2)＝<span class="limop"><span>lim</span><span class="limsub"><i class="v">h</i>→0</span></span><span class="frac"><span class="num">3(−2＋<i class="v">h</i>)<sup>2</sup>－12</span><span class="den"><i class="v">h</i></span></span></p>
+            <h3>ヒント 1 ― まず <math><mi>f</mi><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></math>を計算する</h3>
+            <p class="cite"><span class="cite-tag">使う定義</span>微分係数の定義 <math><mi>f</mi><mo>′</mo><mo>(</mo><mi>a</mi><mo>)</mo><mo>=</mo><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><mi>f</mi><mo>(</mo><mi>a</mi><mo>+</mo><mi>h</mi><mo>)</mo><mo>−</mo><mi>f</mi><mo>(</mo><mi>a</mi><mo>)</mo></mrow><mi>h</mi></mfrac></math>。この問題では <math><mi>a</mi><mo>=</mo><mo>−</mo><mn>2</mn></math> として、この定義の式に当てはめるよ。</p>
+            <p><math><mi>a</mi><mo>=</mo><mo>−</mo><mn>2</mn></math>のときは、符号に注意だよ。</p>
+<div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>f</mi><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo><mo>=</mo><mn>3</mn><mo>×</mo><msup><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>f</mi><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mphantom><mo>=</mo><mn>3</mn><mo>×</mo><mn>4</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>f</mi><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mphantom><mo>=</mo><mn>12</mn></math></div>
+</div>
+<p>。定義に当てはめると、</p>
+            <p class="formula"><math display="block"><mi>f</mi><mo>′</mo><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo><mo>=</mo><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><mn>3</mn><msup><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>+</mo><mi>h</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>12</mn></mrow><mi>h</mi></mfrac></math></p>
             <p>になるよ。</p>
           </div>
           <div class="step hint">
-            <h3>ヒント 2 ― (−2＋<i class="v">h</i>)<sup>2</sup> を展開する</h3>
-            <p>(−2＋<i class="v">h</i>)<sup>2</sup>＝4−4<i class="v">h</i>＋<i class="v">h</i><sup>2</sup>（まん中の項の符号がマイナスになることに注意）。これを 3 倍してから 12 を引くと、分子はどうなるかな？</p>
+            <h3>ヒント<math><mn>2</mn><mo>―</mo><msup><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>+</mo><mi>h</mi><mo>)</mo></mrow><mn>2</mn></msup></math> を展開する</h3>
+            <p class="cite"><span class="cite-tag">使う公式</span>和の2乗の展開 <math><msup><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mi>y</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mi>y</mi><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup></math>。この問題では <math><mi>x</mi><mo>=</mo><mo>−</mo><mn>2</mn></math>、<math><mi>y</mi><mo>=</mo><mi>h</mi></math> の場合で、まん中の項 <math><mn>2</mn><mi>x</mi><mi>y</mi></math> がマイナスになるよ。</p>
+            <p><math><msup><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>+</mo><mi>h</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>4</mn><mo>−</mo><mn>4</mn><mi>h</mi><mo>+</mo><msup><mi>h</mi><mn>2</mn></msup><mo>(</mo></math>まん中の項の符号がマイナスになることに注意）。<br>これを 3 倍してから 12 を引くと、分子はどうなるかな？</p>
           </div>
           <div class="step hint">
-            <h3>ヒント 3 ― <i class="v">h</i> で約分して極限をとる</h3>
-            <p>分子は <i class="v">h</i> でくくれる形になるよ。約分すると「（ある数）＋3<i class="v">h</i>」の形になるはず。その「ある数」が、<i class="v">h</i>→0 のときの極限値だよ。</p>
+            <h3>ヒント<math><mn>3</mn><mo>―</mo><mi>h</mi></math> で約分して極限をとる</h3>
+            <p class="cite"><span class="cite-tag">使う性質</span>約分：<math><mi>h</mi><mo>≠</mo><mn>0</mn></math> のとき、分子と分母を同じ <math><mi>h</mi></math> で割っても分数の値は変わらない。だから <math><mfrac><mrow><mi>h</mi><mo>(</mo><mo>−</mo><mn>12</mn><mo>+</mo><mn>3</mn><mi>h</mi><mo>)</mo></mrow><mi>h</mi></mfrac><mo>=</mo><mo>−</mo><mn>12</mn><mo>+</mo><mn>3</mn><mi>h</mi></math> と約分できるよ。</p>
+            <p>分子は <math><mi>h</mi></math> でくくれる形になるよ。約分すると「（ある数<math><mo>)</mo><mo>+</mo><mn>3</mn><mi>h</mi></math>」の形になるはず。<br>その「ある数」が、<math><mi>h</mi><mo>→</mo><mn>0</mn></math>のときの極限値だよ。</p>
           </div>
           <div class="step answer">
             <h3>解答 (2)</h3>
-            <p class="formula left"><i class="v">f</i>′(−2)＝<span class="limop"><span>lim</span><span class="limsub"><i class="v">h</i>→0</span></span><span class="frac"><span class="num">3(−2＋<i class="v">h</i>)<sup>2</sup>－12</span><span class="den"><i class="v">h</i></span></span>＝<span class="limop"><span>lim</span><span class="limsub"><i class="v">h</i>→0</span></span><span class="frac"><span class="num">−12<i class="v">h</i>＋3<i class="v">h</i><sup>2</sup></span><span class="den"><i class="v">h</i></span></span></p>
-            <p class="formula left">　　　　＝<span class="limop"><span>lim</span><span class="limsub"><i class="v">h</i>→0</span></span>(−12＋3<i class="v">h</i>)</p>
-            <p class="big"><i class="v">f</i>′(−2)＝−12</p>
-            <p><i class="v">h</i>→0 のとき −12＋3<i class="v">h</i> は −12 に近づくので、微分係数は −12。答えがマイナスになっても大丈夫だよ（その意味は次の解説<i class="v">D</i>で図を見て確かめよう）。</p>
+            <p class="cite"><span class="cite-tag">使う定義</span>微分係数の定義 <math><mi>f</mi><mo>′</mo><mo>(</mo><mi>a</mi><mo>)</mo><mo>=</mo><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><mi>f</mi><mo>(</mo><mi>a</mi><mo>+</mo><mi>h</mi><mo>)</mo><mo>−</mo><mi>f</mi><mo>(</mo><mi>a</mi><mo>)</mo></mrow><mi>h</mi></mfrac></math>。解答の計算は、この定義に <math><mi>a</mi><mo>=</mo><mo>−</mo><mn>2</mn></math> を当てはめた式を、展開して約分したものだよ。</p>
+            <div class="chain-crow"><div class="crow"><math displaystyle="true"><mi>f</mi><mo>′</mo><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo><mo>=</mo><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><mn>3</mn><msup><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>+</mo><mi>h</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>12</mn></mrow><mi>h</mi></mfrac></math></div><div class="crow"><math displaystyle="true"><mphantom><mi>f</mi><mo>′</mo><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mphantom><mo>=</mo><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><mo>−</mo><mn>12</mn><mi>h</mi><mo>+</mo><mn>3</mn><msup><mi>h</mi><mn>2</mn></msup></mrow><mi>h</mi></mfrac></math></div><div class="crow"><math displaystyle="true"><mphantom><mi>f</mi><mo>′</mo><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mphantom><mo>=</mo><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mo>(</mo><mo>−</mo><mn>12</mn><mo>+</mo><mn>3</mn><mi>h</mi><mo>)</mo></math></div></div>
+            <p class="big"><math display="block"><mi>f</mi><mo>′</mo><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo><mo>=</mo><mo>−</mo><mn>12</mn></math></p>
+            <p><math><mi>h</mi><mo>→</mo><mn>0</mn></math>のとき<math><mo>−</mo><mn>12</mn><mo>+</mo><mn>3</mn><mi>h</mi></math> は −12 に近づくので、微分係数は −12。<br>答えがマイナスになっても大丈夫だよ（その意味は次の解説<math><mi>D</mi></math>で図を見て確かめよう）。</p>
           </div>
           <p class="prob-done">(2) クリア！　練習3は全部おわり。次は微分係数を図で見てみよう。</p>
         </div>
@@ -497,7 +556,7 @@
         </div>
         <div class="prob-cols">
         <div class="prob-main">
-        <p class="prob-q">微分係数 <i class="v">f</i>′(<i class="v">a</i>) は、グラフの上では何を表しているのだろう？　曲線 <i class="v">y</i>＝<i class="v">x</i><sup>2</sup> の上の点 <i class="v">A</i>(1，1) と、もう1つの点 <i class="v">P</i> を使って、図で確かめてみよう。</p>
+        <p class="prob-q">微分係数 <math><mi>f</mi><mo>′</mo><mo>(</mo><mi>a</mi><mo>)</mo></math>は、グラフの上では何を表しているのだろう？　曲線 <math><mi>y</mi><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup></math> の上の点 <math><mi>A</mi><mo>(</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>)</mo></math>と、もう1つの点 <math><mi>P</mi></math> を使って、図で確かめてみよう。</p>
 
         <figure>
           <div class="figbox">
@@ -552,44 +611,47 @@
             </svg>
           </div>
           <div class="legend" aria-hidden="true">
-            <span><span class="sw"></span>割線 <i class="v">A</i><i class="v">P</i></span>
-            <span><span class="sw tan"></span>接線（点<i class="v">A</i>における）</span>
+            <span><span class="sw"></span>割線 <math><mi>A</mi><mi>P</mi></math></span>
+            <span><span class="sw tan"></span>接線（点<math><mi>A</mi></math>における）</span>
           </div>
-          <figcaption>点 <i class="v">P</i> は、<i class="v">x</i> 座標が 1＋<i class="v">h</i> の点 <i class="v">P</i>（1＋<i class="v">h</i>，(1＋<i class="v">h</i>)<sup>2</sup>）。スライダーで <i class="v">h</i> を小さくすると、点 <i class="v">P</i> が点 <i class="v">A</i> に近づいていく。</figcaption>
+          <figcaption>点 <math><mi>P</mi></math> は、<math><mi>x</mi></math> 座標が<math><mn>1</mn><mo>+</mo><mi>h</mi></math> の点 <math><mi>P</mi><mo>(</mo><mn>1</mn><mo>+</mo><mi>h</mi><mo>,</mo><msup><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mi>h</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>)</mo></math>。スライダーで <math><mi>h</mi></math> を小さくすると、点 <math><mi>P</mi></math> が点 <math><mi>A</mi></math> に近づいていく。</figcaption>
         </figure>
 
         <div class="slider-box">
-          <label for="hSlider">スライダー：<i class="v">h</i> の大きさを変えてみよう（右へ動かすほど <i class="v">h</i> は小さい）</label>
+          <label for="hSlider">スライダー：<math><mi>h</mi></math> の大きさを変えてみよう（右へ動かすほど <math><mi>h</mi></math> は小さい）</label>
           <input type="range" id="hSlider" min="0" max="4" step="1" value="0" aria-label="h の値を変えるスライダー" />
-          <div class="slider-scale" aria-hidden="true"><span><i class="v">h</i>＝2</span><span><i class="v">h</i>＝1</span><span><i class="v">h</i>＝0.5</span><span><i class="v">h</i>＝0.1</span><span><i class="v">h</i>＝0.01</span></div>
+          <div class="slider-scale" aria-hidden="true"><span><math><mi>h</mi><mo>=</mo><mn>2</mn></math></span><span><math><mi>h</mi><mo>=</mo><mn>1</mn></math></span><span><math><mi>h</mi><mo>=</mo><mn>0.5</mn></math></span><span><math><mi>h</mi><mo>=</mo><mn>0.1</mn></math></span><span><math><mi>h</mi><mo>=</mo><mn>0.01</mn></math></span></div>
         </div>
         <div class="readout" aria-live="polite">
-          <span class="cell">いまの <i class="v">h</i> ＝ <b id="hVal">2</b></span>
-          <span class="cell">割線 <i class="v">A</i><i class="v">P</i> の傾き ＝ <b id="slopeVal">4</b></span>
+          <span class="cell">いまの <math><mi>h</mi><mo>=</mo></math><b id="hVal">2</b></span>
+          <span class="cell">割線 <math><mi>A</mi><mi>P</mi></math> の傾き<math><mo>=</mo></math><b id="slopeVal">4</b></span>
         </div>
         </div>
         <div class="prob-side">
 
         <div class="step hint">
           <h3>ステップ 1 ― 割線の傾きは平均変化率</h3>
-          <p>グラフ上の2点 <i class="v">A</i>，<i class="v">P</i> を通る直線を<span class="key">割線</span>というよ。割線 <i class="v">A</i><i class="v">P</i> の傾きは、<i class="v">x</i> が 1 から 1＋<i class="v">h</i> まで変わるときの<b>平均変化率</b>そのもので、</p>
-          <p class="formula"><span class="frac"><span class="num"><i class="v">f</i>(1＋<i class="v">h</i>)－<i class="v">f</i>(1)</span><span class="den"><i class="v">h</i></span></span>＝<span class="frac"><span class="num">(1＋<i class="v">h</i>)<sup>2</sup>－1</span><span class="den"><i class="v">h</i></span></span>＝2＋<i class="v">h</i></p>
-          <p>と計算できる。図のいちばん上（<i class="v">h</i>＝2）のときは、傾きは 2＋2＝4 だね。</p>
+          <p>グラフ上の2点 <math><mi>A</mi><mo>,</mo><mi>P</mi></math> を通る直線を<span class="key">割線</span>というよ。<br>割線 <math><mi>A</mi><mi>P</mi></math> の傾きは、<math><mi>x</mi></math> が 1 から<math><mn>1</mn><mo>+</mo><mi>h</mi></math> まで変わるときの<b>平均変化率</b>そのもので、</p>
+          <p class="cite"><span class="cite-tag">使う定義</span>平均変化率の定義 <math><mfrac><mrow><mi>f</mi><mo>(</mo><mi>a</mi><mo>+</mo><mi>h</mi><mo>)</mo><mo>−</mo><mi>f</mi><mo>(</mo><mi>a</mi><mo>)</mo></mrow><mi>h</mi></mfrac></math>。このステップでは <math><mi>a</mi><mo>=</mo><mn>1</mn></math> の場合を計算して、割線の傾きと結びつけるよ。</p>
+          <p class="formula"><math display="block"><mfrac><mrow><mi>f</mi><mo>(</mo><mn>1</mn><mo>+</mo><mi>h</mi><mo>)</mo><mo>−</mo><mi>f</mi><mo>(</mo><mn>1</mn><mo>)</mo></mrow><mi>h</mi></mfrac><mo>=</mo><mfrac><mrow><msup><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mi>h</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>1</mn></mrow><mi>h</mi></mfrac><mo>=</mo><mn>2</mn><mo>+</mo><mi>h</mi></math></p>
+          <p>と計算できる。図のいちばん上<math><mo>(</mo><mi>h</mi><mo>=</mo><mn>2</mn><mo>)</mo></math>のときは、傾きは<math><mn>2</mn><mo>+</mo><mn>2</mn><mo>=</mo><mn>4</mn></math>だね。</p>
         </div>
         <div class="step hint">
-          <h3>ステップ 2 ― スライダーで <i class="v">h</i> を小さくする</h3>
-          <p>上のスライダーを右へ動かして、<i class="v">h</i> を 1、0.5、0.1、0.01 と小さくしてみよう。点 <i class="v">P</i> が点 <i class="v">A</i> に近づくにつれて、<b>割線がだんだん接線（破線）に重なっていく</b>のが見えるかな？　傾きの表示も 3 → 2.5 → 2.1 → 2.01 と変化していくよ。</p>
+          <h3>ステップ 2 ― スライダーで <math><mi>h</mi></math> を小さくする</h3>
+          <p>上のスライダーを右へ動かして、<math><mi>h</mi></math> を 1、0.5、0.1、0.01 と小さくしてみよう。<br>点 <math><mi>P</mi></math> が点 <math><mi>A</mi></math> に近づくにつれて、<b>割線がだんだん接線（破線）に重なっていく</b>のが見えるかな？<br>　傾きの表示も 3 → 2.5 → 2.1 → 2.01 と変化していくよ。</p>
         </div>
         <div class="step hint">
-          <h3>ステップ 3 ― <i class="v">h</i>→0 の極限で割線は接線になる</h3>
-          <p><i class="v">h</i>→0 の極限では、点 <i class="v">P</i> は点 <i class="v">A</i> に限りなく近づき、割線は「点 <i class="v">A</i> で曲線に接する1本の直線」＝<span class="key">接線</span>に近づく。その傾きは、平均変化率 2＋<i class="v">h</i> の極限だから、<i class="v">h</i>→0 のとき 2 に近づいていくね。</p>
+          <h3>ステップ<math><mn>3</mn><mo>―</mo><mi>h</mi><mo>→</mo><mn>0</mn></math>の極限で割線は接線になる</h3>
+          <p class="cite"><span class="cite-tag">使う定義</span>微分係数の定義 <math><mi>f</mi><mo>′</mo><mo>(</mo><mi>a</mi><mo>)</mo><mo>=</mo><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><mi>f</mi><mo>(</mo><mi>a</mi><mo>+</mo><mi>h</mi><mo>)</mo><mo>−</mo><mi>f</mi><mo>(</mo><mi>a</mi><mo>)</mo></mrow><mi>h</mi></mfrac></math>。<math><mi>a</mi><mo>=</mo><mn>1</mn></math> とすると <math><mi>f</mi><mo>′</mo><mo>(</mo><mn>1</mn><mo>)</mo></math> が、平均変化率 <math><mn>2</mn><mo>+</mo><mi>h</mi></math> の極限になるよ。</p>
+          <p><math><mi>h</mi><mo>→</mo><mn>0</mn></math>の極限では、点 <math><mi>P</mi></math> は点 <math><mi>A</mi></math> に限りなく近づき、割線は「点 <math><mi>A</mi></math> で曲線に接する1本の直線」＝<span class="key">接線</span>に近づく。<br>その傾きは、平均変化率<math><mn>2</mn><mo>+</mo><mi>h</mi></math> の極限だから、<math><mi>h</mi><mo>→</mo><mn>0</mn></math>のとき 2 に近づいていくね。</p>
         </div>
         <div class="step answer">
           <h3>まとめ ― 微分係数の図形的な意味</h3>
           <p>平均変化率の極限が微分係数だったから、この結果は一般にこう言えるよ。</p>
-          <p class="big">点 (<i class="v">a</i>，<i class="v">f</i>(<i class="v">a</i>)) における接線の傾き ＝ <i class="v">f</i>′(<i class="v">a</i>)</p>
-          <p>この図の場合、点 <i class="v">A</i>(1，1) における接線の傾きは <i class="v">f</i>′(1) で、接線の傾きは 2。練習3 (1) で定義から計算した <i class="v">f</i>′(1)＝2 と、ぴったり一致しているね。</p>
-          <p class="note"><b>符号の意味：</b>微分係数がマイナスのとき（練習3 (2) の <i class="v">f</i>′(−2)＝−12 など）、接線は<b>右下がり</b>になる。微分係数の符号は、接線の上がり下がりを表しているんだ。</p>
+          <p class="cite"><span class="cite-tag">使う性質</span>微分係数の図形的な意味：点 <math><mo>(</mo><mi>a</mi><mo>,</mo><mi>f</mi><mo>(</mo><mi>a</mi><mo>)</mo><mo>)</mo></math> における接線の傾きは <math><mi>f</mi><mo>′</mo><mo>(</mo><mi>a</mi><mo>)</mo></math>。これは、割線の傾き（平均変化率）の極限から出てきた性質だよ。</p>
+          <p class="big">点<math><mo>(</mo><mi>a</mi><mo>,</mo><mi>f</mi><mo>(</mo><mi>a</mi><mo>)</mo><mo>)</mo></math>における接線の傾き<math><mo>=</mo><mi>f</mi><mo>′</mo><mo>(</mo><mi>a</mi><mo>)</mo></math></p>
+          <p>この図の場合、点 <math><mi>A</mi><mo>(</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>)</mo></math>における接線の傾きは <math><mi>f</mi><mo>′</mo><mo>(</mo><mn>1</mn><mo>)</mo></math>で、接線の傾きは 2。<br>練習3 (1) で定義から計算した <math><mi>f</mi><mo>′</mo><mo>(</mo><mn>1</mn><mo>)</mo><mo>=</mo><mn>2</mn></math>と、ぴったり一致しているね。</p>
+          <p class="note"><b>符号の意味：</b>微分係数がマイナスのとき（練習3 (2) の <math><mi>f</mi><mo>′</mo><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo><mo>=</mo><mo>−</mo><mn>12</mn></math>など）、接線は<b>右下がり</b>になる。<br>微分係数の符号は、接線の上がり下がりを表しているんだ。</p>
         </div>
         <p class="prob-done">図形的な意味を確認できたね！　このまとめを使って、例4・練習4に進もう。</p>
         </div>
@@ -597,7 +659,7 @@
       </section>
 
       <!-- ================= 例4 ================= -->
-      <section class="card prob" id="prob-ex4" data-flow="ex4" data-label="例4">
+      <section class="nofig card prob" id="prob-ex4" data-flow="ex4" data-label="例4">
         <div class="prob-head">
           <span class="prob-tag">例 4</span>
           <div class="dots" aria-hidden="true">
@@ -607,24 +669,26 @@
         </div>
         <div class="prob-cols">
         <div class="prob-main">
-        <p class="prob-q">曲線 <i class="v">y</i>＝<i class="v">x</i><sup>2</sup> 上の点 (3，9) における接線の傾きを求めよう。</p>
+        <p class="prob-q">曲線 <math><mi>y</mi><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup></math> 上の点<math><mo>(</mo><mn>3</mn><mo>,</mo><mn>9</mn><mo>)</mo></math>における接線の傾きを求めよう。</p>
         </div>
         <div class="prob-side">
 
         <div class="step hint">
-          <h3>ヒント 1 ― 解説<i class="v">D</i>のまとめを使う</h3>
-          <p>点 (<i class="v">a</i>，<i class="v">f</i>(<i class="v">a</i>)) における接線の傾きは、その点における<b>微分係数 <i class="v">f</i>′(<i class="v">a</i>)</b> に等しいんだったね。<i class="v">a</i> は、点の <i class="v">x</i> 座標だよ。</p>
+          <h3>ヒント 1 ― 解説<math><mi>D</mi></math>のまとめを使う</h3>
+          <p class="cite"><span class="cite-tag">使う性質</span>微分係数の図形的な意味：点 <math><mo>(</mo><mi>a</mi><mo>,</mo><mi>f</mi><mo>(</mo><mi>a</mi><mo>)</mo><mo>)</mo></math> における接線の傾きは <math><mi>f</mi><mo>′</mo><mo>(</mo><mi>a</mi><mo>)</mo></math>。この問題では <math><mi>a</mi><mo>=</mo><mn>3</mn></math> の場合を使うよ。</p>
+          <p>点<math><mo>(</mo><mi>a</mi><mo>,</mo><mi>f</mi><mo>(</mo><mi>a</mi><mo>)</mo><mo>)</mo></math>における接線の傾きは、その点における<b>微分係数 <math><mi>f</mi><mo>′</mo><mo>(</mo><mi>a</mi><mo>)</mo></math></b> に等しいんだったね。<br><math><mi>a</mi></math> は、点の <math><mi>x</mi></math> 座標だよ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 必要な微分係数は計算ずみ</h3>
-          <p>この点の <i class="v">x</i> 座標は 3 だから、必要なのは <i class="v">f</i>′(3)。長い lim の計算はしなくて大丈夫 ― <i class="v">f</i>′(3) は、このページの例3で定義から求めた値だよ。思い出してみよう。</p>
+          <p>この点の <math><mi>x</mi></math> 座標は 3 だから、必要なのは <math><mi>f</mi><mo>′</mo><mo>(</mo><mn>3</mn><mo>)</mo></math>。長い lim の計算はしなくて大丈夫<math><mo>―</mo><mi>f</mi><mo>′</mo><mo>(</mo><mn>3</mn><mo>)</mo></math>は、このページの例3で定義から求めた値だよ。<br>思い出してみよう。</p>
         </div>
         <div class="step answer">
           <h3>解答 ― 例4</h3>
-          <p>接線の傾きを <i class="v">m</i> とすると、<i class="v">m</i> は点 (3，9) における微分係数に等しいから、</p>
-          <p class="formula"><i class="v">m</i>＝<i class="v">f</i>′(3)</p>
+          <p>接線の傾きを <math><mi>m</mi></math> とすると、<math><mi>m</mi></math> は点<math><mo>(</mo><mn>3</mn><mo>,</mo><mn>9</mn><mo>)</mo></math>における微分係数に等しいから、</p>
+          <p class="cite"><span class="cite-tag">使う性質</span>微分係数の図形的な意味：接線の傾きは、その点における微分係数に等しい。ここでは <math><mi>f</mi><mo>′</mo><mo>(</mo><mn>3</mn><mo>)</mo><mo>=</mo><mn>6</mn></math>（例3で定義から求めた値）をそのまま使うよ。</p>
+          <p class="formula"><math display="block"><mi>m</mi><mo>=</mo><mi>f</mi><mo>′</mo><mo>(</mo><mn>3</mn><mo>)</mo></math></p>
           <p class="big">接線の傾きは 6</p>
-          <p>例3の結果 <i class="v">f</i>′(3)＝6 をそのまま使えたね。「接線の傾き」と聞いたら「微分係数」と読み替えるのが、この項の合言葉だよ。</p>
+          <p>例3の結果 <math><mi>f</mi><mo>′</mo><mo>(</mo><mn>3</mn><mo>)</mo><mo>=</mo><mn>6</mn></math>をそのまま使えたね。<br>「接線の傾き」と聞いたら「微分係数」と読み替えるのが、この項の合言葉だよ。</p>
         </div>
         <p class="prob-done">例4クリア！　最後は練習4で、自分で解いてみよう。</p>
         </div>
@@ -632,14 +696,14 @@
       </section>
 
       <!-- ================= 練習4 ================= -->
-      <section class="card prob" id="prob-ren4">
+      <section class="nofig card prob" id="prob-ren4">
         <div class="prob-head">
           <span class="prob-tag ren">練習 4</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
         <div class="prob-cols">
         <div class="prob-main">
-        <p class="prob-q">曲線 <i class="v">y</i>＝<i class="v">x</i><sup>2</sup> の、次の点における接線の傾きを求めよ。</p>
+        <p class="prob-q">曲線 <math><mi>y</mi><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup></math> の、次の点における接線の傾きを求めよ。</p>
         </div>
         <div class="prob-side">
         <div class="tabs" role="tablist" aria-label="練習4の小問">
@@ -648,54 +712,63 @@
         </div>
 
         <!-- 練習4 (1) -->
-        <div class="tabpanel show" id="panel-ren4-1" data-flow="ren4-1" data-label="練習4 (1)">
+        <div class="nofig tabpanel show" id="panel-ren4-1" data-flow="ren4-1" data-label="練習4 (1)">
           <div class="prob-head">
-            <span class="prob-q" style="margin:0">(1) 点（1，1）における接線の傾き</span>
+            <span class="prob-q" style="margin:0">(1) 点<math><mo>(</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>)</mo></math>における接線の傾き</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― 微分係数に読み替える</h3>
-            <p>点（1，1）における接線の傾きは、<i class="v">x</i>＝1 における微分係数 <i class="v">f</i>′(1) に等しいよ（解説<i class="v">D</i>のまとめ）。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>微分係数の図形的な意味：点 <math><mo>(</mo><mi>a</mi><mo>,</mo><mi>f</mi><mo>(</mo><mi>a</mi><mo>)</mo><mo>)</mo></math> における接線の傾きは <math><mi>f</mi><mo>′</mo><mo>(</mo><mi>a</mi><mo>)</mo></math>。この問題では <math><mi>a</mi><mo>=</mo><mn>1</mn></math> の場合を使うよ。</p>
+            <p>点<math><mo>(</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>)</mo></math>における接線の傾きは、<math><mi>x</mi><mo>=</mo><mn>1</mn></math>における微分係数 <math><mi>f</mi><mo>′</mo><mo>(</mo><mn>1</mn><mo>)</mo></math>に等しいよ（解説<math><mi>D</mi></math>のまとめ）。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 計算ずみの値を使う</h3>
-            <p><i class="v">f</i>′(1) は、もう計算したことがあるはず。練習3 (1) で、定義に当てはめて lim の計算をした結果を思い出してみよう。解説<i class="v">D</i>の図で確かめた値でもあるよ。</p>
+            <p><math><mi>f</mi><mo>′</mo><mo>(</mo><mn>1</mn><mo>)</mo></math>は、もう計算したことがあるはず。<br>練習3 (1) で、定義に当てはめて lim の計算をした結果を思い出してみよう。<br>解説<math><mi>D</mi></math>の図で確かめた値でもあるよ。</p>
           </div>
           <div class="step answer">
             <h3>解答 (1)</h3>
             <p class="big">接線の傾きは 2</p>
-            <p>傾き ＝ <i class="v">f</i>′(1)＝2。練習3 (1) の結果がそのまま答えになるね。</p>
+            <p>傾き<math><mo>=</mo><mi>f</mi><mo>′</mo><mo>(</mo><mn>1</mn><mo>)</mo><mo>=</mo><mn>2</mn></math>。練習3 (1) の結果がそのまま答えになるね。</p>
           </div>
           <p class="prob-done">(1) クリア！　次のタブを開いてみよう。</p>
         </div>
 
         <!-- 練習4 (2) -->
-        <div class="tabpanel" id="panel-ren4-2" data-flow="ren4-2" data-label="練習4 (2)">
+        <div class="nofig tabpanel" id="panel-ren4-2" data-flow="ren4-2" data-label="練習4 (2)">
           <div class="prob-head">
-            <span class="prob-q" style="margin:0">(2) 点（−2，4）における接線の傾き</span>
+            <span class="prob-q" style="margin:0">(2) 点<math><mo>(</mo><mo>−</mo><mn>2</mn><mo>,</mo><mn>4</mn><mo>)</mo></math>における接線の傾き</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
           <div class="step hint">
-            <h3>ヒント 1 ― <i class="v">f</i>′(−2) を定義から計算する</h3>
-            <p>傾きは <i class="v">f</i>′(−2) に等しい。ただし今度は <i class="v">f</i>(<i class="v">x</i>)＝<i class="v">x</i><sup>2</sup>（練習3 (2) の 3<i class="v">x</i><sup>2</sup> ではない）ことに注意。定義に当てはめると、</p>
-            <p class="formula"><i class="v">f</i>′(−2)＝<span class="limop"><span>lim</span><span class="limsub"><i class="v">h</i>→0</span></span><span class="frac"><span class="num">(−2＋<i class="v">h</i>)<sup>2</sup>－4</span><span class="den"><i class="v">h</i></span></span></p>
+            <h3>ヒント<math><mn>1</mn><mo>―</mo><mi>f</mi><mo>′</mo><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></math>を定義から計算する</h3>
+            <p class="cite"><span class="cite-tag">使う定義</span>微分係数の定義 <math><mi>f</mi><mo>′</mo><mo>(</mo><mi>a</mi><mo>)</mo><mo>=</mo><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><mi>f</mi><mo>(</mo><mi>a</mi><mo>+</mo><mi>h</mi><mo>)</mo><mo>−</mo><mi>f</mi><mo>(</mo><mi>a</mi><mo>)</mo></mrow><mi>h</mi></mfrac></math>。この問題では <math><mi>a</mi><mo>=</mo><mo>−</mo><mn>2</mn></math>、関数は <math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup></math> として、この定義の式に当てはめるよ。</p>
+            <p>傾きは <math><mi>f</mi><mo>′</mo><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></math>に等しい。ただし今度は <math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>(</mo></math>練習3 (2) の<math><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup></math> ではない）ことに注意。<br>定義に当てはめると、</p>
+            <p class="formula"><math display="block"><mi>f</mi><mo>′</mo><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo><mo>=</mo><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><msup><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>+</mo><mi>h</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>4</mn></mrow><mi>h</mi></mfrac></math></p>
             <p>になるよ。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 分子を展開して整理する</h3>
-            <p>(−2＋<i class="v">h</i>)<sup>2</sup>＝4−4<i class="v">h</i>＋<i class="v">h</i><sup>2</sup>。ここから 4 を引くと、定数項が消えて、<i class="v">h</i> を含む項だけが残るよ。</p>
+            <p class="cite"><span class="cite-tag">使う公式</span>和の2乗の展開 <math><msup><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mi>y</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mi>y</mi><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup></math>。この問題では <math><mi>x</mi><mo>=</mo><mo>−</mo><mn>2</mn></math>、<math><mi>y</mi><mo>=</mo><mi>h</mi></math> の場合だよ。</p>
+            <p><math><msup><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>+</mo><mi>h</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>4</mn><mo>−</mo><mn>4</mn><mi>h</mi><mo>+</mo><msup><mi>h</mi><mn>2</mn></msup></math>。ここから 4 を引くと、<br>定数項が消えて、<math><mi>h</mi></math> を含む項だけが残るよ。</p>
           </div>
           <div class="step hint">
-            <h3>ヒント 3 ― <i class="v">h</i> で約分して極限をとる</h3>
-            <p>分子を <i class="v">h</i> でくくって約分すると、「（ある数）＋<i class="v">h</i>」の形になるよ。<i class="v">h</i>→0 としたとき、その「ある数」が接線の傾きだ。</p>
+            <h3>ヒント<math><mn>3</mn><mo>―</mo><mi>h</mi></math> で約分して極限をとる</h3>
+            <p class="cite"><span class="cite-tag">使う性質</span>約分：<math><mi>h</mi><mo>≠</mo><mn>0</mn></math> のとき、分子と分母を同じ <math><mi>h</mi></math> で割っても分数の値は変わらない。だから <math><mfrac><mrow><mi>h</mi><mo>(</mo><mo>−</mo><mn>4</mn><mo>+</mo><mi>h</mi><mo>)</mo></mrow><mi>h</mi></mfrac><mo>=</mo><mo>−</mo><mn>4</mn><mo>+</mo><mi>h</mi></math> と約分できるよ。</p>
+            <p>分子を <math><mi>h</mi></math> でくくって約分すると、「（ある数<math><mo>)</mo><mo>+</mo><mi>h</mi></math>」の形になるよ。<br><math><mi>h</mi><mo>→</mo><mn>0</mn></math>としたとき、その「ある数」が接線の傾きだ。</p>
           </div>
           <div class="step answer">
             <h3>解答 (2)</h3>
-            <p class="formula left"><i class="v">f</i>′(−2)＝<span class="limop"><span>lim</span><span class="limsub"><i class="v">h</i>→0</span></span><span class="frac"><span class="num">(−2＋<i class="v">h</i>)<sup>2</sup>－(−2)<sup>2</sup></span><span class="den"><i class="v">h</i></span></span>＝<span class="limop"><span>lim</span><span class="limsub"><i class="v">h</i>→0</span></span><span class="frac"><span class="num">−4<i class="v">h</i>＋<i class="v">h</i><sup>2</sup></span><span class="den"><i class="v">h</i></span></span>＝<span class="limop"><span>lim</span><span class="limsub"><i class="v">h</i>→0</span></span>(−4＋<i class="v">h</i>)</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>極限の考え方（前のページ）：<math><mi>h</mi></math> を 0 に近づけると <math><mi>h</mi></math> の部分は 0 に近づくから、<math><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mo>(</mo><mo>−</mo><mn>4</mn><mo>+</mo><mi>h</mi><mo>)</mo><mo>=</mo><mo>−</mo><mn>4</mn></math> になるよ。これが接線の傾きだね。</p>
+            <div class="chain-crow formula left">
+<div class="crow"><math displaystyle="true"><mi>f</mi><mo>′</mo><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo><mo>=</mo><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><msup><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>+</mo><mi>h</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><msup><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup></mrow><mi>h</mi></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>f</mi><mo>′</mo><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mphantom><mo>=</mo><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><mo>−</mo><mn>4</mn><mi>h</mi><mo>+</mo><msup><mi>h</mi><mn>2</mn></msup></mrow><mi>h</mi></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>f</mi><mo>′</mo><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mphantom><mo>=</mo><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mo>(</mo><mo>−</mo><mn>4</mn><mo>+</mo><mi>h</mi><mo>)</mo></math></div>
+</div>
             <p class="big">接線の傾きは −4</p>
-            <p><i class="v">f</i>′(−2)＝−4。傾きがマイナスだから、この点での接線は右下がりだね。</p>
+            <p><math><mi>f</mi><mo>′</mo><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo><mo>=</mo><mo>−</mo><mn>4</mn></math>。傾きがマイナスだから、この点での接線は右下がりだね。</p>
           </div>
           <p class="prob-done">(2) クリア！　練習4は全部おわり。下のまとめで確認しよう。</p>
         </div>
@@ -710,10 +783,10 @@
       <section class="card summary" id="summaryCard" style="display:none">
         <h2>この項のポイント</h2>
         <ul>
-          <li><b>微分係数の定義：</b><i class="v">f</i>′(<i class="v">a</i>)＝lim<sub><i class="v">h</i>→0</sub> {<i class="v">f</i>(<i class="v">a</i>＋<i class="v">h</i>)－<i class="v">f</i>(<i class="v">a</i>)}／<i class="v">h</i>。平均変化率で <i class="v">h</i>→0 とした極限値だよ。</li>
-          <li><b>計算の手順：</b>定義に当てはめる → 分子を展開する（定数項が消える）→ <i class="v">h</i> で約分する → <i class="v">h</i>→0 の極限をとる。</li>
-          <li><b>図形的な意味：</b>点 (<i class="v">a</i>，<i class="v">f</i>(<i class="v">a</i>)) における接線の傾きは <i class="v">f</i>′(<i class="v">a</i>)。「接線の傾き」と聞いたら「微分係数」と読み替えよう。符号がマイナスなら接線は右下がり。</li>
-          <li><b><i class="v">y</i>＝<i class="v">x</i><sup>2</sup> の場合：</b><i class="v">f</i>′(<i class="v">a</i>)＝2<i class="v">a</i> になる（定義から {(<i class="v">a</i>＋<i class="v">h</i>)<sup>2</sup>－<i class="v">a</i><sup>2</sup>}／<i class="v">h</i>＝2<i class="v">a</i>＋<i class="v">h</i> → 2<i class="v">a</i> と確かめられる）。だから <i class="v">a</i>＝3 で 6、<i class="v">a</i>＝1 で 2、<i class="v">a</i>＝−2 で −4 と、この項の答えがすべてつながるね。</li>
+          <li><p class="cite"><span class="cite-tag">使う定義</span>微分係数の定義 <math><mi>f</mi><mo>′</mo><mo>(</mo><mi>a</mi><mo>)</mo><mo>=</mo><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><mi>f</mi><mo>(</mo><mi>a</mi><mo>+</mo><mi>h</mi><mo>)</mo><mo>−</mo><mi>f</mi><mo>(</mo><mi>a</mi><mo>)</mo></mrow><mi>h</mi></mfrac></math>。平均変化率で <math><mi>h</mi><mo>→</mo><mn>0</mn></math> とした極限値だよ。</p><b>微分係数の定義：</b><math><mi>f</mi><mo>′</mo><mo>(</mo><mi>a</mi><mo>)</mo><mo>=</mo><msub><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></msub><mo>{</mo><mi>f</mi><mo>(</mo><mi>a</mi><mo>+</mo><mi>h</mi><mo>)</mo><mo>−</mo><mi>f</mi><mo>(</mo><mi>a</mi><mo>)</mo><mo>}</mo><mo>／</mo><mi>h</mi></math>。平均変化率で <math><mi>h</mi><mo>→</mo><mn>0</mn></math>とした極限値だよ。</li>
+          <li><b>計算の手順：</b>定義に当てはめる → <br>分子を展開する（定数項が消える<math><mo>)</mo><mo>→</mo><mi>h</mi></math> で約分する<math><mo>→</mo><mi>h</mi><mo>→</mo><mn>0</mn></math>の極限をとる。</li>
+          <li><b>図形的な意味：</b>点<math><mo>(</mo><mi>a</mi><mo>,</mo><mi>f</mi><mo>(</mo><mi>a</mi><mo>)</mo><mo>)</mo></math>における接線の傾きは <math><mi>f</mi><mo>′</mo><mo>(</mo><mi>a</mi><mo>)</mo></math>。「接線の傾き」と聞いたら「微分係数」と読み替えよう。<br>符号がマイナスなら接線は右下がり。</li>
+          <li><b><math><mi>y</mi><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup></math> の場合：</b><math><mi>f</mi><mo>′</mo><mo>(</mo><mi>a</mi><mo>)</mo><mo>=</mo><mn>2</mn><mi>a</mi></math> になる（定義から<math><mo>{</mo><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>h</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><msup><mi>a</mi><mn>2</mn></msup><mo>}</mo><mo>／</mo><mi>h</mi><mo>=</mo><mn>2</mn><mi>a</mi><mo>+</mo><mi>h</mi><mo>→</mo><mn>2</mn><mi>a</mi></math> と確かめられる）。<br>だから <math><mi>a</mi><mo>=</mo><mn>3</mn></math>で 6、<math><mi>a</mi><mo>=</mo><mn>1</mn></math>で 2、<math><mi>a</mi><mo>=</mo><mo>−</mo><mn>2</mn></math>で −4 と、この項の答えがすべてつながるね。</li>
         </ul>
       </section>
 

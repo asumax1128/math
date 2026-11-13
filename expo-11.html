@@ -245,7 +245,45 @@
         }
         .prob>.prob-done{grid-column:2}
       }
-    </style>
+    
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+</style>
   </head>
   <body>
     <div class="wrap">
@@ -274,7 +312,7 @@
         <span class="pno">教科書 p.172</span>
       </div>
 
-      <section class="card prob active" id="prob-kaisetsu" data-flow="kaisetsu" data-label="解説" data-unit="ステップ" data-last="まとめを見る ▶">
+      <section class="nofig card prob active" id="prob-kaisetsu" data-flow="kaisetsu" data-label="解説" data-unit="ステップ" data-last="まとめを見る ▶">
         <div class="prob-head">
           <span class="prob-tag exp">解説</span>
           <div class="dots" aria-hidden="true">
@@ -283,12 +321,12 @@
           <span class="prob-state">ステップ 0 / 4</span>
         </div>
         <div class="qside">
-        <p class="prob-q">0 &lt; <i>M</i> &lt; 1 の小数 <i>M</i> について、「小数第何位に初めて 0 でない数字が現れるか」を、常用対数 log<sub>10</sub><i>M</i> で調べる方法を、一段ずつ確認しよう。下の「次へ」で進めてね。</p>
+        <p class="prob-q"><math><mn>0</mn><mo>&lt;</mo><mi>M</mi><mo>&lt;</mo><mn>1</mn></math>の小数 <math><mi>M</mi></math> について、「小数第何位に初めて 0 でない数字が現れるか」を、常用対数<math><msub><mi>log</mi><mn>10</mn></msub><mi>M</mi></math> で調べる方法を、一段ずつ確認しよう。下の「次へ」で進めてね。</p>
         </div>
 
         <div class="step hint">
           <h3>ステップ 1 ― まず「位取り」の図で意味を確認する</h3>
-          <p>たとえば <i>M</i> ＝ 0.00123 を、位ごとに分けて見てみよう。小数第1位・第2位は 0 で、<b>小数第3位に初めて 0 でない数字（1）が現れる</b>。</p>
+          <p>たとえば <math><mi>M</mi><mo>=</mo><mn>0.00123</mn></math>を、位ごとに分けて見てみよう。<br>小数第1位・第2位は 0 で、<b>小数第3位に初めて 0 でない数字（1）が現れる</b>。</p>
           <figure>
             <div class="figbox">
               <svg viewBox="0 0 560 208" role="img" aria-label="0.00123の位取りの図。小数第1位と第2位は0、小数第3位に初めて0でない数字1が現れ、そのあと2、3と続く">
@@ -325,8 +363,8 @@
 
         <div class="step hint">
           <h3>ステップ 2 ― 「範囲の式」に言い換える</h3>
-          <p>小数第3位に初めて 0 でない数字が現れる数 <i>M</i> は、<b>0.001 以上で、0.01 より小さい</b>。0.01 ちょうどになると、第2位に数字が現れてしまうからだ。</p>
-          <p class="formula">0.001 ≦ <i>M</i> &lt; 0.01</p>
+          <p>小数第3位に初めて 0 でない数字が現れる数 <math><mi>M</mi></math> は、<b>0.001 以上で、0.01 より小さい</b>。<br>0.01 ちょうどになると、第2位に数字が現れてしまうからだ。</p>
+          <p class="formula"><math display="block"><mn>0.001</mn><mo>≦</mo><mi>M</mi><mo>&lt;</mo><mn>0.01</mn></math></p>
           <figure>
             <div class="figbox">
               <svg viewBox="0 0 560 118" role="img" aria-label="数直線上で0.001以上0.01未満の範囲を示した図">
@@ -348,23 +386,26 @@
         <div class="step hint">
           <h3>ステップ 3 ― 10 の累乗で書き直す</h3>
           <p>0.001 と 0.01 を、10 の累乗（10 を何回かけたか、の形）で表そう。</p>
-          <p>0.001 ＝ 1/1000 ＝ 10<sup>−3</sup>、　0.01 ＝ 1/100 ＝ 10<sup>−2</sup> だから、範囲の式はこうなる。</p>
-          <p class="formula">10<sup>−3</sup> ≦ <i>M</i> &lt; 10<sup>−2</sup></p>
+          <p class="cite"><span class="cite-tag">使う定義</span><math><msup><mi>a</mi><mrow><mo>−</mo><mi>n</mi></mrow></msup><mo>=</mo><mfrac><mn>1</mn><msup><mi>a</mi><mi>n</mi></msup></mfrac></math> ― この定義で、0.001 と 0.01 を分数を経由して 10 の累乗に直す。</p>
+          <p><math><mn>0.001</mn><mo>=</mo><mfrac><mn>1</mn><mn>1000</mn></mfrac><mo>=</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>3</mn></mrow></msup></math>、　<math><mn>0.01</mn><mo>=</mo><mfrac><mn>1</mn><mn>100</mn></mfrac><mo>=</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>2</mn></mrow></msup></math> だから、<br>範囲の式はこうなる。</p>
+          <p class="formula"><math display="block"><msup><mn>10</mn><mrow><mo>−</mo><mn>3</mn></mrow></msup><mo>≦</mo><mi>M</mi><mo>&lt;</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>2</mn></mrow></msup></math></p>
         </div>
 
         <div class="step hint">
           <h3>ステップ 4 ― 常用対数をとる</h3>
-          <p>3つの辺すべてに log<sub>10</sub> をつけよう。log<sub>10</sub> は「数が大きくなるほど値も大きくなる」ので、<b>不等号の向きはそのまま</b>保たれる。</p>
-          <p>log<sub>10</sub>10<sup>−3</sup> ＝ −3、log<sub>10</sub>10<sup>−2</sup> ＝ −2 だから、</p>
-          <p class="formula">−3 ≦ log<sub>10</sub><i>M</i> &lt; −2</p>
-          <p>つまり、<b>log<sub>10</sub><i>M</i> の整数部分を見れば、初めて 0 でない数字が現れる位が分かる</b>。</p>
+          <p>3つの辺すべてに<math><msub><mi>log</mi><mn>10</mn></msub></math> をつけよう。<br><math><msub><mi>log</mi><mn>10</mn></msub></math> は「数が大きくなるほど値も大きくなる」ので、<b>不等号の向きはそのまま</b>保たれる。</p>
+          <p class="cite"><span class="cite-tag">使う定義</span><math><msub><mi>log</mi><mn>10</mn></msub><msup><mn>10</mn><mi>r</mi></msup><mo>=</mo><mi>r</mi></math> ― 対数の定義から、指数の −3、−2 がそのまま値になる。</p>
+          <p><math><msub><mi>log</mi><mn>10</mn></msub><msup><mn>10</mn><mrow><mo>−</mo><mn>3</mn></mrow></msup><mo>=</mo><mo>−</mo><mn>3</mn></math>、<math><msub><mi>log</mi><mn>10</mn></msub><msup><mn>10</mn><mrow><mo>−</mo><mn>2</mn></mrow></msup><mo>=</mo><mo>−</mo><mn>2</mn></math>だから、</p>
+          <p class="formula"><math display="block"><mo>−</mo><mn>3</mn><mo>≦</mo><msub><mi>log</mi><mn>10</mn></msub><mi>M</mi><mo>&lt;</mo><mo>−</mo><mn>2</mn></math></p>
+          <p>つまり、<b><math><msub><mi>log</mi><mn>10</mn></msub><mi>M</mi></math> の整数部分を見れば、初めて 0 でない数字が現れる位が分かる</b>。</p>
         </div>
 
         <div class="step answer">
           <h3>まとめ ― 一般のルール</h3>
-          <p>位が第 <i>k</i> 位の場合も、まったく同じ考え方で次のようにまとめられる。</p>
-          <p class="formula">小数第 <i>k</i> 位に初めて 0 でない数字が現れる<br />⟺　10<sup>−<i>k</i></sup> ≦ <i>M</i> &lt; 10<sup>−<i>k</i>＋1</sup><br />⟺　−<i>k</i> ≦ log<sub>10</sub><i>M</i> &lt; −<i>k</i>＋1</p>
-          <p>log<sub>10</sub><i>M</i> を計算して、<b>それをはさむ2つの整数</b>（たとえば −15 と −14）が分かれば、答えは大きい方の絶対値、つまり <i>k</i> ＝ 15 のように決まる。</p>
+          <p>位が第 <math><mi>k</mi></math> 位の場合も、まったく同じ考え方で次のようにまとめられる。</p>
+          <p class="cite"><span class="cite-tag">使う性質</span><math><mo>−</mo><mi>k</mi><mo>≦</mo><msub><mi>log</mi><mn>10</mn></msub><mi>M</mi><mo>&lt;</mo><mo>−</mo><mi>k</mi><mo>+</mo><mn>1</mn></math> ― 第 k 位の話はこの形に持ち込めば、常用対数を挟む整数から位が読める。</p>
+          <p class="formula">小数第 <math><mi>k</mi></math> 位に初めて 0 でない数字が現れる<br />⟺　<math><msup><mn>10</mn><mrow><mo>−</mo><mi>k</mi></mrow></msup><mo>≦</mo><mi>M</mi><mo>&lt;</mo><msup><mn>10</mn><mrow><mo>−</mo><mi>k</mi><mo>+</mo><mn>1</mn></mrow></msup></math><br />⟺　<math><mo>−</mo><mi>k</mi><mo>≦</mo><msub><mi>log</mi><mn>10</mn></msub><mi>M</mi><mo>&lt;</mo><mo>−</mo><mi>k</mi><mo>+</mo><mn>1</mn></math></p>
+          <p><math><msub><mi>log</mi><mn>10</mn></msub><mi>M</mi></math> を計算して、<b>それをはさむ2つの整数</b>（たとえば −15 と −14）が分かれば、<br>答えは大きい方の絶対値、つまり <math><mi>k</mi><mo>=</mo><mn>15</mn></math>のように決まる。</p>
         </div>
         <p class="prob-done">解説クリア！　次は例題8に挑戦しよう。</p>
       </section>
@@ -376,7 +417,7 @@
         <span class="pno">教科書 p.172</span>
       </div>
 
-      <section class="card prob" id="prob-ex8" data-flow="ex8" data-label="例題8" data-unit="ヒント" data-last="解答を見る ▶">
+      <section class="nofig card prob" id="prob-ex8" data-flow="ex8" data-label="例題8" data-unit="ヒント" data-last="解答を見る ▶">
         <div class="prob-head">
           <span class="prob-tag">例題 8</span>
           <div class="dots" aria-hidden="true">
@@ -385,33 +426,40 @@
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
         <div class="qside">
-        <p class="prob-q">(1/3)<sup>30</sup> を小数で表したとき、小数第何位に初めて 0 でない数字が現れるか。ただし、log<sub>10</sub>3 ＝ 0.4771 とする。</p>
+        <p class="prob-q"><math><msup><mrow><mo>(</mo><mn>1</mn><mo>/</mo><mn>3</mn><mo>)</mo></mrow><mn>30</mn></msup></math> を小数で表したとき、小数第何位に初めて 0 でない数字が現れるか。ただし、<math><msub><mi>log</mi><mn>10</mn></msub><mn>3</mn><mo>=</mo><mn>0.4771</mn></math>とする。</p>
         </div>
 
         <div class="step hint">
-          <h3>ヒント 1 ― まず log<sub>10</sub> をとる</h3>
-          <p>解説のルールを使うために、まず (1/3)<sup>30</sup> の常用対数を計算しよう。累乗の対数は「指数 × 対数」になるから、</p>
-          <p class="formula">log<sub>10</sub>(1/3)<sup>30</sup> ＝ 30 · log<sub>10</sub>(1/3)</p>
-          <p>次に、1/3 ＝ 3<sup>−1</sup> と直すと、log<sub>10</sub>(1/3) ＝ −log<sub>10</sub>3 になることに気づこう。</p>
+          <h3>ヒント 1 ― まず<math><msub><mi>log</mi><mn>10</mn></msub></math> をとる</h3>
+          <p>解説のルールを使うために、まず<math><msup><mrow><mo>(</mo><mn>1</mn><mo>/</mo><mn>3</mn><mo>)</mo></mrow><mn>30</mn></msup></math> の常用対数を計算しよう。<br>累乗の対数は「指数 × 対数」になるから、</p>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><msub><mi>log</mi><mn>10</mn></msub><msup><mi>M</mi><mi>r</mi></msup><mo>=</mo><mi>r</mi><mo>·</mo><msub><mi>log</mi><mn>10</mn></msub><mi>M</mi></math> ― ここでは指数 30 を前に出し、常用対数に 30 をかける形にする。</p>
+          <p class="formula"><math display="block"><msub><mi>log</mi><mn>10</mn></msub><msup><mrow><mo>(</mo><mn>1</mn><mo>/</mo><mn>3</mn><mo>)</mo></mrow><mn>30</mn></msup><mo>=</mo><mn>30</mn><mo>·</mo><msub><mi>log</mi><mn>10</mn></msub><mo>(</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>)</mo></math></p>
+          <p>次に、<math><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>=</mo><msup><mn>3</mn><mrow><mo>−</mo><mn>1</mn></mrow></msup></math> と直すと、<br><math><msub><mi>log</mi><mn>10</mn></msub><mo>(</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>)</mo><mo>=</mo><mo>−</mo><msub><mi>log</mi><mn>10</mn></msub><mn>3</mn></math>になることに気づこう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 数を代入して計算する</h3>
-          <p>log<sub>10</sub>3 ＝ 0.4771 を代入して、最後まで計算しよう。</p>
-          <p class="formula">log<sub>10</sub>(1/3)<sup>30</sup> ＝ −30 × 0.4771 ＝ −14.313</p>
+          <p><math><msub><mi>log</mi><mn>10</mn></msub><mn>3</mn><mo>=</mo><mn>0.4771</mn></math>を代入して、最後まで計算しよう。</p>
+          <p class="mq-wide formula"><math display="block"><msub><mi>log</mi><mn>10</mn></msub><msup><mrow><mo>(</mo><mn>1</mn><mo>/</mo><mn>3</mn><mo>)</mo></mrow><mn>30</mn></msup><mo>=</mo><mo>−</mo><mn>30</mn><mo>×</mo><mn>0.4771</mn><mo>=</mo><mo>−</mo><mn>14.313</mn></math></p>
+<div class="mq-narrow">
+<p class="formula"><math display="block"><msub><mi>log</mi><mn>10</mn></msub><msup><mrow><mo>(</mo><mn>1</mn><mo>/</mo><mn>3</mn><mo>)</mo></mrow><mn>30</mn></msup><mo>=</mo><mo>−</mo><mn>30</mn><mo>×</mo><mn>0.4771</mn><mo>=</mo></math></p>
+<p class="formula cont"><math display="block"><mo>−</mo><mn>14.313</mn></math></p>
+</div>
         </div>
         <div class="step hint">
           <h3>ヒント 3 ― はさむ2つの整数を探す</h3>
-          <p>−14.313 は、整数 −15 と −14 の間にある（数直線で、−15 の方が左＝小さい方だよ）。</p>
+          <p>−14.313 は、整数 −15 と −14 の間にある（数直線で、<br>−15 の方が左＝小さい方だよ）。</p>
           <p class="formula">−15 &lt; −14.313 &lt; −14</p>
-          <p>これを 10 の累乗の形に戻すと、10<sup>−15</sup> &lt; (1/3)<sup>30</sup> &lt; 10<sup>−14</sup> となる。解説のルールと見比べて、<i>k</i> がいくつになるか考えよう。</p>
+          <p class="cite"><span class="cite-tag">使う性質</span><math><msup><mn>10</mn><mrow><mo>−</mo><mi>k</mi></mrow></msup><mo>≦</mo><mi>M</mi><mo>&lt;</mo><msup><mn>10</mn><mrow><mo>−</mo><mi>k</mi><mo>+</mo><mn>1</mn></mrow></msup></math> ― 下の端が 10 の −15 乗になるので、比べるのは k＝15 の形である。</p>
+          <p>これを 10 の累乗の形に戻すと、<math><msup><mn>10</mn><mrow><mo>−</mo><mn>15</mn></mrow></msup><mo>&lt;</mo><msup><mrow><mo>(</mo><mn>1</mn><mo>/</mo><mn>3</mn><mo>)</mo></mrow><mn>30</mn></msup><mo>&lt;</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>14</mn></mrow></msup></math> となる。<br>解説のルールと見比べて、<math><mi>k</mi></math> がいくつになるか考えよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
           <p class="big">小数第 15 位</p>
-          <p>log<sub>10</sub>(1/3)<sup>30</sup> ＝ −14.313 で、−15 &lt; −14.313 &lt; −14 だから</p>
-          <p class="formula">10<sup>−15</sup> &lt; (1/3)<sup>30</sup> &lt; 10<sup>−14</sup></p>
-          <p>ルールの 10<sup>−<i>k</i></sup> ≦ <i>M</i> &lt; 10<sup>−<i>k</i>＋1</sup> と見比べると <i>k</i> ＝ 15。よって、(1/3)<sup>30</sup> を小数で表すと、<b>小数第 15 位</b>に初めて 0 でない数字が現れる。</p>
-          <p class="note"><b>参考：</b>(1/3)<sup>30</sup> ≒ 0.00000000000000486… で、0 が14個並んだあと、第15位に 4 が現れる。計算と一致しているね。</p>
+          <p><math><msub><mi>log</mi><mn>10</mn></msub><msup><mrow><mo>(</mo><mn>1</mn><mo>/</mo><mn>3</mn><mo>)</mo></mrow><mn>30</mn></msup><mo>=</mo><mo>−</mo><mn>14.313</mn></math>で、−15 &lt; −14.313 &lt; −14 だから</p>
+          <p class="formula"><math display="block"><msup><mn>10</mn><mrow><mo>−</mo><mn>15</mn></mrow></msup><mo>&lt;</mo><msup><mrow><mo>(</mo><mn>1</mn><mo>/</mo><mn>3</mn><mo>)</mo></mrow><mn>30</mn></msup><mo>&lt;</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>14</mn></mrow></msup></math></p>
+          <p class="cite"><span class="cite-tag">使う性質</span><math><mo>−</mo><mi>k</mi><mo>≦</mo><msub><mi>log</mi><mn>10</mn></msub><mi>M</mi><mo>&lt;</mo><mo>−</mo><mi>k</mi><mo>+</mo><mn>1</mn></math> ― −14.313 を挟む整数が −15 と −14 なので、−k＝−15、つまり k＝15 と読む。</p>
+          <p>ルールの<math><msup><mn>10</mn><mrow><mo>−</mo><mi>k</mi></mrow></msup><mo>≦</mo><mi>M</mi><mo>&lt;</mo><msup><mn>10</mn><mrow><mo>−</mo><mi>k</mi><mo>+</mo><mn>1</mn></mrow></msup></math> と見比べると <math><mi>k</mi><mo>=</mo><mn>15</mn></math>。<br>よって、<math><msup><mrow><mo>(</mo><mn>1</mn><mo>/</mo><mn>3</mn><mo>)</mo></mrow><mn>30</mn></msup></math> を小数で表すと、<br><b>小数第 15 位</b>に初めて 0 でない数字が現れる。</p>
+          <p class="note"><b>参考：</b><math><msup><mrow><mo>(</mo><mn>1</mn><mo>/</mo><mn>3</mn><mo>)</mo></mrow><mn>30</mn></msup><mo>≒</mo><mn>0.00000000000000486</mn><mo>…</mo></math>で、0 が14個並んだあと、第15位に 4 が現れる。<br>計算と一致しているね。</p>
         </div>
         <p class="prob-done">例題8 クリア！　次は練習27に挑戦しよう。</p>
       </section>
@@ -423,7 +471,7 @@
         <span class="pno">教科書 p.172</span>
       </div>
 
-      <section class="card prob" id="prob-ren27" data-flow="ren27" data-label="練習27" data-unit="ヒント" data-last="解答を見る ▶">
+      <section class="nofig card prob" id="prob-ren27" data-flow="ren27" data-label="練習27" data-unit="ヒント" data-last="解答を見る ▶">
         <div class="prob-head">
           <span class="prob-tag ren">練習 27</span>
           <div class="dots" aria-hidden="true">
@@ -432,33 +480,36 @@
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
         <div class="qside">
-        <p class="prob-q">(1/2)<sup>20</sup> を小数で表したとき、小数第何位に初めて 0 でない数字が現れるか。ただし、log<sub>10</sub>2 ＝ 0.3010 とする。</p>
+        <p class="prob-q"><math><msup><mrow><mo>(</mo><mn>1</mn><mo>/</mo><mn>2</mn><mo>)</mo></mrow><mn>20</mn></msup></math> を小数で表したとき、小数第何位に初めて 0 でない数字が現れるか。ただし、<math><msub><mi>log</mi><mn>10</mn></msub><mn>2</mn><mo>=</mo><mn>0.3010</mn></math>とする。</p>
         </div>
 
         <div class="step hint">
-          <h3>ヒント 1 ― まず log<sub>10</sub> をとる</h3>
-          <p>例題8と同じ流れで進めよう。(1/2)<sup>20</sup> の常用対数をとると、指数の 20 が前に出てくる。</p>
-          <p>さらに 1/2 ＝ 2<sup>−1</sup> と直すと、log<sub>10</sub>(1/2) ＝ −log<sub>10</sub>2 と表せる。式を組み立ててみよう。</p>
+          <h3>ヒント 1 ― まず<math><msub><mi>log</mi><mn>10</mn></msub></math> をとる</h3>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><msub><mi>log</mi><mn>10</mn></msub><msup><mi>M</mi><mi>r</mi></msup><mo>=</mo><mi>r</mi><mo>·</mo><msub><mi>log</mi><mn>10</mn></msub><mi>M</mi></math> ― ここでは指数 20 を前に出し、常用対数に 20 をかける形にする。</p>
+          <p>例題8と同じ流れで進めよう。<br><math><msup><mrow><mo>(</mo><mn>1</mn><mo>/</mo><mn>2</mn><mo>)</mo></mrow><mn>20</mn></msup></math> の常用対数をとると、指数の 20 が前に出てくる。</p>
+          <p>さらに<math><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>=</mo><msup><mn>2</mn><mrow><mo>−</mo><mn>1</mn></mrow></msup></math> と直すと、<math><msub><mi>log</mi><mn>10</mn></msub><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo><mo>=</mo><mo>−</mo><msub><mi>log</mi><mn>10</mn></msub><mn>2</mn></math>と表せる。<br>式を組み立ててみよう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 数を代入して計算する</h3>
-          <p>ヒント1の式に log<sub>10</sub>2 ＝ 0.3010 を代入すると、</p>
-          <p class="formula">log<sub>10</sub>(1/2)<sup>20</sup> ＝ −20 × 0.3010 ＝ −6.020</p>
+          <p>ヒント1の式に<math><msub><mi>log</mi><mn>10</mn></msub><mn>2</mn><mo>=</mo><mn>0.3010</mn></math>を代入すると、</p>
+          <p class="formula"><math display="block"><msub><mi>log</mi><mn>10</mn></msub><msup><mrow><mo>(</mo><mn>1</mn><mo>/</mo><mn>2</mn><mo>)</mo></mrow><mn>20</mn></msup><mo>=</mo><mo>−</mo><mn>20</mn><mo>×</mo><mn>0.3010</mn><mo>=</mo><mo>−</mo><mn>6.020</mn></math></p>
           <p>マイナスの符号を落とさないように注意しよう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 3 ― はさむ2つの整数を探す</h3>
           <p>−6.020 をはさむ2つの整数を考えよう。小さい方は −7、大きい方は −6 だ。</p>
           <p class="formula">−7 &lt; −6.020 &lt; −6</p>
-          <p>10 の累乗に戻すと 10<sup>−7</sup> &lt; (1/2)<sup>20</sup> &lt; 10<sup>−6</sup>。解説のルールと見比べて、位を決めよう。</p>
+          <p class="cite"><span class="cite-tag">使う性質</span><math><msup><mn>10</mn><mrow><mo>−</mo><mi>k</mi></mrow></msup><mo>≦</mo><mi>M</mi><mo>&lt;</mo><msup><mn>10</mn><mrow><mo>−</mo><mi>k</mi><mo>+</mo><mn>1</mn></mrow></msup></math> ― 下の端が 10 の −7 乗になるので、比べるのは k＝7 の形である。</p>
+          <p>10 の累乗に戻すと<math><msup><mn>10</mn><mrow><mo>−</mo><mn>7</mn></mrow></msup><mo>&lt;</mo><msup><mrow><mo>(</mo><mn>1</mn><mo>/</mo><mn>2</mn><mo>)</mo></mrow><mn>20</mn></msup><mo>&lt;</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>6</mn></mrow></msup></math>。<br>解説のルールと見比べて、位を決めよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
           <p class="big">小数第 7 位</p>
-          <p>log<sub>10</sub>(1/2)<sup>20</sup> ＝ −6.020 で、−7 &lt; −6.020 &lt; −6 だから</p>
-          <p class="formula">10<sup>−7</sup> &lt; (1/2)<sup>20</sup> &lt; 10<sup>−6</sup></p>
-          <p>ルールと見比べると <i>k</i> ＝ 7。よって、(1/2)<sup>20</sup> を小数で表すと、<b>小数第 7 位</b>に初めて 0 でない数字が現れる。</p>
-          <p class="note"><b>参考：</b>(1/2)<sup>20</sup> ＝ 1/1048576 ≒ 0.000000953… で、0 が6個並んだあと、第7位に 9 が現れる。計算と一致しているね。</p>
+          <p><math><msub><mi>log</mi><mn>10</mn></msub><msup><mrow><mo>(</mo><mn>1</mn><mo>/</mo><mn>2</mn><mo>)</mo></mrow><mn>20</mn></msup><mo>=</mo><mo>−</mo><mn>6.020</mn></math>で、−7 &lt; −6.020 &lt; −6 だから</p>
+          <p class="formula"><math display="block"><msup><mn>10</mn><mrow><mo>−</mo><mn>7</mn></mrow></msup><mo>&lt;</mo><msup><mrow><mo>(</mo><mn>1</mn><mo>/</mo><mn>2</mn><mo>)</mo></mrow><mn>20</mn></msup><mo>&lt;</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>6</mn></mrow></msup></math></p>
+          <p class="cite"><span class="cite-tag">使う性質</span><math><mo>−</mo><mi>k</mi><mo>≦</mo><msub><mi>log</mi><mn>10</mn></msub><mi>M</mi><mo>&lt;</mo><mo>−</mo><mi>k</mi><mo>+</mo><mn>1</mn></math> ― −6.020 を挟む整数が −7 と −6 なので、−k＝−7、つまり k＝7 と読む。</p>
+          <p>ルールと見比べると <math><mi>k</mi><mo>=</mo><mn>7</mn></math>。<br>よって、<math><msup><mrow><mo>(</mo><mn>1</mn><mo>/</mo><mn>2</mn><mo>)</mo></mrow><mn>20</mn></msup></math> を小数で表すと、<br><b>小数第 7 位</b>に初めて 0 でない数字が現れる。</p>
+          <p class="note"><b>参考：</b><math><msup><mrow><mo>(</mo><mn>1</mn><mo>/</mo><mn>2</mn><mo>)</mo></mrow><mn>20</mn></msup><mo>=</mo><mfrac><mn>1</mn><mn>1048576</mn></mfrac><mo>≒</mo><mn>0.000000953</mn><mo>…</mo></math>で、0 が6個並んだあと、第7位に 9 が現れる。<br>計算と一致しているね。</p>
         </div>
         <p class="prob-done">練習27 クリア！　下のまとめで確認しよう。</p>
       </section>
@@ -467,9 +518,9 @@
       <section class="card summary">
         <h2>この項のポイント</h2>
         <ul>
-          <li><b>位の話は「範囲の式」に直す。</b>「小数第 <i>k</i> 位に初めて 0 でない数字」⟺ 10<sup>−<i>k</i></sup> ≦ <i>M</i> &lt; 10<sup>−<i>k</i>＋1</sup>。右端は含まない（&lt;）ことに注意。</li>
-          <li><b>常用対数をとると指数が見える。</b>−<i>k</i> ≦ log<sub>10</sub><i>M</i> &lt; −<i>k</i>＋1 となり、log<sub>10</sub><i>M</i> をはさむ2つの整数から <i>k</i> が決まる。</li>
-          <li><b>分数の対数はマイナスに直す。</b>1/3 ＝ 3<sup>−1</sup> のように直してから、与えられた log<sub>10</sub>3 などの値を使う。</li>
+          <li><p class="cite"><span class="cite-tag">使う性質</span><math><msup><mn>10</mn><mrow><mo>−</mo><mi>k</mi></mrow></msup><mo>≦</mo><mi>M</mi><mo>&lt;</mo><msup><mn>10</mn><mrow><mo>−</mo><mi>k</mi><mo>+</mo><mn>1</mn></mrow></msup></math> ― 位の条件は、まずこの範囲の式で表すのが出発点になる。</p><b>位の話は「範囲の式」に直す。</b>「小数第 <math><mi>k</mi></math> 位に初めて 0 でない数字」<math><mo>⟺</mo><msup><mn>10</mn><mrow><mo>−</mo><mi>k</mi></mrow></msup><mo>≦</mo><mi>M</mi><mo>&lt;</mo><msup><mn>10</mn><mrow><mo>−</mo><mi>k</mi><mo>+</mo><mn>1</mn></mrow></msup></math>。<br>右端は含まない（&lt;）ことに注意。</li>
+          <li><p class="cite"><span class="cite-tag">使う性質</span><math><mo>−</mo><mi>k</mi><mo>≦</mo><msub><mi>log</mi><mn>10</mn></msub><mi>M</mi><mo>&lt;</mo><mo>−</mo><mi>k</mi><mo>+</mo><mn>1</mn></math> ― 常用対数をとると、位は常用対数を挟む2つの整数に置き換わる。</p><b>常用対数をとると指数が見える。</b><math><mo>−</mo><mi>k</mi><mo>≦</mo><msub><mi>log</mi><mn>10</mn></msub><mi>M</mi><mo>&lt;</mo><mo>−</mo><mi>k</mi><mo>+</mo><mn>1</mn></math>となり、<br><math><msub><mi>log</mi><mn>10</mn></msub><mi>M</mi></math> をはさむ2つの整数から <math><mi>k</mi></math> が決まる。</li>
+          <li><p class="cite"><span class="cite-tag">使う定義</span><math><mfrac><mn>1</mn><mi>a</mi></mfrac><mo>=</mo><msup><mi>a</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup></math> ― 分数は指数 −1 の形に直してから、与えられた対数の値を使う。</p><b>分数の対数はマイナスに直す。</b><math><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>=</mo><msup><mn>3</mn><mrow><mo>−</mo><mn>1</mn></mrow></msup></math> のように直してから、<br>与えられた<math><msub><mi>log</mi><mn>10</mn></msub><mn>3</mn></math>などの値を使う。</li>
         </ul>
       </section>
 

@@ -305,7 +305,45 @@
           max-height:calc(100vh - 345px);
         }
       }
-    </style>
+    
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+</style>
   </head>
   <body>
     <div class="wrap">
@@ -336,39 +374,51 @@
       </div>
 
       <!-- ===== 補充1 ===== -->
-      <section class="card prob active" id="prob-q1" data-flow="q1" data-label="補充1">
+      <section class="nofig card prob active" id="prob-q1" data-flow="q1" data-label="補充1">
         <div class="prob-head">
           <span class="prob-tag">補充 1</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
-        <p class="prob-q">光の進む速さが、毎秒 3.0×10<sup>8</sup> m であるとき、光は 1 km を進むのに約 3.3×10<sup><span class="boxq">　</span></sup> 秒かかる。<span class="boxq">　</span>に適する整数を求めよ。</p>
+        <p class="prob-q">光の進む速さが、毎秒<math><mn>3.0</mn><mo>×</mo><msup><mn>10</mn><mn>8</mn></msup><mi>m</mi></math>であるとき、光は 1 km を進むのに約<math><mn>3.3</mn><mo>×</mo><msup><mn>10</mn><mrow/></msup></math> 秒かかる。<span class="boxq">　</span>に適する整数を求めよ。</p>
         <div class="step hint">
           <h3>ヒント 1 ― 「時間＝距離÷速さ」で立式する</h3>
-          <p>時間を求める式は <b>時間 ＝ 距離 ÷ 速さ</b>。まず単位をそろえよう：<b>1 km ＝ 1000 m</b>。</p>
-          <p>速さは「毎秒 3.0×10<sup>8</sup> m」だから、時間 ＝ 1000 ÷ (3.0×10<sup>8</sup>) を計算することになる。</p>
+          <p>時間を求める式は <b>時間 ＝ 距離 ÷ 速さ</b>。<br>まず単位をそろえよう：<b><math><mn>1</mn><mi>k</mi><mi>m</mi><mo>=</mo><mn>1000</mn><mi>m</mi></math></b>。</p>
+          <p>速さは「毎秒<math><mn>3.0</mn><mo>×</mo><msup><mn>10</mn><mn>8</mn></msup><mi>m</mi></math>」だから、時間<math><mo>=</mo><mn>1000</mn><mo>÷</mo><mo>(</mo><mn>3.0</mn><mo>×</mo><msup><mn>10</mn><mn>8</mn></msup><mo>)</mo></math>を計算することになる。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 指数の割り算をする</h3>
-          <p>10 の累乗の部分だけ先に計算する：1000 ＝ 10<sup>3</sup> だから、10<sup>3</sup> ÷ 10<sup>8</sup> ＝ 10<sup>3−8</sup> ＝ <b>10<sup>−5</sup></b>。</p>
-          <p>係数の部分は 1 ÷ 3.0 ＝ <span class="fr"><span class="fr-n">1</span><span class="fr-d">3</span></span>。合わせて、時間 ＝ <span class="fr"><span class="fr-n">1</span><span class="fr-d">3</span></span>×10<sup>−5</sup> 秒になる。</p>
+            <p class="cite"><span class="cite-tag">使う公式</span>指数法則 <math><msup><mi>a</mi><mi>m</mi></msup><mo>÷</mo><msup><mi>a</mi><mi>n</mi></msup><mo>=</mo><msup><mi>a</mi><mrow><mi>m</mi><mo>−</mo><mi>n</mi></mrow></msup></math>。割り算は指数の引き算になる。ここでは <math><msup><mn>10</mn><mn>3</mn></msup><mo>÷</mo><msup><mn>10</mn><mn>8</mn></msup></math> の指数を <math><mn>3</mn><mo>−</mo><mn>8</mn></math> と計算するよ。</p>
+            
+          <p>10 の累乗の部分だけ先に計算する：<math><mn>1000</mn><mo>=</mo><msup><mn>10</mn><mn>3</mn></msup></math> だから、<math><msup><mn>10</mn><mn>3</mn></msup><mo>÷</mo><msup><mn>10</mn><mn>8</mn></msup><mo>=</mo><msup><mn>10</mn><mrow><mn>3</mn><mo>−</mo><mn>8</mn></mrow></msup><mo>=</mo></math><b><math><msup><mn>10</mn><mrow><mo>−</mo><mn>5</mn></mrow></msup></math></b>。</p>
+          <p>係数の部分は<math><mn>1</mn><mo>÷</mo><mn>3.0</mn><mo>=</mo><mfrac><mn>1</mn><mn>3</mn></mfrac></math>。合わせて、時間<math><mo>=</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>×</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>5</mn></mrow></msup></math> 秒になる。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 3 ― 3.3×10<sup>□</sup> の形に直す</h3>
-          <p><span class="fr"><span class="fr-n">1</span><span class="fr-d">3</span></span> ≒ 0.33 だから、時間 ≒ 0.33×10<sup>−5</sup> 秒。</p>
-          <p>問題の形は 3.3×10<sup>□</sup>。0.33 を 3.3 にするには<b>係数を10倍</b>する。その分、全体の大きさを変えないために <b>10 の指数を1つ小さく</b>する。□はいくつになるか考えよう。</p>
+          <h3>ヒント<math><mn>3</mn><mo>―</mo><mn>3.3</mn><mo>×</mo><msup><mn>10</mn><mo>□</mo></msup></math> の形に直す</h3>
+            <p class="cite"><span class="cite-tag">使う性質</span>大きな数・小さな数の表し方：係数を10倍すると、全体の大きさを変えないために指数は1小さくなる。<math><mn>0.33</mn><mo>×</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>5</mn></mrow></msup><mo>=</mo><mn>3.3</mn><mo>×</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>6</mn></mrow></msup></math> のように、係数と指数でやり取りするよ。</p>
+            
+          <p><math><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>≒</mo><mn>0.33</mn></math>だから、時間<math><mo>≒</mo><mn>0.33</mn><mo>×</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>5</mn></mrow></msup></math> 秒。</p>
+          <p>問題の形は<math><mn>3.3</mn><mo>×</mo><msup><mn>10</mn><mo>□</mo></msup></math>。0.33 を 3.3 にするには<b>係数を10倍</b>する。<br>その分、全体の大きさを変えないために <b>10 の指数を1つ小さく</b>する。□はいくつになるか考えよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
-          <p class="big"><span class="boxq">　</span> ＝ −6</p>
-          <p>時間 ＝ 1000 ÷ (3.0×10<sup>8</sup>) ＝ <span class="fr"><span class="fr-n">1</span><span class="fr-d">3</span></span>×10<sup>−5</sup> ≒ 0.33×10<sup>−5</sup> ＝ 3.3×10<sup>−6</sup>（秒）。よって、□に適する整数は <b>−6</b>。</p>
-          <p class="note"><b>ポイント：</b>係数を10倍したら、指数は1減らす（全体の大きさは変わらない）。この「係数と指数のやり取り」が、大きな数・小さな数を表すときの基本操作だよ。</p>
+            <p class="cite"><span class="cite-tag">使う公式</span>指数法則 <math><msup><mi>a</mi><mi>m</mi></msup><mo>÷</mo><msup><mi>a</mi><mi>n</mi></msup><mo>=</mo><msup><mi>a</mi><mrow><mi>m</mi><mo>−</mo><mi>n</mi></mrow></msup></math>（ヒント2で使った公式）。解答の計算でも、まずこの法則で <math><msup><mn>10</mn><mn>3</mn></msup><mo>÷</mo><msup><mn>10</mn><mn>8</mn></msup></math> を片づけるよ。</p>
+            
+          <p class="big"><span class="boxq">　</span><math><mo>=</mo><mo>−</mo><mn>6</mn></math></p>
+          <p>時間</p>
+<div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mo>=</mo><mn>1000</mn><mo>÷</mo><mo>(</mo><mn>3.0</mn><mo>×</mo><msup><mn>10</mn><mn>8</mn></msup><mo>)</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>×</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>5</mn></mrow></msup><mo>≒</mo><mn>0.33</mn><mo>×</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>5</mn></mrow></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo><mn>3.3</mn><mo>×</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>6</mn></mrow></msup><mo>(</mo></math></div>
+</div>
+<p>秒）。よって、□に適する整数は <b>−6</b>。</p>
+          <p class="note"><b>ポイント：</b>係数を10倍したら、指数は1減らす（全体の大きさは変わらない）。<br>この「係数と指数のやり取り」が、大きな数・小さな数を表すときの基本操作だよ。</p>
         </div>
         <p class="prob-done">補充1 クリア！　次は補充2へ。</p>
       </section>
 
       <!-- ===== 補充2 ===== -->
-      <section class="card prob" id="prob-q2">
+      <section class="nofig card prob" id="prob-q2">
         <div class="prob-head">
           <span class="prob-tag">補充 2</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
@@ -383,120 +433,152 @@
         </div>
 
         <!-- 補充2 (1) -->
-        <div class="tabpanel show" id="panel-q2-1" data-flow="q2-1" data-label="補充2 (1)">
+        <div class="nofig tabpanel show" id="panel-q2-1" data-flow="q2-1" data-label="補充2 (1)">
           <div class="prob-head">
             <span class="sub prob-q" style="margin:0">(1)</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
-          <p class="formula">∛6 · ∛9</p>
+          <p class="formula"><math display="block"><mroot><mn>6</mn><mn>3</mn></mroot><mo>·</mo><mroot><mn>9</mn><mn>3</mn></mroot></math></p>
           <div class="step hint">
             <h3>ヒント 1 ― 1つの根号にまとめる</h3>
-            <p>同じ3乗根どうしの掛け算は、中身を掛けて1つの根号にまとめられる。</p>
-            <p class="formula" style="margin-bottom:10px">∛6 · ∛9 ＝ ∛(6×9) ＝ ∛54</p>
-            <p>あとは ∛54 を簡単にすることに集中しよう。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>同じ指数の根号の積は、中身を掛けて1つにまとめられる：<math><mroot><mi>a</mi><mn>3</mn></mroot><mo>·</mo><mroot><mi>b</mi><mn>3</mn></mroot><mo>=</mo><mroot><mrow><mi>a</mi><mi>b</mi></mrow><mn>3</mn></mroot></math>。ここでは中身の <math><mn>6</mn><mo>×</mo><mn>9</mn></math> を先に計算するよ。</p>
+            
+            <p>同じ3乗根どうしの掛け算は、<br>中身を掛けて1つの根号にまとめられる。</p>
+            <p class="formula" style="margin-bottom:10px"><math display="block"><mroot><mn>6</mn><mn>3</mn></mroot><mo>·</mo><mroot><mn>9</mn><mn>3</mn></mroot><mo>=</mo><mroot><mrow><mn>6</mn><mo>×</mo><mn>9</mn></mrow><mn>3</mn></mroot><mo>=</mo><mroot><mn>54</mn><mn>3</mn></mroot></math></p>
+            <p>あとは<math><mroot><mn>54</mn><mn>3</mn></mroot></math>を簡単にすることに集中しよう。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 3乗のかたまりを探す</h3>
-            <p>54 を分けると <b>54 ＝ 27×2</b>。27 ＝ 3<sup>3</sup> は「3乗」の形だから、∛27 ＝ 3 として根号の<b>外に出せる</b>。</p>
-            <p>∛54 ＝ ∛(27×2) ＝ ∛27 · ∛2 と分けて考えよう。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>根号の中に「指数と同じ乗数」のかたまりがあれば外に出せる：<math><mroot><msup><mi>a</mi><mn>3</mn></msup><mn>3</mn></mroot><mo>=</mo><mi>a</mi></math>（<math><mi>a</mi><mo>≧</mo><mn>0</mn></math>）。ここでは <math><mn>27</mn><mo>=</mo><msup><mn>3</mn><mn>3</mn></msup></math> だから <math><mroot><mn>27</mn><mn>3</mn></mroot><mo>=</mo><mn>3</mn></math> になるよ。</p>
+            
+            <p>54 を分けると <b><math><mn>54</mn><mo>=</mo><mn>27</mn><mo>×</mo><mn>2</mn></math></b>。<math><mn>27</mn><mo>=</mo><msup><mn>3</mn><mn>3</mn></msup></math> は「3乗」の形だから、<br><math><mroot><mn>27</mn><mn>3</mn></mroot><mo>=</mo><mn>3</mn></math>として根号の<b>外に出せる</b>。</p>
+            <p><math><mroot><mn>54</mn><mn>3</mn></mroot><mo>=</mo><mroot><mrow><mn>27</mn><mo>×</mo><mn>2</mn></mrow><mn>3</mn></mroot><mo>=</mo><mroot><mn>27</mn><mn>3</mn></mroot><mo>·</mo><mroot><mn>2</mn><mn>3</mn></mroot></math>と分けて考えよう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (1)</h3>
-            <p class="big">3∛2</p>
-            <p>∛6 · ∛9 ＝ ∛54 ＝ ∛(27×2) ＝ 3∛2。</p>
+            <p class="big"><math display="block"><mn>3</mn><mroot><mn>2</mn><mn>3</mn></mroot></math></p>
+            <div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mroot><mn>6</mn><mn>3</mn></mroot><mo>·</mo><mroot><mn>9</mn><mn>3</mn></mroot><mo>=</mo><mroot><mn>54</mn><mn>3</mn></mroot></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mroot><mn>6</mn><mn>3</mn></mroot><mo>·</mo><mroot><mn>9</mn><mn>3</mn></mroot></mphantom><mo>=</mo><mroot><mrow><mn>27</mn><mo>×</mo><mn>2</mn></mrow><mn>3</mn></mroot></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mroot><mn>6</mn><mn>3</mn></mroot><mo>·</mo><mroot><mn>9</mn><mn>3</mn></mroot></mphantom><mo>=</mo><mn>3</mn><mroot><mn>2</mn><mn>3</mn></mroot><mtext>。</mtext></math></div>
+</div>
             <p class="note"><b>ポイント：</b>根号の中に「根号の指数と同じ乗数（ここでは3乗）」のかたまりがあれば、外に出せる。</p>
           </div>
           <p class="prob-done">(1) クリア！　(2) のタブも開いてみよう。</p>
         </div>
 
         <!-- 補充2 (2) -->
-        <div class="tabpanel" id="panel-q2-2" data-flow="q2-2" data-label="補充2 (2)">
+        <div class="nofig tabpanel" id="panel-q2-2" data-flow="q2-2" data-label="補充2 (2)">
           <div class="prob-head">
             <span class="sub prob-q" style="margin:0">(2)</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
-          <p class="formula"><span class="ri">4</span>√48 − <span class="ri">4</span>√3</p>
+          <p class="formula"><span class="ri">4</span><math><msqrt><mn>48</mn></msqrt><mo>−</mo></math><span class="ri">4</span><math><msqrt><mn>3</mn></msqrt></math></p>
           <div class="step hint">
-            <h3>ヒント 1 ― <span class="ri">4</span>√48 を簡単にする</h3>
-            <p>48 を分けると <b>48 ＝ 16×3</b>。16 ＝ 2<sup>4</sup> は「4乗」の形だから、<span class="ri">4</span>√16 ＝ 2 として根号の外に出せる。</p>
-            <p class="formula" style="margin-bottom:10px"><span class="ri">4</span>√48 ＝ <span class="ri">4</span>√(16×3) ＝ 2·<span class="ri">4</span>√3</p>
+            <h3>ヒント 1 ― <span class="ri">4</span><math><msqrt><mn>48</mn></msqrt></math>を簡単にする</h3>
+            <p class="cite"><span class="cite-tag">使う性質</span>4乗根でも同じ：<math><mroot><msup><mi>a</mi><mn>4</mn></msup><mn>4</mn></mroot><mo>=</mo><mi>a</mi></math>（<math><mi>a</mi><mo>≧</mo><mn>0</mn></math>）。ここでは <math><mn>16</mn><mo>=</mo><msup><mn>2</mn><mn>4</mn></msup></math> だから、16 の4乗根は 2 として外に出せるよ。</p>
+            
+            <p>48 を分けると <b><math><mn>48</mn><mo>=</mo><mn>16</mn><mo>×</mo><mn>3</mn></math></b>。<math><mn>16</mn><mo>=</mo><msup><mn>2</mn><mn>4</mn></msup></math> は「4乗」の形だから、<span class="ri">4</span><math><msqrt><mn>16</mn></msqrt><mo>=</mo><mn>2</mn></math>として根号の外に出せる。</p>
+            <p class="formula" style="margin-bottom:10px"><span class="ri">4</span><math><msqrt><mn>48</mn></msqrt><mo>=</mo></math><span class="ri">4</span><math><msqrt><mrow><mn>16</mn><mo>×</mo><mn>3</mn></mrow></msqrt><mo>=</mo><mn>2</mn><mo>·</mo></math><span class="ri">4</span><math><msqrt><mn>3</mn></msqrt></math></p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 「何個あるか」で引く</h3>
-            <p>式は 2·<span class="ri">4</span>√3 − <span class="ri">4</span>√3 になった。<span class="ri">4</span>√3 が<b>2個 − 1個</b>、という文字式と同じ計算だ。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>中身が同じ根号どうしの加減は、係数だけの計算になる：<math><mn>2</mn><mroot><mn>3</mn><mn>4</mn></mroot><mo>−</mo><mroot><mn>3</mn><mn>4</mn></mroot><mo>=</mo><mo>(</mo><mn>2</mn><mo>−</mo><mn>1</mn><mo>)</mo><mroot><mn>3</mn><mn>4</mn></mroot></math>。文字式で同じ文字を引くのと同じだよ。</p>
+            
+            <p>式は 2·<span class="ri">4</span><math><msqrt><mn>3</mn></msqrt><mo>−</mo></math><span class="ri">4</span><math><msqrt><mn>3</mn></msqrt></math>になった。<span class="ri">4</span><math><msqrt><mn>3</mn></msqrt></math>が<b>2個 − 1個</b>、という文字式と同じ計算だ。</p>
           </div>
           <div class="step answer">
             <h3>解答 (2)</h3>
-            <p class="big"><span class="ri">4</span>√3</p>
-            <p><span class="ri">4</span>√48 − <span class="ri">4</span>√3 ＝ 2·<span class="ri">4</span>√3 − <span class="ri">4</span>√3 ＝ <span class="ri">4</span>√3。</p>
-            <p class="note"><b>ポイント：</b>根号の中身がそろえば、足し算・引き算は「個数」の計算になる。まず根号を簡単にして中身をそろえるのが先。</p>
+            <p class="big"><span class="ri">4</span><math><msqrt><mn>3</mn></msqrt></math></p>
+            <p><span class="ri">4</span><math><msqrt><mn>48</mn></msqrt><mo>−</mo></math><span class="ri">4</span><math><msqrt><mn>3</mn></msqrt><mo>=</mo><mn>2</mn><mo>·</mo></math><span class="ri">4</span><math><msqrt><mn>3</mn></msqrt><mo>−</mo></math><span class="ri">4</span><math><msqrt><mn>3</mn></msqrt><mo>=</mo></math><span class="ri">4</span><math><msqrt><mn>3</mn></msqrt></math>。</p>
+            <p class="note"><b>ポイント：</b>根号の中身がそろえば、足し算・引き算は「個数」の計算になる。<br>まず根号を簡単にして中身をそろえるのが先。</p>
           </div>
           <p class="prob-done">(2) クリア！　(3) のタブも開いてみよう。</p>
         </div>
 
         <!-- 補充2 (3) -->
-        <div class="tabpanel" id="panel-q2-3" data-flow="q2-3" data-label="補充2 (3)">
+        <div class="nofig tabpanel" id="panel-q2-3" data-flow="q2-3" data-label="補充2 (3)">
           <div class="prob-head">
             <span class="sub prob-q" style="margin:0">(3)</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
-          <p class="formula">（<span class="ri">4</span>√3 ＋ <span class="ri">4</span>√2）（<span class="ri">4</span>√3 − <span class="ri">4</span>√2）</p>
+          <p class="formula">（<span class="ri">4</span><math><msqrt><mn>3</mn></msqrt><mo>+</mo></math><span class="ri">4</span><math><msqrt><mn>2</mn></msqrt><mo>)</mo><mo>(</mo></math><span class="ri">4</span><math><msqrt><mn>3</mn></msqrt><mo>−</mo></math><span class="ri">4</span><math><msqrt><mn>2</mn></msqrt><mo>)</mo></math></p>
           <div class="step hint">
             <h3>ヒント 1 ― 和と差の積の形に気づく</h3>
-            <p>（a＋b）（a−b）＝ a<sup>2</sup> − b<sup>2</sup> という展開の形そのものだ。a ＝ <span class="ri">4</span>√3、b ＝ <span class="ri">4</span>√2 として当てはめると、式は (<span class="ri">4</span>√3)<sup>2</sup> − (<span class="ri">4</span>√2)<sup>2</sup> になる。</p>
+            <p class="cite"><span class="cite-tag">使う公式</span>展開の公式 <math><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo><mo>(</mo><mi>a</mi><mo>−</mo><mi>b</mi><mo>)</mo><mo>=</mo><msup><mi>a</mi><mn>2</mn></msup><mo>−</mo><msup><mi>b</mi><mn>2</mn></msup></math>。和と差の積の形を見たらこの公式で、かっこの積を「2乗 − 2乗」に直すよ。</p>
+            
+            <p><math><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo><mo>(</mo><mi>a</mi><mo>−</mo><mi>b</mi><mo>)</mo><mo>=</mo><msup><mi>a</mi><mn>2</mn></msup><mo>−</mo><msup><mi>b</mi><mn>2</mn></msup></math> という展開の形そのものだ。<br><math><mi>a</mi><mo>=</mo></math><span class="ri">4</span><math><msqrt><mn>3</mn></msqrt></math>、<math><mi>b</mi><mo>=</mo></math><span class="ri">4</span><math><msqrt><mn>2</mn></msqrt></math>として当てはめると、式は (<span class="ri">4</span><math><msqrt><mn>3</mn></msqrt><msup><mo>)</mo><mn>2</mn></msup><mo>−</mo><mo>(</mo></math><span class="ri">4</span><math><msqrt><mn>2</mn></msqrt><msup><mo>)</mo><mn>2</mn></msup></math> になる。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 4乗根の2乗を計算する</h3>
-            <p><span class="ri">4</span>√3 ＝ 3<sup>1/4</sup> だから、2乗すると指数は 2 倍になって 3<sup>1/2</sup> ＝ <b>√3</b>。</p>
-            <p>同じように、(<span class="ri">4</span>√2)<sup>2</sup> ＝ √2 になることも確かめよう。</p>
+            <p class="cite"><span class="cite-tag">使う公式</span>指数法則 <math><msup><mrow><mo>(</mo><msup><mi>a</mi><mi>m</mi></msup><mo>)</mo></mrow><mi>n</mi></msup><mo>=</mo><msup><mi>a</mi><mrow><mi>m</mi><mi>n</mi></mrow></msup></math>。累乗の累乗は指数を掛ける。ここでは <math><msup><mn>3</mn><mfrac><mn>1</mn><mn>4</mn></mfrac></msup></math> の2乗だから、指数は <math><mfrac><mn>1</mn><mn>4</mn></mfrac><mo>×</mo><mn>2</mn></math> になるよ。</p>
+            
+            <p><span class="ri">4</span><math><msqrt><mn>3</mn></msqrt><mo>=</mo><msup><mn>3</mn><mfrac><mn>1</mn><mn>4</mn></mfrac></msup></math> だから、2乗すると指数は 2 倍になって<math><msup><mn>3</mn><mfrac><mn>1</mn><mn>2</mn></mfrac></msup><mo>=</mo></math><b><math><msqrt><mn>3</mn></msqrt></math></b>。</p>
+            <p>同じように、(<span class="ri">4</span><math><msqrt><mn>2</mn></msqrt><msup><mo>)</mo><mn>2</mn></msup><mo>=</mo><msqrt><mn>2</mn></msqrt></math>になることも確かめよう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (3)</h3>
-            <p class="big">√3 − √2</p>
-            <p>（<span class="ri">4</span>√3 ＋ <span class="ri">4</span>√2）（<span class="ri">4</span>√3 − <span class="ri">4</span>√2）＝ (<span class="ri">4</span>√3)<sup>2</sup> − (<span class="ri">4</span>√2)<sup>2</sup> ＝ √3 − √2。</p>
-            <p class="note"><b>ポイント：</b>根号の計算も、ふつうの展開公式がそのまま使える。「4乗根の2乗＝平方根（√）」は指数で考えると分かりやすい。</p>
+            <p class="big"><math display="block"><msqrt><mn>3</mn></msqrt><mo>−</mo><msqrt><mn>2</mn></msqrt></math></p>
+            <p>（<span class="ri">4</span><math><msqrt><mn>3</mn></msqrt><mo>+</mo></math><span class="ri">4</span><math><msqrt><mn>2</mn></msqrt><mo>)</mo><mo>(</mo></math><span class="ri">4</span><math><msqrt><mn>3</mn></msqrt><mo>−</mo></math><span class="ri">4</span><math><msqrt><mn>2</mn></msqrt><mo>)</mo><mo>=</mo><mo>(</mo></math><span class="ri">4</span><math><msqrt><mn>3</mn></msqrt><msup><mo>)</mo><mn>2</mn></msup><mo>−</mo><mo>(</mo></math><span class="ri">4</span><math><msqrt><mn>2</mn></msqrt><msup><mo>)</mo><mn>2</mn></msup><mo>=</mo><msqrt><mn>3</mn></msqrt><mo>−</mo><msqrt><mn>2</mn></msqrt></math>。</p>
+            <p class="note"><b>ポイント：</b>根号の計算も、ふつうの展開公式がそのまま使える。<br>「4乗根の2乗＝平方根<math><mo>(</mo><mo>)</mo><mo>√</mo></math>」は指数で考えると分かりやすい。</p>
           </div>
           <p class="prob-done">(3) クリア！　(4) のタブも開いてみよう。</p>
         </div>
 
         <!-- 補充2 (4) -->
-        <div class="tabpanel" id="panel-q2-4" data-flow="q2-4" data-label="補充2 (4)">
+        <div class="nofig tabpanel" id="panel-q2-4" data-flow="q2-4" data-label="補充2 (4)">
           <div class="prob-head">
             <span class="sub prob-q" style="margin:0">(4)</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
-          <p class="formula">（2<sup>1/3</sup> − 2<sup>−1/3</sup>）（2<sup>2/3</sup> ＋ 1 ＋ 2<sup>−2/3</sup>）</p>
+          <p class="formula"><math display="block"><mo>(</mo><msup><mn>2</mn><mfrac><mn>1</mn><mn>3</mn></mfrac></msup><mo>−</mo><msup><mn>2</mn><mrow><mo>−</mo><mfrac><mn>1</mn><mn>3</mn></mfrac></mrow></msup><mo>)</mo><mo>(</mo><msup><mn>2</mn><mfrac><mn>2</mn><mn>3</mn></mfrac></msup><mo>+</mo><mn>1</mn><mo>+</mo><msup><mn>2</mn><mrow><mo>−</mo><mfrac><mn>2</mn><mn>3</mn></mfrac></mrow></msup><mo>)</mo></math></p>
           <div class="step hint">
             <h3>ヒント 1 ― 文字に置き換える</h3>
-            <p><b>u ＝ 2<sup>1/3</sup></b> とおいてみよう。すると 2<sup>−1/3</sup> ＝ <span class="fr"><span class="fr-n">1</span><span class="fr-d">u</span></span>、2<sup>2/3</sup> ＝ u<sup>2</sup>、2<sup>−2/3</sup> ＝ <span class="fr"><span class="fr-n">1</span><span class="fr-d">u<sup>2</sup></span></span> だから、式はこうなる。</p>
-            <p class="formula" style="margin-bottom:10px">（u − <span class="fr"><span class="fr-n">1</span><span class="fr-d">u</span></span>）（u<sup>2</sup> ＋ 1 ＋ <span class="fr"><span class="fr-n">1</span><span class="fr-d">u<sup>2</sup></span></span>）</p>
+            <p class="cite"><span class="cite-tag">使う定義</span>負の指数の定義 <math><msup><mi>a</mi><mrow><mo>−</mo><mi>p</mi></mrow></msup><mo>=</mo><mfrac><mn>1</mn><msup><mi>a</mi><mi>p</mi></msup></mfrac></math>。だから <math><msup><mn>2</mn><mrow><mo>−</mo><mfrac><mn>1</mn><mn>3</mn></mfrac></mrow></msup><mo>=</mo><mfrac><mn>1</mn><mi>u</mi></mfrac></math> と書けて、式全体が <math><mi>u</mi></math> の式に直るよ。</p>
+            
+            <p><b><math><mi>u</mi><mo>=</mo><msup><mn>2</mn><mfrac><mn>1</mn><mn>3</mn></mfrac></msup></math></b> とおいてみよう。すると<math><msup><mn>2</mn><mrow><mo>−</mo><mfrac><mn>1</mn><mn>3</mn></mfrac></mrow></msup><mo>=</mo><mfrac><mn>1</mn><mi>u</mi></mfrac></math>、<math><msup><mn>2</mn><mfrac><mn>2</mn><mn>3</mn></mfrac></msup><mo>=</mo><msup><mi>u</mi><mn>2</mn></msup></math>、<math><msup><mn>2</mn><mrow><mo>−</mo><mfrac><mn>2</mn><mn>3</mn></mfrac></mrow></msup><mo>=</mo><mfrac><mn>1</mn><msup><mi>u</mi><mn>2</mn></msup></mfrac></math> だから、式はこうなる。</p>
+            <p class="formula" style="margin-bottom:10px"><math display="block"><mo>(</mo><mi>u</mi><mo>−</mo><mfrac><mn>1</mn><mi>u</mi></mfrac><mo>)</mo><mo>(</mo><msup><mi>u</mi><mn>2</mn></msup><mo>+</mo><mn>1</mn><mo>+</mo><mfrac><mn>1</mn><msup><mi>u</mi><mn>2</mn></msup></mfrac><mo>)</mo></math></p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 真ん中の「1」の正体</h3>
-            <p>u × <span class="fr"><span class="fr-n">1</span><span class="fr-d">u</span></span> ＝ 1 だから、真ん中の <b>1 は u·<span class="fr"><span class="fr-n">1</span><span class="fr-d">u</span></span> とみなせる</b>。v ＝ <span class="fr"><span class="fr-n">1</span><span class="fr-d">u</span></span> とおくと、式は （u − v）（u<sup>2</sup> ＋ uv ＋ v<sup>2</sup>） の形になる。</p>
+            <p><math><mi>u</mi><mo>×</mo><mfrac><mn>1</mn><mi>u</mi></mfrac><mo>=</mo><mn>1</mn></math>だから、真ん中の <b>1 は<math><mi>u</mi><mo>·</mo><mfrac><mn>1</mn><mi>u</mi></mfrac></math> とみなせる</b>。<math><mi>v</mi><mo>=</mo><mfrac><mn>1</mn><mi>u</mi></mfrac></math> とおくと、式は<math><mo>(</mo><mi>u</mi><mo>−</mo><mi>v</mi><mo>)</mo><mo>(</mo><msup><mi>u</mi><mn>2</mn></msup><mo>+</mo><mi>u</mi><mi>v</mi><mo>+</mo><msup><mi>v</mi><mn>2</mn></msup><mo>)</mo></math>の形になる。</p>
             <p>この形に見覚えはないかな？</p>
           </div>
           <div class="step hint">
             <h3>ヒント 3 ― 因数分解の公式に当てはめる</h3>
-            <p>（u − v）（u<sup>2</sup> ＋ uv ＋ v<sup>2</sup>）＝ <b>u<sup>3</sup> − v<sup>3</sup></b> という公式が使える形だ。</p>
-            <p>u<sup>3</sup> ＝ (2<sup>1/3</sup>)<sup>3</sup> ＝ 2、v<sup>3</sup> ＝ (2<sup>−1/3</sup>)<sup>3</sup> ＝ 2<sup>−1</sup> ＝ <span class="fr"><span class="fr-n">1</span><span class="fr-d">2</span></span> を当てはめてみよう。</p>
+            <p class="cite"><span class="cite-tag">使う公式</span>因数分解の公式 <math><mo>(</mo><mi>u</mi><mo>−</mo><mi>v</mi><mo>)</mo><mo>(</mo><msup><mi>u</mi><mn>2</mn></msup><mo>+</mo><mi>u</mi><mi>v</mi><mo>+</mo><msup><mi>v</mi><mn>2</mn></msup><mo>)</mo><mo>=</mo><msup><mi>u</mi><mn>3</mn></msup><mo>−</mo><msup><mi>v</mi><mn>3</mn></msup></math>。ヒント2で作った形は、ちょうどこの左辺になっているよ。</p>
+            
+            <p><math><mo>(</mo><mi>u</mi><mo>−</mo><mi>v</mi><mo>)</mo><mo>(</mo><msup><mi>u</mi><mn>2</mn></msup><mo>+</mo><mi>u</mi><mi>v</mi><mo>+</mo><msup><mi>v</mi><mn>2</mn></msup><mo>)</mo><mo>=</mo></math><b><math><msup><mi>u</mi><mn>3</mn></msup><mo>−</mo><msup><mi>v</mi><mn>3</mn></msup></math></b> という公式が使える形だ。</p>
+            <p><math><msup><mi>u</mi><mn>3</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><msup><mn>2</mn><mfrac><mn>1</mn><mn>3</mn></mfrac></msup><mo>)</mo></mrow><mn>3</mn></msup><mo>=</mo><mn>2</mn></math>、</p>
+<div class="chain-crow">
+<div class="crow"><math displaystyle="true"><msup><mi>v</mi><mn>3</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><msup><mn>2</mn><mrow><mo>−</mo><mfrac><mn>1</mn><mn>3</mn></mfrac></mrow></msup><mo>)</mo></mrow><mn>3</mn></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msup><mi>v</mi><mn>3</mn></msup></mphantom><mo>=</mo><msup><mn>2</mn><mrow><mo>−</mo><mn>1</mn></mrow></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msup><mi>v</mi><mn>3</mn></msup></mphantom><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math></div>
+</div>
+<p>を当てはめてみよう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (4)</h3>
-            <p class="big"><span class="fr"><span class="fr-n">3</span><span class="fr-d">2</span></span></p>
-            <p>u ＝ 2<sup>1/3</sup>、v ＝ 2<sup>−1/3</sup> とおくと uv ＝ 1 だから、与式 ＝ （u − v）（u<sup>2</sup> ＋ uv ＋ v<sup>2</sup>）＝ u<sup>3</sup> − v<sup>3</sup> ＝ 2 − <span class="fr"><span class="fr-n">1</span><span class="fr-d">2</span></span> ＝ <span class="fr"><span class="fr-n">3</span><span class="fr-d">2</span></span>。</p>
-            <p class="note"><b>ポイント：</b>複雑な指数の式は、文字に置き換えると見慣れた因数分解の形が見えてくる。「1 ＝ uv」と見るのがこの問題の鍵だよ。</p>
+            <p class="big"><math display="block"><mfrac><mn>3</mn><mn>2</mn></mfrac></math></p>
+            <p><math><mi>u</mi><mo>=</mo><msup><mn>2</mn><mfrac><mn>1</mn><mn>3</mn></mfrac></msup></math>、<math><mi>v</mi><mo>=</mo><msup><mn>2</mn><mrow><mo>−</mo><mfrac><mn>1</mn><mn>3</mn></mfrac></mrow></msup></math> とおくと<math><mi>u</mi><mi>v</mi><mo>=</mo><mn>1</mn></math>だから、与式</p>
+<div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mo>=</mo><mo>(</mo><mi>u</mi><mo>−</mo><mi>v</mi><mo>)</mo><mo>(</mo><msup><mi>u</mi><mn>2</mn></msup><mo>+</mo><mi>u</mi><mi>v</mi><mo>+</mo><msup><mi>v</mi><mn>2</mn></msup><mo>)</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo><msup><mi>u</mi><mn>3</mn></msup><mo>−</mo><msup><mi>v</mi><mn>3</mn></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo><mn>2</mn><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo><mfrac><mn>3</mn><mn>2</mn></mfrac><mtext>。</mtext></math></div>
+</div>
+            <p class="note"><b>ポイント：</b>複雑な指数の式は、文字に置き換えると見慣れた因数分解の形が見えてくる。<br>「<math><mn>1</mn><mo>=</mo><mi>u</mi><mi>v</mi></math>」と見るのがこの問題の鍵だよ。</p>
           </div>
           <p class="prob-done">(4) クリア！　補充2 はこれで完了。次は補充3へ。</p>
         </div>
       </section>
 
       <!-- ===== 補充3 ===== -->
-      <section class="card prob" id="prob-q3">
+      <section class="nofig card prob" id="prob-q3">
         <div class="prob-head">
           <span class="prob-tag">補充 3</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
@@ -509,32 +591,36 @@
         </div>
 
         <!-- 補充3 (1) -->
-        <div class="tabpanel show" id="panel-q3-1" data-flow="q3-1" data-label="補充3 (1)">
+        <div class="nofig tabpanel show" id="panel-q3-1" data-flow="q3-1" data-label="補充3 (1)">
           <div class="prob-head">
             <span class="sub prob-q" style="margin:0">(1)</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
-          <p class="formula">y ＝ 2<sup>x−1</sup></p>
+          <p class="formula"><math display="block"><mi>y</mi><mo>=</mo><msup><mn>2</mn><mrow><mi>x</mi><mo>−</mo><mn>1</mn></mrow></msup></math></p>
           <div class="step hint">
             <h3>ヒント 1 ― どのグラフをどう動かすか</h3>
-            <p>y ＝ 2<sup>x−1</sup> は、y ＝ 2<sup>x</sup> の <b>x を x−1 に変えた</b>もの。グラフは <b>x 軸方向に ＋1 平行移動</b>する（右へ1つ動く）。</p>
-            <p>まず y ＝ 2<sup>x</sup> のグラフを思い浮かべて、それを右へずらすイメージを持とう。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>グラフの平行移動：式の <math><mi>x</mi></math> を <math><mi>x</mi><mo>−</mo><mi>a</mi></math> に変えると、グラフは <math><mi>x</mi></math> 軸方向に <math><mo>+</mo><mi>a</mi></math> だけ平行移動する。ここでは <math><mi>a</mi><mo>=</mo><mn>1</mn></math> で、<math><mi>y</mi><mo>=</mo><msup><mn>2</mn><mi>x</mi></msup></math> が右へ1つ動くよ。</p>
+            
+            <p><math><mi>y</mi><mo>=</mo><msup><mn>2</mn><mrow><mi>x</mi><mo>−</mo><mn>1</mn></mrow></msup></math> は、<math><mi>y</mi><mo>=</mo><msup><mn>2</mn><mi>x</mi></msup></math> の <b>x を x−1 に変えた</b>もの。<br>グラフは <b>x 軸方向に ＋1 平行移動</b>する（右へ1つ動く）。</p>
+            <p>まず<math><mi>y</mi><mo>=</mo><msup><mn>2</mn><mi>x</mi></msup></math> のグラフを思い浮かべて、それを右へずらすイメージを持とう。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 通る点を2つ求める</h3>
+            <p class="cite"><span class="cite-tag">使う定義</span>0乗の定義 <math><msup><mi>a</mi><mn>0</mn></msup><mo>=</mo><mn>1</mn></math>（<math><mi>a</mi><mo>≠</mo><mn>0</mn></math>）。点を求めるときに出てくる <math><mi>y</mi><mo>=</mo><msup><mn>2</mn><mn>0</mn></msup></math> は、この定義で 1 になるよ。</p>
+            
             <p>目印になる点を計算しよう。</p>
-            <p>・x ＝ 1 のとき：y ＝ 2<sup>0</sup> ＝ 1 → 点 <b>(1, 1)</b><br />・x ＝ 2 のとき：y ＝ 2<sup>1</sup> ＝ 2 → 点 <b>(2, 2)</b></p>
-            <p>もとのグラフの点 (0, 1)、(1, 2) が、それぞれ右へ1つ動いた点になっていることを確かめよう。</p>
+            <p><math><mo>⋅</mo><mi>x</mi><mo>=</mo><mn>1</mn></math>のとき：<math><mi>y</mi><mo>=</mo><msup><mn>2</mn><mn>0</mn></msup><mo>=</mo><mn>1</mn><mo>→</mo></math>点 <b><math><mo>(</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>)</mo></math></b><br /><math><mo>⋅</mo><mi>x</mi><mo>=</mo><mn>2</mn></math>のとき：<math><mi>y</mi><mo>=</mo><msup><mn>2</mn><mn>1</mn></msup><mo>=</mo><mn>2</mn><mo>→</mo></math>点 <b><math><mo>(</mo><mn>2</mn><mo>,</mo><mn>2</mn><mo>)</mo></math></b></p>
+            <p>もとのグラフの点<math><mo>(</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>)</mo></math>、<math><mo>(</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>)</mo></math>が、それぞれ右へ1つ動いた点になっていることを確かめよう。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 3 ― 漸近線を確認する</h3>
-            <p>漸近線（グラフが近づいていって交わらない直線）は、左右の移動では上下に動かない。y ＝ 2<sup>x</sup> と同じ <b>x 軸（y ＝ 0）</b> のままだ。</p>
+            <p>漸近線（グラフが近づいていって交わらない直線）は、左右の移動では上下に動かない。<br><math><mi>y</mi><mo>=</mo><msup><mn>2</mn><mi>x</mi></msup></math> と同じ <b>x 軸<math><mo>(</mo><mi>y</mi><mo>=</mo><mn>0</mn><mo>)</mo></math></b> のままだ。</p>
             <p>左へ行くほどグラフは x 軸に近づき、右へ行くほど急に増える、あの形を描こう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (1)</h3>
-            <p>y ＝ 2<sup>x</sup> のグラフ（破線）を <b>x 軸方向に ＋1 平行移動</b>したもの。点 (1, 1)、(2, 2) を通り、漸近線は x 軸。</p>
+            <p><math><mi>y</mi><mo>=</mo><msup><mn>2</mn><mi>x</mi></msup></math> のグラフ（破線）を <b>x 軸方向に ＋1 平行移動</b>したもの。<br>点<math><mo>(</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>)</mo></math>、<math><mo>(</mo><mn>2</mn><mo>,</mo><mn>2</mn><mo>)</mo></math>を通り、漸近線は x 軸。</p>
             <figure>
               <div class="figbox">
                 <svg class="graph" viewBox="0 0 320 300" data-ox="96" data-oy="252" data-s="32" data-gx0="-2.5" data-gx1="6" data-gy0="-1" data-gy1="7" role="img" aria-label="y＝2のx−1乗のグラフ。y＝2のx乗のグラフを右へ1平行移動した曲線で、点(1,1)と(2,2)を通り、x軸が漸近線">
@@ -551,7 +637,7 @@
                   <text class="glabel base" data-x="-2.4" data-y="1.75" font-size="13">y＝2ˣ</text>
                 </svg>
               </div>
-              <figcaption>緑の実線が y ＝ 2<sup>x−1</sup>、破線がもとの y ＝ 2<sup>x</sup>。全体が右へ1つずれていることと、漸近線（x 軸）は動かないことを見比べよう。</figcaption>
+              <figcaption>緑の実線が<math><mi>y</mi><mo>=</mo><msup><mn>2</mn><mrow><mi>x</mi><mo>−</mo><mn>1</mn></mrow></msup></math>、破線がもとの<math><mi>y</mi><mo>=</mo><msup><mn>2</mn><mi>x</mi></msup></math>。全体が右へ1つずれていることと、漸近線（x 軸）は動かないことを見比べよう。</figcaption>
             </figure>
             <p class="note"><b>ポイント：</b>「x を x−a に変える → x 軸方向に ＋a 移動」。a の符号と移動の向きが逆に見えるので、点の計算で確かめるのが確実だよ。</p>
           </div>
@@ -559,31 +645,45 @@
         </div>
 
         <!-- 補充3 (2) -->
-        <div class="tabpanel" id="panel-q3-2" data-flow="q3-2" data-label="補充3 (2)">
+        <div class="nofig tabpanel" id="panel-q3-2" data-flow="q3-2" data-label="補充3 (2)">
           <div class="prob-head">
             <span class="sub prob-q" style="margin:0">(2)</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
-          <p class="formula">y ＝ 2<sup>x</sup> ＋ 1</p>
+          <p class="formula"><math display="block"><mi>y</mi><mo>=</mo><msup><mn>2</mn><mi>x</mi></msup><mo>+</mo><mn>1</mn></math></p>
           <div class="step hint">
             <h3>ヒント 1 ― どのグラフをどう動かすか</h3>
-            <p>今度は y ＝ 2<sup>x</sup> の<b>式全体に ＋1</b> されている。グラフは <b>y 軸方向に ＋1 平行移動</b>する（上へ1つ動く）。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>グラフの平行移動：式全体に <math><mo>+</mo><mi>b</mi></math> すると、グラフは <math><mi>y</mi></math> 軸方向に <math><mo>+</mo><mi>b</mi></math> だけ平行移動する。ここでは <math><mi>b</mi><mo>=</mo><mn>1</mn></math> で、全体が上へ1つ動くよ。</p>
+            
+            <p>今度は<math><mi>y</mi><mo>=</mo><msup><mn>2</mn><mi>x</mi></msup></math> の<b>式全体に ＋1</b> されている。<br>グラフは <b>y 軸方向に ＋1 平行移動</b>する（上へ1つ動く）。</p>
             <p>(1) との違いは、動く方向が「右」ではなく「上」という点だ。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 通る点を2つ求める</h3>
-            <p>・x ＝ 0 のとき：y ＝ 2<sup>0</sup> ＋ 1 ＝ 1 ＋ 1 ＝ 2 → 点 <b>(0, 2)</b><br />・x ＝ 1 のとき：y ＝ 2<sup>1</sup> ＋ 1 ＝ 2 ＋ 1 ＝ 3 → 点 <b>(1, 3)</b></p>
-            <p>もとのグラフの点 (0, 1)、(1, 2) が、それぞれ上へ1つ動いた点になっている。</p>
+            <p><math><mo>⋅</mo><mi>x</mi><mo>=</mo><mn>0</mn></math>のとき：</p>
+<div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>y</mi><mo>=</mo><msup><mn>2</mn><mn>0</mn></msup><mo>+</mo><mn>1</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>y</mi></mphantom><mo>=</mo><mn>1</mn><mo>+</mo><mn>1</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>y</mi></mphantom><mo>=</mo><mn>2</mn><mo>→</mo></math></div>
+</div>
+<p>点 <b><math><mo>(</mo><mn>0</mn><mo>,</mo><mn>2</mn><mo>)</mo></math></b><br /><math><mo>⋅</mo><mi>x</mi><mo>=</mo><mn>1</mn></math>のとき：</p>
+<div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>y</mi><mo>=</mo><msup><mn>2</mn><mn>1</mn></msup><mo>+</mo><mn>1</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>y</mi></mphantom><mo>=</mo><mn>2</mn><mo>+</mo><mn>1</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>y</mi></mphantom><mo>=</mo><mn>3</mn><mo>→</mo></math></div>
+</div>
+<p>点 <b><math><mo>(</mo><mn>1</mn><mo>,</mo><mn>3</mn><mo>)</mo></math></b></p>
+            <p>もとのグラフの点<math><mo>(</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>)</mo></math>、<math><mo>(</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>)</mo></math>が、それぞれ上へ1つ動いた点になっている。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 3 ― 漸近線も一緒に動く</h3>
-            <p>グラフ全体が上に1つ上がるから、漸近線も x 軸（y ＝ 0）から上に1つ上がって <b>y ＝ 1</b> になる。</p>
-            <p>左へ行くほど、グラフは直線 y ＝ 1 に近づいていく（y ＝ 1 より下には行かない）。</p>
+            <p>グラフ全体が上に1つ上がるから、漸近線も x 軸<math><mo>(</mo><mi>y</mi><mo>=</mo><mn>0</mn><mo>)</mo></math>から上に1つ上がって <b><math><mi>y</mi><mo>=</mo><mn>1</mn></math></b> になる。</p>
+            <p>左へ行くほど、グラフは直線<math><mi>y</mi><mo>=</mo><mn>1</mn></math>に近づいていく<math><mo>(</mo><mi>y</mi><mo>=</mo><mn>1</mn></math>より下には行かない）。</p>
           </div>
           <div class="step answer">
             <h3>解答 (2)</h3>
-            <p>y ＝ 2<sup>x</sup> のグラフ（破線）を <b>y 軸方向に ＋1 平行移動</b>したもの。点 (0, 2)、(1, 3) を通り、漸近線は y ＝ 1。</p>
+            <p><math><mi>y</mi><mo>=</mo><msup><mn>2</mn><mi>x</mi></msup></math> のグラフ（破線）を <b>y 軸方向に ＋1 平行移動</b>したもの。点<math><mo>(</mo><mn>0</mn><mo>,</mo><mn>2</mn><mo>)</mo></math>、<math><mo>(</mo><mn>1</mn><mo>,</mo><mn>3</mn><mo>)</mo></math>を通り、漸近線は<math><mi>y</mi><mo>=</mo><mn>1</mn></math>。</p>
             <figure>
               <div class="figbox">
                 <svg class="graph" viewBox="0 0 320 300" data-ox="96" data-oy="252" data-s="32" data-gx0="-2.5" data-gx1="6" data-gy0="-1" data-gy1="7" data-asymy="1" role="img" aria-label="y＝2のx乗＋1のグラフ。y＝2のx乗のグラフを上へ1平行移動した曲線で、点(0,2)と(1,3)を通り、漸近線はy＝1">
@@ -601,7 +701,7 @@
                   <text class="glabel asym" data-x="5.9" data-y="1" data-dy="-8" data-anchor="end" font-size="13">y＝1</text>
                 </svg>
               </div>
-              <figcaption>緑の実線が y ＝ 2<sup>x</sup> ＋ 1、破線がもとの y ＝ 2<sup>x</sup>。オレンジの破線 y ＝ 1 が漸近線で、グラフは左へ行くほどこの直線に近づく。</figcaption>
+              <figcaption>緑の実線が<math><mi>y</mi><mo>=</mo><msup><mn>2</mn><mi>x</mi></msup><mo>+</mo><mn>1</mn></math>、破線がもとの<math><mi>y</mi><mo>=</mo><msup><mn>2</mn><mi>x</mi></msup></math>。オレンジの破線<math><mi>y</mi><mo>=</mo><mn>1</mn></math>が漸近線で、グラフは左へ行くほどこの直線に近づく。</figcaption>
             </figure>
             <p class="note"><b>ポイント：</b>「式全体に ＋b → y 軸方向に ＋b 移動」で、漸近線も b だけ動く。(1) の左右移動とセットで覚えよう。</p>
           </div>
@@ -610,12 +710,12 @@
       </section>
 
       <!-- ===== 補充4 ===== -->
-      <section class="card prob" id="prob-q4">
+      <section class="nofig card prob" id="prob-q4">
         <div class="prob-head">
           <span class="prob-tag">補充 4</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
-        <p class="prob-q">x の方程式 4<sup>x</sup> − 3·2<sup>x</sup> − 4 ＝ 0 について、次の問いに答えよ。</p>
+        <p class="prob-q">x の方程式<math><msup><mn>4</mn><mi>x</mi></msup><mo>−</mo><mn>3</mn><mo>·</mo><msup><mn>2</mn><mi>x</mi></msup><mo>−</mo><mn>4</mn><mo>=</mo><mn>0</mn></math>について、次の問いに答えよ。</p>
 
         <div class="tabs" role="tablist" aria-label="補充4の小問">
           <button class="tab" role="tab" data-tab="q4-1" aria-selected="true">(1)</button>
@@ -623,34 +723,38 @@
         </div>
 
         <!-- 補充4 (1) -->
-        <div class="tabpanel show" id="panel-q4-1" data-flow="q4-1" data-label="補充4 (1)">
+        <div class="nofig tabpanel show" id="panel-q4-1" data-flow="q4-1" data-label="補充4 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1) 2<sup>x</sup> ＝ t とおいて得られる t の方程式を作れ</span>
+            <span class="sub prob-q" style="margin:0"><math><mo>(</mo><mn>1</mn><mo>)</mo><msup><mn>2</mn><mi>x</mi></msup><mo>=</mo><mi>t</mi></math>とおいて得られる t の方程式を作れ</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="step hint">
-            <h3>ヒント 1 ― 4<sup>x</sup> を 2 の累乗で表す</h3>
-            <p>鍵は 4<sup>x</sup> の変形だ。4 ＝ 2<sup>2</sup> だから、</p>
-            <p class="formula" style="margin-bottom:10px">4<sup>x</sup> ＝ (2<sup>2</sup>)<sup>x</sup> ＝ (2<sup>x</sup>)<sup>2</sup></p>
-            <p>つまり 4<sup>x</sup> は「2<sup>x</sup> の2乗」になっている。</p>
+            <h3>ヒント<math><mn>1</mn><mo>―</mo><msup><mn>4</mn><mi>x</mi></msup></math> を 2 の累乗で表す</h3>
+            <p class="cite"><span class="cite-tag">使う公式</span>指数法則 <math><msup><mrow><mo>(</mo><msup><mi>a</mi><mi>m</mi></msup><mo>)</mo></mrow><mi>n</mi></msup><mo>=</mo><msup><mi>a</mi><mrow><mi>m</mi><mi>n</mi></mrow></msup></math>。<math><mn>4</mn><mo>=</mo><msup><mn>2</mn><mn>2</mn></msup></math> と見ると <math><msup><mn>4</mn><mi>x</mi></msup><mo>=</mo><msup><mrow><mo>(</mo><msup><mn>2</mn><mi>x</mi></msup><mo>)</mo></mrow><mn>2</mn></msup></math> となり、「<math><msup><mn>2</mn><mi>x</mi></msup></math> の2乗」の形が見えるよ。</p>
+            
+            <p>鍵は<math><msup><mn>4</mn><mi>x</mi></msup></math> の変形だ。<math><mn>4</mn><mo>=</mo><msup><mn>2</mn><mn>2</mn></msup></math> だから、</p>
+            <p class="formula" style="margin-bottom:10px"><math display="block"><msup><mn>4</mn><mi>x</mi></msup><mo>=</mo><msup><mrow><mo>(</mo><msup><mn>2</mn><mn>2</mn></msup><mo>)</mo></mrow><mi>x</mi></msup><mo>=</mo><msup><mrow><mo>(</mo><msup><mn>2</mn><mi>x</mi></msup><mo>)</mo></mrow><mn>2</mn></msup></math></p>
+            <p>つまり<math><msup><mn>4</mn><mi>x</mi></msup></math> は「<math><msup><mn>2</mn><mi>x</mi></msup></math> の2乗」になっている。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― t に置き換える</h3>
-            <p>2<sup>x</sup> ＝ t とおくと、(2<sup>x</sup>)<sup>2</sup> ＝ t<sup>2</sup>。</p>
-            <p>もとの式の 4<sup>x</sup> を t<sup>2</sup> に、2<sup>x</sup> を t に置き換えて、t の方程式を書いてみよう。</p>
+            <p><math><msup><mn>2</mn><mi>x</mi></msup><mo>=</mo><mi>t</mi></math>とおくと、<math><msup><mrow><mo>(</mo><msup><mn>2</mn><mi>x</mi></msup><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mi>t</mi><mn>2</mn></msup></math>。</p>
+            <p>もとの式の<math><msup><mn>4</mn><mi>x</mi></msup></math> を<math><msup><mi>t</mi><mn>2</mn></msup></math> に、<math><msup><mn>2</mn><mi>x</mi></msup></math> を t に置き換えて、<br>t の方程式を書いてみよう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (1)</h3>
-            <p class="big">t<sup>2</sup> − 3t − 4 ＝ 0</p>
-            <p>4<sup>x</sup> ＝ (2<sup>x</sup>)<sup>2</sup> ＝ t<sup>2</sup> だから、方程式は t<sup>2</sup> − 3t − 4 ＝ 0 となる。</p>
-            <p class="note"><b>ポイント：</b>指数の方程式は、底をそろえて「同じ形（ここでは 2<sup>x</sup>）の2乗・1乗」の式に直すと、ふつうの2次方程式になる。</p>
+            <p class="cite"><span class="cite-tag">使う公式</span>指数法則 <math><msup><mrow><mo>(</mo><msup><mi>a</mi><mi>m</mi></msup><mo>)</mo></mrow><mi>n</mi></msup><mo>=</mo><msup><mi>a</mi><mrow><mi>m</mi><mi>n</mi></mrow></msup></math>（ヒント1で使った公式）。<math><msup><mn>4</mn><mi>x</mi></msup><mo>=</mo><msup><mrow><mo>(</mo><msup><mn>2</mn><mi>x</mi></msup><mo>)</mo></mrow><mn>2</mn></msup></math> と直してから <math><mi>t</mi></math> に置き換えるよ。</p>
+            
+            <p class="big"><math display="block"><msup><mi>t</mi><mn>2</mn></msup><mo>−</mo><mn>3</mn><mi>t</mi><mo>−</mo><mn>4</mn><mo>=</mo><mn>0</mn></math></p>
+            <p><math><msup><mn>4</mn><mi>x</mi></msup><mo>=</mo><msup><mrow><mo>(</mo><msup><mn>2</mn><mi>x</mi></msup><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mi>t</mi><mn>2</mn></msup></math> だから、方程式は<math><msup><mi>t</mi><mn>2</mn></msup><mo>−</mo><mn>3</mn><mi>t</mi><mo>−</mo><mn>4</mn><mo>=</mo><mn>0</mn></math>となる。</p>
+            <p class="note"><b>ポイント：</b>指数の方程式は、底をそろえて「同じ形（ここでは<math><msup><mn>2</mn><mi>x</mi></msup><mo>)</mo></math>の2乗・1乗」の式に直すと、<br>ふつうの2次方程式になる。</p>
           </div>
           <p class="prob-done">(1) クリア！　(2) のタブも開いてみよう。</p>
         </div>
 
         <!-- 補充4 (2) -->
-        <div class="tabpanel" id="panel-q4-2" data-flow="q4-2" data-label="補充4 (2)">
+        <div class="nofig tabpanel" id="panel-q4-2" data-flow="q4-2" data-label="補充4 (2)">
           <div class="prob-head">
             <span class="sub prob-q" style="margin:0">(2) 与えられた x の方程式を解け</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
@@ -658,62 +762,70 @@
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― t の方程式を因数分解する</h3>
-            <p>(1) で作った t<sup>2</sup> − 3t − 4 ＝ 0 を因数分解しよう。掛けて −4、足して −3 になる2数は −4 と 1 だ。</p>
-            <p class="formula" style="margin-bottom:10px">(t − 4)(t ＋ 1) ＝ 0</p>
-            <p>よって t ＝ 4 または t ＝ −1 が候補になる。</p>
+            <p>(1) で作った<math><msup><mi>t</mi><mn>2</mn></msup><mo>−</mo><mn>3</mn><mi>t</mi><mo>−</mo><mn>4</mn><mo>=</mo><mn>0</mn></math>を因数分解しよう。<br>掛けて −4、<br>足して −3 になる2数は −4 と 1 だ。</p>
+            <p class="formula" style="margin-bottom:10px"><math display="block"><mo>(</mo><mi>t</mi><mo>−</mo><mn>4</mn><mo>)</mo><mo>(</mo><mi>t</mi><mo>+</mo><mn>1</mn><mo>)</mo><mo>=</mo><mn>0</mn></math></p>
+            <p>よって<math><mi>t</mi><mo>=</mo><mn>4</mn></math>または<math><mi>t</mi><mo>=</mo><mo>−</mo><mn>1</mn></math>が候補になる。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― t の条件で候補を絞る</h3>
-            <p>t ＝ 2<sup>x</sup> は、x がどんな値でも<b>正</b>になる（2 の累乗は 0 や負にはならない）。つまり <b>t ＞ 0</b> が条件だ。</p>
-            <p>候補のうち、t ＝ −1 は条件に合わないので不適。残るのは t ＝ 4 だけだ。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>正の数の累乗は常に正：<math><msup><mn>2</mn><mi>x</mi></msup><mo>&gt;</mo><mn>0</mn></math>。だから置き換えた <math><mi>t</mi><mo>=</mo><msup><mn>2</mn><mi>x</mi></msup></math> には <math><mi>t</mi><mo>&gt;</mo><mn>0</mn></math> という条件がつくよ。</p>
+            
+            <p><math><mi>t</mi><mo>=</mo><msup><mn>2</mn><mi>x</mi></msup></math> は、x がどんな値でも<b>正</b>になる（2 の累乗は 0 や負にはならない）。<br>つまり <b>t ＞ 0</b> が条件だ。</p>
+            <p>候補のうち、<math><mi>t</mi><mo>=</mo><mo>−</mo><mn>1</mn></math>は条件に合わないので不適。残るのは<math><mi>t</mi><mo>=</mo><mn>4</mn></math>だけだ。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 3 ― x に戻す</h3>
-            <p>t ＝ 4 は、2<sup>x</sup> ＝ 4 ということ。4 ＝ 2<sup>2</sup> と直せば、2<sup>x</sup> ＝ 2<sup>2</sup> となる。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>底が同じ累乗どうしが等しければ、指数も等しい：<math><msup><mn>2</mn><mi>x</mi></msup><mo>=</mo><msup><mn>2</mn><mn>2</mn></msup></math> なら <math><mi>x</mi><mo>=</mo><mn>2</mn></math>。右辺を <math><msup><mn>2</mn><mn>2</mn></msup></math> の形にそろえるのがコツだよ。</p>
+            
+            <p><math><mi>t</mi><mo>=</mo><mn>4</mn></math>は、<math><msup><mn>2</mn><mi>x</mi></msup><mo>=</mo><mn>4</mn></math>ということ。<math><mn>4</mn><mo>=</mo><msup><mn>2</mn><mn>2</mn></msup></math> と直せば、<math><msup><mn>2</mn><mi>x</mi></msup><mo>=</mo><msup><mn>2</mn><mn>2</mn></msup></math> となる。</p>
             <p>底が同じなら指数も等しい。x が求まるはずだ。</p>
           </div>
           <div class="step answer">
             <h3>解答 (2)</h3>
-            <p class="big">x ＝ 2</p>
-            <p>t<sup>2</sup> − 3t − 4 ＝ 0 を解くと (t − 4)(t ＋ 1) ＝ 0 より t ＝ 4, −1。t ＝ 2<sup>x</sup> ＞ 0 だから t ＝ 4。2<sup>x</sup> ＝ 4 ＝ 2<sup>2</sup> より、x ＝ 2。</p>
-            <p class="note"><b>ポイント：</b>置き換えたら、最後に必ず「t の条件（t ＞ 0）」で答えを絞る。ここを忘れると余分な答えが残ってしまう。</p>
+            <p class="big"><math display="block"><mi>x</mi><mo>=</mo><mn>2</mn></math></p>
+            <p><math><msup><mi>t</mi><mn>2</mn></msup><mo>−</mo><mn>3</mn><mi>t</mi><mo>−</mo><mn>4</mn><mo>=</mo><mn>0</mn></math>を解くと<math><mo>(</mo><mi>t</mi><mo>−</mo><mn>4</mn><mo>)</mo><mo>(</mo><mi>t</mi><mo>+</mo><mn>1</mn><mo>)</mo><mo>=</mo><mn>0</mn></math>より<math><mi>t</mi><mo>=</mo><mn>4</mn><mo>,</mo><mo>−</mo><mn>1</mn></math>。<br><math><mi>t</mi><mo>=</mo><msup><mn>2</mn><mi>x</mi></msup><mo>&gt;</mo><mn>0</mn></math>だから<math><mi>t</mi><mo>=</mo><mn>4</mn></math>。<math><msup><mn>2</mn><mi>x</mi></msup><mo>=</mo><mn>4</mn><mo>=</mo><msup><mn>2</mn><mn>2</mn></msup></math> より、<math><mi>x</mi><mo>=</mo><mn>2</mn></math>。</p>
+            <p class="note"><b>ポイント：</b>置き換えたら、最後に必ず「t の条件（t ＞ 0）」で答えを絞る。<br>ここを忘れると余分な答えが残ってしまう。</p>
           </div>
           <p class="prob-done">(2) クリア！　補充4 はこれで完了。次は補充5へ。</p>
         </div>
       </section>
 
       <!-- ===== 補充5 ===== -->
-      <section class="card prob" id="prob-q5" data-flow="q5" data-label="補充5">
+      <section class="nofig card prob" id="prob-q5" data-flow="q5" data-label="補充5">
         <div class="prob-head">
           <span class="prob-tag">補充 5</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 4</span>
         </div>
-        <p class="prob-q">x の不等式 4<sup>x</sup> − 7·2<sup>x</sup> − 8 ＞ 0 を解け。</p>
+        <p class="prob-q">x の不等式<math><msup><mn>4</mn><mi>x</mi></msup><mo>−</mo><mn>7</mn><mo>·</mo><msup><mn>2</mn><mi>x</mi></msup><mo>−</mo><mn>8</mn><mo>&gt;</mo><mn>0</mn></math>を解け。</p>
         <div class="step hint">
           <h3>ヒント 1 ― 補充4と同じ置き換え</h3>
-          <p>方程式のときと同じ手が使える。<b>t ＝ 2<sup>x</sup></b> とおく（t ＞ 0）。4<sup>x</sup> ＝ (2<sup>x</sup>)<sup>2</sup> ＝ t<sup>2</sup> だから、不等式は次の形になる。</p>
-          <p class="formula" style="margin-bottom:10px">t<sup>2</sup> − 7t − 8 ＞ 0</p>
+            <p class="cite"><span class="cite-tag">使う公式</span>指数法則 <math><msup><mrow><mo>(</mo><msup><mi>a</mi><mi>m</mi></msup><mo>)</mo></mrow><mi>n</mi></msup><mo>=</mo><msup><mi>a</mi><mrow><mi>m</mi><mi>n</mi></mrow></msup></math>（補充4で使った公式）。<math><msup><mn>4</mn><mi>x</mi></msup><mo>=</mo><msup><mrow><mo>(</mo><msup><mn>2</mn><mi>x</mi></msup><mo>)</mo></mrow><mn>2</mn></msup></math> と見れば、不等式も <math><mi>t</mi></math> の2次式に直るよ。</p>
+            
+          <p>方程式のときと同じ手が使える。<br><b><math><mi>t</mi><mo>=</mo><msup><mn>2</mn><mi>x</mi></msup></math></b> とおく（t ＞ 0）。<math><msup><mn>4</mn><mi>x</mi></msup><mo>=</mo><msup><mrow><mo>(</mo><msup><mn>2</mn><mi>x</mi></msup><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mi>t</mi><mn>2</mn></msup></math> だから、不等式は次の形になる。</p>
+          <p class="formula" style="margin-bottom:10px"><math display="block"><msup><mi>t</mi><mn>2</mn></msup><mo>−</mo><mn>7</mn><mi>t</mi><mo>−</mo><mn>8</mn><mo>&gt;</mo><mn>0</mn></math></p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― t の不等式を解く</h3>
           <p>左辺を因数分解すると (t − 8)(t ＋ 1)。</p>
-          <p>積 (t − 8)(t ＋ 1) が<b>正</b>になるのは、両方とも正か、両方とも負のとき。つまり <b>t ＜ −1 または t ＞ 8</b> のときだ。</p>
+          <p>積 (t − 8)(t ＋ 1) が<b>正</b>になるのは、両方とも正か、両方とも負のとき。<br>つまり <b>t ＜ −1 または t ＞ 8</b> のときだ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 3 ― t ＞ 0 で絞る</h3>
-          <p>t ＝ 2<sup>x</sup> ＞ 0 だから、t ＜ −1 の範囲は使えない。残るのは <b>t ＞ 8</b>、つまり 2<sup>x</sup> ＞ 8 だ。</p>
+          <p><math><mi>t</mi><mo>=</mo><msup><mn>2</mn><mi>x</mi></msup><mo>&gt;</mo><mn>0</mn></math>だから、t ＜ −1 の範囲は使えない。残るのは <b>t ＞ 8</b>、つまり<math><msup><mn>2</mn><mi>x</mi></msup><mo>&gt;</mo><mn>8</mn></math>だ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 4 ― 指数の大小を比べる</h3>
-          <p>8 ＝ 2<sup>3</sup> と直すと、2<sup>x</sup> ＞ 2<sup>3</sup>。</p>
-          <p>底 2 は 1 より大きく、y ＝ 2<sup>x</sup> は増加する関数だから、関数の値の大小は指数の大小と一致する。指数だけを比べてみよう。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>底が1より大きい指数関数は増加関数で、値の大小と指数の大小が一致する：<math><msup><mn>2</mn><mi>x</mi></msup><mo>&gt;</mo><msup><mn>2</mn><mn>3</mn></msup></math> なら <math><mi>x</mi><mo>&gt;</mo><mn>3</mn></math>。不等号の向きはそのままで、指数だけを比べるよ。</p>
+            
+          <p><math><mn>8</mn><mo>=</mo><msup><mn>2</mn><mn>3</mn></msup></math> と直すと、<math><msup><mn>2</mn><mi>x</mi></msup><mo>&gt;</mo><msup><mn>2</mn><mn>3</mn></msup></math>。</p>
+          <p>底 2 は 1 より大きく、<math><mi>y</mi><mo>=</mo><msup><mn>2</mn><mi>x</mi></msup></math> は増加する関数だから、関数の値の大小は指数の大小と一致する。<br>指数だけを比べてみよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
           <p class="big">x ＞ 3</p>
-          <p>t ＝ 2<sup>x</sup>（＞ 0）とおくと t<sup>2</sup> − 7t − 8 ＞ 0、(t − 8)(t ＋ 1) ＞ 0 より t ＜ −1 または t ＞ 8。t ＞ 0 だから t ＞ 8、すなわち 2<sup>x</sup> ＞ 2<sup>3</sup>。底 2 は増加関数だから、x ＞ 3。</p>
-          <p class="note"><b>ポイント：</b>流れは補充4の方程式とまったく同じ。不等式では最後に「底が1より大きいか小さいか」で、不等号の向きがそのままかどうかが決まる。</p>
+          <p><math><mi>t</mi><mo>=</mo><msup><mn>2</mn><mi>x</mi></msup><mo>(</mo><mo>&gt;</mo><mn>0</mn><mo>)</mo></math>とおくと<math><msup><mi>t</mi><mn>2</mn></msup><mo>−</mo><mn>7</mn><mi>t</mi><mo>−</mo><mn>8</mn><mo>&gt;</mo><mn>0</mn></math>、(t − 8)(t ＋ 1) ＞ 0 より t ＜ −1 または t ＞ 8。<br>t ＞ 0 だから t ＞ 8、<br>すなわち<math><msup><mn>2</mn><mi>x</mi></msup><mo>&gt;</mo><msup><mn>2</mn><mn>3</mn></msup></math>。底 2 は増加関数だから、x ＞ 3。</p>
+          <p class="note"><b>ポイント：</b>流れは補充4の方程式とまったく同じ。<br>不等式では最後に「底が1より大きいか小さいか」で、不等号の向きがそのままかどうかが決まる。</p>
         </div>
         <p class="prob-done">補充5 クリア！　第1節の補充はこれで完了。次は第2節へ。</p>
       </section>
@@ -726,7 +838,7 @@
       </div>
 
       <!-- ===== 補充6 ===== -->
-      <section class="card prob" id="prob-q6">
+      <section class="nofig card prob" id="prob-q6">
         <div class="prob-head">
           <span class="prob-tag">補充 6</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
@@ -739,95 +851,133 @@
         </div>
 
         <!-- 補充6 (1) -->
-        <div class="tabpanel show" id="panel-q6-1" data-flow="q6-1" data-label="補充6 (1)">
+        <div class="nofig tabpanel show" id="panel-q6-1" data-flow="q6-1" data-label="補充6 (1)">
           <div class="prob-head">
             <span class="sub prob-q" style="margin:0">(1)</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
-          <p class="formula"><span class="fr"><span class="fr-n">1</span><span class="fr-d">2</span></span> log<sub>4</sub>8 ＋ log<sub>4</sub>√2</p>
+          <p class="formula"><math display="block"><mfrac><mn>1</mn><mn>2</mn></mfrac><msub><mi>log</mi><mn>4</mn></msub><mn>8</mn><mo>+</mo><msub><mi>log</mi><mn>4</mn></msub><msqrt><mn>2</mn></msqrt></math></p>
           <div class="step hint">
-            <h3>ヒント 1 ― log<sub>4</sub>8 を求める</h3>
-            <p>log<sub>4</sub>8 は「4 を何乗すると 8 になるか」という数。4<sup>3/2</sup> ＝ (2<sup>2</sup>)<sup>3/2</sup> ＝ 2<sup>3</sup> ＝ 8 だから、<b>log<sub>4</sub>8 ＝ <span class="fr"><span class="fr-n">3</span><span class="fr-d">2</span></span></b>。</p>
-            <p>まず <span class="fr"><span class="fr-n">1</span><span class="fr-d">2</span></span> × <span class="fr"><span class="fr-n">3</span><span class="fr-d">2</span></span> ＝ <span class="fr"><span class="fr-n">3</span><span class="fr-d">4</span></span> を計算しておこう。</p>
+            <h3>ヒント<math><mn>1</mn><mo>―</mo><msub><mi>log</mi><mn>4</mn></msub><mn>8</mn></math>を求める</h3>
+            <p class="cite"><span class="cite-tag">使う定義</span>対数の定義：<math><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>=</mo><mi>x</mi></math> とは <math><msup><mi>a</mi><mi>x</mi></msup><mo>=</mo><mi>M</mi></math> のこと。<math><msub><mi>log</mi><mn>4</mn></msub><mn>8</mn></math> は「4を何乗すると8になるか」で、<math><msup><mn>4</mn><mfrac><mn>3</mn><mn>2</mn></mfrac></msup><mo>=</mo><mn>8</mn></math> と確かめられるよ。</p>
+            
+            <p><math><msub><mi>log</mi><mn>4</mn></msub><mn>8</mn></math>は「4 を何乗すると 8 になるか」という数。</p>
+<div class="chain-crow">
+<div class="crow"><math displaystyle="true"><msup><mn>4</mn><mfrac><mn>3</mn><mn>2</mn></mfrac></msup><mo>=</mo><msup><mrow><mo>(</mo><msup><mn>2</mn><mn>2</mn></msup><mo>)</mo></mrow><mfrac><mn>3</mn><mn>2</mn></mfrac></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msup><mn>4</mn><mfrac><mn>3</mn><mn>2</mn></mfrac></msup></mphantom><mo>=</mo><msup><mn>2</mn><mn>3</mn></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msup><mn>4</mn><mfrac><mn>3</mn><mn>2</mn></mfrac></msup></mphantom><mo>=</mo><mn>8</mn></math></div>
+</div>
+<p>だから、<b><math><msub><mi>log</mi><mn>4</mn></msub><mn>8</mn><mo>=</mo><mfrac><mn>3</mn><mn>2</mn></mfrac></math></b>。</p>
+            <p>まず <math><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>×</mo><mfrac><mn>3</mn><mn>2</mn></mfrac><mo>=</mo><mfrac><mn>3</mn><mn>4</mn></mfrac></math> を計算しておこう。</p>
           </div>
           <div class="step hint">
-            <h3>ヒント 2 ― log<sub>4</sub>√2 を求める</h3>
-            <p>同じように「4 を何乗すると √2 になるか」を考える。√2 ＝ 2<sup>1/2</sup> で、4<sup>1/4</sup> ＝ (2<sup>2</sup>)<sup>1/4</sup> ＝ 2<sup>1/2</sup> ＝ √2 だから、<b>log<sub>4</sub>√2 ＝ <span class="fr"><span class="fr-n">1</span><span class="fr-d">4</span></span></b>。</p>
+            <h3>ヒント<math><mn>2</mn><mo>―</mo><msub><mi>log</mi><mn>4</mn></msub><msqrt><mn>2</mn></msqrt></math>を求める</h3>
+            <p class="cite"><span class="cite-tag">使う定義</span>対数の定義：<math><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>=</mo><mi>x</mi></math> とは <math><msup><mi>a</mi><mi>x</mi></msup><mo>=</mo><mi>M</mi></math> のこと（ヒント1と同じ定義）。今度は真数が <math><msqrt><mn>2</mn></msqrt></math> の場合で、<math><msup><mn>4</mn><mfrac><mn>1</mn><mn>4</mn></mfrac></msup><mo>=</mo><msqrt><mn>2</mn></msqrt></math> と確かめるよ。</p>
+            
+            <p>同じように「4 を何乗すると<math><msqrt><mn>2</mn></msqrt></math>になるか」を考える。<math><msqrt><mn>2</mn></msqrt><mo>=</mo><msup><mn>2</mn><mfrac><mn>1</mn><mn>2</mn></mfrac></msup></math> で、</p>
+<div class="chain-crow">
+<div class="crow"><math displaystyle="true"><msup><mn>4</mn><mfrac><mn>1</mn><mn>4</mn></mfrac></msup><mo>=</mo><msup><mrow><mo>(</mo><msup><mn>2</mn><mn>2</mn></msup><mo>)</mo></mrow><mfrac><mn>1</mn><mn>4</mn></mfrac></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msup><mn>4</mn><mfrac><mn>1</mn><mn>4</mn></mfrac></msup></mphantom><mo>=</mo><msup><mn>2</mn><mfrac><mn>1</mn><mn>2</mn></mfrac></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msup><mn>4</mn><mfrac><mn>1</mn><mn>4</mn></mfrac></msup></mphantom><mo>=</mo><msqrt><mn>2</mn></msqrt></math></div>
+</div>
+<p>だから、<b><math><msub><mi>log</mi><mn>4</mn></msub><msqrt><mn>2</mn></msqrt><mo>=</mo><mfrac><mn>1</mn><mn>4</mn></mfrac></math></b>。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 3 ― 足し算する</h3>
-            <p>あとは、ヒント1の <span class="fr"><span class="fr-n">3</span><span class="fr-d">4</span></span> と、ヒント2の <span class="fr"><span class="fr-n">1</span><span class="fr-d">4</span></span> を足すだけだ。</p>
+            <p>あとは、ヒント1の <math><mfrac><mn>3</mn><mn>4</mn></mfrac></math> と、ヒント2の <math><mfrac><mn>1</mn><mn>4</mn></mfrac></math> を足すだけだ。</p>
           </div>
           <div class="step answer">
             <h3>解答 (1)</h3>
             <p class="big">1</p>
-            <p>log<sub>4</sub>8 ＝ <span class="fr"><span class="fr-n">3</span><span class="fr-d">2</span></span>、log<sub>4</sub>√2 ＝ <span class="fr"><span class="fr-n">1</span><span class="fr-d">4</span></span> だから、与式 ＝ <span class="fr"><span class="fr-n">1</span><span class="fr-d">2</span></span>·<span class="fr"><span class="fr-n">3</span><span class="fr-d">2</span></span> ＋ <span class="fr"><span class="fr-n">1</span><span class="fr-d">4</span></span> ＝ <span class="fr"><span class="fr-n">3</span><span class="fr-d">4</span></span> ＋ <span class="fr"><span class="fr-n">1</span><span class="fr-d">4</span></span> ＝ 1。</p>
-            <p class="note"><b>ポイント：</b>対数の値は「底を何乗すると真数になるか」で、いつでも確かめられる。真数を 2 の累乗で見直すのがコツだよ。</p>
+            <p><math><msub><mi>log</mi><mn>4</mn></msub><mn>8</mn><mo>=</mo><mfrac><mn>3</mn><mn>2</mn></mfrac></math>、<math><msub><mi>log</mi><mn>4</mn></msub><msqrt><mn>2</mn></msqrt><mo>=</mo><mfrac><mn>1</mn><mn>4</mn></mfrac></math> だから、与式</p>
+<div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>·</mo><mfrac><mn>3</mn><mn>2</mn></mfrac><mo>+</mo><mfrac><mn>1</mn><mn>4</mn></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo><mfrac><mn>3</mn><mn>4</mn></mfrac><mo>+</mo><mfrac><mn>1</mn><mn>4</mn></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo><mn>1</mn><mtext>。</mtext></math></div>
+</div>
+            <p class="note"><b>ポイント：</b>対数の値は「底を何乗すると真数になるか」で、いつでも確かめられる。<br>真数を 2 の累乗で見直すのがコツだよ。</p>
           </div>
           <p class="prob-done">(1) クリア！　(2) のタブも開いてみよう。</p>
         </div>
 
         <!-- 補充6 (2) -->
-        <div class="tabpanel" id="panel-q6-2" data-flow="q6-2" data-label="補充6 (2)">
+        <div class="nofig tabpanel" id="panel-q6-2" data-flow="q6-2" data-label="補充6 (2)">
           <div class="prob-head">
             <span class="sub prob-q" style="margin:0">(2)</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
-          <p class="formula">log<sub>2</sub>∛12 − <span class="fr"><span class="fr-n">1</span><span class="fr-d">3</span></span> log<sub>2</sub>3</p>
+          <p class="formula"><math display="block"><msub><mi>log</mi><mn>2</mn></msub><mroot><mn>12</mn><mn>3</mn></mroot><mo>−</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><msub><mi>log</mi><mn>2</mn></msub><mn>3</mn></math></p>
           <div class="step hint">
             <h3>ヒント 1 ― 3乗根を対数の前に出す</h3>
-            <p>∛12 ＝ 12<sup>1/3</sup> のこと。対数の性質「真数の指数は対数の前に出せる」から、</p>
-            <p class="formula" style="margin-bottom:10px">log<sub>2</sub>∛12 ＝ <span class="fr"><span class="fr-n">1</span><span class="fr-d">3</span></span> log<sub>2</sub>12</p>
-            <p>式全体は <span class="fr"><span class="fr-n">1</span><span class="fr-d">3</span></span> log<sub>2</sub>12 − <span class="fr"><span class="fr-n">1</span><span class="fr-d">3</span></span> log<sub>2</sub>3 になる。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>対数の性質 <math><msub><mi>log</mi><mi>a</mi></msub><msup><mi>M</mi><mi>p</mi></msup><mo>=</mo><mi>p</mi><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi></math>。真数の指数は対数の前に出せる。ここでは3乗根を <math><msup><mn>12</mn><mfrac><mn>1</mn><mn>3</mn></mfrac></msup></math> と見て、指数の <math><mfrac><mn>1</mn><mn>3</mn></mfrac></math> を前に出すよ。</p>
+            
+            <p><math><mroot><mn>12</mn><mn>3</mn></mroot><mo>=</mo><msup><mn>12</mn><mfrac><mn>1</mn><mn>3</mn></mfrac></msup></math> のこと。対数の性質「真数の指数は対数の前に出せる」から、</p>
+            <p class="formula" style="margin-bottom:10px"><math display="block"><msub><mi>log</mi><mn>2</mn></msub><mroot><mn>12</mn><mn>3</mn></mroot><mo>=</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><msub><mi>log</mi><mn>2</mn></msub><mn>12</mn></math></p>
+            <p>式全体は <math><mfrac><mn>1</mn><mn>3</mn></mfrac><msub><mi>log</mi><mn>2</mn></msub><mn>12</mn><mo>−</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><msub><mi>log</mi><mn>2</mn></msub><mn>3</mn></math>になる。</p>
           </div>
           <div class="step hint">
-            <h3>ヒント 2 ― <span class="fr"><span class="fr-n">1</span><span class="fr-d">3</span></span> でくくる</h3>
-            <p>両方の項に <span class="fr"><span class="fr-n">1</span><span class="fr-d">3</span></span> があるので、くくり出すと</p>
-            <p class="formula" style="margin-bottom:10px"><span class="fr"><span class="fr-n">1</span><span class="fr-d">3</span></span>（log<sub>2</sub>12 − log<sub>2</sub>3）</p>
+            <h3>ヒント<math><mn>2</mn><mo>―</mo><mfrac><mn>1</mn><mn>3</mn></mfrac></math> でくくる</h3>
+            <p>両方の項に <math><mfrac><mn>1</mn><mn>3</mn></mfrac></math> があるので、くくり出すと</p>
+            <p class="formula" style="margin-bottom:10px"><math display="block"><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>(</mo><msub><mi>log</mi><mn>2</mn></msub><mn>12</mn><mo>−</mo><msub><mi>log</mi><mn>2</mn></msub><mn>3</mn><mo>)</mo></math></p>
             <p>かっこの中は「対数の差」の形になった。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 3 ― 対数の差を1つにまとめる</h3>
-            <p>対数の差は「真数の商」の対数になる：log<sub>2</sub>12 − log<sub>2</sub>3 ＝ log<sub>2</sub><span class="fr"><span class="fr-n">12</span><span class="fr-d">3</span></span> ＝ log<sub>2</sub>4。</p>
-            <p>log<sub>2</sub>4 ＝ 2（2<sup>2</sup> ＝ 4）だから、あとは <span class="fr"><span class="fr-n">1</span><span class="fr-d">3</span></span> × 2 を計算しよう。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>対数の性質 <math><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>−</mo><msub><mi>log</mi><mi>a</mi></msub><mi>N</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><mfrac><mi>M</mi><mi>N</mi></mfrac></math>。対数の差は真数の商の対数になる。ここでは <math><mfrac><mn>12</mn><mn>3</mn></mfrac></math> が真数になるよ。</p>
+            
+            <p>対数の差は「真数の商」の対数になる：<math><msub><mi>log</mi><mn>2</mn></msub><mn>12</mn><mo>−</mo><msub><mi>log</mi><mn>2</mn></msub><mn>3</mn><mo>=</mo><msub><mi>log</mi><mn>2</mn></msub><mfrac><mn>12</mn><mn>3</mn></mfrac><mo>=</mo><msub><mi>log</mi><mn>2</mn></msub><mn>4</mn></math>。</p>
+            <p><math><msub><mi>log</mi><mn>2</mn></msub><mn>4</mn><mo>=</mo><mn>2</mn><mo>(</mo><msup><mn>2</mn><mn>2</mn></msup><mo>=</mo><mn>4</mn><mo>)</mo></math>だから、あとは <math><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>×</mo><mn>2</mn></math>を計算しよう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (2)</h3>
-            <p class="big"><span class="fr"><span class="fr-n">2</span><span class="fr-d">3</span></span></p>
-            <p>与式 ＝ <span class="fr"><span class="fr-n">1</span><span class="fr-d">3</span></span> log<sub>2</sub>12 − <span class="fr"><span class="fr-n">1</span><span class="fr-d">3</span></span> log<sub>2</sub>3 ＝ <span class="fr"><span class="fr-n">1</span><span class="fr-d">3</span></span> log<sub>2</sub><span class="fr"><span class="fr-n">12</span><span class="fr-d">3</span></span> ＝ <span class="fr"><span class="fr-n">1</span><span class="fr-d">3</span></span> log<sub>2</sub>4 ＝ <span class="fr"><span class="fr-n">1</span><span class="fr-d">3</span></span>·2 ＝ <span class="fr"><span class="fr-n">2</span><span class="fr-d">3</span></span>。</p>
-            <p class="note"><b>ポイント：</b>対数の計算は「バラバラの対数を、性質を使って1つにまとめる」のが基本の流れ。係数をそろえる（くくる）のが先だよ。</p>
+            <p class="big"><math display="block"><mfrac><mn>2</mn><mn>3</mn></mfrac></math></p>
+            <p>与式</p>
+<div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mo>=</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><msub><mi>log</mi><mn>2</mn></msub><mn>12</mn><mo>−</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><msub><mi>log</mi><mn>2</mn></msub><mn>3</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><msub><mi>log</mi><mn>2</mn></msub><mfrac><mn>12</mn><mn>3</mn></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><msub><mi>log</mi><mn>2</mn></msub><mn>4</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>·</mo><mn>2</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mtext>。</mtext></math></div>
+</div>
+            <p class="note"><b>ポイント：</b>対数の計算は「バラバラの対数を、性質を使って1つにまとめる」のが基本の流れ。<br>係数をそろえる（くくる）のが先だよ。</p>
           </div>
           <p class="prob-done">(2) クリア！　補充6 はこれで完了。次は補充7へ。</p>
         </div>
       </section>
 
       <!-- ===== 補充7 ===== -->
-      <section class="card prob" id="prob-q7" data-flow="q7" data-label="補充7">
+      <section class="nofig card prob" id="prob-q7" data-flow="q7" data-label="補充7">
         <div class="prob-head">
           <span class="prob-tag">補充 7</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
-        <p class="prob-q">関数 y ＝ log<sub>2</sub>(x−1) のグラフをかけ。</p>
+        <p class="prob-q">関数<math><mi>y</mi><mo>=</mo><msub><mi>log</mi><mn>2</mn></msub><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></math>のグラフをかけ。</p>
         <div class="step hint">
           <h3>ヒント 1 ― どのグラフをどう動かすか</h3>
-          <p>y ＝ log<sub>2</sub>(x−1) は、y ＝ log<sub>2</sub>x の <b>x を x−1 に変えた</b>もの。補充3 (1) と同じで、グラフは <b>x 軸方向に ＋1 平行移動</b>する（右へ1つ動く）。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>グラフの平行移動：式の <math><mi>x</mi></math> を <math><mi>x</mi><mo>−</mo><mi>a</mi></math> に変えると、グラフは <math><mi>x</mi></math> 軸方向に <math><mo>+</mo><mi>a</mi></math> だけ平行移動する（補充3 (1) と同じ性質）。対数関数でも <math><mi>a</mi><mo>=</mo><mn>1</mn></math> で右へ1つ動くよ。</p>
+            
+          <p><math><mi>y</mi><mo>=</mo><msub><mi>log</mi><mn>2</mn></msub><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></math>は、<math><mi>y</mi><mo>=</mo><msub><mi>log</mi><mn>2</mn></msub><mi>x</mi></math>の <b>x を x−1 に変えた</b>もの。補充3 (1) と同じで、<br>グラフは <b>x 軸方向に ＋1 平行移動</b>する（右へ1つ動く）。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 定義域と漸近線を押さえる</h3>
-          <p>真数は正でなければならないから、x − 1 ＞ 0、つまり <b>x ＞ 1</b> の範囲でだけグラフが存在する。</p>
-          <p>漸近線は、y ＝ log<sub>2</sub>x の漸近線（y 軸、x ＝ 0）が右へ1つ動いて <b>x ＝ 1</b> になる。</p>
+            <p class="cite"><span class="cite-tag">使う定義</span>対数の定義より、真数は正でなければならない。この問題では真数が <math><mi>x</mi><mo>−</mo><mn>1</mn></math> だから、条件は <math><mi>x</mi><mo>−</mo><mn>1</mn><mo>&gt;</mo><mn>0</mn></math> になるよ。</p>
+            
+          <p>真数は正でなければならないから、<br>x − 1 ＞ 0、つまり <b>x ＞ 1</b> の範囲でだけグラフが存在する。</p>
+          <p>漸近線は、<math><mi>y</mi><mo>=</mo><msub><mi>log</mi><mn>2</mn></msub><mi>x</mi></math>の漸近線（y 軸、<math><mi>x</mi><mo>=</mo><mn>0</mn><mo>)</mo></math>が右へ1つ動いて <b><math><mi>x</mi><mo>=</mo><mn>1</mn></math></b> になる。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 3 ― 通る点を2つ求める</h3>
-          <p>・x − 1 ＝ 1、つまり x ＝ 2 のとき：y ＝ log<sub>2</sub>1 ＝ 0 → 点 <b>(2, 0)</b><br />・x − 1 ＝ 2、つまり x ＝ 3 のとき：y ＝ log<sub>2</sub>2 ＝ 1 → 点 <b>(3, 1)</b></p>
-          <p>「真数が 1 のとき y ＝ 0、真数が底と同じ 2 のとき y ＝ 1」が目印の作り方だ。</p>
+            <p class="cite"><span class="cite-tag">使う定義</span>対数の基本の値：<math><msub><mi>log</mi><mi>a</mi></msub><mn>1</mn><mo>=</mo><mn>0</mn></math>、<math><msub><mi>log</mi><mi>a</mi></msub><mi>a</mi><mo>=</mo><mn>1</mn></math>。真数が1のときと底と等しいときが、点を作る目印になるよ。</p>
+            
+          <p><math><mo>⋅</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>=</mo><mn>1</mn></math>、つまり<math><mi>x</mi><mo>=</mo><mn>2</mn></math>のとき：<math><mi>y</mi><mo>=</mo><msub><mi>log</mi><mn>2</mn></msub><mn>1</mn><mo>=</mo><mn>0</mn><mo>→</mo></math>点 <b><math><mo>(</mo><mn>2</mn><mo>,</mo><mn>0</mn><mo>)</mo></math></b><br /><math><mo>⋅</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>=</mo><mn>2</mn></math>、つまり<math><mi>x</mi><mo>=</mo><mn>3</mn></math>のとき：<math><mi>y</mi><mo>=</mo><msub><mi>log</mi><mn>2</mn></msub><mn>2</mn><mo>=</mo><mn>1</mn><mo>→</mo></math>点 <b><math><mo>(</mo><mn>3</mn><mo>,</mo><mn>1</mn><mo>)</mo></math></b></p>
+          <p>「真数が 1 のとき<math><mi>y</mi><mo>=</mo><mn>0</mn></math>、真数が底と同じ 2 のとき<math><mi>y</mi><mo>=</mo><mn>1</mn></math>」が目印の作り方だ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
-          <p>y ＝ log<sub>2</sub>x のグラフ（破線）を <b>x 軸方向に ＋1 平行移動</b>したもの。漸近線は x ＝ 1 で、点 (2, 0)、(3, 1) を通る。</p>
+          <p><math><mi>y</mi><mo>=</mo><msub><mi>log</mi><mn>2</mn></msub><mi>x</mi></math>のグラフ（破線）を <b>x 軸方向に ＋1 平行移動</b>したもの。漸近線は<math><mi>x</mi><mo>=</mo><mn>1</mn></math>で、点<math><mo>(</mo><mn>2</mn><mo>,</mo><mn>0</mn><mo>)</mo></math>、<math><mo>(</mo><mn>3</mn><mo>,</mo><mn>1</mn><mo>)</mo></math>を通る。</p>
           <figure>
             <div class="figbox">
               <svg class="graph" viewBox="0 0 320 300" data-ox="56" data-oy="176" data-s="30" data-gx0="0" data-gx1="8.5" data-gy0="-3" data-gy1="4" data-asymx="1" role="img" aria-label="y＝log2(x−1)のグラフ。y＝log2xのグラフを右へ1平行移動した曲線で、漸近線はx＝1、点(2,0)と(3,1)を通る">
@@ -847,7 +997,7 @@
                 <text class="glabel asym" data-x="1" data-y="4" data-dx="7" data-dy="-6" font-size="13">x＝1</text>
               </svg>
             </div>
-            <figcaption>緑の実線が y ＝ log<sub>2</sub>(x−1)、破線がもとの y ＝ log<sub>2</sub>x。オレンジの破線 x ＝ 1 が漸近線で、グラフはこの直線より左には存在しない。</figcaption>
+            <figcaption>緑の実線が<math><mi>y</mi><mo>=</mo><msub><mi>log</mi><mn>2</mn></msub><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></math>、破線がもとの<math><mi>y</mi><mo>=</mo><msub><mi>log</mi><mn>2</mn></msub><mi>x</mi></math>。オレンジの破線<math><mi>x</mi><mo>=</mo><mn>1</mn></math>が漸近線で、グラフはこの直線より左には存在しない。</figcaption>
           </figure>
           <p class="note"><b>ポイント：</b>対数関数のグラフは「漸近線の位置」と「真数が1になる点・底と等しくなる点」の2点を押さえれば描ける。平行移動では漸近線も一緒に動くよ。</p>
         </div>
@@ -855,7 +1005,7 @@
       </section>
 
       <!-- ===== 補充8 ===== -->
-      <section class="card prob" id="prob-q8">
+      <section class="nofig card prob" id="prob-q8">
         <div class="prob-head">
           <span class="prob-tag">補充 8</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
@@ -868,78 +1018,90 @@
         </div>
 
         <!-- 補充8 (1) -->
-        <div class="tabpanel show" id="panel-q8-1" data-flow="q8-1" data-label="補充8 (1)">
+        <div class="nofig tabpanel show" id="panel-q8-1" data-flow="q8-1" data-label="補充8 (1)">
           <div class="prob-head">
             <span class="sub prob-q" style="margin:0">(1)</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
-          <p class="formula">log<sub>3</sub>(x＋1)<sup>2</sup> ＝ 2</p>
+          <p class="formula"><math display="block"><msub><mi>log</mi><mn>3</mn></msub><msup><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>2</mn></math></p>
           <div class="step hint">
             <h3>ヒント 1 ― まず真数の条件を書く</h3>
-            <p>真数 (x＋1)<sup>2</sup> は正でなければならない。2乗したものが 0 になるのは x ＝ −1 のときだけだから、条件は <b>x ≠ −1</b>。</p>
+            <p class="cite"><span class="cite-tag">使う定義</span>対数の定義より、真数は正でなければならない。この問題では真数が <math><msup><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup></math> だから、0になる場合だけを除く条件になるよ。</p>
+            
+            <p>真数<math><msup><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup></math> は正でなければならない。<br>2乗したものが 0 になるのは<math><mi>x</mi><mo>=</mo><mo>−</mo><mn>1</mn></math>のときだけだから、条件は <b>x ≠ −1</b>。</p>
             <p>この条件は、最後に答えが使えるかどうかを判定するときに必要になる。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 対数の定義に戻す</h3>
-            <p>log<sub>3</sub>A ＝ 2 は「3<sup>2</sup> ＝ A」と同じ意味だ。A ＝ (x＋1)<sup>2</sup> だから、式は</p>
-            <p class="formula" style="margin-bottom:10px">(x＋1)<sup>2</sup> ＝ 3<sup>2</sup> ＝ 9</p>
+            <p class="cite"><span class="cite-tag">使う定義</span>対数の定義：<math><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>=</mo><mi>x</mi></math> とは <math><msup><mi>a</mi><mi>x</mi></msup><mo>=</mo><mi>M</mi></math> のこと。ここでは <math><msub><mi>log</mi><mn>3</mn></msub><mi>A</mi><mo>=</mo><mn>2</mn></math> を <math><mi>A</mi><mo>=</mo><msup><mn>3</mn><mn>2</mn></msup></math> と読みかえるよ。</p>
+            
+            <p><math><msub><mi>log</mi><mn>3</mn></msub><mi>A</mi><mo>=</mo><mn>2</mn></math>は「<math><msup><mn>3</mn><mn>2</mn></msup><mo>=</mo><mi>A</mi></math>」と同じ意味だ。<math><mi>A</mi><mo>=</mo><msup><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup></math> だから、式は</p>
+            <p class="formula" style="margin-bottom:10px"><math display="block"><msup><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mn>3</mn><mn>2</mn></msup><mo>=</mo><mn>9</mn></math></p>
             <p>になる。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 3 ― 2乗をはずす（±を忘れずに）</h3>
-            <p>(x＋1)<sup>2</sup> ＝ 9 から、x＋1 ＝ <b>±3</b>（2乗をはずすときは、プラスマイナスの両方が出てくる）。</p>
-            <p>x ＝ 2 と x ＝ −4 の2つが候補。どちらもヒント1の条件 x ≠ −1 を満たしているか、確かめよう。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>2乗をはずすときは平方根で考える：<math><msup><mi>X</mi><mn>2</mn></msup><mo>=</mo><mn>9</mn></math> なら <math><mi>X</mi><mo>=</mo><mo>±</mo><mn>3</mn></math>。プラスとマイナスの両方が出てくるので、片方を落とさないようにするよ。</p>
+            
+            <p><math><msup><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>9</mn></math>から、<math><mi>x</mi><mo>+</mo><mn>1</mn><mo>=</mo></math><b>±3</b><math><mo>(</mo><mn>2</mn></math>乗をはずすときは、プラスマイナスの両方が出てくる）。</p>
+            <p><math><mi>x</mi><mo>=</mo><mn>2</mn></math>と<math><mi>x</mi><mo>=</mo><mo>−</mo><mn>4</mn></math>の2つが候補。どちらもヒント1の条件 x ≠ −1 を満たしているか、確かめよう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (1)</h3>
-            <p class="big">x ＝ 2, −4</p>
-            <p>真数の条件は (x＋1)<sup>2</sup> ＞ 0、すなわち x ≠ −1。方程式は (x＋1)<sup>2</sup> ＝ 3<sup>2</sup> ＝ 9 と同値で、x＋1 ＝ ±3 より x ＝ 2, −4。どちらも x ≠ −1 を満たすので、両方とも解になる。</p>
-            <p class="note"><b>ポイント：</b>真数が2乗の形だと、答えが2つ出ることがある。真数の条件で両方残るかどうか、最後に必ずチェックしよう。</p>
+            <p class="cite"><span class="cite-tag">使う定義</span>対数の定義：<math><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>=</mo><mi>x</mi></math> とは <math><msup><mi>a</mi><mi>x</mi></msup><mo>=</mo><mi>M</mi></math> のこと（ヒント2で使った定義）。解答でもこの読みかえで方程式を直すよ。</p>
+            
+            <p class="big"><math display="block"><mi>x</mi><mo>=</mo><mn>2</mn><mo>,</mo><mo>−</mo><mn>4</mn></math></p>
+            <p>真数の条件は<math><msup><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>&gt;</mo><mn>0</mn></math>、すなわち x ≠ −1。<br>方程式は<math><msup><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mn>3</mn><mn>2</mn></msup><mo>=</mo><mn>9</mn></math>と同値で、<math><mi>x</mi><mo>+</mo><mn>1</mn><mo>=</mo><mo>±</mo><mn>3</mn></math>より<math><mi>x</mi><mo>=</mo><mn>2</mn><mo>,</mo><mo>−</mo><mn>4</mn></math>。どちらも x ≠ −1 を満たすので、<br>両方とも解になる。</p>
+            <p class="note"><b>ポイント：</b>真数が2乗の形だと、答えが2つ出ることがある。<br>真数の条件で両方残るかどうか、最後に必ずチェックしよう。</p>
           </div>
           <p class="prob-done">(1) クリア！　(2) のタブも開いてみよう。</p>
         </div>
 
         <!-- 補充8 (2) -->
-        <div class="tabpanel" id="panel-q8-2" data-flow="q8-2" data-label="補充8 (2)">
+        <div class="nofig tabpanel" id="panel-q8-2" data-flow="q8-2" data-label="補充8 (2)">
           <div class="prob-head">
             <span class="sub prob-q" style="margin:0">(2)</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
-          <p class="formula">log<sub>2</sub>(2−x) ≧ log<sub>2</sub>x</p>
+          <p class="formula"><math display="block"><msub><mi>log</mi><mn>2</mn></msub><mo>(</mo><mn>2</mn><mo>−</mo><mi>x</mi><mo>)</mo><mo>≧</mo><msub><mi>log</mi><mn>2</mn></msub><mi>x</mi></math></p>
           <div class="step hint">
             <h3>ヒント 1 ― まず真数の条件を書く</h3>
+            <p class="cite"><span class="cite-tag">使う定義</span>対数の定義より、両辺の真数はどちらも正でなければならない。この問題では <math><mn>2</mn><mo>−</mo><mi>x</mi><mo>&gt;</mo><mn>0</mn></math> と <math><mi>x</mi><mo>&gt;</mo><mn>0</mn></math> の2つが条件になるよ。</p>
+            
             <p>両辺の真数が正でなければならない：<b>2 − x ＞ 0</b> かつ <b>x ＞ 0</b>。</p>
             <p>この2つを合わせると <b>0 ＜ x ＜ 2</b>。これが答えの範囲の大前提になる。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 対数をはずす</h3>
-            <p>底 2 は 1 より大きく、y ＝ log<sub>2</sub>x は<b>増加関数</b>だ。だから、対数をはずしても不等号の向きは<b>そのまま</b>で、真数どうしの不等式になる。</p>
-            <p class="formula" style="margin-bottom:10px">2 − x ≧ x</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>底が1より大きい対数関数は増加関数で、値の大小と真数の大小が一致する。だから <math><msub><mi>log</mi><mn>2</mn></msub></math> をはずしても不等号の向きはそのままで、真数どうしの不等式になるよ。</p>
+            
+            <p>底 2 は 1 より大きく、<math><mi>y</mi><mo>=</mo><msub><mi>log</mi><mn>2</mn></msub><mi>x</mi></math>は<b>増加関数</b>だ。<br>だから、対数をはずしても不等号の向きは<b>そのまま</b>で、真数どうしの不等式になる。</p>
+            <p class="formula" style="margin-bottom:10px"><math display="block"><mn>2</mn><mo>−</mo><mi>x</mi><mo>≧</mo><mi>x</mi></math></p>
           </div>
           <div class="step hint">
             <h3>ヒント 3 ― 解いて、前提と重ねる</h3>
-            <p>2 − x ≧ x を解く：−2x ≧ −2 だから <b>x ≦ 1</b>。</p>
+            <p><math><mn>2</mn><mo>−</mo><mi>x</mi><mo>≧</mo><mi>x</mi></math>を解く：<math><mo>−</mo><mn>2</mn><mi>x</mi><mo>≧</mo><mo>−</mo><mn>2</mn></math>だから <b><math><mi>x</mi><mo>≦</mo><mn>1</mn></math></b>。</p>
             <p>最後に、ヒント1の大前提 0 ＜ x ＜ 2 と重ね合わせよう。両方を満たす範囲が答えだ。</p>
           </div>
           <div class="step answer">
             <h3>解答 (2)</h3>
-            <p class="big">0 ＜ x ≦ 1</p>
-            <p>真数の条件から 0 ＜ x ＜ 2。底 2 は増加関数だから、不等式は 2 − x ≧ x と同値で、これを解くと x ≦ 1。条件と合わせて、0 ＜ x ≦ 1。</p>
-            <p class="note"><b>ポイント：</b>対数の不等式は「真数 ＞ 0 の条件 → 対数をはずす → 条件と重ねる」の3段階。条件を書き忘れると、答えの範囲が広がりすぎてしまう。</p>
+            <p class="big"><math display="block"><mn>0</mn><mo>&lt;</mo><mi>x</mi><mo>≦</mo><mn>1</mn></math></p>
+            <p>真数の条件から 0 ＜ x ＜ 2。<br>底 2 は増加関数だから、<br>不等式は<math><mn>2</mn><mo>−</mo><mi>x</mi><mo>≧</mo><mi>x</mi></math>と同値で、これを解くと<math><mi>x</mi><mo>≦</mo><mn>1</mn></math>。条件と合わせて、<math><mn>0</mn><mo>&lt;</mo><mi>x</mi><mo>≦</mo><mn>1</mn></math>。</p>
+            <p class="note"><b>ポイント：</b>対数の不等式は「真数 ＞ 0 の条件 → 対数をはずす → 条件と重ねる」の3段階。<br>条件を書き忘れると、答えの範囲が広がりすぎてしまう。</p>
           </div>
           <p class="prob-done">(2) クリア！　補充8 はこれで完了。次は補充9へ。</p>
         </div>
       </section>
 
       <!-- ===== 補充9 ===== -->
-      <section class="card prob" id="prob-q9">
+      <section class="nofig card prob" id="prob-q9">
         <div class="prob-head">
           <span class="prob-tag">補充 9</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
-        <p class="prob-q">方程式 2(log<sub>2</sub>x)<sup>2</sup> ＋ log<sub>2</sub>x<sup>3</sup> − 2 ＝ 0 について、次の問いに答えよ。</p>
+        <p class="prob-q">方程式<math><mn>2</mn><msup><mrow><mo>(</mo><msub><mi>log</mi><mn>2</mn></msub><mi>x</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msub><mi>log</mi><mn>2</mn></msub><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>2</mn><mo>=</mo><mn>0</mn></math>について、次の問いに答えよ。</p>
 
         <div class="tabs" role="tablist" aria-label="補充9の小問">
           <button class="tab" role="tab" data-tab="q9-1" aria-selected="true">(1)</button>
@@ -947,33 +1109,37 @@
         </div>
 
         <!-- 補充9 (1) -->
-        <div class="tabpanel show" id="panel-q9-1" data-flow="q9-1" data-label="補充9 (1)">
+        <div class="nofig tabpanel show" id="panel-q9-1" data-flow="q9-1" data-label="補充9 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1) log<sub>2</sub>x ＝ t とおいて得られる t の方程式を作れ</span>
+            <span class="sub prob-q" style="margin:0"><math><mo>(</mo><mn>1</mn><mo>)</mo><msub><mi>log</mi><mn>2</mn></msub><mi>x</mi><mo>=</mo><mi>t</mi></math>とおいて得られる t の方程式を作れ</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="step hint">
-            <h3>ヒント 1 ― log<sub>2</sub>x<sup>3</sup> を t で表す</h3>
-            <p>じゃまになっているのは log<sub>2</sub>x<sup>3</sup> の部分だ。対数の性質で、真数の指数 3 は前に出せる：</p>
-            <p class="formula" style="margin-bottom:10px">log<sub>2</sub>x<sup>3</sup> ＝ 3 log<sub>2</sub>x ＝ 3t</p>
+            <h3>ヒント<math><mn>1</mn><mo>―</mo><msub><mi>log</mi><mn>2</mn></msub><msup><mi>x</mi><mn>3</mn></msup></math> を t で表す</h3>
+            <p class="cite"><span class="cite-tag">使う性質</span>対数の性質 <math><msub><mi>log</mi><mi>a</mi></msub><msup><mi>M</mi><mi>p</mi></msup><mo>=</mo><mi>p</mi><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi></math>（補充6 (2) で使った性質）。真数の指数3を前に出すと、式がすべて <math><msub><mi>log</mi><mn>2</mn></msub><mi>x</mi></math> で表せるよ。</p>
+            
+            <p>じゃまになっているのは<math><msub><mi>log</mi><mn>2</mn></msub><msup><mi>x</mi><mn>3</mn></msup></math> の部分だ。対数の性質で、真数の指数 3 は前に出せる：</p>
+            <p class="formula" style="margin-bottom:10px"><math display="block"><msub><mi>log</mi><mn>2</mn></msub><msup><mi>x</mi><mn>3</mn></msup><mo>=</mo><mn>3</mn><msub><mi>log</mi><mn>2</mn></msub><mi>x</mi><mo>=</mo><mn>3</mn><mi>t</mi></math></p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 全部 t に置き換える</h3>
-            <p>(log<sub>2</sub>x)<sup>2</sup> は t<sup>2</sup>、log<sub>2</sub>x<sup>3</sup> は 3t、log<sub>2</sub>x は t。</p>
+            <p><math><msup><mrow><mo>(</mo><msub><mi>log</mi><mn>2</mn></msub><mi>x</mi><mo>)</mo></mrow><mn>2</mn></msup></math> は<math><msup><mi>t</mi><mn>2</mn></msup></math>、<math><msub><mi>log</mi><mn>2</mn></msub><msup><mi>x</mi><mn>3</mn></msup></math> は 3t、<math><msub><mi>log</mi><mn>2</mn></msub><mi>x</mi></math>は t。</p>
             <p>もとの式の3か所を置き換えて、t の方程式を書いてみよう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (1)</h3>
-            <p class="big">2t<sup>2</sup> ＋ 3t − 2 ＝ 0</p>
-            <p>log<sub>2</sub>x<sup>3</sup> ＝ 3log<sub>2</sub>x ＝ 3t だから、方程式は 2t<sup>2</sup> ＋ 3t − 2 ＝ 0 となる。</p>
-            <p class="note"><b>ポイント：</b>置き換えの前に「真数の指数を前に出す」ひと手間が要る。式の中の log<sub>2</sub>x をすべて同じ形にそろえるのが先だよ。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>対数の性質 <math><msub><mi>log</mi><mi>a</mi></msub><msup><mi>M</mi><mi>p</mi></msup><mo>=</mo><mi>p</mi><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi></math>（ヒント1で使った性質）。解答でもこの性質で指数3を前に出してから置き換えるよ。</p>
+            
+            <p class="big"><math display="block"><mn>2</mn><msup><mi>t</mi><mn>2</mn></msup><mo>+</mo><mn>3</mn><mi>t</mi><mo>−</mo><mn>2</mn><mo>=</mo><mn>0</mn></math></p>
+            <p><math><msub><mi>log</mi><mn>2</mn></msub><msup><mi>x</mi><mn>3</mn></msup><mo>=</mo><mn>3</mn><msub><mi>log</mi><mn>2</mn></msub><mi>x</mi><mo>=</mo><mn>3</mn><mi>t</mi></math>だから、方程式は<math><mn>2</mn><msup><mi>t</mi><mn>2</mn></msup><mo>+</mo><mn>3</mn><mi>t</mi><mo>−</mo><mn>2</mn><mo>=</mo><mn>0</mn></math>となる。</p>
+            <p class="note"><b>ポイント：</b>置き換えの前に「真数の指数を前に出す」ひと手間が要る。<br>式の中の<math><msub><mi>log</mi><mn>2</mn></msub><mi>x</mi></math>をすべて同じ形にそろえるのが先だよ。</p>
           </div>
           <p class="prob-done">(1) クリア！　(2) のタブも開いてみよう。</p>
         </div>
 
         <!-- 補充9 (2) -->
-        <div class="tabpanel" id="panel-q9-2" data-flow="q9-2" data-label="補充9 (2)">
+        <div class="nofig tabpanel" id="panel-q9-2" data-flow="q9-2" data-label="補充9 (2)">
           <div class="prob-head">
             <span class="sub prob-q" style="margin:0">(2) 与えられた方程式を解け</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
@@ -981,52 +1147,64 @@
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― t の方程式を因数分解する</h3>
-            <p>2t<sup>2</sup> ＋ 3t − 2 ＝ 0 を因数分解しよう。たすき掛けを試すと、</p>
-            <p class="formula" style="margin-bottom:10px">(2t − 1)(t ＋ 2) ＝ 0</p>
-            <p>よって t ＝ <span class="fr"><span class="fr-n">1</span><span class="fr-d">2</span></span> または t ＝ −2。</p>
+            <p class="cite"><span class="cite-tag">使う公式</span>たすき掛けによる因数分解：係数を分けて掛け合わせ、たすきの和が真ん中の係数3に合う組み合わせを探す。この式では <math><mn>2</mn><msup><mi>t</mi><mn>2</mn></msup><mo>+</mo><mn>3</mn><mi>t</mi><mo>−</mo><mn>2</mn><mo>=</mo><mo>(</mo><mn>2</mn><mi>t</mi><mo>−</mo><mn>1</mn><mo>)</mo><mo>(</mo><mi>t</mi><mo>+</mo><mn>2</mn><mo>)</mo></math> になるよ。</p>
+            
+            <p><math><mn>2</mn><msup><mi>t</mi><mn>2</mn></msup><mo>+</mo><mn>3</mn><mi>t</mi><mo>−</mo><mn>2</mn><mo>=</mo><mn>0</mn></math>を因数分解しよう。たすき掛けを試すと、</p>
+            <p class="formula" style="margin-bottom:10px"><math display="block"><mo>(</mo><mn>2</mn><mi>t</mi><mo>−</mo><mn>1</mn><mo>)</mo><mo>(</mo><mi>t</mi><mo>+</mo><mn>2</mn><mo>)</mo><mo>=</mo><mn>0</mn></math></p>
+            <p>よって<math><mi>t</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math> または<math><mi>t</mi><mo>=</mo><mo>−</mo><mn>2</mn></math>。</p>
           </div>
           <div class="step hint">
-            <h3>ヒント 2 ― t ＝ <span class="fr"><span class="fr-n">1</span><span class="fr-d">2</span></span> のときの x</h3>
-            <p>t は log<sub>2</sub>x のことだった。log<sub>2</sub>x ＝ <span class="fr"><span class="fr-n">1</span><span class="fr-d">2</span></span> は、x ＝ 2<sup>1/2</sup> という意味だ。</p>
-            <p>2<sup>1/2</sup> は根号で書くと何だったかな？</p>
+            <h3>ヒント<math><mn>2</mn><mo>―</mo><mi>t</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math> のときの x</h3>
+            <p class="cite"><span class="cite-tag">使う定義</span>対数の定義：<math><msub><mi>log</mi><mn>2</mn></msub><mi>x</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math> とは <math><mi>x</mi><mo>=</mo><msup><mn>2</mn><mfrac><mn>1</mn><mn>2</mn></mfrac></msup></math> のこと。定義に戻せば、<math><mi>t</mi></math> の値を <math><mi>x</mi></math> に戻せるよ。</p>
+            
+            <p>t は<math><msub><mi>log</mi><mn>2</mn></msub><mi>x</mi></math>のことだった。<math><msub><mi>log</mi><mn>2</mn></msub><mi>x</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math> は、<math><mi>x</mi><mo>=</mo><msup><mn>2</mn><mfrac><mn>1</mn><mn>2</mn></mfrac></msup></math> という意味だ。</p>
+            <p><math><msup><mn>2</mn><mfrac><mn>1</mn><mn>2</mn></mfrac></msup></math> は根号で書くと何だったかな？</p>
           </div>
           <div class="step hint">
-            <h3>ヒント 3 ― t ＝ −2 のときの x</h3>
-            <p>もう1つ、log<sub>2</sub>x ＝ −2 のときは、x ＝ 2<sup>−2</sup>。</p>
-            <p>ここで注意：今回の t ＝ log<sub>2</sub>x は、対数の<b>値</b>だから負の数でも構わない（補充4の t ＝ 2<sup>x</sup> ＞ 0 とは違う）。2<sup>−2</sup> を分数で計算しよう。</p>
+            <h3>ヒント<math><mn>3</mn><mo>―</mo><mi>t</mi><mo>=</mo><mo>−</mo><mn>2</mn></math>のときの x</h3>
+            <p class="cite"><span class="cite-tag">使う定義</span>対数の定義：<math><msub><mi>log</mi><mn>2</mn></msub><mi>x</mi><mo>=</mo><mo>−</mo><mn>2</mn></math> とは <math><mi>x</mi><mo>=</mo><msup><mn>2</mn><mrow><mo>−</mo><mn>2</mn></mrow></msup></math> のこと。負の指数は分数で計算するよ。</p>
+            
+            <p>もう1つ、<math><msub><mi>log</mi><mn>2</mn></msub><mi>x</mi><mo>=</mo><mo>−</mo><mn>2</mn></math>のときは、<math><mi>x</mi><mo>=</mo><msup><mn>2</mn><mrow><mo>−</mo><mn>2</mn></mrow></msup></math>。</p>
+            <p>ここで注意：今回の<math><mi>t</mi><mo>=</mo><msub><mi>log</mi><mn>2</mn></msub><mi>x</mi></math>は、対数の<b>値</b>だから負の数でも構わない（補充4の<math><mi>t</mi><mo>=</mo><msup><mn>2</mn><mi>x</mi></msup><mo>&gt;</mo><mn>0</mn></math>とは違う）。<br><math><msup><mn>2</mn><mrow><mo>−</mo><mn>2</mn></mrow></msup></math> を分数で計算しよう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (2)</h3>
-            <p class="big">x ＝ √2, <span class="fr"><span class="fr-n">1</span><span class="fr-d">4</span></span></p>
-            <p>2t<sup>2</sup> ＋ 3t − 2 ＝ 0 を解くと (2t − 1)(t ＋ 2) ＝ 0 より t ＝ <span class="fr"><span class="fr-n">1</span><span class="fr-d">2</span></span>, −2。log<sub>2</sub>x ＝ <span class="fr"><span class="fr-n">1</span><span class="fr-d">2</span></span> から x ＝ 2<sup>1/2</sup> ＝ √2、log<sub>2</sub>x ＝ −2 から x ＝ 2<sup>−2</sup> ＝ <span class="fr"><span class="fr-n">1</span><span class="fr-d">4</span></span>。</p>
-            <p class="note"><b>ポイント：</b>置き換えた文字の「あり得る範囲」は毎回確認。t ＝ 2<sup>x</sup> なら正だけ、t ＝ log<sub>2</sub>x なら正負どちらもあり得る。</p>
+            <p class="big"><math display="block"><mi>x</mi><mo>=</mo><msqrt><mn>2</mn></msqrt><mo>,</mo><mfrac><mn>1</mn><mn>4</mn></mfrac></math></p>
+            <p><math><mn>2</mn><msup><mi>t</mi><mn>2</mn></msup><mo>+</mo><mn>3</mn><mi>t</mi><mo>−</mo><mn>2</mn><mo>=</mo><mn>0</mn></math>を解くと<math><mo>(</mo><mn>2</mn><mi>t</mi><mo>−</mo><mn>1</mn><mo>)</mo><mo>(</mo><mi>t</mi><mo>+</mo><mn>2</mn><mo>)</mo><mo>=</mo><mn>0</mn></math>より<math><mi>t</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>,</mo><mo>−</mo><mn>2</mn></math>。<math><msub><mi>log</mi><mn>2</mn></msub><mi>x</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math> から<math><mi>x</mi><mo>=</mo><msup><mn>2</mn><mfrac><mn>1</mn><mn>2</mn></mfrac></msup><mo>=</mo><msqrt><mn>2</mn></msqrt></math>、<math><msub><mi>log</mi><mn>2</mn></msub><mi>x</mi><mo>=</mo><mo>−</mo><mn>2</mn></math>から<br><math><mi>x</mi><mo>=</mo><msup><mn>2</mn><mrow><mo>−</mo><mn>2</mn></mrow></msup><mo>=</mo><mfrac><mn>1</mn><mn>4</mn></mfrac></math>。</p>
+            <p class="note"><b>ポイント：</b>置き換えた文字の「あり得る範囲」は毎回確認。<br><math><mi>t</mi><mo>=</mo><msup><mn>2</mn><mi>x</mi></msup></math> なら正だけ、<math><mi>t</mi><mo>=</mo><msub><mi>log</mi><mn>2</mn></msub><mi>x</mi></math>なら正負どちらもあり得る。</p>
           </div>
           <p class="prob-done">(2) クリア！　補充9 はこれで完了。次は補充10へ。</p>
         </div>
       </section>
 
       <!-- ===== 補充10 ===== -->
-      <section class="card prob" id="prob-q10" data-flow="q10" data-label="補充10">
+      <section class="nofig card prob" id="prob-q10" data-flow="q10" data-label="補充10">
         <div class="prob-head">
           <span class="prob-tag">補充 10</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 4</span>
         </div>
-        <p class="prob-q">log<sub>10</sub>2 ＝ 0.3010 とする。（<span class="fr"><span class="fr-n">1</span><span class="fr-d">2</span></span>）<sup>n</sup> ＜ <span class="fr"><span class="fr-n">1</span><span class="fr-d">10<sup>4</sup></span></span> を満たす最小の自然数 n を求めよ。</p>
+        <p class="prob-q"><math><msub><mi>log</mi><mn>10</mn></msub><mn>2</mn><mo>=</mo><mn>0.3010</mn></math>とする。<math><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo></mrow><mi>n</mi></msup><mo>&lt;</mo><mfrac><mn>1</mn><msup><mn>10</mn><mn>4</mn></msup></mfrac></math> を満たす最小の自然数 n を求めよ。</p>
         <div class="step hint">
           <h3>ヒント 1 ― 両辺の常用対数をとる</h3>
-          <p>n が指数にいるので、そのままでは比べられない。両辺の<b>常用対数 log<sub>10</sub></b> をとって、n を指数から下ろそう。</p>
-          <p>左辺は n · log<sub>10</sub><span class="fr"><span class="fr-n">1</span><span class="fr-d">2</span></span>、右辺は log<sub>10</sub><span class="fr"><span class="fr-n">1</span><span class="fr-d">10<sup>4</sup></span></span> ＝ −4 になる。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>対数の性質 <math><msub><mi>log</mi><mi>a</mi></msub><msup><mi>M</mi><mi>p</mi></msup><mo>=</mo><mi>p</mi><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi></math>。両辺の対数をとると、指数にいる <math><mi>n</mi></math> が前に下りてきて、ふつうの不等式として扱えるよ。</p>
+            
+          <p>n が指数にいるので、そのままでは比べられない。<br>両辺の<b>常用対数<math><msub><mi>log</mi><mn>10</mn></msub></math></b> をとって、n を指数から下ろそう。</p>
+          <p>左辺は<math><mi>n</mi><mo>·</mo><msub><mi>log</mi><mn>10</mn></msub><mfrac><mn>1</mn><mn>2</mn></mfrac></math>、右辺は<math><msub><mi>log</mi><mn>10</mn></msub><mfrac><mn>1</mn><msup><mn>10</mn><mn>4</mn></msup></mfrac><mo>=</mo><mo>−</mo><mn>4</mn></math>になる。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 0.3010 を代入する</h3>
-          <p>log<sub>10</sub><span class="fr"><span class="fr-n">1</span><span class="fr-d">2</span></span> ＝ −log<sub>10</sub>2 ＝ <b>−0.3010</b>（<span class="fr"><span class="fr-n">1</span><span class="fr-d">2</span></span> ＝ 2<sup>−1</sup> だから符号が逆になる）。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>対数の性質より、逆数の対数は符号が逆になる：<math><msub><mi>log</mi><mn>10</mn></msub><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>=</mo><mo>−</mo><msub><mi>log</mi><mn>10</mn></msub><mn>2</mn></math>。<math><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>=</mo><msup><mn>2</mn><mrow><mo>−</mo><mn>1</mn></mrow></msup></math> と見るのが理由だよ。</p>
+            
+          <p><math><msub><mi>log</mi><mn>10</mn></msub><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>=</mo><mo>−</mo><msub><mi>log</mi><mn>10</mn></msub><mn>2</mn><mo>=</mo></math><b>−0.3010</b><math><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>=</mo><msup><mn>2</mn><mrow><mo>−</mo><mn>1</mn></mrow></msup></math> だから符号が逆になる）。</p>
           <p>代入すると、不等式は <b>−0.3010n ＜ −4</b> になる。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 3 ― 負の数で割る（向きに注意）</h3>
-          <p>両辺を −0.3010 で割る。<b>負の数で割ると、不等号の向きが逆になる</b>のが最大の注意点だ。</p>
-          <p>n ＞ <span class="fr"><span class="fr-n">4</span><span class="fr-d">0.3010</span></span> となり、4 ÷ 0.3010 ＝ 13.28… と計算できる。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>不等式の性質：両辺を負の数で割る（掛ける）と、不等号の向きが逆になる。このステップがいちばん間違えやすいので、割る数の符号を先に確かめるよ。</p>
+            
+          <p>両辺を −0.3010 で割る。<br><b>負の数で割ると、不等号の向きが逆になる</b>のが最大の注意点だ。</p>
+          <p><math><mi>n</mi><mo>&gt;</mo><mfrac><mn>4</mn><mn>0.3010</mn></mfrac></math> となり、<math><mn>4</mn><mo>÷</mo><mn>0.3010</mn><mo>=</mo><mn>13.28</mn><mo>…</mo></math>と計算できる。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 4 ― 「最小の自然数」を選ぶ</h3>
@@ -1035,9 +1213,11 @@
         </div>
         <div class="step answer">
           <h3>解答</h3>
-          <p class="big">n ＝ 14</p>
-          <p>両辺の常用対数をとると n log<sub>10</sub><span class="fr"><span class="fr-n">1</span><span class="fr-d">2</span></span> ＜ −4。log<sub>10</sub><span class="fr"><span class="fr-n">1</span><span class="fr-d">2</span></span> ＝ −0.3010 だから −0.3010n ＜ −4。負の数で割って向きを変えると n ＞ <span class="fr"><span class="fr-n">4</span><span class="fr-d">0.3010</span></span> ＝ 13.28…。よって、満たす最小の自然数は <b>n ＝ 14</b>。</p>
-          <p class="note"><b>ポイント：</b>指数に文字がある不等式は「両辺の対数をとって、文字を指数から下ろす」。そして負の数で割るときの不等号の反転が、間違えやすい最大のポイントだよ。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>対数の性質 <math><msub><mi>log</mi><mi>a</mi></msub><msup><mi>M</mi><mi>p</mi></msup><mo>=</mo><mi>p</mi><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi></math>（ヒント1で使った性質）。解答でも、両辺の常用対数をとって指数の <math><mi>n</mi></math> を下ろすところから始めるよ。</p>
+            
+          <p class="big"><math display="block"><mi>n</mi><mo>=</mo><mn>14</mn></math></p>
+          <p>両辺の常用対数をとると<math><mi>n</mi><msub><mi>log</mi><mn>10</mn></msub><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>&lt;</mo><mo>−</mo><mn>4</mn></math>。<math><msub><mi>log</mi><mn>10</mn></msub><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>=</mo><mo>−</mo><mn>0.3010</mn></math>だから −0.3010n ＜ −4。<br>負の数で割って向きを変えると<math><mi>n</mi><mo>&gt;</mo><mfrac><mn>4</mn><mn>0.3010</mn></mfrac><mo>=</mo><mn>13.28</mn><mo>…</mo></math>。<br>よって、満たす最小の自然数は <b><math><mi>n</mi><mo>=</mo><mn>14</mn></math></b>。</p>
+          <p class="note"><b>ポイント：</b>指数に文字がある不等式は「両辺の対数をとって、文字を指数から下ろす」。<br>そして負の数で割るときの不等号の反転が、間違えやすい最大のポイントだよ。</p>
         </div>
         <p class="prob-done">補充10 クリア！　補充問題 全10問が完了したよ。おつかれさま！</p>
       </section>
@@ -1046,11 +1226,11 @@
       <section class="card summary">
         <h2>補充問題のポイント</h2>
         <ul>
-          <li><b>置き換え t ＝ 2<sup>x</sup> が指数の方程式・不等式の型。</b>4<sup>x</sup> ＝ (2<sup>x</sup>)<sup>2</sup> と見て t の2次式に直し、t ＞ 0 の条件で答えを絞る（補充4・5）。t ＝ log<sub>2</sub>x の置き換えも同じ発想（補充9）。</li>
-          <li><b>グラフの平行移動は、式の形で決まる。</b>「x を x−a に変える → x 軸方向に ＋a」「式全体に ＋b → y 軸方向に ＋b」。漸近線も一緒に動く（補充3・7）。</li>
-          <li><b>対数の計算は、真数を底の累乗で見直すのが近道。</b>log<sub>4</sub>8 のような値は「底を何乗すると真数になるか」で確かめられる（補充6）。</li>
-          <li><b>対数の方程式・不等式は、真数 ＞ 0 の条件から始める。</b>条件 → 対数をはずす → 条件と重ねる、の順が崩れると答えがずれる（補充8）。</li>
-          <li><b>常用対数は「大きさ・桁数」を調べる道具。</b>指数に文字がある不等式は、両辺の log<sub>10</sub> をとって文字の不等式に直す（補充10）。</li>
+          <li><p class="cite"><span class="cite-tag">使う公式</span>指数法則 <math><msup><mrow><mo>(</mo><msup><mi>a</mi><mi>m</mi></msup><mo>)</mo></mrow><mi>n</mi></msup><mo>=</mo><msup><mi>a</mi><mrow><mi>m</mi><mi>n</mi></mrow></msup></math>。<math><msup><mn>4</mn><mi>x</mi></msup><mo>=</mo><msup><mrow><mo>(</mo><msup><mn>2</mn><mi>x</mi></msup><mo>)</mo></mrow><mn>2</mn></msup></math> と見るのが置き換えの出発点だよ。</p><b>置き換え<math><mi>t</mi><mo>=</mo><msup><mn>2</mn><mi>x</mi></msup></math> が指数の方程式・不等式の型。</b><math><msup><mn>4</mn><mi>x</mi></msup><mo>=</mo><msup><mrow><mo>(</mo><msup><mn>2</mn><mi>x</mi></msup><mo>)</mo></mrow><mn>2</mn></msup></math> と見て t の2次式に直し、<br>t ＞ 0 の条件で答えを絞る（補充4・5）。<math><mi>t</mi><mo>=</mo><msub><mi>log</mi><mn>2</mn></msub><mi>x</mi></math>の置き換えも同じ発想（補充9）。</li>
+          <li><p class="cite"><span class="cite-tag">使う性質</span>平行移動の決まり：<math><mi>x</mi></math> を <math><mi>x</mi><mo>−</mo><mi>a</mi></math> に変えると <math><mi>x</mi></math> 軸方向に <math><mo>+</mo><mi>a</mi></math>、式全体に <math><mo>+</mo><mi>b</mi></math> すると <math><mi>y</mi></math> 軸方向に <math><mo>+</mo><mi>b</mi></math> 動くよ。</p><b>グラフの平行移動は、式の形で決まる。</b>「x を x−a に変える → x 軸方向に ＋a」「式全体に ＋b → y 軸方向に ＋b」。漸近線も一緒に動く（補充3・7）。</li>
+          <li><p class="cite"><span class="cite-tag">使う定義</span>対数の定義：<math><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>=</mo><mi>x</mi></math> とは <math><msup><mi>a</mi><mi>x</mi></msup><mo>=</mo><mi>M</mi></math> のこと。対数の値はこの定義でいつでも確かめられるよ。</p><b>対数の計算は、真数を底の累乗で見直すのが近道。</b><math><msub><mi>log</mi><mn>4</mn></msub><mn>8</mn></math>のような値は「底を何乗すると真数になるか」で確かめられる（補充6）。</li>
+          <li><p class="cite"><span class="cite-tag">使う定義</span>対数の定義より、真数は正でなければならない。方程式・不等式では、この条件を最初に書くのが決まりだよ。</p><b>対数の方程式・不等式は、真数 ＞ 0 の条件から始める。</b>条件 → 対数をはずす → 条件と重ねる、の順が崩れると答えがずれる（補充8）。</li>
+          <li><p class="cite"><span class="cite-tag">使う性質</span>対数の性質 <math><msub><mi>log</mi><mi>a</mi></msub><msup><mi>M</mi><mi>p</mi></msup><mo>=</mo><mi>p</mi><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi></math>。両辺の常用対数をとると、指数が前に下りて文字の不等式に直るよ。</p><b>常用対数は「大きさ・桁数」を調べる道具。</b>指数に文字がある不等式は、<br>両辺の<math><msub><mi>log</mi><mn>10</mn></msub></math> をとって文字の不等式に直す（補充10）。</li>
         </ul>
       </section>
 
@@ -1067,7 +1247,7 @@
     <div class="ctrl-bar">
       <div class="ctrl-inner">
         <p class="ctrl-label">いまの課題：<b id="ctrlLabel">補充1</b>　―　「次へ」でヒントを1つずつ開こう</p>
-        <p class="ctrl-progress" id="ctrlProgress">全体の進み具合：<b>0 / 10 問</b> クリア</p>
+        <p class="ctrl-progress" id="ctrlProgress">全体の進み具合：<b><math><mfrac><mn>0</mn><mn>10</mn></mfrac></math>問</b> クリア</p>
         <div class="ctrl-btns">
           <button class="btn" id="btnReset" type="button">最初からやり直す</button>
           <button class="btn btn-next" id="btnNext" type="button">次へ ▶</button>

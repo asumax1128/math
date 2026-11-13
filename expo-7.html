@@ -285,7 +285,45 @@
           padding:2px 6px 2px 2px;
         }
       }
-    </style>
+    
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+</style>
   </head>
   <body>
     <div class="wrap">
@@ -316,9 +354,9 @@
 
       <section class="card">
         <p>まず、指数の形を思い出そう。どんな数 a でも</p>
-        <p class="formula">1 ＝ a<sup>0</sup>　　，　　a ＝ a<sup>1</sup></p>
+        <p class="formula"><math><mn>1</mn><mo>=</mo><msup><mi>a</mi><mn>0</mn></msup></math>　　，　　<math><mi>a</mi><mo>=</mo><msup><mi>a</mi><mn>1</mn></msup></math></p>
         <p>だった。これを対数の言葉で言い直すと、次の2つが分かる。</p>
-        <p class="formula">log<sub>a</sub> 1 ＝ 0　　，　　log<sub>a</sub> a ＝ 1</p>
+        <p class="formula"><math><msub><mi>log</mi><mi>a</mi></msub><mn>1</mn><mo>=</mo><mn>0</mn></math>　　，　　<math><msub><mi>log</mi><mi>a</mi></msub><mi>a</mi><mo>=</mo><mn>1</mn></math></p>
         <p>「a を何乗したら 1 になるか → 0乗」「a を何乗したら a になるか → 1乗」という意味だね。この2つは、あとの計算の<b>着地点</b>として何度も使う。</p>
       </section>
 
@@ -327,35 +365,33 @@
         <div class="def">
           <div class="prop-row">
             <span class="prop-no">1</span>
-            <div class="prop-body">log<sub>a</sub> MN ＝ log<sub>a</sub> M ＋ log<sub>a</sub> N
-              <span class="cond">かけ算の対数は、対数の<b>足し算</b>に分かれる</span>
+            <div class="prop-body"><math><msub><mi>log</mi><mi>a</mi></msub><mi>MN</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>+</mo><msub><mi>log</mi><mi>a</mi></msub><mi>N</mi></math><span class="cond">かけ算の対数は、対数の<b>足し算</b>に分かれる</span>
             </div>
           </div>
           <div class="prop-row">
             <span class="prop-no">2</span>
-            <div class="prop-body">log<sub>a</sub> <span class="frac"><span class="top">M</span><span class="bot">N</span></span> ＝ log<sub>a</sub> M － log<sub>a</sub> N
-              <span class="cond">わり算の対数は、対数の<b>引き算</b>に分かれる</span>
+            <div class="prop-body"><math><msub><mi>log</mi><mi>a</mi></msub><mfrac><mi>M</mi><mi>N</mi></mfrac><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>−</mo><msub><mi>log</mi><mi>a</mi></msub><mi>N</mi></math><span class="cond">わり算の対数は、対数の<b>引き算</b>に分かれる</span>
             </div>
           </div>
           <div class="prop-row">
             <span class="prop-no">3</span>
-            <div class="prop-body">log<sub>a</sub> M<sup>k</sup> ＝ k log<sub>a</sub> M
-              <span class="cond">累乗の指数 k は、対数の<b>前に係数</b>として出せる</span>
+            <div class="prop-body"><math><msub><mi>log</mi><mi>a</mi></msub><msup><mi>M</mi><mi>k</mi></msup><mo>=</mo><mi>k</mi><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi></math><span class="cond">累乗の指数 k は、対数の<b>前に係数</b>として出せる</span>
             </div>
           </div>
         </div>
         <div class="def">
-          <p><span class="key">注意：</span>性質 <b>2</b> で M＝1 としてみよう。log<sub>a</sub> 1 ＝ 0 だから</p>
-          <p style="text-align:center;font-weight:700">log<sub>a</sub> <span class="frac"><span class="top">1</span><span class="bot">N</span></span> ＝ log<sub>a</sub> 1 － log<sub>a</sub> N ＝ －log<sub>a</sub> N</p>
-          <p>つまり <b>log<sub>a</sub> (1/N) ＝ －log<sub>a</sub> N</b>。分母だけに対数がある形を見たら、この変形を思い出そう。</p>
+          <p class="cite"><span class="cite-tag">使う性質</span><math><msub><mi>log</mi><mi>a</mi></msub><mfrac><mi>M</mi><mi>N</mi></mfrac><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>−</mo><msub><mi>log</mi><mi>a</mi></msub><mi>N</mi></math>。この注意の計算は、性質2で M を 1 とした場合。1 の対数は 0 だから、後ろの項だけがマイナスで残るよ。</p>
+          <p><span class="key">注意：</span>性質 <b>2</b> で<math><mi>M</mi><mo>=</mo><mn>1</mn></math>としてみよう。<math><msub><mi>log</mi><mi>a</mi></msub><mn>1</mn><mo>=</mo><mn>0</mn></math>だから</p>
+          <p style="text-align:center;font-weight:700"><math display="block"><msub><mi>log</mi><mi>a</mi></msub><mfrac><mn>1</mn><mi>N</mi></mfrac><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><mn>1</mn><mo>−</mo><msub><mi>log</mi><mi>a</mi></msub><mi>N</mi><mo>=</mo><mo>−</mo><msub><mi>log</mi><mi>a</mi></msub><mi>N</mi></math></p>
+          <p>つまり <b><math><msub><mi>log</mi><mi>a</mi></msub><mo>(</mo><mfrac><mn>1</mn><mi>N</mi></mfrac><mo>)</mo><mo>=</mo><mo>−</mo><msub><mi>log</mi><mi>a</mi></msub><mi>N</mi></math></b>。分母だけに対数がある形を見たら、この変形を思い出そう。</p>
         </div>
         <p><b>もう1つ大事なこと。</b>これらの等式は、左辺 → 右辺（対数を分ける）だけでなく、<b>右辺 → 左辺（対数を1つにまとめる）</b> の向きにも使える。</p>
-        <p class="formula">log<sub>a</sub> M ＋ log<sub>a</sub> N ＝ log<sub>a</sub> MN</p>
+        <p class="formula"><math display="block"><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>+</mo><msub><mi>log</mi><mi>a</mi></msub><mi>N</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><mi>MN</mi></math></p>
         <p>足し算・引き算の形をした対数の計算では、この「まとめる向き」が主役になる。例10・練習17でたっぷり使うよ。</p>
       </section>
 
       <!-- 性質1の証明（段階表示） -->
-      <section class="card prob" id="prob-pf1" data-flow="pf1" data-kind="proof" data-label="性質1の証明">
+      <section class="nofig card prob" id="prob-pf1" data-flow="pf1" data-kind="proof" data-label="性質1の証明">
         <div class="prob-head">
           <span class="prob-tag demo">性質 1 の証明</span>
           <div class="dots" aria-hidden="true">
@@ -364,34 +400,37 @@
           <span class="prob-state">ステップ 0 / 3</span>
         </div>
         <div class="qside">
-        <p class="prob-q">性質 <b>1</b>：log<sub>a</sub> MN ＝ log<sub>a</sub> M ＋ log<sub>a</sub> N は、どうして成り立つのだろう。下の <b>次へ</b> で、証明を1行ずつ追ってみよう。あとの練習16は、この証明のマネをして解く問題だよ。</p>
+        <p class="prob-q">性質 <b>1</b>：<math><msub><mi>log</mi><mi>a</mi></msub><mi>MN</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>+</mo><msub><mi>log</mi><mi>a</mi></msub><mi>N</mi></math>は、どうして成り立つのだろう。下の <b>次へ</b> で、証明を1行ずつ追ってみよう。あとの練習16は、この証明のマネをして解く問題だよ。</p>
         </div>
 
         <div class="step hint">
           <h3>ステップ 1 ― まず「おく」</h3>
-          <p>log<sub>a</sub> M ＝ p，　log<sub>a</sub> N ＝ q とおく。</p>
-          <p>対数の定義（log<sub>a</sub> M ＝ p ⇔ M ＝ a<sup>p</sup>）から、これは指数の形で</p>
-          <p style="text-align:center;font-weight:700">M ＝ a<sup>p</sup>　　，　　N ＝ a<sup>q</sup></p>
+          <p class="cite"><span class="cite-tag">使う定義</span><math><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>=</mo><mi>p</mi><mo>⇔</mo><mi>M</mi><mo>=</mo><msup><mi>a</mi><mi>p</mi></msup></math>。対数を指数の形に直すときの約束。このステップでは M と N の両方に使って、指数の形に書き直すよ。</p>
+          <p><math><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>=</mo><mi>p</mi><mo>,</mo></math>　<math><msub><mi>log</mi><mi>a</mi></msub><mi>N</mi><mo>=</mo><mi>q</mi></math>とおく。</p>
+          <p>対数の定義<math><mo>(</mo><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>=</mo><mi>p</mi><mo>⇔</mo><mi>M</mi><mo>=</mo><msup><mi>a</mi><mi>p</mi></msup><mo>)</mo></math>から、これは指数の形で</p>
+          <p style="text-align:center;font-weight:700"><math><mi>M</mi><mo>=</mo><msup><mi>a</mi><mi>p</mi></msup></math>　　，　　<math><mi>N</mi><mo>=</mo><msup><mi>a</mi><mi>q</mi></msup></math></p>
           <p>と書ける、ということだね。</p>
         </div>
         <div class="step hint">
           <h3>ステップ 2 ― 両辺をかける</h3>
-          <p>M と N をかけると、指数法則 a<sup>p</sup> × a<sup>q</sup> ＝ a<sup>p+q</sup> が使えて</p>
-          <p style="text-align:center;font-weight:700">MN ＝ a<sup>p</sup> × a<sup>q</sup> ＝ a<sup>p+q</sup></p>
+          <p class="cite"><span class="cite-tag">使う性質</span><math><msup><mi>a</mi><mi>p</mi></msup><mo>×</mo><msup><mi>a</mi><mi>q</mi></msup><mo>=</mo><msup><mi>a</mi><mrow><mi>p</mi><mo>+</mo><mi>q</mi></mrow></msup></math>。底が同じ累乗のかけ算では、指数どうしを足す。このステップの、M と N をかける計算で使うよ。</p>
+          <p>M と N をかけると、指数法則<math><msup><mi>a</mi><mi>p</mi></msup><mo>×</mo><msup><mi>a</mi><mi>q</mi></msup><mo>=</mo><msup><mi>a</mi><mrow><mi>p</mi><mo>+</mo><mi>q</mi></mrow></msup></math> が使えて</p>
+          <p style="text-align:center;font-weight:700"><math display="block"><mi>MN</mi><mo>=</mo><msup><mi>a</mi><mi>p</mi></msup><mo>×</mo><msup><mi>a</mi><mi>q</mi></msup><mo>=</mo><msup><mi>a</mi><mrow><mi>p</mi><mo>+</mo><mi>q</mi></mrow></msup></math></p>
           <p>となる。</p>
         </div>
         <div class="step hint">
           <h3>ステップ 3 ― 対数の言葉に戻す</h3>
-          <p>MN ＝ a<sup>p+q</sup> ということは、「a を (p＋q) 乗したら MN になる」という意味。</p>
+          <p class="cite"><span class="cite-tag">使う定義</span><math><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>=</mo><mi>p</mi><mo>⇔</mo><mi>M</mi><mo>=</mo><msup><mi>a</mi><mi>p</mi></msup></math>。指数の形を対数の形に戻すときも、同じ定義を使う。積 MN が累乗の形で書けたので、対数に言い直せるよ。</p>
+          <p><math><mi>MN</mi><mo>=</mo><msup><mi>a</mi><mrow><mi>p</mi><mo>+</mo><mi>q</mi></mrow></msup></math> ということは、「a を (p＋q) 乗したら MN になる」という意味。</p>
           <p>対数の定義から、そのまま</p>
-          <p style="text-align:center;font-weight:700">log<sub>a</sub> MN ＝ p ＋ q</p>
+          <p style="text-align:center;font-weight:700"><math display="block"><msub><mi>log</mi><mi>a</mi></msub><mi>MN</mi><mo>=</mo><mi>p</mi><mo>+</mo><mi>q</mi></math></p>
           <p>と言い直せる。</p>
         </div>
         <div class="step answer">
           <h3>証明のまとめ</h3>
-          <p>はじめに p ＝ log<sub>a</sub> M，q ＝ log<sub>a</sub> N とおいたのだった。ステップ3の p＋q にこれらを戻すと</p>
-          <p class="big">log<sub>a</sub> MN ＝ log<sub>a</sub> M ＋ log<sub>a</sub> N</p>
-          <p>となり、性質1が示せた。<b>「おく → 指数で計算 → 対数に戻す → おいた文字を戻す」</b>が証明の流れだよ。</p>
+          <p>はじめに<math><mi>p</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>,</mo><mi>q</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><mi>N</mi></math>とおいたのだった。ステップ3の p＋q にこれらを戻すと</p>
+          <p class="big"><math display="block"><msub><mi>log</mi><mi>a</mi></msub><mi>MN</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>+</mo><msub><mi>log</mi><mi>a</mi></msub><mi>N</mi></math></p>
+          <p>となり、性質1が示せた。<br><b>「おく → 指数で計算 → 対数に戻す → おいた文字を戻す」</b>が証明の流れだよ。</p>
         </div>
         <p class="prob-done">性質1の証明を追えた！　この流れをマネして、練習16に挑戦しよう。</p>
       </section>
@@ -403,13 +442,13 @@
         <span class="pno">教科書 p.163</span>
       </div>
 
-      <section class="card prob" id="prob-ren16">
+      <section class="nofig card prob" id="prob-ren16">
         <div class="prob-head">
           <span class="prob-tag ren">練習 16</span>
           <span class="prob-state">下のタブで、証明する性質を選んでね</span>
         </div>
         <div class="qside">
-        <p class="prob-q">上の性質1の証明にならって、性質 <b>2</b> と性質 <b>3</b> が成り立つことを証明せよ。どちらも log<sub>a</sub> M ＝ p，log<sub>a</sub> N ＝ q とおくところから始めるよ。</p>
+        <p class="prob-q">上の性質1の証明にならって、性質 <b>2</b> と性質 <b>3</b> が成り立つことを証明せよ。どちらも<math><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>=</mo><mi>p</mi><mo>,</mo><msub><mi>log</mi><mi>a</mi></msub><mi>N</mi><mo>=</mo><mi>q</mi></math>とおくところから始めるよ。</p>
         </div>
 
         <div class="tabs" role="tablist" aria-label="練習16の小問">
@@ -418,71 +457,75 @@
         </div>
 
         <!-- 性質2 -->
-        <div class="tabpanel show" id="panel-ren16-2" data-flow="ren16-2" data-kind="proof" data-label="練習16 性質2の証明">
+        <div class="nofig tabpanel show" id="panel-ren16-2" data-flow="ren16-2" data-kind="proof" data-label="練習16 性質2の証明">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">性質 2：log<sub>a</sub> (M/N) ＝ log<sub>a</sub> M － log<sub>a</sub> N の証明</span>
+            <span class="sub prob-q" style="margin:0">性質 2：<math><msub><mi>log</mi><mi>a</mi></msub><mo>(</mo><mfrac><mi>M</mi><mi>N</mi></mfrac><mo>)</mo><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>−</mo><msub><mi>log</mi><mi>a</mi></msub><mi>N</mi></math>の証明</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ステップ 0 / 3</span>
           </div>
           <div class="step hint">
             <h3>ステップ 1 ― 性質1と同じ出発点</h3>
-            <p>性質1の証明とまったく同じように、log<sub>a</sub> M ＝ p，log<sub>a</sub> N ＝ q とおく。</p>
-            <p>すると指数の形で M ＝ a<sup>p</sup>，N ＝ a<sup>q</sup> と書ける。</p>
+            <p class="cite"><span class="cite-tag">使う定義</span><math><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>=</mo><mi>p</mi><mo>⇔</mo><mi>M</mi><mo>=</mo><msup><mi>a</mi><mi>p</mi></msup></math>。性質1の証明とまったく同じ出発点。M と N を指数の形に直してから、計算を始めるよ。</p>
+            <p>性質1の証明とまったく同じように、<math><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>=</mo><mi>p</mi><mo>,</mo><msub><mi>log</mi><mi>a</mi></msub><mi>N</mi><mo>=</mo><mi>q</mi></math>とおく。</p>
+            <p>すると指数の形で<math><mi>M</mi><mo>=</mo><msup><mi>a</mi><mi>p</mi></msup><mo>,</mo><mi>N</mi><mo>=</mo><msup><mi>a</mi><mi>q</mi></msup></math> と書ける。</p>
             <p>性質1ではここで「かけた」けれど、性質2で主役になる計算は何かな？</p>
           </div>
           <div class="step hint">
             <h3>ステップ 2 ― 今度は「わる」</h3>
-            <p>M を N でわってみよう。指数法則 a<sup>p</sup> ÷ a<sup>q</sup> ＝ a<sup>p−q</sup> が使えて</p>
-            <p style="text-align:center;font-weight:700"><span class="frac"><span class="top">M</span><span class="bot">N</span></span> ＝ <span class="frac"><span class="top">a<sup>p</sup></span><span class="bot">a<sup>q</sup></span></span> ＝ a<sup>p−q</sup></p>
-            <p>となる。かけ算が足し算になったのと対照的に、わり算は指数の<b>引き算</b>になるね。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span><math><msup><mi>a</mi><mi>p</mi></msup><mo>÷</mo><msup><mi>a</mi><mi>q</mi></msup><mo>=</mo><msup><mi>a</mi><mrow><mi>p</mi><mo>−</mo><mi>q</mi></mrow></msup></math>。底が同じ累乗のわり算では、指数どうしを引く。このステップの、M を N でわる計算で使うよ。</p>
+            <p>M を N でわってみよう。指数法則<math><msup><mi>a</mi><mi>p</mi></msup><mo>÷</mo><msup><mi>a</mi><mi>q</mi></msup><mo>=</mo><msup><mi>a</mi><mrow><mi>p</mi><mo>−</mo><mi>q</mi></mrow></msup></math> が使えて</p>
+            <p style="text-align:center;font-weight:700"><math display="block"><mfrac><mi>M</mi><mi>N</mi></mfrac><mo>=</mo><mfrac><msup><mi>a</mi><mi>p</mi></msup><msup><mi>a</mi><mi>q</mi></msup></mfrac><mo>=</mo><msup><mi>a</mi><mrow><mi>p</mi><mo>−</mo><mi>q</mi></mrow></msup></math></p>
+            <p>となる。かけ算が足し算になったのと対照的に、<br>わり算は指数の<b>引き算</b>になるね。</p>
           </div>
           <div class="step hint">
             <h3>ステップ 3 ― 対数の言葉に戻す</h3>
-            <p>M/N ＝ a<sup>p−q</sup> は、「a を (p−q) 乗したら M/N になる」という意味。</p>
+            <p><math><mfrac><mi>M</mi><mi>N</mi></mfrac><mo>=</mo><msup><mi>a</mi><mrow><mi>p</mi><mo>−</mo><mi>q</mi></mrow></msup></math> は、「a を (p−q) 乗したら M/N になる」という意味。</p>
             <p>対数の定義から、そのまま</p>
-            <p style="text-align:center;font-weight:700">log<sub>a</sub> <span class="frac"><span class="top">M</span><span class="bot">N</span></span> ＝ p － q</p>
+            <p style="text-align:center;font-weight:700"><math display="block"><msub><mi>log</mi><mi>a</mi></msub><mfrac><mi>M</mi><mi>N</mi></mfrac><mo>=</mo><mi>p</mi><mo>−</mo><mi>q</mi></math></p>
             <p>と言い直せる。あとは最後の仕上げだけだ。</p>
           </div>
           <div class="step answer">
             <h3>証明のまとめ（性質 2）</h3>
-            <p>p ＝ log<sub>a</sub> M，q ＝ log<sub>a</sub> N をステップ3に戻すと</p>
-            <p class="big">log<sub>a</sub> <span class="frac"><span class="top">M</span><span class="bot">N</span></span> ＝ log<sub>a</sub> M － log<sub>a</sub> N</p>
-            <p>となり、性質2が示せた。性質1と違うのは、ステップ2で「かけ算」を「わり算」に替えたところだけだよ。</p>
+            <p><math><mi>p</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>,</mo><mi>q</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><mi>N</mi></math>をステップ3に戻すと</p>
+            <p class="big"><math display="block"><msub><mi>log</mi><mi>a</mi></msub><mfrac><mi>M</mi><mi>N</mi></mfrac><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>−</mo><msub><mi>log</mi><mi>a</mi></msub><mi>N</mi></math></p>
+            <p>となり、性質2が示せた。<br>性質1と違うのは、ステップ2で「かけ算」を「わり算」に替えたところだけだよ。</p>
           </div>
           <p class="prob-done">性質2の証明クリア！　次は「性質 3 の証明」タブを開こう。</p>
         </div>
 
         <!-- 性質3 -->
-        <div class="tabpanel" id="panel-ren16-3" data-flow="ren16-3" data-kind="proof" data-label="練習16 性質3の証明">
+        <div class="nofig tabpanel" id="panel-ren16-3" data-flow="ren16-3" data-kind="proof" data-label="練習16 性質3の証明">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">性質 3：log<sub>a</sub> M<sup>k</sup> ＝ k log<sub>a</sub> M の証明</span>
+            <span class="sub prob-q" style="margin:0">性質 3：<math><msub><mi>log</mi><mi>a</mi></msub><msup><mi>M</mi><mi>k</mi></msup><mo>=</mo><mi>k</mi><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi></math>の証明</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ステップ 0 / 3</span>
           </div>
           <div class="step hint">
             <h3>ステップ 1 ― 使うのは M だけ</h3>
-            <p>性質3には N が出てこない。だから log<sub>a</sub> M ＝ p とだけおけば十分だ。</p>
-            <p>指数の形では M ＝ a<sup>p</sup> と書ける。</p>
+            <p class="cite"><span class="cite-tag">使う定義</span><math><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>=</mo><mi>p</mi><mo>⇔</mo><mi>M</mi><mo>=</mo><msup><mi>a</mi><mi>p</mi></msup></math>。性質3では N は出てこないので、M についてだけ定義を使って、指数の形に直しておくよ。</p>
+            <p>性質3には N が出てこない。だから<math><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>=</mo><mi>p</mi></math>とだけおけば十分だ。</p>
+            <p>指数の形では<math><mi>M</mi><mo>=</mo><msup><mi>a</mi><mi>p</mi></msup></math> と書ける。</p>
           </div>
           <div class="step hint">
             <h3>ステップ 2 ― 両辺を k 乗する</h3>
-            <p>M<sup>k</sup> を考えたいので、M ＝ a<sup>p</sup> の両辺を k 乗する。</p>
-            <p>指数法則 (a<sup>p</sup>)<sup>k</sup> ＝ a<sup>pk</sup> が使えて</p>
-            <p style="text-align:center;font-weight:700">M<sup>k</sup> ＝ (a<sup>p</sup>)<sup>k</sup> ＝ a<sup>pk</sup></p>
+            <p class="cite"><span class="cite-tag">使う性質</span><math><msup><mrow><mo>(</mo><msup><mi>a</mi><mi>p</mi></msup><mo>)</mo></mrow><mi>k</mi></msup><mo>=</mo><msup><mi>a</mi><mrow><mi>p</mi><mi>k</mi></mrow></msup></math>。累乗の累乗では、指数どうしをかける。このステップの、両辺を k 乗する計算で使うよ。</p>
+            <p><math><msup><mi>M</mi><mi>k</mi></msup></math> を考えたいので、<math><mi>M</mi><mo>=</mo><msup><mi>a</mi><mi>p</mi></msup></math> の両辺を k 乗する。</p>
+            <p>指数法則<math><msup><mrow><mo>(</mo><msup><mi>a</mi><mi>p</mi></msup><mo>)</mo></mrow><mi>k</mi></msup><mo>=</mo><msup><mi>a</mi><mrow><mi>p</mi><mi>k</mi></mrow></msup></math> が使えて</p>
+            <p style="text-align:center;font-weight:700"><math display="block"><msup><mi>M</mi><mi>k</mi></msup><mo>=</mo><msup><mrow><mo>(</mo><msup><mi>a</mi><mi>p</mi></msup><mo>)</mo></mrow><mi>k</mi></msup><mo>=</mo><msup><mi>a</mi><mrow><mi>p</mi><mi>k</mi></mrow></msup></math></p>
             <p>となる。</p>
           </div>
           <div class="step hint">
             <h3>ステップ 3 ― 対数の言葉に戻す</h3>
-            <p>M<sup>k</sup> ＝ a<sup>pk</sup> は、「a を pk 乗したら M<sup>k</sup> になる」という意味。</p>
+            <p><math><msup><mi>M</mi><mi>k</mi></msup><mo>=</mo><msup><mi>a</mi><mrow><mi>p</mi><mi>k</mi></mrow></msup></math> は、「a を pk 乗したら<math><msup><mi>M</mi><mi>k</mi></msup></math> になる」という意味。</p>
             <p>対数の定義から、そのまま</p>
-            <p style="text-align:center;font-weight:700">log<sub>a</sub> M<sup>k</sup> ＝ pk</p>
+            <p style="text-align:center;font-weight:700"><math display="block"><msub><mi>log</mi><mi>a</mi></msub><msup><mi>M</mi><mi>k</mi></msup><mo>=</mo><mi>p</mi><mi>k</mi></math></p>
             <p>と言い直せる。</p>
           </div>
           <div class="step answer">
             <h3>証明のまとめ（性質 3）</h3>
-            <p>p ＝ log<sub>a</sub> M をステップ3に戻すと、pk ＝ k × log<sub>a</sub> M だから</p>
-            <p class="big">log<sub>a</sub> M<sup>k</sup> ＝ k log<sub>a</sub> M</p>
-            <p>となり、性質3が示せた。「累乗の指数は、かけ算になって前に出る」という性質3の姿が、証明の中にも見えるね。</p>
+            <p><math><mi>p</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi></math>をステップ3に戻すと、<math><mi>p</mi><mi>k</mi><mo>=</mo><mi>k</mi><mo>×</mo><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi></math>だから</p>
+            <p class="big"><math display="block"><msub><mi>log</mi><mi>a</mi></msub><msup><mi>M</mi><mi>k</mi></msup><mo>=</mo><mi>k</mi><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi></math></p>
+            <p>となり、性質3が示せた。<br>「累乗の指数は、かけ算になって前に出る」という性質3の姿が、<br>証明の中にも見えるね。</p>
           </div>
           <p class="prob-done">性質3の証明クリア！　練習16はこれで完了。次は例10で計算の練習だ。</p>
         </div>
@@ -495,7 +538,7 @@
         <span class="pno">教科書 p.163</span>
       </div>
 
-      <section class="card prob" id="prob-ex10">
+      <section class="nofig card prob" id="prob-ex10">
         <div class="prob-head">
           <span class="prob-tag">例 10</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
@@ -511,90 +554,109 @@
         </div>
 
         <!-- 例10 (1) -->
-        <div class="tabpanel show" id="panel-ex10-1" data-flow="ex10-1" data-label="例10 (1)">
+        <div class="nofig tabpanel show" id="panel-ex10-1" data-flow="ex10-1" data-label="例10 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1) log<sub>10</sub> 2 ＋ log<sub>10</sub> 5</span>
+            <span class="sub prob-q" style="margin:0"><math><mo>(</mo><mn>1</mn><mo>)</mo><msub><mi>log</mi><mn>10</mn></msub><mn>2</mn><mo>+</mo><msub><mi>log</mi><mn>10</mn></msub><mn>5</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― 底がそろっているか確認</h3>
-            <p>2つの対数は、どちらも底が <b>10</b> でそろっている。底がそろっていて「足し算」の形をしていたら、性質1を<b>逆向き（まとめる向き）</b>に使うチャンスだ。</p>
+            <p>2つの対数は、どちらも底が <b>10</b> でそろっている。<br>底がそろっていて「足し算」の形をしていたら、性質1を<b>逆向き（まとめる向き）</b>に使うチャンスだ。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 中身をかけて1つにまとめる</h3>
-            <p>性質1の逆向き：log<sub>a</sub> M ＋ log<sub>a</sub> N ＝ log<sub>a</sub> MN。</p>
-            <p>つまり中身の 2 と 5 をかけて、対数を1つにまとめよう。2 × 5 はいくつになるかな？</p>
+            <p class="cite"><span class="cite-tag">使う性質</span><math><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>+</mo><msub><mi>log</mi><mi>a</mi></msub><mi>N</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><mi>MN</mi></math>。底がそろった対数の足し算は、この形で 1 つにまとめられる。この問題では、中身の 2 と 5 をかけてまとめるよ。</p>
+            <p>性質1の逆向き：<math><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>+</mo><msub><mi>log</mi><mi>a</mi></msub><mi>N</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><mi>MN</mi></math>。</p>
+            <p>つまり中身の 2 と 5 をかけて、<br>対数を1つにまとめよう。<math><mn>2</mn><mo>×</mo><mn>5</mn></math>はいくつになるかな？</p>
           </div>
           <div class="step hint">
-            <h3>ヒント 3 ― log<sub>10</sub> 10 の値を思い出す</h3>
-            <p>まとめると log<sub>10</sub> (2 × 5) ＝ log<sub>10</sub> 10 になる。</p>
-            <p>このページのはじめで確認した log<sub>a</sub> a ＝ 1 を、a ＝ 10 の場合に使ってみよう。</p>
+            <h3>ヒント<math><mn>3</mn><mo>―</mo><msub><mi>log</mi><mn>10</mn></msub><mn>10</mn></math>の値を思い出す</h3>
+            <p class="cite"><span class="cite-tag">使う性質</span><math><msub><mi>log</mi><mi>a</mi></msub><mi>a</mi><mo>=</mo><mn>1</mn></math>。底と中身が同じ対数の値は 1 になる。この問題では、底も中身も 10 の場合に使うよ。</p>
+            <p>まとめると<math><msub><mi>log</mi><mn>10</mn></msub><mo>(</mo><mn>2</mn><mo>×</mo><mn>5</mn><mo>)</mo><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><mn>10</mn></math>になる。</p>
+            <p>このページのはじめで確認した<math><msub><mi>log</mi><mi>a</mi></msub><mi>a</mi><mo>=</mo><mn>1</mn></math>を、<math><mi>a</mi><mo>=</mo><mn>10</mn></math>の場合に使ってみよう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (1)</h3>
-            <p class="big">log<sub>10</sub> 2 ＋ log<sub>10</sub> 5 ＝ log<sub>10</sub> (2 × 5) ＝ log<sub>10</sub> 10 ＝ 1</p>
+            <div class="chain-crow big">
+<div class="crow"><math displaystyle="true"><msub><mi>log</mi><mn>10</mn></msub><mn>2</mn><mo>+</mo><msub><mi>log</mi><mn>10</mn></msub><mn>5</mn><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><mo>(</mo><mn>2</mn><mo>×</mo><mn>5</mn><mo>)</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msub><mi>log</mi><mn>10</mn></msub><mn>2</mn><mo>+</mo><msub><mi>log</mi><mn>10</mn></msub><mn>5</mn></mphantom><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><mn>10</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msub><mi>log</mi><mn>10</mn></msub><mn>2</mn><mo>+</mo><msub><mi>log</mi><mn>10</mn></msub><mn>5</mn></mphantom><mo>=</mo><mn>1</mn></math></div>
+</div>
             <p>「2と5をかけると10、底も10」という、きれいに決まる組み合わせだったね。</p>
           </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
 
         <!-- 例10 (2) -->
-        <div class="tabpanel" id="panel-ex10-2" data-flow="ex10-2" data-label="例10 (2)">
+        <div class="nofig tabpanel" id="panel-ex10-2" data-flow="ex10-2" data-label="例10 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2) log<sub>2</sub> 24 － log<sub>2</sub> 3</span>
+            <span class="sub prob-q" style="margin:0"><math><mo>(</mo><mn>2</mn><mo>)</mo><msub><mi>log</mi><mn>2</mn></msub><mn>24</mn><mo>−</mo><msub><mi>log</mi><mn>2</mn></msub><mn>3</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― 引き算は性質2の逆向き</h3>
-            <p>底はどちらも 2 でそろっている。今度は「引き算」の形だから、性質2を逆向きに使う：log<sub>a</sub> M － log<sub>a</sub> N ＝ log<sub>a</sub> (M/N)。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span><math><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>−</mo><msub><mi>log</mi><mi>a</mi></msub><mi>N</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><mo>(</mo><mfrac><mi>M</mi><mi>N</mi></mfrac><mo>)</mo></math>。底がそろった対数の引き算は、この形で 1 つにまとめられる。この問題では、中身をわることでまとめるよ。</p>
+            <p>底はどちらも 2 でそろっている。今度は「引き算」の形だから、性質2を逆向きに使う：<math><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>−</mo><msub><mi>log</mi><mi>a</mi></msub><mi>N</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><mo>(</mo><mfrac><mi>M</mi><mi>N</mi></mfrac><mo>)</mo></math>。</p>
             <p>つまり、中身を<b>わる</b>ことで対数を1つにまとめよう。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 24 ÷ 3 を計算する</h3>
-            <p>まとめると log<sub>2</sub> <span class="frac"><span class="top">24</span><span class="bot">3</span></span> になる。まず分数の中身だけを計算して、簡単な数にしよう。</p>
+            <p>まとめると<math><msub><mi>log</mi><mn>2</mn></msub><mfrac><mn>24</mn><mn>3</mn></mfrac></math> になる。まず分数の中身だけを計算して、簡単な数にしよう。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 3 ― 中身を「底の累乗」で書く</h3>
-            <p>24 ÷ 3 ＝ 8 だから、式は log<sub>2</sub> 8 になる。</p>
-            <p>ここで 8 を、底である 2 の累乗の形（2 の何乗か）で書いてみよう。それがそのまま答えになるよ。</p>
+            <p class="cite"><span class="cite-tag">使う定義</span><math><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>=</mo><mi>p</mi><mo>⇔</mo><mi>M</mi><mo>=</mo><msup><mi>a</mi><mi>p</mi></msup></math>。中身を底の累乗で書けたら、その指数がそのまま対数の値になる。この問題では 8 を 2 の累乗で書くよ。</p>
+            <p><math><mn>24</mn><mo>÷</mo><mn>3</mn><mo>=</mo><mn>8</mn></math>だから、式は<math><msub><mi>log</mi><mn>2</mn></msub><mn>8</mn></math>になる。</p>
+            <p>ここで 8 を、底である 2 の累乗の形（2 の何乗か）で書いてみよう。<br>それがそのまま答えになるよ。</p>
           </div>
           <div class="step answer">
             <h3>解答 (2)</h3>
-            <p class="big">log<sub>2</sub> 24 － log<sub>2</sub> 3 ＝ log<sub>2</sub> <span class="frac"><span class="top">24</span><span class="bot">3</span></span> ＝ log<sub>2</sub> 8 ＝ log<sub>2</sub> 2<sup>3</sup> ＝ 3</p>
+            <div class="chain-crow big">
+<div class="crow"><math displaystyle="true"><msub><mi>log</mi><mn>2</mn></msub><mn>24</mn><mo>−</mo><msub><mi>log</mi><mn>2</mn></msub><mn>3</mn><mo>=</mo><msub><mi>log</mi><mn>2</mn></msub><mfrac><mn>24</mn><mn>3</mn></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msub><mi>log</mi><mn>2</mn></msub><mn>24</mn><mo>−</mo><msub><mi>log</mi><mn>2</mn></msub><mn>3</mn></mphantom><mo>=</mo><msub><mi>log</mi><mn>2</mn></msub><mn>8</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msub><mi>log</mi><mn>2</mn></msub><mn>24</mn><mo>−</mo><msub><mi>log</mi><mn>2</mn></msub><mn>3</mn></mphantom><mo>=</mo><msub><mi>log</mi><mn>2</mn></msub><msup><mn>2</mn><mn>3</mn></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msub><mi>log</mi><mn>2</mn></msub><mn>24</mn><mo>−</mo><msub><mi>log</mi><mn>2</mn></msub><mn>3</mn></mphantom><mo>=</mo><mn>3</mn></math></div>
+</div>
             <p>まとめたあとは「中身を底の累乗で書く」が締めの合言葉だね。</p>
           </div>
           <p class="prob-done">(2) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
 
         <!-- 例10 (3) -->
-        <div class="tabpanel" id="panel-ex10-3" data-flow="ex10-3" data-label="例10 (3)">
+        <div class="nofig tabpanel" id="panel-ex10-3" data-flow="ex10-3" data-label="例10 (3)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(3) 2 log<sub>3</sub> 4 ＋ log<sub>3</sub> 5 － log<sub>3</sub> 8</span>
+            <span class="sub prob-q" style="margin:0"><math><mo>(</mo><mn>3</mn><mo>)</mo><mn>2</mn><msub><mi>log</mi><mn>3</mn></msub><mn>4</mn><mo>+</mo><msub><mi>log</mi><mn>3</mn></msub><mn>5</mn><mo>−</mo><msub><mi>log</mi><mn>3</mn></msub><mn>8</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― まず係数の 2 を片づける</h3>
-            <p>最初の項 2 log<sub>3</sub> 4 だけ、係数の 2 がついていて形がそろっていない。</p>
-            <p>性質3を逆向きに使うと、係数は中身の指数に引っ越せる：2 log<sub>3</sub> 4 ＝ log<sub>3</sub> 4<sup>2</sup>。まずここから手をつけよう。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span><math><msub><mi>log</mi><mi>a</mi></msub><msup><mi>M</mi><mi>k</mi></msup><mo>=</mo><mi>k</mi><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi></math>。係数は、もともと中身の指数だったもの。性質3を逆向きに使うと、係数 2 を中身 4 の指数へ移せるよ。</p>
+            <p>最初の項<math><mn>2</mn><msub><mi>log</mi><mn>3</mn></msub><mn>4</mn></math>だけ、係数の 2 がついていて形がそろっていない。</p>
+            <p>性質3を逆向きに使うと、係数は中身の指数に引っ越せる：<math><mn>2</mn><msub><mi>log</mi><mn>3</mn></msub><mn>4</mn><mo>=</mo><msub><mi>log</mi><mn>3</mn></msub><msup><mn>4</mn><mn>2</mn></msup></math>。まずここから手をつけよう。</p>
           </div>
           <div class="step hint">
-            <h3>ヒント 2 ― 4<sup>2</sup> を計算して、形をそろえる</h3>
-            <p>4<sup>2</sup> ＝ 16 だから、最初の項は log<sub>3</sub> 16 になる。</p>
-            <p>これで3つの項がすべて「log<sub>3</sub> ○」の形にそろった。あとは性質1・2の逆向きで、足し算はかけ算、引き算はわり算にして1つにまとめよう。</p>
+            <h3>ヒント<math><mn>2</mn><mo>―</mo><msup><mn>4</mn><mn>2</mn></msup></math> を計算して、形をそろえる</h3>
+            <p><math><msup><mn>4</mn><mn>2</mn></msup><mo>=</mo><mn>16</mn></math>だから、最初の項は<math><msub><mi>log</mi><mn>3</mn></msub><mn>16</mn></math>になる。</p>
+            <p>これで3つの項がすべて「<math><msub><mi>log</mi><mn>3</mn></msub><mo>○</mo></math>」の形にそろった。<br>あとは性質1・2の逆向きで、足し算はかけ算、<br>引き算はわり算にして1つにまとめよう。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 3 ― 分数の形でまとめる</h3>
-            <p>まとめると log<sub>3</sub> <span class="frac"><span class="top">16 × 5</span><span class="bot">8</span></span> になる（足す項は分子へ、引く項は分母へ）。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span><math><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>−</mo><msub><mi>log</mi><mi>a</mi></msub><mi>N</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><mo>(</mo><mfrac><mi>M</mi><mi>N</mi></mfrac><mo>)</mo></math>。引く項は分母へ集める、という性質2の逆向きがここでの決め手。足す項は性質1の逆向きで、分子へ集めるよ。</p>
+            <p>まとめると<math><msub><mi>log</mi><mn>3</mn></msub><mfrac><mrow><mn>16</mn><mo>×</mo><mn>5</mn></mrow><mn>8</mn></mfrac></math> になる（足す項は分子へ、<br>引く項は分母へ）。</p>
             <p>分数の中身を計算してみよう。きれいな数になるかな？　ならないかな？</p>
           </div>
           <div class="step answer">
             <h3>解答 (3)</h3>
-            <p class="big">2 log<sub>3</sub> 4 ＋ log<sub>3</sub> 5 － log<sub>3</sub> 8 ＝ log<sub>3</sub> <span class="frac"><span class="top">16 × 5</span><span class="bot">8</span></span> ＝ log<sub>3</sub> 10</p>
-            <p>途中式を丁寧に書くと、2 log<sub>3</sub> 4 ＝ log<sub>3</sub> 4<sup>2</sup> ＝ log<sub>3</sub> 16 と変形してからまとめている。</p>
-            <p class="note"><b>ここが大事：</b>中身の 10 は 3 の累乗では書けないので、答えは log<sub>3</sub> 10 のままが最終形。「必ず数になる」とは限らないよ。</p>
+            <p class="mq-wide big"><math display="block"><mn>2</mn><msub><mi>log</mi><mn>3</mn></msub><mn>4</mn><mo>+</mo><msub><mi>log</mi><mn>3</mn></msub><mn>5</mn><mo>−</mo><msub><mi>log</mi><mn>3</mn></msub><mn>8</mn><mo>=</mo><msub><mi>log</mi><mn>3</mn></msub><mfrac><mrow><mn>16</mn><mo>×</mo><mn>5</mn></mrow><mn>8</mn></mfrac><mo>=</mo><msub><mi>log</mi><mn>3</mn></msub><mn>10</mn></math></p>
+<div class="mq-narrow">
+<p class="formula"><math display="block"><mn>2</mn><msub><mi>log</mi><mn>3</mn></msub><mn>4</mn><mo>+</mo><msub><mi>log</mi><mn>3</mn></msub><mn>5</mn><mo>−</mo><msub><mi>log</mi><mn>3</mn></msub><mn>8</mn><mo>=</mo><msub><mi>log</mi><mn>3</mn></msub><mfrac><mrow><mn>16</mn><mo>×</mo><mn>5</mn></mrow><mn>8</mn></mfrac></math></p>
+<p class="formula cont"><math display="block"><mo>=</mo><msub><mi>log</mi><mn>3</mn></msub><mn>10</mn></math></p>
+</div>
+            <p>途中式を丁寧に書くと、<math><mn>2</mn><msub><mi>log</mi><mn>3</mn></msub><mn>4</mn><mo>=</mo><msub><mi>log</mi><mn>3</mn></msub><msup><mn>4</mn><mn>2</mn></msup><mo>=</mo><msub><mi>log</mi><mn>3</mn></msub><mn>16</mn></math>と変形してからまとめている。</p>
+            <p class="note"><b>ここが大事：</b>中身の 10 は 3 の累乗では書けないので、<br>答えは<math><msub><mi>log</mi><mn>3</mn></msub><mn>10</mn></math>のままが最終形。「必ず数になる」とは限らないよ。</p>
           </div>
           <p class="prob-done">(3) クリア！　例10はこれで完了。練習17に挑戦しよう。</p>
         </div>
@@ -607,7 +669,7 @@
         <span class="pno">教科書 p.163</span>
       </div>
 
-      <section class="card prob" id="prob-ren17">
+      <section class="nofig card prob" id="prob-ren17">
         <div class="prob-head">
           <span class="prob-tag ren">練習 17</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
@@ -624,110 +686,135 @@
         </div>
 
         <!-- 練習17 (1) -->
-        <div class="tabpanel show" id="panel-ren17-1" data-flow="ren17-1" data-label="練習17 (1)">
+        <div class="nofig tabpanel show" id="panel-ren17-1" data-flow="ren17-1" data-label="練習17 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1) log<sub>6</sub> 3 ＋ log<sub>6</sub> 12</span>
+            <span class="sub prob-q" style="margin:0"><math><mo>(</mo><mn>1</mn><mo>)</mo><msub><mi>log</mi><mn>6</mn></msub><mn>3</mn><mo>+</mo><msub><mi>log</mi><mn>6</mn></msub><mn>12</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― 足し算は性質1の逆向き</h3>
-            <p>底はどちらも 6 でそろっている。「足し算」の形だから、性質1を逆向きに使って、中身をかけて1つにまとめよう。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span><math><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>+</mo><msub><mi>log</mi><mi>a</mi></msub><mi>N</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><mi>MN</mi></math>。底が 6 でそろった足し算は、この形で 1 つにまとめられる。中身の 3 と 12 をかけてまとめるよ。</p>
+            <p>底はどちらも 6 でそろっている。<br>「足し算」の形だから、性質1を逆向きに使って、中身をかけて1つにまとめよう。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 中身を底の累乗で書く</h3>
-            <p>まとめると log<sub>6</sub> (3 × 12) ＝ log<sub>6</sub> 36 になる。</p>
+            <p>まとめると<math><msub><mi>log</mi><mn>6</mn></msub><mo>(</mo><mn>3</mn><mo>×</mo><mn>12</mn><mo>)</mo><mo>=</mo><msub><mi>log</mi><mn>6</mn></msub><mn>36</mn></math>になる。</p>
             <p>36 を、底である 6 の累乗の形で書いてみよう（6 の何乗かな？）。</p>
           </div>
           <div class="step answer">
             <h3>解答 (1)</h3>
-            <p class="big">log<sub>6</sub> 3 ＋ log<sub>6</sub> 12 ＝ log<sub>6</sub> 36 ＝ log<sub>6</sub> 6<sup>2</sup> ＝ 2</p>
+            <div class="chain-crow big">
+<div class="crow"><math displaystyle="true"><msub><mi>log</mi><mn>6</mn></msub><mn>3</mn><mo>+</mo><msub><mi>log</mi><mn>6</mn></msub><mn>12</mn><mo>=</mo><msub><mi>log</mi><mn>6</mn></msub><mn>36</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msub><mi>log</mi><mn>6</mn></msub><mn>3</mn><mo>+</mo><msub><mi>log</mi><mn>6</mn></msub><mn>12</mn></mphantom><mo>=</mo><msub><mi>log</mi><mn>6</mn></msub><msup><mn>6</mn><mn>2</mn></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msub><mi>log</mi><mn>6</mn></msub><mn>3</mn><mo>+</mo><msub><mi>log</mi><mn>6</mn></msub><mn>12</mn></mphantom><mo>=</mo><mn>2</mn></math></div>
+</div>
           </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
 
         <!-- 練習17 (2) -->
-        <div class="tabpanel" id="panel-ren17-2" data-flow="ren17-2" data-label="練習17 (2)">
+        <div class="nofig tabpanel" id="panel-ren17-2" data-flow="ren17-2" data-label="練習17 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2) log<sub>3</sub> 2 － log<sub>3</sub> 18</span>
+            <span class="sub prob-q" style="margin:0"><math><mo>(</mo><mn>2</mn><mo>)</mo><msub><mi>log</mi><mn>3</mn></msub><mn>2</mn><mo>−</mo><msub><mi>log</mi><mn>3</mn></msub><mn>18</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― 引き算は性質2の逆向き</h3>
-            <p>底はどちらも 3 でそろっている。「引き算」の形だから、性質2を逆向きに使って、中身をわって1つにまとめよう。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span><math><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>−</mo><msub><mi>log</mi><mi>a</mi></msub><mi>N</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><mo>(</mo><mfrac><mi>M</mi><mi>N</mi></mfrac><mo>)</mo></math>。底が 3 でそろった引き算は、この形で 1 つにまとめられる。中身の 2 を 18 でわってまとめるよ。</p>
+            <p>底はどちらも 3 でそろっている。<br>「引き算」の形だから、性質2を逆向きに使って、中身をわって1つにまとめよう。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 分数を約分する</h3>
-            <p>まとめると log<sub>3</sub> <span class="frac"><span class="top">2</span><span class="bot">18</span></span> になる。まず、この分数を約分して簡単にしよう。</p>
+            <p>まとめると<math><msub><mi>log</mi><mn>3</mn></msub><mfrac><mn>2</mn><mn>18</mn></mfrac></math> になる。まず、この分数を約分して簡単にしよう。</p>
           </div>
           <div class="step hint">
-            <h3>ヒント 3 ― 1/9 を3の累乗で書く</h3>
-            <p>約分すると log<sub>3</sub> <span class="frac"><span class="top">1</span><span class="bot">9</span></span> になる。9 ＝ 3<sup>2</sup> だから、1/9 は 3 の<b>マイナス</b>の指数を使って書けるはず。</p>
-            <p>解説の「注意」にあった log<sub>a</sub> (1/N) ＝ －log<sub>a</sub> N を使う手もあるよ。</p>
+            <h3>ヒント<math><mn>3</mn><mo>―</mo><mfrac><mn>1</mn><mn>9</mn></mfrac></math>を3の累乗で書く</h3>
+            <p class="cite"><span class="cite-tag">使う定義</span><math><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>=</mo><mi>p</mi><mo>⇔</mo><mi>M</mi><mo>=</mo><msup><mi>a</mi><mi>p</mi></msup></math>。中身を底の累乗で書けたら、その指数が対数の値になる。まとめた中身は分数で、3 のマイナスの指数で書けるよ。</p>
+            <p>約分すると<math><msub><mi>log</mi><mn>3</mn></msub><mfrac><mn>1</mn><mn>9</mn></mfrac></math> になる。<math><mn>9</mn><mo>=</mo><msup><mn>3</mn><mn>2</mn></msup></math> だから、<math><mfrac><mn>1</mn><mn>9</mn></mfrac></math>は 3 の<b>マイナス</b>の指数を使って書けるはず。</p>
+            <p>解説の「注意」にあった<math><msub><mi>log</mi><mi>a</mi></msub><mo>(</mo><mfrac><mn>1</mn><mi>N</mi></mfrac><mo>)</mo><mo>=</mo><mo>−</mo><msub><mi>log</mi><mi>a</mi></msub><mi>N</mi></math>を使う手もあるよ。</p>
           </div>
           <div class="step answer">
             <h3>解答 (2)</h3>
-            <p class="big">log<sub>3</sub> 2 － log<sub>3</sub> 18 ＝ log<sub>3</sub> <span class="frac"><span class="top">2</span><span class="bot">18</span></span> ＝ log<sub>3</sub> <span class="frac"><span class="top">1</span><span class="bot">9</span></span> ＝ log<sub>3</sub> 3<sup>−2</sup> ＝ −2</p>
-            <p>中身が 1 より小さい分数になると、対数の値は<b>マイナス</b>になる。1/9 ＝ 3<sup>−2</sup> と書ければ、そのまま答えが見えるね。</p>
+            <div class="chain-crow big">
+<div class="crow"><math displaystyle="true"><msub><mi>log</mi><mn>3</mn></msub><mn>2</mn><mo>−</mo><msub><mi>log</mi><mn>3</mn></msub><mn>18</mn><mo>=</mo><msub><mi>log</mi><mn>3</mn></msub><mfrac><mn>2</mn><mn>18</mn></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msub><mi>log</mi><mn>3</mn></msub><mn>2</mn><mo>−</mo><msub><mi>log</mi><mn>3</mn></msub><mn>18</mn></mphantom><mo>=</mo><msub><mi>log</mi><mn>3</mn></msub><mfrac><mn>1</mn><mn>9</mn></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msub><mi>log</mi><mn>3</mn></msub><mn>2</mn><mo>−</mo><msub><mi>log</mi><mn>3</mn></msub><mn>18</mn></mphantom><mo>=</mo><msub><mi>log</mi><mn>3</mn></msub><msup><mn>3</mn><mrow><mo>−</mo><mn>2</mn></mrow></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msub><mi>log</mi><mn>3</mn></msub><mn>2</mn><mo>−</mo><msub><mi>log</mi><mn>3</mn></msub><mn>18</mn></mphantom><mo>=</mo><mo>−</mo><mn>2</mn></math></div>
+</div>
+            <p>中身が 1 より小さい分数になると、<br>対数の値は<b>マイナス</b>になる。<math><mfrac><mn>1</mn><mn>9</mn></mfrac><mo>=</mo><msup><mn>3</mn><mrow><mo>−</mo><mn>2</mn></mrow></msup></math> と書ければ、そのまま答えが見えるね。</p>
           </div>
           <p class="prob-done">(2) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
 
         <!-- 練習17 (3) -->
-        <div class="tabpanel" id="panel-ren17-3" data-flow="ren17-3" data-label="練習17 (3)">
+        <div class="nofig tabpanel" id="panel-ren17-3" data-flow="ren17-3" data-label="練習17 (3)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(3) log<sub>3</sub> 4 ＋ log<sub>3</sub> 18 － 3 log<sub>3</sub> 2</span>
+            <span class="sub prob-q" style="margin:0"><math><mo>(</mo><mn>3</mn><mo>)</mo><msub><mi>log</mi><mn>3</mn></msub><mn>4</mn><mo>+</mo><msub><mi>log</mi><mn>3</mn></msub><mn>18</mn><mo>−</mo><mn>3</mn><msub><mi>log</mi><mn>3</mn></msub><mn>2</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― まず係数の 3 を片づける</h3>
-            <p>最後の項 3 log<sub>3</sub> 2 だけ係数がついている。性質3を逆向きに使って、係数 3 を中身の指数に引っ越そう：3 log<sub>3</sub> 2 ＝ log<sub>3</sub> 2<sup>3</sup>。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span><math><msub><mi>log</mi><mi>a</mi></msub><msup><mi>M</mi><mi>k</mi></msup><mo>=</mo><mi>k</mi><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi></math>。性質3を逆向きに使うと、係数を中身の指数へ移せる。この問題では、係数 3 を中身 2 の指数へ移すよ。</p>
+            <p>最後の項<math><mn>3</mn><msub><mi>log</mi><mn>3</mn></msub><mn>2</mn></math>だけ係数がついている。<br>性質3を逆向きに使って、係数 3 を中身の指数に引っ越そう：<math><mn>3</mn><msub><mi>log</mi><mn>3</mn></msub><mn>2</mn><mo>=</mo><msub><mi>log</mi><mn>3</mn></msub><msup><mn>2</mn><mn>3</mn></msup></math>。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 分数の形で1つにまとめる</h3>
-            <p>2<sup>3</sup> ＝ 8 だから、最後の項は log<sub>3</sub> 8 になる。</p>
-            <p>あとは、足す項（4 と 18）は分子へ、引く項（8）は分母へ集めて、log<sub>3</sub> <span class="frac"><span class="top">4 × 18</span><span class="bot">8</span></span> の形にまとめよう。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span><math><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>−</mo><msub><mi>log</mi><mi>a</mi></msub><mi>N</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><mo>(</mo><mfrac><mi>M</mi><mi>N</mi></mfrac><mo>)</mo></math>。引く項は分母へ集める、という性質2の逆向き。足す項の 4 と 18 は、性質1の逆向きで分子へ集めるよ。</p>
+            <p><math><msup><mn>2</mn><mn>3</mn></msup><mo>=</mo><mn>8</mn></math>だから、最後の項は<math><msub><mi>log</mi><mn>3</mn></msub><mn>8</mn></math>になる。</p>
+            <p>あとは、足す項（4 と 18）は分子へ、引く項（8）は分母へ集めて、<math><msub><mi>log</mi><mn>3</mn></msub><mfrac><mrow><mn>4</mn><mo>×</mo><mn>18</mn></mrow><mn>8</mn></mfrac></math> の形にまとめよう。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 3 ― 分数の中身を計算する</h3>
-            <p>分子は 4 × 18 ＝ 72。それを 8 でわると…？</p>
+            <p>分子は<math><mn>4</mn><mo>×</mo><mn>18</mn><mo>=</mo><mn>72</mn></math>。それを 8 でわると…？</p>
             <p>出てきた数を、底である 3 の累乗の形で書けるか確かめよう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (3)</h3>
-            <p class="big">log<sub>3</sub> 4 ＋ log<sub>3</sub> 18 － 3 log<sub>3</sub> 2 ＝ log<sub>3</sub> <span class="frac"><span class="top">4 × 18</span><span class="bot">2<sup>3</sup></span></span> ＝ log<sub>3</sub> 9 ＝ 2</p>
-            <p>72 ÷ 8 ＝ 9、9 ＝ 3<sup>2</sup> だから答えは 2。係数の処理を最初に済ませると、あとは例10 (3) と同じ流れだね。</p>
+            <div class="chain-crow big">
+<div class="crow"><math displaystyle="true"><msub><mi>log</mi><mn>3</mn></msub><mn>4</mn><mo>+</mo><msub><mi>log</mi><mn>3</mn></msub><mn>18</mn><mo>−</mo><mn>3</mn><msub><mi>log</mi><mn>3</mn></msub><mn>2</mn><mo>=</mo><msub><mi>log</mi><mn>3</mn></msub><mfrac><mrow><mn>4</mn><mo>×</mo><mn>18</mn></mrow><msup><mn>2</mn><mn>3</mn></msup></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msub><mi>log</mi><mn>3</mn></msub><mn>4</mn><mo>+</mo><msub><mi>log</mi><mn>3</mn></msub><mn>18</mn><mo>−</mo><mn>3</mn><msub><mi>log</mi><mn>3</mn></msub><mn>2</mn></mphantom><mo>=</mo><msub><mi>log</mi><mn>3</mn></msub><mn>9</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msub><mi>log</mi><mn>3</mn></msub><mn>4</mn><mo>+</mo><msub><mi>log</mi><mn>3</mn></msub><mn>18</mn><mo>−</mo><mn>3</mn><msub><mi>log</mi><mn>3</mn></msub><mn>2</mn></mphantom><mo>=</mo><mn>2</mn></math></div>
+</div>
+            <p><math><mn>72</mn><mo>÷</mo><mn>8</mn><mo>=</mo><mn>9</mn></math>、<math><mn>9</mn><mo>=</mo><msup><mn>3</mn><mn>2</mn></msup></math> だから答えは 2。係数の処理を最初に済ませると、<br>あとは例10 (3) と同じ流れだね。</p>
           </div>
           <p class="prob-done">(3) クリア！　最後の小問のタブを開いてみよう。</p>
         </div>
 
         <!-- 練習17 (4) -->
-        <div class="tabpanel" id="panel-ren17-4" data-flow="ren17-4" data-label="練習17 (4)">
+        <div class="nofig tabpanel" id="panel-ren17-4" data-flow="ren17-4" data-label="練習17 (4)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(4) log<sub>5</sub> 12 － log<sub>5</sub> 3 － 2 log<sub>5</sub> 10</span>
+            <span class="sub prob-q" style="margin:0"><math><mo>(</mo><mn>4</mn><mo>)</mo><msub><mi>log</mi><mn>5</mn></msub><mn>12</mn><mo>−</mo><msub><mi>log</mi><mn>5</mn></msub><mn>3</mn><mo>−</mo><mn>2</mn><msub><mi>log</mi><mn>5</mn></msub><mn>10</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― まず係数の 2 を片づける</h3>
-            <p>最後の項 2 log<sub>5</sub> 10 の係数 2 を、性質3の逆向きで中身の指数に引っ越そう：2 log<sub>5</sub> 10 ＝ log<sub>5</sub> 10<sup>2</sup>。10<sup>2</sup> は 100 だね。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span><math><msub><mi>log</mi><mi>a</mi></msub><msup><mi>M</mi><mi>k</mi></msup><mo>=</mo><mi>k</mi><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi></math>。性質3を逆向きに使うと、係数を中身の指数へ移せる。この問題では、係数 2 を中身 10 の指数へ移すよ。</p>
+            <p>最後の項<math><mn>2</mn><msub><mi>log</mi><mn>5</mn></msub><mn>10</mn></math>の係数 2 を、性質3の逆向きで中身の指数に引っ越そう：<math><mn>2</mn><msub><mi>log</mi><mn>5</mn></msub><mn>10</mn><mo>=</mo><msub><mi>log</mi><mn>5</mn></msub><msup><mn>10</mn><mn>2</mn></msup></math>。<math><msup><mn>10</mn><mn>2</mn></msup></math> は 100 だね。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 引き算2つを分母に集める</h3>
-            <p>引く項は log<sub>5</sub> 3 と log<sub>5</sub> 100 の2つ。性質2の逆向きを続けて使うと、引く項は両方とも<b>分母</b>に入る。</p>
-            <p>つまり log<sub>5</sub> <span class="frac"><span class="top">12</span><span class="bot">3 × 10<sup>2</sup></span></span> の形にまとめられるよ。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span><math><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>−</mo><msub><mi>log</mi><mi>a</mi></msub><mi>N</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><mo>(</mo><mfrac><mi>M</mi><mi>N</mi></mfrac><mo>)</mo></math>。引き算は、性質2の逆向きで分母へ集める。この問題では引く項が 2 つあるので、どちらも分母へ入れるよ。</p>
+            <p>引く項は<math><msub><mi>log</mi><mn>5</mn></msub><mn>3</mn></math>と<math><msub><mi>log</mi><mn>5</mn></msub><mn>100</mn></math>の2つ。性質2の逆向きを続けて使うと、<br>引く項は両方とも<b>分母</b>に入る。</p>
+            <p>つまり<math><msub><mi>log</mi><mn>5</mn></msub><mfrac><mn>12</mn><mrow><mn>3</mn><mo>×</mo><msup><mn>10</mn><mn>2</mn></msup></mrow></mfrac></math> の形にまとめられるよ。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 3 ― 分数の中身を計算する</h3>
-            <p>分母は 3 × 100 ＝ 300。12 ÷ 300 を約分すると、1 を分子にした分数になるはず。</p>
+            <p class="cite"><span class="cite-tag">使う定義</span><math><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>=</mo><mi>p</mi><mo>⇔</mo><mi>M</mi><mo>=</mo><msup><mi>a</mi><mi>p</mi></msup></math>。中身を底の累乗で書けたら、その指数が対数の値になる。約分で出た分数は、5 のマイナスの指数で書けるよ。</p>
+            <p>分母は<math><mn>3</mn><mo>×</mo><mn>100</mn><mo>=</mo><mn>300</mn></math>。12 ÷ 300 を約分すると、<br>1 を分子にした分数になるはず。</p>
             <p>その分母は、底である 5 の累乗で書けるかな？</p>
           </div>
           <div class="step answer">
             <h3>解答 (4)</h3>
-            <p class="big">log<sub>5</sub> 12 － log<sub>5</sub> 3 － 2 log<sub>5</sub> 10 ＝ log<sub>5</sub> <span class="frac"><span class="top">12</span><span class="bot">3 × 10<sup>2</sup></span></span> ＝ log<sub>5</sub> <span class="frac"><span class="top">1</span><span class="bot">25</span></span> ＝ −2</p>
-            <p>12 / 300 ＝ 1/25 で、1/25 ＝ 5<sup>−2</sup> だから答えは −2。引き算が2つあっても、分母に集めるだけだね。</p>
+            <div class="chain-crow big">
+<div class="crow"><math displaystyle="true"><msub><mi>log</mi><mn>5</mn></msub><mn>12</mn><mo>−</mo><msub><mi>log</mi><mn>5</mn></msub><mn>3</mn><mo>−</mo><mn>2</mn><msub><mi>log</mi><mn>5</mn></msub><mn>10</mn><mo>=</mo><msub><mi>log</mi><mn>5</mn></msub><mfrac><mn>12</mn><mrow><mn>3</mn><mo>×</mo><msup><mn>10</mn><mn>2</mn></msup></mrow></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msub><mi>log</mi><mn>5</mn></msub><mn>12</mn><mo>−</mo><msub><mi>log</mi><mn>5</mn></msub><mn>3</mn><mo>−</mo><mn>2</mn><msub><mi>log</mi><mn>5</mn></msub><mn>10</mn></mphantom><mo>=</mo><msub><mi>log</mi><mn>5</mn></msub><mfrac><mn>1</mn><mn>25</mn></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msub><mi>log</mi><mn>5</mn></msub><mn>12</mn><mo>−</mo><msub><mi>log</mi><mn>5</mn></msub><mn>3</mn><mo>−</mo><mn>2</mn><msub><mi>log</mi><mn>5</mn></msub><mn>10</mn></mphantom><mo>=</mo><mo>−</mo><mn>2</mn></math></div>
+</div>
+            <p><math><mfrac><mn>12</mn><mn>300</mn></mfrac><mo>=</mo><mfrac><mn>1</mn><mn>25</mn></mfrac></math>で、<math><mfrac><mn>1</mn><mn>25</mn></mfrac><mo>=</mo><msup><mn>5</mn><mrow><mo>−</mo><mn>2</mn></mrow></msup></math> だから答えは −2。引き算が2つあっても、<br>分母に集めるだけだね。</p>
           </div>
           <p class="prob-done">(4) クリア！　練習17はこれで完了。次は底の変換公式だ。</p>
         </div>
@@ -741,12 +828,12 @@
       </div>
 
       <section class="card">
-        <p>log<sub>8</sub> 16 のような、底が扱いにくい対数を計算したいときがある。8 も 16 も 2 の累乗だから、<b>底を 2 にそろえて</b>考えられたら楽なのに…。</p>
+        <p><math><msub><mi>log</mi><mn>8</mn></msub><mn>16</mn></math>のような、底が扱いにくい対数を計算したいときがある。8 も 16 も 2 の累乗だから、<b>底を 2 にそろえて</b>考えられたら楽なのに…。</p>
         <p>そんなときに使うのが<b>底の変換公式</b>。底を、好きな底に取り替えることができる公式だ。まず、その公式がどうして成り立つのか、導き方を1行ずつ追ってみよう。</p>
       </section>
 
       <!-- 底の変換公式の導出（段階表示） -->
-      <section class="card prob" id="prob-henkan" data-flow="henkan" data-kind="proof" data-label="底の変換公式の導き方">
+      <section class="nofig card prob" id="prob-henkan" data-flow="henkan" data-kind="proof" data-label="底の変換公式の導き方">
         <div class="prob-head">
           <span class="prob-tag demo">公式の導き方</span>
           <div class="dots" aria-hidden="true">
@@ -755,39 +842,42 @@
           <span class="prob-state">ステップ 0 / 4</span>
         </div>
         <div class="qside">
-        <p class="prob-q">目標は log<sub>a</sub> b を、別の底 c の対数だけで表すこと。下の <b>次へ</b> で、導き方を1行ずつ進めよう。（a＞0，a≠1，b＞0，c＞0，c≠1 とする）</p>
+        <p class="prob-q">目標は<math><msub><mi>log</mi><mi>a</mi></msub><mi>b</mi></math>を、別の底 c の対数だけで表すこと。下の <b>次へ</b> で、導き方を1行ずつ進めよう。（a＞0，a≠1，b＞0，c＞0，c≠1 とする）</p>
         </div>
 
         <div class="step hint">
           <h3>ステップ 1 ― まず「おく」（性質の証明と同じ手）</h3>
-          <p>求めたい値を文字において、log<sub>a</sub> b ＝ p とする。</p>
+          <p class="cite"><span class="cite-tag">使う定義</span><math><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>=</mo><mi>p</mi><mo>⇔</mo><mi>M</mi><mo>=</mo><msup><mi>a</mi><mi>p</mi></msup></math>。求めたい対数を p とおいたら、定義にしたがって指数の形に直すのが出発点だよ。</p>
+          <p>求めたい値を文字において、<math><msub><mi>log</mi><mi>a</mi></msub><mi>b</mi><mo>=</mo><mi>p</mi></math>とする。</p>
           <p>対数の定義から、これは指数の形で</p>
-          <p style="text-align:center;font-weight:700">b ＝ a<sup>p</sup></p>
+          <p style="text-align:center;font-weight:700"><math display="block"><mi>b</mi><mo>=</mo><msup><mi>a</mi><mi>p</mi></msup></math></p>
           <p>と書ける、ということだね。</p>
         </div>
         <div class="step hint">
           <h3>ステップ 2 ― 両辺の「c を底とする対数」をとる</h3>
-          <p>b ＝ a<sup>p</sup> の両辺について、c を底とする対数をとる。等しいものの対数は等しいから</p>
-          <p style="text-align:center;font-weight:700">log<sub>c</sub> b ＝ log<sub>c</sub> a<sup>p</sup></p>
+          <p><math><mi>b</mi><mo>=</mo><msup><mi>a</mi><mi>p</mi></msup></math> の両辺について、c を底とする対数をとる。<br>等しいものの対数は等しいから</p>
+          <p style="text-align:center;font-weight:700"><math display="block"><msub><mi>log</mi><mi>c</mi></msub><mi>b</mi><mo>=</mo><msub><mi>log</mi><mi>c</mi></msub><msup><mi>a</mi><mi>p</mi></msup></math></p>
           <p>が成り立つ。右辺に、対数の性質3が使えそうな形が見えるかな？</p>
         </div>
         <div class="step hint">
           <h3>ステップ 3 ― 性質3で指数 p を前に出す</h3>
-          <p>右辺の log<sub>c</sub> a<sup>p</sup> に性質3を使うと、指数の p が係数として前に出る：</p>
-          <p style="text-align:center;font-weight:700">log<sub>c</sub> b ＝ p log<sub>c</sub> a</p>
+          <p class="cite"><span class="cite-tag">使う性質</span><math><msub><mi>log</mi><mi>a</mi></msub><msup><mi>M</mi><mi>k</mi></msup><mo>=</mo><mi>k</mi><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi></math>。右辺は累乗の対数だから、性質3で指数 p を係数として前に出せる。これで、p を含む式ができあがるよ。</p>
+          <p>右辺の<math><msub><mi>log</mi><mi>c</mi></msub><msup><mi>a</mi><mi>p</mi></msup></math> に性質3を使うと、指数の p が係数として前に出る：</p>
+          <p style="text-align:center;font-weight:700"><math display="block"><msub><mi>log</mi><mi>c</mi></msub><mi>b</mi><mo>=</mo><mi>p</mi><msub><mi>log</mi><mi>c</mi></msub><mi>a</mi></math></p>
           <p>求めたい p を含む式ができあがった。</p>
         </div>
         <div class="step hint">
           <h3>ステップ 4 ― p について解く</h3>
-          <p>log<sub>c</sub> b ＝ p log<sub>c</sub> a の両辺を log<sub>c</sub> a でわると、p だけが残る：</p>
-          <p style="text-align:center;font-weight:700">p ＝ <span class="frac"><span class="top">log<sub>c</sub> b</span><span class="bot">log<sub>c</sub> a</span></span></p>
+          <p><math><msub><mi>log</mi><mi>c</mi></msub><mi>b</mi><mo>=</mo><mi>p</mi><msub><mi>log</mi><mi>c</mi></msub><mi>a</mi></math>の両辺を<math><msub><mi>log</mi><mi>c</mi></msub><mi>a</mi></math>でわると、p だけが残る：</p>
+          <p style="text-align:center;font-weight:700"><math display="block"><mi>p</mi><mo>=</mo><mfrac><mrow><msub><mi>log</mi><mi>c</mi></msub><mi>b</mi></mrow><mrow><msub><mi>log</mi><mi>c</mi></msub><mi>a</mi></mrow></mfrac></math></p>
           <p>あとは、はじめにおいた p の正体を思い出すだけだ。</p>
         </div>
         <div class="step answer">
           <h3>底の変換公式</h3>
-          <p>p は log<sub>a</sub> b のことだった。だから、次の公式が成り立つ。</p>
-          <p class="big">log<sub>a</sub> b ＝ <span class="frac"><span class="top">log<sub>c</sub> b</span><span class="bot">log<sub>c</sub> a</span></span></p>
-          <p class="note"><b>使い方の目安：</b>c は好きな底に決められる。ふつうは、<b>中身の数が累乗で書ける底</b>（例11 (1) なら 2）を選ぶと計算が進むよ。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><msub><mi>log</mi><mi>a</mi></msub><mi>b</mi><mo>=</mo><mfrac><mrow><msub><mi>log</mi><mi>c</mi></msub><mi>b</mi></mrow><mrow><msub><mi>log</mi><mi>c</mi></msub><mi>a</mi></mrow></mfrac></math>。ここまでで導いた底の変換公式。新しい底 c で表すと、分子は中身 b の対数、分母はもとの底 a の対数になるよ。</p>
+          <p>p は<math><msub><mi>log</mi><mi>a</mi></msub><mi>b</mi></math>のことだった。だから、次の公式が成り立つ。</p>
+          <p class="big"><math display="block"><msub><mi>log</mi><mi>a</mi></msub><mi>b</mi><mo>=</mo><mfrac><mrow><msub><mi>log</mi><mi>c</mi></msub><mi>b</mi></mrow><mrow><msub><mi>log</mi><mi>c</mi></msub><mi>a</mi></mrow></mfrac></math></p>
+          <p class="note"><b>使い方の目安：</b>c は好きな底に決められる。<br>ふつうは、<b>中身の数が累乗で書ける底</b>（例11 (1) なら 2）を選ぶと計算が進むよ。</p>
         </div>
         <p class="prob-done">公式の導き方を追えた！　例11で使い方を確認しよう。</p>
       </section>
@@ -799,7 +889,7 @@
         <span class="pno">教科書 p.164</span>
       </div>
 
-      <section class="card prob" id="prob-ex11">
+      <section class="nofig card prob" id="prob-ex11">
         <div class="prob-head">
           <span class="prob-tag">例 11</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
@@ -814,62 +904,74 @@
         </div>
 
         <!-- 例11 (1) -->
-        <div class="tabpanel show" id="panel-ex11-1" data-flow="ex11-1" data-label="例11 (1)">
+        <div class="nofig tabpanel show" id="panel-ex11-1" data-flow="ex11-1" data-label="例11 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1) log<sub>8</sub> 16</span>
+            <span class="sub prob-q" style="margin:0"><math><mo>(</mo><mn>1</mn><mo>)</mo><msub><mi>log</mi><mn>8</mn></msub><mn>16</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― 8 と 16 を眺める</h3>
             <p>底が 8 のままでは、「8を何乗したら16になるか」が考えにくい。</p>
-            <p>でも、8 と 16 は、どちらもある数の<b>累乗</b>で書ける。何の累乗か分かるかな？（2<sup>1</sup>＝2、2<sup>2</sup>＝4、2<sup>3</sup>＝… と数えてみよう）</p>
+            <p>でも、8 と 16 は、どちらもある数の<b>累乗</b>で書ける。<br>何の累乗か分かるかな？<math><mo>(</mo><msup><mn>2</mn><mn>1</mn></msup><mo>=</mo><mn>2</mn></math>、<math><msup><mn>2</mn><mn>2</mn></msup><mo>=</mo><mn>4</mn></math>、<math><msup><mn>2</mn><mn>3</mn></msup><mo>=</mo><mo>…</mo></math>と数えてみよう）</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 底を 2 に変換する</h3>
-            <p>8 ＝ 2<sup>3</sup>，16 ＝ 2<sup>4</sup> だから、底は <b>2</b> にそろえるのがよさそうだ。</p>
-            <p>底の変換公式で c ＝ 2 とすると、log<sub>8</sub> 16 ＝ <span class="frac"><span class="top">log<sub>2</sub> 16</span><span class="bot">log<sub>2</sub> 8</span></span> と書き換えられる。分子・分母は、それぞれふつうの対数として計算できるはず。</p>
+            <p class="cite"><span class="cite-tag">使う公式</span><math><msub><mi>log</mi><mi>a</mi></msub><mi>b</mi><mo>=</mo><mfrac><mrow><msub><mi>log</mi><mi>c</mi></msub><mi>b</mi></mrow><mrow><msub><mi>log</mi><mi>c</mi></msub><mi>a</mi></mrow></mfrac></math>。ここでは<math><msub><mi>log</mi><mn>8</mn></msub><mn>16</mn><mo>=</mo><mfrac><mrow><msub><mi>log</mi><mn>2</mn></msub><mn>16</mn></mrow><mrow><msub><mi>log</mi><mn>2</mn></msub><mn>8</mn></mrow></mfrac></math>。底の変換公式で、新しい底を 2 に決めた場合がこの問題。8 も 16 も 2 の累乗だから、分子・分母の値が読めるよ。</p>
+            <p><math><mn>8</mn><mo>=</mo><msup><mn>2</mn><mn>3</mn></msup><mo>,</mo><mn>16</mn><mo>=</mo><msup><mn>2</mn><mn>4</mn></msup></math> だから、底は <b>2</b> にそろえるのがよさそうだ。</p>
+            <p>底の変換公式で<math><mi>c</mi><mo>=</mo><mn>2</mn></math>とすると、<math><msub><mi>log</mi><mn>8</mn></msub><mn>16</mn><mo>=</mo><mfrac><mrow><msub><mi>log</mi><mn>2</mn></msub><mn>16</mn></mrow><mrow><msub><mi>log</mi><mn>2</mn></msub><mn>8</mn></mrow></mfrac></math> と書き換えられる。分子・分母は、それぞれふつうの対数として計算できるはず。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 3 ― 分子と分母を別々に計算する</h3>
-            <p>分子：16 ＝ 2<sup>4</sup> だから log<sub>2</sub> 16 ＝ 4。</p>
-            <p>分母：8 ＝ 2<sup>3</sup> だから log<sub>2</sub> 8 ＝ 3。</p>
+            <p class="cite"><span class="cite-tag">使う定義</span><math><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>=</mo><mi>p</mi><mo>⇔</mo><mi>M</mi><mo>=</mo><msup><mi>a</mi><mi>p</mi></msup></math>。16 は 2 の 4 乗、8 は 2 の 3 乗。定義から、分子・分母の対数の値は、その指数になると分かるよ。</p>
+            <p>分子：<math><mn>16</mn><mo>=</mo><msup><mn>2</mn><mn>4</mn></msup></math> だから<math><msub><mi>log</mi><mn>2</mn></msub><mn>16</mn><mo>=</mo><mn>4</mn></math>。</p>
+            <p>分母：<math><mn>8</mn><mo>=</mo><msup><mn>2</mn><mn>3</mn></msup></math> だから<math><msub><mi>log</mi><mn>2</mn></msub><mn>8</mn><mo>=</mo><mn>3</mn></math>。</p>
             <p>あとは、この2つの数で分数を作るだけだ。</p>
           </div>
           <div class="step answer">
             <h3>解答 (1)</h3>
-            <p class="big">log<sub>8</sub> 16 ＝ <span class="frac"><span class="top">log<sub>2</sub> 16</span><span class="bot">log<sub>2</sub> 8</span></span> ＝ <span class="frac"><span class="top">log<sub>2</sub> 2<sup>4</sup></span><span class="bot">log<sub>2</sub> 2<sup>3</sup></span></span> ＝ <span class="frac"><span class="top">4</span><span class="bot">3</span></span></p>
+            <div class="chain-crow big">
+<div class="crow"><math displaystyle="true"><msub><mi>log</mi><mn>8</mn></msub><mn>16</mn><mo>=</mo><mfrac><mrow><msub><mi>log</mi><mn>2</mn></msub><mn>16</mn></mrow><mrow><msub><mi>log</mi><mn>2</mn></msub><mn>8</mn></mrow></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msub><mi>log</mi><mn>8</mn></msub><mn>16</mn></mphantom><mo>=</mo><mfrac><mrow><msub><mi>log</mi><mn>2</mn></msub><msup><mn>2</mn><mn>4</mn></msup></mrow><mrow><msub><mi>log</mi><mn>2</mn></msub><msup><mn>2</mn><mn>3</mn></msup></mrow></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msub><mi>log</mi><mn>8</mn></msub><mn>16</mn></mphantom><mo>=</mo><mfrac><mn>4</mn><mn>3</mn></mfrac></math></div>
+</div>
             <p>対数の値が分数になることもある、というのがこの問題のポイントだね。</p>
           </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
 
         <!-- 例11 (2) -->
-        <div class="tabpanel" id="panel-ex11-2" data-flow="ex11-2" data-label="例11 (2)">
+        <div class="nofig tabpanel" id="panel-ex11-2" data-flow="ex11-2" data-label="例11 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2) log<sub>2</sub> 3 ・ log<sub>3</sub> 8</span>
+            <span class="sub prob-q" style="margin:0"><math><mo>(</mo><mn>2</mn><mo>)</mo><msub><mi>log</mi><mn>2</mn></msub><mn>3</mn><mo>⋅</mo><msub><mi>log</mi><mn>3</mn></msub><mn>8</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― どの対数を変換するか決める</h3>
-            <p>底が 2 のものと、底が 3 のものが混ざっている。このままでは計算が進まない。</p>
-            <p>底の変換公式で、<b>log<sub>3</sub> 8 の底を 2 に</b>変えて、底をそろえてみよう。</p>
+            <p>底が 2 のものと、底が 3 のものが混ざっている。<br>このままでは計算が進まない。</p>
+            <p>底の変換公式で、<b><math><msub><mi>log</mi><mn>3</mn></msub><mn>8</mn></math>の底を 2 に</b>変えて、底をそろえてみよう。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 変換して代入する</h3>
-            <p>底の変換公式（c ＝ 2）で、log<sub>3</sub> 8 ＝ <span class="frac"><span class="top">log<sub>2</sub> 8</span><span class="bot">log<sub>2</sub> 3</span></span> と書ける。</p>
-            <p>これをもとの式に代入すると、log<sub>2</sub> 3 × <span class="frac"><span class="top">log<sub>2</sub> 8</span><span class="bot">log<sub>2</sub> 3</span></span> という形になる。分数の約分のように、消えるものはないかな？</p>
+            <p class="cite"><span class="cite-tag">使う公式</span><math><msub><mi>log</mi><mi>a</mi></msub><mi>b</mi><mo>=</mo><mfrac><mrow><msub><mi>log</mi><mi>c</mi></msub><mi>b</mi></mrow><mrow><msub><mi>log</mi><mi>c</mi></msub><mi>a</mi></mrow></mfrac></math>。底の変換公式を、新しい底を 2 として、底が 3 の対数に使うよ。変換した式を、もとの式へ代入するのがこのステップだ。</p>
+            <p>底の変換公式<math><mo>(</mo><mi>c</mi><mo>=</mo><mn>2</mn><mo>)</mo></math>で、<math><msub><mi>log</mi><mn>3</mn></msub><mn>8</mn><mo>=</mo><mfrac><mrow><msub><mi>log</mi><mn>2</mn></msub><mn>8</mn></mrow><mrow><msub><mi>log</mi><mn>2</mn></msub><mn>3</mn></mrow></mfrac></math> と書ける。</p>
+            <p>これをもとの式に代入すると、<math><msub><mi>log</mi><mn>2</mn></msub><mn>3</mn><mo>×</mo><mfrac><mrow><msub><mi>log</mi><mn>2</mn></msub><mn>8</mn></mrow><mrow><msub><mi>log</mi><mn>2</mn></msub><mn>3</mn></mrow></mfrac></math> という形になる。<br>分数の約分のように、消えるものはないかな？</p>
           </div>
           <div class="step hint">
             <h3>ヒント 3 ― 残った対数を計算する</h3>
-            <p>log<sub>2</sub> 3 が分子側と分母側に1つずつあるので、約分で消える。残るのは log<sub>2</sub> 8 だけだ。</p>
-            <p>8 を 2 の累乗で書いて、log<sub>2</sub> 8 の値を出そう。</p>
+            <p><math><msub><mi>log</mi><mn>2</mn></msub><mn>3</mn></math>が分子側と分母側に1つずつあるので、<br>約分で消える。残るのは<math><msub><mi>log</mi><mn>2</mn></msub><mn>8</mn></math>だけだ。</p>
+            <p>8 を 2 の累乗で書いて、<math><msub><mi>log</mi><mn>2</mn></msub><mn>8</mn></math>の値を出そう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (2)</h3>
-            <p class="big">log<sub>2</sub> 3 ・ log<sub>3</sub> 8 ＝ log<sub>2</sub> 3 × <span class="frac"><span class="top">log<sub>2</sub> 8</span><span class="bot">log<sub>2</sub> 3</span></span> ＝ log<sub>2</sub> 8 ＝ log<sub>2</sub> 2<sup>3</sup> ＝ 3</p>
-            <p>値が分からない log<sub>2</sub> 3 が、約分で<b>きれいに消える</b>のがこの計算の気持ちいいところだね。</p>
+            <div class="chain-crow big">
+<div class="crow"><math displaystyle="true"><msub><mi>log</mi><mn>2</mn></msub><mn>3</mn><mo>⋅</mo><msub><mi>log</mi><mn>3</mn></msub><mn>8</mn><mo>=</mo><msub><mi>log</mi><mn>2</mn></msub><mn>3</mn><mo>×</mo><mfrac><mrow><msub><mi>log</mi><mn>2</mn></msub><mn>8</mn></mrow><mrow><msub><mi>log</mi><mn>2</mn></msub><mn>3</mn></mrow></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msub><mi>log</mi><mn>2</mn></msub><mn>3</mn><mo>⋅</mo><msub><mi>log</mi><mn>3</mn></msub><mn>8</mn></mphantom><mo>=</mo><msub><mi>log</mi><mn>2</mn></msub><mn>8</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msub><mi>log</mi><mn>2</mn></msub><mn>3</mn><mo>⋅</mo><msub><mi>log</mi><mn>3</mn></msub><mn>8</mn></mphantom><mo>=</mo><msub><mi>log</mi><mn>2</mn></msub><msup><mn>2</mn><mn>3</mn></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msub><mi>log</mi><mn>2</mn></msub><mn>3</mn><mo>⋅</mo><msub><mi>log</mi><mn>3</mn></msub><mn>8</mn></mphantom><mo>=</mo><mn>3</mn></math></div>
+</div>
+            <p>値が分からない<math><msub><mi>log</mi><mn>2</mn></msub><mn>3</mn></math>が、約分で<b>きれいに消える</b>のが<br>この計算の気持ちいいところだね。</p>
           </div>
           <p class="prob-done">(2) クリア！　例11はこれで完了。練習18に挑戦しよう。</p>
         </div>
@@ -882,7 +984,7 @@
         <span class="pno">教科書 p.164</span>
       </div>
 
-      <section class="card prob" id="prob-ren18">
+      <section class="nofig card prob" id="prob-ren18">
         <div class="prob-head">
           <span class="prob-tag ren">練習 18</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
@@ -898,81 +1000,91 @@
         </div>
 
         <!-- 練習18 (1) -->
-        <div class="tabpanel show" id="panel-ren18-1" data-flow="ren18-1" data-label="練習18 (1)">
+        <div class="nofig tabpanel show" id="panel-ren18-1" data-flow="ren18-1" data-label="練習18 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1) log<sub>4</sub> 8</span>
+            <span class="sub prob-q" style="margin:0"><math><mo>(</mo><mn>1</mn><mo>)</mo><msub><mi>log</mi><mn>4</mn></msub><mn>8</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― そろえる底を決める</h3>
-            <p>底の 4 と中身の 8 は、どちらもある数の累乗で書ける（4 ＝ 2<sup>2</sup>，8 ＝ 2<sup>3</sup>）。</p>
-            <p>だから、底の変換公式で底を <b>2</b> にそろえよう：log<sub>4</sub> 8 ＝ <span class="frac"><span class="top">log<sub>2</sub> 8</span><span class="bot">log<sub>2</sub> 4</span></span>。</p>
+            <p class="cite"><span class="cite-tag">使う公式</span><math><msub><mi>log</mi><mi>a</mi></msub><mi>b</mi><mo>=</mo><mfrac><mrow><msub><mi>log</mi><mi>c</mi></msub><mi>b</mi></mrow><mrow><msub><mi>log</mi><mi>c</mi></msub><mi>a</mi></mrow></mfrac></math>。底の変換公式で、新しい底を 2 にそろえるよ。4 も 8 も 2 の累乗だから、分子・分母の値が読めるんだ。</p>
+            <p>底の 4 と中身の 8 は、どちらもある数の累乗で書ける<math><mo>(</mo><mn>4</mn><mo>=</mo><msup><mn>2</mn><mn>2</mn></msup><mo>,</mo><mn>8</mn><mo>=</mo><msup><mn>2</mn><mn>3</mn></msup><mo>)</mo></math>。</p>
+            <p>だから、底の変換公式で底を <b>2</b> にそろえよう：<math><msub><mi>log</mi><mn>4</mn></msub><mn>8</mn><mo>=</mo><mfrac><mrow><msub><mi>log</mi><mn>2</mn></msub><mn>8</mn></mrow><mrow><msub><mi>log</mi><mn>2</mn></msub><mn>4</mn></mrow></mfrac></math>。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 分子と分母を別々に計算する</h3>
-            <p>分子：8 ＝ 2<sup>3</sup> だから log<sub>2</sub> 8 ＝ 3。</p>
-            <p>分母：4 ＝ 2<sup>2</sup> だから log<sub>2</sub> 4 ＝ 2。</p>
+            <p>分子：<math><mn>8</mn><mo>=</mo><msup><mn>2</mn><mn>3</mn></msup></math> だから<math><msub><mi>log</mi><mn>2</mn></msub><mn>8</mn><mo>=</mo><mn>3</mn></math>。</p>
+            <p>分母：<math><mn>4</mn><mo>=</mo><msup><mn>2</mn><mn>2</mn></msup></math> だから<math><msub><mi>log</mi><mn>2</mn></msub><mn>4</mn><mo>=</mo><mn>2</mn></math>。</p>
             <p>あとは、この2つの数で分数を作るだけだ。</p>
           </div>
           <div class="step answer">
             <h3>解答 (1)</h3>
-            <p class="big">log<sub>4</sub> 8 ＝ <span class="frac"><span class="top">log<sub>2</sub> 8</span><span class="bot">log<sub>2</sub> 4</span></span> ＝ <span class="frac"><span class="top">3</span><span class="bot">2</span></span></p>
+            <p class="big"><math display="block"><msub><mi>log</mi><mn>4</mn></msub><mn>8</mn><mo>=</mo><mfrac><mrow><msub><mi>log</mi><mn>2</mn></msub><mn>8</mn></mrow><mrow><msub><mi>log</mi><mn>2</mn></msub><mn>4</mn></mrow></mfrac><mo>=</mo><mfrac><mn>3</mn><mn>2</mn></mfrac></math></p>
           </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
 
         <!-- 練習18 (2) -->
-        <div class="tabpanel" id="panel-ren18-2" data-flow="ren18-2" data-label="練習18 (2)">
+        <div class="nofig tabpanel" id="panel-ren18-2" data-flow="ren18-2" data-label="練習18 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2) log<sub>9</sub> 3</span>
+            <span class="sub prob-q" style="margin:0"><math><mo>(</mo><mn>2</mn><mo>)</mo><msub><mi>log</mi><mn>9</mn></msub><mn>3</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― そろえる底を決める</h3>
-            <p>底の 9 は、中身の 3 の累乗で書ける（9 ＝ 3<sup>2</sup>）。</p>
-            <p>だから、底の変換公式で底を <b>3</b> にそろえよう：log<sub>9</sub> 3 ＝ <span class="frac"><span class="top">log<sub>3</sub> 3</span><span class="bot">log<sub>3</sub> 9</span></span>。</p>
+            <p class="cite"><span class="cite-tag">使う公式</span><math><msub><mi>log</mi><mi>a</mi></msub><mi>b</mi><mo>=</mo><mfrac><mrow><msub><mi>log</mi><mi>c</mi></msub><mi>b</mi></mrow><mrow><msub><mi>log</mi><mi>c</mi></msub><mi>a</mi></mrow></mfrac></math>。底の変換公式で、新しい底を 3 にそろえるよ。底の 9 が 3 の累乗で書けることが、底選びの決め手だ。</p>
+            <p>底の 9 は、中身の 3 の累乗で書ける<math><mo>(</mo><mn>9</mn><mo>=</mo><msup><mn>3</mn><mn>2</mn></msup><mo>)</mo></math>。</p>
+            <p>だから、底の変換公式で底を <b>3</b> にそろえよう：<math><msub><mi>log</mi><mn>9</mn></msub><mn>3</mn><mo>=</mo><mfrac><mrow><msub><mi>log</mi><mn>3</mn></msub><mn>3</mn></mrow><mrow><msub><mi>log</mi><mn>3</mn></msub><mn>9</mn></mrow></mfrac></math>。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 分子と分母を別々に計算する</h3>
-            <p>分子：log<sub>3</sub> 3 は「底と中身が同じ」タイプ。このページのはじめの log<sub>a</sub> a ＝ 1 が使える。</p>
-            <p>分母：9 ＝ 3<sup>2</sup> だから log<sub>3</sub> 9 ＝ 2。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span><math><msub><mi>log</mi><mi>a</mi></msub><mi>a</mi><mo>=</mo><mn>1</mn></math>。底と中身が同じ対数の値は 1 になる。分子にある、底 3・中身 3 の対数がちょうどこの形だよ。</p>
+            <p>分子：<math><msub><mi>log</mi><mn>3</mn></msub><mn>3</mn></math>は「底と中身が同じ」タイプ。このページのはじめの<math><msub><mi>log</mi><mi>a</mi></msub><mi>a</mi><mo>=</mo><mn>1</mn></math>が使える。</p>
+            <p>分母：<math><mn>9</mn><mo>=</mo><msup><mn>3</mn><mn>2</mn></msup></math> だから<math><msub><mi>log</mi><mn>3</mn></msub><mn>9</mn><mo>=</mo><mn>2</mn></math>。</p>
           </div>
           <div class="step answer">
             <h3>解答 (2)</h3>
-            <p class="big">log<sub>9</sub> 3 ＝ <span class="frac"><span class="top">log<sub>3</sub> 3</span><span class="bot">log<sub>3</sub> 9</span></span> ＝ <span class="frac"><span class="top">1</span><span class="bot">2</span></span></p>
-            <p>「9を何乗したら3になるか」は 1/2 乗、という意味だね。底より中身が小さいと、値は1より小さくなる。</p>
+            <p class="big"><math display="block"><msub><mi>log</mi><mn>9</mn></msub><mn>3</mn><mo>=</mo><mfrac><mrow><msub><mi>log</mi><mn>3</mn></msub><mn>3</mn></mrow><mrow><msub><mi>log</mi><mn>3</mn></msub><mn>9</mn></mrow></mfrac><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math></p>
+            <p>「9を何乗したら3になるか」は<math><mfrac><mn>1</mn><mn>2</mn></mfrac></math>乗、という意味だね。<br>底より中身が小さいと、値は1より小さくなる。</p>
           </div>
           <p class="prob-done">(2) クリア！　最後の小問のタブを開いてみよう。</p>
         </div>
 
         <!-- 練習18 (3) -->
-        <div class="tabpanel" id="panel-ren18-3" data-flow="ren18-3" data-label="練習18 (3)">
+        <div class="nofig tabpanel" id="panel-ren18-3" data-flow="ren18-3" data-label="練習18 (3)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(3) log<sub>3</sub> 2 ・ log<sub>2</sub> 27</span>
+            <span class="sub prob-q" style="margin:0"><math><mo>(</mo><mn>3</mn><mo>)</mo><msub><mi>log</mi><mn>3</mn></msub><mn>2</mn><mo>⋅</mo><msub><mi>log</mi><mn>2</mn></msub><mn>27</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― どの対数を変換するか決める</h3>
-            <p>底が 3 のものと、底が 2 のものの積になっている。例11 (2) と同じタイプだ。</p>
-            <p>今回は、<b>log<sub>2</sub> 27 の底を 3 に</b>変えて、底をそろえてみよう（27が3の累乗であることにも注目）。</p>
+            <p>底が 3 のものと、底が 2 のものの積になっている。<br>例11 (2) と同じタイプだ。</p>
+            <p>今回は、<b><math><msub><mi>log</mi><mn>2</mn></msub><mn>27</mn></math>の底を 3 に</b>変えて、底をそろえてみよう（27が3の累乗であることにも注目）。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 変換して代入する</h3>
-            <p>底の変換公式（c ＝ 3）で、log<sub>2</sub> 27 ＝ <span class="frac"><span class="top">log<sub>3</sub> 27</span><span class="bot">log<sub>3</sub> 2</span></span> と書ける。</p>
-            <p>これをもとの式に代入すると log<sub>3</sub> 2 × <span class="frac"><span class="top">log<sub>3</sub> 27</span><span class="bot">log<sub>3</sub> 2</span></span> になる。約分で消えるものがあるね。</p>
+            <p class="cite"><span class="cite-tag">使う公式</span><math><msub><mi>log</mi><mi>a</mi></msub><mi>b</mi><mo>=</mo><mfrac><mrow><msub><mi>log</mi><mi>c</mi></msub><mi>b</mi></mrow><mrow><msub><mi>log</mi><mi>c</mi></msub><mi>a</mi></mrow></mfrac></math>。底の変換公式を、新しい底を 3 として、底が 2 の対数に使うよ。代入すると、もとの式と約分できる形になるんだ。</p>
+            <p>底の変換公式<math><mo>(</mo><mi>c</mi><mo>=</mo><mn>3</mn><mo>)</mo></math>で、<math><msub><mi>log</mi><mn>2</mn></msub><mn>27</mn><mo>=</mo><mfrac><mrow><msub><mi>log</mi><mn>3</mn></msub><mn>27</mn></mrow><mrow><msub><mi>log</mi><mn>3</mn></msub><mn>2</mn></mrow></mfrac></math> と書ける。</p>
+            <p>これをもとの式に代入すると<math><msub><mi>log</mi><mn>3</mn></msub><mn>2</mn><mo>×</mo><mfrac><mrow><msub><mi>log</mi><mn>3</mn></msub><mn>27</mn></mrow><mrow><msub><mi>log</mi><mn>3</mn></msub><mn>2</mn></mrow></mfrac></math> になる。約分で消えるものがあるね。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 3 ― 残った対数を計算する</h3>
-            <p>log<sub>3</sub> 2 が約分で消えて、残るのは log<sub>3</sub> 27 だけ。</p>
-            <p>27 を 3 の累乗で書いて（3<sup>1</sup>＝3、3<sup>2</sup>＝9、3<sup>3</sup>＝…）、値を出そう。</p>
+            <p class="cite"><span class="cite-tag">使う定義</span><math><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>=</mo><mi>p</mi><mo>⇔</mo><mi>M</mi><mo>=</mo><msup><mi>a</mi><mi>p</mi></msup></math>。中身を底の累乗で書けたら、その指数が対数の値になる。残った対数の中身 27 は、3 の 3 乗だよ。</p>
+            <p><math><msub><mi>log</mi><mn>3</mn></msub><mn>2</mn></math>が約分で消えて、残るのは<math><msub><mi>log</mi><mn>3</mn></msub><mn>27</mn></math>だけ。</p>
+            <p>27 を 3 の累乗で書いて<math><mo>(</mo><msup><mn>3</mn><mn>1</mn></msup><mo>=</mo><mn>3</mn></math>、<math><msup><mn>3</mn><mn>2</mn></msup><mo>=</mo><mn>9</mn></math>、<math><msup><mn>3</mn><mn>3</mn></msup><mo>=</mo><mo>…</mo><mo>)</mo></math>、値を出そう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (3)</h3>
-            <p class="big">log<sub>3</sub> 2 ・ log<sub>2</sub> 27 ＝ log<sub>3</sub> 2 × <span class="frac"><span class="top">log<sub>3</sub> 27</span><span class="bot">log<sub>3</sub> 2</span></span> ＝ log<sub>3</sub> 27 ＝ log<sub>3</sub> 3<sup>3</sup> ＝ 3</p>
-            <p>これも、値が分からない log<sub>3</sub> 2 が約分で消えるタイプ。積の形を見たら「変換 → 約分」を疑ってみよう。</p>
+            <div class="chain-crow big">
+<div class="crow"><math displaystyle="true"><msub><mi>log</mi><mn>3</mn></msub><mn>2</mn><mo>⋅</mo><msub><mi>log</mi><mn>2</mn></msub><mn>27</mn><mo>=</mo><msub><mi>log</mi><mn>3</mn></msub><mn>2</mn><mo>×</mo><mfrac><mrow><msub><mi>log</mi><mn>3</mn></msub><mn>27</mn></mrow><mrow><msub><mi>log</mi><mn>3</mn></msub><mn>2</mn></mrow></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msub><mi>log</mi><mn>3</mn></msub><mn>2</mn><mo>⋅</mo><msub><mi>log</mi><mn>2</mn></msub><mn>27</mn></mphantom><mo>=</mo><msub><mi>log</mi><mn>3</mn></msub><mn>27</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msub><mi>log</mi><mn>3</mn></msub><mn>2</mn><mo>⋅</mo><msub><mi>log</mi><mn>2</mn></msub><mn>27</mn></mphantom><mo>=</mo><msub><mi>log</mi><mn>3</mn></msub><msup><mn>3</mn><mn>3</mn></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msub><mi>log</mi><mn>3</mn></msub><mn>2</mn><mo>⋅</mo><msub><mi>log</mi><mn>2</mn></msub><mn>27</mn></mphantom><mo>=</mo><mn>3</mn></math></div>
+</div>
+            <p>これも、値が分からない<math><msub><mi>log</mi><mn>3</mn></msub><mn>2</mn></math>が約分で消えるタイプ。<br>積の形を見たら「変換 → 約分」を疑ってみよう。</p>
           </div>
           <p class="prob-done">(3) クリア！　練習18はこれで完了。下のまとめで確認しよう。</p>
         </div>
@@ -982,10 +1094,10 @@
       <section class="card summary">
         <h2>この項のポイント</h2>
         <ul>
-          <li><b>対数の性質</b>：かけ算 → 足し算（性質1）、わり算 → 引き算（性質2）、累乗の指数 → 係数（性質3）。証明は「おく → 指数で計算 → 対数に戻す → 文字を戻す」の流れ。</li>
-          <li><b>性質は逆向きにも使える。</b>対数の足し算・引き算は、係数を片づけてから「1つの対数にまとめる」と計算が進む。</li>
-          <li><b>log<sub>a</sub> 1 ＝ 0，log<sub>a</sub> a ＝ 1</b> は計算の着地点。まとめた中身が分数 1/N のときは、log<sub>a</sub> (1/N) ＝ －log<sub>a</sub> N も使える。</li>
-          <li><b>底の変換公式</b><span id="summaryFormulaLock">：（解説Cの「公式の導き方」を最後まで進めると、ここに公式が表示されるよ）</span><span id="summaryFormula" style="display:none"> log<sub>a</sub> b ＝ <span class="frac"><span class="top">log<sub>c</sub> b</span><span class="bot">log<sub>c</sub> a</span></span>：中身が累乗で書ける底にそろえるのがコツ。積の形では、変換すると約分で消えることがある。</span></li>
+          <li><b>対数の性質</b>：かけ算 → 足し算（性質1）、わり算 → 引き算（性質2）、<br>累乗の指数 → 係数（性質3）。<br>証明は「おく → 指数で計算 → 対数に戻す → 文字を戻す」の流れ。</li>
+          <li><b>性質は逆向きにも使える。</b>対数の足し算・引き算は、係数を片づけてから<br>「1つの対数にまとめる」と計算が進む。</li>
+          <li><p class="cite"><span class="cite-tag">使う性質</span><math><msub><mi>log</mi><mi>a</mi></msub><mo>(</mo><mfrac><mn>1</mn><mi>N</mi></mfrac><mo>)</mo><mo>=</mo><mo>−</mo><msub><mi>log</mi><mi>a</mi></msub><mi>N</mi></math>。中身が分数の形になったときの着地点の 1 つ。分母だけの対数は、マイナスをつけた形に直せるよ。</p><b><math><msub><mi>log</mi><mi>a</mi></msub><mn>1</mn><mo>=</mo><mn>0</mn><mo>,</mo><msub><mi>log</mi><mi>a</mi></msub><mi>a</mi><mo>=</mo><mn>1</mn></math></b> は計算の着地点。まとめた中身が分数<math><mfrac><mn>1</mn><mi>N</mi></mfrac></math>のときは、<math><msub><mi>log</mi><mi>a</mi></msub><mo>(</mo><mfrac><mn>1</mn><mi>N</mi></mfrac><mo>)</mo><mo>=</mo><mo>−</mo><msub><mi>log</mi><mi>a</mi></msub><mi>N</mi></math>も使える。</li>
+          <li><b>底の変換公式</b><span id="summaryFormulaLock">：（解説Cの「公式の導き方」を最後まで進めると、ここに公式が表示されるよ）</span><span id="summaryFormula" style="display:none"><math><msub><mi>log</mi><mi>a</mi></msub><mi>b</mi><mo>=</mo><mfrac><mrow><msub><mi>log</mi><mi>c</mi></msub><mi>b</mi></mrow><mrow><msub><mi>log</mi><mi>c</mi></msub><mi>a</mi></mrow></mfrac></math>：中身が累乗で書ける底にそろえるのがコツ。<br>積の形では、変換すると約分で消えることがある。</span></li>
         </ul>
       </section>
 
@@ -1006,7 +1118,7 @@
         <div class="overall" aria-label="全体の進捗">
           <span class="overall-text">全体の進捗</span>
           <div class="overall-track"><div class="overall-fill" id="overallFill"></div></div>
-          <span class="overall-text" id="overallText">0 / 0</span>
+          <span class="overall-text" id="overallText"><math><mfrac><mn>0</mn><mn>0</mn></mfrac></math></span>
         </div>
         <p class="ctrl-label">いまの課題：<b id="ctrlLabel">性質1の証明</b>　―　「次へ」で1つずつ開こう</p>
         <div class="ctrl-btns">

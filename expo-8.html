@@ -288,7 +288,45 @@
           padding:2px 6px 2px 2px;
         }
       }
-    </style>
+    
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+</style>
   </head>
   <body>
     <div class="wrap">
@@ -326,13 +364,13 @@
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
         <div class="def">
-          <p><i>a</i> を <b>1 と異なる正の定数</b>とするとき、関数</p>
-          <p class="formula" style="margin:8px 0">y＝log<sub>a</sub> <i>x</i></p>
-          <p>を、<span class="key"><i>a</i> を底とする対数関数</span>という。</p>
+          <p><math><mi>a</mi></math> を <b>1 と異なる正の定数</b>とするとき、関数</p>
+          <p class="formula" style="margin:8px 0"><math display="block"><mi>y</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><mi>x</mi></math></p>
+          <p>を、<span class="key"><math><mi>a</mi></math> を底とする対数関数</span>という。</p>
         </div>
-        <p>まずは底が 2 の場合、<i>y</i>＝log<sub>2</sub><i>x</i> のグラフをかいてみよう。log<sub>2</sub><i>x</i> は「2 を何乗すると <i>x</i> になるか」を返す数だったね。つまり</p>
-        <p class="formula"><i>y</i>＝log<sub>2</sub><i>x</i>　は　<i>x</i>＝2<sup><i>y</i></sup>　と同じ関係</p>
-        <p>この関係を使うと、前に作った <i>y</i>＝2<sup><i>x</i></sup> の対応表から、<i>y</i>＝log<sub>2</sub><i>x</i> の対応表が作れる。下の「次へ」で1つずつ確かめていこう。</p>
+        <p>まずは底が 2 の場合、<math><mi>y</mi><mo>=</mo><msub><mi>log</mi><mn>2</mn></msub><mi>x</mi></math> のグラフをかいてみよう。<math><msub><mi>log</mi><mn>2</mn></msub><mi>x</mi></math> は「2 を何乗すると <math><mi>x</mi></math> になるか」を返す数だったね。つまり</p>
+        <p class="formula"><math><mi>y</mi><mo>=</mo><msub><mi>log</mi><mn>2</mn></msub><mi>x</mi></math>　は　<math><mi>x</mi><mo>=</mo><msup><mn>2</mn><mi>y</mi></msup></math>　と同じ関係</p>
+        <p>この関係を使うと、前に作った <math><mi>y</mi><mo>=</mo><msup><mn>2</mn><mi>x</mi></msup></math> の対応表から、<math><mi>y</mi><mo>=</mo><msub><mi>log</mi><mn>2</mn></msub><mi>x</mi></math> の対応表が作れる。下の「次へ」で1つずつ確かめていこう。</p>
 
         <figure>
           <div class="figbox">
@@ -381,37 +419,39 @@
         </figure>
 
         <div class="step hint">
-          <h3>ヒント 1 ― まず <i>y</i>＝2<sup><i>x</i></sup> の対応表を思い出す</h3>
-          <p>指数関数のところで作った対応表だよ。この表は「<i>x</i> を決めると 2<sup><i>x</i></sup> の値 <i>y</i> が決まる」という対応を表している。</p>
+          <h3>ヒント 1 ― まず <math><mi>y</mi><mo>=</mo><msup><mn>2</mn><mi>x</mi></msup></math> の対応表を思い出す</h3>
+          <p>指数関数のところで作った対応表だよ。<br>この表は「<math><mi>x</mi></math> を決めると<math><msup><mn>2</mn><mi>x</mi></msup></math> の値 <math><mi>y</mi></math> が決まる」という対応を表している。</p>
           <div class="tblwrap">
             <table class="tbl">
-              <tr><th><i>x</i></th><td>−2</td><td>−1.5</td><td>−1</td><td>−0.5</td><td>0</td><td>0.5</td><td>1</td><td>1.5</td><td>2</td></tr>
-              <tr><th><i>y</i>＝2<sup><i>x</i></sup></th><td>0.25</td><td>0.35</td><td>0.5</td><td>0.71</td><td>1</td><td>1.41</td><td>2</td><td>2.83</td><td>4</td></tr>
+              <tr><th><math><mi>x</mi></math></th><td>−2</td><td>−1.5</td><td>−1</td><td>−0.5</td><td>0</td><td>0.5</td><td>1</td><td>1.5</td><td>2</td></tr>
+              <tr><th><math><mi>y</mi><mo>=</mo><msup><mn>2</mn><mi>x</mi></msup></math></th><td>0.25</td><td>0.35</td><td>0.5</td><td>0.71</td><td>1</td><td>1.41</td><td>2</td><td>2.83</td><td>4</td></tr>
             </table>
           </div>
-          <p>たとえば「<i>x</i>＝1 のとき <i>y</i>＝2」は、「2<sup>1</sup>＝2」という関係だね。</p>
+          <p>たとえば「<math><mi>x</mi><mo>=</mo><mn>1</mn></math>のとき <math><mi>y</mi><mo>=</mo><mn>2</mn></math>」は、「<math><msup><mn>2</mn><mn>1</mn></msup><mo>=</mo><mn>2</mn></math>」という関係だね。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― 表の <i>x</i> と <i>y</i> を入れ替える</h3>
-          <p><i>y</i>＝log<sub>2</sub><i>x</i> は <i>x</i>＝2<sup><i>y</i></sup> と同じ関係だから、上の表の <b><i>x</i> の行と <i>y</i> の行をそっくり入れ替えれば</b>、<i>y</i>＝log<sub>2</sub><i>x</i> の対応表になる。</p>
+          <h3>ヒント 2 ― 表の <math><mi>x</mi></math> と <math><mi>y</mi></math> を入れ替える</h3>
+          <p class="cite"><span class="cite-tag">使う定義</span><math><mi>y</mi><mo>=</mo><msub><mi>log</mi><mn>2</mn></msub><mi>x</mi></math> は <math><mi>x</mi><mo>=</mo><msup><mn>2</mn><mi>y</mi></msup></math> と同じ関係（対数の定義）。この同値があるから、指数関数の対応表の <math><mi>x</mi></math> と <math><mi>y</mi></math> を入れ替えるだけで、対数関数の対応表が作れるよ。</p>
+          <p><math><mi>y</mi><mo>=</mo><msub><mi>log</mi><mn>2</mn></msub><mi>x</mi></math> は <math><mi>x</mi><mo>=</mo><msup><mn>2</mn><mi>y</mi></msup></math> と同じ関係だから、上の表の <b><math><mi>x</mi></math> の行と <math><mi>y</mi></math> の行をそっくり入れ替えれば</b>、<br><math><mi>y</mi><mo>=</mo><msub><mi>log</mi><mn>2</mn></msub><mi>x</mi></math> の対応表になる。</p>
           <div class="tblwrap">
             <table class="tbl">
-              <tr><th><i>x</i></th><td>0.25</td><td>0.35</td><td>0.5</td><td>0.71</td><td>1</td><td>1.41</td><td>2</td><td>2.83</td><td>4</td></tr>
-              <tr><th><i>y</i>＝log<sub>2</sub><i>x</i></th><td>−2</td><td>−1.5</td><td>−1</td><td>−0.5</td><td>0</td><td>0.5</td><td>1</td><td>1.5</td><td>2</td></tr>
+              <tr><th><math><mi>x</mi></math></th><td>0.25</td><td>0.35</td><td>0.5</td><td>0.71</td><td>1</td><td>1.41</td><td>2</td><td>2.83</td><td>4</td></tr>
+              <tr><th><math><mi>y</mi><mo>=</mo><msub><mi>log</mi><mn>2</mn></msub><mi>x</mi></math></th><td>−2</td><td>−1.5</td><td>−1</td><td>−0.5</td><td>0</td><td>0.5</td><td>1</td><td>1.5</td><td>2</td></tr>
             </table>
           </div>
-          <p>たとえば「<i>x</i>＝2 のとき <i>y</i>＝1」は、「2<sup>1</sup>＝2 だから log<sub>2</sub>2＝1」という意味だね。</p>
+          <p>たとえば「<math><mi>x</mi><mo>=</mo><mn>2</mn></math>のとき <math><mi>y</mi><mo>=</mo><mn>1</mn></math>」は、「<math><msup><mn>2</mn><mn>1</mn></msup><mo>=</mo><mn>2</mn></math>だから<math><msub><mi>log</mi><mn>2</mn></msub><mn>2</mn><mo>=</mo><mn>1</mn></math>」という意味だね。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 3 ― 表の9組を、点として打つ</h3>
-          <p>入れ替えた表の9組（<i>x</i>, <i>y</i>）＝ (0.25, −2), (0.35, −1.5), …, (4, 2) を座標平面に打ったのが、上の図の青い点だよ。</p>
-          <p>点の並びを見てみよう。<i>x</i> が 0 に近いところでは点は下の方に、<i>x</i> が大きくなるにつれて点は右上へ進んでいるね。</p>
+          <p>入れ替えた表の9組<math><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>)</mo><mo>=</mo><mo>(</mo><mn>0.25</mn><mo>,</mo><mo>−</mo><mn>2</mn><mo>)</mo><mo>,</mo><mo>(</mo><mn>0.35</mn><mo>,</mo><mo>−</mo><mn>1.5</mn><mo>)</mo><mo>,</mo><mo>…</mo><mo>,</mo><mo>(</mo><mn>4</mn><mo>,</mo><mn>2</mn><mo>)</mo></math>を座標平面に打ったのが、上の図の青い点だよ。</p>
+          <p>点の並びを見てみよう。<math><mi>x</mi></math> が 0 に近いところでは点は下の方に、<br><math><mi>x</mi></math> が大きくなるにつれて点は右上へ進んでいるね。</p>
         </div>
         <div class="step answer">
-          <h3>まとめ ― <i>y</i>＝log<sub>2</sub><i>x</i> のグラフ</h3>
-          <p>9つの点をなめらかにつなぐと、上の図の緑の曲線になる。これが <i>y</i>＝log<sub>2</sub><i>x</i> のグラフだよ。</p>
-          <p>・<i>x</i> が小さいときは <i>y</i> 軸の近くまで下がり、<i>x</i> が大きくなるにつれて<b>右上がり</b>になっていく<br />・点 (1, 0) と点 (2, 1) を通る（log<sub>2</sub>1＝0、log<sub>2</sub>2＝1 だから）</p>
-          <p class="note"><b>ポイント：</b>対数関数の対応表は、指数関数の対応表の <i>x</i> と <i>y</i> を<b>入れ替える</b>だけで作れる。次の解説2では、この「入れ替え」がグラフでは何を意味するかを見ていくよ。</p>
+          <h3>まとめ<math><mo>―</mo><mi>y</mi><mo>=</mo><msub><mi>log</mi><mn>2</mn></msub><mi>x</mi></math> のグラフ</h3>
+          <p>9つの点をなめらかにつなぐと、上の図の緑の曲線になる。<br>これが <math><mi>y</mi><mo>=</mo><msub><mi>log</mi><mn>2</mn></msub><mi>x</mi></math> のグラフだよ。</p>
+          <p class="cite"><span class="cite-tag">使う性質</span>対数関数のグラフは点<math><mo>(</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo>)</mo></math>と点<math><mo>(</mo><mi>a</mi><mo>,</mo><mn>1</mn><mo>)</mo></math>を通る（<math><msub><mi>log</mi><mi>a</mi></msub><mn>1</mn><mo>=</mo><mn>0</mn></math>、<math><msub><mi>log</mi><mi>a</mi></msub><mi>a</mi><mo>=</mo><mn>1</mn></math> だから）。底が 2 の場合は、点<math><mo>(</mo><mn>2</mn><mo>,</mo><mn>1</mn><mo>)</mo></math>がその例だよ。</p>
+          <p><math><mo>⋅</mo><mi>x</mi></math> が小さいときは <math><mi>y</mi></math> 軸の近くまで下がり、<math><mi>x</mi></math> が大きくなるにつれて<b>右上がり</b>になっていく<br />・点<math><mo>(</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo>)</mo></math>と点<math><mo>(</mo><mn>2</mn><mo>,</mo><mn>1</mn><mo>)</mo></math>を通る<math><mo>(</mo><msub><mi>log</mi><mn>2</mn></msub><mn>1</mn><mo>=</mo><mn>0</mn></math>、<math><msub><mi>log</mi><mn>2</mn></msub><mn>2</mn><mo>=</mo><mn>1</mn></math>だから）</p>
+          <p class="note"><b>ポイント：</b>対数関数の対応表は、指数関数の対応表の <math><mi>x</mi></math> と <math><mi>y</mi></math> を<b>入れ替える</b>だけで作れる。<br>次の解説2では、この「入れ替え」がグラフでは何を意味するかを見ていくよ。</p>
         </div>
         <p class="prob-done">解説1 クリア！　次はグラフの対称性を見てみよう。</p>
       </section>
@@ -482,28 +522,30 @@
 
         <div class="step hint">
           <h3>ヒント 1 ― 点 P と点 Q の位置を見比べる</h3>
-          <p>直線 <i>y</i>＝<i>x</i>（オレンジ）と、2つの点 P(1, 2)、Q(2, 1) を表示したよ。</p>
-          <p>P と Q は、<b>座標の2つの数を入れ替えた</b>点同士だね。この2点は、直線 <i>y</i>＝<i>x</i> を折り目にして折り返すと<b>ぴったり重なる</b>位置にある。このような関係を「直線 <i>y</i>＝<i>x</i> に関して<b>対称</b>」というよ。</p>
-          <p>一般に、点 P(<i>s</i>, <i>t</i>) と点 Q(<i>t</i>, <i>s</i>) は、直線 <i>y</i>＝<i>x</i> に関して対称な点同士になる。</p>
+          <p>直線 <math><mi>y</mi><mo>=</mo><mi>x</mi><mo>(</mo></math>オレンジ）と、2つの点 P(1, 2)、Q(2, 1) を表示したよ。</p>
+          <p>P と Q は、<b>座標の2つの数を入れ替えた</b>点同士だね。<br>この2点は、直線 <math><mi>y</mi><mo>=</mo><mi>x</mi></math> を折り目にして折り返すと<b>ぴったり重なる</b>位置にある。このような関係を「直線 <math><mi>y</mi><mo>=</mo><mi>x</mi></math> に関して<b>対称</b>」というよ。</p>
+          <p>一般に、点<math><mi>P</mi><mo>(</mo><mi>s</mi><mo>,</mo><mi>t</mi><mo>)</mo></math>と点<math><mi>Q</mi><mo>(</mo><mi>t</mi><mo>,</mo><mi>s</mi><mo>)</mo></math>は、直線 <math><mi>y</mi><mo>=</mo><mi>x</mi></math> に関して対称な点同士になる。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― <i>y</i>＝2<sup><i>x</i></sup> のグラフを重ねる</h3>
-          <p>青い曲線が <i>y</i>＝2<sup><i>x</i></sup> のグラフだよ。点 P(1, 2) はこの曲線の上にあるね（2<sup>1</sup>＝2 だから）。</p>
-          <p>この曲線上の点はどれも、座標を入れ替えると Q のような点になる。たとえば (0, 1) ↔ (1, 0)、(2, 4) ↔ (4, 2) という具合だよ。</p>
+          <h3>ヒント<math><mn>2</mn><mo>―</mo><mi>y</mi><mo>=</mo><msup><mn>2</mn><mi>x</mi></msup></math> のグラフを重ねる</h3>
+          <p class="cite"><span class="cite-tag">使う定義</span>点がグラフ上にあるのは、その点の座標が関数の式を満たすとき。P(1, 2) は <math><msup><mn>2</mn><mn>1</mn></msup><mo>=</mo><mn>2</mn></math> を満たすから、<math><mi>y</mi><mo>=</mo><msup><mn>2</mn><mi>x</mi></msup></math> のグラフ上の点だよ。</p>
+          <p>青い曲線が <math><mi>y</mi><mo>=</mo><msup><mn>2</mn><mi>x</mi></msup></math> のグラフだよ。点 P(1, 2) はこの曲線の上にあるね<math><mo>(</mo><msup><mn>2</mn><mn>1</mn></msup><mo>=</mo><mn>2</mn></math>だから）。</p>
+          <p>この曲線上の点はどれも、座標を入れ替えると Q のような点になる。<br>たとえば (0, 1) ↔ (1, 0)、(2, 4) ↔ (4, 2) という具合だよ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 3 ― 折り返した先にある曲線</h3>
-          <p>緑の曲線が、<i>y</i>＝2<sup><i>x</i></sup> のグラフを直線 <i>y</i>＝<i>x</i> で<b>折り返した</b>ものだよ。点 Q(2, 1) がその上に乗っているね。</p>
-          <p>折り返した曲線上の点は、もとの曲線の点の座標を入れ替えたものばかり。対応表の入れ替えで作った <i>y</i>＝log<sub>2</sub><i>x</i> の点と、ちょうど一致するはずだね。</p>
+          <p>緑の曲線が、<math><mi>y</mi><mo>=</mo><msup><mn>2</mn><mi>x</mi></msup></math> のグラフを直線 <math><mi>y</mi><mo>=</mo><mi>x</mi></math> で<b>折り返した</b>ものだよ。<br>点 Q(2, 1) がその上に乗っているね。</p>
+          <p>折り返した曲線上の点は、もとの曲線の点の座標を入れ替えたものばかり。<br>対応表の入れ替えで作った <math><mi>y</mi><mo>=</mo><msub><mi>log</mi><mn>2</mn></msub><mi>x</mi></math> の点と、ちょうど一致するはずだね。</p>
         </div>
         <div class="step answer">
           <h3>まとめ ― 対称性と、一般の対数関数のグラフ</h3>
-          <p class="big"><i>y</i>＝log<sub>2</sub><i>x</i> のグラフは、<i>y</i>＝2<sup><i>x</i></sup> のグラフと<br />直線 <i>y</i>＝<i>x</i> に関して対称である</p>
-          <p>一般の対数関数 <i>y</i>＝log<sub>a</sub><i>x</i> についても同じで、そのグラフは指数関数 <i>y</i>＝<i>a</i><sup><i>x</i></sup> のグラフと直線 <i>y</i>＝<i>x</i> に関して対称になる。さらに、次のことがいえるよ。</p>
-          <p>・<b><i>y</i> 軸を漸近線とする</b>（<i>x</i> が 0 に近づくと、曲線は <i>y</i> 軸に限りなく近づく）<br />・<b>点 (1, 0) と点 (<i>a</i>, 1) を通る</b>（log<sub>a</sub>1＝0、log<sub>a</sub><i>a</i>＝1 だから）<br />・<b><i>a</i>＞1 のとき右上がり</b>、<b>0＜<i>a</i>＜1 のとき右下がり</b>の曲線になる</p>
-          <p><b>ためしてみよう。</b>下のスライダーで底 <i>a</i> を動かすと、<i>y</i>＝<i>a</i><sup><i>x</i></sup>（青）と <i>y</i>＝log<sub>a</sub><i>x</i>（緑）のペアが連動して変わるよ。2つの曲線が直線 <i>y</i>＝<i>x</i> に関して常に対称なことと、点 (1, 0)、(<i>a</i>, 1) を通ることを確かめよう。</p>
+          <p class="big"><math><mi>y</mi><mo>=</mo><msub><mi>log</mi><mn>2</mn></msub><mi>x</mi></math> のグラフは、<math><mi>y</mi><mo>=</mo><msup><mn>2</mn><mi>x</mi></msup></math> のグラフと<br />直線 <math><mi>y</mi><mo>=</mo><mi>x</mi></math> に関して対称である</p>
+          <p class="cite"><span class="cite-tag">使う性質</span><math><mi>y</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><mi>x</mi></math> のグラフは、<math><mi>y</mi><mo>=</mo><msup><mi>a</mi><mi>x</mi></msup></math> のグラフと直線 <math><mi>y</mi><mo>=</mo><mi>x</mi></math> に関して対称。一般の場合も、底が 2 のとき見た「座標の入れ替え」の関係がそのまま成り立つよ。</p>
+          <p>一般の対数関数 <math><mi>y</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><mi>x</mi></math> についても同じで、そのグラフは指数関数 <math><mi>y</mi><mo>=</mo><msup><mi>a</mi><mi>x</mi></msup></math> のグラフと直線 <math><mi>y</mi><mo>=</mo><mi>x</mi></math> に関して対称になる。<br>さらに、次のことがいえるよ。</p>
+          <p>・<b><math><mi>y</mi></math> 軸を漸近線とする</b><math><mo>(</mo><mi>x</mi></math> が 0 に近づくと、曲線は <math><mi>y</mi></math> 軸に限りなく近づく）<br />・<b>点<math><mo>(</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo>)</mo></math>と点<math><mo>(</mo><mi>a</mi><mo>,</mo><mn>1</mn><mo>)</mo></math>を通る</b><math><mo>(</mo><msub><mi>log</mi><mi>a</mi></msub><mn>1</mn><mo>=</mo><mn>0</mn></math>、<math><msub><mi>log</mi><mi>a</mi></msub><mi>a</mi><mo>=</mo><mn>1</mn></math>だから）<br />・<b><math><mi>a</mi><mo>&gt;</mo><mn>1</mn></math>のとき右上がり</b>、<b><math><mn>0</mn><mo>&lt;</mo><mi>a</mi><mo>&lt;</mo><mn>1</mn></math>のとき右下がり</b>の曲線になる</p>
+          <p><b>ためしてみよう。</b>下のスライダーで底 <math><mi>a</mi></math> を動かすと、<math><mi>y</mi><mo>=</mo><msup><mi>a</mi><mi>x</mi></msup><mo>(</mo></math>青）と <math><mi>y</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><mi>x</mi><mo>(</mo></math>緑）のペアが連動して変わるよ。<br>2つの曲線が直線 <math><mi>y</mi><mo>=</mo><mi>x</mi></math> に関して常に対称なことと、点<math><mo>(</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo>)</mo></math>、<math><mo>(</mo><mi>a</mi><mo>,</mo><mn>1</mn><mo>)</mo></math>を通ることを確かめよう。</p>
           <div class="slider-row">
-            <label for="slideA">底 <i>a</i></label>
+            <label for="slideA">底 <math><mi>a</mi></math></label>
             <input type="range" id="slideA" min="0.3" max="3" value="2" step="0.05" aria-label="底 a を変えるスライダー" />
           </div>
           <p class="slider-state" id="slideAState"></p>
@@ -528,7 +570,7 @@
               </svg>
             </div>
           </figure>
-          <p class="note"><b>注意：</b>底は「1 と異なる正の数」が約束だったね。スライダーで <i>a</i>＝1 に近づけると、2つの曲線が直線 <i>y</i>＝<i>x</i> に張りついていく様子が見えるよ（<i>a</i>＝1 ちょうどは底にはならない）。</p>
+          <p class="note"><b>注意：</b>底は「1 と異なる正の数」が約束だったね。<br>スライダーで <math><mi>a</mi><mo>=</mo><mn>1</mn></math>に近づけると、2つの曲線が直線 <math><mi>y</mi><mo>=</mo><mi>x</mi></math> に張りついていく様子が見えるよ<math><mo>(</mo><mi>a</mi><mo>=</mo><mn>1</mn></math>ちょうどは底にはならない）。</p>
         </div>
         <p class="prob-done">解説2 クリア！　次は練習19で、自分でグラフをかいてみよう。</p>
       </section>
@@ -540,7 +582,7 @@
         <span class="pno">教科書 p.166</span>
       </div>
 
-      <section class="card prob" id="prob-ren19">
+      <section class="nofig card prob" id="prob-ren19">
         <div class="prob-head">
           <span class="prob-tag ren">練習 19</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
@@ -555,7 +597,7 @@
         <!-- (1) -->
         <div class="tabpanel show" id="panel-ren19-1" data-flow="ren19-1" data-label="練習19 (1)">
           <div class="prob-head">
-            <span class="prob-q" style="margin:0">(1)　<i>y</i>＝log<sub>3</sub><i>x</i></span>
+            <span class="prob-q" style="margin:0">(1)　<math><mi>y</mi><mo>=</mo><msub><mi>log</mi><mn>3</mn></msub><mi>x</mi></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
@@ -605,23 +647,27 @@
           </figure>
           <div class="step hint">
             <h3>ヒント 1 ― まず「必ず通る点」を1つ打つ</h3>
-            <p>底が何であっても、対数関数のグラフは点 <b>(1, 0)</b> を通るんだったね。log<sub>3</sub>1＝0 だからだよ。まずこの点を打とう（図に青い点が出たよ）。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>どの底でも <math><msub><mi>log</mi><mi>a</mi></msub><mn>1</mn><mo>=</mo><mn>0</mn></math>（<math><msup><mi>a</mi><mn>0</mn></msup><mo>=</mo><mn>1</mn></math> だから）。この問題では <math><msub><mi>log</mi><mn>3</mn></msub><mn>1</mn><mo>=</mo><mn>0</mn></math> となり、グラフは点<math><mo>(</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo>)</mo></math>を通るよ。</p>
+          <p>底が何であっても、対数関数のグラフは点 <b><math><mo>(</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo>)</mo></math></b> を通るんだったね。<br><math><msub><mi>log</mi><mn>3</mn></msub><mn>1</mn><mo>=</mo><mn>0</mn></math>だからだよ。まずこの点を打とう（図に青い点が出たよ）。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 底を使った点をもう1つ</h3>
-            <p>次に、<i>x</i>＝3 のときの <i>y</i> を考えよう。「3 を何乗すると 3 になるか」→ 1 乗だね。つまり log<sub>3</sub>3＝1。</p>
-            <p>だから点 <b>(3, 1)</b> も通る。この点も打とう。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span><math><msub><mi>log</mi><mi>a</mi></msub><mi>a</mi><mo>=</mo><mn>1</mn></math>（<math><msup><mi>a</mi><mn>1</mn></msup><mo>=</mo><mi>a</mi></math> だから）。底が 3 のこの問題では <math><msub><mi>log</mi><mn>3</mn></msub><mn>3</mn><mo>=</mo><mn>1</mn></math> だよ。</p>
+          <p>次に、<math><mi>x</mi><mo>=</mo><mn>3</mn></math>のときの <math><mi>y</mi></math> を考えよう。<br>「3 を何乗すると 3 になるか」→ 1 乗だね。つまり<math><msub><mi>log</mi><mn>3</mn></msub><mn>3</mn><mo>=</mo><mn>1</mn></math>。</p>
+            <p>だから点 <b><math><mo>(</mo><mn>3</mn><mo>,</mo><mn>1</mn><mo>)</mo></math></b> も通る。この点も打とう。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 3 ― 点をあと2つ増やす</h3>
-            <p>・<i>x</i>＝9 のとき：3<sup>2</sup>＝9 だから log<sub>3</sub>9＝2 → 点 <b>(9, 2)</b><br />・<i>x</i>＝<span class="frac"><span class="ft">1</span><span class="fb">3</span></span> のとき：3<sup>−1</sup>＝<span class="frac"><span class="ft">1</span><span class="fb">3</span></span> だから log<sub>3</sub><span class="frac"><span class="ft">1</span><span class="fb">3</span></span>＝−1 → 点 <b>(<span class="frac"><span class="ft">1</span><span class="fb">3</span></span>, −1)</b></p>
-            <p>底 3 は 1 より大きいから、グラフは<b>右上がり</b>になるはず。この4点をなめらかにつないだ形を、ノートに予想してから次へ進もう。</p>
+            <p class="cite"><span class="cite-tag">使う定義</span><math><msub><mi>log</mi><mn>3</mn></msub><mi>x</mi></math> は「3 を何乗すると <math><mi>x</mi></math> になるか」という指数のこと。<math><msup><mn>3</mn><mn>2</mn></msup><mo>=</mo><mn>9</mn></math>、<math><msup><mn>3</mn><mrow><mo>−</mo><mn>1</mn></mrow></msup><mo>=</mo><mfrac><mn>1</mn><mn>3</mn></mfrac></math> と見て、2つの値を決めるよ。</p>
+          <p><math><mo>⋅</mo><mi>x</mi><mo>=</mo><mn>9</mn></math>のとき：<math><msup><mn>3</mn><mn>2</mn></msup><mo>=</mo><mn>9</mn></math>だから<math><msub><mi>log</mi><mn>3</mn></msub><mn>9</mn><mo>=</mo><mn>2</mn><mo>→</mo></math>点 <b><math><mo>(</mo><mn>9</mn><mo>,</mo><mn>2</mn><mo>)</mo></math></b><br /><math><mo>⋅</mo><mi>x</mi><mo>=</mo><mfrac><mn>1</mn><mn>3</mn></mfrac></math> のとき：<math><msup><mn>3</mn><mrow><mo>−</mo><mn>1</mn></mrow></msup><mo>=</mo><mfrac><mn>1</mn><mn>3</mn></mfrac></math> だから<math><msub><mi>log</mi><mn>3</mn></msub><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>=</mo><mo>−</mo><mn>1</mn><mo>→</mo></math>点 <b><math><mo>(</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>,</mo><mo>−</mo><mn>1</mn><mo>)</mo></math></b></p>
+            <p>底 3 は 1 より大きいから、グラフは<b>右上がり</b>になるはず。<br>この4点をなめらかにつないだ形を、ノートに予想してから次へ進もう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (1)</h3>
-            <p>図の緑の曲線が <i>y</i>＝log<sub>3</sub><i>x</i> のグラフだよ。自分の予想と比べてみよう。</p>
-            <p>・点 (1, 0), (3, 1), (9, 2), (<span class="frac"><span class="ft">1</span><span class="fb">3</span></span>, −1) を通る<br />・<b><i>y</i> 軸を漸近線</b>として、<b>右上がり</b>の曲線になる</p>
-            <p class="note">底が 2 のとき（解説1）と形はよく似ているね。底が 3 の方が、少しだけ立ち上がりがゆるやかになる。</p>
+            <p>図の緑の曲線が <math><mi>y</mi><mo>=</mo><msub><mi>log</mi><mn>3</mn></msub><mi>x</mi></math> のグラフだよ。自分の予想と比べてみよう。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>底 <math><mi>a</mi><mo>&gt;</mo><mn>1</mn></math> のとき、<math><mi>y</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><mi>x</mi></math> のグラフは右上がりで、<math><mi>y</mi></math> 軸を漸近線とする。底 3 もこの場合で、通る点と合わせると曲線の形が決まるよ。</p>
+          <p>・点<math><mo>(</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo>)</mo><mo>,</mo><mo>(</mo><mn>3</mn><mo>,</mo><mn>1</mn><mo>)</mo><mo>,</mo><mo>(</mo><mn>9</mn><mo>,</mo><mn>2</mn><mo>)</mo><mo>,</mo><mo>(</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>,</mo><mo>−</mo><mn>1</mn><mo>)</mo></math>を通る<br />・<b><math><mi>y</mi></math> 軸を漸近線</b>として、<b>右上がり</b>の曲線になる</p>
+            <p class="note">底が 2 のとき（解説1）と形はよく似ているね。<br>底が 3 の方が、少しだけ立ち上がりがゆるやかになる。</p>
           </div>
           <p class="prob-done">(1) クリア！　(2) のタブも開いてみよう。</p>
         </div>
@@ -629,7 +675,7 @@
         <!-- (2) -->
         <div class="tabpanel" id="panel-ren19-2" data-flow="ren19-2" data-label="練習19 (2)">
           <div class="prob-head">
-            <span class="prob-q" style="margin:0">(2)　<i>y</i>＝log<sub>1/2</sub><i>x</i></span>
+            <span class="prob-q" style="margin:0">(2)　<math><mi>y</mi><mo>=</mo><msub><mi>log</mi><mfrac><mn>1</mn><mn>2</mn></mfrac></msub><mi>x</mi></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
@@ -683,24 +729,28 @@
           </figure>
           <div class="step hint">
             <h3>ヒント 1 ― まず「必ず通る点」を1つ打つ</h3>
-            <p>この関数でも、log<sub>1/2</sub>1＝0 だから点 <b>(1, 0)</b> を必ず通るよ。まずこの点を打とう。</p>
-            <p>ただし今回は底が <span class="frac"><span class="ft">1</span><span class="fb">2</span></span> で、<b>0 と 1 の間</b>の数。グラフの向きが (1) とは変わるはずだよ。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>どの底でも <math><msub><mi>log</mi><mi>a</mi></msub><mn>1</mn><mo>=</mo><mn>0</mn></math>（<math><msup><mi>a</mi><mn>0</mn></msup><mo>=</mo><mn>1</mn></math> だから）。底が <math><mfrac><mn>1</mn><mn>2</mn></mfrac></math> のこの問題でも <math><msub><mi>log</mi><mfrac><mn>1</mn><mn>2</mn></mfrac></msub><mn>1</mn><mo>=</mo><mn>0</mn></math> で、点<math><mo>(</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo>)</mo></math>を通るよ。</p>
+          <p>この関数でも、<math><msub><mi>log</mi><mfrac><mn>1</mn><mn>2</mn></mfrac></msub><mn>1</mn><mo>=</mo><mn>0</mn></math>だから点 <b><math><mo>(</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo>)</mo></math></b> を必ず通るよ。まずこの点を打とう。</p>
+            <p>ただし今回は底が <math><mfrac><mn>1</mn><mn>2</mn></mfrac></math> で、<b>0 と 1 の間</b>の数。<br>グラフの向きが (1) とは変わるはずだよ。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 底を使った点をもう1つ</h3>
-            <p><i>x</i>＝<span class="frac"><span class="ft">1</span><span class="fb">2</span></span> のときを考えよう。「<span class="frac"><span class="ft">1</span><span class="fb">2</span></span> を何乗すると <span class="frac"><span class="ft">1</span><span class="fb">2</span></span> になるか」→ 1 乗だね。log<sub>1/2</sub><span class="frac"><span class="ft">1</span><span class="fb">2</span></span>＝1。</p>
-            <p>だから点 <b>(<span class="frac"><span class="ft">1</span><span class="fb">2</span></span>, 1)</b> も通る。この点は (1, 0) より<b>左上</b>にあるね。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span><math><msub><mi>log</mi><mi>a</mi></msub><mi>a</mi><mo>=</mo><mn>1</mn></math>（<math><msup><mi>a</mi><mn>1</mn></msup><mo>=</mo><mi>a</mi></math> だから）。底が <math><mfrac><mn>1</mn><mn>2</mn></mfrac></math> のこの問題では <math><msub><mi>log</mi><mfrac><mn>1</mn><mn>2</mn></mfrac></msub><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>=</mo><mn>1</mn></math> だよ。</p>
+          <p><math><mi>x</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math> のときを考えよう。「<math><mfrac><mn>1</mn><mn>2</mn></mfrac></math> を何乗すると <math><mfrac><mn>1</mn><mn>2</mn></mfrac></math> になるか」→ 1 乗だね。<math><msub><mi>log</mi><mfrac><mn>1</mn><mn>2</mn></mfrac></msub><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>=</mo><mn>1</mn></math>。</p>
+            <p>だから点 <b><math><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>,</mo><mn>1</mn><mo>)</mo></math></b> も通る。この点は<math><mo>(</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo>)</mo></math>より<b>左上</b>にあるね。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 3 ― 点をあと2つ増やす</h3>
-            <p>・<i>x</i>＝<span class="frac"><span class="ft">1</span><span class="fb">4</span></span> のとき：(<span class="frac"><span class="ft">1</span><span class="fb">2</span></span>)<sup>2</sup>＝<span class="frac"><span class="ft">1</span><span class="fb">4</span></span> だから log<sub>1/2</sub><span class="frac"><span class="ft">1</span><span class="fb">4</span></span>＝2 → 点 <b>(<span class="frac"><span class="ft">1</span><span class="fb">4</span></span>, 2)</b><br />・<i>x</i>＝2 のとき：(<span class="frac"><span class="ft">1</span><span class="fb">2</span></span>)<sup>−1</sup>＝2 だから log<sub>1/2</sub>2＝−1 → 点 <b>(2, −1)</b></p>
-            <p><i>x</i> が大きくなるほど <i>y</i> は小さくなっている。つまり<b>右下がり</b>のグラフになるはず。この4点をなめらかにつないだ形を予想してから次へ進もう。</p>
+            <p class="cite"><span class="cite-tag">使う定義</span><math><msub><mi>log</mi><mfrac><mn>1</mn><mn>2</mn></mfrac></msub><mi>x</mi></math> は「<math><mfrac><mn>1</mn><mn>2</mn></mfrac></math> を何乗すると <math><mi>x</mi></math> になるか」という指数のこと。<math><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mfrac><mn>1</mn><mn>4</mn></mfrac></math>、<math><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msup><mo>=</mo><mn>2</mn></math> と見て、2つの値を決めるよ。</p>
+          <p><math><mo>⋅</mo><mi>x</mi><mo>=</mo><mfrac><mn>1</mn><mn>4</mn></mfrac></math> のとき：<math><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mfrac><mn>1</mn><mn>4</mn></mfrac></math> だから<math><msub><mi>log</mi><mfrac><mn>1</mn><mn>2</mn></mfrac></msub><mfrac><mn>1</mn><mn>4</mn></mfrac><mo>=</mo><mn>2</mn><mo>→</mo></math>点 <b><math><mo>(</mo><mfrac><mn>1</mn><mn>4</mn></mfrac><mo>,</mo><mn>2</mn><mo>)</mo></math></b><br /><math><mo>⋅</mo><mi>x</mi><mo>=</mo><mn>2</mn></math>のとき：<math><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msup><mo>=</mo><mn>2</mn></math>だから<math><msub><mi>log</mi><mfrac><mn>1</mn><mn>2</mn></mfrac></msub><mn>2</mn><mo>=</mo><mo>−</mo><mn>1</mn><mo>→</mo></math>点 <b><math><mo>(</mo><mn>2</mn><mo>,</mo><mo>−</mo><mn>1</mn><mo>)</mo></math></b></p>
+            <p><math><mi>x</mi></math> が大きくなるほど <math><mi>y</mi></math> は小さくなっている。<br>つまり<b>右下がり</b>のグラフになるはず。この4点をなめらかにつないだ形を予想してから次へ進もう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (2)</h3>
-            <p>図の緑の曲線が <i>y</i>＝log<sub>1/2</sub><i>x</i> のグラフだよ。</p>
-            <p>・点 (1, 0), (<span class="frac"><span class="ft">1</span><span class="fb">2</span></span>, 1), (<span class="frac"><span class="ft">1</span><span class="fb">4</span></span>, 2), (2, −1) を通る<br />・<b><i>y</i> 軸を漸近線</b>として、<b>右下がり</b>の曲線になる</p>
-            <p class="note">(1) との違いは「右上がりか、右下がりか」。決め手は<b>底が 1 より大きいか、小さいか</b>だよ。</p>
+            <p>図の緑の曲線が <math><mi>y</mi><mo>=</mo><msub><mi>log</mi><mfrac><mn>1</mn><mn>2</mn></mfrac></msub><mi>x</mi></math> のグラフだよ。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>底 <math><mn>0</mn><mo>&lt;</mo><mi>a</mi><mo>&lt;</mo><mn>1</mn></math> のとき、<math><mi>y</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><mi>x</mi></math> のグラフは右下がりで、<math><mi>y</mi></math> 軸を漸近線とする。底 <math><mfrac><mn>1</mn><mn>2</mn></mfrac></math> もこの場合で、通る点と合わせると曲線の形が決まるよ。</p>
+          <p>・点<math><mo>(</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo>)</mo><mo>,</mo><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>,</mo><mn>1</mn><mo>)</mo><mo>,</mo><mo>(</mo><mfrac><mn>1</mn><mn>4</mn></mfrac><mo>,</mo><mn>2</mn><mo>)</mo><mo>,</mo><mo>(</mo><mn>2</mn><mo>,</mo><mo>−</mo><mn>1</mn><mo>)</mo></math>を通る<br />・<b><math><mi>y</mi></math> 軸を漸近線</b>として、<b>右下がり</b>の曲線になる</p>
+            <p class="note">(1) との違いは「右上がりか、右下がりか」。<br>決め手は<b>底が 1 より大きいか、小さいか</b>だよ。</p>
           </div>
           <p class="prob-done">(2) クリア！　練習19 はこれで終わり。次は対数関数の特徴をまとめよう。</p>
         </div>
@@ -721,7 +771,7 @@
           </div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
-        <p class="prob-q">グラフから読み取れる、対数関数 <i>y</i>＝log<sub>a</sub><i>x</i> の特徴をまとめよう。</p>
+        <p class="prob-q">グラフから読み取れる、対数関数 <math><mi>y</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><mi>x</mi></math> の特徴をまとめよう。</p>
 
         <figure>
           <div class="figbox">
@@ -783,33 +833,38 @@
               </g>
             </svg>
           </div>
-          <figcaption>左と右で、同じ <i>p</i>, <i>q</i> に対する log の値の大小がどう違うかを見比べよう。</figcaption>
+          <figcaption>左と右で、同じ <math><mi>p</mi><mo>,</mo><mi>q</mi></math> に対する log の値の大小がどう違うかを見比べよう。</figcaption>
         </figure>
 
         <div class="step hint">
           <h3>ヒント 1 ― 定義域と値域をグラフで確認する</h3>
-          <p>左の図に、底 2 のグラフを表示したよ。色のついた範囲（<i>y</i> 軸の右側）にだけ曲線があるね。</p>
-          <p>つまり、<i>x</i> が<b>正の数</b>のときだけ値が決まる。これが<span class="key">定義域は正の数全体</span>ということ。</p>
-          <p>一方、<i>y</i> の値は、曲線を下へも上へも限りなくたどれるから、<b>すべての実数</b>をとる。これが<span class="key">値域は実数全体</span>ということだよ。</p>
+          <p>左の図に、底 2 のグラフを表示したよ。<br>色のついた範囲<math><mo>(</mo><mi>y</mi></math> 軸の右側）にだけ曲線があるね。</p>
+          <p class="cite"><span class="cite-tag">使う定義</span>対数 <math><msub><mi>log</mi><mi>a</mi></msub><mi>x</mi></math> が定義されるのは、真数が正のとき、つまり <math><mi>x</mi><mo>&gt;</mo><mn>0</mn></math> のときだけ（<math><msup><mi>a</mi><mi>y</mi></msup></math> はいつも正だから）。だから定義域は正の数全体になるよ。</p>
+          <p>つまり、<math><mi>x</mi></math> が<b>正の数</b>のときだけ値が決まる。これが<span class="key">定義域は正の数全体</span>ということ。</p>
+          <p>一方、<math><mi>y</mi></math> の値は、曲線を下へも上へも限りなくたどれるから、<b>すべての実数</b>をとる。<br>これが<span class="key">値域は実数全体</span>ということだよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― <i>a</i>＞1 のとき：値は「そろって」大きくなる</h3>
-          <p>左の図で、2つの数 <i>p</i>＝1 と <i>q</i>＝4 に対する log の値を読んでみよう。</p>
-          <p>・log<sub>2</sub><i>p</i>＝log<sub>2</sub>1＝<b>0</b>　・log<sub>2</sub><i>q</i>＝log<sub>2</sub>4＝<b>2</b></p>
-          <p><i>p</i>＜<i>q</i> のとき、log の値も 0＜2 と<b>同じ向きに</b>大きくなっているね。右上がりのグラフだから、これはいつでも成り立つよ。</p>
+          <h3>ヒント<math><mn>2</mn><mo>―</mo><mi>a</mi><mo>&gt;</mo><mn>1</mn></math>のとき：値は「そろって」大きくなる</h3>
+          <p>左の図で、2つの数 <math><mi>p</mi><mo>=</mo><mn>1</mn></math>と <math><mi>q</mi><mo>=</mo><mn>4</mn></math>に対する log の値を読んでみよう。</p>
+          <p class="cite"><span class="cite-tag">使う定義</span>対数の定義で値を読む：<math><msup><mn>2</mn><mn>0</mn></msup><mo>=</mo><mn>1</mn></math> から <math><msub><mi>log</mi><mn>2</mn></msub><mn>1</mn><mo>=</mo><mn>0</mn></math>、<math><msup><mn>2</mn><mn>2</mn></msup><mo>=</mo><mn>4</mn></math> から <math><msub><mi>log</mi><mn>2</mn></msub><mn>4</mn><mo>=</mo><mn>2</mn></math>。この2つの値の大小を、もとの数の大小と比べるよ。</p>
+          <p><math><mo>⋅</mo><msub><mi>log</mi><mn>2</mn></msub><mi>p</mi><mo>=</mo><msub><mi>log</mi><mn>2</mn></msub><mn>1</mn><mo>=</mo></math><b>0</b>　<math><mo>⋅</mo><msub><mi>log</mi><mn>2</mn></msub><mi>q</mi><mo>=</mo><msub><mi>log</mi><mn>2</mn></msub><mn>4</mn><mo>=</mo></math><b>2</b></p>
+          <p><math><mi>p</mi><mo>&lt;</mo><mi>q</mi></math> のとき、log の値も 0＜2 と<b>同じ向きに</b>大きくなっているね。<br>右上がりのグラフだから、これはいつでも成り立つよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 3 ― 0＜<i>a</i>＜1 のとき：値の大小が「逆」になる</h3>
-          <p>右の図に、底 <span class="frac"><span class="ft">1</span><span class="fb">2</span></span> のグラフを表示したよ。同じ <i>p</i>＝1、<i>q</i>＝4 で値を読んでみよう。</p>
-          <p>・log<sub>1/2</sub><i>p</i>＝log<sub>1/2</sub>1＝<b>0</b>　・log<sub>1/2</sub><i>q</i>＝log<sub>1/2</sub>4＝<b>−2</b></p>
-          <p>今度は <i>p</i>＜<i>q</i> なのに、log の値は 0＞−2 と<b>逆向き</b>になった。右下がりのグラフだからだね。</p>
+          <h3>ヒント<math><mn>3</mn><mo>―</mo><mn>0</mn><mo>&lt;</mo><mi>a</mi><mo>&lt;</mo><mn>1</mn></math>のとき：値の大小が「逆」になる</h3>
+          <p>右の図に、底 <math><mfrac><mn>1</mn><mn>2</mn></mfrac></math> のグラフを表示したよ。同じ <math><mi>p</mi><mo>=</mo><mn>1</mn></math>、<math><mi>q</mi><mo>=</mo><mn>4</mn></math>で値を読んでみよう。</p>
+          <p class="cite"><span class="cite-tag">使う定義</span>対数の定義で値を読む：<math><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo></mrow><mn>0</mn></msup><mo>=</mo><mn>1</mn></math> から <math><msub><mi>log</mi><mfrac><mn>1</mn><mn>2</mn></mfrac></msub><mn>1</mn><mo>=</mo><mn>0</mn></math>、<math><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo></mrow><mrow><mo>−</mo><mn>2</mn></mrow></msup><mo>=</mo><mn>4</mn></math> から <math><msub><mi>log</mi><mfrac><mn>1</mn><mn>2</mn></mfrac></msub><mn>4</mn><mo>=</mo><mo>−</mo><mn>2</mn></math>。この2つの値の大小を比べるよ。</p>
+          <p><math><mo>⋅</mo><msub><mi>log</mi><mfrac><mn>1</mn><mn>2</mn></mfrac></msub><mi>p</mi><mo>=</mo><msub><mi>log</mi><mfrac><mn>1</mn><mn>2</mn></mfrac></msub><mn>1</mn><mo>=</mo></math><b>0</b>　<math><mo>⋅</mo><msub><mi>log</mi><mfrac><mn>1</mn><mn>2</mn></mfrac></msub><mi>q</mi><mo>=</mo><msub><mi>log</mi><mfrac><mn>1</mn><mn>2</mn></mfrac></msub><mn>4</mn><mo>=</mo></math><b>−2</b></p>
+          <p>今度は <math><mi>p</mi><mo>&lt;</mo><mi>q</mi></math> なのに、log の値は 0＞−2 と<b>逆向き</b>になった。<br>右下がりのグラフだからだね。</p>
         </div>
         <div class="step answer">
-          <h3>まとめ ― 対数関数 <i>y</i>＝log<sub>a</sub><i>x</i> の特徴</h3>
+          <h3>まとめ ― 対数関数 <math><mi>y</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><mi>x</mi></math> の特徴</h3>
           <p><b>1.</b>　定義域は<b>正の数全体</b>、値域は<b>実数全体</b>である。</p>
-          <p><b>2.</b>　<i>a</i>＞1 のとき、<b>増加関数</b>である。すなわち<br />　　0＜<i>p</i>＜<i>q</i>　⟺　log<sub>a</sub><i>p</i>＜log<sub>a</sub><i>q</i></p>
-          <p><b>3.</b>　0＜<i>a</i>＜1 のとき、<b>減少関数</b>である。すなわち<br />　　0＜<i>p</i>＜<i>q</i>　⟺　log<sub>a</sub><i>p</i>＞log<sub>a</sub><i>q</i></p>
-          <p class="note"><b>注意：</b><i>p</i>＞0, <i>q</i>＞0 のとき、次が成り立つ。<br />　　<i>p</i>＝<i>q</i>　⟺　log<sub>a</sub><i>p</i>＝log<sub>a</sub><i>q</i><br />つまり、log の値が等しいのは、もとの数が等しいときに限る。この性質は、次のページの方程式・不等式で使うよ。</p>
+          <p class="cite"><span class="cite-tag">使う性質</span><math><mi>a</mi><mo>&gt;</mo><mn>1</mn></math> のとき増加関数である、すなわち <math><mn>0</mn><mo>&lt;</mo><mi>p</mi><mo>&lt;</mo><mi>q</mi><mo>⟺</mo><msub><mi>log</mi><mi>a</mi></msub><mi>p</mi><mo>&lt;</mo><msub><mi>log</mi><mi>a</mi></msub><mi>q</mi></math>。もとの数と log の値で、大小の向きがそろうのがこの場合の決まりだよ。</p>
+          <p><b>2.</b>　<math><mi>a</mi><mo>&gt;</mo><mn>1</mn></math>のとき、<b>増加関数</b>である。すなわち<br />　　<math><mn>0</mn><mo>&lt;</mo><mi>p</mi><mo>&lt;</mo><mi>q</mi></math>　⟺　<math><msub><mi>log</mi><mi>a</mi></msub><mi>p</mi><mo>&lt;</mo><msub><mi>log</mi><mi>a</mi></msub><mi>q</mi></math></p>
+          <p class="cite"><span class="cite-tag">使う性質</span><math><mn>0</mn><mo>&lt;</mo><mi>a</mi><mo>&lt;</mo><mn>1</mn></math> のとき減少関数である、すなわち <math><mn>0</mn><mo>&lt;</mo><mi>p</mi><mo>&lt;</mo><mi>q</mi><mo>⟺</mo><msub><mi>log</mi><mi>a</mi></msub><mi>p</mi><mo>&gt;</mo><msub><mi>log</mi><mi>a</mi></msub><mi>q</mi></math>。もとの数と log の値で、大小の向きが逆になるのがこの場合の決まりだよ。</p>
+          <p><b>3.</b>　<math><mn>0</mn><mo>&lt;</mo><mi>a</mi><mo>&lt;</mo><mn>1</mn></math>のとき、<b>減少関数</b>である。すなわち<br />　　<math><mn>0</mn><mo>&lt;</mo><mi>p</mi><mo>&lt;</mo><mi>q</mi></math>　⟺　<math><msub><mi>log</mi><mi>a</mi></msub><mi>p</mi><mo>&gt;</mo><msub><mi>log</mi><mi>a</mi></msub><mi>q</mi></math></p>
+          <p class="note"><b>注意：</b><math><mi>p</mi><mo>&gt;</mo><mn>0</mn><mo>,</mo><mi>q</mi><mo>&gt;</mo><mn>0</mn></math>のとき、次が成り立つ。<br />　　<math><mi>p</mi><mo>=</mo><mi>q</mi></math>　⟺　<math><msub><mi>log</mi><mi>a</mi></msub><mi>p</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><mi>q</mi></math><br />つまり、log の値が等しいのは、もとの数が等しいときに限る。<br>この性質は、次のページの方程式・不等式で使うよ。</p>
         </div>
         <p class="prob-done">解説3 クリア！　この項はこれで全部終わり。下のポイントで最終確認をしよう。</p>
       </section>
@@ -823,11 +878,14 @@
       <section class="card summary" id="summaryCard" style="display:none">
         <h2>この項のポイント</h2>
         <ul>
-          <li><b>対数関数 <i>y</i>＝log<sub>a</sub><i>x</i></b>（<i>a</i> は 1 と異なる正の定数）。対応表は、<i>y</i>＝<i>a</i><sup><i>x</i></sup> の表の <i>x</i> と <i>y</i> を入れ替えて作れる。</li>
-          <li><b>グラフは <i>y</i>＝<i>a</i><sup><i>x</i></sup> と直線 <i>y</i>＝<i>x</i> に関して対称。</b><i>y</i> 軸が漸近線で、点 (1, 0)、(<i>a</i>, 1) を通る。</li>
-          <li><b>底で向きが決まる。</b><i>a</i>＞1 なら右上がり（増加関数）、0＜<i>a</i>＜1 なら右下がり（減少関数）。</li>
+          <li><b>対数関数 <math><mi>y</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><mi>x</mi></math></b><math><mo>(</mo><mi>a</mi></math> は 1 と異なる正の定数）。<br>対応表は、<math><mi>y</mi><mo>=</mo><msup><mi>a</mi><mi>x</mi></msup></math> の表の <math><mi>x</mi></math> と <math><mi>y</mi></math> を入れ替えて作れる。</li>
+          <li><p class="cite"><span class="cite-tag">使う性質</span><math><mi>y</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><mi>x</mi></math> のグラフは、<math><mi>y</mi><mo>=</mo><msup><mi>a</mi><mi>x</mi></msup></math> のグラフと直線 <math><mi>y</mi><mo>=</mo><mi>x</mi></math> に関して対称。この対称性が、漸近線と通る点の根拠になっているよ。</p>
+          <b>グラフは <math><mi>y</mi><mo>=</mo><msup><mi>a</mi><mi>x</mi></msup></math> と直線 <math><mi>y</mi><mo>=</mo><mi>x</mi></math> に関して対称。</b><math><mi>y</mi></math> 軸が漸近線で、点<math><mo>(</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo>)</mo></math>、<math><mo>(</mo><mi>a</mi><mo>,</mo><mn>1</mn><mo>)</mo></math>を通る。</li>
+          <li><p class="cite"><span class="cite-tag">使う性質</span><math><mi>a</mi><mo>&gt;</mo><mn>1</mn></math> なら増加関数（右上がり）、<math><mn>0</mn><mo>&lt;</mo><mi>a</mi><mo>&lt;</mo><mn>1</mn></math> なら減少関数（右下がり）。グラフの向きは、底と 1 の大小だけで決まるよ。</p>
+          <b>底で向きが決まる。</b><math><mi>a</mi><mo>&gt;</mo><mn>1</mn></math>なら右上がり（増加関数）、<math><mn>0</mn><mo>&lt;</mo><mi>a</mi><mo>&lt;</mo><mn>1</mn></math>なら右下がり（減少関数）。</li>
           <li><b>定義域は正の数全体、値域は実数全体。</b>真数（log の中身）は必ず正、という約束につながる。</li>
-          <li><b>大小の向き：</b><i>a</i>＞1 では <i>p</i>＜<i>q</i> ⟺ log<sub>a</sub><i>p</i>＜log<sub>a</sub><i>q</i>（同じ向き）、0＜<i>a</i>＜1 では不等号が逆になる。</li>
+          <li><p class="cite"><span class="cite-tag">使う性質</span><math><mi>a</mi><mo>&gt;</mo><mn>1</mn></math> では <math><mi>p</mi><mo>&lt;</mo><mi>q</mi><mo>⟺</mo><msub><mi>log</mi><mi>a</mi></msub><mi>p</mi><mo>&lt;</mo><msub><mi>log</mi><mi>a</mi></msub><mi>q</mi></math> と大小が同じ向きになる。この「同じ向き・逆向き」の決まりが、大小比較の土台だよ。</p>
+          <b>大小の向き：</b><math><mi>a</mi><mo>&gt;</mo><mn>1</mn></math>では <math><mi>p</mi><mo>&lt;</mo><mi>q</mi><mo>⟺</mo><msub><mi>log</mi><mi>a</mi></msub><mi>p</mi><mo>&lt;</mo><msub><mi>log</mi><mi>a</mi></msub><mi>q</mi><mo>(</mo></math>同じ向き）、<br><math><mn>0</mn><mo>&lt;</mo><mi>a</mi><mo>&lt;</mo><mn>1</mn></math>では不等号が逆になる。</li>
         </ul>
       </section>
 

@@ -281,7 +281,45 @@
           scrollbar-width:thin;
         }
       }
-    </style>
+    
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+</style>
   </head>
   <body>
     <div class="wrap">
@@ -322,8 +360,8 @@
           </div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
-        <p class="prob-q">関数 f(x)＝x<sup>2</sup> について、x＝a における微分係数 f′(a) を、定義にしたがって計算してみよう。</p>
-        <p>前の項で学んだとおり、微分係数は <b>x＝a における接線の傾き</b>だった。まず図でイメージを確認しよう。</p>
+        <p class="prob-q">関数<math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup></math> について、<math><mi>x</mi><mo>=</mo><mi>a</mi></math>における微分係数 f′(a) を、定義にしたがって計算してみよう。</p>
+        <p>前の項で学んだとおり、微分係数は <b><math><mi>x</mi><mo>=</mo><mi>a</mi></math>における接線の傾き</b>だった。まず図でイメージを確認しよう。</p>
         <figure>
           <div class="figbox">
             <svg viewBox="0 0 520 300" role="img" aria-label="放物線 y＝x の2乗と、点(a, aの2乗)における接線の図">
@@ -346,56 +384,65 @@
               <text x="330" y="166" class="svg-txt-soft" font-size="13.5">傾きが f′(a)</text>
             </svg>
           </div>
-          <figcaption>点 (a, a<sup>2</sup>) における接線の傾きが、微分係数 f′(a)。a の場所が変われば、傾きも変わる。</figcaption>
+          <figcaption>点<math><mo>(</mo><mi>a</mi><mo>,</mo><msup><mi>a</mi><mn>2</mn></msup><mo>)</mo></math>における接線の傾きが、微分係数 f′(a)。a の場所が変われば、傾きも変わる。</figcaption>
         </figure>
-        <p>微分係数の定義は f′(a)＝<span class="limd"><span>lim</span><span class="lim-b">h→0</span></span><span class="frac"><span class="num">f(a＋h)−f(a)</span><span class="den">h</span></span> だったね。下の「次へ」で、計算を1行ずつ進めてみよう。</p>
+        <p>微分係数の定義は<math><mi>f</mi><mi>′</mi><mo>(</mo><mi>a</mi><mo>)</mo><mo>=</mo><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><mi>f</mi><mo>(</mo><mi>a</mi><mo>+</mo><mi>h</mi><mo>)</mo><mo>−</mo><mi>f</mi><mo>(</mo><mi>a</mi><mo>)</mo></mrow><mi>h</mi></mfrac></math> だったね。下の「次へ」で、計算を1行ずつ進めてみよう。</p>
         </div>
 
         <div class="flow-steps">
         <div class="step hint">
           <h3>計算 1 ― 定義にあてはめる</h3>
-          <p>f(x)＝x<sup>2</sup> だから、f(a＋h)＝(a＋h)<sup>2</sup>、f(a)＝a<sup>2</sup>。これを定義の式に入れると…</p>
-          <p class="calc">f′(a) ＝ <span class="limd"><span>lim</span><span class="lim-b">h→0</span></span><span class="frac"><span class="num">(a＋h)<sup>2</sup>−a<sup>2</sup></span><span class="den">h</span></span></p>
+          <p class="cite"><span class="cite-tag">使う定義</span>微分係数の定義 <math><mi>f</mi><mi>′</mi><mo>(</mo><mi>a</mi><mo>)</mo><mo>=</mo><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><mi>f</mi><mo>(</mo><mi>a</mi><mo>+</mo><mi>h</mi><mo>)</mo><mo>−</mo><mi>f</mi><mo>(</mo><mi>a</mi><mo>)</mo></mrow><mi>h</mi></mfrac></math>。このステップでは、f(x)＝xの2乗をこの定義に当てはめて、f′(a) を計算し始めるよ。</p>
+          <p><math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup></math> だから、<math><mi>f</mi><mo>(</mo><mi>a</mi><mo>+</mo><mi>h</mi><mo>)</mo><mo>=</mo><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>h</mi><mo>)</mo></mrow><mn>2</mn></msup></math>、<math><mi>f</mi><mo>(</mo><mi>a</mi><mo>)</mo><mo>=</mo><msup><mi>a</mi><mn>2</mn></msup></math>。<br>これを定義の式に入れると…</p>
+          <p class="calc"><math><mi>f</mi><mi>′</mi><mo>(</mo><mi>a</mi><mo>)</mo><mo>=</mo><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>h</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><msup><mi>a</mi><mn>2</mn></msup></mrow><mi>h</mi></mfrac></math></p>
         </div>
         <div class="step hint">
           <h3>計算 2 ― 分子を展開する</h3>
-          <p>(a＋h)<sup>2</sup> を展開すると a<sup>2</sup>＋2ah＋h<sup>2</sup>。a<sup>2</sup> が消えて、分子は 2ah＋h<sup>2</sup> になる。h でくくるところまで進めよう。</p>
-          <p class="calc">分子 ＝ (a<sup>2</sup>＋2ah＋h<sup>2</sup>) − a<sup>2</sup> ＝ 2ah＋h<sup>2</sup> ＝ h(2a＋h)</p>
-          <p class="calc">f′(a) ＝ <span class="limd"><span>lim</span><span class="lim-b">h→0</span></span><span class="frac"><span class="num">h(2a＋h)</span><span class="den">h</span></span></p>
+          <p class="cite"><span class="cite-tag">使う公式</span>展開公式 <math><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>h</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>a</mi><mi>h</mi><mo>+</mo><msup><mi>h</mi><mn>2</mn></msup></math>。分子の（a＋h）の2乗は、この公式で3つの項に分けてから整理するよ。</p>
+          <p><math><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>h</mi><mo>)</mo></mrow><mn>2</mn></msup></math> を展開すると<math><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>a</mi><mi>h</mi><mo>+</mo><msup><mi>h</mi><mn>2</mn></msup></math>。<math><msup><mi>a</mi><mn>2</mn></msup></math> が消えて、分子は<math><mn>2</mn><mi>a</mi><mi>h</mi><mo>+</mo><msup><mi>h</mi><mn>2</mn></msup></math> になる。<br>h でくくるところまで進めよう。</p>
+          <p>分子</p>
+<div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mo>=</mo><mo>(</mo><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>a</mi><mi>h</mi><mo>+</mo><msup><mi>h</mi><mn>2</mn></msup><mo>)</mo><mo>−</mo><msup><mi>a</mi><mn>2</mn></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo><mn>2</mn><mi>a</mi><mi>h</mi><mo>+</mo><msup><mi>h</mi><mn>2</mn></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo><mi>h</mi><mo>(</mo><mn>2</mn><mi>a</mi><mo>+</mo><mi>h</mi><mo>)</mo></math></div>
+</div>
+          <p class="calc"><math><mi>f</mi><mi>′</mi><mo>(</mo><mi>a</mi><mo>)</mo><mo>=</mo><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><mi>h</mi><mo>(</mo><mn>2</mn><mi>a</mi><mo>+</mo><mi>h</mi><mo>)</mo></mrow><mi>h</mi></mfrac></math></p>
         </div>
         <div class="step hint">
           <h3>計算 3 ― h で約分して、h→0 とする</h3>
-          <p>h≠0 だから、分子と分母の h を約分できる。あとは h を 0 に近づけるだけだ。</p>
-          <p class="calc">f′(a) ＝ <span class="limd"><span>lim</span><span class="lim-b">h→0</span></span>(2a＋h)</p>
-          <p>h→0 のとき 2a＋h は 2a に近づく。つまり f′(a) の値は…？　最後のステップで確認しよう。</p>
+          <p class="cite"><span class="cite-tag">使う性質</span>極限の性質 <math><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mo>(</mo><mn>2</mn><mi>a</mi><mo>+</mo><mi>h</mi><mo>)</mo><mo>=</mo><mn>2</mn><mi>a</mi></math>。h を含む項だけが 0 に近づくので、h で約分したあとの極限はこの形で決まるよ。</p>
+          <p>h≠0 だから、分子と分母の h を約分できる。<br>あとは h を 0 に近づけるだけだ。</p>
+          <p class="calc"><math><mi>f</mi><mi>′</mi><mo>(</mo><mi>a</mi><mo>)</mo><mo>=</mo><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mo>(</mo><mn>2</mn><mi>a</mi><mo>+</mo><mi>h</mi><mo>)</mo></math></p>
+          <p>h→0 のとき 2a＋h は 2a に近づく。<br>つまり f′(a) の値は…？　最後のステップで確認しよう。</p>
         </div>
         <div class="step answer">
           <h3>まとめ ― 導関数の定義</h3>
-          <p class="big">f′(a) ＝ 2a</p>
-          <p>ここで a に注目しよう。a＝1 なら f′(1)＝2、a＝2 なら f′(2)＝4 のように、<b>a の値を決めると f′(a) の値がただ1つ決まる</b>。つまり f′(a) は <b>a の関数</b>になっている。</p>
-          <p>そこで、変数 a を x と書き直した関数 f′(x) を、もとの関数 f(x) の<span class="key">導関数</span>という。一般の関数については、次のように定義する。</p>
-          <p class="formula">導関数　f′(x) ＝ <span class="limd"><span>lim</span><span class="lim-b">h→0</span></span><span class="frac"><span class="num">f(x＋h)−f(x)</span><span class="den">h</span></span></p>
-          <p>導関数を求めることを、<b>f(x) を微分する</b>という。また、f(x) の導関数を表す記号には、f′(x) のほかに <b>y′</b>、<b><span class="frac" style="font-size:.92em"><span class="num">dy</span><span class="den">dx</span></span></b> などがある（y＝f(x) のとき）。</p>
-          <p class="note">このページの f(x)＝x<sup>2</sup> の導関数は f′(x)＝2x。「x＝a での傾き」を、a を動かせる<b>関数</b>としてまとめたものが導関数だよ。</p>
+          <p class="big"><math display="block"><mi>f</mi><mi>′</mi><mo>(</mo><mi>a</mi><mo>)</mo><mo>=</mo><mn>2</mn><mi>a</mi></math></p>
+          <p>ここで a に注目しよう。<br><math><mi>a</mi><mo>=</mo><mn>1</mn></math>なら<math><mi>f</mi><mi>′</mi><mo>(</mo><mn>1</mn><mo>)</mo><mo>=</mo><mn>2</mn></math>、<math><mi>a</mi><mo>=</mo><mn>2</mn></math>なら<math><mi>f</mi><mi>′</mi><mo>(</mo><mn>2</mn><mo>)</mo><mo>=</mo><mn>4</mn></math>のように、<b>a の値を決めると f′(a) の値がただ1つ決まる</b>。つまり f′(a) は <b>a の関数</b>になっている。</p>
+          <p>そこで、変数 a を x と書き直した関数 f′(x) を、もとの関数 f(x) の<span class="key">導関数</span>という。<br>一般の関数については、次のように定義する。</p>
+          <p class="cite"><span class="cite-tag">使う定義</span>導関数の定義 <math><mi>f</mi><mi>′</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>+</mo><mi>h</mi><mo>)</mo><mo>−</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><mi>h</mi></mfrac></math>。変数 a を x と書き直すと、微分係数を求める式がそのまま導関数の定義になるよ。</p>
+          <p class="formula">導関数　<math><mi>f</mi><mi>′</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>+</mo><mi>h</mi><mo>)</mo><mo>−</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><mi>h</mi></mfrac></math></p>
+          <p>導関数を求めることを、<b>f(x) を微分する</b>という。<br>また、f(x) の導関数を表す記号には、f′(x) のほかに <b>y′</b>、<b><math><mfrac><mrow><mi>d</mi><mi>y</mi></mrow><mrow><mi>d</mi><mi>x</mi></mrow></mfrac></math></b> などがある<math><mo>(</mo><mi>y</mi><mo>=</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>のとき）。</p>
+          <p class="note">このページの<math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup></math> の導関数は<math><mi>f</mi><mi>′</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mn>2</mn><mi>x</mi></math>。「<math><mi>x</mi><mo>=</mo><mi>a</mi></math>での傾き」を、a を動かせる<b>関数</b>としてまとめたものが導関数だよ。</p>
         </div>
-        <p class="prob-done">解説A クリア！　次は練習5で、f′(a)＝2a を使ってみよう。</p>
+        <p class="prob-done">解説A クリア！　次は練習5で、<math><mi>f</mi><mi>′</mi><mo>(</mo><mi>a</mi><mo>)</mo><mo>=</mo><mn>2</mn><mi>a</mi></math>を使ってみよう。</p>
         </div>
       </section>
 
       <!-- ================= 練習5 ================= -->
       <div class="sec-head">
         <span class="sec-tag">練習</span>
-        <h2>f′(a)＝2a を使ってみる</h2>
+        <h2><math><mi>f</mi><mi>′</mi><mo>(</mo><mi>a</mi><mo>)</mo><mo>=</mo><mn>2</mn><mi>a</mi></math>を使ってみる</h2>
         <span class="pno">教科書 p.182</span>
       </div>
 
-      <section class="card prob" id="prob-ren5">
+      <section class="nofig card prob" id="prob-ren5">
         <div class="flow-main">
         <div class="prob-head">
           <span class="prob-tag ren">練習 5</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
-        <p class="prob-q">関数 f(x)＝x<sup>2</sup> について、解説Aで求めた <b>f′(a)＝2a</b> を利用して、次の微分係数を求めよ。</p>
+        <p class="prob-q">関数<math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup></math> について、解説Aで求めた <b><math><mi>f</mi><mi>′</mi><mo>(</mo><mi>a</mi><mo>)</mo><mo>=</mo><mn>2</mn><mi>a</mi></math></b> を利用して、次の微分係数を求めよ。</p>
         </div>
 
         <div class="flow-steps">
@@ -406,7 +453,7 @@
         </div>
 
         <!-- (1) -->
-        <div class="tabpanel show" id="panel-ren5-1" data-flow="ren5-1" data-label="練習5 (1)">
+        <div class="nofig tabpanel show" id="panel-ren5-1" data-flow="ren5-1" data-label="練習5 (1)">
           <div class="prob-head">
             <span class="sub prob-q" style="margin:0">(1) f′(4)</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
@@ -414,24 +461,25 @@
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― 使う式を決める</h3>
-            <p>解説Aで、f(x)＝x<sup>2</sup> のとき <b>f′(a)＝2a</b> が分かっている。f′(4) は「a が 4 のときの f′(a)」のことだ。</p>
+            <p class="cite"><span class="cite-tag">使う公式</span>解説Aで求めた結果 <math><mi>f</mi><mi>′</mi><mo>(</mo><mi>a</mi><mo>)</mo><mo>=</mo><mn>2</mn><mi>a</mi></math>。f′(4) は a＝4 の場合なので、この式の a に 4 を代入するよ。</p>
+          <p>解説Aで、<math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup></math> のとき <b><math><mi>f</mi><mi>′</mi><mo>(</mo><mi>a</mi><mo>)</mo><mo>=</mo><mn>2</mn><mi>a</mi></math></b> が分かっている。<br>f′(4) は「a が 4 のときの f′(a)」のことだ。</p>
             <p>だから、式の <b>a のところに 4 を代入</b>すればよい。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 代入して式を作る</h3>
-            <p class="calc">f′(4) ＝ 2 × 4</p>
+            <p class="calc"><math><mi>f</mi><mi>′</mi><mo>(</mo><mn>4</mn><mo>)</mo><mo>=</mo><mn>2</mn><mo>×</mo><mn>4</mn></math></p>
             <p>あとは、この計算をするだけだよ。</p>
           </div>
           <div class="step answer">
             <h3>解答 (1)</h3>
-            <p class="big">f′(4) ＝ 8</p>
-            <p>f′(a)＝2a に a＝4 を代入して、2×4＝8。x＝4 における接線の傾きは 8 ということだね。</p>
+            <p class="big"><math display="block"><mi>f</mi><mi>′</mi><mo>(</mo><mn>4</mn><mo>)</mo><mo>=</mo><mn>8</mn></math></p>
+            <p><math><mi>f</mi><mi>′</mi><mo>(</mo><mi>a</mi><mo>)</mo><mo>=</mo><mn>2</mn><mi>a</mi></math>に<math><mi>a</mi><mo>=</mo><mn>4</mn></math>を代入して、<math><mn>2</mn><mo>×</mo><mn>4</mn><mo>=</mo><mn>8</mn></math>。<math><mi>x</mi><mo>=</mo><mn>4</mn></math>における接線の傾きは 8 ということだね。</p>
           </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
 
         <!-- (2) -->
-        <div class="tabpanel" id="panel-ren5-2" data-flow="ren5-2" data-label="練習5 (2)">
+        <div class="nofig tabpanel" id="panel-ren5-2" data-flow="ren5-2" data-label="練習5 (2)">
           <div class="prob-head">
             <span class="sub prob-q" style="margin:0">(2) f′(0)</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
@@ -439,24 +487,25 @@
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― a に 0 を代入する</h3>
-            <p>やることは (1) と同じ。f′(a)＝2a の <b>a のところに 0</b> を入れる。</p>
-            <p class="calc">f′(0) ＝ 2 × 0</p>
+            <p class="cite"><span class="cite-tag">使う公式</span>解説Aで求めた結果 <math><mi>f</mi><mi>′</mi><mo>(</mo><mi>a</mi><mo>)</mo><mo>=</mo><mn>2</mn><mi>a</mi></math>。f′(0) は a＝0 の場合なので、この式の a に 0 を代入するよ。</p>
+          <p>やることは (1) と同じ。<br><math><mi>f</mi><mi>′</mi><mo>(</mo><mi>a</mi><mo>)</mo><mo>=</mo><mn>2</mn><mi>a</mi></math>の <b>a のところに 0</b> を入れる。</p>
+            <p class="calc"><math><mi>f</mi><mi>′</mi><mo>(</mo><mn>0</mn><mo>)</mo><mo>=</mo><mn>2</mn><mo>×</mo><mn>0</mn></math></p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 計算はそのまま</h3>
-            <p>2×0 の答えは、もちろん 0。難しく考えなくて大丈夫だよ。</p>
-            <p>ちなみに x＝0 は放物線 y＝x<sup>2</sup> の<b>頂点</b>。頂点での接線の傾きがどうなっているか、図を思い出してみよう。</p>
+            <p><math><mn>2</mn><mo>×</mo><mn>0</mn></math>の答えは、もちろん 0。難しく考えなくて大丈夫だよ。</p>
+            <p>ちなみに<math><mi>x</mi><mo>=</mo><mn>0</mn></math>は放物線<math><mi>y</mi><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup></math> の<b>頂点</b>。<br>頂点での接線の傾きがどうなっているか、図を思い出してみよう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (2)</h3>
-            <p class="big">f′(0) ＝ 0</p>
-            <p>f′(a)＝2a に a＝0 を代入して、2×0＝0。頂点では接線が<b>水平</b>になるので、傾きが 0 になることとつじつまが合うね。</p>
+            <p class="big"><math display="block"><mi>f</mi><mi>′</mi><mo>(</mo><mn>0</mn><mo>)</mo><mo>=</mo><mn>0</mn></math></p>
+            <p><math><mi>f</mi><mi>′</mi><mo>(</mo><mi>a</mi><mo>)</mo><mo>=</mo><mn>2</mn><mi>a</mi></math>に<math><mi>a</mi><mo>=</mo><mn>0</mn></math>を代入して、<math><mn>2</mn><mo>×</mo><mn>0</mn><mo>=</mo><mn>0</mn></math>。頂点では接線が<b>水平</b>になるので、<br>傾きが 0 になることとつじつまが合うね。</p>
           </div>
           <p class="prob-done">(2) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
 
         <!-- (3) -->
-        <div class="tabpanel" id="panel-ren5-3" data-flow="ren5-3" data-label="練習5 (3)">
+        <div class="nofig tabpanel" id="panel-ren5-3" data-flow="ren5-3" data-label="練習5 (3)">
           <div class="prob-head">
             <span class="sub prob-q" style="margin:0">(3) f′(−2)</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
@@ -464,17 +513,18 @@
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― マイナスの数もそのまま代入</h3>
-            <p>f′(−2) は「a が −2 のときの f′(a)」。a には<b>負の数もそのまま</b>代入してよい。</p>
-            <p class="calc">f′(−2) ＝ 2 × (−2)</p>
+            <p class="cite"><span class="cite-tag">使う公式</span>解説Aで求めた結果 <math><mi>f</mi><mi>′</mi><mo>(</mo><mi>a</mi><mo>)</mo><mo>=</mo><mn>2</mn><mi>a</mi></math>。f′(−2) は a＝−2 の場合なので、負の数もこの式の a にそのまま代入するよ。</p>
+          <p>f′(−2) は「a が −2 のときの f′(a)」。a には<b>負の数もそのまま</b>代入してよい。</p>
+            <p class="calc"><math><mi>f</mi><mi>′</mi><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo><mo>=</mo><mn>2</mn><mo>×</mo><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></math></p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 符号に注意して計算する</h3>
-            <p>2 × (−2) は、正の数 × 負の数。答えの符号は<b>負</b>になるよ。</p>
+            <p>2 × (−2) は、正の数 × 負の数。<br>答えの符号は<b>負</b>になるよ。</p>
           </div>
           <div class="step answer">
             <h3>解答 (3)</h3>
-            <p class="big">f′(−2) ＝ −4</p>
-            <p>2 × (−2) ＝ −4。傾きが負ということは、x＝−2 における接線は<b>右下がり</b>。放物線の左側のようすと合っているね。</p>
+            <p class="big"><math display="block"><mi>f</mi><mi>′</mi><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo><mo>=</mo><mo>−</mo><mn>4</mn></math></p>
+            <p><math><mn>2</mn><mo>×</mo><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo><mo>=</mo><mo>−</mo><mn>4</mn></math>。傾きが負ということは、<math><mi>x</mi><mo>=</mo><mo>−</mo><mn>2</mn></math>における接線は<b>右下がり</b>。<br>放物線の左側のようすと合っているね。</p>
           </div>
           <p class="prob-done">(3) クリア！　練習5 完了。次は例5で、定義から導関数を求める計算に慣れよう。</p>
         </div>
@@ -488,13 +538,13 @@
         <span class="pno">教科書 p.183</span>
       </div>
 
-      <section class="card prob" id="prob-ex5">
+      <section class="nofig card prob" id="prob-ex5">
         <div class="flow-main">
         <div class="prob-head">
           <span class="prob-tag">例 5</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
-        <p class="prob-q">定義 f′(x)＝<span class="limd"><span>lim</span><span class="lim-b">h→0</span></span><span class="frac"><span class="num">f(x＋h)−f(x)</span><span class="den">h</span></span> にしたがって、次の関数の導関数を求めよ。</p>
+        <p class="prob-q">定義<math><mi>f</mi><mi>′</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>+</mo><mi>h</mi><mo>)</mo><mo>−</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><mi>h</mi></mfrac></math> にしたがって、次の関数の導関数を求めよ。</p>
         </div>
 
         <div class="flow-steps">
@@ -505,89 +555,93 @@
         </div>
 
         <!-- (1) -->
-        <div class="tabpanel show" id="panel-ex5-1" data-flow="ex5-1" data-label="例5 (1)">
+        <div class="nofig tabpanel show" id="panel-ex5-1" data-flow="ex5-1" data-label="例5 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1) f(x)＝x</span>
+            <span class="sub prob-q" style="margin:0"><math><mo>(</mo><mn>1</mn><mo>)</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mi>x</mi></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
           <div class="step hint">
             <h3>計算 1 ― 定義にあてはめる</h3>
-            <p>f(x)＝x のとき、f(x＋h)＝x＋h、f(x)＝x。これを定義の式に入れる。</p>
-            <p class="calc">f′(x) ＝ <span class="limd"><span>lim</span><span class="lim-b">h→0</span></span><span class="frac"><span class="num">(x＋h) − x</span><span class="den">h</span></span></p>
+            <p class="cite"><span class="cite-tag">使う定義</span>導関数の定義 <math><mi>f</mi><mi>′</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>+</mo><mi>h</mi><mo>)</mo><mo>−</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><mi>h</mi></mfrac></math>。f(x)＝x のときも、まずこの定義に f(x＋h) と f(x) を入れるよ。</p>
+          <p><math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mi>x</mi></math>のとき、<math><mi>f</mi><mo>(</mo><mi>x</mi><mo>+</mo><mi>h</mi><mo>)</mo><mo>=</mo><mi>x</mi><mo>+</mo><mi>h</mi></math>、<math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mi>x</mi></math>。<br>これを定義の式に入れる。</p>
+            <p class="calc"><math><mi>f</mi><mi>′</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mi>h</mi><mo>)</mo><mo>−</mo><mi>x</mi></mrow><mi>h</mi></mfrac></math></p>
           </div>
           <div class="step hint">
             <h3>計算 2 ― 分子を整理する</h3>
             <p>分子の (x＋h) − x は、x が消えて <b>h</b> だけが残る。</p>
-            <p class="calc">f′(x) ＝ <span class="limd"><span>lim</span><span class="lim-b">h→0</span></span><span class="frac"><span class="num">h</span><span class="den">h</span></span></p>
+            <p class="calc"><math><mi>f</mi><mi>′</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mi>h</mi><mi>h</mi></mfrac></math></p>
           </div>
           <div class="step hint">
             <h3>計算 3 ― 約分して極限をとる</h3>
-            <p><span class="frac"><span class="num">h</span><span class="den">h</span></span> ＝ 1（h≠0）。h に関係ない値 1 の極限は、そのまま 1 だ。</p>
+            <p><math><mfrac><mi>h</mi><mi>h</mi></mfrac><mo>=</mo><mn>1</mn><mo>(</mo><mi>h</mi><mo>≠</mo><mn>0</mn><mo>)</mo></math>。h に関係ない値 1 の極限は、<br>そのまま 1 だ。</p>
           </div>
           <div class="step answer">
             <h3>解答 (1)</h3>
-            <p class="big">f′(x) ＝ 1</p>
-            <p>y＝x のグラフは傾き 1 の直線。どの点でも接線の傾きが 1 であることと一致するね。</p>
+            <p class="big"><math display="block"><mi>f</mi><mi>′</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mn>1</mn></math></p>
+            <p><math><mi>y</mi><mo>=</mo><mi>x</mi></math>のグラフは傾き 1 の直線。どの点でも接線の傾きが 1 であることと一致するね。</p>
           </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
 
         <!-- (2) -->
-        <div class="tabpanel" id="panel-ex5-2" data-flow="ex5-2" data-label="例5 (2)">
+        <div class="nofig tabpanel" id="panel-ex5-2" data-flow="ex5-2" data-label="例5 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2) f(x)＝x<sup>3</sup></span>
+            <span class="sub prob-q" style="margin:0"><math><mo>(</mo><mn>2</mn><mo>)</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><msup><mi>x</mi><mn>3</mn></msup></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
           <div class="step hint">
             <h3>計算 1 ― 定義にあてはめる</h3>
-            <p>f(x)＝x<sup>3</sup> のとき、f(x＋h)＝(x＋h)<sup>3</sup>。定義の式に入れる。</p>
-            <p class="calc">f′(x) ＝ <span class="limd"><span>lim</span><span class="lim-b">h→0</span></span><span class="frac"><span class="num">(x＋h)<sup>3</sup> − x<sup>3</sup></span><span class="den">h</span></span></p>
+            <p class="cite"><span class="cite-tag">使う定義</span>導関数の定義 <math><mi>f</mi><mi>′</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>+</mo><mi>h</mi><mo>)</mo><mo>−</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><mi>h</mi></mfrac></math>。f(x)＝xの3乗のときも、まずこの定義に f(x＋h) と f(x) を入れるよ。</p>
+          <p><math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><msup><mi>x</mi><mn>3</mn></msup></math> のとき、<math><mi>f</mi><mo>(</mo><mi>x</mi><mo>+</mo><mi>h</mi><mo>)</mo><mo>=</mo><msup><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mi>h</mi><mo>)</mo></mrow><mn>3</mn></msup></math>。定義の式に入れる。</p>
+            <p class="calc"><math><mi>f</mi><mi>′</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><msup><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mi>h</mi><mo>)</mo></mrow><mn>3</mn></msup><mo>−</mo><msup><mi>x</mi><mn>3</mn></msup></mrow><mi>h</mi></mfrac></math></p>
           </div>
           <div class="step hint">
             <h3>計算 2 ― 展開して、h でくくる</h3>
-            <p>展開公式 (x＋h)<sup>3</sup> ＝ x<sup>3</sup>＋3x<sup>2</sup>h＋3xh<sup>2</sup>＋h<sup>3</sup> を使う。x<sup>3</sup> が消えて、残りはすべて h を含む項だから、h でくくれる。</p>
-            <p class="calc">分子 ＝ 3x<sup>2</sup>h＋3xh<sup>2</sup>＋h<sup>3</sup> ＝ h(3x<sup>2</sup>＋3xh＋h<sup>2</sup>)</p>
+            <p class="cite"><span class="cite-tag">使う公式</span>展開公式 <math><msup><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mi>h</mi><mo>)</mo></mrow><mn>3</mn></msup><mo>=</mo><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mi>h</mi><mo>+</mo><mn>3</mn><mi>x</mi><msup><mi>h</mi><mn>2</mn></msup><mo>+</mo><msup><mi>h</mi><mn>3</mn></msup></math>。（x＋h）の3乗はこの公式で展開してから、残った項を h でくくるよ。</p>
+          <p>展開公式<math><msup><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mi>h</mi><mo>)</mo></mrow><mn>3</mn></msup><mo>=</mo><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mi>h</mi><mo>+</mo><mn>3</mn><mi>x</mi><msup><mi>h</mi><mn>2</mn></msup><mo>+</mo><msup><mi>h</mi><mn>3</mn></msup></math> を使う。<br><math><msup><mi>x</mi><mn>3</mn></msup></math> が消えて、残りはすべて h を含む項だから、h でくくれる。</p>
+            <p class="calc">分子<math><mo>=</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mi>h</mi><mo>+</mo><mn>3</mn><mi>x</mi><msup><mi>h</mi><mn>2</mn></msup><mo>+</mo><msup><mi>h</mi><mn>3</mn></msup><mo>=</mo><mi>h</mi><mo>(</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>3</mn><mi>x</mi><mi>h</mi><mo>+</mo><msup><mi>h</mi><mn>2</mn></msup><mo>)</mo></math></p>
           </div>
           <div class="step hint">
             <h3>計算 3 ― 約分して、h→0 とする</h3>
-            <p>h で約分すると 3x<sup>2</sup>＋3xh＋h<sup>2</sup>。ここで h→0 とすると、3xh と h<sup>2</sup> はどちらも 0 に近づく。</p>
-            <p class="calc">f′(x) ＝ <span class="limd"><span>lim</span><span class="lim-b">h→0</span></span>(3x<sup>2</sup>＋3xh＋h<sup>2</sup>)</p>
+            <p>h で約分すると<math><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>3</mn><mi>x</mi><mi>h</mi><mo>+</mo><msup><mi>h</mi><mn>2</mn></msup></math>。ここで h→0 とすると、<br>3xh と<math><msup><mi>h</mi><mn>2</mn></msup></math> はどちらも 0 に近づく。</p>
+            <p class="calc"><math><mi>f</mi><mi>′</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mo>(</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>3</mn><mi>x</mi><mi>h</mi><mo>+</mo><msup><mi>h</mi><mn>2</mn></msup><mo>)</mo></math></p>
           </div>
           <div class="step answer">
             <h3>解答 (2)</h3>
-            <p class="big">f′(x) ＝ 3x<sup>2</sup></p>
-            <p>残るのは 3x<sup>2</sup> だけ。f(x)＝x<sup>2</sup> のときの 2x と並べてみると、「指数が前に出て、指数が1つ減る」パターンが見えてくるね（後の「公式」で確認するよ）。</p>
+            <p class="big"><math display="block"><mi>f</mi><mi>′</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup></math></p>
+            <p>残るのは<math><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup></math> だけ。<br><math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup></math> のときの 2x と並べてみると、「指数が前に出て、指数が1つ減る」パターンが見えてくるね（後の「公式」で確認するよ）。</p>
           </div>
           <p class="prob-done">(2) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
 
         <!-- (3) -->
-        <div class="tabpanel" id="panel-ex5-3" data-flow="ex5-3" data-label="例5 (3)">
+        <div class="nofig tabpanel" id="panel-ex5-3" data-flow="ex5-3" data-label="例5 (3)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(3) f(x)＝2（定数関数）</span>
+            <span class="sub prob-q" style="margin:0"><math><mo>(</mo><mn>3</mn><mo>)</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mn>2</mn><mo>(</mo></math>定数関数）</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
           <div class="step hint">
             <h3>計算 1 ― f(x＋h) の値に注意</h3>
-            <p>f(x)＝2 は、x がどんな値でも関数の値が 2 という<b>定数関数</b>。だから f(x＋h) も、やはり <b>2</b> になる。</p>
-            <p class="calc">f′(x) ＝ <span class="limd"><span>lim</span><span class="lim-b">h→0</span></span><span class="frac"><span class="num">2 − 2</span><span class="den">h</span></span></p>
+            <p class="cite"><span class="cite-tag">使う定義</span>導関数の定義 <math><mi>f</mi><mi>′</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>+</mo><mi>h</mi><mo>)</mo><mo>−</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><mi>h</mi></mfrac></math>。定数関数でも使う定義は同じで、f(x＋h) も f(x) も 2 になることをこの式で確かめるよ。</p>
+          <p><math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mn>2</mn></math>は、x がどんな値でも関数の値が 2 という<b>定数関数</b>。だから f(x＋h) も、やはり <b>2</b> になる。</p>
+            <p class="calc"><math><mi>f</mi><mi>′</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><mn>2</mn><mo>−</mo><mn>2</mn></mrow><mi>h</mi></mfrac></math></p>
           </div>
           <div class="step hint">
             <h3>計算 2 ― 分子は 0</h3>
-            <p>分子は 2 − 2 ＝ 0。<span class="frac"><span class="num">0</span><span class="den">h</span></span> ＝ 0 だから、式全体はずっと 0 のままだ。</p>
-            <p class="calc">f′(x) ＝ <span class="limd"><span>lim</span><span class="lim-b">h→0</span></span>0</p>
+            <p>分子は<math><mn>2</mn><mo>−</mo><mn>2</mn><mo>=</mo><mn>0</mn></math>。<math><mfrac><mn>0</mn><mi>h</mi></mfrac><mo>=</mo><mn>0</mn></math>だから、<br>式全体はずっと 0 のままだ。</p>
+            <p class="calc"><math><mi>f</mi><mi>′</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mn>0</mn></math></p>
           </div>
           <div class="step hint">
             <h3>計算 3 ― 極限をとる</h3>
-            <p>ずっと 0 であるものの極限は 0。「変化しない関数は、傾き（変化の割合）が 0」というイメージで覚えよう。</p>
+            <p>ずっと 0 であるものの極限は 0。<br>「変化しない関数は、傾き（変化の割合）が 0」というイメージで覚えよう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (3)</h3>
-            <p class="big">f′(x) ＝ 0</p>
-            <p>定数関数 y＝2 のグラフは水平な直線で、傾きは 0。計算の結果と一致するね。<b>定数関数の導関数は 0</b> ― これはこのあと公式として何度も使うよ。</p>
+            <p class="big"><math display="block"><mi>f</mi><mi>′</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mn>0</mn></math></p>
+            <p>定数関数<math><mi>y</mi><mo>=</mo><mn>2</mn></math>のグラフは水平な直線で、傾きは 0。計算の結果と一致するね。<br><b>定数関数の導関数は 0</b> ― これはこのあと公式として何度も使うよ。</p>
           </div>
           <p class="prob-done">(3) クリア！　例5 完了。次は練習6で、自分で定義から計算してみよう。</p>
         </div>
@@ -601,7 +655,7 @@
         <span class="pno">教科書 p.183</span>
       </div>
 
-      <section class="card prob" id="prob-ren6">
+      <section class="nofig card prob" id="prob-ren6">
         <div class="flow-main">
         <div class="prob-head">
           <span class="prob-tag ren">練習 6</span>
@@ -618,50 +672,57 @@
         </div>
 
         <!-- (1) -->
-        <div class="tabpanel show" id="panel-ren6-1" data-flow="ren6-1" data-label="練習6 (1)">
+        <div class="nofig tabpanel show" id="panel-ren6-1" data-flow="ren6-1" data-label="練習6 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1) f(x)＝3x</span>
+            <span class="sub prob-q" style="margin:0"><math><mo>(</mo><mn>1</mn><mo>)</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mn>3</mn><mi>x</mi></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― 定義にあてはめる</h3>
-            <p>f(x)＝3x のとき、f(x＋h)＝3(x＋h)。まずこれを定義の式に入れよう。</p>
-            <p class="calc">f′(x) ＝ <span class="limd"><span>lim</span><span class="lim-b">h→0</span></span><span class="frac"><span class="num">3(x＋h) − 3x</span><span class="den">h</span></span></p>
+            <p class="cite"><span class="cite-tag">使う定義</span>導関数の定義 <math><mi>f</mi><mi>′</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>+</mo><mi>h</mi><mo>)</mo><mo>−</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><mi>h</mi></mfrac></math>。f(x)＝3x のときも、まずこの定義に f(x＋h)＝3(x＋h) を入れるよ。</p>
+          <p><math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mn>3</mn><mi>x</mi></math>のとき、<math><mi>f</mi><mo>(</mo><mi>x</mi><mo>+</mo><mi>h</mi><mo>)</mo><mo>=</mo><mn>3</mn><mo>(</mo><mi>x</mi><mo>+</mo><mi>h</mi><mo>)</mo></math>。まずこれを定義の式に入れよう。</p>
+            <p class="calc"><math><mi>f</mi><mi>′</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><mn>3</mn><mo>(</mo><mi>x</mi><mo>+</mo><mi>h</mi><mo>)</mo><mo>−</mo><mn>3</mn><mi>x</mi></mrow><mi>h</mi></mfrac></math></p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 分子を整理する</h3>
-            <p>分子の 3(x＋h) を展開すると 3x＋3h。そこから 3x を引くと、何が残るかな？</p>
-            <p class="calc">分子 ＝ (3x＋3h) − 3x ＝ 3h</p>
+            <p>分子の 3(x＋h) を展開すると 3x＋3h。<br>そこから 3x を引くと、何が残るかな？</p>
+            <p class="calc">分子<math><mo>=</mo><mo>(</mo><mn>3</mn><mi>x</mi><mo>+</mo><mn>3</mn><mi>h</mi><mo>)</mo><mo>−</mo><mn>3</mn><mi>x</mi><mo>=</mo><mn>3</mn><mi>h</mi></math></p>
           </div>
           <div class="step hint">
             <h3>ヒント 3 ― 約分して極限をとる</h3>
-            <p><span class="frac"><span class="num">3h</span><span class="den">h</span></span> を h で約分すると 3。h に関係ない値だから、極限もそのまま 3 になるはずだ。</p>
+            <p><math><mfrac><mrow><mn>3</mn><mi>h</mi></mrow><mi>h</mi></mfrac></math> を h で約分すると 3。<br>h に関係ない値だから、極限もそのまま 3 になるはずだ。</p>
           </div>
           <div class="step answer">
             <h3>解答 (1)</h3>
-            <p class="big">f′(x) ＝ 3</p>
-            <p>y＝3x は傾き 3 の直線。例5 (1) の y＝x（傾き1 → 導関数 1）と同じで、「直線の導関数は、その傾き」と一致するね。</p>
+            <p class="big"><math display="block"><mi>f</mi><mi>′</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mn>3</mn></math></p>
+            <p><math><mi>y</mi><mo>=</mo><mn>3</mn><mi>x</mi></math>は傾き 3 の直線。<br>例5 (1) の<math><mi>y</mi><mo>=</mo><mi>x</mi><mo>(</mo></math>傾き1 → 導関数 1）と同じで、「直線の導関数は、その傾き」と一致するね。</p>
           </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
 
         <!-- (2) -->
-        <div class="tabpanel" id="panel-ren6-2" data-flow="ren6-2" data-label="練習6 (2)">
+        <div class="nofig tabpanel" id="panel-ren6-2" data-flow="ren6-2" data-label="練習6 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2) f(x)＝−x<sup>2</sup></span>
+            <span class="sub prob-q" style="margin:0"><math><mo>(</mo><mn>2</mn><mo>)</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― 符号に注意して代入する</h3>
-            <p>f(x＋h)＝−(x＋h)<sup>2</sup>、f(x)＝−x<sup>2</sup>。引くときの符号に注意して、定義の式に入れよう。</p>
-            <p class="calc">f′(x) ＝ <span class="limd"><span>lim</span><span class="lim-b">h→0</span></span><span class="frac"><span class="num">−(x＋h)<sup>2</sup> − (−x<sup>2</sup>)</span><span class="den">h</span></span> ＝ <span class="limd"><span>lim</span><span class="lim-b">h→0</span></span><span class="frac"><span class="num">−(x＋h)<sup>2</sup> ＋ x<sup>2</sup></span><span class="den">h</span></span></p>
+            <p class="cite"><span class="cite-tag">使う定義</span>導関数の定義 <math><mi>f</mi><mi>′</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>+</mo><mi>h</mi><mo>)</mo><mo>−</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><mi>h</mi></mfrac></math>。f(x)＝−xの2乗のときもこの定義に入れるが、引くときの符号に注意しよう。</p>
+          <p><math><mi>f</mi><mo>(</mo><mi>x</mi><mo>+</mo><mi>h</mi><mo>)</mo><mo>=</mo><mo>−</mo><msup><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mi>h</mi><mo>)</mo></mrow><mn>2</mn></msup></math>、<math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup></math>。<br>引くときの符号に注意して、定義の式に入れよう。</p>
+            <p class="mq-wide calc"><math><mi>f</mi><mi>′</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><mo>−</mo><msup><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mi>h</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mo>(</mo><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>)</mo></mrow><mi>h</mi></mfrac><mo>=</mo><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><mo>−</mo><msup><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mi>h</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mi>x</mi><mn>2</mn></msup></mrow><mi>h</mi></mfrac></math></p>
+<div class="mq-narrow">
+<p class="formula"><math display="block"><mi>f</mi><mi>′</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><mo>−</mo><msup><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mi>h</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mo>(</mo><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>)</mo></mrow><mi>h</mi></mfrac></math></p>
+<p class="formula cont"><math display="block"><mo>=</mo><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><mo>−</mo><msup><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mi>h</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mi>x</mi><mn>2</mn></msup></mrow><mi>h</mi></mfrac></math></p>
+</div>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 展開して分子を整理する</h3>
-            <p>(x＋h)<sup>2</sup> ＝ x<sup>2</sup>＋2xh＋h<sup>2</sup>。全体にマイナスがかかるから、−(x＋h)<sup>2</sup> ＝ −x<sup>2</sup>−2xh−h<sup>2</sup> になる。</p>
-            <p class="calc">分子 ＝ (−x<sup>2</sup>−2xh−h<sup>2</sup>) ＋ x<sup>2</sup> ＝ −2xh − h<sup>2</sup></p>
+            <p class="cite"><span class="cite-tag">使う公式</span>展開公式 <math><msup><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mi>h</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mi>h</mi><mo>+</mo><msup><mi>h</mi><mn>2</mn></msup></math>。（x＋h）の2乗をこの公式で開いてから、全体にかかるマイナスに注意して整理するよ。</p>
+          <p><math><msup><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mi>h</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mi>h</mi><mo>+</mo><msup><mi>h</mi><mn>2</mn></msup></math>。全体にマイナスがかかるから、<br><math><mo>−</mo><msup><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mi>h</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>x</mi><mi>h</mi><mo>−</mo><msup><mi>h</mi><mn>2</mn></msup></math> になる。</p>
+            <p class="calc">分子<math><mo>=</mo><mo>(</mo><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>x</mi><mi>h</mi><mo>−</mo><msup><mi>h</mi><mn>2</mn></msup><mo>)</mo><mo>+</mo><msup><mi>x</mi><mn>2</mn></msup><mo>=</mo><mo>−</mo><mn>2</mn><mi>x</mi><mi>h</mi><mo>−</mo><msup><mi>h</mi><mn>2</mn></msup></math></p>
           </div>
           <div class="step hint">
             <h3>ヒント 3 ― h で約分して、h→0 とする</h3>
@@ -670,31 +731,32 @@
           </div>
           <div class="step answer">
             <h3>解答 (2)</h3>
-            <p class="big">f′(x) ＝ −2x</p>
-            <p>−(2x＋h) で h→0 とすると −2x。f(x)＝x<sup>2</sup> の導関数 2x に、マイナスがついた形になったね。</p>
+            <p class="big"><math display="block"><mi>f</mi><mi>′</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mo>−</mo><mn>2</mn><mi>x</mi></math></p>
+            <p>−(2x＋h) で h→0 とすると −2x。<br><math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup></math> の導関数 2x に、マイナスがついた形になったね。</p>
           </div>
           <p class="prob-done">(2) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
 
         <!-- (3) -->
-        <div class="tabpanel" id="panel-ren6-3" data-flow="ren6-3" data-label="練習6 (3)">
+        <div class="nofig tabpanel" id="panel-ren6-3" data-flow="ren6-3" data-label="練習6 (3)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(3) f(x)＝4</span>
+            <span class="sub prob-q" style="margin:0"><math><mo>(</mo><mn>3</mn><mo>)</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mn>4</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― これは定数関数</h3>
-            <p>f(x)＝4 は定数関数。例5 (3) の f(x)＝2 とまったく同じタイプだ。f(x＋h) の値も 4 になる。</p>
-            <p class="calc">f′(x) ＝ <span class="limd"><span>lim</span><span class="lim-b">h→0</span></span><span class="frac"><span class="num">4 − 4</span><span class="den">h</span></span></p>
+            <p class="cite"><span class="cite-tag">使う定義</span>導関数の定義 <math><mi>f</mi><mi>′</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>+</mo><mi>h</mi><mo>)</mo><mo>−</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><mi>h</mi></mfrac></math>。f(x)＝4 も定数関数なので、f(x＋h)＝4 としてこの定義の式に入れるよ。</p>
+          <p><math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mn>4</mn></math>は定数関数。<br>例5 (3) の<math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mn>2</mn></math>とまったく同じタイプだ。<br>f(x＋h) の値も 4 になる。</p>
+            <p class="calc"><math><mi>f</mi><mi>′</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><mn>4</mn><mo>−</mo><mn>4</mn></mrow><mi>h</mi></mfrac></math></p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 分子を計算する</h3>
-            <p>分子は 4 − 4 ＝ 0。<span class="frac"><span class="num">0</span><span class="den">h</span></span> ＝ 0 だから、極限も 0 だ。</p>
+            <p>分子は<math><mn>4</mn><mo>−</mo><mn>4</mn><mo>=</mo><mn>0</mn></math>。<math><mfrac><mn>0</mn><mi>h</mi></mfrac><mo>=</mo><mn>0</mn></math>だから、<br>極限も 0 だ。</p>
           </div>
           <div class="step answer">
             <h3>解答 (3)</h3>
-            <p class="big">f′(x) ＝ 0</p>
+            <p class="big"><math display="block"><mi>f</mi><mi>′</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mn>0</mn></math></p>
             <p>定数関数の導関数は 0。値が 2 でも 4 でも、定数なら答えは同じ 0 になる。</p>
           </div>
           <p class="prob-done">(3) クリア！　練習6 完了。次は、ここまでの結果から「公式」を見つけよう。</p>
@@ -709,7 +771,7 @@
         <span class="pno">教科書 p.183</span>
       </div>
 
-      <section class="card prob" id="prob-kosiki" data-flow="kosiki" data-label="公式">
+      <section class="nofig card prob" id="prob-kosiki" data-flow="kosiki" data-label="公式">
         <div class="flow-main">
         <div class="prob-head">
           <span class="prob-tag kai">公式</span>
@@ -725,20 +787,20 @@
         <div class="step hint">
           <h3>ステップ 1 ― 結果を並べる</h3>
           <p>ここまでで分かった導関数は、次の4つだ。</p>
-          <p class="calc">(x)′ ＝ 1　　　(x<sup>2</sup>)′ ＝ 2x　　　(x<sup>3</sup>)′ ＝ 3x<sup>2</sup>　　　(2)′ ＝ 0</p>
-          <p>それぞれ、もとの関数の<b>指数</b>と、導関数の<b>係数</b>・<b>指数</b>を比べてみよう。</p>
+          <p class="calc"><math><mo>(</mo><mi>x</mi><mo>)</mo><mo>′</mo><mo>=</mo><mn>1</mn></math>　　　<math><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>)</mo><mo>′</mo><mo>=</mo><mn>2</mn><mi>x</mi></math>　　　<math><mo>(</mo><msup><mi>x</mi><mn>3</mn></msup><mo>)</mo><mo>′</mo><mo>=</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup></math>　　　<math><mo>(</mo><mn>2</mn><mo>)</mo><mo>′</mo><mo>=</mo><mn>0</mn></math></p>
+          <p>それぞれ、<br>もとの関数の<b>指数</b>と、導関数の<b>係数</b>・<b>指数</b>を比べてみよう。</p>
         </div>
         <div class="step hint">
           <h3>ステップ 2 ― パターンを読み取る</h3>
-          <p>・x<sup>3</sup> → 3x<sup>2</sup>：指数 <b>3</b> が係数として前に出て、指数は 3−1＝<b>2</b> に減った<br />・x<sup>2</sup> → 2x：指数 <b>2</b> が前に出て、指数は 2−1＝<b>1</b> に減った<br />・x ＝ x<sup>1</sup> → 1：指数 <b>1</b> が前に出て、指数は 1−1＝<b>0</b>（x<sup>0</sup>＝1）になった</p>
-          <p>つまり「<b>指数を係数として前に出し、指数を1つ下げる</b>」という規則が見える。また、定数 2 の導関数は 0 だった。</p>
+          <p><math><mo>⋅</mo><msup><mi>x</mi><mn>3</mn></msup><mo>→</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup></math>：指数 <b>3</b> が係数として前に出て、指数は<math><mn>3</mn><mo>−</mo><mn>1</mn><mo>=</mo></math><b>2</b> に減った<br /><math><mo>⋅</mo><msup><mi>x</mi><mn>2</mn></msup><mo>→</mo><mn>2</mn><mi>x</mi></math>：指数 <b>2</b> が前に出て、指数は<math><mn>2</mn><mo>−</mo><mn>1</mn><mo>=</mo></math><b>1</b> に減った<br /><math><mo>⋅</mo><mi>x</mi><mo>=</mo><msup><mi>x</mi><mn>1</mn></msup><mo>→</mo><mn>1</mn></math>：指数 <b>1</b> が前に出て、指数は<math><mn>1</mn><mo>−</mo><mn>1</mn><mo>=</mo></math><b>0</b><math><mo>(</mo><msup><mi>x</mi><mn>0</mn></msup><mo>=</mo><mn>1</mn><mo>)</mo></math>になった</p>
+          <p>つまり「<b>指数を係数として前に出し、指数を1つ下げる</b>」という規則が見える。<br>また、定数 2 の導関数は 0 だった。</p>
         </div>
         <div class="step answer">
           <h3>公式</h3>
-          <p class="formula">(x<sup>n</sup>)′ ＝ nx<sup>n−1</sup>　（n は正の整数）</p>
-          <p class="formula">定数関数 (c)′ ＝ 0　（c は定数）</p>
-          <p>この公式を使えば、定義の lim の計算に戻らなくても、x<sup>n</sup> の導関数をすぐに求められる。次の練習7でさっそく使ってみよう。</p>
-          <p class="note">公式は「覚えるもの」ではなく、定義から導いた結果のまとめだよ。忘れたら、例5の計算を思い出せば復元できる。</p>
+          <p class="formula"><math><mo>(</mo><msup><mi>x</mi><mi>n</mi></msup><mo>)</mo><mo>′</mo><mo>=</mo><mi>n</mi><msup><mi>x</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup></math>　（n は正の整数）</p>
+          <p class="formula">定数関数<math><mo>(</mo><mi>c</mi><mo>)</mo><mo>′</mo><mo>=</mo><mn>0</mn></math>　（c は定数）</p>
+          <p>この公式を使えば、定義の lim の計算に戻らなくても、<math><msup><mi>x</mi><mi>n</mi></msup></math> の導関数をすぐに求められる。<br>次の練習7でさっそく使ってみよう。</p>
+          <p class="note">公式は「覚えるもの」ではなく、定義から導いた結果のまとめだよ。<br>忘れたら、例5の計算を思い出せば復元できる。</p>
         </div>
         <p class="prob-done">公式 クリア！　最後は練習7で、公式を使って微分してみよう。</p>
         </div>
@@ -751,7 +813,7 @@
         <span class="pno">教科書 p.183</span>
       </div>
 
-      <section class="card prob" id="prob-ren7">
+      <section class="nofig card prob" id="prob-ren7">
         <div class="flow-main">
         <div class="prob-head">
           <span class="prob-tag ren">練習 7</span>
@@ -767,50 +829,52 @@
         </div>
 
         <!-- (1) -->
-        <div class="tabpanel show" id="panel-ren7-1" data-flow="ren7-1" data-label="練習7 (1)">
+        <div class="nofig tabpanel show" id="panel-ren7-1" data-flow="ren7-1" data-label="練習7 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1) y＝x<sup>4</sup></span>
+            <span class="sub prob-q" style="margin:0"><math><mo>(</mo><mn>1</mn><mo>)</mo><mi>y</mi><mo>=</mo><msup><mi>x</mi><mn>4</mn></msup></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― 公式の n はいくつ？</h3>
-            <p>y＝x<sup>4</sup> は、公式 (x<sup>n</sup>)′＝nx<sup>n−1</sup> の <b>n＝4</b> の場合だ。</p>
+            <p class="cite"><span class="cite-tag">使う公式</span>微分の公式 <math><mo>(</mo><msup><mi>x</mi><mi>n</mi></msup><mo>)</mo><mo>′</mo><mo>=</mo><mi>n</mi><msup><mi>x</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup></math>。y＝xの4乗は n＝4 の場合なので、指数 4 を前に出して、指数を 1 つ下げるよ。</p>
+          <p><math><mi>y</mi><mo>=</mo><msup><mi>x</mi><mn>4</mn></msup></math> は、公式<math><mo>(</mo><msup><mi>x</mi><mi>n</mi></msup><mo>)</mo><mo>′</mo><mo>=</mo><mi>n</mi><msup><mi>x</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup></math> の <b><math><mi>n</mi><mo>=</mo><mn>4</mn></math></b> の場合だ。</p>
             <p>公式の n のところに 4 を入れてみよう。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 指数を前に出して、1つ下げる</h3>
-            <p class="calc">y′ ＝ 4x<sup>4−1</sup></p>
+            <p class="calc"><math><mi>y</mi><mi>′</mi><mo>=</mo><mn>4</mn><msup><mi>x</mi><mrow><mn>4</mn><mo>−</mo><mn>1</mn></mrow></msup></math></p>
             <p>あとは、指数の 4−1 を計算するだけだよ。</p>
           </div>
           <div class="step answer">
             <h3>解答 (1)</h3>
-            <p class="big">y′ ＝ 4x<sup>3</sup></p>
-            <p>指数 4 を前に出し、指数を 4−1＝3 に下げた。定義の計算をしなくても、一瞬で求められたね。</p>
+            <p class="big"><math display="block"><mi>y</mi><mi>′</mi><mo>=</mo><mn>4</mn><msup><mi>x</mi><mn>3</mn></msup></math></p>
+            <p>指数 4 を前に出し、指数を<math><mn>4</mn><mo>−</mo><mn>1</mn><mo>=</mo><mn>3</mn></math>に下げた。<br>定義の計算をしなくても、一瞬で求められたね。</p>
           </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
 
         <!-- (2) -->
-        <div class="tabpanel" id="panel-ren7-2" data-flow="ren7-2" data-label="練習7 (2)">
+        <div class="nofig tabpanel" id="panel-ren7-2" data-flow="ren7-2" data-label="練習7 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2) y＝x<sup>5</sup></span>
+            <span class="sub prob-q" style="margin:0"><math><mo>(</mo><mn>2</mn><mo>)</mo><mi>y</mi><mo>=</mo><msup><mi>x</mi><mn>5</mn></msup></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― 公式の n はいくつ？</h3>
-            <p>y＝x<sup>5</sup> は、公式の <b>n＝5</b> の場合。(1) と同じ手順で進めよう。</p>
+            <p class="cite"><span class="cite-tag">使う公式</span>微分の公式 <math><mo>(</mo><msup><mi>x</mi><mi>n</mi></msup><mo>)</mo><mo>′</mo><mo>=</mo><mi>n</mi><msup><mi>x</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup></math>。y＝xの5乗は n＝5 の場合なので、指数 5 を前に出して、指数を 1 つ下げるよ。</p>
+          <p><math><mi>y</mi><mo>=</mo><msup><mi>x</mi><mn>5</mn></msup></math> は、公式の <b><math><mi>n</mi><mo>=</mo><mn>5</mn></math></b> の場合。(1) と同じ手順で進めよう。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 指数を前に出して、1つ下げる</h3>
-            <p class="calc">y′ ＝ 5x<sup>5−1</sup></p>
+            <p class="calc"><math><mi>y</mi><mi>′</mi><mo>=</mo><mn>5</mn><msup><mi>x</mi><mrow><mn>5</mn><mo>−</mo><mn>1</mn></mrow></msup></math></p>
             <p>指数の計算 5−1 を忘れずに。</p>
           </div>
           <div class="step answer">
             <h3>解答 (2)</h3>
-            <p class="big">y′ ＝ 5x<sup>4</sup></p>
-            <p>指数 5 を前に出し、指数を 5−1＝4 に下げた。これで練習7 完了。この項はこれで終わりだよ。</p>
+            <p class="big"><math display="block"><mi>y</mi><mi>′</mi><mo>=</mo><mn>5</mn><msup><mi>x</mi><mn>4</mn></msup></math></p>
+            <p>指数 5 を前に出し、指数を<math><mn>5</mn><mo>−</mo><mn>1</mn><mo>=</mo><mn>4</mn></math>に下げた。<br>これで練習7 完了。この項はこれで終わりだよ。</p>
           </div>
           <p class="prob-done">(2) クリア！　練習7 完了。下のまとめで確認しよう。</p>
         </div>
@@ -821,11 +885,13 @@
       <section class="card summary">
         <h2>この項のポイント</h2>
         <ul>
-          <li><b>導関数</b>とは、微分係数 f′(a) を a の関数とみたもの：　f′(x) ＝ <span class="limd"><span>lim</span><span class="lim-b">h→0</span></span><span class="frac"><span class="num">f(x＋h)−f(x)</span><span class="den">h</span></span>。導関数を求めることを「微分する」という。</li>
+          <li><p class="cite"><span class="cite-tag">使う定義</span>導関数の定義 <math><mi>f</mi><mi>′</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>+</mo><mi>h</mi><mo>)</mo><mo>−</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><mi>h</mi></mfrac></math>。微分係数 f′(a) を a の関数とみて、a を x と書き直したものが導関数だよ。</p>
+          <b>導関数</b>とは、微分係数 f′(a) を a の関数とみたもの：　<math><mi>f</mi><mi>′</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>+</mo><mi>h</mi><mo>)</mo><mo>−</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><mi>h</mi></mfrac></math>。<br>導関数を求めることを「微分する」という。</li>
           <li>導関数の記号は f′(x) のほかに <b>y′</b>、<b>dy/dx</b> がある。</li>
           <li>定義からの計算の流れは「<b>代入 → 分子を整理 → h で約分 → h→0</b>」。</li>
-          <li class="gate" id="sumFormula">公式：<b>(x<sup>n</sup>)′＝nx<sup>n−1</sup></b>（指数を前に出して、指数を1つ下げる）、<b>定数関数 (c)′＝0</b>。</li>
-          <li class="gate" id="sumExamples">具体例：(x)′＝1、(x<sup>2</sup>)′＝2x、(x<sup>3</sup>)′＝3x<sup>2</sup>、(x<sup>4</sup>)′＝4x<sup>3</sup>、(x<sup>5</sup>)′＝5x<sup>4</sup>。</li>
+          <li class="gate" id="sumFormula"><p class="cite"><span class="cite-tag">使う公式</span>微分の公式 <math><mo>(</mo><msup><mi>x</mi><mi>n</mi></msup><mo>)</mo><mo>′</mo><mo>=</mo><mi>n</mi><msup><mi>x</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup></math>。指数を係数として前に出し、指数を 1 つ下げるのが、この公式の使い方だよ。</p>
+          公式：<b><math><mo>(</mo><msup><mi>x</mi><mi>n</mi></msup><mo>)</mo><mo>′</mo><mo>=</mo><mi>n</mi><msup><mi>x</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup></math></b><math><mo>(</mo></math>指数を前に出して、指数を1つ下げる）、<b>定数関数<math><mo>(</mo><mi>c</mi><mo>)</mo><mo>′</mo><mo>=</mo><mn>0</mn></math></b>。</li>
+          <li class="gate" id="sumExamples">具体例：<math><mo>(</mo><mi>x</mi><mo>)</mo><mo>′</mo><mo>=</mo><mn>1</mn></math>、<math><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>)</mo><mo>′</mo><mo>=</mo><mn>2</mn><mi>x</mi></math>、<math><mo>(</mo><msup><mi>x</mi><mn>3</mn></msup><mo>)</mo><mo>′</mo><mo>=</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup></math>、<math><mo>(</mo><msup><mi>x</mi><mn>4</mn></msup><mo>)</mo><mo>′</mo><mo>=</mo><mn>4</mn><msup><mi>x</mi><mn>3</mn></msup></math>、<math><mo>(</mo><msup><mi>x</mi><mn>5</mn></msup><mo>)</mo><mo>′</mo><mo>=</mo><mn>5</mn><msup><mi>x</mi><mn>4</mn></msup></math>。</li>
           <li id="sumGateNote">公式と具体例は、上の「公式」と「練習7」の課題を最後まで開くと、ここに表示されるよ。</li>
         </ul>
       </section>

@@ -265,7 +265,45 @@
           padding-right: 6px;
         }
       }
-    </style>
+    
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+</style>
   </head>
   <body>
     <div class="wrap">
@@ -287,19 +325,19 @@
           <li>問題はタブで切り替えます。下のバーが、いま開いている問題の進み具合を示します。</li>
         </ul>
         <div class="overall">
-          <div class="overall-text">全体の進み具合： <strong id="overallText">0 / 42 ステップ</strong></div>
+          <div class="overall-text">全体の進み具合： <strong id="overallText"><math><mfrac><mn>0</mn><mn>42</mn></mfrac></math>ステップ</strong></div>
           <div class="bar-track"><div class="bar-fill" id="overallFill"></div></div>
         </div>
       </section>
 
       <section class="card explain">
         <h2><span class="sec-tag">解説</span>解法の考え方</h2>
-        <p>指数関数を含む方程式・不等式は、<strong>両辺を同じ底の累乗にそろえる</strong>のが基本です。どちらの数も表せる底を探すのが第一歩で、たとえば 8 と 4 なら底は 2、27 なら底は 3、<span class="m"><span class="frac"><span class="num">1</span><span class="den">9</span></span></span> なら底は <span class="m"><span class="frac"><span class="num">1</span><span class="den">3</span></span></span> や 3 が使えます。</p>
+        <p>指数関数を含む方程式・不等式は、<strong>両辺を同じ底の累乗にそろえる</strong>のが基本です。<br>どちらの数も表せる底を探すのが第一歩で、<br>たとえば 8 と 4 なら底は 2、27 なら底は 3、<math><mfrac><mn>1</mn><mn>9</mn></mfrac></math> なら底は <math><mfrac><mn>1</mn><mn>3</mn></mfrac></math> や 3 が使えます。</p>
         <p>底がそろったら、あとは<strong>指数の部分だけを取り出して比べます</strong>。</p>
         <div class="rule-box">
-          <p><span class="rule-name">方程式</span><span class="m"><i>a<sup>p</sup></i> = <i>a<sup>q</sup></i> ⟺ <i>p</i> = <i>q</i></span>　（底がそろえば、等しくなるのは指数どうし）</p>
-          <p><span class="rule-name">不等式（底 <span class="m"><i>a</i> &gt; 1</span>）</span><span class="m"><i>a<sup>p</sup></i> &lt; <i>a<sup>q</sup></i> ⟺ <i>p</i> &lt; <i>q</i></span>　（不等号は<strong>そのまま</strong>）</p>
-          <p><span class="rule-name">不等式（底 <span class="m">0 &lt; <i>a</i> &lt; 1</span>）</span><span class="m"><i>a<sup>p</sup></i> &lt; <i>a<sup>q</sup></i> ⟺ <i>p</i> &gt; <i>q</i></span>　（不等号が<strong>逆になる</strong>）</p>
+          <p><span class="rule-name">方程式</span><math><msup><mi>a</mi><mi>p</mi></msup><mo>=</mo><msup><mi>a</mi><mi>q</mi></msup><mo>⟺</mo><mi>p</mi><mo>=</mo><mi>q</mi></math>　（底がそろえば、等しくなるのは指数どうし）</p>
+          <p><span class="rule-name">不等式（底 <math><mi>a</mi><mo>&gt;</mo><mn>1</mn><mo>)</mo></math></span><math><msup><mi>a</mi><mi>p</mi></msup><mo>&lt;</mo><msup><mi>a</mi><mi>q</mi></msup><mo>⟺</mo><mi>p</mi><mo>&lt;</mo><mi>q</mi></math>　（不等号は<strong>そのまま</strong>）</p>
+          <p><span class="rule-name">不等式（底 <math><mn>0</mn><mo>&lt;</mo><mi>a</mi><mo>&lt;</mo><mn>1</mn><mo>)</mo></math></span><math><msup><mi>a</mi><mi>p</mi></msup><mo>&lt;</mo><msup><mi>a</mi><mi>q</mi></msup><mo>⟺</mo><mi>p</mi><mo>&gt;</mo><mi>q</mi></math>　（不等号が<strong>逆になる</strong>）</p>
         </div>
         <p>なぜ底によって不等号の向きが変わるのか、グラフで確認しましょう。</p>
         <div class="figs">
@@ -322,7 +360,7 @@
               <circle class="pt" cx="164" cy="18" r="3.2" />
               <text x="118" y="30" text-anchor="middle">y = 2<tspan dy="-7" font-size="10">x</tspan></text>
             </svg>
-            <figcaption><strong><span class="m"><i>y</i> = 2<sup><i>x</i></sup></span>（底 2 は 1 より大きい）</strong>：グラフは右上がりで、<i>x</i> が大きいほど <i>y</i> も大きい（増加関数）。値の大小と指数の大小がそろうので、不等号はそのまま使えます。</figcaption>
+            <figcaption><strong><math><mi>y</mi><mo>=</mo><msup><mn>2</mn><mi>x</mi></msup><mo>(</mo></math>底 2 は 1 より大きい）</strong>：グラフは右上がりで、<math><mi>x</mi></math> が大きいほど <math><mi>y</mi></math> も大きい（増加関数）。<br>値の大小と指数の大小がそろうので、不等号はそのまま使えます。</figcaption>
           </figure>
           <figure>
             <svg viewBox="0 0 200 170" role="img" aria-label="y=2分の1のx乗のグラフ（右下がり）">
@@ -343,12 +381,12 @@
               <circle class="pt" cx="130" cy="123" r="3.2" />
               <text x="140" y="94" text-anchor="middle">y = (<tspan dy="-2" font-size="10">1</tspan><tspan dy="4" font-size="10">/</tspan><tspan dy="2" font-size="10">2</tspan>)<tspan dy="-7" font-size="10">x</tspan></text>
             </svg>
-            <figcaption><strong><span class="m"><i>y</i> = (<span class="frac"><span class="num">1</span><span class="den">2</span></span>)<sup><i>x</i></sup></span>（底 <span class="m"><span class="frac"><span class="num">1</span><span class="den">2</span></span></span> は 1 より小さい）</strong>：グラフは右下がりで、<i>x</i> が大きいほど <i>y</i> は小さい（減少関数）。値の大小と指数の大小が逆転するので、不等号も逆になります。</figcaption>
+            <figcaption><strong><math><mi>y</mi><mo>=</mo><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo></mrow><mi>x</mi></msup><mo>(</mo></math>底 <math><mfrac><mn>1</mn><mn>2</mn></mfrac></math> は 1 より小さい）</strong>：グラフは右下がりで、<math><mi>x</mi></math> が大きいほど <math><mi>y</mi></math> は小さい（減少関数）。<br>値の大小と指数の大小が逆転するので、不等号も逆になります。</figcaption>
           </figure>
         </div>
       </section>
 
-      <section class="card prob" data-section="reidai3">
+      <section class="nofig card prob" data-section="reidai3">
         <div class="prob-head">
           <span class="prob-tag ex">例題3</span>
           <h2>次の方程式を解け。</h2>
@@ -361,29 +399,31 @@
 
         <div class="panel" data-part="r3a" data-label="例題3 (1)">
           <div class="prob-left">
-          <p class="q"><span class="qnum">(1)</span><span class="m">8<sup><i>x</i></sup> = 4</span></p>
+          <p class="q"><span class="qnum">(1)</span><math><msup><mn>8</mn><mi>x</mi></msup><mo>=</mo><mn>4</mn></math></p>
           </div>
           <div class="prob-right">
           <div class="step hint" hidden>
             <span class="step-label">ヒント1</span>
-            <p>左辺の 8 を、2 の累乗で表そう。8 = 2<sup>3</sup> だから、<span class="m">8<sup><i>x</i></sup></span> は <span class="m">(2<sup>3</sup>)<sup><i>x</i></sup></span> と書ける。</p>
+            <p>左辺の 8 を、2 の累乗で表そう。<br><math><mn>8</mn><mo>=</mo><msup><mn>2</mn><mn>3</mn></msup></math> だから、<math><msup><mn>8</mn><mi>x</mi></msup></math> は <math><msup><mrow><mo>(</mo><msup><mn>2</mn><mn>3</mn></msup><mo>)</mo></mrow><mi>x</mi></msup></math> と書ける。</p>
           </div>
           <div class="step hint" hidden>
             <span class="step-label">ヒント2</span>
-            <p>累乗の累乗は、指数どうしを掛ける。<span class="m">(2<sup>3</sup>)<sup><i>x</i></sup> = 2<sup>3<i>x</i></sup></span> となり、左辺は <span class="m">2<sup>3<i>x</i></sup></span> になる。</p>
+            <p class="cite"><span class="cite-tag">使う公式</span>累乗の累乗 <math><msup><mrow><mo>(</mo><msup><mi>a</mi><mi>m</mi></msup><mo>)</mo></mrow><mi>n</mi></msup><mo>=</mo><msup><mi>a</mi><mrow><mi>m</mi><mi>n</mi></mrow></msup></math>。かっこの中の指数と外の指数を掛けます。この問題では <math><msup><mrow><mo>(</mo><msup><mn>2</mn><mn>3</mn></msup><mo>)</mo></mrow><mi>x</mi></msup></math> を <math><msup><mn>2</mn><mrow><mn>3</mn><mi>x</mi></mrow></msup></math> と計算します。</p>
+            <p>累乗の累乗は、指数どうしを掛ける。<br><math><msup><mrow><mo>(</mo><msup><mn>2</mn><mn>3</mn></msup><mo>)</mo></mrow><mi>x</mi></msup><mo>=</mo><msup><mn>2</mn><mrow><mn>3</mn><mi>x</mi></mrow></msup></math> となり、左辺は <math><msup><mn>2</mn><mrow><mn>3</mn><mi>x</mi></mrow></msup></math> になる。</p>
           </div>
           <div class="step hint" hidden>
             <span class="step-label">ヒント3</span>
-            <p>右辺の 4 も 2 の累乗に直そう。4 = 2<sup>2</sup> だから、方程式は <span class="m">2<sup>3<i>x</i></sup> = 2<sup>2</sup></span> となる。</p>
+            <p>右辺の 4 も 2 の累乗に直そう。<br><math><mn>4</mn><mo>=</mo><msup><mn>2</mn><mn>2</mn></msup></math> だから、方程式は <math><msup><mn>2</mn><mrow><mn>3</mn><mi>x</mi></mrow></msup><mo>=</mo><msup><mn>2</mn><mn>2</mn></msup></math> となる。</p>
           </div>
           <div class="step hint" hidden>
             <span class="step-label">ヒント4</span>
-            <p>両辺の底が 2 にそろった。あとは指数どうしを比べる。<span class="m">3<i>x</i> = 2</span></p>
+            <p class="cite"><span class="cite-tag">使う性質</span>底がそろった方程式 <math><msup><mi>a</mi><mi>p</mi></msup><mo>=</mo><msup><mi>a</mi><mi>q</mi></msup><mo>⟺</mo><mi>p</mi><mo>=</mo><mi>q</mi></math>。底が同じなら、等しくなるのは指数どうしです。この問題では <math><msup><mn>2</mn><mrow><mn>3</mn><mi>x</mi></mrow></msup><mo>=</mo><msup><mn>2</mn><mn>2</mn></msup></math> から <math><mn>3</mn><mi>x</mi><mo>=</mo><mn>2</mn></math> が取り出せます。</p>
+            <p>両辺の底が 2 にそろった。あとは指数どうしを比べる。<math><mn>3</mn><mi>x</mi><mo>=</mo><mn>2</mn></math></p>
           </div>
           <div class="step answer" hidden>
             <span class="step-label">解答</span>
-            <p><span class="m">3<i>x</i> = 2</span> の両辺を 3 で割ると、</p>
-            <p class="ans-main"><span class="m"><i>x</i> = <span class="frac"><span class="num">2</span><span class="den">3</span></span></span></p>
+            <p><math><mn>3</mn><mi>x</mi><mo>=</mo><mn>2</mn></math> の両辺を 3 で割ると、</p>
+            <p class="ans-main"><math><mi>x</mi><mo>=</mo><mfrac><mn>2</mn><mn>3</mn></mfrac></math></p>
           </div>
           <p class="part-status" data-part-status></p>
           </div>
@@ -391,32 +431,34 @@
 
         <div class="panel" data-part="r3b" data-label="例題3 (2)" hidden>
           <div class="prob-left">
-          <p class="q"><span class="qnum">(2)</span><span class="m">9<sup><i>x</i></sup> = 3<sup><i>x</i>+1</sup></span></p>
+          <p class="q"><span class="qnum">(2)</span><math><msup><mn>9</mn><mi>x</mi></msup><mo>=</mo><msup><mn>3</mn><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow></msup></math></p>
           </div>
           <div class="prob-right">
           <div class="step hint" hidden>
             <span class="step-label">ヒント1</span>
-            <p>左辺の 9 を 3 の累乗で表そう。9 = 3<sup>2</sup> だから、<span class="m">9<sup><i>x</i></sup> = (3<sup>2</sup>)<sup><i>x</i></sup></span> と書ける。</p>
+            <p>左辺の 9 を 3 の累乗で表そう。<br><math><mn>9</mn><mo>=</mo><msup><mn>3</mn><mn>2</mn></msup></math> だから、<math><msup><mn>9</mn><mi>x</mi></msup><mo>=</mo><msup><mrow><mo>(</mo><msup><mn>3</mn><mn>2</mn></msup><mo>)</mo></mrow><mi>x</mi></msup></math> と書ける。</p>
           </div>
           <div class="step hint" hidden>
             <span class="step-label">ヒント2</span>
-            <p><span class="m">(3<sup>2</sup>)<sup><i>x</i></sup> = 3<sup>2<i>x</i></sup></span>。右辺はもともと <span class="m">3<sup><i>x</i>+1</sup></span> で、両辺の底が 3 にそろった。</p>
+            <p class="cite"><span class="cite-tag">使う公式</span>累乗の累乗 <math><msup><mrow><mo>(</mo><msup><mi>a</mi><mi>m</mi></msup><mo>)</mo></mrow><mi>n</mi></msup><mo>=</mo><msup><mi>a</mi><mrow><mi>m</mi><mi>n</mi></mrow></msup></math>。かっこの中の指数と外の指数を掛けます。この問題では <math><msup><mrow><mo>(</mo><msup><mn>3</mn><mn>2</mn></msup><mo>)</mo></mrow><mi>x</mi></msup></math> を <math><msup><mn>3</mn><mrow><mn>2</mn><mi>x</mi></mrow></msup></math> と計算します。</p>
+            <p><math><msup><mrow><mo>(</mo><msup><mn>3</mn><mn>2</mn></msup><mo>)</mo></mrow><mi>x</mi></msup><mo>=</mo><msup><mn>3</mn><mrow><mn>2</mn><mi>x</mi></mrow></msup></math>。<br>右辺はもともと <math><msup><mn>3</mn><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow></msup></math> で、両辺の底が 3 にそろった。</p>
           </div>
           <div class="step hint" hidden>
             <span class="step-label">ヒント3</span>
-            <p>指数どうしを比べて、<span class="m">2<i>x</i> = <i>x</i> + 1</span>。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>底がそろった方程式 <math><msup><mi>a</mi><mi>p</mi></msup><mo>=</mo><msup><mi>a</mi><mi>q</mi></msup><mo>⟺</mo><mi>p</mi><mo>=</mo><mi>q</mi></math>。底が同じなら、等しくなるのは指数どうしです。この問題では <math><msup><mn>3</mn><mrow><mn>2</mn><mi>x</mi></mrow></msup><mo>=</mo><msup><mn>3</mn><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow></msup></math> から <math><mn>2</mn><mi>x</mi><mo>=</mo><mi>x</mi><mo>+</mo><mn>1</mn></math> が取り出せます。</p>
+            <p>指数どうしを比べて、<math><mn>2</mn><mi>x</mi><mo>=</mo><mi>x</mi><mo>+</mo><mn>1</mn></math>。</p>
           </div>
           <div class="step answer" hidden>
             <span class="step-label">解答</span>
-            <p><span class="m">2<i>x</i> = <i>x</i> + 1</span> の <span class="m"><i>x</i></span> を左辺に移項すると、</p>
-            <p class="ans-main"><span class="m"><i>x</i> = 1</span></p>
+            <p><math><mn>2</mn><mi>x</mi><mo>=</mo><mi>x</mi><mo>+</mo><mn>1</mn></math> の <math><mi>x</mi></math> を左辺に移項すると、</p>
+            <p class="ans-main"><math><mi>x</mi><mo>=</mo><mn>1</mn></math></p>
           </div>
           <p class="part-status" data-part-status></p>
           </div>
         </div>
       </section>
 
-      <section class="card prob" data-section="enshu11">
+      <section class="nofig card prob" data-section="enshu11">
         <div class="prob-head">
           <span class="prob-tag pr">練習11</span>
           <h2>次の方程式を解け。</h2>
@@ -430,25 +472,27 @@
 
         <div class="panel" data-part="e11a" data-label="練習11 (1)">
           <div class="prob-left">
-          <p class="q"><span class="qnum">(1)</span><span class="m">4<sup><i>x</i></sup> = 8</span></p>
+          <p class="q"><span class="qnum">(1)</span><math><msup><mn>4</mn><mi>x</mi></msup><mo>=</mo><mn>8</mn></math></p>
           </div>
           <div class="prob-right">
           <div class="step hint" hidden>
             <span class="step-label">ヒント1</span>
-            <p>4 と 8 は、どちらも 2 の累乗で表せる。まず 4 = 2<sup>2</sup> だから、<span class="m">4<sup><i>x</i></sup> = (2<sup>2</sup>)<sup><i>x</i></sup> = 2<sup>2<i>x</i></sup></span>。</p>
+            <p class="cite"><span class="cite-tag">使う公式</span>累乗の累乗 <math><msup><mrow><mo>(</mo><msup><mi>a</mi><mi>m</mi></msup><mo>)</mo></mrow><mi>n</mi></msup><mo>=</mo><msup><mi>a</mi><mrow><mi>m</mi><mi>n</mi></mrow></msup></math>。かっこの中の指数と外の指数を掛けます。この問題では <math><msup><mrow><mo>(</mo><msup><mn>2</mn><mn>2</mn></msup><mo>)</mo></mrow><mi>x</mi></msup></math> を <math><msup><mn>2</mn><mrow><mn>2</mn><mi>x</mi></mrow></msup></math> と計算します。</p>
+            <p>4 と 8 は、どちらも 2 の累乗で表せる。<br>まず<math><mn>4</mn><mo>=</mo><msup><mn>2</mn><mn>2</mn></msup></math> だから、<math><msup><mn>4</mn><mi>x</mi></msup><mo>=</mo><msup><mrow><mo>(</mo><msup><mn>2</mn><mn>2</mn></msup><mo>)</mo></mrow><mi>x</mi></msup><mo>=</mo><msup><mn>2</mn><mrow><mn>2</mn><mi>x</mi></mrow></msup></math>。</p>
           </div>
           <div class="step hint" hidden>
             <span class="step-label">ヒント2</span>
-            <p>右辺も直そう。8 = 2<sup>3</sup> だから、方程式は <span class="m">2<sup>2<i>x</i></sup> = 2<sup>3</sup></span> となる。</p>
+            <p>右辺も直そう。<math><mn>8</mn><mo>=</mo><msup><mn>2</mn><mn>3</mn></msup></math> だから、方程式は <math><msup><mn>2</mn><mrow><mn>2</mn><mi>x</mi></mrow></msup><mo>=</mo><msup><mn>2</mn><mn>3</mn></msup></math> となる。</p>
           </div>
           <div class="step hint" hidden>
             <span class="step-label">ヒント3</span>
-            <p>底がそろったので、指数を比べる。<span class="m">2<i>x</i> = 3</span></p>
+            <p class="cite"><span class="cite-tag">使う性質</span>底がそろった方程式 <math><msup><mi>a</mi><mi>p</mi></msup><mo>=</mo><msup><mi>a</mi><mi>q</mi></msup><mo>⟺</mo><mi>p</mi><mo>=</mo><mi>q</mi></math>。底が同じなら、等しくなるのは指数どうしです。この問題では <math><msup><mn>2</mn><mrow><mn>2</mn><mi>x</mi></mrow></msup><mo>=</mo><msup><mn>2</mn><mn>3</mn></msup></math> から <math><mn>2</mn><mi>x</mi><mo>=</mo><mn>3</mn></math> が取り出せます。</p>
+            <p>底がそろったので、指数を比べる。<math><mn>2</mn><mi>x</mi><mo>=</mo><mn>3</mn></math></p>
           </div>
           <div class="step answer" hidden>
             <span class="step-label">解答</span>
-            <p><span class="m">2<i>x</i> = 3</span> の両辺を 2 で割ると、</p>
-            <p class="ans-main"><span class="m"><i>x</i> = <span class="frac"><span class="num">3</span><span class="den">2</span></span></span></p>
+            <p><math><mn>2</mn><mi>x</mi><mo>=</mo><mn>3</mn></math> の両辺を 2 で割ると、</p>
+            <p class="ans-main"><math><mi>x</mi><mo>=</mo><mfrac><mn>3</mn><mn>2</mn></mfrac></math></p>
           </div>
           <p class="part-status" data-part-status></p>
           </div>
@@ -456,25 +500,28 @@
 
         <div class="panel" data-part="e11b" data-label="練習11 (2)" hidden>
           <div class="prob-left">
-          <p class="q"><span class="qnum">(2)</span><span class="m">8<sup><i>x</i></sup> = <span class="frac"><span class="num">1</span><span class="den">16</span></span></span></p>
+          <p class="q"><span class="qnum">(2)</span><math><msup><mn>8</mn><mi>x</mi></msup><mo>=</mo><mfrac><mn>1</mn><mn>16</mn></mfrac></math></p>
           </div>
           <div class="prob-right">
           <div class="step hint" hidden>
             <span class="step-label">ヒント1</span>
-            <p>8 = 2<sup>3</sup> だから、左辺は <span class="m">8<sup><i>x</i></sup> = (2<sup>3</sup>)<sup><i>x</i></sup> = 2<sup>3<i>x</i></sup></span>。</p>
+            <p class="cite"><span class="cite-tag">使う公式</span>累乗の累乗 <math><msup><mrow><mo>(</mo><msup><mi>a</mi><mi>m</mi></msup><mo>)</mo></mrow><mi>n</mi></msup><mo>=</mo><msup><mi>a</mi><mrow><mi>m</mi><mi>n</mi></mrow></msup></math>。かっこの中の指数と外の指数を掛けます。この問題では <math><msup><mrow><mo>(</mo><msup><mn>2</mn><mn>3</mn></msup><mo>)</mo></mrow><mi>x</mi></msup></math> を <math><msup><mn>2</mn><mrow><mn>3</mn><mi>x</mi></mrow></msup></math> と計算します。</p>
+            <p><math><mn>8</mn><mo>=</mo><msup><mn>2</mn><mn>3</mn></msup></math> だから、左辺は <math><msup><mn>8</mn><mi>x</mi></msup><mo>=</mo><msup><mrow><mo>(</mo><msup><mn>2</mn><mn>3</mn></msup><mo>)</mo></mrow><mi>x</mi></msup><mo>=</mo><msup><mn>2</mn><mrow><mn>3</mn><mi>x</mi></mrow></msup></math>。</p>
           </div>
           <div class="step hint" hidden>
             <span class="step-label">ヒント2</span>
-            <p>右辺の <span class="m"><span class="frac"><span class="num">1</span><span class="den">16</span></span></span> を 2 の累乗で表す。16 = 2<sup>4</sup> だから <span class="m"><span class="frac"><span class="num">1</span><span class="den">16</span></span> = <span class="frac"><span class="num">1</span><span class="den">2<sup>4</sup></span></span></span>。分数は負の指数を使って <span class="m">2<sup>−4</sup></span> と書ける。</p>
+            <p class="cite"><span class="cite-tag">使う定義</span>負の指数の定義 <math><msup><mi>a</mi><mrow><mo>−</mo><mi>n</mi></mrow></msup><mo>=</mo><mfrac><mn>1</mn><msup><mi>a</mi><mi>n</mi></msup></mfrac></math>（ただし <math><mi>a</mi><mo>≠</mo><mn>0</mn></math>）。分数は、負の指数を使って累乗の形に書き直せます。この問題では <math><mfrac><mn>1</mn><mn>16</mn></mfrac><mo>=</mo><msup><mn>2</mn><mrow><mo>−</mo><mn>4</mn></mrow></msup></math> とします。</p>
+            <p>右辺の <math><mfrac><mn>1</mn><mn>16</mn></mfrac></math> を 2 の累乗で表す。<br><math><mn>16</mn><mo>=</mo><msup><mn>2</mn><mn>4</mn></msup></math> だから <math><mfrac><mn>1</mn><mn>16</mn></mfrac><mo>=</mo><mfrac><mn>1</mn><msup><mn>2</mn><mn>4</mn></msup></mfrac></math>。<br>分数は負の指数を使って <math><msup><mn>2</mn><mrow><mo>−</mo><mn>4</mn></mrow></msup></math> と書ける。</p>
           </div>
           <div class="step hint" hidden>
             <span class="step-label">ヒント3</span>
-            <p>方程式は <span class="m">2<sup>3<i>x</i></sup> = 2<sup>−4</sup></span> となる。指数を比べて、<span class="m">3<i>x</i> = −4</span>。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>底がそろった方程式 <math><msup><mi>a</mi><mi>p</mi></msup><mo>=</mo><msup><mi>a</mi><mi>q</mi></msup><mo>⟺</mo><mi>p</mi><mo>=</mo><mi>q</mi></math>。底が同じなら、等しくなるのは指数どうしです。この問題では <math><msup><mn>2</mn><mrow><mn>3</mn><mi>x</mi></mrow></msup><mo>=</mo><msup><mn>2</mn><mrow><mo>−</mo><mn>4</mn></mrow></msup></math> から <math><mn>3</mn><mi>x</mi><mo>=</mo><mo>−</mo><mn>4</mn></math> が取り出せます。</p>
+            <p>方程式は <math><msup><mn>2</mn><mrow><mn>3</mn><mi>x</mi></mrow></msup><mo>=</mo><msup><mn>2</mn><mrow><mo>−</mo><mn>4</mn></mrow></msup></math> となる。指数を比べて、<math><mn>3</mn><mi>x</mi><mo>=</mo><mo>−</mo><mn>4</mn></math>。</p>
           </div>
           <div class="step answer" hidden>
             <span class="step-label">解答</span>
-            <p><span class="m">3<i>x</i> = −4</span> の両辺を 3 で割ると、</p>
-            <p class="ans-main"><span class="m"><i>x</i> = −<span class="frac"><span class="num">4</span><span class="den">3</span></span></span></p>
+            <p><math><mn>3</mn><mi>x</mi><mo>=</mo><mo>−</mo><mn>4</mn></math> の両辺を 3 で割ると、</p>
+            <p class="ans-main"><math><mi>x</mi><mo>=</mo><mo>−</mo><mfrac><mn>4</mn><mn>3</mn></mfrac></math></p>
           </div>
           <p class="part-status" data-part-status></p>
           </div>
@@ -482,25 +529,27 @@
 
         <div class="panel" data-part="e11c" data-label="練習11 (3)" hidden>
           <div class="prob-left">
-          <p class="q"><span class="qnum">(3)</span><span class="m">27<sup><i>x</i></sup> = 3<sup>2−<i>x</i></sup></span></p>
+          <p class="q"><span class="qnum">(3)</span><math><msup><mn>27</mn><mi>x</mi></msup><mo>=</mo><msup><mn>3</mn><mrow><mn>2</mn><mo>−</mo><mi>x</mi></mrow></msup></math></p>
           </div>
           <div class="prob-right">
           <div class="step hint" hidden>
             <span class="step-label">ヒント1</span>
-            <p>27 = 3<sup>3</sup> だから、左辺は <span class="m">27<sup><i>x</i></sup> = (3<sup>3</sup>)<sup><i>x</i></sup> = 3<sup>3<i>x</i></sup></span>。右辺はすでに底 3 の形 <span class="m">3<sup>2−<i>x</i></sup></span> になっている。</p>
+            <p class="cite"><span class="cite-tag">使う公式</span>累乗の累乗 <math><msup><mrow><mo>(</mo><msup><mi>a</mi><mi>m</mi></msup><mo>)</mo></mrow><mi>n</mi></msup><mo>=</mo><msup><mi>a</mi><mrow><mi>m</mi><mi>n</mi></mrow></msup></math>。かっこの中の指数と外の指数を掛けます。この問題では <math><msup><mrow><mo>(</mo><msup><mn>3</mn><mn>3</mn></msup><mo>)</mo></mrow><mi>x</mi></msup></math> を <math><msup><mn>3</mn><mrow><mn>3</mn><mi>x</mi></mrow></msup></math> と計算します。</p>
+            <p><math><mn>27</mn><mo>=</mo><msup><mn>3</mn><mn>3</mn></msup></math> だから、左辺は <math><msup><mn>27</mn><mi>x</mi></msup><mo>=</mo><msup><mrow><mo>(</mo><msup><mn>3</mn><mn>3</mn></msup><mo>)</mo></mrow><mi>x</mi></msup><mo>=</mo><msup><mn>3</mn><mrow><mn>3</mn><mi>x</mi></mrow></msup></math>。<br>右辺はすでに底 3 の形 <math><msup><mn>3</mn><mrow><mn>2</mn><mo>−</mo><mi>x</mi></mrow></msup></math> になっている。</p>
           </div>
           <div class="step hint" hidden>
             <span class="step-label">ヒント2</span>
-            <p>指数を比べて、<span class="m">3<i>x</i> = 2 − <i>x</i></span>。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>底がそろった方程式 <math><msup><mi>a</mi><mi>p</mi></msup><mo>=</mo><msup><mi>a</mi><mi>q</mi></msup><mo>⟺</mo><mi>p</mi><mo>=</mo><mi>q</mi></math>。底が同じなら、等しくなるのは指数どうしです。この問題では <math><msup><mn>3</mn><mrow><mn>3</mn><mi>x</mi></mrow></msup><mo>=</mo><msup><mn>3</mn><mrow><mn>2</mn><mo>−</mo><mi>x</mi></mrow></msup></math> から <math><mn>3</mn><mi>x</mi><mo>=</mo><mn>2</mn><mo>−</mo><mi>x</mi></math> が取り出せます。</p>
+            <p>指数を比べて、<math><mn>3</mn><mi>x</mi><mo>=</mo><mn>2</mn><mo>−</mo><mi>x</mi></math>。</p>
           </div>
           <div class="step hint" hidden>
             <span class="step-label">ヒント3</span>
-            <p><span class="m">−<i>x</i></span> を左辺へ移項すると <span class="m">3<i>x</i> + <i>x</i> = 2</span>、つまり <span class="m">4<i>x</i> = 2</span>。</p>
+            <p><math><mo>−</mo><mi>x</mi></math> を左辺へ移項すると <math><mn>3</mn><mi>x</mi><mo>+</mo><mi>x</mi><mo>=</mo><mn>2</mn></math>、つまり <math><mn>4</mn><mi>x</mi><mo>=</mo><mn>2</mn></math>。</p>
           </div>
           <div class="step answer" hidden>
             <span class="step-label">解答</span>
-            <p><span class="m">4<i>x</i> = 2</span> の両辺を 4 で割ると、</p>
-            <p class="ans-main"><span class="m"><i>x</i> = <span class="frac"><span class="num">1</span><span class="den">2</span></span></span></p>
+            <p><math><mn>4</mn><mi>x</mi><mo>=</mo><mn>2</mn></math> の両辺を 4 で割ると、</p>
+            <p class="ans-main"><math><mi>x</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math></p>
           </div>
           <p class="part-status" data-part-status></p>
           </div>
@@ -520,7 +569,7 @@
 
         <div class="panel" data-part="r4a" data-label="例題4 (1)" data-fig="figMarkR4a">
           <div class="prob-left">
-          <p class="q"><span class="qnum">(1)</span><span class="m">2<sup><i>x</i></sup> ≧ 8</span></p>
+          <p class="q"><span class="qnum">(1)</span><math><msup><mn>2</mn><mi>x</mi></msup><mo>≧</mo><mn>8</mn></math></p>
           <figure class="panel-fig">
             <svg viewBox="0 0 240 180" role="img" aria-label="y=2のx乗のグラフ">
               <line class="axis" x1="8" y1="158" x2="228" y2="158" />
@@ -543,26 +592,27 @@
                 <text x="166" y="177" text-anchor="middle">3</text>
               </g>
             </svg>
-            <figcaption>図：<span class="m"><i>y</i> = 2<sup><i>x</i></sup></span> のグラフ</figcaption>
+            <figcaption>図：<math><mi>y</mi><mo>=</mo><msup><mn>2</mn><mi>x</mi></msup></math> のグラフ</figcaption>
           </figure>
           </div>
           <div class="prob-right">
           <div class="step hint" hidden>
             <span class="step-label">ヒント1</span>
-            <p>右辺の 8 を 2 の累乗で表そう。8 = 2<sup>3</sup> だから、不等式は <span class="m">2<sup><i>x</i></sup> ≧ 2<sup>3</sup></span> となる。</p>
+            <p>右辺の 8 を 2 の累乗で表そう。<br><math><mn>8</mn><mo>=</mo><msup><mn>2</mn><mn>3</mn></msup></math> だから、不等式は <math><msup><mn>2</mn><mi>x</mi></msup><mo>≧</mo><msup><mn>2</mn><mn>3</mn></msup></math> となる。</p>
           </div>
           <div class="step hint" hidden>
             <span class="step-label">ヒント2</span>
-            <p>底 2 は 1 より大きい。上の図のように <span class="m"><i>y</i> = 2<sup><i>x</i></sup></span> は右上がりのグラフ（増加関数）で、<span class="m"><i>x</i></span> が大きいほど値も大きくなる。</p>
+            <p>底 2 は 1 より大きい。<br>上の図のように <math><mi>y</mi><mo>=</mo><msup><mn>2</mn><mi>x</mi></msup></math> は右上がりのグラフ（増加関数）で、<br><math><mi>x</mi></math> が大きいほど値も大きくなる。</p>
           </div>
           <div class="step hint" hidden>
             <span class="step-label">ヒント3</span>
-            <p>だから、指数を比べるとき<strong>不等号の向きはそのまま</strong>でよい。<span class="m"><i>x</i> ≧ 3</span></p>
+            <p class="cite"><span class="cite-tag">使う性質</span>指数関数の増加性（底 <math><mi>a</mi><mo>&gt;</mo><mn>1</mn></math> のとき） <math><msup><mi>a</mi><mi>p</mi></msup><mo>≧</mo><msup><mi>a</mi><mi>q</mi></msup><mo>⟺</mo><mi>p</mi><mo>≧</mo><mi>q</mi></math>。底が 1 より大きいと、値の大小と指数の大小がそろうので、不等号はそのままです。この問題では、底 2 の不等式から <math><mi>x</mi><mo>≧</mo><mn>3</mn></math> がそのまま取り出せます。</p>
+            <p>だから、指数を比べるとき<strong>不等号の向きはそのまま</strong>でよい。<math><mi>x</mi><mo>≧</mo><mn>3</mn></math></p>
           </div>
           <div class="step answer" hidden>
             <span class="step-label">解答</span>
-            <p class="ans-main"><span class="m"><i>x</i> ≧ 3</span></p>
-            <p>図の破線は <span class="m">2<sup><i>x</i></sup> = 8</span> となる <span class="m"><i>x</i> = 3</span> の位置。<span class="m">2<sup><i>x</i></sup></span> の値が 8 以上になるのは、<span class="m"><i>x</i></span> が 3 以上の範囲であることが読み取れる。</p>
+            <p class="ans-main"><math><mi>x</mi><mo>≧</mo><mn>3</mn></math></p>
+            <p>図の破線は <math><msup><mn>2</mn><mi>x</mi></msup><mo>=</mo><mn>8</mn></math> となる <math><mi>x</mi><mo>=</mo><mn>3</mn></math> の位置。<br><math><msup><mn>2</mn><mi>x</mi></msup></math> の値が 8 以上になるのは、<math><mi>x</mi></math> が 3 以上の範囲であることが読み取れる。</p>
             <svg class="nl" viewBox="0 0 260 46" role="img" aria-label="数直線：x≧3">
               <line class="axis" x1="10" y1="28" x2="240" y2="28" />
               <polygon class="axis-fill" points="248,28 239,24 239,32" />
@@ -580,20 +630,21 @@
 
         <div class="panel" data-part="r4b" data-label="例題4 (2)" hidden>
           <div class="prob-left">
-          <p class="q"><span class="qnum">(2)</span><span class="m">(<span class="frac"><span class="num">1</span><span class="den">3</span></span>)<sup><i>x</i>+1</sup> &lt; (<span class="frac"><span class="num">1</span><span class="den">9</span></span>)<sup><i>x</i></sup></span></p>
+          <p class="q"><span class="qnum">(2)</span><math><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>)</mo></mrow><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow></msup><mo>&lt;</mo><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>9</mn></mfrac><mo>)</mo></mrow><mi>x</mi></msup></math></p>
           </div>
           <div class="prob-right">
           <div class="step hint" hidden>
             <span class="step-label">ヒント1</span>
-            <p>両辺の底を <span class="m"><span class="frac"><span class="num">1</span><span class="den">3</span></span></span> にそろえる。<span class="m"><span class="frac"><span class="num">1</span><span class="den">9</span></span> = (<span class="frac"><span class="num">1</span><span class="den">3</span></span>)<sup>2</sup></span> だから、右辺は <span class="m">(<span class="frac"><span class="num">1</span><span class="den">9</span></span>)<sup><i>x</i></sup> = ((<span class="frac"><span class="num">1</span><span class="den">3</span></span>)<sup>2</sup>)<sup><i>x</i></sup> = (<span class="frac"><span class="num">1</span><span class="den">3</span></span>)<sup>2<i>x</i></sup></span> と書ける。</p>
+            <p class="cite"><span class="cite-tag">使う公式</span>累乗の累乗 <math><msup><mrow><mo>(</mo><msup><mi>a</mi><mi>m</mi></msup><mo>)</mo></mrow><mi>n</mi></msup><mo>=</mo><msup><mi>a</mi><mrow><mi>m</mi><mi>n</mi></mrow></msup></math>。かっこの中の指数と外の指数を掛けます。この問題では、右辺を底 <math><mfrac><mn>1</mn><mn>3</mn></mfrac></math> にそろえるために、<math><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>9</mn></mfrac><mo>)</mo></mrow><mi>x</mi></msup></math> を <math><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>)</mo></mrow><mrow><mn>2</mn><mi>x</mi></mrow></msup></math> と計算します。</p>
+            <p>両辺の底を <math><mfrac><mn>1</mn><mn>3</mn></mfrac></math> にそろえる。<br><math><mfrac><mn>1</mn><mn>9</mn></mfrac><mo>=</mo><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>)</mo></mrow><mn>2</mn></msup></math> だから、右辺は <math><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>9</mn></mfrac><mo>)</mo></mrow><mi>x</mi></msup><mo>=</mo><msup><mrow><mo>(</mo><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>)</mo></mrow><mn>2</mn></msup><mo>)</mo></mrow><mi>x</mi></msup><mo>=</mo><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>)</mo></mrow><mrow><mn>2</mn><mi>x</mi></mrow></msup></math> と書ける。</p>
           </div>
           <div class="step hint" hidden>
             <span class="step-label">ヒント2</span>
-            <p>不等式は <span class="m">(<span class="frac"><span class="num">1</span><span class="den">3</span></span>)<sup><i>x</i>+1</sup> &lt; (<span class="frac"><span class="num">1</span><span class="den">3</span></span>)<sup>2<i>x</i></sup></span> となる。</p>
+            <p>不等式は <math><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>)</mo></mrow><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow></msup><mo>&lt;</mo><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>)</mo></mrow><mrow><mn>2</mn><mi>x</mi></mrow></msup></math> となる。</p>
           </div>
           <div class="step hint" hidden>
             <span class="step-label">ヒント3</span>
-            <p>底 <span class="m"><span class="frac"><span class="num">1</span><span class="den">3</span></span></span> は 1 より小さい。<span class="m"><i>y</i> = (<span class="frac"><span class="num">1</span><span class="den">3</span></span>)<sup><i>x</i></sup></span> は右下がりのグラフ（減少関数）で、<span class="m"><i>x</i></span> が大きいほど値は小さくなる。つまり、指数の大小と値の大小が<strong>逆</strong>になる。</p>
+            <p>底 <math><mfrac><mn>1</mn><mn>3</mn></mfrac></math> は 1 より小さい。<br><math><mi>y</mi><mo>=</mo><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>)</mo></mrow><mi>x</mi></msup></math> は右下がりのグラフ（減少関数）で、<br><math><mi>x</mi></math> が大きいほど値は小さくなる。<br>つまり、指数の大小と値の大小が<strong>逆</strong>になる。</p>
             <figure class="mini-fig">
               <svg viewBox="0 0 150 104" role="img" aria-label="y=3分の1のx乗のグラフ（右下がり）">
                 <line class="axis" x1="8" y1="84" x2="138" y2="84" />
@@ -610,12 +661,13 @@
           </div>
           <div class="step hint" hidden>
             <span class="step-label">ヒント4</span>
-            <p>だから、指数を比べるときは<strong>不等号を逆にする</strong>。<span class="m"><i>x</i> + 1 &gt; 2<i>x</i></span></p>
+            <p class="cite"><span class="cite-tag">使う性質</span>指数関数の減少性（底 <math><mn>0</mn><mo>&lt;</mo><mi>a</mi><mo>&lt;</mo><mn>1</mn></math> のとき） <math><msup><mi>a</mi><mi>p</mi></msup><mo>&lt;</mo><msup><mi>a</mi><mi>q</mi></msup><mo>⟺</mo><mi>p</mi><mo>&gt;</mo><mi>q</mi></math>。底が 1 より小さいと、値の大小と指数の大小が逆になるので、不等号を逆にします。この問題では <math><mi>x</mi><mo>+</mo><mn>1</mn><mo>&gt;</mo><mn>2</mn><mi>x</mi></math> となります。</p>
+            <p>だから、指数を比べるときは<strong>不等号を逆にする</strong>。<math><mi>x</mi><mo>+</mo><mn>1</mn><mo>&gt;</mo><mn>2</mn><mi>x</mi></math></p>
           </div>
           <div class="step answer" hidden>
             <span class="step-label">解答</span>
-            <p><span class="m"><i>x</i> + 1 &gt; 2<i>x</i></span> の <span class="m">2<i>x</i></span> を左辺へ移項すると <span class="m">1 &gt; <i>x</i></span> となるから、</p>
-            <p class="ans-main"><span class="m"><i>x</i> &lt; 1</span></p>
+            <p><math><mi>x</mi><mo>+</mo><mn>1</mn><mo>&gt;</mo><mn>2</mn><mi>x</mi></math> の <math><mn>2</mn><mi>x</mi></math> を左辺へ移項すると <math><mn>1</mn><mo>&gt;</mo><mi>x</mi></math> となるから、</p>
+            <p class="ans-main"><math><mi>x</mi><mo>&lt;</mo><mn>1</mn></math></p>
             <svg class="nl" viewBox="0 0 260 46" role="img" aria-label="数直線：x<1">
               <line class="axis" x1="10" y1="28" x2="240" y2="28" />
               <polygon class="axis-fill" points="248,28 239,24 239,32" />
@@ -632,7 +684,7 @@
         </div>
       </section>
 
-      <section class="card prob" data-section="enshu12">
+      <section class="nofig card prob" data-section="enshu12">
         <div class="prob-head">
           <span class="prob-tag pr">練習12</span>
           <h2>次の不等式を解け。</h2>
@@ -646,20 +698,21 @@
 
         <div class="panel" data-part="e12a" data-label="練習12 (1)">
           <div class="prob-left">
-          <p class="q"><span class="qnum">(1)</span><span class="m">3<sup><i>x</i></sup> &lt; 81</span></p>
+          <p class="q"><span class="qnum">(1)</span><math><msup><mn>3</mn><mi>x</mi></msup><mo>&lt;</mo><mn>81</mn></math></p>
           </div>
           <div class="prob-right">
           <div class="step hint" hidden>
             <span class="step-label">ヒント1</span>
-            <p>81 を 3 の累乗で表す。<span class="m">3<sup>1</sup> = 3</span>、<span class="m">3<sup>2</sup> = 9</span>、<span class="m">3<sup>3</sup> = 27</span>、<span class="m">3<sup>4</sup> = 81</span> だから、<span class="m">81 = 3<sup>4</sup></span>。</p>
+            <p>81 を 3 の累乗で表す。<br><math><msup><mn>3</mn><mn>1</mn></msup><mo>=</mo><mn>3</mn></math>、<math><msup><mn>3</mn><mn>2</mn></msup><mo>=</mo><mn>9</mn></math>、<math><msup><mn>3</mn><mn>3</mn></msup><mo>=</mo><mn>27</mn></math>、<math><msup><mn>3</mn><mn>4</mn></msup><mo>=</mo><mn>81</mn></math> だから、<math><mn>81</mn><mo>=</mo><msup><mn>3</mn><mn>4</mn></msup></math>。</p>
           </div>
           <div class="step hint" hidden>
             <span class="step-label">ヒント2</span>
-            <p>不等式は <span class="m">3<sup><i>x</i></sup> &lt; 3<sup>4</sup></span> となる。底 3 は 1 より大きい（増加関数）ので、<strong>不等号はそのまま</strong>指数を比べられる。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>指数関数の増加性（底 <math><mi>a</mi><mo>&gt;</mo><mn>1</mn></math> のとき） <math><msup><mi>a</mi><mi>p</mi></msup><mo>&lt;</mo><msup><mi>a</mi><mi>q</mi></msup><mo>⟺</mo><mi>p</mi><mo>&lt;</mo><mi>q</mi></math>。底が 1 より大きいと、値の大小と指数の大小がそろうので、不等号はそのままです。この問題では、底 3 の不等式の指数をそのまま比べて <math><mi>x</mi><mo>&lt;</mo><mn>4</mn></math> とできます。</p>
+            <p>不等式は <math><msup><mn>3</mn><mi>x</mi></msup><mo>&lt;</mo><msup><mn>3</mn><mn>4</mn></msup></math> となる。<br>底 3 は 1 より大きい（増加関数）ので、<strong>不等号はそのまま</strong>指数を比べられる。</p>
           </div>
           <div class="step answer" hidden>
             <span class="step-label">解答</span>
-            <p class="ans-main"><span class="m"><i>x</i> &lt; 4</span></p>
+            <p class="ans-main"><math><mi>x</mi><mo>&lt;</mo><mn>4</mn></math></p>
             <svg class="nl" viewBox="0 0 260 46" role="img" aria-label="数直線：x<4">
               <line class="axis" x1="10" y1="28" x2="240" y2="28" />
               <polygon class="axis-fill" points="248,28 239,24 239,32" />
@@ -677,25 +730,26 @@
 
         <div class="panel" data-part="e12b" data-label="練習12 (2)" hidden>
           <div class="prob-left">
-          <p class="q"><span class="qnum">(2)</span><span class="m">(<span class="frac"><span class="num">1</span><span class="den">2</span></span>)<sup><i>x</i></sup> ≧ <span class="frac"><span class="num">1</span><span class="den">32</span></span></span></p>
+          <p class="q"><span class="qnum">(2)</span><math><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo></mrow><mi>x</mi></msup><mo>≧</mo><mfrac><mn>1</mn><mn>32</mn></mfrac></math></p>
           </div>
           <div class="prob-right">
           <div class="step hint" hidden>
             <span class="step-label">ヒント1</span>
-            <p><span class="m"><span class="frac"><span class="num">1</span><span class="den">32</span></span></span> を <span class="m">(<span class="frac"><span class="num">1</span><span class="den">2</span></span>)</span> の累乗で表す。<span class="m">32 = 2<sup>5</sup></span> だから、<span class="m"><span class="frac"><span class="num">1</span><span class="den">32</span></span> = (<span class="frac"><span class="num">1</span><span class="den">2</span></span>)<sup>5</sup></span>。</p>
+            <p><math><mfrac><mn>1</mn><mn>32</mn></mfrac></math> を <math><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo></math> の累乗で表す。<br><math><mn>32</mn><mo>=</mo><msup><mn>2</mn><mn>5</mn></msup></math> だから、<math><mfrac><mn>1</mn><mn>32</mn></mfrac><mo>=</mo><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo></mrow><mn>5</mn></msup></math>。</p>
           </div>
           <div class="step hint" hidden>
             <span class="step-label">ヒント2</span>
-            <p>不等式は <span class="m">(<span class="frac"><span class="num">1</span><span class="den">2</span></span>)<sup><i>x</i></sup> ≧ (<span class="frac"><span class="num">1</span><span class="den">2</span></span>)<sup>5</sup></span> となる。</p>
+            <p>不等式は <math><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo></mrow><mi>x</mi></msup><mo>≧</mo><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo></mrow><mn>5</mn></msup></math> となる。</p>
           </div>
           <div class="step hint" hidden>
             <span class="step-label">ヒント3</span>
-            <p>底 <span class="m"><span class="frac"><span class="num">1</span><span class="den">2</span></span></span> は 1 より小さい（減少関数）。指数を比べるときは、<strong>不等号を逆にする</strong>。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>指数関数の減少性（底 <math><mn>0</mn><mo>&lt;</mo><mi>a</mi><mo>&lt;</mo><mn>1</mn></math> のとき） <math><msup><mi>a</mi><mi>p</mi></msup><mo>≧</mo><msup><mi>a</mi><mi>q</mi></msup><mo>⟺</mo><mi>p</mi><mo>≦</mo><mi>q</mi></math>。底が 1 より小さいと、値の大小と指数の大小が逆になるので、不等号を逆にします。この問題では、底 <math><mfrac><mn>1</mn><mn>2</mn></mfrac></math> の指数を比べるときにこの逆転が起きます。</p>
+            <p>底 <math><mfrac><mn>1</mn><mn>2</mn></mfrac></math> は 1 より小さい（減少関数）。<br>指数を比べるときは、<strong>不等号を逆にする</strong>。</p>
           </div>
           <div class="step answer" hidden>
             <span class="step-label">解答</span>
             <p>不等号を逆にして指数を比べると、</p>
-            <p class="ans-main"><span class="m"><i>x</i> ≦ 5</span></p>
+            <p class="ans-main"><math><mi>x</mi><mo>≦</mo><mn>5</mn></math></p>
             <svg class="nl" viewBox="0 0 260 46" role="img" aria-label="数直線：x≦5">
               <line class="axis" x1="10" y1="28" x2="240" y2="28" />
               <polygon class="axis-fill" points="248,28 239,24 239,32" />
@@ -713,29 +767,31 @@
 
         <div class="panel" data-part="e12c" data-label="練習12 (3)" hidden>
           <div class="prob-left">
-          <p class="q"><span class="qnum">(3)</span><span class="m">2<sup>3<i>x</i>−4</sup> &gt; (<span class="frac"><span class="num">1</span><span class="den">4</span></span>)<sup><i>x</i></sup></span></p>
+          <p class="q"><span class="qnum">(3)</span><math><msup><mn>2</mn><mrow><mn>3</mn><mi>x</mi><mo>−</mo><mn>4</mn></mrow></msup><mo>&gt;</mo><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>4</mn></mfrac><mo>)</mo></mrow><mi>x</mi></msup></math></p>
           </div>
           <div class="prob-right">
           <div class="step hint" hidden>
             <span class="step-label">ヒント1</span>
-            <p>右辺の <span class="m"><span class="frac"><span class="num">1</span><span class="den">4</span></span></span> を 2 の累乗で表す。<span class="m"><span class="frac"><span class="num">1</span><span class="den">4</span></span> = 2<sup>−2</sup></span> だから、<span class="m">(<span class="frac"><span class="num">1</span><span class="den">4</span></span>)<sup><i>x</i></sup> = (2<sup>−2</sup>)<sup><i>x</i></sup> = 2<sup>−2<i>x</i></sup></span>。</p>
+            <p class="cite"><span class="cite-tag">使う公式</span>累乗の累乗 <math><msup><mrow><mo>(</mo><msup><mi>a</mi><mi>m</mi></msup><mo>)</mo></mrow><mi>n</mi></msup><mo>=</mo><msup><mi>a</mi><mrow><mi>m</mi><mi>n</mi></mrow></msup></math>。かっこの中の指数と外の指数を掛けます。この問題では <math><msup><mrow><mo>(</mo><msup><mn>2</mn><mrow><mo>−</mo><mn>2</mn></mrow></msup><mo>)</mo></mrow><mi>x</mi></msup></math> を <math><msup><mn>2</mn><mrow><mo>−</mo><mn>2</mn><mi>x</mi></mrow></msup></math> と計算します。</p>
+            <p>右辺の <math><mfrac><mn>1</mn><mn>4</mn></mfrac></math> を 2 の累乗で表す。<br><math><mfrac><mn>1</mn><mn>4</mn></mfrac><mo>=</mo><msup><mn>2</mn><mrow><mo>−</mo><mn>2</mn></mrow></msup></math> だから、<math><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>4</mn></mfrac><mo>)</mo></mrow><mi>x</mi></msup><mo>=</mo><msup><mrow><mo>(</mo><msup><mn>2</mn><mrow><mo>−</mo><mn>2</mn></mrow></msup><mo>)</mo></mrow><mi>x</mi></msup><mo>=</mo><msup><mn>2</mn><mrow><mo>−</mo><mn>2</mn><mi>x</mi></mrow></msup></math>。</p>
           </div>
           <div class="step hint" hidden>
             <span class="step-label">ヒント2</span>
-            <p>不等式は <span class="m">2<sup>3<i>x</i>−4</sup> &gt; 2<sup>−2<i>x</i></sup></span> となる。</p>
+            <p>不等式は <math><msup><mn>2</mn><mrow><mn>3</mn><mi>x</mi><mo>−</mo><mn>4</mn></mrow></msup><mo>&gt;</mo><msup><mn>2</mn><mrow><mo>−</mo><mn>2</mn><mi>x</mi></mrow></msup></math> となる。</p>
           </div>
           <div class="step hint" hidden>
             <span class="step-label">ヒント3</span>
-            <p>底 2 は 1 より大きい（増加関数）ので、<strong>不等号はそのまま</strong>指数を比べる。<span class="m">3<i>x</i> − 4 &gt; −2<i>x</i></span></p>
+            <p class="cite"><span class="cite-tag">使う性質</span>指数関数の増加性（底 <math><mi>a</mi><mo>&gt;</mo><mn>1</mn></math> のとき） <math><msup><mi>a</mi><mi>p</mi></msup><mo>&gt;</mo><msup><mi>a</mi><mi>q</mi></msup><mo>⟺</mo><mi>p</mi><mo>&gt;</mo><mi>q</mi></math>。底が 1 より大きいと、値の大小と指数の大小がそろうので、不等号はそのままです。この問題では、底 2 の不等式から <math><mn>3</mn><mi>x</mi><mo>−</mo><mn>4</mn><mo>&gt;</mo><mo>−</mo><mn>2</mn><mi>x</mi></math> がそのまま取り出せます。</p>
+            <p>底 2 は 1 より大きい（増加関数）ので、<br><strong>不等号はそのまま</strong>指数を比べる。<math><mn>3</mn><mi>x</mi><mo>−</mo><mn>4</mn><mo>&gt;</mo><mo>−</mo><mn>2</mn><mi>x</mi></math></p>
           </div>
           <div class="step hint" hidden>
             <span class="step-label">ヒント4</span>
-            <p><span class="m">−2<i>x</i></span> を左辺へ移項すると <span class="m">5<i>x</i> − 4 &gt; 0</span>、つまり <span class="m">5<i>x</i> &gt; 4</span>。</p>
+            <p><math><mo>−</mo><mn>2</mn><mi>x</mi></math> を左辺へ移項すると <math><mn>5</mn><mi>x</mi><mo>−</mo><mn>4</mn><mo>&gt;</mo><mn>0</mn></math>、つまり <math><mn>5</mn><mi>x</mi><mo>&gt;</mo><mn>4</mn></math>。</p>
           </div>
           <div class="step answer" hidden>
             <span class="step-label">解答</span>
-            <p><span class="m">5<i>x</i> &gt; 4</span> の両辺を 5 で割ると、</p>
-            <p class="ans-main"><span class="m"><i>x</i> &gt; <span class="frac"><span class="num">4</span><span class="den">5</span></span></span></p>
+            <p><math><mn>5</mn><mi>x</mi><mo>&gt;</mo><mn>4</mn></math> の両辺を 5 で割ると、</p>
+            <p class="ans-main"><math><mi>x</mi><mo>&gt;</mo><mfrac><mn>4</mn><mn>5</mn></mfrac></math></p>
             <svg class="nl" viewBox="0 0 260 46" role="img" aria-label="数直線：x>4/5">
               <line class="axis" x1="10" y1="28" x2="240" y2="28" />
               <polygon class="axis-fill" points="248,28 239,24 239,32" />
@@ -754,14 +810,17 @@
 
       <section class="card deepen">
         <h2><span class="sec-tag">深める</span>例題4 (2) の別解 ― 底を 3 にそろえる</h2>
-        <p>例題4 (2) は、底を <span class="m"><span class="frac"><span class="num">1</span><span class="den">3</span></span></span> ではなく 3 にそろえても解けます。<span class="m"><span class="frac"><span class="num">1</span><span class="den">3</span></span></span> や <span class="m"><span class="frac"><span class="num">1</span><span class="den">9</span></span></span> を、負の指数を使って 3 の累乗で表すのがポイントです。例題4 (2) の解答を見たあとで、確かめてみましょう。</p>
+        <p>例題4 (2) は、底を <math><mfrac><mn>1</mn><mn>3</mn></mfrac></math> ではなく 3 にそろえても解けます。<br><math><mfrac><mn>1</mn><mn>3</mn></mfrac></math> や <math><mfrac><mn>1</mn><mn>9</mn></mfrac></math> を、負の指数を使って 3 の累乗で表すのがポイントです。<br>例題4 (2) の解答を見たあとで、確かめてみましょう。</p>
         <button class="alt-btn" id="altToggle" aria-expanded="false">別解を見る</button>
         <div class="alt-body" id="altBody" hidden>
-          <p><span class="m"><span class="frac"><span class="num">1</span><span class="den">3</span></span> = 3<sup>−1</sup></span> だから、左辺は <span class="m">(<span class="frac"><span class="num">1</span><span class="den">3</span></span>)<sup><i>x</i>+1</sup> = (3<sup>−1</sup>)<sup><i>x</i>+1</sup> = 3<sup>−<i>x</i>−1</sup></span>。</p>
-          <p><span class="m"><span class="frac"><span class="num">1</span><span class="den">9</span></span> = 3<sup>−2</sup></span> だから、右辺は <span class="m">(<span class="frac"><span class="num">1</span><span class="den">9</span></span>)<sup><i>x</i></sup> = 3<sup>−2<i>x</i></sup></span>。</p>
-          <p>不等式は <span class="m">3<sup>−<i>x</i>−1</sup> &lt; 3<sup>−2<i>x</i></sup></span> となる。</p>
-          <p>底 3 は 1 より大きい（増加関数）ので、今度は<strong>不等号はそのまま</strong>比べて、<span class="m">−<i>x</i> − 1 &lt; −2<i>x</i></span>。</p>
-          <p>解くと <span class="m"><i>x</i> &lt; 1</span> となり、本解と同じ答えになる。底の選び方によって「不等号を逆にするかどうか」が変わる点に注意しよう。</p>
+          <p class="cite"><span class="cite-tag">使う定義</span>負の指数の定義 <math><msup><mi>a</mi><mrow><mo>−</mo><mi>n</mi></mrow></msup><mo>=</mo><mfrac><mn>1</mn><msup><mi>a</mi><mi>n</mi></msup></mfrac></math>（ただし <math><mi>a</mi><mo>≠</mo><mn>0</mn></math>）。分数は、負の指数を使って累乗の形に書き直せます。この別解では <math><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>=</mo><msup><mn>3</mn><mrow><mo>−</mo><mn>1</mn></mrow></msup></math> として、左辺を 3 の累乗だけの形に直すのが第一歩です。</p>
+          <p><math><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>=</mo><msup><mn>3</mn><mrow><mo>−</mo><mn>1</mn></mrow></msup></math> だから、左辺は <math><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>)</mo></mrow><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow></msup><mo>=</mo><msup><mrow><mo>(</mo><msup><mn>3</mn><mrow><mo>−</mo><mn>1</mn></mrow></msup><mo>)</mo></mrow><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow></msup><mo>=</mo><msup><mn>3</mn><mrow><mo>−</mo><mi>x</mi><mo>−</mo><mn>1</mn></mrow></msup></math>。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span>累乗の累乗 <math><msup><mrow><mo>(</mo><msup><mi>a</mi><mi>m</mi></msup><mo>)</mo></mrow><mi>n</mi></msup><mo>=</mo><msup><mi>a</mi><mrow><mi>m</mi><mi>n</mi></mrow></msup></math>。かっこの中の指数と外の指数を掛けます。この別解では、右辺の <math><msup><mrow><mo>(</mo><msup><mn>3</mn><mrow><mo>−</mo><mn>2</mn></mrow></msup><mo>)</mo></mrow><mi>x</mi></msup></math> を <math><msup><mn>3</mn><mrow><mo>−</mo><mn>2</mn><mi>x</mi></mrow></msup></math> と計算します。</p>
+          <p><math><mfrac><mn>1</mn><mn>9</mn></mfrac><mo>=</mo><msup><mn>3</mn><mrow><mo>−</mo><mn>2</mn></mrow></msup></math> だから、右辺は <math><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>9</mn></mfrac><mo>)</mo></mrow><mi>x</mi></msup><mo>=</mo><msup><mn>3</mn><mrow><mo>−</mo><mn>2</mn><mi>x</mi></mrow></msup></math>。</p>
+          <p>不等式は <math><msup><mn>3</mn><mrow><mo>−</mo><mi>x</mi><mo>−</mo><mn>1</mn></mrow></msup><mo>&lt;</mo><msup><mn>3</mn><mrow><mo>−</mo><mn>2</mn><mi>x</mi></mrow></msup></math> となる。</p>
+          <p class="cite"><span class="cite-tag">使う性質</span>指数関数の増加性（底 <math><mi>a</mi><mo>&gt;</mo><mn>1</mn></math> のとき） <math><msup><mi>a</mi><mi>p</mi></msup><mo>&lt;</mo><msup><mi>a</mi><mi>q</mi></msup><mo>⟺</mo><mi>p</mi><mo>&lt;</mo><mi>q</mi></math>。底が 1 より大きいと、値の大小と指数の大小がそろうので、不等号はそのままです。この別解では、底 3 にそろえたので <math><mo>−</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>&lt;</mo><mo>−</mo><mn>2</mn><mi>x</mi></math> と比べられます。</p>
+          <p>底 3 は 1 より大きい（増加関数）ので、<br>今度は<strong>不等号はそのまま</strong>比べて、<math><mo>−</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>&lt;</mo><mo>−</mo><mn>2</mn><mi>x</mi></math>。</p>
+          <p>解くと <math><mi>x</mi><mo>&lt;</mo><mn>1</mn></math> となり、本解と同じ答えになる。<br>底の選び方によって「不等号を逆にするかどうか」が変わる点に注意しよう。</p>
         </div>
       </section>
 

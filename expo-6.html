@@ -251,7 +251,45 @@
         .col-right{min-width:0;max-height:calc(100vh - 148px);overflow-y:auto;overscroll-behavior:contain;padding:2px 6px 2px 2px;scrollbar-gutter:stable}
         .col-right .tabs{position:sticky;top:0;background:var(--surface);padding:4px 0 8px;z-index:2;margin-bottom:10px}
       }
-    </style>
+    
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+</style>
   </head>
   <body>
     <div class="wrap">
@@ -272,7 +310,7 @@
           <li><b>練習問題</b>に挑戦 ― 答えは最後のヒントのあとに出てくるよ</li>
         </ol>
       </section>
-      <p class="overall" id="overall">全体の進み具合：<b>0 / 21</b> 課題の解答を開きました</p>
+      <p class="overall" id="overall">全体の進み具合：<b><math><mfrac><mn>0</mn><mn>21</mn></mfrac></math></b> 課題の解答を開きました</p>
 
       <!-- ================= 解説1 ================= -->
       <div class="sec-head">
@@ -290,8 +328,8 @@
           </div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
-        <p>方程式 2<sup><span class="v">x</span></sup>＝4 の解は <span class="v">x</span>＝2 である。なぜなら 2<sup>2</sup>＝4 だからだ。</p>
-        <p>では、方程式 <b>2<sup><span class="v">x</span></sup>＝3</b> の解はどうなるだろう？　2<sup>1</sup>＝2、2<sup>2</sup>＝4 だから、解は 1 と 2 のあいだにあるはずだが、ちょうどよい数が思い浮かばない。まずグラフで確かめよう。下の <b>次へ</b> を押すと、説明が1段ずつ進むよ。</p>
+        <p>方程式<math><msup><mn>2</mn><mi>x</mi></msup><mo>=</mo><mn>4</mn></math>の解は <math><mi>x</mi><mo>=</mo><mn>2</mn></math>である。なぜなら<math><msup><mn>2</mn><mn>2</mn></msup><mo>=</mo><mn>4</mn></math>だからだ。</p>
+        <p>では、方程式 <b><math><msup><mn>2</mn><mi>x</mi></msup><mo>=</mo><mn>3</mn></math></b> の解はどうなるだろう？　<math><msup><mn>2</mn><mn>1</mn></msup><mo>=</mo><mn>2</mn></math>、<math><msup><mn>2</mn><mn>2</mn></msup><mo>=</mo><mn>4</mn></math>だから、解は 1 と 2 のあいだにあるはずだが、ちょうどよい数が思い浮かばない。まずグラフで確かめよう。下の <b>次へ</b> を押すと、説明が1段ずつ進むよ。</p>
         <figure>
           <div class="figbox">
             <svg viewBox="0 0 520 302" role="img" aria-label="指数関数 y＝2のx乗 のグラフ。点（2, 4）を通ることと、M＝3 に対応する x が 1 と 2 のあいだにあることを読み取る図">
@@ -351,27 +389,27 @@
               </g>
             </svg>
           </div>
-          <figcaption>グラフから値を読み取る：高さ（<span class="v">y</span> の値）が分かれば、それに対応する <span class="v">x</span> がただ1つ決まる。</figcaption>
+          <figcaption>グラフから値を読み取る：高さ<math><mo>(</mo><mi>y</mi></math> の値）が分かれば、それに対応する <math><mi>x</mi></math> がただ1つ決まる。</figcaption>
         </figure>
 
         </div><div class="col-right">
         <div class="step hint">
-          <h3>つづき 1 ― どんな正の数にも、対応する <span class="v">x</span> がある</h3>
-          <p>指数関数 <span class="v">y</span>＝2<sup><span class="v">x</span></sup> は<b>増加関数</b>（<span class="v">x</span> が増えると <span class="v">y</span> も増え続ける）で、その値域は<b>正の数全体</b>である。</p>
-          <p>だから、どんな正の数 <span class="v">M</span> に対しても、<b><span class="v">M</span>＝2<sup><span class="v">x</span></sup> となる実数 <span class="v">x</span> がただ1つ定まる</b>。図では、グラフに <span class="v">M</span>＝3 の横線（オレンジの破線）を引いて確かめた。この <span class="v">x</span> は 1 と 2 のあいだの数である。</p>
+          <h3>つづき 1 ― どんな正の数にも、対応する <math><mi>x</mi></math> がある</h3>
+          <p>指数関数 <math><mi>y</mi><mo>=</mo><msup><mn>2</mn><mi>x</mi></msup></math> は<b>増加関数</b><math><mo>(</mo><mi>x</mi></math> が増えると <math><mi>y</mi></math> も増え続ける）で、その値域は<b>正の数全体</b>である。</p>
+          <p>だから、どんな正の数 <math><mi>M</mi></math> に対しても、<b><math><mi>M</mi><mo>=</mo><msup><mn>2</mn><mi>x</mi></msup></math> となる実数 <math><mi>x</mi></math> がただ1つ定まる</b>。<br>図では、グラフに <math><mi>M</mi><mo>=</mo><mn>3</mn></math>の横線（オレンジの破線）を引いて確かめた。この <math><mi>x</mi></math> は 1 と 2 のあいだの数である。</p>
         </div>
         <div class="step hint">
-          <h3>つづき 2 ― その <span class="v">x</span> に「log」という名前をつける</h3>
-          <p><span class="v">M</span>＝2<sup><span class="v">x</span></sup> となる <span class="v">x</span> のことを、<b>log<sub>2</sub><span class="v">M</span></b> と書くことにする。たとえば 2<sup><span class="v">x</span></sup>＝3 の解は <b><span class="v">x</span>＝log<sub>2</sub>3</b> と書ける（図のオレンジの点に対応する <span class="v">x</span>）。</p>
-          <p>読み方は「<b>2 を底（てい）とする 3 の対数</b>」。log<sub>2</sub>3 は「<b>2 を何乗すると 3 になるか</b>」という問いへの答え、そのものだ。</p>
+          <h3>つづき 2 ― その <math><mi>x</mi></math> に「log」という名前をつける</h3>
+          <p><math><mi>M</mi><mo>=</mo><msup><mn>2</mn><mi>x</mi></msup></math> となる <math><mi>x</mi></math> のことを、<b><math><msub><mi>log</mi><mn>2</mn></msub><mi>M</mi></math></b> と書くことにする。<br>たとえば<math><msup><mn>2</mn><mi>x</mi></msup><mo>=</mo><mn>3</mn></math>の解は <b><math><mi>x</mi><mo>=</mo><msub><mi>log</mi><mn>2</mn></msub><mn>3</mn></math></b> と書ける（図のオレンジの点に対応する <math><mi>x</mi><mo>)</mo></math>。</p>
+          <p>読み方は「<b>2 を底（てい）とする 3 の対数</b>」。<br><math><msub><mi>log</mi><mn>2</mn></msub><mn>3</mn></math>は「<b>2 を何乗すると 3 になるか</b>」という問いへの答え、そのものだ。</p>
         </div>
         <div class="step answer">
           <h3>まとめ ― 対数の定義</h3>
-          <p>一般に、正の数 <span class="v">M</span> に対して、<b><span class="v">M</span>＝<span class="v">a</span><sup><span class="v">p</span></sup></b> となる実数 <span class="v">p</span> を</p>
-          <p class="big">log<sub><span class="v">a</span></sub><span class="v">M</span></p>
-          <p>と表し、<b><span class="v">a</span> を底とする <span class="v">M</span> の対数</b>という。また、<span class="v">M</span> を<b>真数</b>という。</p>
-          <p><b>底（てい）</b>とは、log の右下に小さく書く数 <span class="v">a</span> のこと。「<b>何を累乗するか</b>」を表す数だよ。<b>真数（しんすう）</b>とは、log の右に書く数 <span class="v">M</span> のこと。「<b>累乗した結果の数</b>」を表す。</p>
-          <p class="note"><b>条件：</b>底と真数には決まりがある。　<b><span class="v">a</span>＞0，<span class="v">a</span>≠1，<span class="v">M</span>＞0</b>　（底は 1 以外の正の数、真数は正の数）</p>
+          <p class="cite"><span class="cite-tag">使う定義</span>対数の定義 <math><mi>M</mi><mo>=</mo><msup><mi>a</mi><mi>p</mi></msup><mo>⟺</mo><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>=</mo><mi>p</mi></math>。この行き来が、このページの書き換えすべての土台だよ。</p><p>一般に、正の数 <math><mi>M</mi></math> に対して、<b><math><mi>M</mi><mo>=</mo><msup><mi>a</mi><mi>p</mi></msup></math></b> となる実数 <math><mi>p</mi></math> を</p>
+          <p class="big"><math display="block"><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi></math></p>
+          <p>と表し、<b><math><mi>a</mi></math> を底とする <math><mi>M</mi></math> の対数</b>という。また、<math><mi>M</mi></math> を<b>真数</b>という。</p>
+          <p><b>底（てい）</b>とは、log の右下に小さく書く数 <math><mi>a</mi></math> のこと。「<b>何を累乗するか</b>」を表す数だよ。<br><b>真数（しんすう）</b>とは、log の右に書く数 <math><mi>M</mi></math> のこと。「<b>累乗した結果の数</b>」を表す。</p>
+          <p class="cite"><span class="cite-tag">使う定義</span>底と真数の条件 <math><mi>a</mi><mo>&gt;</mo><mn>0</mn><mo>,</mo><mi>a</mi><mo>≠</mo><mn>1</mn><mo>,</mo><mi>M</mi><mo>&gt;</mo><mn>0</mn></math>。底は1以外の正の数、真数は正の数だけを扱うよ。</p><p class="note"><b>条件：</b>底と真数には決まりがある。　<b><math><mi>a</mi><mo>&gt;</mo><mn>0</mn><mo>,</mo><mi>a</mi><mo>≠</mo><mn>1</mn><mo>,</mo><mi>M</mi><mo>&gt;</mo><mn>0</mn></math></b>　（底は 1 以外の正の数、真数は正の数）</p>
         </div>
         <p class="prob-done">解説1 おわり！　次は例7で、定義を使ってみよう。</p>
       </div></div>
@@ -384,67 +422,67 @@
         <span class="pno">教科書 p.161</span>
       </div>
 
-      <section class="card prob" id="prob-ex7">
+      <section class="nofig card prob" id="prob-ex7">
         <div class="flow-main"><div class="col-left">
         <div class="prob-head">
           <span class="prob-tag">例 7</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
-        <p class="prob-q">次の等式を、対数 log<sub><span class="v">a</span></sub><span class="v">M</span> の形に書け。</p>
+        <p class="prob-q">次の等式を、対数<math><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi></math> の形に書け。</p>
         </div><div class="col-right">
         <div class="tabs" role="tablist" aria-label="例7の小問">
           <button class="tab" role="tab" data-tab="ex7-1" aria-selected="true">(1) 8＝2<sup>3</sup></button>
           <button class="tab" role="tab" data-tab="ex7-2" aria-selected="false">(2) 1/2＝2<sup>−1</sup></button>
         </div>
 
-        <div class="tabpanel show" id="panel-ex7-1" data-flow="ex7-1" data-label="例7 (1)">
+        <div class="nofig tabpanel show" id="panel-ex7-1" data-flow="ex7-1" data-label="例7 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　8＝2<sup>3</sup></span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><mn>8</mn><mo>=</mo><msup><mn>2</mn><mn>3</mn></msup></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― 3つの数を指さして確認する</h3>
-            <p>等式 8＝2<sup>3</sup> を見よう。<b>底になる数</b>（累乗される数）は 2、<b>指数</b>（右上の小さい数）は 3、<b>累乗した結果</b>は 8 だね。この3つをまず確認しよう。</p>
+            <p>等式<math><mn>8</mn><mo>=</mo><msup><mn>2</mn><mn>3</mn></msup></math> を見よう。<b>底になる数</b>（累乗される数）は 2、<b>指数</b>（右上の小さい数）は 3、<b>累乗した結果</b>は 8 だね。<br>この3つをまず確認しよう。</p>
           </div>
           <div class="step hint">
-            <h3>ヒント 2 ― 定義の形 <span class="v">M</span>＝<span class="v">a</span><sup><span class="v">p</span></sup> に対応づける</h3>
-            <p>定義では「<span class="v">M</span>＝<span class="v">a</span><sup><span class="v">p</span></sup> となる <span class="v">p</span> を log<sub><span class="v">a</span></sub><span class="v">M</span> と書く」だった。今回の式と見比べると、<b><span class="v">a</span>＝2，<span class="v">M</span>＝8，<span class="v">p</span>＝3</b> に対応するはずだ。自分でも当てはめてみよう。</p>
+            <h3>ヒント 2 ― 定義の形 <math><mi>M</mi><mo>=</mo><msup><mi>a</mi><mi>p</mi></msup></math> に対応づける</h3>
+            <p class="cite"><span class="cite-tag">使う定義</span>対数の定義 <math><mi>M</mi><mo>=</mo><msup><mi>a</mi><mi>p</mi></msup><mo>⟺</mo><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>=</mo><mi>p</mi></math>。今回は a＝2、M＝8、p＝3 に当てはめるよ。</p><p>定義では「<math><mi>M</mi><mo>=</mo><msup><mi>a</mi><mi>p</mi></msup></math> となる <math><mi>p</mi></math> を<math><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi></math> と書く」だった。<br>今回の式と見比べると、<b><math><mi>a</mi><mo>=</mo><mn>2</mn><mo>,</mo><mi>M</mi><mo>=</mo><mn>8</mn><mo>,</mo><mi>p</mi><mo>=</mo><mn>3</mn></math></b> に対応するはずだ。自分でも当てはめてみよう。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 3 ― log の形に並べ替える</h3>
-            <p>log<sub><span class="v">a</span></sub><span class="v">M</span>＝<span class="v">p</span> の形に書くには：log の右下に <b><span class="v">a</span>（底）</b>、log の右に <b><span class="v">M</span>（真数）</b>、＝の右に <b><span class="v">p</span>（指数）</b> を置く。3つの数をその場所に置いてみよう。</p>
+            <p><math><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>=</mo><mi>p</mi></math> の形に書くには：log の右下に <b><math><mi>a</mi><mo>(</mo></math>底）</b>、log の右に <b><math><mi>M</mi><mo>(</mo></math>真数）</b>、＝の右に <b><math><mi>p</mi><mo>(</mo></math>指数）</b> を置く。<br>3つの数をその場所に置いてみよう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (1)</h3>
-            <p class="big">log<sub>2</sub>8＝3</p>
-            <p>8＝2<sup>3</sup> だから、「2 を底とする 8 の対数」は 3 である。読み替えると「<b>2 を 3 乗すると 8 になる</b>」という意味だよ。</p>
+            <p class="big"><math display="block"><msub><mi>log</mi><mn>2</mn></msub><mn>8</mn><mo>=</mo><mn>3</mn></math></p>
+            <p><math><mn>8</mn><mo>=</mo><msup><mn>2</mn><mn>3</mn></msup></math> だから、「2 を底とする 8 の対数」は 3 である。<br>読み替えると「<b>2 を 3 乗すると 8 になる</b>」という意味だよ。</p>
           </div>
           <p class="prob-done">(1) クリア！　(2) のタブも開いてみよう。</p>
         </div>
 
-        <div class="tabpanel" id="panel-ex7-2" data-flow="ex7-2" data-label="例7 (2)">
+        <div class="nofig tabpanel" id="panel-ex7-2" data-flow="ex7-2" data-label="例7 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　1/2＝2<sup>−1</sup></span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>=</mo><msup><mn>2</mn><mrow><mo>−</mo><mn>1</mn></mrow></msup></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― 指数がマイナスであることを確認する</h3>
-            <p>等式 1/2＝2<sup>−1</sup> の右上を見よう。指数は <b>−1</b> だね（1/2 は、2 の −1 乗。逆数は「−1 乗」で表せることを思い出そう）。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>負の指数 <math><msup><mi>a</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup><mo>=</mo><mfrac><mn>1</mn><mi>a</mi></mfrac></math>。逆数は「−1乗」で表せるから、ここでは真数が 2 の −1 乗と読めるよ。</p><p>等式<math><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>=</mo><msup><mn>2</mn><mrow><mo>−</mo><mn>1</mn></mrow></msup></math> の右上を見よう。指数は <b>−1</b> だね<math><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math>は、2 の −1 乗。<br>逆数は「−1 乗」で表せることを思い出そう）。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 定義の形に対応づける</h3>
-            <p><span class="v">M</span>＝<span class="v">a</span><sup><span class="v">p</span></sup> と見比べよう。今回、<b><span class="v">a</span>＝2，<span class="v">M</span>＝1/2，<span class="v">p</span>＝−1</b> に対応する。指数がマイナスでも、やることは (1) とまったく同じだよ。</p>
+            <p class="cite"><span class="cite-tag">使う定義</span>対数の定義 <math><mi>M</mi><mo>=</mo><msup><mi>a</mi><mi>p</mi></msup><mo>⟺</mo><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>=</mo><mi>p</mi></math>。指数がマイナスでも、当てはめる場所は (1) と同じだよ。</p><p><math><mi>M</mi><mo>=</mo><msup><mi>a</mi><mi>p</mi></msup></math> と見比べよう。今回、<b><math><mi>a</mi><mo>=</mo><mn>2</mn><mo>,</mo><mi>M</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>,</mo><mi>p</mi><mo>=</mo><mo>−</mo><mn>1</mn></math></b> に対応する。<br>指数がマイナスでも、やることは (1) とまったく同じだよ。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 3 ― log の形に並べ替える</h3>
-            <p>log の右下に底 2、log の右に真数 1/2、＝の右に指数 −1 を置く。log<sub>2</sub>(1/2)＝□ の □ に入る数を考えよう。</p>
+            <p>log の右下に底 2、log の右に真数<math><mfrac><mn>1</mn><mn>2</mn></mfrac></math>、＝の右に指数 −1 を置く。<math><msub><mi>log</mi><mn>2</mn></msub><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo><mo>=</mo><mo>□</mo></math>の □ に入る数を考えよう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (2)</h3>
-            <p class="big">log<sub>2</sub>(1/2)＝−1</p>
-            <p>1/2＝2<sup>−1</sup> だから、「2 を −1 乗すると 1/2 になる」→ 対数は −1 になる。真数が 1 より小さいと、対数はマイナスになることが多いよ。</p>
+            <p class="big"><math display="block"><msub><mi>log</mi><mn>2</mn></msub><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo><mo>=</mo><mo>−</mo><mn>1</mn></math></p>
+            <p><math><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>=</mo><msup><mn>2</mn><mrow><mo>−</mo><mn>1</mn></mrow></msup></math> だから、「2 を −1 乗すると<math><mfrac><mn>1</mn><mn>2</mn></mfrac></math>になる」→ 対数は −1 になる。<br>真数が 1 より小さいと、対数はマイナスになることが多いよ。</p>
           </div>
           <p class="prob-done">(2) クリア！　次の解説2へ進もう。</p>
         </div>
@@ -458,7 +496,7 @@
         <span class="pno">教科書 p.162</span>
       </div>
 
-      <section class="card prob" id="prob-kai2" data-flow="kai2" data-label="解説2　指数と対数の関係">
+      <section class="nofig card prob" id="prob-kai2" data-flow="kai2" data-label="解説2　指数と対数の関係">
         <div class="flow-main"><div class="col-left">
         <div class="prob-head">
           <span class="prob-tag kai">解説 2</span>
@@ -468,20 +506,20 @@
           <span class="prob-state">ヒント 0 / 1</span>
         </div>
         <p>対数の定義は、見方を変えると「<b>指数の形と対数の形は、同じ関係を2通りに書いたもの</b>」だと言える。下の <b>次へ</b> で1段ずつ確認しよう。</p>
-        <p class="formula"><span class="c-base"><span class="v">M</span></span>＝<span class="c-shin"><span class="v">a</span></span><sup><span class="c-exp"><span class="v">p</span></span></sup></p>
+        <p class="formula"><span class="c-base"><math><mi>M</mi></math></span>＝<span class="c-shin"><math><mi>a</mi></math></span><math><msup><mrow></mrow><mi>p</mi></msup></math></p>
         </div><div class="col-right">
         <div class="step hint">
-          <h3>つづき 1 ― 行き来できる関係（⇔）</h3>
-          <p>色に注目しよう。<span class="c-base"><span class="v">M</span></span>（結果の数＝真数）、<span class="c-shin"><span class="v">a</span></span>（累乗する数＝底）、<span class="c-exp"><span class="v">p</span></span>（指数）。この3つの数の役割は、対数の形に書き換えても変わらない。</p>
-          <p class="formula"><span class="c-base"><span class="v">M</span></span>＝<span class="c-shin"><span class="v">a</span></span><sup><span class="c-exp"><span class="v">p</span></span></sup>　⟺　log<sub><span class="c-shin"><span class="v">a</span></span></sub><span class="c-base"><span class="v">M</span></span>＝<span class="c-exp"><span class="v">p</span></span></p>
-          <p>左から右へは例7・例8の書き換え、右から左へは練習14の書き換えだ。どちらの向きも自由に行き来できることが大事だよ。</p>
+          <h3>つづき 1 ― 行き来できる関係<math><mo>(</mo><mo>⇔</mo><mo>)</mo></math></h3>
+          <p>色に注目しよう。<span class="c-base"><math><mi>M</mi></math></span>（結果の数＝真数）、<span class="c-shin"><math><mi>a</mi></math></span>（累乗する数＝底）、<span class="c-exp"><math><mi>p</mi></math></span>（指数）。<br>この3つの数の役割は、対数の形に書き換えても変わらない。</p>
+          <p class="cite"><span class="cite-tag">使う定義</span>対数の定義 <math><mi>M</mi><mo>=</mo><msup><mi>a</mi><mi>p</mi></msup><mo>⟺</mo><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>=</mo><mi>p</mi></math>。3つの数の役割は、どちらの形に書き換えても変わらないよ。</p><p class="formula"><span class="c-base"><math><mi>M</mi></math></span>＝<span class="c-shin"><math><mi>a</mi></math></span><math><msup><mrow></mrow><mi>p</mi></msup></math>　⟺　<math><msub><mi>log</mi><mi>a</mi></msub></math><span class="c-base"><math><mi>M</mi></math></span>＝<span class="c-exp"><math><mi>p</mi></math></span></p>
+          <p>左から右へは例7・例8の書き換え、右から左へは練習14の書き換えだ。<br>どちらの向きも自由に行き来できることが大事だよ。</p>
         </div>
         <div class="step answer">
-          <h3>まとめ ― log<sub><span class="v">a</span></sub>(<span class="v">a</span><sup><span class="v">p</span></sup>)＝<span class="v">p</span></h3>
-          <p>関係式 <span class="v">M</span>＝<span class="v">a</span><sup><span class="v">p</span></sup> ⟺ log<sub><span class="v">a</span></sub><span class="v">M</span>＝<span class="v">p</span> の <b><span class="v">M</span> のところに <span class="v">a</span><sup><span class="v">p</span></sup> を代入</b>すると、特別な形が得られる。</p>
-          <p class="big">log<sub><span class="v">a</span></sub>(<span class="v">a</span><sup><span class="v">p</span></sup>)＝<span class="v">p</span></p>
-          <p>つまり「<b>真数が、ちょうど底の <span class="v">p</span> 乗になっている</b>とき、対数の値はそのまま <span class="v">p</span>」。この形は、例9と練習15の計算で何度も使うよ。</p>
-          <p class="note"><b>確認：</b>たとえば log<sub>2</sub>(2<sup>3</sup>)＝3、log<sub>5</sub>(5<sup>−2</sup>)＝−2 のように、指数がそのまま答えになる。</p>
+          <h3>まとめ<math><mo>―</mo><msub><mi>log</mi><mi>a</mi></msub><mo>(</mo><msup><mi>a</mi><mi>p</mi></msup><mo>)</mo><mo>=</mo><mi>p</mi></math></h3>
+          <p>関係式 <math><mi>M</mi><mo>=</mo><msup><mi>a</mi><mi>p</mi></msup><mo>⟺</mo><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>=</mo><mi>p</mi></math> の <b><math><mi>M</mi></math> のところに <math><msup><mi>a</mi><mi>p</mi></msup></math> を代入</b>すると、<br>特別な形が得られる。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><msub><mi>log</mi><mi>a</mi></msub><mo>(</mo><msup><mi>a</mi><mi>p</mi></msup><mo>)</mo><mo>=</mo><mi>p</mi></math>。真数がちょうど底の累乗の形になったら、指数がそのまま対数の値になるよ。</p><p class="big"><math display="block"><msub><mi>log</mi><mi>a</mi></msub><mo>(</mo><msup><mi>a</mi><mi>p</mi></msup><mo>)</mo><mo>=</mo><mi>p</mi></math></p>
+          <p>つまり「<b>真数が、ちょうど底の <math><mi>p</mi></math> 乗になっている</b>とき、対数の値はそのまま <math><mi>p</mi></math>」。<br>この形は、例9と練習15の計算で何度も使うよ。</p>
+          <p class="note"><b>確認：</b>たとえば<math><msub><mi>log</mi><mn>2</mn></msub><mo>(</mo><msup><mn>2</mn><mn>3</mn></msup><mo>)</mo><mo>=</mo><mn>3</mn></math>、<math><msub><mi>log</mi><mn>5</mn></msub><mo>(</mo><msup><mn>5</mn><mrow><mo>−</mo><mn>2</mn></mrow></msup><mo>)</mo><mo>=</mo><mo>−</mo><mn>2</mn></math>のように、指数がそのまま答えになる。</p>
         </div>
         <p class="prob-done">解説2 おわり！　例8で書き換えの練習をしよう。</p>
       </div></div>
@@ -494,59 +532,64 @@
         <span class="pno">教科書 p.162</span>
       </div>
 
-      <section class="card prob" id="prob-ex8">
+      <section class="nofig card prob" id="prob-ex8">
         <div class="flow-main"><div class="col-left">
         <div class="prob-head">
           <span class="prob-tag">例 8</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
-        <p class="prob-q">次の等式を、対数 log<sub><span class="v">a</span></sub><span class="v">M</span> の形に書け。</p>
+        <p class="prob-q">次の等式を、対数<math><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi></math> の形に書け。</p>
         </div><div class="col-right">
         <div class="tabs" role="tablist" aria-label="例8の小問">
           <button class="tab" role="tab" data-tab="ex8-1" aria-selected="true">(1) 81＝3<sup>4</sup></button>
           <button class="tab" role="tab" data-tab="ex8-2" aria-selected="false">(2) 1/49＝7<sup>−2</sup></button>
         </div>
 
-        <div class="tabpanel show" id="panel-ex8-1" data-flow="ex8-1" data-label="例8 (1)">
+        <div class="nofig tabpanel show" id="panel-ex8-1" data-flow="ex8-1" data-label="例8 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　81＝3<sup>4</sup></span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><mn>81</mn><mo>=</mo><msup><mn>3</mn><mn>4</mn></msup></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― 3つの数を確認する</h3>
-            <p>81＝3<sup>4</sup> で、底は 3、真数になるのは 81、指数は 4。まずこの対応を声に出して確認しよう。</p>
+            <p><math><mn>81</mn><mo>=</mo><msup><mn>3</mn><mn>4</mn></msup></math> で、底は 3、真数になるのは 81、指数は 4。まずこの対応を声に出して確認しよう。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― log の形に置く</h3>
-            <p>log の右下に底、log の右に真数、＝の右に指数。log<sub>3</sub>81＝□ の □ を考えよう。</p>
+            <p class="cite"><span class="cite-tag">使う定義</span>対数の定義 <math><mi>M</mi><mo>=</mo><msup><mi>a</mi><mi>p</mi></msup><mo>⟺</mo><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>=</mo><mi>p</mi></math>。今回は a＝3、M＝81、p＝4 だよ。</p><p>log の右下に底、log の右に真数、＝の右に指数。<math><msub><mi>log</mi><mn>3</mn></msub><mn>81</mn><mo>=</mo><mo>□</mo></math>の □ を考えよう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (1)</h3>
-            <p class="big">log<sub>3</sub>81＝4</p>
+            <p class="big"><math display="block"><msub><mi>log</mi><mn>3</mn></msub><mn>81</mn><mo>=</mo><mn>4</mn></math></p>
             <p>「3 を 4 乗すると 81」だから、3 を底とする 81 の対数は 4。</p>
           </div>
           <p class="prob-done">(1) クリア！　(2) のタブも開いてみよう。</p>
         </div>
 
-        <div class="tabpanel" id="panel-ex8-2" data-flow="ex8-2" data-label="例8 (2)">
+        <div class="nofig tabpanel" id="panel-ex8-2" data-flow="ex8-2" data-label="例8 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　1/49＝7<sup>−2</sup></span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><mfrac><mn>1</mn><mn>49</mn></mfrac><mo>=</mo><msup><mn>7</mn><mrow><mo>−</mo><mn>2</mn></mrow></msup></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― 指数 −2 の由来を確認する</h3>
-            <p>49＝7<sup>2</sup> だから、その逆数 1/49 は 7<sup>−2</sup> と書ける。等式 1/49＝7<sup>−2</sup> の指数は <b>−2</b> だね。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>負の指数 <math><msup><mi>a</mi><mrow><mo>−</mo><mi>n</mi></mrow></msup><mo>=</mo><mfrac><mn>1</mn><msup><mi>a</mi><mi>n</mi></msup></mfrac></math>。49＝7の2乗の逆数は、指数の符号を変えて 7 の −2 乗と書けるよ。</p><p><math><mn>49</mn><mo>=</mo><msup><mn>7</mn><mn>2</mn></msup></math> だから、その逆数<math><mfrac><mn>1</mn><mn>49</mn></mfrac></math>は<math><msup><mn>7</mn><mrow><mo>−</mo><mn>2</mn></mrow></msup></math> と書ける。<br>等式<math><mfrac><mn>1</mn><mn>49</mn></mfrac><mo>=</mo><msup><mn>7</mn><mrow><mo>−</mo><mn>2</mn></mrow></msup></math> の指数は <b>−2</b> だね。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 3つの数に対応づける</h3>
-            <p><span class="v">a</span>＝7，<span class="v">M</span>＝1/49，<span class="v">p</span>＝−2 と置いて、log<sub><span class="v">a</span></sub><span class="v">M</span>＝<span class="v">p</span> の形に並べ替えよう。</p>
+            <div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>a</mi><mo>=</mo><mn>7</mn><mo>,</mo><mi>M</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>a</mi></mphantom><mo>=</mo><mfrac><mn>1</mn><mn>49</mn></mfrac><mo>,</mo><mi>p</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>a</mi></mphantom><mo>=</mo><mo>−</mo><mn>2</mn></math></div>
+</div>
+<p>と置いて、<math><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>=</mo><mi>p</mi></math> の形に並べ替えよう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (2)</h3>
-            <p class="big">log<sub>7</sub>(1/49)＝−2</p>
-            <p>「7 を −2 乗すると 1/49」だから、対数は −2 になる。</p>
+            <p class="big"><math display="block"><msub><mi>log</mi><mn>7</mn></msub><mo>(</mo><mfrac><mn>1</mn><mn>49</mn></mfrac><mo>)</mo><mo>=</mo><mo>−</mo><mn>2</mn></math></p>
+            <p>「7 を −2 乗すると<math><mfrac><mn>1</mn><mn>49</mn></mfrac></math>」だから、対数は −2 になる。</p>
           </div>
           <p class="prob-done">(2) クリア！　練習13に挑戦しよう。</p>
         </div>
@@ -560,13 +603,13 @@
         <span class="pno">教科書 p.162</span>
       </div>
 
-      <section class="card prob" id="prob-ren13">
+      <section class="nofig card prob" id="prob-ren13">
         <div class="flow-main"><div class="col-left">
         <div class="prob-head">
           <span class="prob-tag ren">練習 13</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
-        <p class="prob-q">次の関係を、log<sub><span class="v">a</span></sub><span class="v">M</span>＝<span class="v">p</span> の形に書け。</p>
+        <p class="prob-q">次の関係を、<math><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>=</mo><mi>p</mi></math> の形に書け。</p>
         </div><div class="col-right">
         <div class="tabs" role="tablist" aria-label="練習13の小問">
           <button class="tab" role="tab" data-tab="ren13-1" aria-selected="true">(1) 9＝3<sup>2</sup></button>
@@ -574,68 +617,78 @@
           <button class="tab" role="tab" data-tab="ren13-3" aria-selected="false">(3) 1/8＝(1/2)<sup>3</sup></button>
         </div>
 
-        <div class="tabpanel show" id="panel-ren13-1" data-flow="ren13-1" data-label="練習13 (1)">
+        <div class="nofig tabpanel show" id="panel-ren13-1" data-flow="ren13-1" data-label="練習13 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　9＝3<sup>2</sup></span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><mn>9</mn><mo>=</mo><msup><mn>3</mn><mn>2</mn></msup></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― 底・真数・指数を指さす</h3>
-            <p>9＝3<sup>2</sup> の中で、<b>底</b>（累乗される数）は 3、<b>真数</b>（累乗した結果）は 9、<b>指数</b>（右上の数）は 2。この3つをまず書き出そう。</p>
+            <p><math><mn>9</mn><mo>=</mo><msup><mn>3</mn><mn>2</mn></msup></math> の中で、<b>底</b>（累乗される数）は 3、<b>真数</b>（累乗した結果）は 9、<b>指数</b>（右上の数）は 2。<br>この3つをまず書き出そう。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 空欄に順に入れる</h3>
-            <p>log<sub>□</sub>□＝□ の3つの □ には、左から「底 → 真数 → 指数」の順で数が入る。ヒント1で書き出した3つを、その順に置いてみよう。</p>
+            <p class="cite"><span class="cite-tag">使う定義</span>対数の定義 <math><mi>M</mi><mo>=</mo><msup><mi>a</mi><mi>p</mi></msup><mo>⟺</mo><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>=</mo><mi>p</mi></math>。□には、左から底・真数・指数の順に数が入るよ。</p><p><math><msub><mi>log</mi><mo>□</mo></msub><mo>□</mo><mo>=</mo><mo>□</mo></math>の3つの □ には、左から「底 → 真数 → 指数」の順で数が入る。ヒント1で書き出した3つを、その順に置いてみよう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (1)</h3>
-            <p class="big">log<sub>3</sub>9＝2</p>
+            <p class="big"><math display="block"><msub><mi>log</mi><mn>3</mn></msub><mn>9</mn><mo>=</mo><mn>2</mn></math></p>
             <p>「3 を 2 乗すると 9」→ 3 を底とする 9 の対数は 2。</p>
           </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
 
-        <div class="tabpanel" id="panel-ren13-2" data-flow="ren13-2" data-label="練習13 (2)">
+        <div class="nofig tabpanel" id="panel-ren13-2" data-flow="ren13-2" data-label="練習13 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　1/25＝5<sup>−2</sup></span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><mfrac><mn>1</mn><mn>25</mn></mfrac><mo>=</mo><msup><mn>5</mn><mrow><mo>−</mo><mn>2</mn></mrow></msup></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― 指数が −2 であることを確認する</h3>
-            <p>25＝5<sup>2</sup> の逆数が 1/25。逆数は指数の符号を変えるから、1/25＝5<sup>−2</sup> で指数は <b>−2</b>。この等式の底は 5、真数は 1/25 だね。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>負の指数 <math><msup><mi>a</mi><mrow><mo>−</mo><mi>n</mi></mrow></msup><mo>=</mo><mfrac><mn>1</mn><msup><mi>a</mi><mi>n</mi></msup></mfrac></math>。25＝5の2乗の逆数は、5 の −2 乗だよ。</p><p><math><mn>25</mn><mo>=</mo><msup><mn>5</mn><mn>2</mn></msup></math> の逆数が<math><mfrac><mn>1</mn><mn>25</mn></mfrac></math>。逆数は指数の符号を変えるから、<math><mfrac><mn>1</mn><mn>25</mn></mfrac><mo>=</mo><msup><mn>5</mn><mrow><mo>−</mo><mn>2</mn></mrow></msup></math> で指数は <b>−2</b>。<br>この等式の底は 5、真数は<math><mfrac><mn>1</mn><mn>25</mn></mfrac></math>だね。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 対応づけて並べ替える</h3>
-            <p><span class="v">a</span>＝5，<span class="v">M</span>＝1/25，<span class="v">p</span>＝−2 を、log<sub><span class="v">a</span></sub><span class="v">M</span>＝<span class="v">p</span> の場所に置いてみよう。真数が分数のときは (　) でくくるのが約束だよ。</p>
+            <div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>a</mi><mo>=</mo><mn>5</mn><mo>,</mo><mi>M</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>a</mi></mphantom><mo>=</mo><mfrac><mn>1</mn><mn>25</mn></mfrac><mo>,</mo><mi>p</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>a</mi></mphantom><mo>=</mo><mo>−</mo><mn>2</mn></math></div>
+</div>
+<p>を、<math><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>=</mo><mi>p</mi></math> の場所に置いてみよう。真数が分数のときは (　) でくくるのが約束だよ。</p>
           </div>
           <div class="step answer">
             <h3>解答 (2)</h3>
-            <p class="big">log<sub>5</sub>(1/25)＝−2</p>
-            <p>「5 を −2 乗すると 1/25」→ 対数は −2。</p>
+            <p class="big"><math display="block"><msub><mi>log</mi><mn>5</mn></msub><mo>(</mo><mfrac><mn>1</mn><mn>25</mn></mfrac><mo>)</mo><mo>=</mo><mo>−</mo><mn>2</mn></math></p>
+            <p>「5 を −2 乗すると<math><mfrac><mn>1</mn><mn>25</mn></mfrac></math>」→ 対数は −2。</p>
           </div>
           <p class="prob-done">(2) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
 
-        <div class="tabpanel" id="panel-ren13-3" data-flow="ren13-3" data-label="練習13 (3)">
+        <div class="nofig tabpanel" id="panel-ren13-3" data-flow="ren13-3" data-label="練習13 (3)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(3)　1/8＝(1/2)<sup>3</sup></span>
+            <span class="sub prob-q" style="margin:0">(3)　<math><mfrac><mn>1</mn><mn>8</mn></mfrac><mo>=</mo><msup><mrow><mo>(</mo><mn>1</mn><mo>/</mo><mn>2</mn><mo>)</mo></mrow><mn>3</mn></msup></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― 今回は底が分数であることを確認する</h3>
-            <p>検算してみよう。(1/2)<sup>3</sup>＝1/2×1/2×1/2＝1/8。たしかに等式が成り立つね。今回の<b>底は分数の 1/2</b>、指数は 3 だ。</p>
+            <p>検算してみよう。<math><msup><mrow><mo>(</mo><mn>1</mn><mo>/</mo><mn>2</mn><mo>)</mo></mrow><mn>3</mn></msup><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>×</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>×</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>=</mo><mfrac><mn>1</mn><mn>8</mn></mfrac></math>。たしかに等式が成り立つね。<br>今回の<b>底は分数の<math><mfrac><mn>1</mn><mn>2</mn></mfrac></math></b>、指数は 3 だ。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 対応づけて並べ替える</h3>
-            <p><span class="v">a</span>＝1/2，<span class="v">M</span>＝1/8，<span class="v">p</span>＝3 を log<sub><span class="v">a</span></sub><span class="v">M</span>＝<span class="v">p</span> に置こう。底が分数のときも、やることは同じ。底と真数は (　) でくくって書くよ。</p>
+            <div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>a</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>,</mo><mi>M</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>a</mi></mphantom><mo>=</mo><mfrac><mn>1</mn><mn>8</mn></mfrac><mo>,</mo><mi>p</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>a</mi></mphantom><mo>=</mo><mn>3</mn></math></div>
+</div>
+<p>を<math><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>=</mo><mi>p</mi></math> に置こう。<br>底が分数のときも、やることは同じ。底と真数は (　) でくくって書くよ。</p>
           </div>
           <div class="step answer">
             <h3>解答 (3)</h3>
-            <p class="big">log<sub>1/2</sub>(1/8)＝3</p>
-            <p>「1/2 を 3 乗すると 1/8」→ 1/2 を底とする 1/8 の対数は 3。底が 1 より小さい分数でも、対数は定義できる（底の条件は <span class="v">a</span>＞0，<span class="v">a</span>≠1）。</p>
+            <p class="big"><math display="block"><msub><mi>log</mi><mfrac><mn>1</mn><mn>2</mn></mfrac></msub><mo>(</mo><mfrac><mn>1</mn><mn>8</mn></mfrac><mo>)</mo><mo>=</mo><mn>3</mn></math></p>
+            <p class="cite"><span class="cite-tag">使う定義</span>底と真数の条件 <math><mi>a</mi><mo>&gt;</mo><mn>0</mn><mo>,</mo><mi>a</mi><mo>≠</mo><mn>1</mn><mo>,</mo><mi>M</mi><mo>&gt;</mo><mn>0</mn></math>。底が分数でも、0より大きく1でなければ対数は定義できるよ。</p><p>「<math><mfrac><mn>1</mn><mn>2</mn></mfrac></math>を 3 乗すると<math><mfrac><mn>1</mn><mn>8</mn></mfrac></math>」<math><mo>→</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math>を底とする<math><mfrac><mn>1</mn><mn>8</mn></mfrac></math>の対数は 3。<br>底が 1 より小さい分数でも、対数は定義できる（底の条件は <math><mi>a</mi><mo>&gt;</mo><mn>0</mn><mo>,</mo><mi>a</mi><mo>≠</mo><mn>1</mn><mo>)</mo></math>。</p>
           </div>
           <p class="prob-done">(3) クリア！　練習14へ進もう。</p>
         </div>
@@ -649,13 +702,13 @@
         <span class="pno">教科書 p.162</span>
       </div>
 
-      <section class="card prob" id="prob-ren14">
+      <section class="nofig card prob" id="prob-ren14">
         <div class="flow-main"><div class="col-left">
         <div class="prob-head">
           <span class="prob-tag ren">練習 14</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
-        <p class="prob-q">次の関係を、<span class="v">M</span>＝<span class="v">a</span><sup><span class="v">p</span></sup> の形に書け。</p>
+        <p class="prob-q">次の関係を、<math><mi>M</mi><mo>=</mo><msup><mi>a</mi><mi>p</mi></msup></math> の形に書け。</p>
         </div><div class="col-right">
         <div class="tabs" role="tablist" aria-label="練習14の小問">
           <button class="tab" role="tab" data-tab="ren14-1" aria-selected="true">(1) log<sub>4</sub>16＝2</button>
@@ -663,68 +716,68 @@
           <button class="tab" role="tab" data-tab="ren14-3" aria-selected="false">(3) log<sub>9</sub>3＝1/2</button>
         </div>
 
-        <div class="tabpanel show" id="panel-ren14-1" data-flow="ren14-1" data-label="練習14 (1)">
+        <div class="nofig tabpanel show" id="panel-ren14-1" data-flow="ren14-1" data-label="練習14 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　log<sub>4</sub>16＝2</span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><msub><mi>log</mi><mn>4</mn></msub><mn>16</mn><mo>=</mo><mn>2</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― まず日本語で読み直す</h3>
-            <p>log<sub>4</sub>16＝2 は「<b>4 を 2 乗すると 16 になる</b>」という意味だったね。底は 4、対数の値（指数にあたる数）は 2、真数は 16。この3つを確認しよう。</p>
+            <p><math><msub><mi>log</mi><mn>4</mn></msub><mn>16</mn><mo>=</mo><mn>2</mn></math>は「<b>4 を 2 乗すると 16 になる</b>」という意味だったね。<br>底は 4、対数の値（指数にあたる数）は 2、真数は 16。この3つを確認しよう。</p>
           </div>
           <div class="step hint">
-            <h3>ヒント 2 ― <span class="v">M</span>＝<span class="v">a</span><sup><span class="v">p</span></sup> の順に並べる</h3>
-            <p><span class="v">M</span>＝<span class="v">a</span><sup><span class="v">p</span></sup> の形は「<b>真数 ＝ 底<sup>対数の値</sup></b>」。真数 16 を左辺に、底 4 の右上に 2 を置いてみよう。</p>
+            <h3>ヒント<math><mn>2</mn><mo>―</mo><mi>M</mi><mo>=</mo><msup><mi>a</mi><mi>p</mi></msup></math> の順に並べる</h3>
+            <p class="cite"><span class="cite-tag">使う定義</span>対数の定義 <math><mi>M</mi><mo>=</mo><msup><mi>a</mi><mi>p</mi></msup><mo>⟺</mo><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>=</mo><mi>p</mi></math>。今度は右から左へ、対数の形を指数の形に戻すよ。</p><p><math><mi>M</mi><mo>=</mo><msup><mi>a</mi><mi>p</mi></msup></math> の形は「<b>真数 ＝ 底<math><msup><mrow></mrow><mtext>対数の値</mtext></msup></math></b>」。真数 16 を左辺に、底 4 の右上に 2 を置いてみよう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (1)</h3>
-            <p class="big">16＝4<sup>2</sup></p>
-            <p>log<sub>4</sub>16＝2 ⟺ 16＝4<sup>2</sup>。たしかに 4<sup>2</sup>＝16 で検算もできるね。</p>
+            <p class="big"><math display="block"><mn>16</mn><mo>=</mo><msup><mn>4</mn><mn>2</mn></msup></math></p>
+            <p><math><msub><mi>log</mi><mn>4</mn></msub><mn>16</mn><mo>=</mo><mn>2</mn><mo>⟺</mo><mn>16</mn><mo>=</mo><msup><mn>4</mn><mn>2</mn></msup></math>。たしかに<math><msup><mn>4</mn><mn>2</mn></msup><mo>=</mo><mn>16</mn></math>で検算もできるね。</p>
           </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
 
-        <div class="tabpanel" id="panel-ren14-2" data-flow="ren14-2" data-label="練習14 (2)">
+        <div class="nofig tabpanel" id="panel-ren14-2" data-flow="ren14-2" data-label="練習14 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　log<sub>10</sub>(1/100)＝−2</span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><msub><mi>log</mi><mn>10</mn></msub><mo>(</mo><mfrac><mn>1</mn><mn>100</mn></mfrac><mo>)</mo><mo>=</mo><mo>−</mo><mn>2</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― 3つの数を読み取る</h3>
-            <p>log<sub>10</sub>(1/100)＝−2 から、底は 10、対数の値は −2、真数は 1/100。読み方は「10 を −2 乗すると 1/100 になる」だね。</p>
+            <p><math><msub><mi>log</mi><mn>10</mn></msub><mo>(</mo><mfrac><mn>1</mn><mn>100</mn></mfrac><mo>)</mo><mo>=</mo><mo>−</mo><mn>2</mn></math>から、底は 10、対数の値は −2、真数は<math><mfrac><mn>1</mn><mn>100</mn></mfrac></math>。<br>読み方は「10 を −2 乗すると<math><mfrac><mn>1</mn><mn>100</mn></mfrac></math>になる」だね。</p>
           </div>
           <div class="step hint">
-            <h3>ヒント 2 ― <span class="v">M</span>＝<span class="v">a</span><sup><span class="v">p</span></sup> の順に並べる</h3>
-            <p>「真数 ＝ 底<sup>対数の値</sup>」の順に置く。左辺は 1/100、右辺は 10 の右上に −2 が乗る形になるはずだ。</p>
+            <h3>ヒント<math><mn>2</mn><mo>―</mo><mi>M</mi><mo>=</mo><msup><mi>a</mi><mi>p</mi></msup></math> の順に並べる</h3>
+            <p>「真数 ＝ 底<math><msup><mrow></mrow><mtext>対数の値</mtext></msup></math>」の順に置く。左辺は<math><mfrac><mn>1</mn><mn>100</mn></mfrac></math>、右辺は 10 の右上に −2 が乗る形になるはずだ。</p>
           </div>
           <div class="step answer">
             <h3>解答 (2)</h3>
-            <p class="big">1/100＝10<sup>−2</sup></p>
-            <p>検算：10<sup>−2</sup>＝1/10<sup>2</sup>＝1/100。たしかに合っているね。</p>
+            <p class="big"><math display="block"><mfrac><mn>1</mn><mn>100</mn></mfrac><mo>=</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>2</mn></mrow></msup></math></p>
+            <p class="cite"><span class="cite-tag">使う性質</span>負の指数 <math><msup><mi>a</mi><mrow><mo>−</mo><mi>n</mi></mrow></msup><mo>=</mo><mfrac><mn>1</mn><msup><mi>a</mi><mi>n</mi></msup></mfrac></math>。10 の −2 乗は 10 の2乗の逆数で、100分の1になるよ。</p><p>検算：<math><msup><mn>10</mn><mrow><mo>−</mo><mn>2</mn></mrow></msup><mo>=</mo><mfrac><mn>1</mn><msup><mn>10</mn><mn>2</mn></msup></mfrac><mo>=</mo><mfrac><mn>1</mn><mn>100</mn></mfrac></math>。たしかに合っているね。</p>
           </div>
           <p class="prob-done">(2) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
 
-        <div class="tabpanel" id="panel-ren14-3" data-flow="ren14-3" data-label="練習14 (3)">
+        <div class="nofig tabpanel" id="panel-ren14-3" data-flow="ren14-3" data-label="練習14 (3)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(3)　log<sub>9</sub>3＝1/2</span>
+            <span class="sub prob-q" style="margin:0">(3)　<math><msub><mi>log</mi><mn>9</mn></msub><mn>3</mn><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― 3つの数を読み取る</h3>
-            <p>log<sub>9</sub>3＝1/2 から、底は 9、対数の値は 1/2、真数は 3。今回は対数の値が<b>分数</b>になっている点に注意しよう。</p>
+            <p><math><msub><mi>log</mi><mn>9</mn></msub><mn>3</mn><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math>から、底は 9、対数の値は<math><mfrac><mn>1</mn><mn>2</mn></mfrac></math>、真数は 3。<br>今回は対数の値が<b>分数</b>になっている点に注意しよう。</p>
           </div>
           <div class="step hint">
-            <h3>ヒント 2 ― <span class="v">M</span>＝<span class="v">a</span><sup><span class="v">p</span></sup> の順に並べ、検算する</h3>
-            <p>「真数 ＝ 底<sup>対数の値</sup>」の順に置いてみよう。検算のヒント：9<sup>1/2</sup> は √9 のことで、√9＝3 になるはずだ。</p>
+            <h3>ヒント<math><mn>2</mn><mo>―</mo><mi>M</mi><mo>=</mo><msup><mi>a</mi><mi>p</mi></msup></math> の順に並べ、検算する</h3>
+            <p class="cite"><span class="cite-tag">使う性質</span>分数の指数 <math><msup><mi>a</mi><mfrac><mn>1</mn><mn>2</mn></mfrac></msup><mo>=</mo><msqrt><mi>a</mi></msqrt></math>。9 の2分の1乗は √9 のことだから、検算に使えるよ。</p><p>「真数 ＝ 底<math><msup><mrow></mrow><mtext>対数の値</mtext></msup></math>」の順に置いてみよう。<br>検算のヒント：<math><msup><mn>9</mn><mfrac><mn>1</mn><mn>2</mn></mfrac></msup></math> は<math><msqrt><mn>9</mn></msqrt></math>のことで、<math><msqrt><mn>9</mn></msqrt><mo>=</mo><mn>3</mn></math>になるはずだ。</p>
           </div>
           <div class="step answer">
             <h3>解答 (3)</h3>
-            <p class="big">3＝9<sup>1/2</sup></p>
-            <p>検算：9<sup>1/2</sup>＝√9＝3。分数の指数は「根号（√）」とつながっていることを、ここで確認しておこう。</p>
+            <p class="big"><math display="block"><mn>3</mn><mo>=</mo><msup><mn>9</mn><mfrac><mn>1</mn><mn>2</mn></mfrac></msup></math></p>
+            <p>検算：<math><msup><mn>9</mn><mfrac><mn>1</mn><mn>2</mn></mfrac></msup><mo>=</mo><msqrt><mn>9</mn></msqrt><mo>=</mo><mn>3</mn></math>。分数の指数は「根号<math><mo>(</mo><mo>)</mo><mo>√</mo></math>」とつながっていることを、ここで確認しておこう。</p>
           </div>
           <p class="prob-done">(3) クリア！　例9へ進もう。</p>
         </div>
@@ -738,7 +791,7 @@
         <span class="pno">教科書 p.162</span>
       </div>
 
-      <section class="card prob" id="prob-ex9">
+      <section class="nofig card prob" id="prob-ex9">
         <div class="flow-main"><div class="col-left">
         <div class="prob-head">
           <span class="prob-tag">例 9</span>
@@ -752,72 +805,72 @@
           <button class="tab" role="tab" data-tab="ex9-3" aria-selected="false">(3) log<sub>3</sub>√3</button>
         </div>
 
-        <div class="tabpanel show" id="panel-ex9-1" data-flow="ex9-1" data-label="例9 (1)">
+        <div class="nofig tabpanel show" id="panel-ex9-1" data-flow="ex9-1" data-label="例9 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　log<sub>5</sub>125</span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><msub><mi>log</mi><mn>5</mn></msub><mn>125</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― 真数を、底の累乗で表す</h3>
-            <p>コツは「<b>真数を、底と同じ数の累乗に書き換える</b>」こと。底は 5 だから、125 を 5 の累乗で表そう。5<sup>2</sup>＝25、5<sup>3</sup>＝125 と、順に計算してみよう。</p>
+            <p>コツは「<b>真数を、底と同じ数の累乗に書き換える</b>」こと。<br>底は 5 だから、125 を 5 の累乗で表そう。<math><msup><mn>5</mn><mn>2</mn></msup><mo>=</mo><mn>25</mn></math>、<math><msup><mn>5</mn><mn>3</mn></msup><mo>=</mo><mn>125</mn></math>と、順に計算してみよう。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― log の中に書き換えた形を入れる</h3>
-            <p>125＝5<sup>3</sup> と分かったら、log<sub>5</sub>125 を log<sub>5</sub>5<sup>3</sup> の形に書き換えてみよう。</p>
+            <p><math><mn>125</mn><mo>=</mo><msup><mn>5</mn><mn>3</mn></msup></math> と分かったら、<math><msub><mi>log</mi><mn>5</mn></msub><mn>125</mn></math>を<math><msub><mi>log</mi><mn>5</mn></msub><msup><mn>5</mn><mn>3</mn></msup></math> の形に書き換えてみよう。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 3 ― 解説2の形を使う</h3>
-            <p>log<sub><span class="v">a</span></sub>(<span class="v">a</span><sup><span class="v">p</span></sup>)＝<span class="v">p</span> だったね。今回 <span class="v">a</span>＝5，<span class="v">p</span>＝3 に対応する。答えが見えてきたかな？</p>
+            <p class="cite"><span class="cite-tag">使う公式</span><math><msub><mi>log</mi><mi>a</mi></msub><mo>(</mo><msup><mi>a</mi><mi>p</mi></msup><mo>)</mo><mo>=</mo><mi>p</mi></math>。125 を 5 の3乗と書き換えたら、この形そのものになるよ。</p><p><math><msub><mi>log</mi><mi>a</mi></msub><mo>(</mo><msup><mi>a</mi><mi>p</mi></msup><mo>)</mo><mo>=</mo><mi>p</mi></math> だったね。今回 <math><mi>a</mi><mo>=</mo><mn>5</mn><mo>,</mo><mi>p</mi><mo>=</mo><mn>3</mn></math>に対応する。答えが見えてきたかな？</p>
           </div>
           <div class="step answer">
             <h3>解答 (1)</h3>
-            <p class="big">log<sub>5</sub>125＝log<sub>5</sub>5<sup>3</sup>＝3</p>
+            <p class="big"><math display="block"><msub><mi>log</mi><mn>5</mn></msub><mn>125</mn><mo>=</mo><msub><mi>log</mi><mn>5</mn></msub><msup><mn>5</mn><mn>3</mn></msup><mo>=</mo><mn>3</mn></math></p>
             <p>「5 を何乗すると 125 になるか」→ 3 乗。だから対数の値は 3。</p>
           </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
 
-        <div class="tabpanel" id="panel-ex9-2" data-flow="ex9-2" data-label="例9 (2)">
+        <div class="nofig tabpanel" id="panel-ex9-2" data-flow="ex9-2" data-label="例9 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　log<sub>1/2</sub>2</span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><msub><mi>log</mi><mfrac><mn>1</mn><mn>2</mn></mfrac></msub><mn>2</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="step hint">
-            <h3>ヒント 1 ― 真数 2 を、底 1/2 の累乗で表す</h3>
-            <p>底は 1/2。真数 2 を (1/2) の累乗で表したい。(1/2)<sup>−1</sup> は 1/2 の<b>逆数</b>だから、(1/2)<sup>−1</sup>＝2 になることを確かめよう。</p>
+            <h3>ヒント 1 ― 真数 2 を、底<math><mfrac><mn>1</mn><mn>2</mn></mfrac></math>の累乗で表す</h3>
+            <p class="cite"><span class="cite-tag">使う性質</span>負の指数 <math><msup><mi>a</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup><mo>=</mo><mfrac><mn>1</mn><mi>a</mi></mfrac></math>。2分の1の逆数は「−1乗」で表せて、2 になるよ。</p><p>底は<math><mfrac><mn>1</mn><mn>2</mn></mfrac></math>。真数 2 を<math><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo></math>の累乗で表したい。<br><math><msup><mrow><mo>(</mo><mn>1</mn><mo>/</mo><mn>2</mn><mo>)</mo></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msup></math> は<math><mfrac><mn>1</mn><mn>2</mn></mfrac></math>の<b>逆数</b>だから、<math><msup><mrow><mo>(</mo><mn>1</mn><mo>/</mo><mn>2</mn><mo>)</mo></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msup><mo>=</mo><mn>2</mn></math>になることを確かめよう。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 書き換えて、形を使う</h3>
-            <p>log<sub>1/2</sub>2＝log<sub>1/2</sub>(1/2)<sup>−1</sup> と書き換えたら、log<sub><span class="v">a</span></sub>(<span class="v">a</span><sup><span class="v">p</span></sup>)＝<span class="v">p</span> の形そのものだ。<span class="v">p</span> の値を読み取ろう。</p>
+            <p><math><msub><mi>log</mi><mfrac><mn>1</mn><mn>2</mn></mfrac></msub><mn>2</mn><mo>=</mo><msub><mi>log</mi><mfrac><mn>1</mn><mn>2</mn></mfrac></msub><msup><mrow><mo>(</mo><mn>1</mn><mo>/</mo><mn>2</mn><mo>)</mo></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msup></math> と書き換えたら、<math><msub><mi>log</mi><mi>a</mi></msub><mo>(</mo><msup><mi>a</mi><mi>p</mi></msup><mo>)</mo><mo>=</mo><mi>p</mi></math> の形そのものだ。<math><mi>p</mi></math> の値を読み取ろう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (2)</h3>
-            <p class="big">log<sub>1/2</sub>2＝log<sub>1/2</sub>(1/2)<sup>−1</sup>＝−1</p>
-            <p>「1/2 を −1 乗すると（逆数をとると）2 になる」→ 対数の値は −1。底が 1 より小さいときは、真数が大きいほど対数はマイナス側にいくよ。</p>
+            <p class="big"><math display="block"><msub><mi>log</mi><mfrac><mn>1</mn><mn>2</mn></mfrac></msub><mn>2</mn><mo>=</mo><msub><mi>log</mi><mfrac><mn>1</mn><mn>2</mn></mfrac></msub><msup><mrow><mo>(</mo><mn>1</mn><mo>/</mo><mn>2</mn><mo>)</mo></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msup><mo>=</mo><mo>−</mo><mn>1</mn></math></p>
+            <p>「<math><mfrac><mn>1</mn><mn>2</mn></mfrac></math>を −1 乗すると（逆数をとると）2 になる」→ 対数の値は −1。<br>底が 1 より小さいときは、真数が大きいほど対数はマイナス側にいくよ。</p>
           </div>
           <p class="prob-done">(2) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
 
-        <div class="tabpanel" id="panel-ex9-3" data-flow="ex9-3" data-label="例9 (3)">
+        <div class="nofig tabpanel" id="panel-ex9-3" data-flow="ex9-3" data-label="例9 (3)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(3)　log<sub>3</sub>√3</span>
+            <span class="sub prob-q" style="margin:0">(3)　<math><msub><mi>log</mi><mn>3</mn></msub><msqrt><mn>3</mn></msqrt></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="step hint">
-            <h3>ヒント 1 ― √ を指数の形に直す</h3>
-            <p>真数は √3。根号は指数で表せたね：√3＝3<sup>1/2</sup>（√ は「1/2 乗」）。まずこの書き換えをしよう。</p>
+            <h3>ヒント<math><mn>1</mn><mo>―</mo><mo>√</mo></math>を指数の形に直す</h3>
+            <p class="cite"><span class="cite-tag">使う性質</span>根号の指数表示 <math><msup><mi>a</mi><mfrac><mn>1</mn><mn>2</mn></mfrac></msup><mo>=</mo><msqrt><mi>a</mi></msqrt></math>。√3 は 3 の2分の1乗と書けるよ。</p><p>真数は<math><msqrt><mn>3</mn></msqrt></math>。根号は指数で表せたね：<math><msqrt><mn>3</mn></msqrt><mo>=</mo><msup><mn>3</mn><mfrac><mn>1</mn><mn>2</mn></mfrac></msup><mo>(</mo><mo>√</mo></math>は「<math><mfrac><mn>1</mn><mn>2</mn></mfrac></math>乗」）。<br>まずこの書き換えをしよう。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 形を使う</h3>
-            <p>log<sub>3</sub>√3＝log<sub>3</sub>3<sup>1/2</sup> と書き換えたら、log<sub><span class="v">a</span></sub>(<span class="v">a</span><sup><span class="v">p</span></sup>)＝<span class="v">p</span> の形だ。指数の部分がそのまま答えになるよ。</p>
+            <p><math><msub><mi>log</mi><mn>3</mn></msub><msqrt><mn>3</mn></msqrt><mo>=</mo><msub><mi>log</mi><mn>3</mn></msub><msup><mn>3</mn><mfrac><mn>1</mn><mn>2</mn></mfrac></msup></math> と書き換えたら、<math><msub><mi>log</mi><mi>a</mi></msub><mo>(</mo><msup><mi>a</mi><mi>p</mi></msup><mo>)</mo><mo>=</mo><mi>p</mi></math> の形だ。指数の部分がそのまま答えになるよ。</p>
           </div>
           <div class="step answer">
             <h3>解答 (3)</h3>
-            <p class="big">log<sub>3</sub>√3＝log<sub>3</sub>3<sup>1/2</sup>＝1/2</p>
-            <p>「3 を 1/2 乗すると √3」→ 対数の値は 1/2。</p>
+            <p class="big"><math display="block"><msub><mi>log</mi><mn>3</mn></msub><msqrt><mn>3</mn></msqrt><mo>=</mo><msub><mi>log</mi><mn>3</mn></msub><msup><mn>3</mn><mfrac><mn>1</mn><mn>2</mn></mfrac></msup><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math></p>
+            <p>「3 を<math><mfrac><mn>1</mn><mn>2</mn></mfrac></math>乗すると<math><msqrt><mn>3</mn></msqrt></math>」→ 対数の値は<math><mfrac><mn>1</mn><mn>2</mn></mfrac></math>。</p>
           </div>
           <p class="prob-done">(3) クリア！　練習15に挑戦しよう。</p>
         </div>
@@ -831,7 +884,7 @@
         <span class="pno">教科書 p.162</span>
       </div>
 
-      <section class="card prob" id="prob-ren15">
+      <section class="nofig card prob" id="prob-ren15">
         <div class="flow-main"><div class="col-left">
         <div class="prob-head">
           <span class="prob-tag ren">練習 15</span>
@@ -850,172 +903,172 @@
           <button class="tab" role="tab" data-tab="ren15-8" aria-selected="false">(8)</button>
         </div>
 
-        <div class="tabpanel show" id="panel-ren15-1" data-flow="ren15-1" data-label="練習15 (1)">
+        <div class="nofig tabpanel show" id="panel-ren15-1" data-flow="ren15-1" data-label="練習15 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　log<sub>2</sub>2<sup>5</sup></span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><msub><mi>log</mi><mn>2</mn></msub><msup><mn>2</mn><mn>5</mn></msup></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― 形に注目する</h3>
-            <p>真数は 2<sup>5</sup> で、すでに「底 2 の累乗」の形になっているね。書き換えは不要だ。</p>
+            <p>真数は<math><msup><mn>2</mn><mn>5</mn></msup></math> で、すでに「底 2 の累乗」の形になっているね。書き換えは不要だ。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 指数を読み取る</h3>
-            <p>log<sub><span class="v">a</span></sub>(<span class="v">a</span><sup><span class="v">p</span></sup>)＝<span class="v">p</span> の形そのもの。今回の <span class="v">p</span> は、右上に書かれた数だ。その数を読み取ろう。</p>
+            <p class="cite"><span class="cite-tag">使う公式</span><math><msub><mi>log</mi><mi>a</mi></msub><mo>(</mo><msup><mi>a</mi><mi>p</mi></msup><mo>)</mo><mo>=</mo><mi>p</mi></math>。真数がすでに底の累乗の形だから、指数を読み取るだけだよ。</p><p><math><msub><mi>log</mi><mi>a</mi></msub><mo>(</mo><msup><mi>a</mi><mi>p</mi></msup><mo>)</mo><mo>=</mo><mi>p</mi></math> の形そのもの。今回の <math><mi>p</mi></math> は、右上に書かれた数だ。その数を読み取ろう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (1)</h3>
-            <p class="big">log<sub>2</sub>2<sup>5</sup>＝5</p>
+            <p class="big"><math display="block"><msub><mi>log</mi><mn>2</mn></msub><msup><mn>2</mn><mn>5</mn></msup><mo>=</mo><mn>5</mn></math></p>
           </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
 
-        <div class="tabpanel" id="panel-ren15-2" data-flow="ren15-2" data-label="練習15 (2)">
+        <div class="nofig tabpanel" id="panel-ren15-2" data-flow="ren15-2" data-label="練習15 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　log<sub>5</sub>25</span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><msub><mi>log</mi><mn>5</mn></msub><mn>25</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― 真数を底の累乗に書き換える</h3>
-            <p>底は 5。真数 25 を 5 の累乗で表そう。5<sup>2</sup> を計算して確かめてみよう。</p>
+            <p>底は 5。真数 25 を 5 の累乗で表そう。<math><msup><mn>5</mn><mn>2</mn></msup></math> を計算して確かめてみよう。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 書き換えた形で考える</h3>
-            <p>log<sub>5</sub>25＝log<sub>5</sub>5<sup>□</sup> の形にしたら、あとは指数 □ が答えだ。</p>
+            <p class="cite"><span class="cite-tag">使う公式</span><math><msub><mi>log</mi><mi>a</mi></msub><mo>(</mo><msup><mi>a</mi><mi>p</mi></msup><mo>)</mo><mo>=</mo><mi>p</mi></math>。25 を 5 の2乗と書き換えれば、この形になるよ。</p><p><math><msub><mi>log</mi><mn>5</mn></msub><mn>25</mn><mo>=</mo><msub><mi>log</mi><mn>5</mn></msub><msup><mn>5</mn><mo>□</mo></msup></math> の形にしたら、あとは指数 □ が答えだ。</p>
           </div>
           <div class="step answer">
             <h3>解答 (2)</h3>
-            <p class="big">log<sub>5</sub>25＝log<sub>5</sub>5<sup>2</sup>＝2</p>
+            <p class="big"><math display="block"><msub><mi>log</mi><mn>5</mn></msub><mn>25</mn><mo>=</mo><msub><mi>log</mi><mn>5</mn></msub><msup><mn>5</mn><mn>2</mn></msup><mo>=</mo><mn>2</mn></math></p>
           </div>
           <p class="prob-done">(2) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
 
-        <div class="tabpanel" id="panel-ren15-3" data-flow="ren15-3" data-label="練習15 (3)">
+        <div class="nofig tabpanel" id="panel-ren15-3" data-flow="ren15-3" data-label="練習15 (3)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(3)　log<sub>3</sub>(1/27)</span>
+            <span class="sub prob-q" style="margin:0">(3)　<math><msub><mi>log</mi><mn>3</mn></msub><mo>(</mo><mfrac><mn>1</mn><mn>27</mn></mfrac><mo>)</mo></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― まず 27 を 3 の累乗で表す</h3>
-            <p>3<sup>2</sup>＝9、3<sup>3</sup>＝27。だから 27＝3<sup>3</sup> と書ける。ここが第一歩。</p>
+            <p><math><msup><mn>3</mn><mn>2</mn></msup><mo>=</mo><mn>9</mn></math>、<math><msup><mn>3</mn><mn>3</mn></msup><mo>=</mo><mn>27</mn></math>。だから<math><mn>27</mn><mo>=</mo><msup><mn>3</mn><mn>3</mn></msup></math> と書ける。<br>ここが第一歩。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 逆数は指数の符号を変える</h3>
-            <p>真数は 1/27、つまり 27 の逆数。逆数は「−（マイナス）乗」だから、1/27＝3<sup>−□</sup> と書ける。□ に入る数を考えよう。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>負の指数 <math><msup><mi>a</mi><mrow><mo>−</mo><mi>n</mi></mrow></msup><mo>=</mo><mfrac><mn>1</mn><msup><mi>a</mi><mi>n</mi></msup></mfrac></math>。27＝3の3乗の逆数は、3 の −3 乗だよ。</p><p>真数は<math><mfrac><mn>1</mn><mn>27</mn></mfrac></math>、つまり 27 の逆数。逆数は「−（マイナス）乗」だから、<math><mfrac><mn>1</mn><mn>27</mn></mfrac><mo>=</mo><msup><mn>3</mn><mrow><mo>−</mo><mo>□</mo></mrow></msup></math> と書ける。□ に入る数を考えよう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (3)</h3>
-            <p class="big">log<sub>3</sub>(1/27)＝log<sub>3</sub>3<sup>−3</sup>＝−3</p>
+            <p class="big"><math display="block"><msub><mi>log</mi><mn>3</mn></msub><mo>(</mo><mfrac><mn>1</mn><mn>27</mn></mfrac><mo>)</mo><mo>=</mo><msub><mi>log</mi><mn>3</mn></msub><msup><mn>3</mn><mrow><mo>−</mo><mn>3</mn></mrow></msup><mo>=</mo><mo>−</mo><mn>3</mn></math></p>
           </div>
           <p class="prob-done">(3) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
 
-        <div class="tabpanel" id="panel-ren15-4" data-flow="ren15-4" data-label="練習15 (4)">
+        <div class="nofig tabpanel" id="panel-ren15-4" data-flow="ren15-4" data-label="練習15 (4)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(4)　log<sub>1/2</sub>(1/16)</span>
+            <span class="sub prob-q" style="margin:0">(4)　<math><msub><mi>log</mi><mfrac><mn>1</mn><mn>2</mn></mfrac></msub><mo>(</mo><mfrac><mn>1</mn><mn>16</mn></mfrac><mo>)</mo></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― 底の累乗を順に計算する</h3>
-            <p>底は 1/2。(1/2)<sup>2</sup>＝1/4、(1/2)<sup>3</sup>＝1/8 と、1つずつ掛けて、1/16 になるのは何乗のときか数えよう。</p>
+            <p>底は<math><mfrac><mn>1</mn><mn>2</mn></mfrac></math>。<math><msup><mrow><mo>(</mo><mn>1</mn><mo>/</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mfrac><mn>1</mn><mn>4</mn></mfrac></math>、<math><msup><mrow><mo>(</mo><mn>1</mn><mo>/</mo><mn>2</mn><mo>)</mo></mrow><mn>3</mn></msup><mo>=</mo><mfrac><mn>1</mn><mn>8</mn></mfrac></math>と、1つずつ掛けて、<br><math><mfrac><mn>1</mn><mn>16</mn></mfrac></math>になるのは何乗のときか数えよう。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 書き換えた形で考える</h3>
-            <p>1/16＝(1/2)<sup>□</sup> と書けたら、log<sub>1/2</sub>(1/16)＝log<sub>1/2</sub>(1/2)<sup>□</sup> となり、□ がそのまま答えだ。</p>
+            <p class="cite"><span class="cite-tag">使う公式</span><math><msub><mi>log</mi><mi>a</mi></msub><mo>(</mo><msup><mi>a</mi><mi>p</mi></msup><mo>)</mo><mo>=</mo><mi>p</mi></math>。真数を底の累乗で表せたら、その指数がそのまま答えになるよ。</p><p><math><mfrac><mn>1</mn><mn>16</mn></mfrac><mo>=</mo><msup><mrow><mo>(</mo><mn>1</mn><mo>/</mo><mn>2</mn><mo>)</mo></mrow><mo>□</mo></msup></math> と書けたら、<math><msub><mi>log</mi><mfrac><mn>1</mn><mn>2</mn></mfrac></msub><mo>(</mo><mfrac><mn>1</mn><mn>16</mn></mfrac><mo>)</mo><mo>=</mo><msub><mi>log</mi><mfrac><mn>1</mn><mn>2</mn></mfrac></msub><msup><mrow><mo>(</mo><mn>1</mn><mo>/</mo><mn>2</mn><mo>)</mo></mrow><mo>□</mo></msup></math> となり、□ がそのまま答えだ。</p>
           </div>
           <div class="step answer">
             <h3>解答 (4)</h3>
-            <p class="big">log<sub>1/2</sub>(1/16)＝log<sub>1/2</sub>(1/2)<sup>4</sup>＝4</p>
+            <p class="big"><math display="block"><msub><mi>log</mi><mfrac><mn>1</mn><mn>2</mn></mfrac></msub><mo>(</mo><mfrac><mn>1</mn><mn>16</mn></mfrac><mo>)</mo><mo>=</mo><msub><mi>log</mi><mfrac><mn>1</mn><mn>2</mn></mfrac></msub><msup><mrow><mo>(</mo><mn>1</mn><mo>/</mo><mn>2</mn><mo>)</mo></mrow><mn>4</mn></msup><mo>=</mo><mn>4</mn></math></p>
             <p>底が 1 より小さくても、真数を底の累乗に書き換える手順は同じだよ。</p>
           </div>
           <p class="prob-done">(4) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
 
-        <div class="tabpanel" id="panel-ren15-5" data-flow="ren15-5" data-label="練習15 (5)">
+        <div class="nofig tabpanel" id="panel-ren15-5" data-flow="ren15-5" data-label="練習15 (5)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(5)　log<sub>10</sub>0.1</span>
+            <span class="sub prob-q" style="margin:0">(5)　<math><msub><mi>log</mi><mn>10</mn></msub><mn>0.1</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― 小数を分数に直す</h3>
-            <p>0.1 は分数で書くと 1/10。まずこの書き換えをしよう。</p>
+            <p>0.1 は分数で書くと<math><mfrac><mn>1</mn><mn>10</mn></mfrac></math>。まずこの書き換えをしよう。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 底 10 の累乗で表す</h3>
-            <p>1/10 は 10 の逆数だから、10<sup>−□</sup> の形で書ける。□ に入る数を考えて、log の形に当てはめよう。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>負の指数 <math><msup><mi>a</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup><mo>=</mo><mfrac><mn>1</mn><mi>a</mi></mfrac></math>。10分の1は、10 の −1 乗と書けるよ。</p><p><math><mfrac><mn>1</mn><mn>10</mn></mfrac></math>は 10 の逆数だから、<math><msup><mn>10</mn><mrow><mo>−</mo><mo>□</mo></mrow></msup></math> の形で書ける。□ に入る数を考えて、log の形に当てはめよう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (5)</h3>
-            <p class="big">log<sub>10</sub>0.1＝log<sub>10</sub>10<sup>−1</sup>＝−1</p>
+            <p class="big"><math display="block"><msub><mi>log</mi><mn>10</mn></msub><mn>0.1</mn><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><msup><mn>10</mn><mrow><mo>−</mo><mn>1</mn></mrow></msup><mo>=</mo><mo>−</mo><mn>1</mn></math></p>
           </div>
           <p class="prob-done">(5) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
 
-        <div class="tabpanel" id="panel-ren15-6" data-flow="ren15-6" data-label="練習15 (6)">
+        <div class="nofig tabpanel" id="panel-ren15-6" data-flow="ren15-6" data-label="練習15 (6)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(6)　log<sub>1/3</sub>3</span>
+            <span class="sub prob-q" style="margin:0">(6)　<math><msub><mi>log</mi><mfrac><mn>1</mn><mn>3</mn></mfrac></msub><mn>3</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― 例9 (2) と同じ発想を使う</h3>
-            <p>底は 1/3、真数は 3。3 は 1/3 の<b>逆数</b>だね。逆数は「−1 乗」で表せたことを思い出そう。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>負の指数 <math><msup><mi>a</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup><mo>=</mo><mfrac><mn>1</mn><mi>a</mi></mfrac></math>。3 は 3分の1の逆数だから、3分の1の −1 乗と書けるよ。</p><p>底は<math><mfrac><mn>1</mn><mn>3</mn></mfrac></math>、真数は 3。3 は<math><mfrac><mn>1</mn><mn>3</mn></mfrac></math>の<b>逆数</b>だね。逆数は「−1 乗」で表せたことを思い出そう。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 書き換えた形で考える</h3>
-            <p>3＝(1/3)<sup>−□</sup> と書けたら、log<sub>1/3</sub>3＝log<sub>1/3</sub>(1/3)<sup>−□</sup> となり、指数の部分が答えになる。</p>
+            <p><math><mn>3</mn><mo>=</mo><msup><mrow><mo>(</mo><mn>1</mn><mo>/</mo><mn>3</mn><mo>)</mo></mrow><mrow><mo>−</mo><mo>□</mo></mrow></msup></math> と書けたら、<math><msub><mi>log</mi><mfrac><mn>1</mn><mn>3</mn></mfrac></msub><mn>3</mn><mo>=</mo><msub><mi>log</mi><mfrac><mn>1</mn><mn>3</mn></mfrac></msub><msup><mrow><mo>(</mo><mn>1</mn><mo>/</mo><mn>3</mn><mo>)</mo></mrow><mrow><mo>−</mo><mo>□</mo></mrow></msup></math> となり、指数の部分が答えになる。</p>
           </div>
           <div class="step answer">
             <h3>解答 (6)</h3>
-            <p class="big">log<sub>1/3</sub>3＝log<sub>1/3</sub>(1/3)<sup>−1</sup>＝−1</p>
+            <p class="big"><math display="block"><msub><mi>log</mi><mfrac><mn>1</mn><mn>3</mn></mfrac></msub><mn>3</mn><mo>=</mo><msub><mi>log</mi><mfrac><mn>1</mn><mn>3</mn></mfrac></msub><msup><mrow><mo>(</mo><mn>1</mn><mo>/</mo><mn>3</mn><mo>)</mo></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msup><mo>=</mo><mo>−</mo><mn>1</mn></math></p>
           </div>
           <p class="prob-done">(6) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
 
-        <div class="tabpanel" id="panel-ren15-7" data-flow="ren15-7" data-label="練習15 (7)">
+        <div class="nofig tabpanel" id="panel-ren15-7" data-flow="ren15-7" data-label="練習15 (7)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(7)　log<sub>2</sub>∛2</span>
+            <span class="sub prob-q" style="margin:0">(7)　<math><msub><mi>log</mi><mn>2</mn></msub><mroot><mn>2</mn><mn>3</mn></mroot></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="step hint">
-            <h3>ヒント 1 ― ∛ を指数の形に直す</h3>
-            <p>∛2 は「3乗すると 2 になる数」、つまり立方根。根号の指数表示では、√ が 1/2 乗だったのと同じように、∛ は <b>1/3 乗</b> で表せる。∛2＝2<sup>1/3</sup> と書いてみよう。</p>
+            <h3>ヒント<math><mn>1</mn><mo>―</mo><mn>3</mn><mo>√</mo></math>を指数の形に直す</h3>
+            <p class="cite"><span class="cite-tag">使う性質</span>根号の指数表示 <math><msup><mi>a</mi><mfrac><mn>1</mn><mn>3</mn></mfrac></msup><mo>=</mo><mroot><mi>a</mi><mn>3</mn></mroot></math>。立方根は「3分の1乗」で表せるよ。</p><p><math><mroot><mn>2</mn><mn>3</mn></mroot></math>は「3乗すると 2 になる数」、つまり立方根。<br>根号の指数表示では、<math><mo>√</mo></math>が<math><mfrac><mn>1</mn><mn>2</mn></mfrac></math>乗だったのと同じように、<math><mn>3</mn><mo>√</mo></math>は <b><math><mfrac><mn>1</mn><mn>3</mn></mfrac></math>乗</b> で表せる。<math><mroot><mn>2</mn><mn>3</mn></mroot><mo>=</mo><msup><mn>2</mn><mfrac><mn>1</mn><mn>3</mn></mfrac></msup></math> と書いてみよう。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 形を使う</h3>
-            <p>log<sub>2</sub>∛2＝log<sub>2</sub>2<sup>□</sup> の形にしたら、指数 □ がそのまま答えだ。</p>
+            <p><math><msub><mi>log</mi><mn>2</mn></msub><mroot><mn>2</mn><mn>3</mn></mroot><mo>=</mo><msub><mi>log</mi><mn>2</mn></msub><msup><mn>2</mn><mo>□</mo></msup></math> の形にしたら、指数 □ がそのまま答えだ。</p>
           </div>
           <div class="step answer">
             <h3>解答 (7)</h3>
-            <p class="big">log<sub>2</sub>∛2＝log<sub>2</sub>2<sup>1/3</sup>＝1/3</p>
+            <p class="big"><math display="block"><msub><mi>log</mi><mn>2</mn></msub><mroot><mn>2</mn><mn>3</mn></mroot><mo>=</mo><msub><mi>log</mi><mn>2</mn></msub><msup><mn>2</mn><mfrac><mn>1</mn><mn>3</mn></mfrac></msup><mo>=</mo><mfrac><mn>1</mn><mn>3</mn></mfrac></math></p>
           </div>
           <p class="prob-done">(7) クリア！　最後の小問のタブを開いてみよう。</p>
         </div>
 
-        <div class="tabpanel" id="panel-ren15-8" data-flow="ren15-8" data-label="練習15 (8)">
+        <div class="nofig tabpanel" id="panel-ren15-8" data-flow="ren15-8" data-label="練習15 (8)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(8)　log<sub>√5</sub>5</span>
+            <span class="sub prob-q" style="margin:0">(8)　<math><msub><mi>log</mi><msqrt><mn>5</mn></msqrt></msub><mn>5</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="step hint">
-            <h3>ヒント 1 ― 真数 5 を、底 √5 の累乗で表す</h3>
-            <p>今回は底が √5 という変わった数。真数 5 を (√5) の累乗で表そう。(√5)<sup>2</sup> を計算すると何になるか、確かめてみよう。</p>
+            <h3>ヒント 1 ― 真数 5 を、底<math><msqrt><mn>5</mn></msqrt></math>の累乗で表す</h3>
+            <p class="cite"><span class="cite-tag">使う性質</span>平方根の性質 <math><msup><mrow><mo>(</mo><msqrt><mi>a</mi></msqrt><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mi>a</mi></math>（a＞0）。√5 の2乗は 5 だから、5 は底の2乗と分かるよ。</p><p>今回は底が<math><msqrt><mn>5</mn></msqrt></math>という変わった数。<br>真数 5 を<math><mo>(</mo><msqrt><mn>5</mn></msqrt><mo>)</mo></math>の累乗で表そう。<math><msup><mrow><mo>(</mo><msqrt><mn>5</mn></msqrt><mo>)</mo></mrow><mn>2</mn></msup></math> を計算すると何になるか、確かめてみよう。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 書き換えた形で考える</h3>
-            <p>5＝(√5)<sup>□</sup> と書けたら、log<sub>√5</sub>5＝log<sub>√5</sub>(√5)<sup>□</sup> となり、底が √ でも同じ形が使える。□ が答えだ。</p>
+            <p><math><mn>5</mn><mo>=</mo><msup><mrow><mo>(</mo><msqrt><mn>5</mn></msqrt><mo>)</mo></mrow><mo>□</mo></msup></math> と書けたら、<math><msub><mi>log</mi><msqrt><mn>5</mn></msqrt></msub><mn>5</mn><mo>=</mo><msub><mi>log</mi><msqrt><mn>5</mn></msqrt></msub><msup><mrow><mo>(</mo><msqrt><mn>5</mn></msqrt><mo>)</mo></mrow><mo>□</mo></msup></math> となり、底が<math><mo>√</mo></math>でも同じ形が使える。□ が答えだ。</p>
           </div>
           <div class="step answer">
             <h3>解答 (8)</h3>
-            <p class="big">log<sub>√5</sub>5＝log<sub>√5</sub>(√5)<sup>2</sup>＝2</p>
-            <p>底が √5 のような数でも、「真数を底の累乗に書き換える」手順はまったく同じだよ。</p>
+            <p class="big"><math display="block"><msub><mi>log</mi><msqrt><mn>5</mn></msqrt></msub><mn>5</mn><mo>=</mo><msub><mi>log</mi><msqrt><mn>5</mn></msqrt></msub><msup><mrow><mo>(</mo><msqrt><mn>5</mn></msqrt><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>2</mn></math></p>
+            <p>底が<math><msqrt><mn>5</mn></msqrt></math>のような数でも、「真数を底の累乗に書き換える」手順はまったく同じだよ。</p>
           </div>
           <p class="prob-done">(8) クリア！　練習15 全小問が終わったら、下のまとめで確認しよう。</p>
         </div>
@@ -1026,10 +1079,10 @@
       <section class="card summary">
         <h2>この項のポイント</h2>
         <ul>
-          <li><b>対数の定義：</b><span class="v">M</span>＝<span class="v">a</span><sup><span class="v">p</span></sup> となる実数 <span class="v">p</span> を log<sub><span class="v">a</span></sub><span class="v">M</span> と書き、<b><span class="v">a</span> を底とする <span class="v">M</span> の対数</b>という。<span class="v">M</span> は<b>真数</b>。条件は <b><span class="v">a</span>＞0，<span class="v">a</span>≠1，<span class="v">M</span>＞0</b>。</li>
-          <li><b>読み替え：</b>log<sub><span class="v">a</span></sub><span class="v">M</span>＝<span class="v">p</span> は「<b><span class="v">a</span> を <span class="v">p</span> 乗すると <span class="v">M</span> になる</b>」という意味。指数の形 <span class="v">M</span>＝<span class="v">a</span><sup><span class="v">p</span></sup> と自由に行き来できる。</li>
-          <li><b>値の求め方：</b>log<sub><span class="v">a</span></sub>(<span class="v">a</span><sup><span class="v">p</span></sup>)＝<span class="v">p</span>。<b>真数を底の累乗に書き換える</b>と、指数がそのまま答えになる。</li>
-          <li><b>書き換えの道具：</b>逆数は「−1 乗」（例：1/2＝2<sup>−1</sup>）、√ は「1/2 乗」、∛ は「1/3 乗」。</li>
+          <li><p class="cite"><span class="cite-tag">使う定義</span>対数の定義 <math><mi>M</mi><mo>=</mo><msup><mi>a</mi><mi>p</mi></msup><mo>⟺</mo><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>=</mo><mi>p</mi></math>。まとめでも、この行き来がすべての出発点だよ。</p><b>対数の定義：</b><math><mi>M</mi><mo>=</mo><msup><mi>a</mi><mi>p</mi></msup></math> となる実数 <math><mi>p</mi></math> を<math><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi></math> と書き、<b><math><mi>a</mi></math> を底とする <math><mi>M</mi></math> の対数</b>という。<math><mi>M</mi></math> は<b>真数</b>。条件は <b><math><mi>a</mi><mo>&gt;</mo><mn>0</mn><mo>,</mo><mi>a</mi><mo>≠</mo><mn>1</mn><mo>,</mo><mi>M</mi><mo>&gt;</mo><mn>0</mn></math></b>。</li>
+          <li><b>読み替え：</b><math><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>=</mo><mi>p</mi></math> は「<b><math><mi>a</mi></math> を <math><mi>p</mi></math> 乗すると <math><mi>M</mi></math> になる</b>」という意味。<br>指数の形 <math><mi>M</mi><mo>=</mo><msup><mi>a</mi><mi>p</mi></msup></math> と自由に行き来できる。</li>
+          <li><p class="cite"><span class="cite-tag">使う公式</span><math><msub><mi>log</mi><mi>a</mi></msub><mo>(</mo><msup><mi>a</mi><mi>p</mi></msup><mo>)</mo><mo>=</mo><mi>p</mi></math>。真数を底の累乗に書き換えるのが、値の求め方の合言葉だよ。</p><b>値の求め方：</b><math><msub><mi>log</mi><mi>a</mi></msub><mo>(</mo><msup><mi>a</mi><mi>p</mi></msup><mo>)</mo><mo>=</mo><mi>p</mi></math>。<b>真数を底の累乗に書き換える</b>と、指数がそのまま答えになる。</li>
+          <li><b>書き換えの道具：</b>逆数は「−1 乗」（例：<math><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>=</mo><msup><mn>2</mn><mrow><mo>−</mo><mn>1</mn></mrow></msup><mo>)</mo></math>、<math><mo>√</mo></math>は「<math><mfrac><mn>1</mn><mn>2</mn></mfrac></math>乗」、<math><mn>3</mn><mo>√</mo></math>は「<math><mfrac><mn>1</mn><mn>3</mn></mfrac></math>乗」。</li>
         </ul>
       </section>
 

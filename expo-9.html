@@ -264,7 +264,45 @@
           scrollbar-gutter:stable;
         }
       }
-    </style>
+    
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+</style>
   </head>
   <body>
     <div class="wrap">
@@ -295,13 +333,13 @@
 
       <section class="card">
         <div class="def">
-          <p><span class="key">方程式の型</span>：対数の定義「log<sub>a</sub>x＝p　⇔　x＝a<sup>p</sup>」をそのまま使う。</p>
-          <p>たとえば log<sub>3</sub>x＝2 なら、x＝3<sup>2</sup> と直して計算するだけだ。</p>
+          <p><span class="key">方程式の型</span>：対数の定義「<math><msub><mi>log</mi><mi>a</mi></msub><mi>x</mi><mo>=</mo><mi>p</mi></math>　<math><mo>⇔</mo></math>　<math><mi>x</mi><mo>=</mo><msup><mi>a</mi><mi>p</mi></msup></math>」をそのまま使う。</p>
+          <p>たとえば<math><msub><mi>log</mi><mn>3</mn></msub><mi>x</mi><mo>=</mo><mn>2</mn></math>なら、<math><mi>x</mi><mo>=</mo><msup><mn>3</mn><mn>2</mn></msup></math> と直して計算するだけだ。</p>
         </div>
         <div class="def">
           <p><span class="key">不等式の型（3ステップ）</span></p>
           <p><b>ステップ1</b>　まず<b>真数は正</b>という条件を書く（真数とは log の後ろの数のこと）。<br />
-          <b>ステップ2</b>　右辺の数を log の形に直して、両辺を「log<sub>a</sub>（真数）」の形にそろえる。<br />
+          <b>ステップ2</b>　右辺の数を log の形に直して、両辺を「<math><msub><mi>log</mi><mi>a</mi></msub><mo>(</mo></math>真数）」の形にそろえる。<br />
           <b>ステップ3</b>　底を見て、真数どうしの不等式に直す。最後に、ステップ1との<b>共通範囲</b>を求める。</p>
         </div>
         <p>ステップ3で大切なのが、<b>底の大きさ</b>だ。前のページで学んだ対数関数の特徴を思い出そう。</p>
@@ -339,7 +377,8 @@
         </figure>
         <div class="def">
           <p><span class="key">なぜ底が1より小さいと、不等号が逆になるの？</span></p>
-          <p>底 <span class="frac"><span>1</span><span>3</span></span> で具体的に計算してみよう。log<sub>1/3</sub>3＝−1、log<sub>1/3</sub>9＝−2 だ。真数は 3＜9 と<b>大きく</b>なったのに、対数の値は −1＞−2 と<b>小さく</b>なっている。</p>
+          <p class="cite"><span class="cite-tag">使う定義</span>対数の定義：<math><msub><mi>log</mi><mi>a</mi></msub><mi>x</mi><mo>=</mo><mi>p</mi></math>　<math><mo>⇔</mo></math>　<math><mi>x</mi><mo>=</mo><msup><mi>a</mi><mi>p</mi></msup></math>。<math><msub><mi>log</mi><mfrac><mn>1</mn><mn>3</mn></mfrac></msub><mn>3</mn><mo>=</mo><mo>−</mo><mn>1</mn></math> は <math><mn>3</mn><mo>=</mo><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>)</mo></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msup></math> という意味であり、具体例の値はこの定義で確かめられる。</p>
+          <p>底 <math><mfrac><mn>1</mn><mn>3</mn></mfrac></math> で具体的に計算してみよう。<math><msub><mi>log</mi><mfrac><mn>1</mn><mn>3</mn></mfrac></msub><mn>3</mn><mo>=</mo><mo>−</mo><mn>1</mn></math>、<math><msub><mi>log</mi><mfrac><mn>1</mn><mn>3</mn></mfrac></msub><mn>9</mn><mo>=</mo><mo>−</mo><mn>2</mn></math>だ。真数は 3＜9 と<b>大きく</b>なったのに、対数の値は −1＞−2 と<b>小さく</b>なっている。</p>
           <p>つまり、減少関数では「真数の大小」と「値の大小」が<b>逆転</b>する。だから、log の不等式を真数どうしの不等式に直すとき、<b>不等号を逆向きにしなければならない</b>んだ。</p>
         </div>
         <p class="formula">底 a＞1：そのまま　／　底 0＜a＜1：不等号は逆</p>
@@ -352,7 +391,7 @@
         <span class="pno">教科書 p.167</span>
       </div>
 
-      <section class="card prob" id="prob-ex5" data-flow="ex5" data-label="例題5">
+      <section class="nofig card prob" id="prob-ex5" data-flow="ex5" data-label="例題5">
         <div class="prob-head">
           <span class="prob-tag">例題 5</span>
           <div class="dots" aria-hidden="true">
@@ -361,35 +400,37 @@
           <span class="prob-state">ヒント 0 / 4</span>
         </div>
         <p class="prob-q">次の2つの数の大小を、不等号を用いて表せ。</p>
-        <p class="formula">2log<sub>5</sub>3　，　3log<sub>5</sub>2</p>
+        <p class="formula"><math><mn>2</mn><msub><mi>log</mi><mn>5</mn></msub><mn>3</mn></math>　，　<math><mn>3</mn><msub><mi>log</mi><mn>5</mn></msub><mn>2</mn></math></p>
 
         <div class="step hint">
           <h3>ヒント 1 ― まず「形をそろえる」ことを考える</h3>
-          <p>このままでは比べられない。対数の大小を比べるには、<b>底が同じで、係数のない</b> log<sub>5</sub>（真数）の形にそろえたい。</p>
-          <p>邪魔なのは、log の前についた係数 2 と 3。性質 <b>k log<sub>a</sub>M＝log<sub>a</sub>M<sup>k</sup></b>（係数は真数の指数に直せる）を使おう。</p>
+          <p class="cite"><span class="cite-tag">使う性質</span>対数の性質：<math><mi>k</mi><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><msup><mi>M</mi><mi>k</mi></msup></math>。係数 2 と 3 を真数の指数に直せば、底 5 の log どうしで比べられる。</p>
+          <p>このままでは比べられない。対数の大小を比べるには、<br><b>底が同じで、係数のない</b><math><msub><mi>log</mi><mn>5</mn></msub><mo>(</mo></math>真数）の形にそろえたい。</p>
+          <p>邪魔なのは、log の前についた係数 2 と 3。性質 <b><math><mi>k</mi><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><msup><mi>M</mi><mi>k</mi></msup></math></b><math><mo>(</mo></math>係数は真数の指数に直せる）を使おう。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― 2log<sub>5</sub>3 の係数を直す</h3>
+          <h3>ヒント<math><mn>2</mn><mo>―</mo><mn>2</mn><msub><mi>log</mi><mn>5</mn></msub><mn>3</mn></math>の係数を直す</h3>
           <p>係数 2 を、真数 3 の指数に直すと</p>
-          <p class="formula">2log<sub>5</sub>3＝log<sub>5</sub>3<sup>2</sup>＝log<sub>5</sub>9</p>
-          <p>これで左の数は log<sub>5</sub>9 になった。</p>
+          <p class="formula"><math display="block"><mn>2</mn><msub><mi>log</mi><mn>5</mn></msub><mn>3</mn><mo>=</mo><msub><mi>log</mi><mn>5</mn></msub><msup><mn>3</mn><mn>2</mn></msup><mo>=</mo><msub><mi>log</mi><mn>5</mn></msub><mn>9</mn></math></p>
+          <p>これで左の数は<math><msub><mi>log</mi><mn>5</mn></msub><mn>9</mn></math>になった。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 3 ― 3log<sub>5</sub>2 も同じように直す</h3>
+          <h3>ヒント<math><mn>3</mn><mo>―</mo><mn>3</mn><msub><mi>log</mi><mn>5</mn></msub><mn>2</mn></math>も同じように直す</h3>
           <p>係数 3 を、真数 2 の指数に直すと</p>
-          <p class="formula">3log<sub>5</sub>2＝log<sub>5</sub>2<sup>3</sup>＝log<sub>5</sub>8</p>
-          <p>これで、比べる相手は log<sub>5</sub>9 と log<sub>5</sub>8。あとは真数 9 と 8 の大小と、底 5 の関係だけだ。</p>
+          <p class="formula"><math display="block"><mn>3</mn><msub><mi>log</mi><mn>5</mn></msub><mn>2</mn><mo>=</mo><msub><mi>log</mi><mn>5</mn></msub><msup><mn>2</mn><mn>3</mn></msup><mo>=</mo><msub><mi>log</mi><mn>5</mn></msub><mn>8</mn></math></p>
+          <p>これで、比べる相手は<math><msub><mi>log</mi><mn>5</mn></msub><mn>9</mn></math>と<math><msub><mi>log</mi><mn>5</mn></msub><mn>8</mn></math>。あとは真数 9 と 8 の大小と、<br>底 5 の関係だけだ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 4 ― 底 5 を確認する</h3>
-          <p>底 5 は 1 より大きい。だから y＝log<sub>5</sub>x は<b>増加関数</b>で、<b>真数が大きいほど、対数の値も大きい</b>。</p>
-          <p>真数は 8＜9。では log<sub>5</sub>8 と log<sub>5</sub>9 の大小はどうなるか、考えてみよう。</p>
+          <p class="cite"><span class="cite-tag">使う性質</span>対数関数の性質：<math><mi>a</mi><mo>&gt;</mo><mn>1</mn></math> のとき <math><mi>y</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><mi>x</mi></math> は増加関数で、真数が大きいほど対数の値も大きい。底 5 は 1 より大きいから、真数 8 と 9 の大小がそのまま対数の大小になる。</p>
+          <p>底 5 は 1 より大きい。だから<math><mi>y</mi><mo>=</mo><msub><mi>log</mi><mn>5</mn></msub><mi>x</mi></math>は<b>増加関数</b>で、<br><b>真数が大きいほど、対数の値も大きい</b>。</p>
+          <p>真数は 8＜9。では<math><msub><mi>log</mi><mn>5</mn></msub><mn>8</mn></math>と<math><msub><mi>log</mi><mn>5</mn></msub><mn>9</mn></math>の大小はどうなるか、考えてみよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
-          <p class="big">3log<sub>5</sub>2 ＜ 2log<sub>5</sub>3</p>
-          <p>2log<sub>5</sub>3＝log<sub>5</sub>3<sup>2</sup>＝log<sub>5</sub>9、3log<sub>5</sub>2＝log<sub>5</sub>2<sup>3</sup>＝log<sub>5</sub>8 と変形できる。</p>
-          <p>底 5 は 1 より大きいから y＝log<sub>5</sub>x は増加関数で、8＜9 より log<sub>5</sub>8＜log<sub>5</sub>9。よって、3log<sub>5</sub>2＜2log<sub>5</sub>3 である。</p>
+          <p class="big"><math display="block"><mn>3</mn><msub><mi>log</mi><mn>5</mn></msub><mn>2</mn><mo>&lt;</mo><mn>2</mn><msub><mi>log</mi><mn>5</mn></msub><mn>3</mn></math></p>
+          <p><math><mn>2</mn><msub><mi>log</mi><mn>5</mn></msub><mn>3</mn><mo>=</mo><msub><mi>log</mi><mn>5</mn></msub><msup><mn>3</mn><mn>2</mn></msup><mo>=</mo><msub><mi>log</mi><mn>5</mn></msub><mn>9</mn></math>、<math><mn>3</mn><msub><mi>log</mi><mn>5</mn></msub><mn>2</mn><mo>=</mo><msub><mi>log</mi><mn>5</mn></msub><msup><mn>2</mn><mn>3</mn></msup><mo>=</mo><msub><mi>log</mi><mn>5</mn></msub><mn>8</mn></math>と変形できる。</p>
+          <p>底 5 は 1 より大きいから<math><mi>y</mi><mo>=</mo><msub><mi>log</mi><mn>5</mn></msub><mi>x</mi></math>は増加関数で、<br>8＜9 より<math><msub><mi>log</mi><mn>5</mn></msub><mn>8</mn><mo>&lt;</mo><msub><mi>log</mi><mn>5</mn></msub><mn>9</mn></math>。よって、<math><mn>3</mn><msub><mi>log</mi><mn>5</mn></msub><mn>2</mn><mo>&lt;</mo><mn>2</mn><msub><mi>log</mi><mn>5</mn></msub><mn>3</mn></math>である。</p>
         </div>
         <p class="prob-done">例題5 クリア！　次は練習20に挑戦しよう。</p>
       </section>
@@ -401,7 +442,7 @@
         <span class="pno">教科書 p.167</span>
       </div>
 
-      <section class="card prob" id="prob-ren20" data-label="練習20">
+      <section class="nofig card prob" id="prob-ren20" data-label="練習20">
         <div class="prob-head">
           <span class="prob-tag ren">練習 20</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
@@ -414,68 +455,73 @@
         </div>
 
         <!-- (1) -->
-        <div class="tabpanel show" id="panel-ren20-1" data-flow="ren20-1" data-label="練習20 (1)">
+        <div class="nofig tabpanel show" id="panel-ren20-1" data-flow="ren20-1" data-label="練習20 (1)">
           <div class="prob-head">
-            <span class="prob-q" style="margin:0">(1)　3log<sub>4</sub>3　，　2log<sub>4</sub>5</span>
+            <span class="prob-q" style="margin:0">(1)　<math><mn>3</mn><msub><mi>log</mi><mn>4</mn></msub><mn>3</mn></math>　，　<math><mn>2</mn><msub><mi>log</mi><mn>4</mn></msub><mn>5</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― 例題5と同じ作戦</h3>
-            <p>係数を真数の指数に直して（k log<sub>a</sub>M＝log<sub>a</sub>M<sup>k</sup>）、底 4 の log どうしで比べられる形にそろえよう。まずは 3log<sub>4</sub>3 から。</p>
+            <p>係数を真数の指数に直して<math><mo>(</mo><mi>k</mi><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><msup><mi>M</mi><mi>k</mi></msup><mo>)</mo></math>、<br>底 4 の log どうしで比べられる形にそろえよう。まずは<math><mn>3</mn><msub><mi>log</mi><mn>4</mn></msub><mn>3</mn></math>から。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 両方を変形する</h3>
-            <p class="formula">3log<sub>4</sub>3＝log<sub>4</sub>3<sup>3</sup>＝log<sub>4</sub>27</p>
-            <p class="formula">2log<sub>4</sub>5＝log<sub>4</sub>5<sup>2</sup>＝log<sub>4</sub>25</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>対数の性質：<math><mi>k</mi><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><msup><mi>M</mi><mi>k</mi></msup></math>。係数 3 と 2 を真数の指数に直して、底 4 の log にそろえる。</p>
+            <p class="formula"><math display="block"><mn>3</mn><msub><mi>log</mi><mn>4</mn></msub><mn>3</mn><mo>=</mo><msub><mi>log</mi><mn>4</mn></msub><msup><mn>3</mn><mn>3</mn></msup><mo>=</mo><msub><mi>log</mi><mn>4</mn></msub><mn>27</mn></math></p>
+            <p class="formula"><math display="block"><mn>2</mn><msub><mi>log</mi><mn>4</mn></msub><mn>5</mn><mo>=</mo><msub><mi>log</mi><mn>4</mn></msub><msup><mn>5</mn><mn>2</mn></msup><mo>=</mo><msub><mi>log</mi><mn>4</mn></msub><mn>25</mn></math></p>
             <p>真数は 27 と 25 になった。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 3 ― 底 4 を確認する</h3>
-            <p>底 4 は 1 より大きいから、y＝log<sub>4</sub>x は増加関数。<b>真数が大きいほど値も大きい</b>。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>対数関数の性質：<math><mi>a</mi><mo>&gt;</mo><mn>1</mn></math> のとき <math><mi>y</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><mi>x</mi></math> は増加関数で、真数が大きいほど対数の値も大きい。底 4 は 1 より大きいから、真数 25 と 27 の大小がそのまま使える。</p>
+            <p>底 4 は 1 より大きいから、<math><mi>y</mi><mo>=</mo><msub><mi>log</mi><mn>4</mn></msub><mi>x</mi></math>は増加関数。<b>真数が大きいほど値も大きい</b>。</p>
             <p>25 と 27、大きいのはどちらかな？</p>
           </div>
           <div class="step answer">
             <h3>解答 (1)</h3>
-            <p class="big">2log<sub>4</sub>5 ＜ 3log<sub>4</sub>3</p>
-            <p>3log<sub>4</sub>3＝log<sub>4</sub>27、2log<sub>4</sub>5＝log<sub>4</sub>25。底 4 は 1 より大きい（増加関数）から、25＜27 より log<sub>4</sub>25＜log<sub>4</sub>27。よって 2log<sub>4</sub>5＜3log<sub>4</sub>3。</p>
+            <p class="big"><math display="block"><mn>2</mn><msub><mi>log</mi><mn>4</mn></msub><mn>5</mn><mo>&lt;</mo><mn>3</mn><msub><mi>log</mi><mn>4</mn></msub><mn>3</mn></math></p>
+            <p><math><mn>3</mn><msub><mi>log</mi><mn>4</mn></msub><mn>3</mn><mo>=</mo><msub><mi>log</mi><mn>4</mn></msub><mn>27</mn></math>、<math><mn>2</mn><msub><mi>log</mi><mn>4</mn></msub><mn>5</mn><mo>=</mo><msub><mi>log</mi><mn>4</mn></msub><mn>25</mn></math>。底 4 は 1 より大きい（増加関数）から、<br>25＜27 より<math><msub><mi>log</mi><mn>4</mn></msub><mn>25</mn><mo>&lt;</mo><msub><mi>log</mi><mn>4</mn></msub><mn>27</mn></math>。よって<math><mn>2</mn><msub><mi>log</mi><mn>4</mn></msub><mn>5</mn><mo>&lt;</mo><mn>3</mn><msub><mi>log</mi><mn>4</mn></msub><mn>3</mn></math>。</p>
           </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
 
         <!-- (2) -->
-        <div class="tabpanel" id="panel-ren20-2" data-flow="ren20-2" data-label="練習20 (2)">
+        <div class="nofig tabpanel" id="panel-ren20-2" data-flow="ren20-2" data-label="練習20 (2)">
           <div class="prob-head">
-            <span class="prob-q" style="margin:0">(2)　<span class="frac"><span>1</span><span>2</span></span>log<sub>1/4</sub>8　，　log<sub>1/4</sub>3</span>
+            <span class="prob-q" style="margin:0">(2)　<math><mfrac><mn>1</mn><mn>2</mn></mfrac><msub><mi>log</mi><mfrac><mn>1</mn><mn>4</mn></mfrac></msub><mn>8</mn></math>　，　<math><msub><mi>log</mi><mfrac><mn>1</mn><mn>4</mn></mfrac></msub><mn>3</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 4</span>
           </div>
           <div class="step hint">
-            <h3>ヒント 1 ― 係数 <span class="frac"><span>1</span><span>2</span></span> を真数の指数に直す</h3>
-            <p>作戦は同じ。係数 <span class="frac"><span>1</span><span>2</span></span> を真数 8 の指数に直すと、<span class="frac"><span>1</span><span>2</span></span>log<sub>1/4</sub>8＝log<sub>1/4</sub>（8<sup>1/2</sup>）になる。</p>
-            <p>では 8<sup>1/2</sup> は、どんな数かな？</p>
+            <h3>ヒント 1 ― 係数 <math><mfrac><mn>1</mn><mn>2</mn></mfrac></math> を真数の指数に直す</h3>
+            <p class="cite"><span class="cite-tag">使う性質</span>対数の性質：<math><mi>k</mi><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><msup><mi>M</mi><mi>k</mi></msup></math>。係数 <math><mfrac><mn>1</mn><mn>2</mn></mfrac></math> も真数の指数に直せるので、まず 8 の <math><mfrac><mn>1</mn><mn>2</mn></mfrac></math> 乗の形にする。</p>
+            <p>作戦は同じ。係数 <math><mfrac><mn>1</mn><mn>2</mn></mfrac></math> を真数 8 の指数に直すと、<math><mfrac><mn>1</mn><mn>2</mn></mfrac><msub><mi>log</mi><mfrac><mn>1</mn><mn>4</mn></mfrac></msub><mn>8</mn><mo>=</mo><msub><mi>log</mi><mfrac><mn>1</mn><mn>4</mn></mfrac></msub><mo>(</mo><msup><mn>8</mn><mfrac><mn>1</mn><mn>2</mn></mfrac></msup><mo>)</mo></math>になる。</p>
+            <p>では<math><msup><mn>8</mn><mfrac><mn>1</mn><mn>2</mn></mfrac></msup></math> は、どんな数かな？</p>
           </div>
           <div class="step hint">
-            <h3>ヒント 2 ― 8<sup>1/2</sup> を根号で表す</h3>
-            <p>a<sup>1/2</sup>＝√a だから、8<sup>1/2</sup>＝√8。√8＝√(4×2)＝2√2 と直せるので</p>
-            <p class="formula"><span class="frac"><span>1</span><span>2</span></span>log<sub>1/4</sub>8＝log<sub>1/4</sub>（2√2）</p>
-            <p>比べる真数は 2√2 と 3 になった。</p>
+            <h3>ヒント<math><mn>2</mn><mo>―</mo><msup><mn>8</mn><mfrac><mn>1</mn><mn>2</mn></mfrac></msup></math> を根号で表す</h3>
+            <p class="cite"><span class="cite-tag">使う性質</span>指数の性質：<math><msup><mi>a</mi><mfrac><mn>1</mn><mn>2</mn></mfrac></msup><mo>=</mo><msqrt><mi>a</mi></msqrt></math>。これで <math><msup><mn>8</mn><mfrac><mn>1</mn><mn>2</mn></mfrac></msup></math> を根号で表せる。</p>
+            <p><math><msup><mi>a</mi><mfrac><mn>1</mn><mn>2</mn></mfrac></msup><mo>=</mo><msqrt><mi>a</mi></msqrt></math>だから、<math><msup><mn>8</mn><mfrac><mn>1</mn><mn>2</mn></mfrac></msup><mo>=</mo><msqrt><mn>8</mn></msqrt></math>。<math><msqrt><mn>8</mn></msqrt><mo>=</mo><msqrt><mrow><mn>4</mn><mo>×</mo><mn>2</mn></mrow></msqrt><mo>=</mo><mn>2</mn><msqrt><mn>2</mn></msqrt></math>と直せるので</p>
+            <p class="formula"><math display="block"><mfrac><mn>1</mn><mn>2</mn></mfrac><msub><mi>log</mi><mfrac><mn>1</mn><mn>4</mn></mfrac></msub><mn>8</mn><mo>=</mo><msub><mi>log</mi><mfrac><mn>1</mn><mn>4</mn></mfrac></msub><mo>(</mo><mn>2</mn><msqrt><mn>2</mn></msqrt><mo>)</mo></math></p>
+            <p>比べる真数は<math><mn>2</mn><msqrt><mn>2</mn></msqrt></math>と 3 になった。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 3 ― 真数どうしを比べる</h3>
-            <p>√2≒1.41 だから、2√2≒2.83。もう一方の真数は 3。</p>
-            <p>つまり真数は 2√2＜3 だ。ここまでは普通の大小比較。問題はこのあと、底を見たときに何が起こるかだ。</p>
+            <p><math><msqrt><mn>2</mn></msqrt><mo>≒</mo><mn>1.41</mn></math>だから、<math><mn>2</mn><msqrt><mn>2</mn></msqrt><mo>≒</mo><mn>2.83</mn></math>。もう一方の真数は 3。</p>
+            <p>つまり真数は<math><mn>2</mn><msqrt><mn>2</mn></msqrt><mo>&lt;</mo><mn>3</mn></math>だ。ここまでは普通の大小比較。問題はこのあと、<br>底を見たときに何が起こるかだ。</p>
           </div>
           <div class="step hint">
-            <h3>ヒント 4 ― 底 <span class="frac"><span>1</span><span>4</span></span> は 1 より小さい！</h3>
-            <p>底 <span class="frac"><span>1</span><span>4</span></span> は 1 より小さいから、y＝log<sub>1/4</sub>x は<b>減少関数</b>。真数が大きいほど、対数の値は<b>小さく</b>なる。</p>
-            <p>真数は 2√2＜3 と小さい方…。では、その対数の値は、log<sub>1/4</sub>3 と比べて大きくなる？　小さくなる？</p>
+            <h3>ヒント 4 ― 底 <math><mfrac><mn>1</mn><mn>4</mn></mfrac></math> は 1 より小さい！</h3>
+            <p class="cite"><span class="cite-tag">使う性質</span>対数関数の性質：<math><mn>0</mn><mo>&lt;</mo><mi>a</mi><mo>&lt;</mo><mn>1</mn></math> のとき <math><mi>y</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><mi>x</mi></math> は減少関数で、真数が大きいほど対数の値は小さくなる。底 <math><mfrac><mn>1</mn><mn>4</mn></mfrac></math> は 0 と 1 の間だから、真数の大小と対数の値の大小は逆になる。</p>
+            <p>底 <math><mfrac><mn>1</mn><mn>4</mn></mfrac></math> は 1 より小さいから、<br><math><mi>y</mi><mo>=</mo><msub><mi>log</mi><mfrac><mn>1</mn><mn>4</mn></mfrac></msub><mi>x</mi></math>は<b>減少関数</b>。真数が大きいほど、対数の値は<b>小さく</b>なる。</p>
+            <p>真数は<math><mn>2</mn><msqrt><mn>2</mn></msqrt><mo>&lt;</mo><mn>3</mn></math>と小さい方…。では、その対数の値は、<br><math><msub><mi>log</mi><mfrac><mn>1</mn><mn>4</mn></mfrac></msub><mn>3</mn></math>と比べて大きくなる？　小さくなる？</p>
           </div>
           <div class="step answer">
             <h3>解答 (2)</h3>
-            <p class="big"><span class="frac"><span>1</span><span>2</span></span>log<sub>1/4</sub>8 ＞ log<sub>1/4</sub>3</p>
-            <p><span class="frac"><span>1</span><span>2</span></span>log<sub>1/4</sub>8＝log<sub>1/4</sub>（8<sup>1/2</sup>）＝log<sub>1/4</sub>（2√2）。真数は 2√2≒2.83＜3。</p>
-            <p>底 <span class="frac"><span>1</span><span>4</span></span> は 1 より小さい（減少関数）だから、真数の大小と対数の値の大小は<b>逆</b>になる。よって log<sub>1/4</sub>（2√2）＞log<sub>1/4</sub>3、すなわち <span class="frac"><span>1</span><span>2</span></span>log<sub>1/4</sub>8＞log<sub>1/4</sub>3。</p>
+            <p class="big"><math display="block"><mfrac><mn>1</mn><mn>2</mn></mfrac><msub><mi>log</mi><mfrac><mn>1</mn><mn>4</mn></mfrac></msub><mn>8</mn><mo>&gt;</mo><msub><mi>log</mi><mfrac><mn>1</mn><mn>4</mn></mfrac></msub><mn>3</mn></math></p>
+            <p><math><mfrac><mn>1</mn><mn>2</mn></mfrac><msub><mi>log</mi><mfrac><mn>1</mn><mn>4</mn></mfrac></msub><mn>8</mn><mo>=</mo><msub><mi>log</mi><mfrac><mn>1</mn><mn>4</mn></mfrac></msub><mo>(</mo><msup><mn>8</mn><mfrac><mn>1</mn><mn>2</mn></mfrac></msup><mo>)</mo><mo>=</mo><msub><mi>log</mi><mfrac><mn>1</mn><mn>4</mn></mfrac></msub><mo>(</mo><mn>2</mn><msqrt><mn>2</mn></msqrt><mo>)</mo></math>。真数は<math><mn>2</mn><msqrt><mn>2</mn></msqrt><mo>≒</mo><mn>2.83</mn><mo>&lt;</mo><mn>3</mn></math>。</p>
+            <p>底 <math><mfrac><mn>1</mn><mn>4</mn></mfrac></math> は 1 より小さい（減少関数）だから、<br>真数の大小と対数の値の大小は<b>逆</b>になる。よって<math><msub><mi>log</mi><mfrac><mn>1</mn><mn>4</mn></mfrac></msub><mo>(</mo><mn>2</mn><msqrt><mn>2</mn></msqrt><mo>)</mo><mo>&gt;</mo><msub><mi>log</mi><mfrac><mn>1</mn><mn>4</mn></mfrac></msub><mn>3</mn></math>、すなわち <math><mfrac><mn>1</mn><mn>2</mn></mfrac><msub><mi>log</mi><mfrac><mn>1</mn><mn>4</mn></mfrac></msub><mn>8</mn><mo>&gt;</mo><msub><mi>log</mi><mfrac><mn>1</mn><mn>4</mn></mfrac></msub><mn>3</mn></math>。</p>
           </div>
           <p class="prob-done">(2) クリア！　大小比較の型はばっちりだね。</p>
         </div>
@@ -488,7 +534,7 @@
         <span class="pno">教科書 p.167</span>
       </div>
 
-      <section class="card prob" id="prob-ex6" data-label="例題6">
+      <section class="nofig card prob" id="prob-ex6" data-label="例題6">
         <div class="prob-head">
           <span class="prob-tag">例題 6</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
@@ -501,39 +547,41 @@
         </div>
 
         <!-- (1) -->
-        <div class="tabpanel show" id="panel-ex6-1" data-flow="ex6-1" data-label="例題6 (1)">
+        <div class="nofig tabpanel show" id="panel-ex6-1" data-flow="ex6-1" data-label="例題6 (1)">
           <div class="prob-head">
-            <span class="prob-q" style="margin:0">(1)　log<sub>2</sub>x＝3</span>
+            <span class="prob-q" style="margin:0">(1)　<math><msub><mi>log</mi><mn>2</mn></msub><mi>x</mi><mo>=</mo><mn>3</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― 対数の定義にもどる</h3>
-            <p>log<sub>2</sub>x＝3 は、「x は 2 の<b>何乗</b>か」という問い。その答えが 3 だと言っている。</p>
-            <p>定義「log<sub>a</sub>x＝p　⇔　x＝a<sup>p</sup>」にあてはめると、x はどう書けるかな？</p>
+            <p class="cite"><span class="cite-tag">使う定義</span>対数の定義：<math><msub><mi>log</mi><mi>a</mi></msub><mi>x</mi><mo>=</mo><mi>p</mi></math>　<math><mo>⇔</mo></math>　<math><mi>x</mi><mo>=</mo><msup><mi>a</mi><mi>p</mi></msup></math>。<math><msub><mi>log</mi><mn>2</mn></msub><mi>x</mi><mo>=</mo><mn>3</mn></math> に当てはめると <math><mi>x</mi><mo>=</mo><msup><mn>2</mn><mn>3</mn></msup></math> と直せる。</p>
+            <p><math><msub><mi>log</mi><mn>2</mn></msub><mi>x</mi><mo>=</mo><mn>3</mn></math>は、「x は 2 の<b>何乗</b>か」という問い。その答えが 3 だと言っている。</p>
+            <p>定義「<math><msub><mi>log</mi><mi>a</mi></msub><mi>x</mi><mo>=</mo><mi>p</mi></math>　<math><mo>⇔</mo></math>　<math><mi>x</mi><mo>=</mo><msup><mi>a</mi><mi>p</mi></msup></math>」にあてはめると、x はどう書けるかな？</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― あてはめて計算する</h3>
-            <p class="formula">x＝2<sup>3</sup></p>
-            <p>あとは 2<sup>3</sup>＝2×2×2 を計算するだけだ。</p>
+            <p class="formula"><math display="block"><mi>x</mi><mo>=</mo><msup><mn>2</mn><mn>3</mn></msup></math></p>
+            <p>あとは<math><msup><mn>2</mn><mn>3</mn></msup><mo>=</mo><mn>2</mn><mo>×</mo><mn>2</mn><mo>×</mo><mn>2</mn></math>を計算するだけだ。</p>
           </div>
           <div class="step answer">
             <h3>解答 (1)</h3>
-            <p class="big">x＝8</p>
-            <p>対数の定義から x＝2<sup>3</sup>＝8。</p>
+            <p class="big"><math display="block"><mi>x</mi><mo>=</mo><mn>8</mn></math></p>
+            <p>対数の定義から<math><mi>x</mi><mo>=</mo><msup><mn>2</mn><mn>3</mn></msup><mo>=</mo><mn>8</mn></math>。</p>
           </div>
           <p class="prob-done">(1) クリア！　(2) の不等式に進もう。</p>
         </div>
 
         <!-- (2) -->
-        <div class="tabpanel" id="panel-ex6-2" data-flow="ex6-2" data-label="例題6 (2)">
+        <div class="nofig tabpanel" id="panel-ex6-2" data-flow="ex6-2" data-label="例題6 (2)">
           <div class="prob-head">
-            <span class="prob-q" style="margin:0">(2)　log<sub>2</sub>x≦3</span>
+            <span class="prob-q" style="margin:0">(2)　<math><msub><mi>log</mi><mn>2</mn></msub><mi>x</mi><mo>≦</mo><mn>3</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― まず「真数は正」を確認する</h3>
+            <p class="cite"><span class="cite-tag">使う定義</span>対数の定義：<math><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi></math> が意味をもつのは、真数 <math><mi>M</mi><mo>&gt;</mo><mn>0</mn></math> のときだけ。ここでは真数 <math><mi>x</mi></math> について <math><mi>x</mi><mo>&gt;</mo><mn>0</mn></math> を、変形の前に書く。</p>
             <p>不等式を変形する前に、必ずこの条件から書く。真数 x は<b>正</b>でなければならない。つまり</p>
             <p class="formula">x＞0　……<span class="circ">1</span></p>
             <figure>
@@ -555,14 +603,16 @@
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 右辺の 3 を log の形に直す</h3>
-            <p>両辺を log<sub>2</sub>（真数）の形にそろえる。3＝log<sub>2</sub>2<sup>3</sup>＝log<sub>2</sub>8 だから、与えられた不等式は</p>
-            <p class="formula">log<sub>2</sub>x≦log<sub>2</sub>8</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>数の log 表示：<math><mi>p</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><msup><mi>a</mi><mi>p</mi></msup></math>（対数の定義から出る表し方）。底 2 に合わせて <math><mn>3</mn><mo>=</mo><msub><mi>log</mi><mn>2</mn></msub><msup><mn>2</mn><mn>3</mn></msup></math> と直せば、両辺が <math><msub><mi>log</mi><mn>2</mn></msub><mo>(</mo></math>真数）の形にそろう。</p>
+            <p>両辺を<math><msub><mi>log</mi><mn>2</mn></msub><mo>(</mo></math>真数）の形にそろえる。<math><mn>3</mn><mo>=</mo><msub><mi>log</mi><mn>2</mn></msub><msup><mn>2</mn><mn>3</mn></msup><mo>=</mo><msub><mi>log</mi><mn>2</mn></msub><mn>8</mn></math>だから、与えられた不等式は</p>
+            <p class="formula"><math display="block"><msub><mi>log</mi><mn>2</mn></msub><mi>x</mi><mo>≦</mo><msub><mi>log</mi><mn>2</mn></msub><mn>8</mn></math></p>
             <p>と書き直せる。真数どうしの比較まで、あと一歩だ。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 3 ― 底 2 を見て、真数の不等式にする</h3>
+            <p class="cite"><span class="cite-tag">使う性質</span>対数関数の性質：<math><mi>a</mi><mo>&gt;</mo><mn>1</mn></math> のとき <math><mi>y</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><mi>x</mi></math> は増加関数で、真数が大きいほど対数の値も大きい。底 2 は 1 より大きいから、真数どうしの不等式に直しても不等号はそのままだ。</p>
             <p>底 2 は 1 より大きい（増加関数）から、真数の大小はそのまま</p>
-            <p class="formula">x≦8　……<span class="circ">2</span></p>
+            <p class="formula"><math><mi>x</mi><mo>≦</mo><mn>8</mn></math>　……<span class="circ">2</span></p>
             <figure>
               <div class="figbox">
                 <svg viewBox="0 0 520 100" role="img" aria-label="数直線：8以下の範囲">
@@ -583,8 +633,8 @@
           </div>
           <div class="step answer">
             <h3>解答 (2)</h3>
-            <p class="big">0＜x≦8</p>
-            <p>① x＞0 と ② x≦8 の<b>共通範囲</b>を求めると、0＜x≦8 になる。</p>
+            <p class="big"><math display="block"><mn>0</mn><mo>&lt;</mo><mi>x</mi><mo>≦</mo><mn>8</mn></math></p>
+            <p>① x＞0 と<math><mo>②</mo><mi>x</mi><mo>≦</mo><mn>8</mn></math>の<b>共通範囲</b>を求めると、<math><mn>0</mn><mo>&lt;</mo><mi>x</mi><mo>≦</mo><mn>8</mn></math>になる。</p>
             <figure>
               <div class="figbox">
                 <svg viewBox="0 0 520 100" role="img" aria-label="数直線：0より大きく8以下の共通範囲">
@@ -602,14 +652,14 @@
               </div>
               <figcaption>①と②が重なる部分だけが答えになる。</figcaption>
             </figure>
-            <p class="note"><b>ここが大事：</b>不等式では、<b>真数条件を最初に書く</b>のが鉄則。書き忘れると、答えに「あり得ない範囲」が混ざってしまうよ。</p>
+            <p class="note"><b>ここが大事：</b>不等式では、<b>真数条件を最初に書く</b>のが鉄則。書き忘れると、<br>答えに「あり得ない範囲」が混ざってしまうよ。</p>
           </div>
           <p class="prob-done">(2) クリア！　例題6 の型を練習21で繰り返そう。</p>
         </div>
       </section>
 
       <!-- ================= 練習21 ================= -->
-      <section class="card prob" id="prob-ren21" data-label="練習21">
+      <section class="nofig card prob" id="prob-ren21" data-label="練習21">
         <div class="prob-head">
           <span class="prob-tag ren">練習 21</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
@@ -626,56 +676,58 @@
         </div>
 
         <!-- (1) -->
-        <div class="tabpanel show" id="panel-ren21-1" data-flow="ren21-1" data-label="練習21 (1)">
+        <div class="nofig tabpanel show" id="panel-ren21-1" data-flow="ren21-1" data-label="練習21 (1)">
           <div class="prob-head">
-            <span class="prob-q" style="margin:0">(1)　log<sub>2</sub>x＝4</span>
+            <span class="prob-q" style="margin:0">(1)　<math><msub><mi>log</mi><mn>2</mn></msub><mi>x</mi><mo>=</mo><mn>4</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― 対数の定義にあてはめる</h3>
-            <p>log<sub>2</sub>x＝4 は「x＝2 の 4 乗」という意味。定義から、x＝2<sup>4</sup> と書ける。</p>
+            <p class="cite"><span class="cite-tag">使う定義</span>対数の定義：<math><msub><mi>log</mi><mi>a</mi></msub><mi>x</mi><mo>=</mo><mi>p</mi></math>　<math><mo>⇔</mo></math>　<math><mi>x</mi><mo>=</mo><msup><mi>a</mi><mi>p</mi></msup></math>。<math><msub><mi>log</mi><mn>2</mn></msub><mi>x</mi><mo>=</mo><mn>4</mn></math> から <math><mi>x</mi><mo>=</mo><msup><mn>2</mn><mn>4</mn></msup></math> と書ける。</p>
+            <p><math><msub><mi>log</mi><mn>2</mn></msub><mi>x</mi><mo>=</mo><mn>4</mn></math>は「<math><mi>x</mi><mo>=</mo><mn>2</mn></math>の 4 乗」という意味。定義から、<math><mi>x</mi><mo>=</mo><msup><mn>2</mn><mn>4</mn></msup></math> と書ける。</p>
           </div>
           <div class="step hint">
-            <h3>ヒント 2 ― 2<sup>4</sup> を計算する</h3>
-            <p>2<sup>4</sup>＝2×2×2×2。順に計算すると 4、8、…と増えていく。最後まで計算してみよう。</p>
+            <h3>ヒント<math><mn>2</mn><mo>―</mo><msup><mn>2</mn><mn>4</mn></msup></math> を計算する</h3>
+            <p><math><msup><mn>2</mn><mn>4</mn></msup><mo>=</mo><mn>2</mn><mo>×</mo><mn>2</mn><mo>×</mo><mn>2</mn><mo>×</mo><mn>2</mn></math>。順に計算すると 4、8、…と増えていく。最後まで計算してみよう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (1)</h3>
-            <p class="big">x＝16</p>
-            <p>対数の定義から x＝2<sup>4</sup>＝16。</p>
+            <p class="big"><math display="block"><mi>x</mi><mo>=</mo><mn>16</mn></math></p>
+            <p>対数の定義から<math><mi>x</mi><mo>=</mo><msup><mn>2</mn><mn>4</mn></msup><mo>=</mo><mn>16</mn></math>。</p>
           </div>
           <p class="prob-done">(1) クリア！</p>
         </div>
 
         <!-- (2) -->
-        <div class="tabpanel" id="panel-ren21-2" data-flow="ren21-2" data-label="練習21 (2)">
+        <div class="nofig tabpanel" id="panel-ren21-2" data-flow="ren21-2" data-label="練習21 (2)">
           <div class="prob-head">
-            <span class="prob-q" style="margin:0">(2)　log<sub>1/2</sub>x＝2</span>
+            <span class="prob-q" style="margin:0">(2)　<math><msub><mi>log</mi><mfrac><mn>1</mn><mn>2</mn></mfrac></msub><mi>x</mi><mo>=</mo><mn>2</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― 底が分数でも、やり方は同じ</h3>
-            <p>定義「log<sub>a</sub>x＝p　⇔　x＝a<sup>p</sup>」にあてはめる。今回は底 a が <span class="frac"><span>1</span><span>2</span></span>、p が 2 だ。</p>
-            <p>x＝（<span class="frac"><span>1</span><span>2</span></span>）<sup>2</sup> と書けるはずだよ。</p>
+            <p class="cite"><span class="cite-tag">使う定義</span>対数の定義：<math><msub><mi>log</mi><mi>a</mi></msub><mi>x</mi><mo>=</mo><mi>p</mi></math>　<math><mo>⇔</mo></math>　<math><mi>x</mi><mo>=</mo><msup><mi>a</mi><mi>p</mi></msup></math>。底が分数 <math><mfrac><mn>1</mn><mn>2</mn></mfrac></math> でも定義は同じで、<math><mi>x</mi><mo>=</mo><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo></mrow><mn>2</mn></msup></math> と書ける。</p>
+            <p>定義「<math><msub><mi>log</mi><mi>a</mi></msub><mi>x</mi><mo>=</mo><mi>p</mi></math>　<math><mo>⇔</mo></math>　<math><mi>x</mi><mo>=</mo><msup><mi>a</mi><mi>p</mi></msup></math>」にあてはめる。今回は底 a が <math><mfrac><mn>1</mn><mn>2</mn></mfrac></math>、<br>p が 2 だ。</p>
+            <p><math><mi>x</mi><mo>=</mo><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo></mrow><mn>2</mn></msup></math> と書けるはずだよ。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 分数の2乗を計算する</h3>
-            <p>（<span class="frac"><span>1</span><span>2</span></span>）<sup>2</sup>＝<span class="frac"><span>1</span><span>2</span></span>×<span class="frac"><span>1</span><span>2</span></span>。分子どうし、分母どうしを掛けよう。</p>
+            <p><math><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>×</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math>。分子どうし、分母どうしを掛けよう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (2)</h3>
-            <p class="big">x＝<span class="frac"><span>1</span><span>4</span></span></p>
-            <p>対数の定義から x＝（<span class="frac"><span>1</span><span>2</span></span>）<sup>2</sup>＝<span class="frac"><span>1</span><span>4</span></span>。</p>
+            <p class="big"><math display="block"><mi>x</mi><mo>=</mo><mfrac><mn>1</mn><mn>4</mn></mfrac></math></p>
+            <p>対数の定義から<math><mi>x</mi><mo>=</mo><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mfrac><mn>1</mn><mn>4</mn></mfrac></math>。</p>
           </div>
           <p class="prob-done">(2) クリア！</p>
         </div>
 
         <!-- (3) -->
-        <div class="tabpanel" id="panel-ren21-3" data-flow="ren21-3" data-label="練習21 (3)">
+        <div class="nofig tabpanel" id="panel-ren21-3" data-flow="ren21-3" data-label="練習21 (3)">
           <div class="prob-head">
-            <span class="prob-q" style="margin:0">(3)　log<sub>2</sub>x≦4</span>
+            <span class="prob-q" style="margin:0">(3)　<math><msub><mi>log</mi><mn>2</mn></msub><mi>x</mi><mo>≦</mo><mn>4</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
@@ -686,26 +738,27 @@
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 右辺の 4 を log の形に直す</h3>
-            <p>4＝log<sub>2</sub>2<sup>4</sup>＝log<sub>2</sub>16 だから、不等式は log<sub>2</sub>x≦log<sub>2</sub>16 と書き直せる。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>数の log 表示：<math><mi>p</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><msup><mi>a</mi><mi>p</mi></msup></math>。底 2 に合わせて <math><mn>4</mn><mo>=</mo><msub><mi>log</mi><mn>2</mn></msub><msup><mn>2</mn><mn>4</mn></msup></math> と直せば、両辺が <math><msub><mi>log</mi><mn>2</mn></msub><mo>(</mo></math>真数）の形にそろう。</p>
+            <p><math><mn>4</mn><mo>=</mo><msub><mi>log</mi><mn>2</mn></msub><msup><mn>2</mn><mn>4</mn></msup><mo>=</mo><msub><mi>log</mi><mn>2</mn></msub><mn>16</mn></math>だから、不等式は<math><msub><mi>log</mi><mn>2</mn></msub><mi>x</mi><mo>≦</mo><msub><mi>log</mi><mn>2</mn></msub><mn>16</mn></math>と書き直せる。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 3 ― 底 2 を見て真数の不等式にする</h3>
             <p>底 2 は 1 より大きい（増加関数）から、不等号はそのまま</p>
-            <p class="formula">x≦16　……<span class="circ">2</span></p>
+            <p class="formula"><math><mi>x</mi><mo>≦</mo><mn>16</mn></math>　……<span class="circ">2</span></p>
             <p>あとは ① と ② の共通範囲を求めるだけだ。</p>
           </div>
           <div class="step answer">
             <h3>解答 (3)</h3>
-            <p class="big">0＜x≦16</p>
-            <p>真数条件 x＞0 ……① と、変形して得た x≦16 ……② の共通範囲が答えになる。</p>
+            <p class="big"><math display="block"><mn>0</mn><mo>&lt;</mo><mi>x</mi><mo>≦</mo><mn>16</mn></math></p>
+            <p>真数条件 x＞0 ……① と、変形して得た<math><mi>x</mi><mo>≦</mo><mn>16</mn><mo>…</mo><mo>…</mo><mo>②</mo></math>の共通範囲が答えになる。</p>
           </div>
           <p class="prob-done">(3) クリア！</p>
         </div>
 
         <!-- (4) -->
-        <div class="tabpanel" id="panel-ren21-4" data-flow="ren21-4" data-label="練習21 (4)">
+        <div class="nofig tabpanel" id="panel-ren21-4" data-flow="ren21-4" data-label="練習21 (4)">
           <div class="prob-head">
-            <span class="prob-q" style="margin:0">(4)　log<sub>1/2</sub>x＜2</span>
+            <span class="prob-q" style="margin:0">(4)　<math><msub><mi>log</mi><mfrac><mn>1</mn><mn>2</mn></mfrac></msub><mi>x</mi><mo>&lt;</mo><mn>2</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 4</span>
           </div>
@@ -717,32 +770,33 @@
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 右辺の 2 を log の形に直す</h3>
-            <p>底が <span class="frac"><span>1</span><span>2</span></span> だから、2＝log<sub>1/2</sub>（<span class="frac"><span>1</span><span>2</span></span>）<sup>2</sup>＝log<sub>1/2</sub><span class="frac"><span>1</span><span>4</span></span>。</p>
-            <p>不等式は log<sub>1/2</sub>x＜log<sub>1/2</sub><span class="frac"><span>1</span><span>4</span></span> と書き直せる。</p>
+            <p>底が <math><mfrac><mn>1</mn><mn>2</mn></mfrac></math> だから、<math><mn>2</mn><mo>=</mo><msub><mi>log</mi><mfrac><mn>1</mn><mn>2</mn></mfrac></msub><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msub><mi>log</mi><mfrac><mn>1</mn><mn>2</mn></mfrac></msub><mfrac><mn>1</mn><mn>4</mn></mfrac></math>。</p>
+            <p>不等式は<math><msub><mi>log</mi><mfrac><mn>1</mn><mn>2</mn></mfrac></msub><mi>x</mi><mo>&lt;</mo><msub><mi>log</mi><mfrac><mn>1</mn><mn>2</mn></mfrac></msub><mfrac><mn>1</mn><mn>4</mn></mfrac></math> と書き直せる。</p>
           </div>
           <div class="step hint">
-            <h3>ヒント 3 ― 底 <span class="frac"><span>1</span><span>2</span></span> は 1 より小さい！</h3>
-            <p>底が 1 より小さい対数関数は<b>減少関数</b>。真数が大きいほど値は小さくなるので、真数どうしの不等式に直すときは、<b>不等号が逆になる</b>。</p>
-            <p>log<sub>1/2</sub>x＜log<sub>1/2</sub><span class="frac"><span>1</span><span>4</span></span> から、x と <span class="frac"><span>1</span><span>4</span></span> の不等式を作ってみよう。「＜」がどう変わるか注意してね。</p>
+            <h3>ヒント 3 ― 底 <math><mfrac><mn>1</mn><mn>2</mn></mfrac></math> は 1 より小さい！</h3>
+            <p class="cite"><span class="cite-tag">使う性質</span>対数関数の性質：<math><mn>0</mn><mo>&lt;</mo><mi>a</mi><mo>&lt;</mo><mn>1</mn></math> のとき <math><mi>y</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><mi>x</mi></math> は減少関数で、真数が大きいほど対数の値は小さくなる。底 <math><mfrac><mn>1</mn><mn>2</mn></mfrac></math> は 0 と 1 の間だから、真数どうしの不等式に直すとき不等号が逆になる。</p>
+            <p>底が 1 より小さい対数関数は<b>減少関数</b>。真数が大きいほど値は小さくなるので、<br>真数どうしの不等式に直すときは、<b>不等号が逆になる</b>。</p>
+            <p><math><msub><mi>log</mi><mfrac><mn>1</mn><mn>2</mn></mfrac></msub><mi>x</mi><mo>&lt;</mo><msub><mi>log</mi><mfrac><mn>1</mn><mn>2</mn></mfrac></msub><mfrac><mn>1</mn><mn>4</mn></mfrac></math> から、x と <math><mfrac><mn>1</mn><mn>4</mn></mfrac></math> の不等式を作ってみよう。「＜」がどう変わるか注意してね。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 4 ― 逆にした不等式を確認する</h3>
-            <p class="formula">x＞<span class="frac"><span>1</span><span>4</span></span>　……<span class="circ">2</span></p>
-            <p>これが ②。あとは ① x＞0 との共通範囲だ。<span class="frac"><span>1</span><span>4</span></span> は 0 より大きいから、共通範囲はどうなるかな？</p>
+            <p class="formula"><math><mi>x</mi><mo>&gt;</mo><mfrac><mn>1</mn><mn>4</mn></mfrac></math>　……<span class="circ">2</span></p>
+            <p>これが ②。あとは ① x＞0 との共通範囲だ。<math><mfrac><mn>1</mn><mn>4</mn></mfrac></math> は 0 より大きいから、<br>共通範囲はどうなるかな？</p>
           </div>
           <div class="step answer">
             <h3>解答 (4)</h3>
-            <p class="big">x＞<span class="frac"><span>1</span><span>4</span></span></p>
-            <p>底 <span class="frac"><span>1</span><span>2</span></span> は 1 より小さい（減少関数）だから、真数に直すと不等号が逆になり x＞<span class="frac"><span>1</span><span>4</span></span> ……②。</p>
-            <p>① x＞0 と ② の共通範囲は、x＞<span class="frac"><span>1</span><span>4</span></span>（<span class="frac"><span>1</span><span>4</span></span>＞0 なので、② の方が強い条件になる）。</p>
+            <p class="big"><math display="block"><mi>x</mi><mo>&gt;</mo><mfrac><mn>1</mn><mn>4</mn></mfrac></math></p>
+            <p>底 <math><mfrac><mn>1</mn><mn>2</mn></mfrac></math> は 1 より小さい（減少関数）だから、<br>真数に直すと不等号が逆になり<math><mi>x</mi><mo>&gt;</mo><mfrac><mn>1</mn><mn>4</mn></mfrac><mo>…</mo><mo>…</mo><mo>②</mo></math>。</p>
+            <p>① x＞0 と ② の共通範囲は、<math><mi>x</mi><mo>&gt;</mo><mfrac><mn>1</mn><mn>4</mn></mfrac><mo>(</mo><mfrac><mn>1</mn><mn>4</mn></mfrac><mo>&gt;</mo><mn>0</mn></math>なので、② の方が強い条件になる）。</p>
           </div>
           <p class="prob-done">(4) クリア！</p>
         </div>
 
         <!-- (5) -->
-        <div class="tabpanel" id="panel-ren21-5" data-flow="ren21-5" data-label="練習21 (5)">
+        <div class="nofig tabpanel" id="panel-ren21-5" data-flow="ren21-5" data-label="練習21 (5)">
           <div class="prob-head">
-            <span class="prob-q" style="margin:0">(5)　log<sub>4</sub>x≧<span class="frac"><span>1</span><span>2</span></span></span>
+            <span class="prob-q" style="margin:0">(5)　<math><msub><mi>log</mi><mn>4</mn></msub><mi>x</mi><mo>≧</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
@@ -751,27 +805,28 @@
             <p>真数 x は正だから、x＞0 ……<span class="circ">1</span>。まずこれを書いておこう。</p>
           </div>
           <div class="step hint">
-            <h3>ヒント 2 ― 右辺の <span class="frac"><span>1</span><span>2</span></span> を log の形に直す</h3>
-            <p><span class="frac"><span>1</span><span>2</span></span>＝log<sub>4</sub>4<sup>1/2</sup>。ここで 4<sup>1/2</sup>＝√4＝2 だから、右辺は log<sub>4</sub>2 と書ける。</p>
-            <p>不等式は log<sub>4</sub>x≧log<sub>4</sub>2 になる。</p>
+            <h3>ヒント 2 ― 右辺の <math><mfrac><mn>1</mn><mn>2</mn></mfrac></math> を log の形に直す</h3>
+            <p class="cite"><span class="cite-tag">使う性質</span>数の log 表示：<math><mi>p</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><msup><mi>a</mi><mi>p</mi></msup></math>。底 4 に合わせて <math><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>=</mo><msub><mi>log</mi><mn>4</mn></msub><msup><mn>4</mn><mfrac><mn>1</mn><mn>2</mn></mfrac></msup></math> と直すのがこのステップだ。</p>
+            <p><math><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>=</mo><msub><mi>log</mi><mn>4</mn></msub><msup><mn>4</mn><mfrac><mn>1</mn><mn>2</mn></mfrac></msup></math>。ここで<math><msup><mn>4</mn><mfrac><mn>1</mn><mn>2</mn></mfrac></msup><mo>=</mo><msqrt><mn>4</mn></msqrt><mo>=</mo><mn>2</mn></math>だから、右辺は<math><msub><mi>log</mi><mn>4</mn></msub><mn>2</mn></math>と書ける。</p>
+            <p>不等式は<math><msub><mi>log</mi><mn>4</mn></msub><mi>x</mi><mo>≧</mo><msub><mi>log</mi><mn>4</mn></msub><mn>2</mn></math>になる。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 3 ― 底 4 を見て真数の不等式にする</h3>
-            <p>底 4 は 1 より大きい（増加関数）だから、不等号はそのままだ。真数の不等式を作ってみよう。</p>
+            <p>底 4 は 1 より大きい（増加関数）だから、<br>不等号はそのままだ。真数の不等式を作ってみよう。</p>
             <p>得られた範囲は、① x＞0 を自動的に満たすはずだ（2 以上の数に負の数はない）。</p>
           </div>
           <div class="step answer">
             <h3>解答 (5)</h3>
-            <p class="big">x≧2</p>
-            <p>右辺は log<sub>4</sub>4<sup>1/2</sup>＝log<sub>4</sub>2。底 4 は増加関数だから x≧4<sup>1/2</sup>＝2。これが真数条件 x＞0 も満たすので、そのまま答えになる。</p>
+            <p class="big"><math display="block"><mi>x</mi><mo>≧</mo><mn>2</mn></math></p>
+            <p>右辺は<math><msub><mi>log</mi><mn>4</mn></msub><msup><mn>4</mn><mfrac><mn>1</mn><mn>2</mn></mfrac></msup><mo>=</mo><msub><mi>log</mi><mn>4</mn></msub><mn>2</mn></math>。底 4 は増加関数だから<math><mi>x</mi><mo>≧</mo><msup><mn>4</mn><mfrac><mn>1</mn><mn>2</mn></mfrac></msup><mo>=</mo><mn>2</mn></math>。これが真数条件 x＞0 も満たすので、<br>そのまま答えになる。</p>
           </div>
           <p class="prob-done">(5) クリア！</p>
         </div>
 
         <!-- (6) -->
-        <div class="tabpanel" id="panel-ren21-6" data-flow="ren21-6" data-label="練習21 (6)">
+        <div class="nofig tabpanel" id="panel-ren21-6" data-flow="ren21-6" data-label="練習21 (6)">
           <div class="prob-head">
-            <span class="prob-q" style="margin:0">(6)　log<sub>1/3</sub>x＞−1</span>
+            <span class="prob-q" style="margin:0">(6)　<math><msub><mi>log</mi><mfrac><mn>1</mn><mn>3</mn></mfrac></msub><mi>x</mi><mo>&gt;</mo><mo>−</mo><mn>1</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 4</span>
           </div>
@@ -782,13 +837,14 @@
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 右辺の −1 を log の形に直す</h3>
-            <p>−1＝log<sub>1/3</sub>（<span class="frac"><span>1</span><span>3</span></span>）<sup>−1</sup>。負の指数は逆数を表すから、（<span class="frac"><span>1</span><span>3</span></span>）<sup>−1</sup>＝3 だ。</p>
-            <p>つまり右辺は log<sub>1/3</sub>3 と書ける。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>指数の性質：<math><msup><mi>a</mi><mrow><mo>−</mo><mi>p</mi></mrow></msup><mo>=</mo><mfrac><mn>1</mn><msup><mi>a</mi><mi>p</mi></msup></mfrac></math>（負の指数は逆数を表す）。これで <math><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>)</mo></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msup><mo>=</mo><mn>3</mn></math> となり、右辺を log の形に直せる。</p>
+            <p><math><mo>−</mo><mn>1</mn><mo>=</mo><msub><mi>log</mi><mfrac><mn>1</mn><mn>3</mn></mfrac></msub><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>)</mo></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msup></math>。負の指数は逆数を表すから、<math><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>)</mo></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msup><mo>=</mo><mn>3</mn></math>だ。</p>
+            <p>つまり右辺は<math><msub><mi>log</mi><mfrac><mn>1</mn><mn>3</mn></mfrac></msub><mn>3</mn></math>と書ける。</p>
           </div>
           <div class="step hint">
-            <h3>ヒント 3 ― 底 <span class="frac"><span>1</span><span>3</span></span> は 1 より小さい！</h3>
+            <h3>ヒント 3 ― 底 <math><mfrac><mn>1</mn><mn>3</mn></mfrac></math> は 1 より小さい！</h3>
             <p>減少関数だから、真数に直すとき<b>不等号が逆になる</b>。</p>
-            <p>log<sub>1/3</sub>x＞log<sub>1/3</sub>3 から作る真数の不等式は、x と 3 を「＞」のまま結ぶ？　それとも逆にする？　よく考えてみよう。</p>
+            <p><math><msub><mi>log</mi><mfrac><mn>1</mn><mn>3</mn></mfrac></msub><mi>x</mi><mo>&gt;</mo><msub><mi>log</mi><mfrac><mn>1</mn><mn>3</mn></mfrac></msub><mn>3</mn></math>から作る真数の不等式は、x と 3 を「＞」のまま結ぶ？　それとも逆にする？　よく考えてみよう。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 4 ― 逆にした不等式を確認する</h3>
@@ -798,7 +854,7 @@
           <div class="step answer">
             <h3>解答 (6)</h3>
             <p class="big">0＜x＜3</p>
-            <p>−1＝log<sub>1/3</sub>（<span class="frac"><span>1</span><span>3</span></span>）<sup>−1</sup>＝log<sub>1/3</sub>3。底 <span class="frac"><span>1</span><span>3</span></span> は 1 より小さい（減少関数）だから、不等号は逆になり x＜3 ……②。① と ② の共通範囲は 0＜x＜3。</p>
+            <p><math><mo>−</mo><mn>1</mn><mo>=</mo><msub><mi>log</mi><mfrac><mn>1</mn><mn>3</mn></mfrac></msub><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>)</mo></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msup><mo>=</mo><msub><mi>log</mi><mfrac><mn>1</mn><mn>3</mn></mfrac></msub><mn>3</mn></math>。底 <math><mfrac><mn>1</mn><mn>3</mn></mfrac></math> は 1 より小さい（減少関数）だから、<br>不等号は逆になり x＜3 ……②。① と ② の共通範囲は 0＜x＜3。</p>
           </div>
           <p class="prob-done">(6) クリア！　練習21 全小問おつかれさま。</p>
         </div>
@@ -811,7 +867,7 @@
         <span class="pno">教科書 p.168</span>
       </div>
 
-      <section class="card prob" id="prob-ouyou1" data-flow="ouyou1" data-label="応用例題1">
+      <section class="nofig card prob" id="prob-ouyou1" data-flow="ouyou1" data-label="応用例題1">
         <div class="prob-head">
           <span class="prob-tag ouyou">応用例題 1</span>
           <div class="dots" aria-hidden="true">
@@ -820,44 +876,48 @@
           <span class="prob-state">ヒント 0 / 4</span>
         </div>
         <p class="prob-q">次の方程式を解け。</p>
-        <p class="formula">log<sub>3</sub>x＋log<sub>3</sub>(x−8)＝2</p>
+        <p class="formula"><math display="block"><msub><mi>log</mi><mn>3</mn></msub><mi>x</mi><mo>+</mo><msub><mi>log</mi><mn>3</mn></msub><mo>(</mo><mi>x</mi><mo>−</mo><mn>8</mn><mo>)</mo><mo>=</mo><mn>2</mn></math></p>
 
         <div class="step hint">
           <h3>ヒント 1 ― 真数は2つ。両方とも正になる範囲を出す</h3>
+          <p class="cite"><span class="cite-tag">使う定義</span>対数の定義：<math><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi></math> が意味をもつのは、真数 <math><mi>M</mi><mo>&gt;</mo><mn>0</mn></math> のときだけ。ここでは真数が <math><mi>x</mi></math> と <math><mi>x</mi><mo>−</mo><mn>8</mn></math> の 2 つあるので、両方に正の条件を課す。</p>
           <p>真数が x と x−8 の2つある。まず、<b>両方とも正</b>になる条件を書こう。</p>
-          <p>x＞0 かつ x−8＞0。2つ目の式を解くと x＞8。両方を満たすのは、強い方（大きい方）の条件だ。</p>
+          <p>x＞0 かつ x−8＞0。2つ目の式を解くと x＞8。両方を満たすのは、<br>強い方（大きい方）の条件だ。</p>
           <p class="formula">x＞8　……<span class="circ">1</span></p>
           <p>この ① を、最後に答えのチェックで使う。メモしておこう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 左辺を1つの log にまとめる</h3>
-          <p>対数の性質 <b>log<sub>a</sub>M＋log<sub>a</sub>N＝log<sub>a</sub>MN</b> を使うと、左辺は真数どうしの積で1つにまとまる。</p>
-          <p class="formula">log<sub>3</sub>{x(x−8)}＝2</p>
+          <p class="cite"><span class="cite-tag">使う性質</span>対数の性質：<math><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>+</mo><msub><mi>log</mi><mi>a</mi></msub><mi>N</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><mi>MN</mi></math>。左辺の 2 つの log を、真数どうしの積で 1 つにまとめる。</p>
+          <p>対数の性質 <b><math><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>+</mo><msub><mi>log</mi><mi>a</mi></msub><mi>N</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><mi>MN</mi></math></b> を使うと、左辺は真数どうしの積で1つにまとまる。</p>
+          <p class="formula"><math display="block"><msub><mi>log</mi><mn>3</mn></msub><mo>{</mo><mi>x</mi><mo>(</mo><mi>x</mi><mo>−</mo><mn>8</mn><mo>)</mo><mo>}</mo><mo>=</mo><mn>2</mn></math></p>
         </div>
         <div class="step hint">
           <h3>ヒント 3 ― 対数の定義で log を外す</h3>
-          <p>定義「log<sub>3</sub>（真数）＝2　⇔　真数＝3<sup>2</sup>」から</p>
-          <p class="formula">x(x−8)＝3<sup>2</sup>＝9</p>
+          <p class="cite"><span class="cite-tag">使う定義</span>対数の定義：<math><msub><mi>log</mi><mi>a</mi></msub><mi>x</mi><mo>=</mo><mi>p</mi></math>　<math><mo>⇔</mo></math>　<math><mi>x</mi><mo>=</mo><msup><mi>a</mi><mi>p</mi></msup></math>。まとめた <math><msub><mi>log</mi><mn>3</mn></msub><mo>(</mo></math>真数）<math><mo>=</mo><mn>2</mn></math> に当てはめると、真数 <math><mo>=</mo><msup><mn>3</mn><mn>2</mn></msup></math> と log を外せる。</p>
+          <p>定義「<math><msub><mi>log</mi><mn>3</mn></msub><mo>(</mo></math>真数<math><mo>)</mo><mo>=</mo><mn>2</mn></math>　<math><mo>⇔</mo></math>　真数<math><mo>=</mo><msup><mn>3</mn><mn>2</mn></msup></math>」から</p>
+          <p class="formula"><math display="block"><mi>x</mi><mo>(</mo><mi>x</mi><mo>−</mo><mn>8</mn><mo>)</mo><mo>=</mo><msup><mn>3</mn><mn>2</mn></msup><mo>=</mo><mn>9</mn></math></p>
           <p>あとは普通の2次方程式だ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 4 ― 2次方程式を解く</h3>
-          <p>左辺を展開して整理すると x<sup>2</sup>−8x−9＝0。</p>
-          <p>積が −9、和が −8 になる2数は −9 と 1（符号に注意：(x＋1)(x−9) の形）だから、因数分解すると (x＋1)(x−9)＝0。</p>
+          <p>左辺を展開して整理すると<math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>8</mn><mi>x</mi><mo>−</mo><mn>9</mn><mo>=</mo><mn>0</mn></math>。</p>
+          <p>積が −9、和が −8 になる2数は −9 と 1（符号に注意：(x＋1)(x−9) の形）だから、<br>因数分解すると<math><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo><mo>(</mo><mi>x</mi><mo>−</mo><mn>9</mn><mo>)</mo><mo>=</mo><mn>0</mn></math>。</p>
           <p>解は2つ出てくるはずだ。それを書き出してみよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
-          <p class="big">x＝9</p>
-          <p>真数がともに正である条件は x＞8 ……①。方程式を変形すると x<sup>2</sup>−8x−9＝0、(x＋1)(x−9)＝0 となり、解の候補は x＝−1, 9。</p>
-          <p>① と照らし合わせると、<b>x＝−1 は ① を満たさないので不適</b>（x＝−1 では真数 x−8＝−9 が負になってしまう）。よって、解は x＝9 のみ。</p>
-          <p class="note"><b>ここが大事：</b>真数が2つある方程式では、解の候補が複数出ても、<b>最初に書いた真数条件 ① を満たすものだけ</b>が本当の解になる。チェックを忘れないでね。</p>
+          <p class="cite"><span class="cite-tag">使う定義</span>対数の定義：<math><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi></math> が意味をもつのは、真数 <math><mi>M</mi><mo>&gt;</mo><mn>0</mn></math> のときだけ。解の候補もこの条件を満たすものだけが解になる。<math><mi>x</mi><mo>=</mo><mo>−</mo><mn>1</mn></math> では真数 <math><mi>x</mi><mo>−</mo><mn>8</mn></math> が負になるので不適だ。</p>
+          <p class="big"><math display="block"><mi>x</mi><mo>=</mo><mn>9</mn></math></p>
+          <p>真数がともに正である条件は x＞8 ……①。方程式を変形すると<math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>8</mn><mi>x</mi><mo>−</mo><mn>9</mn><mo>=</mo><mn>0</mn></math>、<br><math><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo><mo>(</mo><mi>x</mi><mo>−</mo><mn>9</mn><mo>)</mo><mo>=</mo><mn>0</mn></math>となり、解の候補は<math><mi>x</mi><mo>=</mo><mo>−</mo><mn>1</mn><mo>,</mo><mn>9</mn></math>。</p>
+          <p>① と照らし合わせると、<b><math><mi>x</mi><mo>=</mo><mo>−</mo><mn>1</mn></math>は ① を満たさないので不適</b><math><mo>(</mo><mi>x</mi><mo>=</mo><mo>−</mo><mn>1</mn></math>では真数<math><mi>x</mi><mo>−</mo><mn>8</mn><mo>=</mo><mo>−</mo><mn>9</mn></math>が負になってしまう）。よって、解は<math><mi>x</mi><mo>=</mo><mn>9</mn></math>のみ。</p>
+          <p class="note"><b>ここが大事：</b>真数が2つある方程式では、解の候補が複数出ても、<br><b>最初に書いた真数条件 ① を満たすものだけ</b>が本当の解になる。チェックを忘れないでね。</p>
         </div>
         <p class="prob-done">応用例題1 クリア！　同じ型を練習22で練習しよう。</p>
       </section>
 
       <!-- ================= 練習22 ================= -->
-      <section class="card prob" id="prob-ren22" data-label="練習22">
+      <section class="nofig card prob" id="prob-ren22" data-label="練習22">
         <div class="prob-head">
           <span class="prob-tag ren">練習 22</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
@@ -870,9 +930,9 @@
         </div>
 
         <!-- (1) -->
-        <div class="tabpanel show" id="panel-ren22-1" data-flow="ren22-1" data-label="練習22 (1)">
+        <div class="nofig tabpanel show" id="panel-ren22-1" data-flow="ren22-1" data-label="練習22 (1)">
           <div class="prob-head">
-            <span class="prob-q" style="margin:0">(1)　log<sub>4</sub>x＋log<sub>4</sub>(x−6)＝2</span>
+            <span class="prob-q" style="margin:0">(1)　<math><msub><mi>log</mi><mn>4</mn></msub><mi>x</mi><mo>+</mo><msub><mi>log</mi><mn>4</mn></msub><mo>(</mo><mi>x</mi><mo>−</mo><mn>6</mn><mo>)</mo><mo>=</mo><mn>2</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 4</span>
           </div>
@@ -883,60 +943,63 @@
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 左辺を1つにまとめて log を外す</h3>
-            <p>性質 log<sub>a</sub>M＋log<sub>a</sub>N＝log<sub>a</sub>MN でまとめると log<sub>4</sub>{x(x−6)}＝2。</p>
-            <p>定義から、x(x−6)＝4<sup>2</sup> になる。4<sup>2</sup> の値を計算しておこう。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>対数の性質：<math><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>+</mo><msub><mi>log</mi><mi>a</mi></msub><mi>N</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><mi>MN</mi></math>。底 4 の 2 つの log を、真数どうしの積で 1 つにまとめる。</p>
+            <p>性質<math><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>+</mo><msub><mi>log</mi><mi>a</mi></msub><mi>N</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><mi>MN</mi></math>でまとめると<math><msub><mi>log</mi><mn>4</mn></msub><mo>{</mo><mi>x</mi><mo>(</mo><mi>x</mi><mo>−</mo><mn>6</mn><mo>)</mo><mo>}</mo><mo>=</mo><mn>2</mn></math>。</p>
+            <p>定義から、<math><mi>x</mi><mo>(</mo><mi>x</mi><mo>−</mo><mn>6</mn><mo>)</mo><mo>=</mo><msup><mn>4</mn><mn>2</mn></msup></math> になる。<math><msup><mn>4</mn><mn>2</mn></msup></math> の値を計算しておこう。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 3 ― 2次方程式を整理する</h3>
-            <p>x(x−6)＝16 を展開すると x<sup>2</sup>−6x＝16。右辺を移項して</p>
-            <p class="formula">x<sup>2</sup>−6x−16＝0</p>
+            <p><math><mi>x</mi><mo>(</mo><mi>x</mi><mo>−</mo><mn>6</mn><mo>)</mo><mo>=</mo><mn>16</mn></math>を展開すると<math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>6</mn><mi>x</mi><mo>=</mo><mn>16</mn></math>。右辺を移項して</p>
+            <p class="formula"><math display="block"><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>6</mn><mi>x</mi><mo>−</mo><mn>16</mn><mo>=</mo><mn>0</mn></math></p>
             <p>積が −16、和が −6 になる2数を探して、因数分解してみよう。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 4 ― 因数分解して候補を出す</h3>
-            <p>積 −16・和 −6 の組は −8 と 2。だから (x−8)(x＋2)＝0 となり、解の候補は x＝8, −2。</p>
+            <p>積 −16・和 −6 の組は −8 と 2。だから<math><mo>(</mo><mi>x</mi><mo>−</mo><mn>8</mn><mo>)</mo><mo>(</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo><mo>=</mo><mn>0</mn></math>となり、<br>解の候補は<math><mi>x</mi><mo>=</mo><mn>8</mn><mo>,</mo><mo>−</mo><mn>2</mn></math>。</p>
             <p>あとは、ヒント1で出した ①（x＞6）と照らし合わせるだけだ。</p>
           </div>
           <div class="step answer">
             <h3>解答 (1)</h3>
-            <p class="big">x＝8</p>
-            <p>真数条件は x＞6 ……①。変形すると x<sup>2</sup>−6x−16＝0、(x−8)(x＋2)＝0 で、候補は x＝8, −2。① を満たすのは x＝8 のみ（x＝−2 は不適）。</p>
+            <p class="big"><math display="block"><mi>x</mi><mo>=</mo><mn>8</mn></math></p>
+            <p>真数条件は x＞6 ……①。変形すると<math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>6</mn><mi>x</mi><mo>−</mo><mn>16</mn><mo>=</mo><mn>0</mn></math>、<br><math><mo>(</mo><mi>x</mi><mo>−</mo><mn>8</mn><mo>)</mo><mo>(</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo><mo>=</mo><mn>0</mn></math>で、候補は<math><mi>x</mi><mo>=</mo><mn>8</mn><mo>,</mo><mo>−</mo><mn>2</mn></math>。① を満たすのは<math><mi>x</mi><mo>=</mo><mn>8</mn></math>のみ<math><mo>(</mo><mi>x</mi><mo>=</mo><mo>−</mo><mn>2</mn></math>は不適）。</p>
           </div>
           <p class="prob-done">(1) クリア！</p>
         </div>
 
         <!-- (2) -->
-        <div class="tabpanel" id="panel-ren22-2" data-flow="ren22-2" data-label="練習22 (2)">
+        <div class="nofig tabpanel" id="panel-ren22-2" data-flow="ren22-2" data-label="練習22 (2)">
           <div class="prob-head">
-            <span class="prob-q" style="margin:0">(2)　log<sub>2</sub>(x＋5)＋log<sub>2</sub>(x−2)＝3</span>
+            <span class="prob-q" style="margin:0">(2)　<math><msub><mi>log</mi><mn>2</mn></msub><mo>(</mo><mi>x</mi><mo>+</mo><mn>5</mn><mo>)</mo><mo>+</mo><msub><mi>log</mi><mn>2</mn></msub><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo><mo>=</mo><mn>3</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 4</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― 真数がともに正になる範囲を出す</h3>
-            <p>真数は x＋5 と x−2。両方とも正になる条件は、x＋5＞0 かつ x−2＞0。</p>
+            <p class="cite"><span class="cite-tag">使う定義</span>対数の定義：<math><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi></math> が意味をもつのは、真数 <math><mi>M</mi><mo>&gt;</mo><mn>0</mn></math> のときだけ。真数は <math><mi>x</mi><mo>+</mo><mn>5</mn></math> と <math><mi>x</mi><mo>−</mo><mn>2</mn></math> の 2 つなので、両方とも正になる条件を書く。</p>
+            <p>真数は x＋5 と x−2。両方とも正になる条件は、<br>x＋5＞0 かつ x−2＞0。</p>
             <p>それぞれ解くと x＞−5 と x＞2。両方を満たす強い方はどちらかな？</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 左辺を1つにまとめて log を外す</h3>
-            <p>性質でまとめると log<sub>2</sub>{(x＋5)(x−2)}＝3。定義から</p>
-            <p class="formula">(x＋5)(x−2)＝2<sup>3</sup>＝8</p>
+            <p class="cite"><span class="cite-tag">使う定義</span>対数の定義：<math><msub><mi>log</mi><mi>a</mi></msub><mi>x</mi><mo>=</mo><mi>p</mi></math>　<math><mo>⇔</mo></math>　<math><mi>x</mi><mo>=</mo><msup><mi>a</mi><mi>p</mi></msup></math>。まとめた <math><msub><mi>log</mi><mn>2</mn></msub><mo>{</mo><mo>(</mo><mi>x</mi><mo>+</mo><mn>5</mn><mo>)</mo><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo><mo>}</mo><mo>=</mo><mn>3</mn></math> に当てはめると、<math><mo>(</mo><mi>x</mi><mo>+</mo><mn>5</mn><mo>)</mo><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo><mo>=</mo><msup><mn>2</mn><mn>3</mn></msup></math> と log を外せる。</p>
+            <p>性質でまとめると<math><msub><mi>log</mi><mn>2</mn></msub><mo>{</mo><mo>(</mo><mi>x</mi><mo>+</mo><mn>5</mn><mo>)</mo><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo><mo>}</mo><mo>=</mo><mn>3</mn></math>。定義から</p>
+            <p class="formula"><math display="block"><mo>(</mo><mi>x</mi><mo>+</mo><mn>5</mn><mo>)</mo><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo><mo>=</mo><msup><mn>2</mn><mn>3</mn></msup><mo>=</mo><mn>8</mn></math></p>
           </div>
           <div class="step hint">
             <h3>ヒント 3 ― 展開して整理する</h3>
-            <p>左辺を展開すると x<sup>2</sup>＋3x−10。これが 8 に等しいので、移項して</p>
-            <p class="formula">x<sup>2</sup>＋3x−18＝0</p>
+            <p>左辺を展開すると<math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>3</mn><mi>x</mi><mo>−</mo><mn>10</mn></math>。これが 8 に等しいので、移項して</p>
+            <p class="formula"><math display="block"><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>3</mn><mi>x</mi><mo>−</mo><mn>18</mn><mo>=</mo><mn>0</mn></math></p>
             <p>積が −18、和が 3 になる2数を探してみよう。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 4 ― 因数分解して候補を出す</h3>
-            <p>積 −18・和 3 の組は 6 と −3。だから (x＋6)(x−3)＝0 となり、解の候補は x＝−6, 3。</p>
+            <p>積 −18・和 3 の組は 6 と −3。だから<math><mo>(</mo><mi>x</mi><mo>+</mo><mn>6</mn><mo>)</mo><mo>(</mo><mi>x</mi><mo>−</mo><mn>3</mn><mo>)</mo><mo>=</mo><mn>0</mn></math>となり、<br>解の候補は<math><mi>x</mi><mo>=</mo><mo>−</mo><mn>6</mn><mo>,</mo><mn>3</mn></math>。</p>
             <p>最後に、ヒント1の真数条件 ①（x＞2）と照らし合わせよう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (2)</h3>
-            <p class="big">x＝3</p>
-            <p>真数条件は x＞2 ……①。変形すると x<sup>2</sup>＋3x−18＝0、(x＋6)(x−3)＝0 で、候補は x＝−6, 3。① を満たすのは x＝3 のみ（x＝−6 は不適）。</p>
+            <p class="big"><math display="block"><mi>x</mi><mo>=</mo><mn>3</mn></math></p>
+            <p>真数条件は x＞2 ……①。変形すると<math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>3</mn><mi>x</mi><mo>−</mo><mn>18</mn><mo>=</mo><mn>0</mn></math>、<br><math><mo>(</mo><mi>x</mi><mo>+</mo><mn>6</mn><mo>)</mo><mo>(</mo><mi>x</mi><mo>−</mo><mn>3</mn><mo>)</mo><mo>=</mo><mn>0</mn></math>で、候補は<math><mi>x</mi><mo>=</mo><mo>−</mo><mn>6</mn><mo>,</mo><mn>3</mn></math>。① を満たすのは<math><mi>x</mi><mo>=</mo><mn>3</mn></math>のみ<math><mo>(</mo><mi>x</mi><mo>=</mo><mo>−</mo><mn>6</mn></math>は不適）。</p>
           </div>
           <p class="prob-done">(2) クリア！　練習22 全小問おつかれさま。</p>
         </div>
@@ -949,7 +1012,7 @@
         <span class="pno">教科書 p.168</span>
       </div>
 
-      <section class="card prob" id="prob-ouyou2" data-flow="ouyou2" data-label="応用例題2">
+      <section class="nofig card prob" id="prob-ouyou2" data-flow="ouyou2" data-label="応用例題2">
         <div class="prob-head">
           <span class="prob-tag ouyou">応用例題 2</span>
           <div class="dots" aria-hidden="true">
@@ -958,10 +1021,11 @@
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
         <p class="prob-q">次の不等式を解け。</p>
-        <p class="formula">log<sub>1/3</sub>(x−1)＞2</p>
+        <p class="formula"><math display="block"><msub><mi>log</mi><mfrac><mn>1</mn><mn>3</mn></mfrac></msub><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo><mo>&gt;</mo><mn>2</mn></math></p>
 
         <div class="step hint">
           <h3>ヒント 1 ― まず真数条件を書く</h3>
+          <p class="cite"><span class="cite-tag">使う定義</span>対数の定義：<math><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi></math> が意味をもつのは、真数 <math><mi>M</mi><mo>&gt;</mo><mn>0</mn></math> のときだけ。ここでは真数 <math><mi>x</mi><mo>−</mo><mn>1</mn></math> について <math><mi>x</mi><mo>−</mo><mn>1</mn><mo>&gt;</mo><mn>0</mn></math> を最初に書く。</p>
           <p>真数 x−1 は正でなければならない。つまり</p>
           <p class="formula">x−1＞0　すなわち　x＞1　……<span class="circ">1</span></p>
           <figure>
@@ -979,19 +1043,20 @@
                 <text x="345" y="34" text-anchor="middle" class="svg-txt" font-size="15" fill="var(--accent-deep)">① x＞1（真数は正）</text>
               </svg>
             </div>
-            <figcaption>数直線は 1 と 10/9 の近くだけを拡大して描いてある。10/9＝1.11… は 1 のすぐ右にある数だ。</figcaption>
+            <figcaption>数直線は 1 と<math><mfrac><mn>10</mn><mn>9</mn></mfrac></math>の近くだけを拡大して描いてある。<math><mfrac><mn>10</mn><mn>9</mn></mfrac><mo>=</mo><mn>1.11</mn><mo>…</mo></math>は 1 のすぐ右にある数だ。</figcaption>
           </figure>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 右辺の 2 を log の形に直す</h3>
-          <p>底が <span class="frac"><span>1</span><span>3</span></span> だから、2＝log<sub>1/3</sub>（<span class="frac"><span>1</span><span>3</span></span>）<sup>2</sup> と書ける。不等式は</p>
-          <p class="formula">log<sub>1/3</sub>(x−1)＞log<sub>1/3</sub>（<span class="frac"><span>1</span><span>3</span></span>）<sup>2</sup></p>
-          <p>両辺が log<sub>1/3</sub>（真数）の形にそろった。</p>
+          <p>底が <math><mfrac><mn>1</mn><mn>3</mn></mfrac></math> だから、<math><mn>2</mn><mo>=</mo><msub><mi>log</mi><mfrac><mn>1</mn><mn>3</mn></mfrac></msub><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>)</mo></mrow><mn>2</mn></msup></math> と書ける。不等式は</p>
+          <p class="formula"><math display="block"><msub><mi>log</mi><mfrac><mn>1</mn><mn>3</mn></mfrac></msub><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo><mo>&gt;</mo><msub><mi>log</mi><mfrac><mn>1</mn><mn>3</mn></mfrac></msub><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>)</mo></mrow><mn>2</mn></msup></math></p>
+          <p>両辺が<math><msub><mi>log</mi><mfrac><mn>1</mn><mn>3</mn></mfrac></msub><mo>(</mo></math>真数）の形にそろった。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 3 ― 底 <span class="frac"><span>1</span><span>3</span></span> は減少関数。不等号は逆！</h3>
-          <p>底 <span class="frac"><span>1</span><span>3</span></span> は 1 より小さいから、y＝log<sub>1/3</sub>x は<b>減少関数</b>。真数が大きいほど値は小さくなるので、真数どうしの不等式に直すときは<b>不等号が逆になる</b>。</p>
-          <p class="formula">x−1＜（<span class="frac"><span>1</span><span>3</span></span>）<sup>2</sup>＝<span class="frac"><span>1</span><span>9</span></span>　から　x＜<span class="frac"><span>10</span><span>9</span></span>　……<span class="circ">2</span></p>
+          <h3>ヒント 3 ― 底 <math><mfrac><mn>1</mn><mn>3</mn></mfrac></math> は減少関数。不等号は逆！</h3>
+          <p class="cite"><span class="cite-tag">使う性質</span>対数関数の性質：<math><mn>0</mn><mo>&lt;</mo><mi>a</mi><mo>&lt;</mo><mn>1</mn></math> のとき <math><mi>y</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><mi>x</mi></math> は減少関数で、真数が大きいほど対数の値は小さくなる。底 <math><mfrac><mn>1</mn><mn>3</mn></mfrac></math> は 0 と 1 の間だから、真数どうしの不等式に直すとき不等号が逆になる。</p>
+          <p>底 <math><mfrac><mn>1</mn><mn>3</mn></mfrac></math> は 1 より小さいから、<br><math><mi>y</mi><mo>=</mo><msub><mi>log</mi><mfrac><mn>1</mn><mn>3</mn></mfrac></msub><mi>x</mi></math>は<b>減少関数</b>。真数が大きいほど値は小さくなるので、真数どうしの不等式に直すときは<b>不等号が逆になる</b>。</p>
+          <p class="formula"><math><mi>x</mi><mo>−</mo><mn>1</mn><mo>&lt;</mo><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mfrac><mn>1</mn><mn>9</mn></mfrac></math>　から　<math><mi>x</mi><mo>&lt;</mo><mfrac><mn>10</mn><mn>9</mn></mfrac></math>　……<span class="circ">2</span></p>
           <figure>
             <div class="figbox">
               <svg viewBox="0 0 520 100" role="img" aria-label="数直線：10/9より小さい範囲">
@@ -1012,8 +1077,8 @@
         </div>
         <div class="step answer">
           <h3>解答</h3>
-          <p class="big">1＜x＜<span class="frac"><span>10</span><span>9</span></span></p>
-          <p>① x＞1 と ② x＜<span class="frac"><span>10</span><span>9</span></span> の共通範囲を求めると、1＜x＜<span class="frac"><span>10</span><span>9</span></span> になる。</p>
+          <p class="big"><math display="block"><mn>1</mn><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mfrac><mn>10</mn><mn>9</mn></mfrac></math></p>
+          <p>① x＞1 と<math><mo>②</mo><mi>x</mi><mo>&lt;</mo><mfrac><mn>10</mn><mn>9</mn></mfrac></math> の共通範囲を求めると、<math><mn>1</mn><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mfrac><mn>10</mn><mn>9</mn></mfrac></math> になる。</p>
           <figure>
             <div class="figbox">
               <svg viewBox="0 0 520 100" role="img" aria-label="数直線：1より大きく10/9より小さい共通範囲">
@@ -1031,13 +1096,13 @@
             </div>
             <figcaption>幅のせまい範囲だが、ちゃんと存在する。① と ② の両方を満たす部分だ。</figcaption>
           </figure>
-          <p class="note"><b>ここが大事：</b>底が 1 より小さい不等式は、(1) 不等号を逆にする、(2) 真数条件との共通範囲を取る、の2つをセットで忘れないこと。</p>
+          <p class="note"><b>ここが大事：</b>底が 1 より小さい不等式は、<br>(1) 不等号を逆にする、(2) 真数条件との共通範囲を取る、の2つをセットで忘れないこと。</p>
         </div>
         <p class="prob-done">応用例題2 クリア！　最後は練習23だ。</p>
       </section>
 
       <!-- ================= 練習23 ================= -->
-      <section class="card prob" id="prob-ren23" data-label="練習23">
+      <section class="nofig card prob" id="prob-ren23" data-label="練習23">
         <div class="prob-head">
           <span class="prob-tag ren">練習 23</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
@@ -1050,9 +1115,9 @@
         </div>
 
         <!-- (1) -->
-        <div class="tabpanel show" id="panel-ren23-1" data-flow="ren23-1" data-label="練習23 (1)">
+        <div class="nofig tabpanel show" id="panel-ren23-1" data-flow="ren23-1" data-label="練習23 (1)">
           <div class="prob-head">
-            <span class="prob-q" style="margin:0">(1)　log<sub>2</sub>(x−3)＜4</span>
+            <span class="prob-q" style="margin:0">(1)　<math><msub><mi>log</mi><mn>2</mn></msub><mo>(</mo><mi>x</mi><mo>−</mo><mn>3</mn><mo>)</mo><mo>&lt;</mo><mn>4</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
@@ -1063,25 +1128,26 @@
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 右辺の 4 を log の形に直す</h3>
-            <p>4＝log<sub>2</sub>2<sup>4</sup>＝log<sub>2</sub>16 だから、不等式は log<sub>2</sub>(x−3)＜log<sub>2</sub>16 と書き直せる。</p>
+            <p><math><mn>4</mn><mo>=</mo><msub><mi>log</mi><mn>2</mn></msub><msup><mn>2</mn><mn>4</mn></msup><mo>=</mo><msub><mi>log</mi><mn>2</mn></msub><mn>16</mn></math>だから、不等式は<math><msub><mi>log</mi><mn>2</mn></msub><mo>(</mo><mi>x</mi><mo>−</mo><mn>3</mn><mo>)</mo><mo>&lt;</mo><msub><mi>log</mi><mn>2</mn></msub><mn>16</mn></math>と書き直せる。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 3 ― 底 2 を見て真数の不等式にする</h3>
-            <p>底 2 は 1 より大きい（増加関数）だから、不等号はそのまま x−3＜2<sup>4</sup>＝16。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>対数関数の性質：<math><mi>a</mi><mo>&gt;</mo><mn>1</mn></math> のとき <math><mi>y</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><mi>x</mi></math> は増加関数で、真数が大きいほど対数の値も大きい。底 2 は 1 より大きいから、真数どうしの不等式に直しても不等号はそのままだ。</p>
+            <p>底 2 は 1 より大きい（増加関数）だから、不等号はそのまま<math><mi>x</mi><mo>−</mo><mn>3</mn><mo>&lt;</mo><msup><mn>2</mn><mn>4</mn></msup><mo>=</mo><mn>16</mn></math>。</p>
             <p>これを x について解くと ② が得られる。あとは ① との共通範囲だ。</p>
           </div>
           <div class="step answer">
             <h3>解答 (1)</h3>
             <p class="big">3＜x＜19</p>
-            <p>真数条件 x＞3 ……①。底 2 は増加関数だから x−3＜16、すなわち x＜19 ……②。① と ② の共通範囲は 3＜x＜19。</p>
+            <p>真数条件 x＞3 ……①。底 2 は増加関数だから x−3＜16、<br>すなわち x＜19 ……②。① と ② の共通範囲は 3＜x＜19。</p>
           </div>
           <p class="prob-done">(1) クリア！</p>
         </div>
 
         <!-- (2) -->
-        <div class="tabpanel" id="panel-ren23-2" data-flow="ren23-2" data-label="練習23 (2)">
+        <div class="nofig tabpanel" id="panel-ren23-2" data-flow="ren23-2" data-label="練習23 (2)">
           <div class="prob-head">
-            <span class="prob-q" style="margin:0">(2)　log<sub>1/2</sub>(x＋2)≧3</span>
+            <span class="prob-q" style="margin:0">(2)　<math><msub><mi>log</mi><mfrac><mn>1</mn><mn>2</mn></mfrac></msub><mo>(</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo><mo>≧</mo><mn>3</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 4</span>
           </div>
@@ -1092,25 +1158,26 @@
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 右辺の 3 を log の形に直す</h3>
-            <p>底が <span class="frac"><span>1</span><span>2</span></span> だから、3＝log<sub>1/2</sub>（<span class="frac"><span>1</span><span>2</span></span>）<sup>3</sup>＝log<sub>1/2</sub><span class="frac"><span>1</span><span>8</span></span>。</p>
-            <p>不等式は log<sub>1/2</sub>(x＋2)≧log<sub>1/2</sub><span class="frac"><span>1</span><span>8</span></span> と書き直せる。</p>
+            <p>底が <math><mfrac><mn>1</mn><mn>2</mn></mfrac></math> だから、<math><mn>3</mn><mo>=</mo><msub><mi>log</mi><mfrac><mn>1</mn><mn>2</mn></mfrac></msub><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo></mrow><mn>3</mn></msup><mo>=</mo><msub><mi>log</mi><mfrac><mn>1</mn><mn>2</mn></mfrac></msub><mfrac><mn>1</mn><mn>8</mn></mfrac></math>。</p>
+            <p>不等式は<math><msub><mi>log</mi><mfrac><mn>1</mn><mn>2</mn></mfrac></msub><mo>(</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo><mo>≧</mo><msub><mi>log</mi><mfrac><mn>1</mn><mn>2</mn></mfrac></msub><mfrac><mn>1</mn><mn>8</mn></mfrac></math> と書き直せる。</p>
           </div>
           <div class="step hint">
-            <h3>ヒント 3 ― 底 <span class="frac"><span>1</span><span>2</span></span> は 1 より小さい。不等号は逆！</h3>
+            <h3>ヒント 3 ― 底 <math><mfrac><mn>1</mn><mn>2</mn></mfrac></math> は 1 より小さい。不等号は逆！</h3>
+            <p class="cite"><span class="cite-tag">使う性質</span>対数関数の性質：<math><mn>0</mn><mo>&lt;</mo><mi>a</mi><mo>&lt;</mo><mn>1</mn></math> のとき <math><mi>y</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><mi>x</mi></math> は減少関数で、真数が大きいほど対数の値は小さくなる。底 <math><mfrac><mn>1</mn><mn>2</mn></mfrac></math> は 0 と 1 の間だから、「≧」は「≦」に逆になる（等号はそのまま残る）。</p>
             <p>減少関数だから、真数に直すと「≧」が「≦」に変わる。</p>
-            <p class="formula">x＋2≦（<span class="frac"><span>1</span><span>2</span></span>）<sup>3</sup>＝<span class="frac"><span>1</span><span>8</span></span></p>
+            <p class="formula"><math display="block"><mi>x</mi><mo>+</mo><mn>2</mn><mo>≦</mo><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo></mrow><mn>3</mn></msup><mo>=</mo><mfrac><mn>1</mn><mn>8</mn></mfrac></math></p>
             <p>等号つきの不等号も、逆にするとき等号はそのまま残ることに注意。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 4 ― ② を x について解く</h3>
-            <p>x＋2≦<span class="frac"><span>1</span><span>8</span></span> の両辺から 2 を引くと、x≦<span class="frac"><span>1</span><span>8</span></span>−2＝−<span class="frac"><span>15</span><span>8</span></span>。</p>
-            <p class="formula">x≦−<span class="frac"><span>15</span><span>8</span></span>　……<span class="circ">2</span></p>
-            <p>あとは ① x＞−2 との共通範囲を求めるだけだ（−<span class="frac"><span>15</span><span>8</span></span>＝−1.875 は、−2 より少し大きい数だよ）。</p>
+            <p><math><mi>x</mi><mo>+</mo><mn>2</mn><mo>≦</mo><mfrac><mn>1</mn><mn>8</mn></mfrac></math> の両辺から 2 を引くと、<math><mi>x</mi><mo>≦</mo><mfrac><mn>1</mn><mn>8</mn></mfrac><mo>−</mo><mn>2</mn><mo>=</mo><mo>−</mo><mfrac><mn>15</mn><mn>8</mn></mfrac></math>。</p>
+            <p class="formula"><math><mi>x</mi><mo>≦</mo><mo>−</mo><mfrac><mn>15</mn><mn>8</mn></mfrac></math>　……<span class="circ">2</span></p>
+            <p>あとは ① x＞−2 との共通範囲を求めるだけだ<math><mo>(</mo><mo>−</mo><mfrac><mn>15</mn><mn>8</mn></mfrac><mo>=</mo><mo>−</mo><mn>1.875</mn></math>は、<br>−2 より少し大きい数だよ）。</p>
           </div>
           <div class="step answer">
             <h3>解答 (2)</h3>
-            <p class="big">−2＜x≦−<span class="frac"><span>15</span><span>8</span></span></p>
-            <p>真数条件 x＞−2 ……①。底 <span class="frac"><span>1</span><span>2</span></span> は 1 より小さい（減少関数）だから、不等号は逆になり x＋2≦<span class="frac"><span>1</span><span>8</span></span>、すなわち x≦−<span class="frac"><span>15</span><span>8</span></span> ……②。① と ② の共通範囲は −2＜x≦−<span class="frac"><span>15</span><span>8</span></span>。</p>
+            <p class="big"><math display="block"><mo>−</mo><mn>2</mn><mo>&lt;</mo><mi>x</mi><mo>≦</mo><mo>−</mo><mfrac><mn>15</mn><mn>8</mn></mfrac></math></p>
+            <p>真数条件 x＞−2 ……①。底 <math><mfrac><mn>1</mn><mn>2</mn></mfrac></math> は 1 より小さい（減少関数）だから、<br>不等号は逆になり<math><mi>x</mi><mo>+</mo><mn>2</mn><mo>≦</mo><mfrac><mn>1</mn><mn>8</mn></mfrac></math>、すなわち<math><mi>x</mi><mo>≦</mo><mo>−</mo><mfrac><mn>15</mn><mn>8</mn></mfrac><mo>…</mo><mo>…</mo><mo>②</mo></math>。① と ② の共通範囲は<math><mo>−</mo><mn>2</mn><mo>&lt;</mo><mi>x</mi><mo>≦</mo><mo>−</mo><mfrac><mn>15</mn><mn>8</mn></mfrac></math>。</p>
           </div>
           <p class="prob-done">(2) クリア！　このページの問題は全部終わり。よくがんばったね。</p>
         </div>
@@ -1120,10 +1187,10 @@
       <section class="card summary">
         <h2>この項のポイント</h2>
         <ul>
-          <li><b>大小比較</b>は、係数を真数の指数に直して（k log<sub>a</sub>M＝log<sub>a</sub>M<sup>k</sup>）、底の同じ log にそろえてから真数を比べる。</li>
-          <li><b>方程式</b> log<sub>a</sub>x＝p は、対数の定義で x＝a<sup>p</sup> に直す。</li>
+          <li><p class="cite"><span class="cite-tag">使う性質</span>対数の性質：<math><mi>k</mi><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><msup><mi>M</mi><mi>k</mi></msup></math>。大小比較は、この変形で底の同じ log にそろえることから始まる。</p><b>大小比較</b>は、係数を真数の指数に直して<math><mo>(</mo><mi>k</mi><msub><mi>log</mi><mi>a</mi></msub><mi>M</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><msup><mi>M</mi><mi>k</mi></msup><mo>)</mo></math>、<br>底の同じ log にそろえてから真数を比べる。</li>
+          <li><p class="cite"><span class="cite-tag">使う定義</span>対数の定義：<math><msub><mi>log</mi><mi>a</mi></msub><mi>x</mi><mo>=</mo><mi>p</mi></math>　<math><mo>⇔</mo></math>　<math><mi>x</mi><mo>=</mo><msup><mi>a</mi><mi>p</mi></msup></math>。方程式はこの定義で log を外して解く。</p><b>方程式</b><math><msub><mi>log</mi><mi>a</mi></msub><mi>x</mi><mo>=</mo><mi>p</mi></math>は、対数の定義で<math><mi>x</mi><mo>=</mo><msup><mi>a</mi><mi>p</mi></msup></math> に直す。</li>
           <li><b>不等式の3ステップ</b>：まず真数条件（真数は正）→ 右辺を log の形にそろえる → 底を見て真数の不等式に直し、真数条件との共通範囲を取る。</li>
-          <li><b>底が 1 より小さいときは不等号が逆になる</b>（減少関数だから、真数が大きいほど対数の値は小さい）。</li>
+          <li><p class="cite"><span class="cite-tag">使う性質</span>対数関数の性質：<math><mn>0</mn><mo>&lt;</mo><mi>a</mi><mo>&lt;</mo><mn>1</mn></math> のとき <math><mi>y</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><mi>x</mi></math> は減少関数で、真数が大きいほど対数の値は小さくなる。だから真数どうしの不等式に直すとき、不等号が逆になる。</p><b>底が 1 より小さいときは不等号が逆になる</b>（減少関数だから、<br>真数が大きいほど対数の値は小さい）。</li>
           <li>真数が2つある方程式では、解の候補を<b>真数条件で必ずチェック</b>する。条件を満たさない解は「不適」として捨てる。</li>
         </ul>
       </section>
@@ -1142,7 +1209,7 @@
     <!-- ================= 下部固定バー ================= -->
     <div class="ctrl-bar">
       <div class="ctrl-inner">
-        <p class="ctrl-progress" id="ctrlProgress">全体の進捗：<b>0 / 17</b> 問クリア</p>
+        <p class="ctrl-progress" id="ctrlProgress">全体の進捗：<b><math><mfrac><mn>0</mn><mn>17</mn></mfrac></math></b> 問クリア</p>
         <p class="ctrl-label">いまの課題：<b id="ctrlLabel">例題5</b>　―　「次へ」でヒントを1つずつ開こう</p>
         <div class="ctrl-btns">
           <button class="btn" id="btnReset" type="button">最初からやり直す</button>

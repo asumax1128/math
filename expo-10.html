@@ -284,7 +284,45 @@
           padding:2px 6px 2px 2px;
         }
       }
-    </style>
+    
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+</style>
   </head>
   <body>
     <div class="wrap">
@@ -314,23 +352,28 @@
       </div>
 
       <section class="card">
-        <p>とても大きい数や、とても小さい数は、10 の累乗（10<sup>n</sup> の形）を使って表すと見やすくなる。たとえば</p>
-        <p class="formula">1620000 ＝ 1.62×10<sup>6</sup>　　　0.000618 ＝ 6.18×10<sup>−4</sup></p>
+        <p>とても大きい数や、とても小さい数は、10 の累乗<math><mo>(</mo><msup><mn>10</mn><mi>n</mi></msup></math> の形）を使って表すと見やすくなる。たとえば</p>
+        <p class="mq-wide formula"><math display="block"><mn>1620000</mn><mo>=</mo><mn>1.62</mn><mo>×</mo><msup><mn>10</mn><mn>6</mn></msup><mspace width="2em"/><mn>0.000618</mn><mo>=</mo><mn>6.18</mn><mo>×</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>4</mn></mrow></msup></math></p>
+<div class="mq-narrow mq-stack">
+<p class="formula"><math display="block"><mn>1620000</mn><mo>=</mo><mn>1.62</mn><mo>×</mo><msup><mn>10</mn><mn>6</mn></msup></math></p>
+<p class="formula"><math display="block"><mn>0.000618</mn><mo>=</mo><mn>6.18</mn><mo>×</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>4</mn></mrow></msup></math></p>
+</div>
         <div class="def">
           <p><span class="key">常用対数</span>とは、<b>10 を底とする対数</b>のことである。</p>
-          <p>つまり、log<sub>10</sub>M が常用対数だ（底の 10 は、ふつう省略せずに書く）。</p>
+          <p>つまり、<math><msub><mi>log</mi><mn>10</mn></msub><mi>M</mi></math>が常用対数だ（底の 10 は、ふつう省略せずに書く）。</p>
         </div>
         <p>正の数 M は、必ず次の形に表すことができる。</p>
-        <p class="formula">M ＝ a×10<sup>n</sup>　（n は整数、1≦a＜10）</p>
-        <p>この両辺の常用対数をとると、積の対数は「和」になることと log<sub>10</sub>10<sup>n</sup>＝n であることから</p>
-        <p class="formula">log<sub>10</sub>M ＝ log<sub>10</sub>a ＋ log<sub>10</sub>10<sup>n</sup> ＝ log<sub>10</sub>a ＋ n</p>
-        <p>ここで、1≦a＜10 のとき、log<sub>10</sub>a の大きさは</p>
-        <p class="formula">0 ≦ log<sub>10</sub>a ＜ 1</p>
-        <p>つまり、<b>log<sub>10</sub>M の整数部分が n、小数部分が log<sub>10</sub>a</b> になる。n が「10 の何乗の大きさか」を、log<sub>10</sub>a が「a の値」を表している、と考えるとよい。</p>
+        <p class="formula"><math><mi>M</mi><mo>=</mo><mi>a</mi><mo>×</mo><msup><mn>10</mn><mi>n</mi></msup></math>　（n は整数、<math><mn>1</mn><mo>≦</mo><mi>a</mi><mo>&lt;</mo><mn>10</mn><mo>)</mo></math></p>
+        <p class="cite"><span class="cite-tag">使う公式</span><math><msub><mi>log</mi><mn>10</mn></msub><mo>(</mo><mi>MN</mi><mo>)</mo><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><mi>M</mi><mo>+</mo><msub><mi>log</mi><mn>10</mn></msub><mi>N</mi></math> ― ここでは M＝a、N＝10ⁿ として、積 a×10ⁿ の常用対数を和に分ける。</p>
+        <p>この両辺の常用対数をとると、積の対数は「和」になることと<math><msub><mi>log</mi><mn>10</mn></msub><msup><mn>10</mn><mi>n</mi></msup><mo>=</mo><mi>n</mi></math>であることから</p>
+        <p class="formula"><math display="block"><msub><mi>log</mi><mn>10</mn></msub><mi>M</mi><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><mi>a</mi><mo>+</mo><msub><mi>log</mi><mn>10</mn></msub><msup><mn>10</mn><mi>n</mi></msup><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><mi>a</mi><mo>+</mo><mi>n</mi></math></p>
+        <p>ここで、<math><mn>1</mn><mo>≦</mo><mi>a</mi><mo>&lt;</mo><mn>10</mn></math>のとき、<math><msub><mi>log</mi><mn>10</mn></msub><mi>a</mi></math>の大きさは</p>
+        <p class="formula"><math display="block"><mn>0</mn><mo>≦</mo><msub><mi>log</mi><mn>10</mn></msub><mi>a</mi><mo>&lt;</mo><mn>1</mn></math></p>
+        <p>つまり、<b><math><msub><mi>log</mi><mn>10</mn></msub><mi>M</mi></math>の整数部分が n、小数部分が<math><msub><mi>log</mi><mn>10</mn></msub><mi>a</mi></math></b> になる。n が「10 の何乗の大きさか」を、<math><msub><mi>log</mi><mn>10</mn></msub><mi>a</mi></math>が「a の値」を表している、と考えるとよい。</p>
       </section>
 
       <section class="card">
-        <p><b>常用対数表の読み方。</b>log<sub>10</sub>a（1≦a＜10）の値は、教科書の巻末にある<b>常用対数表</b>で調べることができる。下は表の抜粋だ。</p>
+        <p><b>常用対数表の読み方。</b><math><msub><mi>log</mi><mn>10</mn></msub><mi>a</mi><mo>(</mo><mn>1</mn><mo>≦</mo><mi>a</mi><mo>&lt;</mo><mn>10</mn><mo>)</mo></math>の値は、教科書の巻末にある<b>常用対数表</b>で調べることができる。下は表の抜粋だ。</p>
         <figure>
           <div class="figbox">
             <svg viewBox="0 0 520 148" role="img" aria-label="常用対数表の抜粋。行1.6、列2の値が0.2095であることを示す図">
@@ -364,7 +407,7 @@
           </div>
           <figcaption>1.62 なら、左の「1.6」の行と、上の「2」の列が交わる数を読み取る（先頭の 0. は省略されて .2095 と書かれている）。</figcaption>
         </figure>
-        <p>表にのっているのは <b>1≦a＜10 の範囲の log<sub>10</sub>a だけ</b>。それ以外の数の常用対数は、a×10<sup>n</sup> の形に直してから、表の値に n を足して（引いて）求める。それが次の例12のやり方だ。</p>
+        <p>表にのっているのは <b><math><mn>1</mn><mo>≦</mo><mi>a</mi><mo>&lt;</mo><mn>10</mn></math>の範囲の<math><msub><mi>log</mi><mn>10</mn></msub><mi>a</mi></math>だけ</b>。それ以外の数の常用対数は、<math><mi>a</mi><mo>×</mo><msup><mn>10</mn><mi>n</mi></msup></math> の形に直してから、表の値に n を足して（引いて）求める。それが次の例12のやり方だ。</p>
       </section>
 
       <!-- ================= 例12 ================= -->
@@ -374,13 +417,13 @@
         <span class="pno">教科書 p.169</span>
       </div>
 
-      <section class="card prob" id="prob-ex12">
+      <section class="nofig card prob" id="prob-ex12">
         <div class="prob-head">
           <span class="prob-tag">例 12</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
         <div class="qside">
-        <p class="prob-q">常用対数表によると log<sub>10</sub>1.62＝0.2095 である。この値を用いて、次の値を計算してみよう。</p>
+        <p class="prob-q">常用対数表によると<math><msub><mi>log</mi><mn>10</mn></msub><mn>1.62</mn><mo>=</mo><mn>0.2095</mn></math>である。この値を用いて、次の値を計算してみよう。</p>
         </div>
 
         <div class="tabs" role="tablist" aria-label="例12の小問">
@@ -389,63 +432,78 @@
         </div>
 
         <!-- (1) -->
-        <div class="tabpanel show" id="panel-ex12-1" data-flow="ex12-1" data-label="例12 (1)">
+        <div class="nofig tabpanel show" id="panel-ex12-1" data-flow="ex12-1" data-label="例12 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1) log<sub>10</sub>1620000</span>
+            <span class="sub prob-q" style="margin:0"><math><mo>(</mo><mn>1</mn><mo>)</mo><msub><mi>log</mi><mn>10</mn></msub><mn>1620000</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
           <div class="step hint">
-            <h3>ヒント 1 ― まず a×10<sup>n</sup> の形に直す</h3>
-            <p>1620000 の小数点を左へ動かして、1.62 の形にしてみよう。小数点を <b>6 つ</b>動かすと 1.62 になる。</p>
-            <p>つまり　1620000 ＝ 1.62×10<sup>6</sup>　だ（10<sup>6</sup> をかけると、もとの数に戻ることを確かめてみよう）。</p>
+            <h3>ヒント 1 ― まず<math><mi>a</mi><mo>×</mo><msup><mn>10</mn><mi>n</mi></msup></math> の形に直す</h3>
+            <p class="cite"><span class="cite-tag">使う定義</span><math><mi>M</mi><mo>=</mo><mi>a</mi><mo>×</mo><msup><mn>10</mn><mi>n</mi></msup><mo>(</mo><mn>1</mn><mo>≦</mo><mi>a</mi><mo>&lt;</mo><mn>10</mn><mo>)</mo></math> ― ここでは 1620000 を、a＝1.62、n＝6 としてこの形に直す。</p>
+            <p>1620000 の小数点を左へ動かして、1.62 の形にしてみよう。<br>小数点を <b>6 つ</b>動かすと 1.62 になる。</p>
+            <p>つまり　<math><mn>1620000</mn><mo>=</mo><mn>1.62</mn><mo>×</mo><msup><mn>10</mn><mn>6</mn></msup></math>　だ<math><mo>(</mo><msup><mn>10</mn><mn>6</mn></msup></math> をかけると、<br>もとの数に戻ることを確かめてみよう）。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 対数をとって、和に分ける</h3>
-            <p>log<sub>10</sub>(1.62×10<sup>6</sup>) に、積の対数の性質「log<sub>10</sub>(MN)＝log<sub>10</sub>M＋log<sub>10</sub>N」を使うと</p>
-            <p>log<sub>10</sub>(1.62×10<sup>6</sup>) ＝ log<sub>10</sub>1.62 ＋ log<sub>10</sub>10<sup>6</sup></p>
-            <p>となる。後ろの log<sub>10</sub>10<sup>6</sup> は、指数の 6 がそのまま答えになる（log<sub>10</sub>10<sup>n</sup>＝n）。</p>
+            <p class="cite"><span class="cite-tag">使う公式</span><math><msub><mi>log</mi><mn>10</mn></msub><mo>(</mo><mi>MN</mi><mo>)</mo><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><mi>M</mi><mo>+</mo><msub><mi>log</mi><mn>10</mn></msub><mi>N</mi></math> ― ここでは M＝1.62、N＝10⁶ として、積の対数を和に分ける。</p>
+            <p><math><msub><mi>log</mi><mn>10</mn></msub><mo>(</mo><mn>1.62</mn><mo>×</mo><msup><mn>10</mn><mn>6</mn></msup><mo>)</mo></math>に、積の対数の性質「<math><msub><mi>log</mi><mn>10</mn></msub><mo>(</mo><mi>MN</mi><mo>)</mo><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><mi>M</mi><mo>+</mo><msub><mi>log</mi><mn>10</mn></msub><mi>N</mi></math>」を使うと</p>
+            <p><math><msub><mi>log</mi><mn>10</mn></msub><mo>(</mo><mn>1.62</mn><mo>×</mo><msup><mn>10</mn><mn>6</mn></msup><mo>)</mo><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><mn>1.62</mn><mo>+</mo><msub><mi>log</mi><mn>10</mn></msub><msup><mn>10</mn><mn>6</mn></msup></math></p>
+            <p>となる。<br>後ろの<math><msub><mi>log</mi><mn>10</mn></msub><msup><mn>10</mn><mn>6</mn></msup></math> は、指数の 6 がそのまま答えになる<math><mo>(</mo><msub><mi>log</mi><mn>10</mn></msub><msup><mn>10</mn><mi>n</mi></msup><mo>=</mo><mi>n</mi><mo>)</mo></math>。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 3 ― 表の値を代入する</h3>
-            <p>問題文で与えられた log<sub>10</sub>1.62＝0.2095 を代入して、0.2095 ＋ 6 を計算すれば完成だ。</p>
+            <p>問題文で与えられた<math><msub><mi>log</mi><mn>10</mn></msub><mn>1.62</mn><mo>=</mo><mn>0.2095</mn></math>を代入して、<br>0.2095 ＋ 6 を計算すれば完成だ。</p>
           </div>
           <div class="step answer">
             <h3>解答 (1)</h3>
-            <p class="big">log<sub>10</sub>1620000 ＝ 6.2095</p>
-            <p>log<sub>10</sub>1620000 ＝ log<sub>10</sub>(1.62×10<sup>6</sup>) ＝ log<sub>10</sub>1.62 ＋ log<sub>10</sub>10<sup>6</sup> ＝ 0.2095 ＋ 6 ＝ <b>6.2095</b></p>
-            <p class="note">整数部分の 6 が「10<sup>6</sup> の大きさ」、小数部分の 0.2095 が「1.62 の情報」を表しているね。</p>
+            <p class="cite"><span class="cite-tag">使う定義</span><math><msub><mi>log</mi><mn>10</mn></msub><mi>M</mi><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><mi>a</mi><mo>+</mo><mi>n</mi><mo>(</mo><mn>0</mn><mo>≦</mo><msub><mi>log</mi><mn>10</mn></msub><mi>a</mi><mo>&lt;</mo><mn>1</mn><mo>)</mo></math> ― ここでは a＝1.62、n＝6 で、表の値 log₁₀1.62＝0.2095 を使う。</p>
+            <p class="big"><math display="block"><msub><mi>log</mi><mn>10</mn></msub><mn>1620000</mn><mo>=</mo><mn>6.2095</mn></math></p>
+            <div class="chain-crow">
+<div class="crow"><math displaystyle="true"><msub><mi>log</mi><mn>10</mn></msub><mn>1620000</mn><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><mo>(</mo><mn>1.62</mn><mo>×</mo><msup><mn>10</mn><mn>6</mn></msup><mo>)</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msub><mi>log</mi><mn>10</mn></msub><mn>1620000</mn></mphantom><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><mn>1.62</mn><mo>+</mo><msub><mi>log</mi><mn>10</mn></msub><msup><mn>10</mn><mn>6</mn></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msub><mi>log</mi><mn>10</mn></msub><mn>1620000</mn></mphantom><mo>=</mo><mn>0.2095</mn><mo>+</mo><mn>6</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msub><mi>log</mi><mn>10</mn></msub><mn>1620000</mn></mphantom><mo>=</mo><mstyle mathvariant="bold"><mn>6.2095</mn></mstyle></math></div>
+</div>
+            <p class="note">整数部分の 6 が「<math><msup><mn>10</mn><mn>6</mn></msup></math> の大きさ」、<br>小数部分の 0.2095 が「1.62 の情報」を表しているね。</p>
           </div>
           <p class="prob-done">(1) クリア！　(2) のタブも開いてみよう。</p>
         </div>
 
         <!-- (2) -->
-        <div class="tabpanel" id="panel-ex12-2" data-flow="ex12-2" data-label="例12 (2)">
+        <div class="nofig tabpanel" id="panel-ex12-2" data-flow="ex12-2" data-label="例12 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2) log<sub>10</sub>0.00162</span>
+            <span class="sub prob-q" style="margin:0"><math><mo>(</mo><mn>2</mn><mo>)</mo><msub><mi>log</mi><mn>10</mn></msub><mn>0.00162</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
           <div class="step hint">
-            <h3>ヒント 1 ― まず a×10<sup>n</sup> の形に直す</h3>
+            <h3>ヒント 1 ― まず<math><mi>a</mi><mo>×</mo><msup><mn>10</mn><mi>n</mi></msup></math> の形に直す</h3>
             <p>今度は小さい数だ。0.00162 の小数点を<b>右へ 3 つ</b>動かすと 1.62 になる。</p>
-            <p>小数点を右へ動かした分、指数はマイナスになる。つまり　0.00162 ＝ 1.62×10<sup>−3</sup>　だ。</p>
+            <p>小数点を右へ動かした分、指数はマイナスになる。<br>つまり　<math><mn>0.00162</mn><mo>=</mo><mn>1.62</mn><mo>×</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>3</mn></mrow></msup></math>　だ。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 対数をとって、和に分ける</h3>
+            <p class="cite"><span class="cite-tag">使う公式</span><math><msub><mi>log</mi><mn>10</mn></msub><mo>(</mo><mi>MN</mi><mo>)</mo><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><mi>M</mi><mo>+</mo><msub><mi>log</mi><mn>10</mn></msub><mi>N</mi></math> ― ここでは M＝1.62、N＝10⁻³ として、積の対数を和に分ける。</p>
             <p>(1) と同じように、積の対数の性質を使うと</p>
-            <p>log<sub>10</sub>(1.62×10<sup>−3</sup>) ＝ log<sub>10</sub>1.62 ＋ log<sub>10</sub>10<sup>−3</sup></p>
-            <p>となる。log<sub>10</sub>10<sup>−3</sup> は、指数の −3 がそのまま出てくる。</p>
+            <p><math><msub><mi>log</mi><mn>10</mn></msub><mo>(</mo><mn>1.62</mn><mo>×</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>3</mn></mrow></msup><mo>)</mo><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><mn>1.62</mn><mo>+</mo><msub><mi>log</mi><mn>10</mn></msub><msup><mn>10</mn><mrow><mo>−</mo><mn>3</mn></mrow></msup></math></p>
+            <p>となる。<math><msub><mi>log</mi><mn>10</mn></msub><msup><mn>10</mn><mrow><mo>−</mo><mn>3</mn></mrow></msup></math> は、指数の −3 がそのまま出てくる。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 3 ― 表の値を代入する</h3>
-            <p>log<sub>10</sub>1.62＝0.2095 を代入して、0.2095 − 3 を計算しよう。0.2095 より 3 の方が大きいので、答えは<b>負の数</b>になるよ。</p>
+            <p><math><msub><mi>log</mi><mn>10</mn></msub><mn>1.62</mn><mo>=</mo><mn>0.2095</mn></math>を代入して、0.2095 − 3 を計算しよう。<br>0.2095 より 3 の方が大きいので、答えは<b>負の数</b>になるよ。</p>
           </div>
           <div class="step answer">
             <h3>解答 (2)</h3>
-            <p class="big">log<sub>10</sub>0.00162 ＝ −2.7905</p>
-            <p>log<sub>10</sub>0.00162 ＝ log<sub>10</sub>(1.62×10<sup>−3</sup>) ＝ log<sub>10</sub>1.62 ＋ log<sub>10</sub>10<sup>−3</sup> ＝ 0.2095 − 3 ＝ <b>−2.7905</b></p>
-            <p class="note">1 より小さい数の常用対数は、負の数になる。(1) との違いは、指数が −3 になることだけだね。</p>
+            <p class="cite"><span class="cite-tag">使う定義</span><math><msub><mi>log</mi><mn>10</mn></msub><mi>M</mi><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><mi>a</mi><mo>+</mo><mi>n</mi><mo>(</mo><mn>0</mn><mo>≦</mo><msub><mi>log</mi><mn>10</mn></msub><mi>a</mi><mo>&lt;</mo><mn>1</mn><mo>)</mo></math> ― ここでは a＝1.62、n＝−3 で、表の値 log₁₀1.62＝0.2095 を使う。</p>
+            <p class="big"><math display="block"><msub><mi>log</mi><mn>10</mn></msub><mn>0.00162</mn><mo>=</mo><mo>−</mo><mn>2.7905</mn></math></p>
+            <div class="chain-crow">
+<div class="crow"><math displaystyle="true"><msub><mi>log</mi><mn>10</mn></msub><mn>0.00162</mn><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><mo>(</mo><mn>1.62</mn><mo>×</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>3</mn></mrow></msup><mo>)</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msub><mi>log</mi><mn>10</mn></msub><mn>0.00162</mn></mphantom><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><mn>1.62</mn><mo>+</mo><msub><mi>log</mi><mn>10</mn></msub><msup><mn>10</mn><mrow><mo>−</mo><mn>3</mn></mrow></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msub><mi>log</mi><mn>10</mn></msub><mn>0.00162</mn></mphantom><mo>=</mo><mn>0.2095</mn><mo>−</mo><mn>3</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msub><mi>log</mi><mn>10</mn></msub><mn>0.00162</mn></mphantom><mo>=</mo><mstyle mathvariant="bold"><mo>−</mo><mn>2.7905</mn></mstyle></math></div>
+</div>
+            <p class="note">1 より小さい数の常用対数は、負の数になる。<br>(1) との違いは、指数が −3 になることだけだね。</p>
           </div>
           <p class="prob-done">(2) クリア！　次は練習24に挑戦しよう。</p>
         </div>
@@ -458,7 +516,7 @@
         <span class="pno">教科書 p.169</span>
       </div>
 
-      <section class="card prob" id="prob-ren24">
+      <section class="nofig card prob" id="prob-ren24">
         <div class="prob-head">
           <span class="prob-tag ren">練習 24</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
@@ -468,7 +526,7 @@
         <p>常用対数表の抜粋（この問題で使う分だけ）</p>
         <table class="comp">
           <tr><th>a</th><td>3.45</td><td>9.20</td><td>6.18</td></tr>
-          <tr><th>log<sub>10</sub>a</th><td>0.5378</td><td>0.9638</td><td>0.7903</td></tr>
+          <tr><th><math><msub><mi>log</mi><mn>10</mn></msub><mi>a</mi></math></th><td>0.5378</td><td>0.9638</td><td>0.7903</td></tr>
         </table>
         </div>
 
@@ -479,91 +537,121 @@
         </div>
 
         <!-- (1) -->
-        <div class="tabpanel show" id="panel-ren24-1" data-flow="ren24-1" data-label="練習24 (1)">
+        <div class="nofig tabpanel show" id="panel-ren24-1" data-flow="ren24-1" data-label="練習24 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1) log<sub>10</sub>3450</span>
+            <span class="sub prob-q" style="margin:0"><math><mo>(</mo><mn>1</mn><mo>)</mo><msub><mi>log</mi><mn>10</mn></msub><mn>3450</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
           <div class="step hint">
-            <h3>ヒント 1 ― 3450 を a×10<sup>n</sup> の形に直す</h3>
+            <h3>ヒント 1 ― 3450 を<math><mi>a</mi><mo>×</mo><msup><mn>10</mn><mi>n</mi></msup></math> の形に直す</h3>
             <p>3450 の小数点を左へ <b>3 つ</b>動かすと 3.45 になる。だから</p>
-            <p>3450 ＝ 3.45×10<sup>3</sup></p>
-            <p>と表せる（3.45×1000＝3450 に戻ることを確かめよう）。</p>
+            <p><math><mn>3450</mn><mo>=</mo><mn>3.45</mn><mo>×</mo><msup><mn>10</mn><mn>3</mn></msup></math></p>
+            <p>と表せる<math><mo>(</mo><mn>3.45</mn><mo>×</mo><mn>1000</mn><mo>=</mo><mn>3450</mn></math>に戻ることを確かめよう）。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 対数をとって、和に分ける</h3>
-            <p>log<sub>10</sub>(3.45×10<sup>3</sup>) ＝ log<sub>10</sub>3.45 ＋ log<sub>10</sub>10<sup>3</sup> ＝ log<sub>10</sub>3.45 ＋ 3</p>
-            <p>あとは log<sub>10</sub>3.45 の値が分かればよい。</p>
+            <p class="cite"><span class="cite-tag">使う公式</span><math><msub><mi>log</mi><mn>10</mn></msub><mo>(</mo><mi>MN</mi><mo>)</mo><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><mi>M</mi><mo>+</mo><msub><mi>log</mi><mn>10</mn></msub><mi>N</mi></math> ― ここでは M＝3.45、N＝10³ として、積の対数を和に分ける。</p>
+            <p class="mq-wide"><math><msub><mi>log</mi><mn>10</mn></msub><mo>(</mo><mn>3.45</mn><mo>×</mo><msup><mn>10</mn><mn>3</mn></msup><mo>)</mo><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><mn>3.45</mn><mo>+</mo><msub><mi>log</mi><mn>10</mn></msub><msup><mn>10</mn><mn>3</mn></msup><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><mn>3.45</mn><mo>+</mo><mn>3</mn></math></p>
+<div class="mq-narrow">
+<p class="formula"><math display="block"><msub><mi>log</mi><mn>10</mn></msub><mo>(</mo><mn>3.45</mn><mo>×</mo><msup><mn>10</mn><mn>3</mn></msup><mo>)</mo><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><mn>3.45</mn></math></p>
+<p class="formula cont"><math display="block"><mo>+</mo><msub><mi>log</mi><mn>10</mn></msub><msup><mn>10</mn><mn>3</mn></msup><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><mn>3.45</mn><mo>+</mo><mn>3</mn></math></p>
+</div>
+            <p>あとは<math><msub><mi>log</mi><mn>10</mn></msub><mn>3.45</mn></math>の値が分かればよい。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 3 ― 抜粋の表から値を読む</h3>
-            <p>上の抜粋で a＝3.45 の欄を見ると、log<sub>10</sub>3.45＝0.5378。これを ＋3 すれば完成だ。</p>
+            <p>上の抜粋で<math><mi>a</mi><mo>=</mo><mn>3.45</mn></math>の欄を見ると、<math><msub><mi>log</mi><mn>10</mn></msub><mn>3.45</mn><mo>=</mo><mn>0.5378</mn></math>。これを ＋3 すれば完成だ。</p>
           </div>
           <div class="step answer">
             <h3>解答 (1)</h3>
-            <p class="big">log<sub>10</sub>3450 ＝ 3.5378</p>
-            <p>log<sub>10</sub>3450 ＝ log<sub>10</sub>(3.45×10<sup>3</sup>) ＝ 0.5378 ＋ 3 ＝ <b>3.5378</b></p>
+            <p class="cite"><span class="cite-tag">使う定義</span><math><msub><mi>log</mi><mn>10</mn></msub><mi>M</mi><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><mi>a</mi><mo>+</mo><mi>n</mi><mo>(</mo><mn>0</mn><mo>≦</mo><msub><mi>log</mi><mn>10</mn></msub><mi>a</mi><mo>&lt;</mo><mn>1</mn><mo>)</mo></math> ― ここでは a＝3.45、n＝3 で、表の値 log₁₀3.45＝0.5378 を使う。</p>
+            <p class="big"><math display="block"><msub><mi>log</mi><mn>10</mn></msub><mn>3450</mn><mo>=</mo><mn>3.5378</mn></math></p>
+            <div class="chain-crow">
+<div class="crow"><math displaystyle="true"><msub><mi>log</mi><mn>10</mn></msub><mn>3450</mn><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><mo>(</mo><mn>3.45</mn><mo>×</mo><msup><mn>10</mn><mn>3</mn></msup><mo>)</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msub><mi>log</mi><mn>10</mn></msub><mn>3450</mn></mphantom><mo>=</mo><mn>0.5378</mn><mo>+</mo><mn>3</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msub><mi>log</mi><mn>10</mn></msub><mn>3450</mn></mphantom><mo>=</mo><mstyle mathvariant="bold"><mn>3.5378</mn></mstyle></math></div>
+</div>
           </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
 
         <!-- (2) -->
-        <div class="tabpanel" id="panel-ren24-2" data-flow="ren24-2" data-label="練習24 (2)">
+        <div class="nofig tabpanel" id="panel-ren24-2" data-flow="ren24-2" data-label="練習24 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2) log<sub>10</sub>92000</span>
+            <span class="sub prob-q" style="margin:0"><math><mo>(</mo><mn>2</mn><mo>)</mo><msub><mi>log</mi><mn>10</mn></msub><mn>92000</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
           <div class="step hint">
-            <h3>ヒント 1 ― 92000 を a×10<sup>n</sup> の形に直す</h3>
-            <p>92000 の小数点を左へ <b>4 つ</b>動かすと 9.2 になる。表の形に合わせて 9.20 と書くと</p>
-            <p>92000 ＝ 9.20×10<sup>4</sup></p>
+            <h3>ヒント 1 ― 92000 を<math><mi>a</mi><mo>×</mo><msup><mn>10</mn><mi>n</mi></msup></math> の形に直す</h3>
+            <p>92000 の小数点を左へ <b>4 つ</b>動かすと 9.2 になる。<br>表の形に合わせて 9.20 と書くと</p>
+            <p><math><mn>92000</mn><mo>=</mo><mn>9.20</mn><mo>×</mo><msup><mn>10</mn><mn>4</mn></msup></math></p>
             <p>と表せる。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 対数をとって、和に分ける</h3>
-            <p>log<sub>10</sub>(9.20×10<sup>4</sup>) ＝ log<sub>10</sub>9.20 ＋ log<sub>10</sub>10<sup>4</sup> ＝ log<sub>10</sub>9.20 ＋ 4</p>
-            <p>あとは log<sub>10</sub>9.20 の値を表から読むだけだ。</p>
+            <p class="cite"><span class="cite-tag">使う公式</span><math><msub><mi>log</mi><mn>10</mn></msub><mo>(</mo><mi>MN</mi><mo>)</mo><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><mi>M</mi><mo>+</mo><msub><mi>log</mi><mn>10</mn></msub><mi>N</mi></math> ― ここでは M＝9.20、N＝10⁴ として、積の対数を和に分ける。</p>
+            <p class="mq-wide"><math><msub><mi>log</mi><mn>10</mn></msub><mo>(</mo><mn>9.20</mn><mo>×</mo><msup><mn>10</mn><mn>4</mn></msup><mo>)</mo><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><mn>9.20</mn><mo>+</mo><msub><mi>log</mi><mn>10</mn></msub><msup><mn>10</mn><mn>4</mn></msup><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><mn>9.20</mn><mo>+</mo><mn>4</mn></math></p>
+<div class="mq-narrow">
+<p class="formula"><math display="block"><msub><mi>log</mi><mn>10</mn></msub><mo>(</mo><mn>9.20</mn><mo>×</mo><msup><mn>10</mn><mn>4</mn></msup><mo>)</mo><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><mn>9.20</mn></math></p>
+<p class="formula cont"><math display="block"><mo>+</mo><msub><mi>log</mi><mn>10</mn></msub><msup><mn>10</mn><mn>4</mn></msup><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><mn>9.20</mn><mo>+</mo><mn>4</mn></math></p>
+</div>
+            <p>あとは<math><msub><mi>log</mi><mn>10</mn></msub><mn>9.20</mn></math>の値を表から読むだけだ。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 3 ― 抜粋の表から値を読む</h3>
-            <p>上の抜粋で a＝9.20 の欄を見ると、log<sub>10</sub>9.20＝0.9638。これを ＋4 すれば完成だ。</p>
+            <p>上の抜粋で<math><mi>a</mi><mo>=</mo><mn>9.20</mn></math>の欄を見ると、<math><msub><mi>log</mi><mn>10</mn></msub><mn>9.20</mn><mo>=</mo><mn>0.9638</mn></math>。これを ＋4 すれば完成だ。</p>
           </div>
           <div class="step answer">
             <h3>解答 (2)</h3>
-            <p class="big">log<sub>10</sub>92000 ＝ 4.9638</p>
-            <p>log<sub>10</sub>92000 ＝ log<sub>10</sub>(9.20×10<sup>4</sup>) ＝ 0.9638 ＋ 4 ＝ <b>4.9638</b></p>
+            <p class="cite"><span class="cite-tag">使う定義</span><math><msub><mi>log</mi><mn>10</mn></msub><mi>M</mi><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><mi>a</mi><mo>+</mo><mi>n</mi><mo>(</mo><mn>0</mn><mo>≦</mo><msub><mi>log</mi><mn>10</mn></msub><mi>a</mi><mo>&lt;</mo><mn>1</mn><mo>)</mo></math> ― ここでは a＝9.20、n＝4 で、表の値 log₁₀9.20＝0.9638 を使う。</p>
+            <p class="big"><math display="block"><msub><mi>log</mi><mn>10</mn></msub><mn>92000</mn><mo>=</mo><mn>4.9638</mn></math></p>
+            <div class="chain-crow">
+<div class="crow"><math displaystyle="true"><msub><mi>log</mi><mn>10</mn></msub><mn>92000</mn><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><mo>(</mo><mn>9.20</mn><mo>×</mo><msup><mn>10</mn><mn>4</mn></msup><mo>)</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msub><mi>log</mi><mn>10</mn></msub><mn>92000</mn></mphantom><mo>=</mo><mn>0.9638</mn><mo>+</mo><mn>4</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msub><mi>log</mi><mn>10</mn></msub><mn>92000</mn></mphantom><mo>=</mo><mstyle mathvariant="bold"><mn>4.9638</mn></mstyle></math></div>
+</div>
           </div>
           <p class="prob-done">(2) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
 
         <!-- (3) -->
-        <div class="tabpanel" id="panel-ren24-3" data-flow="ren24-3" data-label="練習24 (3)">
+        <div class="nofig tabpanel" id="panel-ren24-3" data-flow="ren24-3" data-label="練習24 (3)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(3) log<sub>10</sub>0.000618</span>
+            <span class="sub prob-q" style="margin:0"><math><mo>(</mo><mn>3</mn><mo>)</mo><msub><mi>log</mi><mn>10</mn></msub><mn>0.000618</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
           <div class="step hint">
-            <h3>ヒント 1 ― 0.000618 を a×10<sup>n</sup> の形に直す</h3>
-            <p>0.000618 の小数点を、はじめて 0 でない数字 6 が現れるまで右へ動かす。<b>4 つ</b>動かすと 6.18 になる。</p>
-            <p>右へ動かした分、指数はマイナス。つまり　0.000618 ＝ 6.18×10<sup>−4</sup>　だ。</p>
+            <h3>ヒント 1 ― 0.000618 を<math><mi>a</mi><mo>×</mo><msup><mn>10</mn><mi>n</mi></msup></math> の形に直す</h3>
+            <p>0.000618 の小数点を、はじめて 0 でない数字 6 が現れるまで右へ動かす。<br><b>4 つ</b>動かすと 6.18 になる。</p>
+            <p>右へ動かした分、指数はマイナス。つまり　<math><mn>0.000618</mn><mo>=</mo><mn>6.18</mn><mo>×</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>4</mn></mrow></msup></math>　だ。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 対数をとって、和に分ける</h3>
-            <p>log<sub>10</sub>(6.18×10<sup>−4</sup>) ＝ log<sub>10</sub>6.18 ＋ log<sub>10</sub>10<sup>−4</sup> ＝ log<sub>10</sub>6.18 − 4</p>
-            <p>あとは log<sub>10</sub>6.18 の値を表から読むだけだ。</p>
+            <p class="cite"><span class="cite-tag">使う公式</span><math><msub><mi>log</mi><mn>10</mn></msub><mo>(</mo><mi>MN</mi><mo>)</mo><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><mi>M</mi><mo>+</mo><msub><mi>log</mi><mn>10</mn></msub><mi>N</mi></math> ― ここでは M＝6.18、N＝10⁻⁴ として、積の対数を和に分ける。</p>
+            <p class="mq-wide"><math><msub><mi>log</mi><mn>10</mn></msub><mo>(</mo><mn>6.18</mn><mo>×</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>4</mn></mrow></msup><mo>)</mo><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><mn>6.18</mn><mo>+</mo><msub><mi>log</mi><mn>10</mn></msub><msup><mn>10</mn><mrow><mo>−</mo><mn>4</mn></mrow></msup><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><mn>6.18</mn><mo>−</mo><mn>4</mn></math></p>
+<div class="mq-narrow">
+<p class="formula"><math display="block"><msub><mi>log</mi><mn>10</mn></msub><mo>(</mo><mn>6.18</mn><mo>×</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>4</mn></mrow></msup><mo>)</mo><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><mn>6.18</mn></math></p>
+<p class="formula cont"><math display="block"><mo>+</mo><msub><mi>log</mi><mn>10</mn></msub><msup><mn>10</mn><mrow><mo>−</mo><mn>4</mn></mrow></msup><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><mn>6.18</mn><mo>−</mo><mn>4</mn></math></p>
+</div>
+            <p>あとは<math><msub><mi>log</mi><mn>10</mn></msub><mn>6.18</mn></math>の値を表から読むだけだ。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 3 ― 抜粋の表から値を読む</h3>
-            <p>上の抜粋で a＝6.18 の欄を見ると、log<sub>10</sub>6.18＝0.7903。0.7903 − 4 を計算しよう（答えは負の数になる）。</p>
+            <p>上の抜粋で<math><mi>a</mi><mo>=</mo><mn>6.18</mn></math>の欄を見ると、<math><msub><mi>log</mi><mn>10</mn></msub><mn>6.18</mn><mo>=</mo><mn>0.7903</mn></math>。<br>0.7903 − 4 を計算しよう（答えは負の数になる）。</p>
           </div>
           <div class="step answer">
             <h3>解答 (3)</h3>
-            <p class="big">log<sub>10</sub>0.000618 ＝ −3.2097</p>
-            <p>log<sub>10</sub>0.000618 ＝ log<sub>10</sub>(6.18×10<sup>−4</sup>) ＝ 0.7903 − 4 ＝ <b>−3.2097</b></p>
-            <p class="note">0.7903 − 4 は、0.7903 − 4 ＝ −(4 − 0.7903) ＝ −3.2097 と考えると計算しやすいよ。</p>
+            <p class="cite"><span class="cite-tag">使う定義</span><math><msub><mi>log</mi><mn>10</mn></msub><mi>M</mi><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><mi>a</mi><mo>+</mo><mi>n</mi><mo>(</mo><mn>0</mn><mo>≦</mo><msub><mi>log</mi><mn>10</mn></msub><mi>a</mi><mo>&lt;</mo><mn>1</mn><mo>)</mo></math> ― ここでは a＝6.18、n＝−4 で、表の値 log₁₀6.18＝0.7903 を使う。</p>
+            <p class="big"><math display="block"><msub><mi>log</mi><mn>10</mn></msub><mn>0.000618</mn><mo>=</mo><mo>−</mo><mn>3.2097</mn></math></p>
+            <div class="chain-crow">
+<div class="crow"><math displaystyle="true"><msub><mi>log</mi><mn>10</mn></msub><mn>0.000618</mn><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><mo>(</mo><mn>6.18</mn><mo>×</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>4</mn></mrow></msup><mo>)</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msub><mi>log</mi><mn>10</mn></msub><mn>0.000618</mn></mphantom><mo>=</mo><mn>0.7903</mn><mo>−</mo><mn>4</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msub><mi>log</mi><mn>10</mn></msub><mn>0.000618</mn></mphantom><mo>=</mo><mstyle mathvariant="bold"><mo>−</mo><mn>3.2097</mn></mstyle></math></div>
+</div>
+            <p class="note">0.7903 − 4 は、<math><mn>0.7903</mn><mo>−</mo><mn>4</mn><mo>=</mo><mo>−</mo><mo>(</mo><mn>4</mn><mo>−</mo><mn>0.7903</mn><mo>)</mo><mo>=</mo><mo>−</mo><mn>3.2097</mn></math>と考えると計算しやすいよ。</p>
           </div>
           <p class="prob-done">(3) クリア！　次は「桁数」の話に進もう。</p>
         </div>
@@ -579,15 +667,16 @@
       <section class="card">
         <p>常用対数を使うと、大きな数の<b>桁数</b>が分かる。まず、3 桁の数で考えてみよう。</p>
         <div class="def">
-          <p>自然数 N が <b>3 桁の数</b>であるとは、100≦N＜1000 のこと。10 の累乗で書くと</p>
-          <p style="text-align:center;font-weight:700">10<sup>2</sup> ≦ N ＜ 10<sup>3</sup></p>
+          <p>自然数 N が <b>3 桁の数</b>であるとは、<math><mn>100</mn><mo>≦</mo><mi>N</mi><mo>&lt;</mo><mn>1000</mn></math>のこと。10 の累乗で書くと</p>
+          <p style="text-align:center;font-weight:700"><math display="block"><msup><mn>10</mn><mn>2</mn></msup><mo>≦</mo><mi>N</mi><mo>&lt;</mo><msup><mn>10</mn><mn>3</mn></msup></math></p>
+          <p class="cite"><span class="cite-tag">使う性質</span><math><mi>a</mi><mo>≦</mo><mi>b</mi><mo>⟺</mo><msub><mi>log</mi><mn>10</mn></msub><mi>a</mi><mo>≦</mo><msub><mi>log</mi><mn>10</mn></msub><mi>b</mi></math> ― 底 10 の対数は増加関数なので、ここでは 10²≦N＜10³ の各辺に、不等号の向きを保ったまま常用対数をとる。</p>
           <p>ということだ。この両辺の常用対数をとると、底 10 の対数は増加関数だから、不等号の向きはそのままで</p>
-          <p style="text-align:center;font-weight:700">2 ≦ log<sub>10</sub>N ＜ 3</p>
+          <p style="text-align:center;font-weight:700"><math display="block"><mn>2</mn><mo>≦</mo><msub><mi>log</mi><mn>10</mn></msub><mi>N</mi><mo>&lt;</mo><mn>3</mn></math></p>
           <p>となる。</p>
         </div>
         <p>一般に、桁数 k を使って書くと次のようになる。</p>
-        <p class="formula">N が k 桁の数　⟺　k−1 ≦ log<sub>10</sub>N ＜ k</p>
-        <p><b>ためしてみよう。</b>下のスライダーで桁数 k を変えて、log<sub>10</sub>N の範囲が数直線上でどう動くか確かめよう。</p>
+        <p class="formula">N が k 桁の数　⟺　<math><mi>k</mi><mo>−</mo><mn>1</mn><mo>≦</mo><msub><mi>log</mi><mn>10</mn></msub><mi>N</mi><mo>&lt;</mo><mi>k</mi></math></p>
+        <p><b>ためしてみよう。</b>下のスライダーで桁数 k を変えて、<math><msub><mi>log</mi><mn>10</mn></msub><mi>N</mi></math>の範囲が数直線上でどう動くか確かめよう。</p>
         <div class="slider-row">
           <label for="kSlider">桁数 k</label>
           <input type="range" id="kSlider" min="1" max="6" value="3" step="1" aria-label="桁数kを変えるスライダー" />
@@ -616,8 +705,8 @@
             </svg>
           </div>
         </figure>
-        <p class="slider-state" id="kState">N が 3 桁 ⟺ 10² ≦ N ＜ 10³ ⟺ 2 ≦ log₁₀N ＜ 3</p>
-        <p>ポイントは、<b>log<sub>10</sub>N の整数部分に 1 を足したものが桁数</b>になること。たとえば log<sub>10</sub>N の整数部分が 2 なら、N は 3 桁だ。</p>
+        <p class="slider-state" id="kState">N が 3 桁<math><mo>⟺</mo><msup><mn>10</mn><mn>2</mn></msup><mo>≦</mo><mi>N</mi><mo>&lt;</mo><msup><mn>10</mn><mn>3</mn></msup><mo>⟺</mo><mn>2</mn><mo>≦</mo><mi>log</mi><mo>₁</mo><mo>₀</mo><mi>N</mi><mo>&lt;</mo><mn>3</mn></math></p>
+        <p>ポイントは、<b><math><msub><mi>log</mi><mn>10</mn></msub><mi>N</mi></math>の整数部分に 1 を足したものが桁数</b>になること。たとえば<math><msub><mi>log</mi><mn>10</mn></msub><mi>N</mi></math>の整数部分が 2 なら、N は 3 桁だ。</p>
       </section>
 
       <!-- ================= 例題7 ================= -->
@@ -627,7 +716,7 @@
         <span class="pno">教科書 p.170</span>
       </div>
 
-      <section class="card prob" id="prob-reidai7" data-flow="reidai7" data-label="例題7">
+      <section class="nofig card prob" id="prob-reidai7" data-flow="reidai7" data-label="例題7">
         <div class="prob-head">
           <span class="prob-tag">例題 7</span>
           <div class="dots" aria-hidden="true">
@@ -636,40 +725,48 @@
           <span class="prob-state">ヒント 0 / 4</span>
         </div>
         <div class="qside">
-        <p class="prob-q">3<sup>20</sup> は何桁の数か。ただし、log<sub>10</sub>3＝0.4771 とする。</p>
+        <p class="prob-q"><math><msup><mn>3</mn><mn>20</mn></msup></math> は何桁の数か。ただし、<math><msub><mi>log</mi><mn>10</mn></msub><mn>3</mn><mo>=</mo><mn>0.4771</mn></math>とする。</p>
         </div>
 
         <div class="step hint">
           <h3>ヒント 1 ― まず常用対数をとる</h3>
-          <p>3<sup>20</sup> そのものは大きすぎて計算できない。そこで、両辺ではなく <b>3<sup>20</sup> の常用対数 log<sub>10</sub>3<sup>20</sup></b> を先に求める。</p>
-          <p>累乗の対数は「指数を前に出す」ことができたね：log<sub>10</sub>3<sup>20</sup> ＝ 20 log<sub>10</sub>3。</p>
+            <p class="cite"><span class="cite-tag">使う公式</span><math><msub><mi>log</mi><mn>10</mn></msub><msup><mi>M</mi><mi>r</mi></msup><mo>=</mo><mi>r</mi><msub><mi>log</mi><mn>10</mn></msub><mi>M</mi></math> ― ここでは M＝3、r＝20 として、指数 20 を前に出す。</p>
+          <p><math><msup><mn>3</mn><mn>20</mn></msup></math> そのものは大きすぎて計算できない。<br>そこで、両辺ではなく <b><math><msup><mn>3</mn><mn>20</mn></msup></math> の常用対数<math><msub><mi>log</mi><mn>10</mn></msub><msup><mn>3</mn><mn>20</mn></msup></math></b> を先に求める。</p>
+          <p>累乗の対数は「指数を前に出す」ことができたね：<math><msub><mi>log</mi><mn>10</mn></msub><msup><mn>3</mn><mn>20</mn></msup><mo>=</mo><mn>20</mn><msub><mi>log</mi><mn>10</mn></msub><mn>3</mn></math>。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 与えられた値を代入して計算する</h3>
-          <p>log<sub>10</sub>3＝0.4771 を代入すると</p>
-          <p>20 log<sub>10</sub>3 ＝ 20×0.4771</p>
-          <p>この掛け算をしてみよう（0.4771×20 ＝ 0.4771×2×10 と考えると速い）。</p>
+          <p><math><msub><mi>log</mi><mn>10</mn></msub><mn>3</mn><mo>=</mo><mn>0.4771</mn></math>を代入すると</p>
+          <p><math><mn>20</mn><msub><mi>log</mi><mn>10</mn></msub><mn>3</mn><mo>=</mo><mn>20</mn><mo>×</mo><mn>0.4771</mn></math></p>
+          <p>この掛け算をしてみよう<math><mo>(</mo><mn>0.4771</mn><mo>×</mo><mn>20</mn><mo>=</mo><mn>0.4771</mn><mo>×</mo><mn>2</mn><mo>×</mo><mn>10</mn></math>と考えると速い）。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 3 ― 結果を、整数と整数の間にはさむ</h3>
           <p>計算結果は 9.542 になったはずだ。この数は</p>
           <p style="text-align:center;font-weight:700">9 ＜ 9.542 ＜ 10</p>
-          <p>と、整数 9 と 10 の間にある。つまり　9 ＜ log<sub>10</sub>3<sup>20</sup> ＜ 10　だ。</p>
+          <p>と、整数 9 と 10 の間にある。つまり　<math><mn>9</mn><mo>&lt;</mo><msub><mi>log</mi><mn>10</mn></msub><msup><mn>3</mn><mn>20</mn></msup><mo>&lt;</mo><mn>10</mn></math>　だ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 4 ― 9 と 10 を log の形に戻す</h3>
-          <p>9 ＝ log<sub>10</sub>10<sup>9</sup>、10 ＝ log<sub>10</sub>10<sup>10</sup> と書けるから</p>
-          <p style="text-align:center;font-weight:700">log<sub>10</sub>10<sup>9</sup> ＜ log<sub>10</sub>3<sup>20</sup> ＜ log<sub>10</sub>10<sup>10</sup></p>
-          <p>底 10 の対数は増加関数だから、log を外しても不等号の向きは変わらない。10<sup>9</sup>＜3<sup>20</sup>＜10<sup>10</sup> と分かる。</p>
-          <p>あとは、解説Bの「N が k 桁 ⟺ 10<sup>k−1</sup>≦N＜10<sup>k</sup>」と見比べれば、桁数が決まる。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span><math><mi>a</mi><mo>≦</mo><mi>b</mi><mo>⟺</mo><msub><mi>log</mi><mn>10</mn></msub><mi>a</mi><mo>≦</mo><msub><mi>log</mi><mn>10</mn></msub><mi>b</mi></math> ― 底 10 の対数は増加関数なので、ここでは log を外しても不等号の向きが変わらないことを使う。</p>
+          <p><math><mn>9</mn><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><msup><mn>10</mn><mn>9</mn></msup></math>、<math><mn>10</mn><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><msup><mn>10</mn><mn>10</mn></msup></math> と書けるから</p>
+          <p class="mq-wide" style="text-align:center;font-weight:700"><math display="block"><msub><mi>log</mi><mn>10</mn></msub><msup><mn>10</mn><mn>9</mn></msup><mo>&lt;</mo><msub><mi>log</mi><mn>10</mn></msub><msup><mn>3</mn><mn>20</mn></msup><mo>&lt;</mo><msub><mi>log</mi><mn>10</mn></msub><msup><mn>10</mn><mn>10</mn></msup></math></p>
+<p class="formula mq-narrow" style="text-align:center;font-weight:700;font-size:15px"><math display="block"><msub><mi>log</mi><mn>10</mn></msub><msup><mn>10</mn><mn>9</mn></msup><mo>&lt;</mo><msub><mi>log</mi><mn>10</mn></msub><msup><mn>3</mn><mn>20</mn></msup><mo>&lt;</mo><msub><mi>log</mi><mn>10</mn></msub><msup><mn>10</mn><mn>10</mn></msup></math></p>
+          <p>底 10 の対数は増加関数だから、log を外しても不等号の向きは変わらない。<br><math><msup><mn>10</mn><mn>9</mn></msup><mo>&lt;</mo><msup><mn>3</mn><mn>20</mn></msup><mo>&lt;</mo><msup><mn>10</mn><mn>10</mn></msup></math> と分かる。</p>
+          <p>あとは、解説Bの「N が k 桁<math><mo>⟺</mo><msup><mn>10</mn><mrow><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msup><mo>≦</mo><mi>N</mi><mo>&lt;</mo><msup><mn>10</mn><mi>k</mi></msup></math>」と見比べれば、桁数が決まる。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
-          <p class="big">3<sup>20</sup> は 10 桁の数である</p>
-          <p>log<sub>10</sub>3<sup>20</sup> ＝ 20 log<sub>10</sub>3 ＝ 20×0.4771 ＝ 9.542</p>
-          <p>9 ＜ 9.542 ＜ 10 だから　log<sub>10</sub>10<sup>9</sup> ＜ log<sub>10</sub>3<sup>20</sup> ＜ log<sub>10</sub>10<sup>10</sup>、よって 10<sup>9</sup> ＜ 3<sup>20</sup> ＜ 10<sup>10</sup></p>
-          <p>したがって、3<sup>20</sup> は <b>10 桁</b>の数である。</p>
-          <p class="note">log<sub>10</sub>3<sup>20</sup> の整数部分は 9。9＋1＝10 が桁数、という見方でも答えは同じだね。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span><math><msup><mn>10</mn><mrow><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msup><mo>≦</mo><mi>N</mi><mo>&lt;</mo><msup><mn>10</mn><mi>k</mi></msup></math> ― N が k 桁の範囲で、ここでは log₁₀3²⁰＝9.542 から 10⁹＜3²⁰＜10¹⁰ となり、k＝10 にあたる。</p>
+          <p class="big"><math><msup><mn>3</mn><mn>20</mn></msup></math> は 10 桁の数である</p>
+          <div class="chain-crow">
+<div class="crow"><math displaystyle="true"><msub><mi>log</mi><mn>10</mn></msub><msup><mn>3</mn><mn>20</mn></msup><mo>=</mo><mn>20</mn><msub><mi>log</mi><mn>10</mn></msub><mn>3</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msub><mi>log</mi><mn>10</mn></msub><msup><mn>3</mn><mn>20</mn></msup></mphantom><mo>=</mo><mn>20</mn><mo>×</mo><mn>0.4771</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msub><mi>log</mi><mn>10</mn></msub><msup><mn>3</mn><mn>20</mn></msup></mphantom><mo>=</mo><mn>9.542</mn></math></div>
+</div>
+          <p>9 ＜ 9.542 ＜ 10 だから　<math><msub><mi>log</mi><mn>10</mn></msub><msup><mn>10</mn><mn>9</mn></msup><mo>&lt;</mo><msub><mi>log</mi><mn>10</mn></msub><msup><mn>3</mn><mn>20</mn></msup><mo>&lt;</mo><msub><mi>log</mi><mn>10</mn></msub><msup><mn>10</mn><mn>10</mn></msup></math>、よって<math><msup><mn>10</mn><mn>9</mn></msup><mo>&lt;</mo><msup><mn>3</mn><mn>20</mn></msup><mo>&lt;</mo><msup><mn>10</mn><mn>10</mn></msup></math></p>
+          <p>したがって、<math><msup><mn>3</mn><mn>20</mn></msup></math> は <b>10 桁</b>の数である。</p>
+          <p class="note"><math><msub><mi>log</mi><mn>10</mn></msub><msup><mn>3</mn><mn>20</mn></msup></math> の整数部分は 9。<br><math><mn>9</mn><mo>+</mo><mn>1</mn><mo>=</mo><mn>10</mn></math>が桁数、という見方でも答えは同じだね。</p>
         </div>
         <p class="prob-done">例題7 クリア！　次は練習25に挑戦しよう。</p>
       </section>
@@ -681,13 +778,13 @@
         <span class="pno">教科書 p.171</span>
       </div>
 
-      <section class="card prob" id="prob-ren25">
+      <section class="nofig card prob" id="prob-ren25">
         <div class="prob-head">
           <span class="prob-tag ren">練習 25</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
         <div class="qside">
-        <p class="prob-q">次の数は何桁の数か。ただし、log<sub>10</sub>2＝0.3010 とする。</p>
+        <p class="prob-q">次の数は何桁の数か。ただし、<math><msub><mi>log</mi><mn>10</mn></msub><mn>2</mn><mo>=</mo><mn>0.3010</mn></math>とする。</p>
         </div>
 
         <div class="tabs" role="tablist" aria-label="練習25の小問">
@@ -696,56 +793,69 @@
         </div>
 
         <!-- (1) -->
-        <div class="tabpanel show" id="panel-ren25-1" data-flow="ren25-1" data-label="練習25 (1)">
+        <div class="nofig tabpanel show" id="panel-ren25-1" data-flow="ren25-1" data-label="練習25 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1) 2<sup>20</sup></span>
+            <span class="sub prob-q" style="margin:0"><math><mo>(</mo><mn>1</mn><mo>)</mo><msup><mn>2</mn><mn>20</mn></msup></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― 常用対数をとる</h3>
-            <p>例題7と同じ流れだ。log<sub>10</sub>2<sup>20</sup> ＝ 20 log<sub>10</sub>2 と、指数 20 を前に出そう。</p>
+            <p class="cite"><span class="cite-tag">使う公式</span><math><msub><mi>log</mi><mn>10</mn></msub><msup><mi>M</mi><mi>r</mi></msup><mo>=</mo><mi>r</mi><msub><mi>log</mi><mn>10</mn></msub><mi>M</mi></math> ― ここでは M＝2、r＝20 として、指数 20 を前に出す。</p>
+            <p>例題7と同じ流れだ。<math><msub><mi>log</mi><mn>10</mn></msub><msup><mn>2</mn><mn>20</mn></msup><mo>=</mo><mn>20</mn><msub><mi>log</mi><mn>10</mn></msub><mn>2</mn></math>と、指数 20 を前に出そう。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 値を代入して計算する</h3>
-            <p>log<sub>10</sub>2＝0.3010 を代入して、20×0.3010 を計算しよう。</p>
+            <p><math><msub><mi>log</mi><mn>10</mn></msub><mn>2</mn><mo>=</mo><mn>0.3010</mn></math>を代入して、<math><mn>20</mn><mo>×</mo><mn>0.3010</mn></math>を計算しよう。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 3 ― 整数と整数の間にはさむ</h3>
+            <p class="cite"><span class="cite-tag">使う性質</span><math><msup><mn>10</mn><mrow><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msup><mo>≦</mo><mi>N</mi><mo>&lt;</mo><msup><mn>10</mn><mi>k</mi></msup></math> ― N が k 桁の範囲で、ここでは 10⁶＜2²⁰＜10⁷ が k＝7 の場合にあたる。</p>
             <p>計算結果は 6.020。これは 6 と 7 の間にあるから</p>
-            <p style="text-align:center;font-weight:700">log<sub>10</sub>10<sup>6</sup> ＜ log<sub>10</sub>2<sup>20</sup> ＜ log<sub>10</sub>10<sup>7</sup></p>
-            <p>log を外すと、2<sup>20</sup> が 10<sup>6</sup> と 10<sup>7</sup> の間にあることが分かる。桁数は何桁になるかな？</p>
+            <p class="mq-wide" style="text-align:center;font-weight:700"><math display="block"><msub><mi>log</mi><mn>10</mn></msub><msup><mn>10</mn><mn>6</mn></msup><mo>&lt;</mo><msub><mi>log</mi><mn>10</mn></msub><msup><mn>2</mn><mn>20</mn></msup><mo>&lt;</mo><msub><mi>log</mi><mn>10</mn></msub><msup><mn>10</mn><mn>7</mn></msup></math></p>
+<p class="formula mq-narrow" style="text-align:center;font-weight:700;font-size:15px"><math display="block"><msub><mi>log</mi><mn>10</mn></msub><msup><mn>10</mn><mn>6</mn></msup><mo>&lt;</mo><msub><mi>log</mi><mn>10</mn></msub><msup><mn>2</mn><mn>20</mn></msup><mo>&lt;</mo><msub><mi>log</mi><mn>10</mn></msub><msup><mn>10</mn><mn>7</mn></msup></math></p>
+            <p>log を外すと、<math><msup><mn>2</mn><mn>20</mn></msup></math> が<math><msup><mn>10</mn><mn>6</mn></msup></math> と<math><msup><mn>10</mn><mn>7</mn></msup></math> の間にあることが分かる。<br>桁数は何桁になるかな？</p>
           </div>
           <div class="step answer">
             <h3>解答 (1)</h3>
-            <p class="big">2<sup>20</sup> は 7 桁の数である</p>
-            <p>log<sub>10</sub>2<sup>20</sup> ＝ 20 log<sub>10</sub>2 ＝ 20×0.3010 ＝ 6.020</p>
-            <p>よって 10<sup>6</sup> ＜ 2<sup>20</sup> ＜ 10<sup>7</sup> だから、2<sup>20</sup> は <b>7 桁</b>の数である。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span><math><mi>k</mi><mo>−</mo><mn>1</mn><mo>≦</mo><msub><mi>log</mi><mn>10</mn></msub><mi>N</mi><mo>&lt;</mo><mi>k</mi></math> ― ここでは log₁₀2²⁰＝6.020 の整数部分 6 に 1 を足して、7 桁と読む。</p>
+            <p class="big"><math><msup><mn>2</mn><mn>20</mn></msup></math> は 7 桁の数である</p>
+            <div class="chain-crow">
+<div class="crow"><math displaystyle="true"><msub><mi>log</mi><mn>10</mn></msub><msup><mn>2</mn><mn>20</mn></msup><mo>=</mo><mn>20</mn><msub><mi>log</mi><mn>10</mn></msub><mn>2</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msub><mi>log</mi><mn>10</mn></msub><msup><mn>2</mn><mn>20</mn></msup></mphantom><mo>=</mo><mn>20</mn><mo>×</mo><mn>0.3010</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msub><mi>log</mi><mn>10</mn></msub><msup><mn>2</mn><mn>20</mn></msup></mphantom><mo>=</mo><mn>6.020</mn></math></div>
+</div>
+            <p>よって<math><msup><mn>10</mn><mn>6</mn></msup><mo>&lt;</mo><msup><mn>2</mn><mn>20</mn></msup><mo>&lt;</mo><msup><mn>10</mn><mn>7</mn></msup></math> だから、<math><msup><mn>2</mn><mn>20</mn></msup></math> は <b>7 桁</b>の数である。</p>
           </div>
           <p class="prob-done">(1) クリア！　(2) のタブも開いてみよう。</p>
         </div>
 
         <!-- (2) -->
-        <div class="tabpanel" id="panel-ren25-2" data-flow="ren25-2" data-label="練習25 (2)">
+        <div class="nofig tabpanel" id="panel-ren25-2" data-flow="ren25-2" data-label="練習25 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2) 2<sup>30</sup></span>
+            <span class="sub prob-q" style="margin:0"><math><mo>(</mo><mn>2</mn><mo>)</mo><msup><mn>2</mn><mn>30</mn></msup></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― 常用対数をとって計算する</h3>
-            <p>log<sub>10</sub>2<sup>30</sup> ＝ 30 log<sub>10</sub>2 ＝ 30×0.3010 を計算しよう。</p>
+            <p><math><msub><mi>log</mi><mn>10</mn></msub><msup><mn>2</mn><mn>30</mn></msup><mo>=</mo><mn>30</mn><msub><mi>log</mi><mn>10</mn></msub><mn>2</mn><mo>=</mo><mn>30</mn><mo>×</mo><mn>0.3010</mn></math>を計算しよう。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 整数と整数の間にはさむ</h3>
-            <p>計算結果は 9.030。9 と 10 の間にあるから、log<sub>10</sub>2<sup>30</sup> は log<sub>10</sub>10<sup>9</sup> と log<sub>10</sub>10<sup>10</sup> の間にある。</p>
+            <p>計算結果は 9.030。<br>9 と 10 の間にあるから、<math><msub><mi>log</mi><mn>10</mn></msub><msup><mn>2</mn><mn>30</mn></msup></math> は<math><msub><mi>log</mi><mn>10</mn></msub><msup><mn>10</mn><mn>9</mn></msup></math> と<math><msub><mi>log</mi><mn>10</mn></msub><msup><mn>10</mn><mn>10</mn></msup></math> の間にある。</p>
             <p>log を外して 10 の累乗ではさむと、桁数が決まる。</p>
           </div>
           <div class="step answer">
             <h3>解答 (2)</h3>
-            <p class="big">2<sup>30</sup> は 10 桁の数である</p>
-            <p>log<sub>10</sub>2<sup>30</sup> ＝ 30 log<sub>10</sub>2 ＝ 30×0.3010 ＝ 9.030</p>
-            <p>よって 10<sup>9</sup> ＜ 2<sup>30</sup> ＜ 10<sup>10</sup> だから、2<sup>30</sup> は <b>10 桁</b>の数である。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span><math><mi>k</mi><mo>−</mo><mn>1</mn><mo>≦</mo><msub><mi>log</mi><mn>10</mn></msub><mi>N</mi><mo>&lt;</mo><mi>k</mi></math> ― ここでは log₁₀2³⁰＝9.030 の整数部分 9 に 1 を足して、10 桁と読む。</p>
+            <p class="big"><math><msup><mn>2</mn><mn>30</mn></msup></math> は 10 桁の数である</p>
+            <div class="chain-crow">
+<div class="crow"><math displaystyle="true"><msub><mi>log</mi><mn>10</mn></msub><msup><mn>2</mn><mn>30</mn></msup><mo>=</mo><mn>30</mn><msub><mi>log</mi><mn>10</mn></msub><mn>2</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msub><mi>log</mi><mn>10</mn></msub><msup><mn>2</mn><mn>30</mn></msup></mphantom><mo>=</mo><mn>30</mn><mo>×</mo><mn>0.3010</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msub><mi>log</mi><mn>10</mn></msub><msup><mn>2</mn><mn>30</mn></msup></mphantom><mo>=</mo><mn>9.030</mn></math></div>
+</div>
+            <p>よって<math><msup><mn>10</mn><mn>9</mn></msup><mo>&lt;</mo><msup><mn>2</mn><mn>30</mn></msup><mo>&lt;</mo><msup><mn>10</mn><mn>10</mn></msup></math> だから、<math><msup><mn>2</mn><mn>30</mn></msup></math> は <b>10 桁</b>の数である。</p>
           </div>
           <p class="prob-done">(2) クリア！　次は応用例題3に挑戦しよう。</p>
         </div>
@@ -758,7 +868,7 @@
         <span class="pno">教科書 p.171</span>
       </div>
 
-      <section class="card prob" id="prob-ouyou3" data-flow="ouyou3" data-label="応用例題3">
+      <section class="nofig card prob" id="prob-ouyou3" data-flow="ouyou3" data-label="応用例題3">
         <div class="prob-head">
           <span class="prob-tag oyo">応用例題 3</span>
           <div class="dots" aria-hidden="true">
@@ -767,28 +877,31 @@
           <span class="prob-state">ヒント 0 / 4</span>
         </div>
         <div class="qside">
-        <p class="prob-q">2<sup>n</sup> が 10 桁の数となるような自然数 n をすべて求めよ。ただし、log<sub>10</sub>2＝0.3010 とする。</p>
+        <p class="prob-q"><math><msup><mn>2</mn><mi>n</mi></msup></math> が 10 桁の数となるような自然数 n をすべて求めよ。ただし、<math><msub><mi>log</mi><mn>10</mn></msub><mn>2</mn><mo>=</mo><mn>0.3010</mn></math>とする。</p>
         </div>
 
         <div class="step hint">
           <h3>ヒント 1 ― 「10 桁」を不等式で表す</h3>
-          <p>10 桁の数は、いちばん小さいもので 10<sup>9</sup>（1 のあとに 0 が 9 個）、いちばん大きいものでも 10<sup>10</sup> 未満だ。</p>
-          <p>つまり　2<sup>n</sup> が 10 桁 ⟺ <b>10<sup>9</sup> ≦ 2<sup>n</sup> ＜ 10<sup>10</sup></b>。左側は「≦」で、10<sup>9</sup> ちょうども 10 桁に含まれることに注意しよう。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span><math><msup><mn>10</mn><mrow><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msup><mo>≦</mo><mi>N</mi><mo>&lt;</mo><msup><mn>10</mn><mi>k</mi></msup></math> ― N が k 桁の範囲で、ここでは k＝10 として 10⁹≦2ⁿ＜10¹⁰ と表す。</p>
+          <p>10 桁の数は、いちばん小さいもので<math><msup><mn>10</mn><mn>9</mn></msup><mo>(</mo><mn>1</mn></math>のあとに 0 が 9 個）、<br>いちばん大きいものでも<math><msup><mn>10</mn><mn>10</mn></msup></math> 未満だ。</p>
+          <p>つまり　<math><msup><mn>2</mn><mi>n</mi></msup></math> が 10 桁<math><mo>⟺</mo></math><b><math><msup><mn>10</mn><mn>9</mn></msup><mo>≦</mo><msup><mn>2</mn><mi>n</mi></msup><mo>&lt;</mo><msup><mn>10</mn><mn>10</mn></msup></math></b>。左側は「≦」で、<math><msup><mn>10</mn><mn>9</mn></msup></math> ちょうども 10 桁に含まれることに注意しよう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 3 つの辺の常用対数をとる</h3>
-          <p>10<sup>9</sup> ≦ 2<sup>n</sup> ＜ 10<sup>10</sup> の常用対数をとると、左端は log<sub>10</sub>10<sup>9</sup>＝9、右端は log<sub>10</sub>10<sup>10</sup>＝10、真ん中は log<sub>10</sub>2<sup>n</sup>＝n log<sub>10</sub>2 になる。</p>
-          <p>log<sub>10</sub>2＝0.3010 を使うと、不等式は　<b>9 ≦ 0.3010n ＜ 10</b>　となる。</p>
+            <p class="cite"><span class="cite-tag">使う公式</span><math><msub><mi>log</mi><mn>10</mn></msub><msup><mi>M</mi><mi>r</mi></msup><mo>=</mo><mi>r</mi><msub><mi>log</mi><mn>10</mn></msub><mi>M</mi></math> ― ここでは真ん中の辺 2ⁿ にあてはめて、指数 n を前に出す（両端は log₁₀10ⁿ＝n で 9 と 10 になる）。</p>
+          <p><math><msup><mn>10</mn><mn>9</mn></msup><mo>≦</mo><msup><mn>2</mn><mi>n</mi></msup><mo>&lt;</mo><msup><mn>10</mn><mn>10</mn></msup></math> の常用対数をとると、左端は<math><msub><mi>log</mi><mn>10</mn></msub><msup><mn>10</mn><mn>9</mn></msup><mo>=</mo><mn>9</mn></math>、<br>右端は<math><msub><mi>log</mi><mn>10</mn></msub><msup><mn>10</mn><mn>10</mn></msup><mo>=</mo><mn>10</mn></math>、真ん中は<math><msub><mi>log</mi><mn>10</mn></msub><msup><mn>2</mn><mi>n</mi></msup><mo>=</mo><mi>n</mi><msub><mi>log</mi><mn>10</mn></msub><mn>2</mn></math>になる。</p>
+          <p><math><msub><mi>log</mi><mn>10</mn></msub><mn>2</mn><mo>=</mo><mn>0.3010</mn></math>を使うと、不等式は　<b><math><mn>9</mn><mo>≦</mo><mn>0.3010</mn><mi>n</mi><mo>&lt;</mo><mn>10</mn></math></b>　となる。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 3 ― 0.3010 で割る</h3>
-          <p>0.3010 は<b>正の数</b>だから、3 つの辺をすべて 0.3010 で割っても、不等号の向きは変わらない。</p>
-          <p>9 ≦ 0.3010n ＜ 10　の両側を割ると　9/0.3010 ≦ n ＜ 10/0.3010　となる。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span><math><mi>c</mi><mo>&gt;</mo><mn>0</mn></math> ― 正の数で割っても不等号の向きは変わらない。ここでは c＝0.3010 として 3 つの辺を割る。</p>
+          <p>0.3010 は<b>正の数</b>だから、<br>3 つの辺をすべて 0.3010 で割っても、不等号の向きは変わらない。</p>
+          <p><math><mn>9</mn><mo>≦</mo><mn>0.3010</mn><mi>n</mi><mo>&lt;</mo><mn>10</mn></math>　の両側を割ると　<math><mfrac><mn>9</mn><mn>0.3010</mn></mfrac><mo>≦</mo><mi>n</mi><mo>&lt;</mo><mfrac><mn>10</mn><mn>0.3010</mn></mfrac></math>　となる。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 4 ― 割り算をして、範囲の中の自然数を拾う</h3>
-          <p>9÷0.3010＝29.9…、10÷0.3010＝33.2… だから、不等式は</p>
-          <p style="text-align:center;font-weight:700">29.9… ≦ n ＜ 33.2…</p>
+          <p><math><mn>9</mn><mo>÷</mo><mn>0.3010</mn><mo>=</mo><mn>29.9</mn><mo>…</mo></math>、<math><mn>10</mn><mo>÷</mo><mn>0.3010</mn><mo>=</mo><mn>33.2</mn><mo>…</mo></math>だから、不等式は</p>
+          <p style="text-align:center;font-weight:700"><math display="block"><mn>29.9</mn><mo>…</mo><mo>≦</mo><mi>n</mi><mo>&lt;</mo><mn>33.2</mn><mo>…</mo></math></p>
           <figure>
             <div class="figbox">
               <svg viewBox="0 0 520 92" role="img" aria-label="nの数直線。29.9以上33.2未満の範囲に、自然数30、31、32、33が入る図">
@@ -819,11 +932,12 @@
         </div>
         <div class="step answer">
           <h3>解答</h3>
-          <p class="big">n ＝ 30, 31, 32, 33</p>
-          <p>2<sup>n</sup> が 10 桁 ⟺ 10<sup>9</sup> ≦ 2<sup>n</sup> ＜ 10<sup>10</sup></p>
-          <p>常用対数をとると　9 ≦ n log<sub>10</sub>2 ＜ 10。log<sub>10</sub>2＝0.3010＞0 だから、0.3010 で割って</p>
-          <p>9/0.3010 ≦ n ＜ 10/0.3010　すなわち　29.9… ≦ n ＜ 33.2…</p>
-          <p>この範囲にある自然数は <b>n＝30, 31, 32, 33</b> の 4 つである。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span><math><mi>k</mi><mo>−</mo><mn>1</mn><mo>≦</mo><msub><mi>log</mi><mn>10</mn></msub><mi>N</mi><mo>&lt;</mo><mi>k</mi></math> ― ここでは 2ⁿ が 10 桁である条件を、9≦log₁₀2ⁿ＜10 という log の範囲としてたどる。</p>
+          <p class="big"><math display="block"><mi>n</mi><mo>=</mo><mn>30</mn><mo>,</mo><mn>31</mn><mo>,</mo><mn>32</mn><mo>,</mo><mn>33</mn></math></p>
+          <p><math><msup><mn>2</mn><mi>n</mi></msup></math> が 10 桁<math><mo>⟺</mo><msup><mn>10</mn><mn>9</mn></msup><mo>≦</mo><msup><mn>2</mn><mi>n</mi></msup><mo>&lt;</mo><msup><mn>10</mn><mn>10</mn></msup></math></p>
+          <p>常用対数をとると　<math><mn>9</mn><mo>≦</mo><mi>n</mi><msub><mi>log</mi><mn>10</mn></msub><mn>2</mn><mo>&lt;</mo><mn>10</mn></math>。<math><msub><mi>log</mi><mn>10</mn></msub><mn>2</mn><mo>=</mo><mn>0.3010</mn><mo>&gt;</mo><mn>0</mn></math>だから、<br>0.3010 で割って</p>
+          <p><math><mfrac><mn>9</mn><mn>0.3010</mn></mfrac><mo>≦</mo><mi>n</mi><mo>&lt;</mo><mfrac><mn>10</mn><mn>0.3010</mn></mfrac></math>　すなわち　<math><mn>29.9</mn><mo>…</mo><mo>≦</mo><mi>n</mi><mo>&lt;</mo><mn>33.2</mn><mo>…</mo></math></p>
+          <p>この範囲にある自然数は <b><math><mi>n</mi><mo>=</mo><mn>30</mn><mo>,</mo><mn>31</mn><mo>,</mo><mn>32</mn><mo>,</mo><mn>33</mn></math></b> の 4 つである。</p>
         </div>
         <p class="prob-done">応用例題3 クリア！　最後は練習26に挑戦しよう。</p>
       </section>
@@ -835,7 +949,7 @@
         <span class="pno">教科書 p.171</span>
       </div>
 
-      <section class="card prob" id="prob-ren26" data-flow="ren26" data-label="練習26">
+      <section class="nofig card prob" id="prob-ren26" data-flow="ren26" data-label="練習26">
         <div class="prob-head">
           <span class="prob-tag ren">練習 26</span>
           <div class="dots" aria-hidden="true">
@@ -844,36 +958,40 @@
           <span class="prob-state">ヒント 0 / 4</span>
         </div>
         <div class="qside">
-        <p class="prob-q">3<sup>n</sup> が 8 桁の数となるような自然数 n をすべて求めよ。ただし、log<sub>10</sub>3＝0.4771 とする。</p>
+        <p class="prob-q"><math><msup><mn>3</mn><mi>n</mi></msup></math> が 8 桁の数となるような自然数 n をすべて求めよ。ただし、<math><msub><mi>log</mi><mn>10</mn></msub><mn>3</mn><mo>=</mo><mn>0.4771</mn></math>とする。</p>
         </div>
 
         <div class="step hint">
           <h3>ヒント 1 ― 「8 桁」を不等式で表す</h3>
-          <p>8 桁の数は、10<sup>7</sup> 以上 10<sup>8</sup> 未満だ（7 桁の最大が 10<sup>7</sup>−1 であることから確かめよう）。</p>
-          <p>つまり　3<sup>n</sup> が 8 桁 ⟺ <b>10<sup>7</sup> ≦ 3<sup>n</sup> ＜ 10<sup>8</sup></b>。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span><math><msup><mn>10</mn><mrow><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msup><mo>≦</mo><mi>N</mi><mo>&lt;</mo><msup><mn>10</mn><mi>k</mi></msup></math> ― N が k 桁の範囲で、ここでは k＝8 として 10⁷≦3ⁿ＜10⁸ と表す。</p>
+          <p>8 桁の数は、<math><msup><mn>10</mn><mn>7</mn></msup></math> 以上<math><msup><mn>10</mn><mn>8</mn></msup></math> 未満だ<br>（7 桁の最大が<math><msup><mn>10</mn><mn>7</mn></msup><mo>−</mo><mn>1</mn></math>であることから確かめよう）。</p>
+          <p>つまり　<math><msup><mn>3</mn><mi>n</mi></msup></math> が 8 桁<math><mo>⟺</mo></math><b><math><msup><mn>10</mn><mn>7</mn></msup><mo>≦</mo><msup><mn>3</mn><mi>n</mi></msup><mo>&lt;</mo><msup><mn>10</mn><mn>8</mn></msup></math></b>。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 3 つの辺の常用対数をとる</h3>
-          <p>常用対数をとると、左端は 7、右端は 8、真ん中は n log<sub>10</sub>3 になる。</p>
-          <p>log<sub>10</sub>3＝0.4771 を使うと、不等式は　<b>7 ≦ 0.4771n ＜ 8</b>　となる。</p>
+            <p class="cite"><span class="cite-tag">使う公式</span><math><msub><mi>log</mi><mn>10</mn></msub><msup><mi>M</mi><mi>r</mi></msup><mo>=</mo><mi>r</mi><msub><mi>log</mi><mn>10</mn></msub><mi>M</mi></math> ― ここでは真ん中の辺 3ⁿ にあてはめて、指数 n を前に出す（両端は log₁₀10ⁿ＝n で 7 と 8 になる）。</p>
+          <p>常用対数をとると、左端は 7、右端は 8、真ん中は<math><mi>n</mi><msub><mi>log</mi><mn>10</mn></msub><mn>3</mn></math>になる。</p>
+          <p><math><msub><mi>log</mi><mn>10</mn></msub><mn>3</mn><mo>=</mo><mn>0.4771</mn></math>を使うと、不等式は　<b><math><mn>7</mn><mo>≦</mo><mn>0.4771</mn><mi>n</mi><mo>&lt;</mo><mn>8</mn></math></b>　となる。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 3 ― 0.4771 で割る</h3>
+            <p class="cite"><span class="cite-tag">使う性質</span><math><mi>c</mi><mo>&gt;</mo><mn>0</mn></math> ― 正の数で割っても不等号の向きは変わらない。ここでは c＝0.4771 として 3 つの辺を割る。</p>
           <p>0.4771 は正の数だから、割っても不等号の向きは変わらない。</p>
-          <p>7 ≦ 0.4771n ＜ 8　は　7/0.4771 ≦ n ＜ 8/0.4771　となる。</p>
+          <p><math><mn>7</mn><mo>≦</mo><mn>0.4771</mn><mi>n</mi><mo>&lt;</mo><mn>8</mn></math>　は　<math><mfrac><mn>7</mn><mn>0.4771</mn></mfrac><mo>≦</mo><mi>n</mi><mo>&lt;</mo><mfrac><mn>8</mn><mn>0.4771</mn></mfrac></math>　となる。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 4 ― 割り算をして、範囲の中の自然数を拾う</h3>
-          <p>7÷0.4771 と 8÷0.4771 を計算してみよう。それぞれ 14.6… と 16.7… になるはずだ。</p>
-          <p>14.6… ≦ n ＜ 16.7… の範囲にある自然数は、いくつあるかな？</p>
+          <p>7÷0.4771 と 8÷0.4771 を計算してみよう。<br>それぞれ 14.6… と 16.7… になるはずだ。</p>
+          <p><math><mn>14.6</mn><mo>…</mo><mo>≦</mo><mi>n</mi><mo>&lt;</mo><mn>16.7</mn><mo>…</mo></math>の範囲にある自然数は、いくつあるかな？</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
-          <p class="big">n ＝ 15, 16</p>
-          <p>3<sup>n</sup> が 8 桁 ⟺ 10<sup>7</sup> ≦ 3<sup>n</sup> ＜ 10<sup>8</sup></p>
-          <p>常用対数をとると　7 ≦ 0.4771n ＜ 8。0.4771 で割って</p>
-          <p>7/0.4771 ≦ n ＜ 8/0.4771　すなわち　14.6… ≦ n ＜ 16.7…</p>
-          <p>この範囲にある自然数は <b>n＝15, 16</b> の 2 つである。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span><math><mi>k</mi><mo>−</mo><mn>1</mn><mo>≦</mo><msub><mi>log</mi><mn>10</mn></msub><mi>N</mi><mo>&lt;</mo><mi>k</mi></math> ― ここでは 3ⁿ が 8 桁である条件を、7≦log₁₀3ⁿ＜8 という log の範囲としてたどる。</p>
+          <p class="big"><math display="block"><mi>n</mi><mo>=</mo><mn>15</mn><mo>,</mo><mn>16</mn></math></p>
+          <p><math><msup><mn>3</mn><mi>n</mi></msup></math> が 8 桁<math><mo>⟺</mo><msup><mn>10</mn><mn>7</mn></msup><mo>≦</mo><msup><mn>3</mn><mi>n</mi></msup><mo>&lt;</mo><msup><mn>10</mn><mn>8</mn></msup></math></p>
+          <p>常用対数をとると　<math><mn>7</mn><mo>≦</mo><mn>0.4771</mn><mi>n</mi><mo>&lt;</mo><mn>8</mn></math>。<br>0.4771 で割って</p>
+          <p><math><mfrac><mn>7</mn><mn>0.4771</mn></mfrac><mo>≦</mo><mi>n</mi><mo>&lt;</mo><mfrac><mn>8</mn><mn>0.4771</mn></mfrac></math>　すなわち　<math><mn>14.6</mn><mo>…</mo><mo>≦</mo><mi>n</mi><mo>&lt;</mo><mn>16.7</mn><mo>…</mo></math></p>
+          <p>この範囲にある自然数は <b><math><mi>n</mi><mo>=</mo><mn>15</mn><mo>,</mo><mn>16</mn></math></b> の 2 つである。</p>
         </div>
         <p class="prob-done">練習26 クリア！　下のまとめで確認しよう。</p>
       </section>
@@ -882,10 +1000,10 @@
       <section class="card summary">
         <h2>この項のポイント</h2>
         <ul>
-          <li><b>常用対数は「10 を底とする対数」。</b>正の数 M は M＝a×10<sup>n</sup>（1≦a＜10）と表せて、log<sub>10</sub>M＝log<sub>10</sub>a＋n（0≦log<sub>10</sub>a＜1）。</li>
-          <li><b>表にない数も、a×10<sup>n</sup> の形に直せば計算できる。</b>表で log<sub>10</sub>a を読み、n を足す（n が負なら引く）。</li>
-          <li><b>桁数の判定：N が k 桁 ⟺ k−1 ≦ log<sub>10</sub>N ＜ k。</b>log<sub>10</sub>N の整数部分に 1 を足したものが桁数になる。</li>
-          <li><b>「n を求める」問題は逆向きにたどる。</b>桁数の条件を 10 の累乗の不等式に直し、常用対数をとってから、log<sub>10</sub>（底の数）の値で割る。</li>
+          <li><p class="cite"><span class="cite-tag">使う定義</span><math><msub><mi>log</mi><mn>10</mn></msub><mi>M</mi><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><mi>a</mi><mo>+</mo><mi>n</mi><mo>(</mo><mn>0</mn><mo>≦</mo><msub><mi>log</mi><mn>10</mn></msub><mi>a</mi><mo>&lt;</mo><mn>1</mn><mo>)</mo></math> ― 正の数 M を a×10ⁿ と表したときの形で、整数部分 n と小数部分 log₁₀a に分かれる。</p><b>常用対数は「10 を底とする対数」。</b><br>正の数 M は<math><mi>M</mi><mo>=</mo><mi>a</mi><mo>×</mo><msup><mn>10</mn><mi>n</mi></msup><mo>(</mo><mn>1</mn><mo>≦</mo><mi>a</mi><mo>&lt;</mo><mn>10</mn><mo>)</mo></math>と表せて、<math><msub><mi>log</mi><mn>10</mn></msub><mi>M</mi><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><mi>a</mi><mo>+</mo><mi>n</mi><mo>(</mo><mn>0</mn><mo>≦</mo><msub><mi>log</mi><mn>10</mn></msub><mi>a</mi><mo>&lt;</mo><mn>1</mn><mo>)</mo></math>。</li>
+          <li><b>表にない数も、<math><mi>a</mi><mo>×</mo><msup><mn>10</mn><mi>n</mi></msup></math> の形に直せば計算できる。</b><br>表で<math><msub><mi>log</mi><mn>10</mn></msub><mi>a</mi></math>を読み、n を足す（n が負なら引く）。</li>
+          <li><p class="cite"><span class="cite-tag">使う性質</span><math><mi>k</mi><mo>−</mo><mn>1</mn><mo>≦</mo><msub><mi>log</mi><mn>10</mn></msub><mi>N</mi><mo>&lt;</mo><mi>k</mi></math> ― log₁₀N の整数部分に 1 を足したものが桁数になる、という読み方のもとになる関係。</p><b>桁数の判定：N が k 桁<math><mo>⟺</mo><mi>k</mi><mo>−</mo><mn>1</mn><mo>≦</mo><msub><mi>log</mi><mn>10</mn></msub><mi>N</mi><mo>&lt;</mo><mi>k</mi></math>。</b><br><math><msub><mi>log</mi><mn>10</mn></msub><mi>N</mi></math>の整数部分に 1 を足したものが桁数になる。</li>
+          <li><b>「n を求める」問題は逆向きにたどる。</b><br>桁数の条件を 10 の累乗の不等式に直し、常用対数をとってから、<math><msub><mi>log</mi><mn>10</mn></msub><mo>(</mo></math>底の数）の値で割る。</li>
         </ul>
       </section>
 
@@ -905,7 +1023,7 @@
       <div class="ctrl-inner">
         <div class="overall">
           <div class="overall-bar"><div class="overall-fill" id="overallFill"></div></div>
-          <span id="overallText">全体の進み具合：0 / 42 ステップ</span>
+          <span id="overallText">全体の進み具合：<math><mfrac><mn>0</mn><mn>42</mn></mfrac></math>ステップ</span>
         </div>
         <p class="ctrl-label">いまの課題：<b id="ctrlLabel">例12 (1)</b>　―　「次へ」でヒントを1つずつ開こう</p>
         <div class="ctrl-btns">
@@ -936,8 +1054,7 @@
           kLeft.setAttribute('x', x0);  kLeft.textContent = String(k - 1);
           kRight.setAttribute('x', x1); kRight.textContent = String(k);
           kMid.setAttribute('x', (x0 + x1) / 2);
-          kState.textContent = 'N が ' + k + ' 桁 ⟺ 10' + sup(k - 1) + ' ≦ N ＜ 10' + sup(k) +
-                               ' ⟺ ' + (k - 1) + ' ≦ log₁₀N ＜ ' + k;
+          kState.innerHTML = 'N が ' + k + ' 桁 ⟺ <math><msup><mn>10</mn><mn>' + (k - 1) + '</mn></msup></math> ≦ N ＜ <math><msup><mn>10</mn><mn>' + k + '</mn></msup></math> ⟺ ' + (k - 1) + ' ≦ <math><msub><mi>log</mi><mn>10</mn></msub><mi>N</mi></math> ＜ ' + k;
         }
         kSlider.addEventListener('input', applyK);
         applyK();
