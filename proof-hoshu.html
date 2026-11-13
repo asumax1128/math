@@ -310,7 +310,64 @@
       }
       @media (prefers-color-scheme: dark){ .finish-btn{color:#0c1712} }
       .finish-btn:active{transform:scale(.98)}
-    </style>
+    
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+
+      /* 積分記号は大きめに表示する（元のページの可読化デザインに合わせる） */
+      math .int-op{font-size:1.35em}
+      /* calc-12 世代（.card）と calc-18 世代（.unit）の、図のない問題の全幅化 */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig>.step{position:static !important}
+        .card.nofig>.steps-wrap{max-height:none !important;overflow:visible !important}
+        .unit.nofig{display:block !important}
+        .unit.nofig>.qside{position:static !important}
+        .unit.nofig>.steps-stack{max-height:none !important;overflow:visible !important}
+      }
+
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける・第3弾c） */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig .qside{position:static !important}
+        .card.nofig .steps-wrap,.card.nofig .tabpanel .steps-wrap{max-height:none !important;overflow:visible !important}
+      }
+</style>
   </head>
   <body>
     <div class="wrap">
@@ -331,7 +388,7 @@
         <h2>第1節の補充問題</h2>
         <span class="pno">教科書 p.24</span>
       </div>
-      <section class="card prob" id="prob-ho1" data-label="補充問題 1">
+      <section class="nofig card prob" id="prob-ho1" data-label="補充問題 1">
         <div class="prob-head">
           <span class="prob-tag ren">問題 1</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
@@ -345,116 +402,120 @@
         </div>
         <div class="tabpanel show" id="panel-ho1-1" data-flow="ho1-1" data-label="補充問題 1 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　(2x − 3)<sup>3</sup></span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><msup><mrow><mo>(</mo><mn>2</mn><mi>x</mi><mo>−</mo><mn>3</mn><mo>)</mo></mrow><mn>3</mn></msup></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 3乗の公式に当てはめる</h3>
-          <p>公式 (a + b)<sup>3</sup> = a<sup>3</sup> + 3a<sup>2</sup>b + 3ab<sup>2</sup> + b<sup>3</sup> に、a = 2x、b = −3 を当てはめよう。項は (2x)<sup>3</sup>、3(2x)<sup>2</sup>(−3)、3(2x)(−3)<sup>2</sup>、(−3)<sup>3</sup> の4つだよ。</p>
+          <h3>ヒント 1 ― 3乗の公式に当てはめる</h3><p class="cite"><span class="cite-tag">使う公式</span><math><mrow><msup><mrow><mo>(</mo><mrow><mi>a</mi><mo>+</mo><mi>b</mi></mrow><mo>)</mo></mrow><mn>3</mn></msup><mo>=</mo><msup><mi>a</mi><mn>3</mn></msup><mo>+</mo><mn>3</mn><msup><mi>a</mi><mn>2</mn></msup><mi>b</mi><mo>+</mo><mn>3</mn><mi>a</mi><msup><mi>b</mi><mn>2</mn></msup><mo>+</mo><msup><mi>b</mi><mn>3</mn></msup></mrow></math>ここでは <math><mi>a</mi><mo>=</mo><mn>2</mn><mi>x</mi></math>、<math><mi>b</mi><mo>=</mo><mo>−</mo><mn>3</mn></math> を当てはめる。各項の符号に注意する。</p>
+          <p>公式<math><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mn>3</mn></msup><mo>=</mo><msup><mi>a</mi><mn>3</mn></msup><mo>+</mo><mn>3</mn><msup><mi>a</mi><mn>2</mn></msup><mi>b</mi><mo>+</mo><mn>3</mn><mi>a</mi><msup><mi>b</mi><mn>2</mn></msup><mo>+</mo><msup><mi>b</mi><mn>3</mn></msup></math> に、<math><mi>a</mi><mo>=</mo><mn>2</mn><mi>x</mi></math>、<math><mi>b</mi><mo>=</mo><mo>−</mo><mn>3</mn></math>を当てはめよう。<br>項は<math><msup><mrow><mo>(</mo><mn>2</mn><mi>x</mi><mo>)</mo></mrow><mn>3</mn></msup></math>、<math><mn>3</mn><msup><mrow><mo>(</mo><mn>2</mn><mi>x</mi><mo>)</mo></mrow><mn>2</mn></msup><mrow><mo>(</mo><mo>−</mo><mn>3</mn><mo>)</mo></mrow></math>、<math><mn>3</mn><mrow><mo>(</mo><mn>2</mn><mi>x</mi><mo>)</mo></mrow><msup><mrow><mo>(</mo><mo>−</mo><mn>3</mn><mo>)</mo></mrow><mn>2</mn></msup></math>、<math><msup><mrow><mo>(</mo><mo>−</mo><mn>3</mn><mo>)</mo></mrow><mn>3</mn></msup></math> の4つだよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">8x<sup>3</sup> − 36x<sup>2</sup> + 54x − 27</p>
-          <p>(2x)<sup>3</sup> = 8x<sup>3</sup>、3(2x)<sup>2</sup>(−3) = −36x<sup>2</sup>、3(2x)(−3)<sup>2</sup> = 54x、(−3)<sup>3</sup> = −27。これらを並べると、上の式になる。</p>
+          <p class="big"><math display="block"><mn>8</mn><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>36</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>54</mn><mi>x</mi><mo>−</mo><mn>27</mn></math></p><p class="cite"><span class="cite-tag">使う公式</span><math><mrow><msup><mrow><mo>(</mo><mrow><mi>a</mi><mo>+</mo><mi>b</mi></mrow><mo>)</mo></mrow><mn>3</mn></msup><mo>=</mo><msup><mi>a</mi><mn>3</mn></msup><mo>+</mo><mn>3</mn><msup><mi>a</mi><mn>2</mn></msup><mi>b</mi><mo>+</mo><mn>3</mn><mi>a</mi><msup><mi>b</mi><mn>2</mn></msup><mo>+</mo><msup><mi>b</mi><mn>3</mn></msup></mrow></math><math><mi>a</mi><mo>=</mo><mn>2</mn><mi>x</mi></math>、<math><mi>b</mi><mo>=</mo><mo>−</mo><mn>3</mn></math> を当てはめた各項を並べて答えを出す。</p>
+          <p><math><msup><mrow><mo>(</mo><mn>2</mn><mi>x</mi><mo>)</mo></mrow><mn>3</mn></msup><mo>=</mo><mn>8</mn><msup><mi>x</mi><mn>3</mn></msup></math>、<math><mn>3</mn><msup><mrow><mo>(</mo><mn>2</mn><mi>x</mi><mo>)</mo></mrow><mn>2</mn></msup><mrow><mo>(</mo><mo>−</mo><mn>3</mn><mo>)</mo></mrow><mo>=</mo><mo>−</mo><mn>36</mn><msup><mi>x</mi><mn>2</mn></msup></math>、<math><mn>3</mn><mrow><mo>(</mo><mn>2</mn><mi>x</mi><mo>)</mo></mrow><msup><mrow><mo>(</mo><mo>−</mo><mn>3</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>54</mn><mi>x</mi></math>、<math><msup><mrow><mo>(</mo><mo>−</mo><mn>3</mn><mo>)</mo></mrow><mn>3</mn></msup><mo>=</mo><mo>−</mo><mn>27</mn></math>。<br>これらを並べると、上の式になる。</p>
         </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ho1-2" data-flow="ho1-2" data-label="補充問題 1 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　(1 − x)(1 + x + x<sup>2</sup>)</span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mi>x</mi><mo>)</mo></mrow><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mi>x</mi><mo>+</mo><msup><mi>x</mi><mn>2</mn></msup><mo>)</mo></mrow></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
           <div class="quiz" id="qz-ho1-2" data-correct="2">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>x<sup>3</sup> − 1</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>1 − x<sup>3</sup></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>1 + x<sup>3</sup></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>(1 − x)<sup>3</sup></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>1</mn></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mn>1</mn><mo>−</mo><msup><mi>x</mi><mn>3</mn></msup></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mn>1</mn><mo>+</mo><msup><mi>x</mi><mn>3</mn></msup></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><msup><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mi>x</mi><mo>)</mo></mrow><mn>3</mn></msup></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
           <p class="verdict"></p>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 因数分解の公式を逆に使う</h3>
-          <p>公式 a<sup>3</sup> − b<sup>3</sup> = (a − b)(a<sup>2</sup> + ab + b<sup>2</sup>) と見比べよう。a = 1、b = x とすると、(1 − x)(1 + x + x<sup>2</sup>) はちょうどこの形だよ。</p>
+          <h3>ヒント 1 ― 因数分解の公式を逆に使う</h3><p class="cite"><span class="cite-tag">使う公式</span><math><mrow><msup><mi>a</mi><mn>3</mn></msup><mo>−</mo><msup><mi>b</mi><mn>3</mn></msup><mo>=</mo><mrow><mo>(</mo><mrow><mi>a</mi><mo>−</mo><mi>b</mi></mrow><mo>)</mo></mrow><mrow><mo>(</mo><mrow><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><mi>a</mi><mi>b</mi><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup></mrow><mo>)</mo></mrow></mrow></math>ここでは <math><mi>a</mi><mo>=</mo><mn>1</mn></math>、<math><mi>b</mi><mo>=</mo><mi>x</mi></math> と見ると、与えられた積がこの形になっている。</p>
+          <p>公式<math><msup><mi>a</mi><mn>3</mn></msup><mo>−</mo><msup><mi>b</mi><mn>3</mn></msup><mo>=</mo><mrow><mo>(</mo><mi>a</mi><mo>−</mo><mi>b</mi><mo>)</mo></mrow><mrow><mo>(</mo><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><mi>a</mi><mi>b</mi><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup><mo>)</mo></mrow></math>と見比べよう。<br><math><mi>a</mi><mo>=</mo><mn>1</mn></math>、<math><mi>b</mi><mo>=</mo><mi>x</mi></math>とすると、<math><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mi>x</mi><mo>)</mo></mrow><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mi>x</mi><mo>+</mo><msup><mi>x</mi><mn>2</mn></msup><mo>)</mo></mrow></math>はちょうどこの形だよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">1 − x<sup>3</sup></p>
-          <p>a = 1、b = x として公式を使うと、1<sup>3</sup> − x<sup>3</sup> になる。</p>
+          <p class="big"><math display="block"><mn>1</mn><mo>−</mo><msup><mi>x</mi><mn>3</mn></msup></math></p>
+          <p><math><mi>a</mi><mo>=</mo><mn>1</mn></math>、<math><mi>b</mi><mo>=</mo><mi>x</mi></math>として公式を使うと、<math><msup><mn>1</mn><mn>3</mn></msup><mo>−</mo><msup><mi>x</mi><mn>3</mn></msup></math> になる。</p>
         </div>
           <p class="prob-done">(2) クリア！　補充問題1は全部おわり。次は問題2だよ。</p>
         </div>
       </section>
-      <section class="card prob" id="prob-ho2" data-flow="ho2" data-label="補充問題 2">
+      <section class="nofig card prob" id="prob-ho2" data-flow="ho2" data-label="補充問題 2">
         <div class="prob-head">
           <span class="prob-tag ren">問題 2</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">A = 6x<sup>2</sup> − 11ax − 10a<sup>2</sup>，B = 3x + 2a を，x についての多項式とみて，A を B で割った商と余りを求めよ。</p>
+        <p class="prob-q"><math><mi>A</mi><mo>=</mo><mn>6</mn><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>11</mn><mi>a</mi><mi>x</mi><mo>−</mo><mn>10</mn><msup><mi>a</mi><mn>2</mn></msup><mo>,</mo><mi>B</mi><mo>=</mo><mn>3</mn><mi>x</mi><mo>+</mo><mn>2</mn><mi>a</mi></math>を，<math><mi>x</mi></math> についての多項式とみて，<math><mi>A</mi></math> を <math><mi>B</mi></math> で割った商と余りを求めよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 商の1項目を立てる</h3>
-          <p>a は定数として扱い、x の多項式の割り算をする。まず 6x<sup>2</sup> ÷ 3x = 2x を商に立てる。2x × (3x + 2a) = 6x<sup>2</sup> + 4ax を A から引くと、−15ax − 10a<sup>2</sup> が残るよ。</p>
+          <h3>ヒント 1 ― 商の1項目を立てる</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mn>6</mn><msup><mi>x</mi><mn>2</mn></msup><mo>÷</mo><mn>3</mn><mi>x</mi><mo>=</mo><mn>2</mn><mi>x</mi></mrow></math><math><mi>a</mi></math> は定数として扱い、<math><mi>x</mi></math> の多項式として商を立てる。</p>
+          <p><math><mi>a</mi></math> は定数として扱い、<math><mi>x</mi></math> の多項式の割り算をする。<br>まず<math><mn>6</mn><msup><mi>x</mi><mn>2</mn></msup><mo>÷</mo><mn>3</mn><mi>x</mi><mo>=</mo><mn>2</mn><mi>x</mi></math>を商に立てる。<math><mn>2</mn><mi>x</mi><mo>×</mo><mrow><mo>(</mo><mn>3</mn><mi>x</mi><mo>+</mo><mn>2</mn><mi>a</mi><mo>)</mo></mrow><mo>=</mo><mn>6</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>4</mn><mi>a</mi><mi>x</mi></math>を <math><mi>A</mi></math> から引くと、<math><mo>−</mo><mn>15</mn><mi>a</mi><mi>x</mi><mo>−</mo><mn>10</mn><msup><mi>a</mi><mn>2</mn></msup></math> が残るよ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 商の2項目を立てる</h3>
-          <p>次に −15ax ÷ 3x = −5a を商に立てる。−5a × (3x + 2a) = −15ax − 10a<sup>2</sup> を引くと、残りは 0 になるよ。</p>
+          <p>次に<math><mo>−</mo><mn>15</mn><mi>a</mi><mi>x</mi><mo>÷</mo><mn>3</mn><mi>x</mi><mo>=</mo><mo>−</mo><mn>5</mn><mi>a</mi></math>を商に立てる。<br><math><mo>−</mo><mn>5</mn><mi>a</mi><mo>×</mo><mrow><mo>(</mo><mn>3</mn><mi>x</mi><mo>+</mo><mn>2</mn><mi>a</mi><mo>)</mo></mrow><mo>=</mo><mo>−</mo><mn>15</mn><mi>a</mi><mi>x</mi><mo>−</mo><mn>10</mn><msup><mi>a</mi><mn>2</mn></msup></math> を引くと、残りは 0 になるよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
           <p class="big">商　2x − 5a，　余り　0</p>
-          <p>A = (3x + 2a)(2x − 5a) とも書ける。余りが 0 だから、A は B で割り切れるね。</p>
+          <p><math><mi>A</mi><mo>=</mo><mrow><mo>(</mo><mn>3</mn><mi>x</mi><mo>+</mo><mn>2</mn><mi>a</mi><mo>)</mo></mrow><mrow><mo>(</mo><mn>2</mn><mi>x</mi><mo>−</mo><mn>5</mn><mi>a</mi><mo>)</mo></mrow></math>とも書ける。余りが 0 だから、<math><mi>A</mi></math> は <math><mi>B</mi></math> で割り切れるね。</p>
         </div>
         <p class="prob-done">補充問題2 クリア！　次は問題3だよ。</p>
       </section>
-      <section class="card prob" id="prob-ho3" data-flow="ho3" data-label="補充問題 3">
+      <section class="nofig card prob" id="prob-ho3" data-flow="ho3" data-label="補充問題 3">
         <div class="prob-head">
           <span class="prob-tag ren">問題 3</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">A = 1 + <span class="formula" style="display:inline-block;vertical-align:middle;margin:0 4px"><span class="frac"><span class="num">1</span><span class="den">x</span></span></span>，B = x − <span class="formula" style="display:inline-block;vertical-align:middle;margin:0 4px"><span class="frac"><span class="num">1</span><span class="den">x</span></span></span> のとき，<span class="formula" style="display:inline-block;vertical-align:middle;margin:0 4px"><span class="frac"><span class="num">A</span><span class="den">B</span></span></span> を簡単にせよ。</p>
+        <p class="prob-q"><math><mi>A</mi><mo>=</mo><mn>1</mn><mo>+</mo><mfrac><mn>1</mn><mi>x</mi></mfrac><mo>,</mo><mi>B</mi><mo>=</mo><mi>x</mi><mo>−</mo><mfrac><mn>1</mn><mi>x</mi></mfrac></math> のとき<math><mo>,</mo><mfrac><mi>A</mi><mi>B</mi></mfrac></math> を簡単にせよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― A と B を1つの分数にする</h3>
-          <p>A = <span class="frac"><span class="num">x + 1</span><span class="den">x</span></span>、B = <span class="frac"><span class="num">x<sup>2</sup> − 1</span><span class="den">x</span></span> と、それぞれ1つの分数にまとめよう。</p>
+          <h3>ヒント 1 ― <math><mi>A</mi></math> と <math><mi>B</mi></math> を1つの分数にする</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mi>A</mi><mo>=</mo><mfrac><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow><mi>x</mi></mfrac></mrow></math>もう一方も1つの分数にまとめ、割り算を掛け算に直す準備をする。</p>
+          <p><math><mi>A</mi><mo>=</mo><mfrac><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow><mi>x</mi></mfrac></math>、<math><mi>B</mi><mo>=</mo><mfrac><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn></mrow><mi>x</mi></mfrac></math> と、それぞれ1つの分数にまとめよう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 割り算を掛け算に直して約分する</h3>
-          <p><span class="frac"><span class="num">A</span><span class="den">B</span></span> = <span class="frac"><span class="num">x + 1</span><span class="den">x</span></span> × <span class="frac"><span class="num">x</span><span class="den">x<sup>2</sup> − 1</span></span>。x<sup>2</sup> − 1 = (x + 1)(x − 1) と因数分解すると、x と (x + 1) が約分できるよ。</p>
+          <p><math><mfrac><mi>A</mi><mi>B</mi></mfrac><mo>=</mo><mfrac><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow><mi>x</mi></mfrac><mo>×</mo><mfrac><mi>x</mi><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn></mrow></mfrac></math>。<br><math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>=</mo><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow></math>と因数分解すると、<math><mi>x</mi></math> と (<math><mi>x</mi></math> + 1) が約分できるよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big"><span class="frac"><span class="num">1</span><span class="den">x − 1</span></span></p>
+          <p class="big"><math display="block"><mfrac><mn>1</mn><mrow><mi>x</mi><mo>−</mo><mn>1</mn></mrow></mfrac></math></p>
           <p>約分すると、上の式になる。</p>
         </div>
         <p class="prob-done">補充問題3 クリア！　次は問題4だよ。</p>
       </section>
-      <section class="card prob" id="prob-ho4" data-flow="ho4" data-label="補充問題 4">
+      <section class="nofig card prob" id="prob-ho4" data-flow="ho4" data-label="補充問題 4">
         <div class="prob-head">
           <span class="prob-tag ren">問題 4</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">次の式を計算せよ。<span class="formula" style="display:block;margin-top:8px"><span class="frac"><span class="num">1</span><span class="den">x(x + 1)</span></span> + <span class="frac"><span class="num">1</span><span class="den">(x + 1)(x + 2)</span></span> + <span class="frac"><span class="num">1</span><span class="den">(x + 2)(x + 3)</span></span></span></p>
+        <p class="prob-q">次の式を計算せよ。<p class="mq-wide formula left"><math display="block"><mfrac><mn>1</mn><mrow><mi>x</mi><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow></mrow></mfrac><mo>+</mo><mfrac><mn>1</mn><mrow><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo></mrow></mrow></mfrac><mo>+</mo><mfrac><mn>1</mn><mrow><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo></mrow><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>3</mn><mo>)</mo></mrow></mrow></mfrac></math></p>
+<div class="mq-narrow">
+<p class="formula"><math display="block"><mfrac><mn>1</mn><mrow><mi>x</mi><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow></mrow></mfrac><mo>+</mo><mfrac><mn>1</mn><mrow><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo></mrow></mrow></mfrac></math></p>
+<p class="formula cont"><math display="block"><mo>+</mo><mfrac><mn>1</mn><mrow><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo></mrow><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>3</mn><mo>)</mo></mrow></mrow></mfrac></math></p>
+</div></p>
           <div class="quiz" id="qz-ho4" data-correct="2">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><span class="frac"><span class="num">1</span><span class="den">x(x + 3)</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><span class="frac"><span class="num">3</span><span class="den">x(x + 3)</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><span class="frac"><span class="num">3</span><span class="den">x + 3</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><span class="frac"><span class="num">1</span><span class="den">x</span></span></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mfrac><mn>1</mn><mrow><mi>x</mi><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>3</mn><mo>)</mo></mrow></mrow></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mfrac><mn>3</mn><mrow><mi>x</mi><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>3</mn><mo>)</mo></mrow></mrow></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mfrac><mn>3</mn><mrow><mi>x</mi><mo>+</mo><mn>3</mn></mrow></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mfrac><mn>1</mn><mi>x</mi></mfrac></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
@@ -462,28 +523,34 @@
           </div>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 部分分数に分ける</h3>
-          <p><span class="frac"><span class="num">1</span><span class="den">x(x + 1)</span></span> = <span class="frac"><span class="num">1</span><span class="den">x</span></span> − <span class="frac"><span class="num">1</span><span class="den">x + 1</span></span> のように、2つの分数の差に分けよう。他の2項も同じ形に分けられるよ。</p>
+          <h3>ヒント 1 ― 部分分数に分ける</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mfrac><mn>1</mn><mrow><mi>x</mi><mrow><mo>(</mo><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow><mo>)</mo></mrow></mrow></mfrac><mo>=</mo><mfrac><mn>1</mn><mi>x</mi></mfrac><mo>−</mo><mfrac><mn>1</mn><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow></mfrac></mrow></math>部分分数への分解。他の2項も同じ形に分けると、途中の項が消える。</p>
+          <p><math><mfrac><mn>1</mn><mrow><mi>x</mi><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow></mrow></mfrac><mo>=</mo><mfrac><mn>1</mn><mi>x</mi></mfrac><mo>−</mo><mfrac><mn>1</mn><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow></mfrac></math> のように、2つの分数の差に分けよう。他の2項も同じ形に分けられるよ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 消える項を見つける</h3>
-          <p>3項をすべて分けると、(<span class="frac"><span class="num">1</span><span class="den">x</span></span> − <span class="frac"><span class="num">1</span><span class="den">x + 1</span></span>) + (<span class="frac"><span class="num">1</span><span class="den">x + 1</span></span> − <span class="frac"><span class="num">1</span><span class="den">x + 2</span></span>) + (<span class="frac"><span class="num">1</span><span class="den">x + 2</span></span> − <span class="frac"><span class="num">1</span><span class="den">x + 3</span></span>) となり、途中の項が次々に消える。残るのは最初と最後だけだよ。</p>
+          <p class="mq-wide">3項をすべて分けると、<math><mrow><mo>(</mo><mfrac><mn>1</mn><mi>x</mi></mfrac><mo>−</mo><mfrac><mn>1</mn><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow></mfrac><mo>)</mo></mrow><mo>+</mo><mrow><mo>(</mo><mfrac><mn>1</mn><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow></mfrac><mo>−</mo><mfrac><mn>1</mn><mrow><mi>x</mi><mo>+</mo><mn>2</mn></mrow></mfrac><mo>)</mo></mrow><mo>+</mo><mrow><mo>(</mo><mfrac><mn>1</mn><mrow><mi>x</mi><mo>+</mo><mn>2</mn></mrow></mfrac><mo>−</mo><mfrac><mn>1</mn><mrow><mi>x</mi><mo>+</mo><mn>3</mn></mrow></mfrac><mo>)</mo></mrow></math>となり、途中の項が次々に消える。<br>残るのは最初と最後だけだよ。</p>
+<div class="mq-narrow">
+<p>3項をすべて分けると、</p>
+<p class="formula"><math display="block"><mrow><mo>(</mo><mfrac><mn>1</mn><mi>x</mi></mfrac><mo>−</mo><mfrac><mn>1</mn><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow></mfrac><mo>)</mo></mrow><mo>+</mo><mrow><mo>(</mo><mfrac><mn>1</mn><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow></mfrac><mo>−</mo><mfrac><mn>1</mn><mrow><mi>x</mi><mo>+</mo><mn>2</mn></mrow></mfrac><mo>)</mo></mrow></math></p>
+<p class="formula cont"><math display="block"><mo>+</mo><mrow><mo>(</mo><mfrac><mn>1</mn><mrow><mi>x</mi><mo>+</mo><mn>2</mn></mrow></mfrac><mo>−</mo><mfrac><mn>1</mn><mrow><mi>x</mi><mo>+</mo><mn>3</mn></mrow></mfrac><mo>)</mo></mrow></math></p>
+<p>となり、途中の項が次々に消える。残るのは最初と最後だけだよ。</p>
+</div>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big"><span class="frac"><span class="num">3</span><span class="den">x(x + 3)</span></span></p>
-          <p>残った <span class="frac"><span class="num">1</span><span class="den">x</span></span> − <span class="frac"><span class="num">1</span><span class="den">x + 3</span></span> を通分すると、上の式になる。</p>
+          <p class="big"><math display="block"><mfrac><mn>3</mn><mrow><mi>x</mi><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>3</mn><mo>)</mo></mrow></mrow></mfrac></math></p>
+          <p>残った <math><mfrac><mn>1</mn><mi>x</mi></mfrac><mo>−</mo><mfrac><mn>1</mn><mrow><mi>x</mi><mo>+</mo><mn>3</mn></mrow></mfrac></math> を通分すると、上の式になる。</p>
         </div>
         <p class="prob-done">補充問題4 クリア！　次は問題5だよ。</p>
       </section>
-      <section class="card prob" id="prob-ho5" data-label="補充問題 5">
+      <section class="nofig card prob" id="prob-ho5" data-label="補充問題 5">
         <div class="prob-head">
           <span class="prob-tag ren">問題 5</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
         <div class="qside">
-        <p class="prob-q">次の等式が x についての恒等式となるように，定数 a, b の値を定めよ。</p>
+        <p class="prob-q">次の等式が <math><mi>x</mi></math> についての恒等式となるように，定数 <math><mi>a</mi></math>, <math><mi>b</mi></math> の値を定めよ。</p>
         </div>
         <div class="tabs" role="tablist" aria-label="補充問題 5の小問">
           <button class="tab" role="tab" data-tab="ho5-1" aria-selected="true">(1)</button>
@@ -491,43 +558,43 @@
         </div>
         <div class="tabpanel show" id="panel-ho5-1" data-flow="ho5-1" data-label="補充問題 5 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　(a + b − 4)x + (a − b + 2) = 0</span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>−</mo><mn>4</mn><mo>)</mo></mrow><mi>x</mi><mo>+</mo><mrow><mo>(</mo><mi>a</mi><mo>−</mo><mi>b</mi><mo>+</mo><mn>2</mn><mo>)</mo></mrow><mo>=</mo><mn>0</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 係数と定数項を 0 にする</h3>
-          <p>どんな x でも成り立つためには、x の係数と定数項がどちらも 0 でなければならない。a + b − 4 = 0、a − b + 2 = 0 の連立方程式を立てよう。</p>
+          <h3>ヒント 1 ― 係数と定数項を 0 にする</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mi>p</mi><mi>x</mi><mo>+</mo><mi>q</mi><mo>=</mo><mn>0</mn><mo>⇒</mo><mi>p</mi><mo>=</mo><mi>q</mi><mo>=</mo><mn>0</mn></mrow></math>どんな値でも成り立つためには、係数と定数項がどちらも0でなければならない。</p>
+          <p>どんな <math><mi>x</mi></math> でも成り立つためには、<math><mi>x</mi></math> の係数と定数項がどちらも 0 でなければならない。<br><math><mi>a</mi><mo>+</mo><mi>b</mi><mo>−</mo><mn>4</mn><mo>=</mo><mn>0</mn></math>、<math><mi>a</mi><mo>−</mo><mi>b</mi><mo>+</mo><mn>2</mn><mo>=</mo><mn>0</mn></math>の連立方程式を立てよう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 連立方程式を解く</h3>
-          <p>2つの式を辺々足すと 2a − 2 = 0、引くと 2b − 6 = 0 になるよ。</p>
+          <p>2つの式を辺々足すと<math><mn>2</mn><mi>a</mi><mo>−</mo><mn>2</mn><mo>=</mo><mn>0</mn></math>、引くと<math><mn>2</mn><mi>b</mi><mo>−</mo><mn>6</mn><mo>=</mo><mn>0</mn></math>になるよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">a = 1，　b = 3</p>
+          <p class="big"><math display="block"><mi>a</mi><mo>=</mo><mn>1</mn><mo>,</mo><mspace width="2em"/><mi>b</mi><mo>=</mo><mn>3</mn></math></p>
         </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ho5-2" data-flow="ho5-2" data-label="補充問題 5 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　(x + 1)a + (2x − 1)b + 2x + 5 = 0</span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow><mi>a</mi><mo>+</mo><mrow><mo>(</mo><mn>2</mn><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mi>b</mi><mo>+</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>5</mn><mo>=</mo><mn>0</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― x の式として整理する</h3>
-          <p>左辺を x の式として整理すると、(a + 2b + 2)x + (a − b + 5) = 0 の形になるよ。</p>
+          <h3>ヒント 1 ― <math><mi>x</mi></math> の式として整理する</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mi>p</mi><mi>x</mi><mo>+</mo><mi>q</mi><mo>=</mo><mn>0</mn><mo>⇒</mo><mi>p</mi><mo>=</mo><mi>q</mi><mo>=</mo><mn>0</mn></mrow></math>左辺を <math><mi>x</mi></math> の式として整理し、係数と定数項を0として連立方程式を立てる。</p>
+          <p>左辺を <math><mi>x</mi></math> の式として整理すると、<math><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mn>2</mn><mi>b</mi><mo>+</mo><mn>2</mn><mo>)</mo></mrow><mi>x</mi><mo>+</mo><mrow><mo>(</mo><mi>a</mi><mo>−</mo><mi>b</mi><mo>+</mo><mn>5</mn><mo>)</mo></mrow><mo>=</mo><mn>0</mn></math>の形になるよ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 連立方程式を解く</h3>
-          <p>係数と定数項を 0 として、a + 2b + 2 = 0、a − b + 5 = 0 の連立方程式を解こう。辺々引くと 3b − 3 = 0 になるよ。</p>
+          <p>係数と定数項を 0 として、<math><mi>a</mi><mo>+</mo><mn>2</mn><mi>b</mi><mo>+</mo><mn>2</mn><mo>=</mo><mn>0</mn></math>、<math><mi>a</mi><mo>−</mo><mi>b</mi><mo>+</mo><mn>5</mn><mo>=</mo><mn>0</mn></math>の連立方程式を解こう。辺々引くと<math><mn>3</mn><mi>b</mi><mo>−</mo><mn>3</mn><mo>=</mo><mn>0</mn></math>になるよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">a = −4，　b = 1</p>
+          <p class="big"><math display="block"><mi>a</mi><mo>=</mo><mo>−</mo><mn>4</mn><mo>,</mo><mspace width="2em"/><mi>b</mi><mo>=</mo><mn>1</mn></math></p>
         </div>
           <p class="prob-done">(2) クリア！　補充問題5は全部おわり。第1節分はここまで。続いて第2節分だよ。</p>
         </div>
@@ -537,74 +604,79 @@
         <h2>第2節の補充問題</h2>
         <span class="pno">教科書 p.35</span>
       </div>
-      <section class="card prob" id="prob-ho6" data-flow="ho6" data-label="補充問題 6">
+      <section class="nofig card prob" id="prob-ho6" data-flow="ho6" data-label="補充問題 6">
         <div class="prob-head">
           <span class="prob-tag ren">問題 6</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">a + b + c = 0 のとき，次の等式を証明せよ。<span class="formula" style="display:block;margin-top:8px">a<sup>3</sup> + b<sup>3</sup> + c<sup>3</sup> = 3abc</span></p>
+        <p class="prob-q"><math><mi>a</mi><mo>+</mo><mi>b</mi><mo>+</mo><mi>c</mi><mo>=</mo><mn>0</mn></math>のとき，次の等式を証明せよ。<p class="formula left"><math display="block"><msup><mi>a</mi><mn>3</mn></msup><mo>+</mo><msup><mi>b</mi><mn>3</mn></msup><mo>+</mo><msup><mi>c</mi><mn>3</mn></msup><mo>=</mo><mn>3</mn><mi>a</mi><mi>b</mi><mi>c</mi></math></p></p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― c を消去する</h3>
-          <p>条件から c = −(a + b)。まず a<sup>3</sup> + b<sup>3</sup> = (a + b)<sup>3</sup> − 3ab(a + b) と変形しておこう（3乗の公式の使い方だね）。</p>
+          <h3>ヒント 1 ― <math><mi>c</mi></math> を消去する</h3><p class="cite"><span class="cite-tag">使う公式</span><math><mrow><msup><mi>a</mi><mn>3</mn></msup><mo>+</mo><msup><mi>b</mi><mn>3</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><mrow><mi>a</mi><mo>+</mo><mi>b</mi></mrow><mo>)</mo></mrow><mn>3</mn></msup><mo>−</mo><mn>3</mn><mi>a</mi><mi>b</mi><mrow><mo>(</mo><mrow><mi>a</mi><mo>+</mo><mi>b</mi></mrow><mo>)</mo></mrow></mrow></math>条件から <math><mi>c</mi></math> は <math><mi>a</mi><mo>+</mo><mi>b</mi></math> の符号を変えたもの。まず立方の和をこの形に変形しておく。</p>
+          <p>条件から<math><mi>c</mi><mo>=</mo><mo>−</mo><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow></math>。<br>まず<math><msup><mi>a</mi><mn>3</mn></msup><mo>+</mo><msup><mi>b</mi><mn>3</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mn>3</mn></msup><mo>−</mo><mn>3</mn><mi>a</mi><mi>b</mi><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow></math>と変形しておこう（3乗の公式の使い方だね）。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― (左辺) − (右辺) に代入する</h3>
-          <p>a<sup>3</sup> + b<sup>3</sup> + c<sup>3</sup> − 3abc に c = −(a + b) を代入する。(a + b)<sup>3</sup> + c<sup>3</sup> = (a + b)<sup>3</sup> − (a + b)<sup>3</sup> = 0。また、−3ab(a + b) − 3abc = −3ab(a + b + c) とまとめられるよ。</p>
+          <p><math><msup><mi>a</mi><mn>3</mn></msup><mo>+</mo><msup><mi>b</mi><mn>3</mn></msup><mo>+</mo><msup><mi>c</mi><mn>3</mn></msup><mo>−</mo><mn>3</mn><mi>a</mi><mi>b</mi><mi>c</mi></math>に<math><mi>c</mi><mo>=</mo><mo>−</mo><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow></math>を代入する。<br><math><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mn>3</mn></msup><mo>+</mo><msup><mi>c</mi><mn>3</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mn>3</mn></msup><mo>−</mo><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mn>3</mn></msup><mo>=</mo><mn>0</mn></math>。また、<math><mo>−</mo><mn>3</mn><mi>a</mi><mi>b</mi><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mo>−</mo><mn>3</mn><mi>a</mi><mi>b</mi><mi>c</mi><mo>=</mo><mo>−</mo><mn>3</mn><mi>a</mi><mi>b</mi><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>+</mo><mi>c</mi><mo>)</mo></mrow></math>とまとめられるよ。</p>
         </div>
         <div class="step answer">
-          <h3>解答</h3>
-          <p>a<sup>3</sup> + b<sup>3</sup> + c<sup>3</sup> − 3abc = {(a + b)<sup>3</sup> + c<sup>3</sup>} − 3ab(a + b + c)。ここで c = −(a + b) だから第1の {　} は 0、条件 a + b + c = 0 だから第2の項も 0。よって a<sup>3</sup> + b<sup>3</sup> + c<sup>3</sup> − 3abc = 0、すなわち a<sup>3</sup> + b<sup>3</sup> + c<sup>3</sup> = 3abc。　（証明終わり）</p>
+          <h3>解答</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mi>A</mi><mo>=</mo><mi>B</mi><mo>⇔</mo><mi>A</mi><mo>−</mo><mi>B</mi><mo>=</mo><mn>0</mn></mrow></math>条件を代入すると左辺−右辺が0になり、等式が成り立つ。</p>
+          <p class="mq-wide"><math><msup><mi>a</mi><mn>3</mn></msup><mo>+</mo><msup><mi>b</mi><mn>3</mn></msup><mo>+</mo><msup><mi>c</mi><mn>3</mn></msup><mo>−</mo><mn>3</mn><mi>a</mi><mi>b</mi><mi>c</mi><mo>=</mo><mrow><mo>{</mo><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mn>3</mn></msup><mo>+</mo><msup><mi>c</mi><mn>3</mn></msup><mo>}</mo></mrow><mo>−</mo><mn>3</mn><mi>a</mi><mi>b</mi><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>+</mo><mi>c</mi><mo>)</mo></mrow></math>。<br>ここで<math><mi>c</mi><mo>=</mo><mo>−</mo><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow></math>だから第1の {　} は 0、条件<math><mi>a</mi><mo>+</mo><mi>b</mi><mo>+</mo><mi>c</mi><mo>=</mo><mn>0</mn></math>だから第2の項も 0。よって<math><msup><mi>a</mi><mn>3</mn></msup><mo>+</mo><msup><mi>b</mi><mn>3</mn></msup><mo>+</mo><msup><mi>c</mi><mn>3</mn></msup><mo>−</mo><mn>3</mn><mi>a</mi><mi>b</mi><mi>c</mi><mo>=</mo><mn>0</mn></math>、すなわち<math><msup><mi>a</mi><mn>3</mn></msup><mo>+</mo><msup><mi>b</mi><mn>3</mn></msup><mo>+</mo><msup><mi>c</mi><mn>3</mn></msup><mo>=</mo><mn>3</mn><mi>a</mi><mi>b</mi><mi>c</mi></math>。　（証明終わり）</p>
+<div class="mq-narrow">
+<p class="formula"><math display="block"><msup><mi>a</mi><mn>3</mn></msup><mo>+</mo><msup><mi>b</mi><mn>3</mn></msup><mo>+</mo><msup><mi>c</mi><mn>3</mn></msup><mo>−</mo><mn>3</mn><mi>a</mi><mi>b</mi><mi>c</mi><mo>=</mo><mrow><mo>{</mo><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mn>3</mn></msup><mo>+</mo><msup><mi>c</mi><mn>3</mn></msup><mo>}</mo></mrow></math></p>
+<p class="formula cont"><math display="block"><mo>−</mo><mn>3</mn><mi>a</mi><mi>b</mi><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>+</mo><mi>c</mi><mo>)</mo></mrow></math></p>
+<p>。<br>ここで<math><mi>c</mi><mo>=</mo><mo>−</mo><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow></math>だから第1の {　} は 0、条件<math><mi>a</mi><mo>+</mo><mi>b</mi><mo>+</mo><mi>c</mi><mo>=</mo><mn>0</mn></math>だから第2の項も 0。よって<math><msup><mi>a</mi><mn>3</mn></msup><mo>+</mo><msup><mi>b</mi><mn>3</mn></msup><mo>+</mo><msup><mi>c</mi><mn>3</mn></msup><mo>−</mo><mn>3</mn><mi>a</mi><mi>b</mi><mi>c</mi><mo>=</mo><mn>0</mn></math>、すなわち<math><msup><mi>a</mi><mn>3</mn></msup><mo>+</mo><msup><mi>b</mi><mn>3</mn></msup><mo>+</mo><msup><mi>c</mi><mn>3</mn></msup><mo>=</mo><mn>3</mn><mi>a</mi><mi>b</mi><mi>c</mi></math>。　（証明終わり）</p>
+</div>
         </div>
         <p class="prob-done">補充問題6 クリア！　次は問題7だよ。</p>
       </section>
-      <section class="card prob" id="prob-ho7" data-flow="ho7" data-label="補充問題 7">
+      <section class="nofig card prob" id="prob-ho7" data-flow="ho7" data-label="補充問題 7">
         <div class="prob-head">
           <span class="prob-tag ren">問題 7</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">a < b，x < y のとき，ax + by と bx + ay の大小を不等号を用いて表せ。</p>
+        <p class="prob-q"><math><mi>a</mi></math> < <math><mi>b</mi></math>，<math><mi>x</mi></math> < <math><mi>y</mi></math> のとき，ax + by と bx + ay の大小を不等号を用いて表せ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 差を調べる</h3>
-          <p>大小を比べるときは、2つの式の差を調べる。(ax + by) − (bx + ay) を整理すると、(a − b)(x − y) になるよ。</p>
+          <h3>ヒント 1 ― 差を調べる</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mi>a</mi><mo>&gt;</mo><mi>b</mi><mo>⇔</mo><mi>a</mi><mo>−</mo><mi>b</mi><mo>&gt;</mo><mn>0</mn></mrow></math>大小を比べるときは2つの式の差を調べ、因数分解して符号を判断する。</p>
+          <p>大小を比べるときは、2つの式の差を調べる。<br>(ax + by) − (bx + ay) を整理すると、(<math><mi>a</mi></math> − <math><mi>b</mi></math>)(<math><mi>x</mi></math> − <math><mi>y</mi></math>) になるよ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 符号を判断する</h3>
-          <p>a < b だから a − b < 0、x < y だから x − y < 0。負の数どうしの積 (a − b)(x − y) は正になるよ。</p>
+          <p><math><mi>a</mi></math> < <math><mi>b</mi></math> だから <math><mi>a</mi></math> − <math><mi>b</mi></math> < 0、<math><mi>x</mi></math> < <math><mi>y</mi></math> だから <math><mi>x</mi></math> − <math><mi>y</mi></math> < 0。負の数どうしの積 (<math><mi>a</mi></math> − <math><mi>b</mi></math>)(<math><mi>x</mi></math> − <math><mi>y</mi></math>) は正になるよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
           <p class="big">ax + by > bx + ay</p>
-          <p>(ax + by) − (bx + ay) = (a − b)(x − y) > 0 だから、ax + by の方が大きい。</p>
+          <p><math><mrow><mo>(</mo><mi>a</mi><mi>x</mi><mo>+</mo><mi>b</mi><mi>y</mi><mo>)</mo></mrow><mo>−</mo><mrow><mo>(</mo><mi>b</mi><mi>x</mi><mo>+</mo><mi>a</mi><mi>y</mi><mo>)</mo></mrow><mo>=</mo><mrow><mo>(</mo><mi>a</mi><mo>−</mo><mi>b</mi><mo>)</mo></mrow><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mi>y</mi><mo>)</mo></mrow><mo>&gt;</mo><mn>0</mn></math>だから、ax + by の方が大きい。</p>
         </div>
         <p class="prob-done">補充問題7 クリア！　次は問題8だよ。</p>
       </section>
-      <section class="card prob" id="prob-ho8" data-flow="ho8" data-label="補充問題 8">
+      <section class="nofig card prob" id="prob-ho8" data-flow="ho8" data-label="補充問題 8">
         <div class="prob-head">
           <span class="prob-tag ren">問題 8</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">a > 0，b > 0 のとき，次の不等式を証明せよ。<span class="formula" style="display:block;margin-top:8px">(a + b)(<span class="frac"><span class="num">1</span><span class="den">a</span></span> + <span class="frac"><span class="num">1</span><span class="den">b</span></span>) ≧ 4</span></p>
+        <p class="prob-q"><math><mi>a</mi></math> > 0，<math><mi>b</mi></math> > 0 のとき，次の不等式を証明せよ。<p class="formula left"><math display="block"><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mrow><mo>(</mo><mfrac><mn>1</mn><mi>a</mi></mfrac><mo>+</mo><mfrac><mn>1</mn><mi>b</mi></mfrac><mo>)</mo></mrow><mo>≧</mo><mn>4</mn></math></p></p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 左辺を展開する</h3>
-          <p>左辺を展開すると、(a + b)(<span class="frac"><span class="num">1</span><span class="den">a</span></span> + <span class="frac"><span class="num">1</span><span class="den">b</span></span>) = 2 + <span class="frac"><span class="num">a</span><span class="den">b</span></span> + <span class="frac"><span class="num">b</span><span class="den">a</span></span> になるよ。</p>
+          <h3>ヒント 1 ― 左辺を展開する</h3><p class="cite"><span class="cite-tag">使う公式</span><math><mrow><mfrac><mrow><mi>a</mi><mo>+</mo><mi>b</mi></mrow><mn>2</mn></mfrac><mo>≧</mo><msqrt><mrow><mi>a</mi><mi>b</mi></mrow></msqrt></mrow></math>左辺を展開すると2つの正の数の和が現れ、そこにこの関係を使う。</p>
+          <p>左辺を展開すると、<math><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mrow><mo>(</mo><mfrac><mn>1</mn><mi>a</mi></mfrac><mo>+</mo><mfrac><mn>1</mn><mi>b</mi></mfrac><mo>)</mo></mrow><mo>=</mo><mn>2</mn><mo>+</mo><mfrac><mi>a</mi><mi>b</mi></mfrac><mo>+</mo><mfrac><mi>b</mi><mi>a</mi></mfrac></math> になるよ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 相加平均と相乗平均を使う</h3>
-          <p><span class="frac"><span class="num">a</span><span class="den">b</span></span> > 0、<span class="frac"><span class="num">b</span><span class="den">a</span></span> > 0 だから、相加平均と相乗平均の関係で <span class="frac"><span class="num">a</span><span class="den">b</span></span> + <span class="frac"><span class="num">b</span><span class="den">a</span></span> ≧ 2 が成り立つよ（積 <span class="frac"><span class="num">a</span><span class="den">b</span></span>・<span class="frac"><span class="num">b</span><span class="den">a</span></span> = 1 の平方根が 1 になる）。</p>
+          <p><math><mfrac><mi>a</mi><mi>b</mi></mfrac><mo>&gt;</mo><mn>0</mn></math>、<math><mfrac><mi>b</mi><mi>a</mi></mfrac><mo>&gt;</mo><mn>0</mn></math>だから、相加平均と相乗平均の関係で <math><mfrac><mi>a</mi><mi>b</mi></mfrac><mo>+</mo><mfrac><mi>b</mi><mi>a</mi></mfrac><mo>≧</mo><mn>2</mn></math>が成り立つよ（積 <math><mfrac><mi>a</mi><mi>b</mi></mfrac><mo>⋅</mo><mfrac><mi>b</mi><mi>a</mi></mfrac><mo>=</mo><mn>1</mn></math>の平方根が 1 になる）。</p>
         </div>
         <div class="step answer">
-          <h3>解答</h3>
-          <p>よって、(左辺) = 2 + (<span class="frac"><span class="num">a</span><span class="den">b</span></span> + <span class="frac"><span class="num">b</span><span class="den">a</span></span>) ≧ 2 + 2 = 4。等号は <span class="frac"><span class="num">a</span><span class="den">b</span></span> = <span class="frac"><span class="num">b</span><span class="den">a</span></span>、すなわち a = b のときに成り立つ。　（証明終わり）</p>
+          <h3>解答</h3><p class="cite"><span class="cite-tag">使う公式</span><math><mrow><mfrac><mrow><mi>a</mi><mo>+</mo><mi>b</mi></mrow><mn>2</mn></mfrac><mo>≧</mo><msqrt><mrow><mi>a</mi><mi>b</mi></mrow></msqrt></mrow></math>展開して現れた和に、相加平均と相乗平均の関係を使う。</p>
+          <p>よって、(左辺<math><mo>)</mo><mo>=</mo><mn>2</mn><mo>+</mo><mrow><mo>(</mo><mfrac><mi>a</mi><mi>b</mi></mfrac><mo>+</mo><mfrac><mi>b</mi><mi>a</mi></mfrac><mo>)</mo></mrow><mo>≧</mo><mn>2</mn><mo>+</mo><mn>2</mn><mo>=</mo><mn>4</mn></math>。<br>等号は <math><mfrac><mi>a</mi><mi>b</mi></mfrac><mo>=</mo><mfrac><mi>b</mi><mi>a</mi></mfrac></math>、すなわち<math><mi>a</mi><mo>=</mo><mi>b</mi></math>のときに成り立つ。　（証明終わり）</p>
         </div>
         <p class="prob-done">補充問題8 クリア！　補充問題は全部おわり。おつかれさま！</p>
       </section>
@@ -614,11 +686,11 @@
       <section class="card summary" id="summaryCard" style="display:none">
         <h2>この項のポイント</h2>
         <ul>
-          <li>展開は、公式 (a + b)<sup>3</sup> = a<sup>3</sup> + 3a<sup>2</sup>b + 3ab<sup>2</sup> + b<sup>3</sup> と a<sup>3</sup> − b<sup>3</sup> = (a − b)(a<sup>2</sup> + ab + b<sup>2</sup>) が基本。</li>
-          <li>多項式の割り算は、割る式の最高次に合わせて商を1項ずつ立て、引いていく。</li>
-          <li>分数式は、部分分数 <span class="frac"><span class="num">1</span><span class="den">x(x + 1)</span></span> = <span class="frac"><span class="num">1</span><span class="den">x</span></span> − <span class="frac"><span class="num">1</span><span class="den">x + 1</span></span> の形に分けると、途中の項が消えることがある。</li>
+          <li><p class="cite"><span class="cite-tag">使う公式</span><math><mrow><msup><mrow><mo>(</mo><mrow><mi>a</mi><mo>+</mo><mi>b</mi></mrow><mo>)</mo></mrow><mn>3</mn></msup><mo>=</mo><msup><mi>a</mi><mn>3</mn></msup><mo>+</mo><mn>3</mn><msup><mi>a</mi><mn>2</mn></msup><mi>b</mi><mo>+</mo><mn>3</mn><mi>a</mi><msup><mi>b</mi><mn>2</mn></msup><mo>+</mo><msup><mi>b</mi><mn>3</mn></msup></mrow></math>差の立方の因数分解と合わせて、展開・因数分解の基本になる。</p>展開は、公式<math><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mn>3</mn></msup><mo>=</mo><msup><mi>a</mi><mn>3</mn></msup><mo>+</mo><mn>3</mn><msup><mi>a</mi><mn>2</mn></msup><mi>b</mi><mo>+</mo><mn>3</mn><mi>a</mi><msup><mi>b</mi><mn>2</mn></msup><mo>+</mo><msup><mi>b</mi><mn>3</mn></msup></math> と<math><msup><mi>a</mi><mn>3</mn></msup><mo>−</mo><msup><mi>b</mi><mn>3</mn></msup><mo>=</mo><mrow><mo>(</mo><mi>a</mi><mo>−</mo><mi>b</mi><mo>)</mo></mrow><mrow><mo>(</mo><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><mi>a</mi><mi>b</mi><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup><mo>)</mo></mrow></math>が基本。</li>
+          <li><p class="cite"><span class="cite-tag">使う定義</span><math><mrow><mi>A</mi><mo>=</mo><mi>B</mi><mi>Q</mi><mo>+</mo><mi>R</mi></mrow></math>割る式の最高次に合わせて商を1項ずつ立て、引いていく。</p>多項式の割り算は、割る式の最高次に合わせて商を1項ずつ立て、引いていく。</li>
+          <li><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mfrac><mn>1</mn><mrow><mi>x</mi><mrow><mo>(</mo><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow><mo>)</mo></mrow></mrow></mfrac><mo>=</mo><mfrac><mn>1</mn><mi>x</mi></mfrac><mo>−</mo><mfrac><mn>1</mn><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow></mfrac></mrow></math>この形に分けると、途中の項が次々に消えることがある。</p>分数式は、部分分数 <math><mfrac><mn>1</mn><mrow><mi>x</mi><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow></mrow></mfrac><mo>=</mo><mfrac><mn>1</mn><mi>x</mi></mfrac><mo>−</mo><mfrac><mn>1</mn><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow></mfrac></math> の形に分けると、途中の項が消えることがある。</li>
           <li>恒等式では「係数を比べて連立方程式」が基本の型。</li>
-          <li>不等式の証明では、相加平均と相乗平均の関係（<span class="frac"><span class="num">a</span><span class="den">b</span></span> + <span class="frac"><span class="num">b</span><span class="den">a</span></span> ≧ 2 など）が強力な道具になる。</li>
+          <li><p class="cite"><span class="cite-tag">使う公式</span><math><mrow><mfrac><mrow><mi>a</mi><mo>+</mo><mi>b</mi></mrow><mn>2</mn></mfrac><mo>≧</mo><msqrt><mrow><mi>a</mi><mi>b</mi></mrow></msqrt></mrow></math>不等式の証明では、相加平均と相乗平均の関係が強力な道具になる。</p>不等式の証明では、相加平均と相乗平均の関係<math><mo>(</mo><mfrac><mi>a</mi><mi>b</mi></mfrac><mo>+</mo><mfrac><mi>b</mi><mi>a</mi></mfrac><mo>≧</mo><mn>2</mn></math>など）が強力な道具になる。</li>
         </ul>
       </section>
       <footer>

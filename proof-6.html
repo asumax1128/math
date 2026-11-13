@@ -297,7 +297,64 @@
       table.comp th,table.comp td{border:1px solid var(--line);padding:8px 10px;text-align:center;font-size:15px}
       table.comp th{background:var(--surface2)}
     
-.next-page{display:block;text-align:center;font-weight:900;font-size:17px;color:#fff;background:var(--accent);border-radius:12px;padding:15px 10px;margin:0 0 14px;text-decoration:none}    </style>
+.next-page{display:block;text-align:center;font-weight:900;font-size:17px;color:#fff;background:var(--accent);border-radius:12px;padding:15px 10px;margin:0 0 14px;text-decoration:none}    
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+
+      /* 積分記号は大きめに表示する（元のページの可読化デザインに合わせる） */
+      math .int-op{font-size:1.35em}
+      /* calc-12 世代（.card）と calc-18 世代（.unit）の、図のない問題の全幅化 */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig>.step{position:static !important}
+        .card.nofig>.steps-wrap{max-height:none !important;overflow:visible !important}
+        .unit.nofig{display:block !important}
+        .unit.nofig>.qside{position:static !important}
+        .unit.nofig>.steps-stack{max-height:none !important;overflow:visible !important}
+      }
+
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける・第3弾c） */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig .qside{position:static !important}
+        .card.nofig .steps-wrap,.card.nofig .tabpanel .steps-wrap{max-height:none !important;overflow:visible !important}
+      }
+</style>
   </head>
   <body>
     <div class="wrap">
@@ -320,7 +377,7 @@
         <span class="pno">教科書 p.22</span>
       </div>
       <section class="card">
-        <p>等式 (x − 1)<sup>2</sup> = x<sup>2</sup> − 2x + 1 や、<span class="frac"><span class="num">1</span><span class="den">x + 1</span></span> + <span class="frac"><span class="num">1</span><span class="den">x − 1</span></span> = <span class="frac"><span class="num">2x</span><span class="den">x<sup>2</sup> − 1</span></span> のように、含まれている文字にどのような値を代入しても、両辺の値が存在する限り等式が常に成り立つとき、その等式をそれらの文字についての<span class="key">恒等式</span>という。</p>
+        <p>等式<math><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>1</mn></math>や、<math><mfrac><mn>1</mn><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow></mfrac><mo>+</mo><mfrac><mn>1</mn><mrow><mi>x</mi><mo>−</mo><mn>1</mn></mrow></mfrac><mo>=</mo><mfrac><mrow><mn>2</mn><mi>x</mi></mrow><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn></mrow></mfrac></math> のように、含まれている文字にどのような値を代入しても、両辺の値が存在する限り等式が常に成り立つとき、その等式をそれらの文字についての<span class="key">恒等式</span>という。</p>
         <p>式変形によって導かれる等式は恒等式である。一方、特定の値のときだけ成り立つ等式は恒等式ではなく、<span class="key">方程式</span>である。</p>
       </section>
       <div class="sec-head">
@@ -328,45 +385,45 @@
         <h2>例10 ― 恒等式かどうか</h2>
         <span class="pno">教科書 p.22</span>
       </div>
-      <section class="card prob" id="prob-ex10" data-flow="ex10" data-label="例10">
+      <section class="nofig card prob" id="prob-ex10" data-flow="ex10" data-label="例10">
         <div class="prob-head">
           <span class="prob-tag ">例 10</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">次の等式は、x についての恒等式だろうか。<br>(1)　(x + 2)(x − 3) = x<sup>2</sup> − x − 6<br>(2)　x(x − 2) = x</p>
+        <p class="prob-q">次の等式は、<math><mi>x</mi></math> についての恒等式だろうか。<br>(1)　<math><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo></mrow><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>3</mn><mo>)</mo></mrow><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>x</mi><mo>−</mo><mn>6</mn></math><br>(2)　<math><mi>x</mi><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mo>=</mo><mi>x</mi></math></p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― (1) 左辺を展開する</h3>
-          <p>左辺を展開してみよう。(x + 2)(x − 3) = x<sup>2</sup> − x − 6 となって、右辺と一致するね。式変形で導かれる等式だから……。</p>
+          <h3>ヒント 1 ― (1) 左辺を展開する</h3><p class="cite"><span class="cite-tag">使う公式</span><math><mrow><mrow><mo>(</mo><mrow><mi>x</mi><mo>+</mo><mi>a</mi></mrow><mo>)</mo></mrow><mrow><mo>(</mo><mrow><mi>x</mi><mo>+</mo><mi>b</mi></mrow><mo>)</mo></mrow><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mrow><mo>(</mo><mrow><mi>a</mi><mo>+</mo><mi>b</mi></mrow><mo>)</mo></mrow><mi>x</mi><mo>+</mo><mi>a</mi><mi>b</mi></mrow></math>ここでは <math><mi>a</mi><mo>=</mo><mn>2</mn></math>、<math><mi>b</mi><mo>=</mo><mo>−</mo><mn>3</mn></math> として左辺を展開し、右辺と比べる。</p>
+          <p>左辺を展開してみよう。<br><math><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo></mrow><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>3</mn><mo>)</mo></mrow><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>x</mi><mo>−</mo><mn>6</mn></math>となって、右辺と一致するね。式変形で導かれる等式だから……。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― (2) すべての x で成り立つか</h3>
-          <p>左辺を展開すると x<sup>2</sup> − 2x になる。右辺の x と比べると、すべての x で成り立つかな？ 方程式として解くと、x = 0 または x = 3 のときだけ成り立つことが分かるよ。</p>
+          <h3>ヒント 2 ― (2) すべての <math><mi>x</mi></math> で成り立つか</h3><p class="cite"><span class="cite-tag">使う定義</span><math><mrow><mi>x</mi><mrow><mo>(</mo><mrow><mi>x</mi><mo>−</mo><mn>2</mn></mrow><mo>)</mo></mrow><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>x</mi></mrow></math>左辺を展開した式と右辺を比べ、すべての <math><mi>x</mi></math> で成り立つか考える。一部の値でしか成り立たなければ方程式である。</p>
+          <p>左辺を展開すると<math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>x</mi></math>になる。<br>右辺の <math><mi>x</mi></math> と比べると、すべての <math><mi>x</mi></math> で成り立つかな？ 方程式として解くと、<math><mi>x</mi><mo>=</mo><mn>0</mn></math>または<math><mi>x</mi><mo>=</mo><mn>3</mn></math>のときだけ成り立つことが分かるよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
           <p class="big">(1) 恒等式である　　(2) 恒等式ではない（方程式）</p>
-          <p>(1) は式変形で右辺が導かれる。(2) は x = 0，3 のときに限り成り立つ。</p>
+          <p>(1) は式変形で右辺が導かれる。(2) は<math><mi>x</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>3</mn></math>のときに限り成り立つ。</p>
         </div>
         <p class="prob-done">例10 クリア！　恒等式かどうかは「どんな値を入れても成り立つか」で判断するよ。次は練習19だよ。</p>
       </section>
-      <section class="card prob" id="prob-ren19" data-flow="ren19" data-label="練習19">
+      <section class="nofig card prob" id="prob-ren19" data-flow="ren19" data-label="練習19">
         <div class="prob-head">
           <span class="prob-tag ren">練習 19</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
         <div class="qside">
-        <p class="prob-q">次の等式のうち、x についての恒等式はどれか。<br>(1)　(x + 1)(x − 1) = x<sup>2</sup> − 1<br>(2)　x<sup>2</sup> − 4x + 3 = 0<br>(3)　2 + <span class="frac"><span class="num">1</span><span class="den">x + 1</span></span> = <span class="frac"><span class="num">3</span><span class="den">x + 1</span></span><br>(4)　<span class="frac"><span class="num">1</span><span class="den">x</span></span> − <span class="frac"><span class="num">1</span><span class="den">x + 2</span></span> = <span class="frac"><span class="num">2</span><span class="den">x(x + 2)</span></span></p>
+        <p class="prob-q">次の等式のうち、<math><mi>x</mi></math> についての恒等式はどれか。<br>(1)　<math><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn></math><br>(2)　<math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>x</mi><mo>+</mo><mn>3</mn><mo>=</mo><mn>0</mn></math><br>(3)　<math><mn>2</mn><mo>+</mo><mfrac><mn>1</mn><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow></mfrac><mo>=</mo><mfrac><mn>3</mn><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow></mfrac></math><br>(4)　<math><mfrac><mn>1</mn><mi>x</mi></mfrac><mo>−</mo><mfrac><mn>1</mn><mrow><mi>x</mi><mo>+</mo><mn>2</mn></mrow></mfrac><mo>=</mo><mfrac><mn>2</mn><mrow><mi>x</mi><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo></mrow></mrow></mfrac></math></p>
           <div class="quiz" id="qz-ren19" data-correct="1,4" data-multi="1">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>(1)　(x + 1)(x − 1) = x<sup>2</sup> − 1</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>(2)　x<sup>2</sup> − 4x + 3 = 0</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>(3)　2 + <span class="frac"><span class="num">1</span><span class="den">x + 1</span></span> = <span class="frac"><span class="num">3</span><span class="den">x + 1</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>(4)　<span class="frac"><span class="num">1</span><span class="den">x</span></span> − <span class="frac"><span class="num">1</span><span class="den">x + 2</span></span> = <span class="frac"><span class="num">2</span><span class="den">x(x + 2)</span></span></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>(1)　<math><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>(2)　<math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>x</mi><mo>+</mo><mn>3</mn><mo>=</mo><mn>0</mn></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>(3)　<math><mn>2</mn><mo>+</mo><mfrac><mn>1</mn><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow></mfrac><mo>=</mo><mfrac><mn>3</mn><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>(4)　<math><mfrac><mn>1</mn><mi>x</mi></mfrac><mo>−</mo><mfrac><mn>1</mn><mrow><mi>x</mi><mo>+</mo><mn>2</mn></mrow></mfrac><mo>=</mo><mfrac><mn>2</mn><mrow><mi>x</mi><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo></mrow></mrow></mfrac></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
@@ -374,22 +431,22 @@
           </div>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― (1) を展開する</h3>
-          <p>左辺を展開してみよう。(x + 1)(x − 1) = x<sup>2</sup> − 1 だね。</p>
+          <h3>ヒント 1 ― (1) を展開する</h3><p class="cite"><span class="cite-tag">使う公式</span><math><mrow><mrow><mo>(</mo><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow><mo>)</mo></mrow><mrow><mo>(</mo><mrow><mi>x</mi><mo>−</mo><mn>1</mn></mrow><mo>)</mo></mrow><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn></mrow></math>和と差の積の展開。左辺を展開して右辺と比べ、恒等式かどうか判断する。</p>
+          <p>左辺を展開してみよう。<math><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn></math>だね。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― (2)(3) を調べる</h3>
-          <p>(2) は右辺が 0 の等式で、成り立つのは特定の x のときだけ。(3) は左辺を通分して計算すると <span class="frac"><span class="num">2x + 3</span><span class="den">x + 1</span></span> になり、右辺と比べてみよう。</p>
+          <p>(2) は右辺が 0 の等式で、成り立つのは特定の <math><mi>x</mi></math> のときだけ。<br>(3) は左辺を通分して計算すると <math><mfrac><mrow><mn>2</mn><mi>x</mi><mo>+</mo><mn>3</mn></mrow><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow></mfrac></math> になり、右辺と比べてみよう。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 3 ― (4) を通分する</h3>
-          <p>(4) の左辺を通分すると <span class="frac"><span class="num">(x + 2) − x</span><span class="den">x(x + 2)</span></span> = <span class="frac"><span class="num">2</span><span class="den">x(x + 2)</span></span> となり、右辺と一致するよ。</p>
+          <h3>ヒント 3 ― (4) を通分する</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mfrac><mn>1</mn><mi>x</mi></mfrac><mo>−</mo><mfrac><mn>1</mn><mrow><mi>x</mi><mo>+</mo><mn>2</mn></mrow></mfrac><mo>=</mo><mfrac><mn>2</mn><mrow><mi>x</mi><mrow><mo>(</mo><mrow><mi>x</mi><mo>+</mo><mn>2</mn></mrow><mo>)</mo></mrow></mrow></mfrac></mrow></math>左辺を通分して計算し、右辺と一致するか確かめる。</p>
+          <p>(4) の左辺を通分すると <math><mfrac><mrow><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo></mrow><mo>−</mo><mi>x</mi></mrow><mrow><mi>x</mi><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo></mrow></mrow></mfrac><mo>=</mo><mfrac><mn>2</mn><mrow><mi>x</mi><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo></mrow></mrow></mfrac></math> となり、右辺と一致するよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
           <p class="big">恒等式は　(1) と (4)</p>
-          <p>(2) は x = 1，3 のときだけ成り立つ方程式。(3) は左辺が <span class="frac"><span class="num">2x + 3</span><span class="den">x + 1</span></span> となり、右辺と一致しない。</p>
+          <p>(2) は<math><mi>x</mi><mo>=</mo><mn>1</mn><mo>,</mo><mn>3</mn></math>のときだけ成り立つ方程式。<br>(3) は左辺が <math><mfrac><mrow><mn>2</mn><mi>x</mi><mo>+</mo><mn>3</mn></mrow><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow></mfrac></math> となり、右辺と一致しない。</p>
         </div>
         <p class="prob-done">練習19 クリア！　次は係数を比べる方法だよ。</p>
       </section>
@@ -399,9 +456,17 @@
         <span class="pno">教科書 p.22</span>
       </div>
       <section class="card">
-        <p>恒等式の両辺が x についての多項式のとき、各辺で同類項を整理すると、両辺の同じ次数の項の係数は、それぞれ等しい。たとえば、a，b，c，a′，b′，c′ を定数とすると、次のことが成り立つ。</p>
-        <div class="law"><span class="law-no">恒等式の性質 1</span><p class="formula left">ax<sup>2</sup> + bx + c = a′x<sup>2</sup> + b′x + c′ が x についての恒等式である　⇔　a = a′， b = b′， c = c′</p></div>
-        <div class="law"><span class="law-no">恒等式の性質 2</span><p class="formula left">ax<sup>2</sup> + bx + c = 0 が x についての恒等式である　⇔　a = b = c = 0</p></div>
+        <p>恒等式の両辺が <math><mi>x</mi></math> についての多項式のとき、各辺で同類項を整理すると、両辺の同じ次数の項の係数は、それぞれ等しい。たとえば、<math><mi>a</mi></math>，<math><mi>b</mi></math>，<math><mi>c</mi></math>，<math><mi>a</mi><mo>′</mo></math>，<math><mi>b</mi><mo>′</mo></math>，<math><mi>c</mi><mo>′</mo></math> を定数とすると、次のことが成り立つ。</p>
+        <div class="law"><span class="law-no">恒等式の性質 1</span><p class="formula left"><math><mi>a</mi><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>b</mi><mi>x</mi><mo>+</mo><mi>c</mi><mo>=</mo><mi>a</mi><mi>′</mi><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>b</mi><mi>′</mi><mi>x</mi><mo>+</mo><mi>c</mi><mi>′</mi></math>が <math><mi>x</mi></math> についての恒等式である　<div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mo>⇔</mo><mspace width="2em"/><mi>a</mi><mo>=</mo><mi>a</mi><mi>′</mi><mo>,</mo><mi>b</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mo>⇔</mo><mspace width="2em"/><mi>a</mi></mphantom><mo>=</mo><mi>b</mi><mi>′</mi><mo>,</mo><mi>c</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mo>⇔</mo><mspace width="2em"/><mi>a</mi></mphantom><mo>=</mo><mi>c</mi><mi>′</mi></math></div>
+</div></p></div>
+        <div class="law"><span class="law-no">恒等式の性質 2</span><p class="formula left"><math><mi>a</mi><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>b</mi><mi>x</mi><mo>+</mo><mi>c</mi><mo>=</mo><mn>0</mn></math>が <math><mi>x</mi></math> についての恒等式である　<div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mo>⇔</mo><mspace width="2em"/><mi>a</mi><mo>=</mo><mi>b</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mo>⇔</mo><mspace width="2em"/><mi>a</mi></mphantom><mo>=</mo><mi>c</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mo>⇔</mo><mspace width="2em"/><mi>a</mi></mphantom><mo>=</mo><mn>0</mn></math></div>
+</div></p></div>
         <p>この性質を使って、等式が恒等式になるような未知の定数の値を定めることができるよ。</p>
       </section>
       <div class="sec-head">
@@ -409,61 +474,69 @@
         <h2>例題6 ― 係数を比べて定数を定める</h2>
         <span class="pno">教科書 p.23</span>
       </div>
-      <section class="card prob" id="prob-reidai6" data-flow="reidai6" data-label="例題6">
+      <section class="nofig card prob" id="prob-reidai6" data-flow="reidai6" data-label="例題6">
         <div class="prob-head">
           <span class="prob-tag ">例題 6</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
         <div class="qside">
-        <p class="prob-q">等式 3x<sup>2</sup> + 8x + 1 = (x + 2)(ax + b) + c が x についての恒等式となるように、定数 a，b，c の値を定めよ。</p>
+        <p class="prob-q">等式<math><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>8</mn><mi>x</mi><mo>+</mo><mn>1</mn><mo>=</mo><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo></mrow><mrow><mo>(</mo><mi>a</mi><mi>x</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mo>+</mo><mi>c</mi></math>が <math><mi>x</mi></math> についての恒等式となるように、定数 <math><mi>a</mi></math>，<math><mi>b</mi></math>，<math><mi>c</mi></math> の値を定めよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 右辺を整理する</h3>
-          <p>まず右辺を x について整理しよう。(x + 2)(ax + b) を展開して、同類項をまとめるよ。</p>
+          <h3>ヒント 1 ― 右辺を整理する</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mrow><mo>(</mo><mrow><mi>x</mi><mo>+</mo><mn>2</mn></mrow><mo>)</mo></mrow><mrow><mo>(</mo><mrow><mi>a</mi><mi>x</mi><mo>+</mo><mi>b</mi></mrow><mo>)</mo></mrow><mo>+</mo><mi>c</mi><mo>=</mo><mi>a</mi><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mrow><mo>(</mo><mrow><mn>2</mn><mi>a</mi><mo>+</mo><mi>b</mi></mrow><mo>)</mo></mrow><mi>x</mi><mo>+</mo><mrow><mo>(</mo><mrow><mn>2</mn><mi>b</mi><mo>+</mo><mi>c</mi></mrow><mo>)</mo></mrow></mrow></math>右辺を <math><mi>x</mi></math> について整理してから、両辺の係数を比べる。</p>
+          <p>まず右辺を <math><mi>x</mi></math> について整理しよう。<br>(<math><mi>x</mi></math> + 2)(ax + <math><mi>b</mi></math>) を展開して、同類項をまとめるよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― 係数を比べる</h3>
-          <p>右辺は ax<sup>2</sup> + (2a + b)x + (2b + c) になる。両辺の同じ次数の項の係数を比べよう（性質 1）。</p>
+          <h3>ヒント 2 ― 係数を比べる</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mi>a</mi><mo>=</mo><mi>p</mi><mo>,</mo><mi>b</mi><mo>=</mo><mi>q</mi><mo>,</mo><mi>c</mi><mo>=</mo><mi>r</mi></mrow></math>恒等式では同じ次数の項の係数がそれぞれ等しい。整理した右辺の各係数を、左辺の係数と比べる。</p>
+          <p>右辺は<math><mi>a</mi><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mrow><mo>(</mo><mn>2</mn><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mi>x</mi><mo>+</mo><mrow><mo>(</mo><mn>2</mn><mi>b</mi><mo>+</mo><mi>c</mi><mo>)</mo></mrow></math>になる。両辺の同じ次数の項の係数を比べよう（性質 1）。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 3 ― 3 つの式を解く</h3>
-          <p>x<sup>2</sup> の係数から 3 = a、x の係数から 8 = 2a + b、定数項から 1 = 2b + c という 3 つの式ができるよ。上から順に解いていこう。</p>
+          <p><math><msup><mi>x</mi><mn>2</mn></msup></math> の係数から<math><mn>3</mn><mo>=</mo><mi>a</mi></math>、<math><mi>x</mi></math> の係数から<math><mn>8</mn><mo>=</mo><mn>2</mn><mi>a</mi><mo>+</mo><mi>b</mi></math>、定数項から<math><mn>1</mn><mo>=</mo><mn>2</mn><mi>b</mi><mo>+</mo><mi>c</mi></math>という 3 つの式ができるよ。<br>上から順に解いていこう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">a = 3，　b = 2，　c = −3</p>
-          <p>a = 3 を 8 = 2a + b に代入して b = 2、b = 2 を 1 = 2b + c に代入して c = −3。</p>
+          <div class="chain-crow big">
+<div class="crow"><math displaystyle="true"><mi>a</mi><mo>=</mo><mn>3</mn><mo>,</mo><mspace width="2em"/><mi>b</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>a</mi></mphantom><mo>=</mo><mn>2</mn><mo>,</mo><mspace width="2em"/><mi>c</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>a</mi></mphantom><mo>=</mo><mo>−</mo><mn>3</mn></math></div>
+</div><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mi>a</mi><mo>=</mo><mi>p</mi><mo>,</mo><mi>b</mi><mo>=</mo><mi>q</mi><mo>,</mo><mi>c</mi><mo>=</mo><mi>r</mi></mrow></math>係数を比べて得た3つの式を、上から順に代入して解く。</p>
+          <p><math><mi>a</mi><mo>=</mo><mn>3</mn></math>を<math><mn>8</mn><mo>=</mo><mn>2</mn><mi>a</mi><mo>+</mo><mi>b</mi></math>に代入して<math><mi>b</mi><mo>=</mo><mn>2</mn></math>、<math><mi>b</mi><mo>=</mo><mn>2</mn></math>を<math><mn>1</mn><mo>=</mo><mn>2</mn><mi>b</mi><mo>+</mo><mi>c</mi></math>に代入して<math><mi>c</mi><mo>=</mo><mo>−</mo><mn>3</mn></math>。</p>
         </div>
         <p class="prob-done">例題6 クリア！　流れは「整理 → 係数比較 → 解く」だね。次は練習20だよ。</p>
       </section>
-      <section class="card prob" id="prob-ren20" data-flow="ren20" data-label="練習20">
+      <section class="nofig card prob" id="prob-ren20" data-flow="ren20" data-label="練習20">
         <div class="prob-head">
           <span class="prob-tag ren">練習 20</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
         <div class="qside">
-        <p class="prob-q">等式 2x<sup>2</sup> − 7x + 8 = (x − 3)(ax + b) + c が x についての恒等式となるように、定数 a，b，c の値を定めよ。</p>
+        <p class="prob-q">等式<math><mn>2</mn><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>7</mn><mi>x</mi><mo>+</mo><mn>8</mn><mo>=</mo><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>3</mn><mo>)</mo></mrow><mrow><mo>(</mo><mi>a</mi><mi>x</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mo>+</mo><mi>c</mi></math>が <math><mi>x</mi></math> についての恒等式となるように、定数 <math><mi>a</mi></math>，<math><mi>b</mi></math>，<math><mi>c</mi></math> の値を定めよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 右辺を整理する</h3>
-          <p>右辺を x について整理しよう。(x − 3)(ax + b) を展開して、同類項をまとめるよ。</p>
+          <h3>ヒント 1 ― 右辺を整理する</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mrow><mo>(</mo><mrow><mi>x</mi><mo>−</mo><mn>3</mn></mrow><mo>)</mo></mrow><mrow><mo>(</mo><mrow><mi>a</mi><mi>x</mi><mo>+</mo><mi>b</mi></mrow><mo>)</mo></mrow><mo>+</mo><mi>c</mi><mo>=</mo><mi>a</mi><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mrow><mo>(</mo><mrow><mi>b</mi><mo>−</mo><mn>3</mn><mi>a</mi></mrow><mo>)</mo></mrow><mi>x</mi><mo>+</mo><mrow><mo>(</mo><mrow><mo>−</mo><mn>3</mn><mi>b</mi><mo>+</mo><mi>c</mi></mrow><mo>)</mo></mrow></mrow></math>右辺を <math><mi>x</mi></math> について整理してから、両辺の係数を比べる。</p>
+          <p>右辺を <math><mi>x</mi></math> について整理しよう。(<math><mi>x</mi></math> − 3)(ax + <math><mi>b</mi></math>) を展開して、同類項をまとめるよ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 係数を比べる</h3>
-          <p>右辺は ax<sup>2</sup> + (b − 3a)x + (−3b + c) になる。両辺の係数を比べよう。</p>
+          <p>右辺は<math><mi>a</mi><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mrow><mo>(</mo><mi>b</mi><mo>−</mo><mn>3</mn><mi>a</mi><mo>)</mo></mrow><mi>x</mi><mo>+</mo><mrow><mo>(</mo><mo>−</mo><mn>3</mn><mi>b</mi><mo>+</mo><mi>c</mi><mo>)</mo></mrow></math>になる。両辺の係数を比べよう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 3 ― 3 つの式を解く</h3>
-          <p>x<sup>2</sup> の係数から a = 2。x の係数から b − 3a = −7、定数項から −3b + c = 8 だよ。</p>
+          <p><math><msup><mi>x</mi><mn>2</mn></msup></math> の係数から<math><mi>a</mi><mo>=</mo><mn>2</mn></math>。<math><mi>x</mi></math> の係数から<math><mi>b</mi><mo>−</mo><mn>3</mn><mi>a</mi><mo>=</mo><mo>−</mo><mn>7</mn></math>、定数項から<math><mo>−</mo><mn>3</mn><mi>b</mi><mo>+</mo><mi>c</mi><mo>=</mo><mn>8</mn></math>だよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">a = 2，　b = −1，　c = 5</p>
-          <p>a = 2、b − 6 = −7 より b = −1、3 + c = 8 より c = 5。</p>
+          <div class="chain-crow big">
+<div class="crow"><math displaystyle="true"><mi>a</mi><mo>=</mo><mn>2</mn><mo>,</mo><mspace width="2em"/><mi>b</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>a</mi></mphantom><mo>=</mo><mo>−</mo><mn>1</mn><mo>,</mo><mspace width="2em"/><mi>c</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>a</mi></mphantom><mo>=</mo><mn>5</mn></math></div>
+</div>
+          <p><math><mi>a</mi><mo>=</mo><mn>2</mn></math>、<math><mi>b</mi><mo>−</mo><mn>6</mn><mo>=</mo><mo>−</mo><mn>7</mn></math>より<math><mi>b</mi><mo>=</mo><mo>−</mo><mn>1</mn></math>、<math><mn>3</mn><mo>+</mo><mi>c</mi><mo>=</mo><mn>8</mn></math>より<math><mi>c</mi><mo>=</mo><mn>5</mn></math>。</p>
         </div>
         <p class="prob-done">練習20 クリア！　符号ミスに注意できたね。次は応用例題2だよ。</p>
       </section>
@@ -472,49 +545,49 @@
         <h2>応用例題2 ― 分母をはらって係数比較</h2>
         <span class="pno">教科書 p.23</span>
       </div>
-      <section class="card prob" id="prob-ouyou2" data-flow="ouyou2" data-label="応用例題2">
+      <section class="nofig card prob" id="prob-ouyou2" data-flow="ouyou2" data-label="応用例題2">
         <div class="prob-head">
           <span class="prob-tag ouyou">応用例題 2</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
         <div class="qside">
-        <p class="prob-q">等式 <span class="frac"><span class="num">x + 3</span><span class="den">(x + 1)(x + 2)</span></span> = <span class="frac"><span class="num">a</span><span class="den">x + 1</span></span> + <span class="frac"><span class="num">b</span><span class="den">x + 2</span></span> が x についての恒等式となるように、定数 a，b の値を定めよ。</p>
+        <p class="prob-q">等式 <math><mfrac><mrow><mi>x</mi><mo>+</mo><mn>3</mn></mrow><mrow><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo></mrow></mrow></mfrac><mo>=</mo><mfrac><mi>a</mi><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow></mfrac><mo>+</mo><mfrac><mi>b</mi><mrow><mi>x</mi><mo>+</mo><mn>2</mn></mrow></mfrac></math> が <math><mi>x</mi></math> についての恒等式となるように、定数 <math><mi>a</mi></math>，<math><mi>b</mi></math> の値を定めよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 考え方：分母をはらう</h3>
-          <p>分母をはらって得られる等式が恒等式となるように、a，b の値を定める。</p>
+          <h3>ヒント 1 ― 考え方：分母をはらう</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mi>x</mi><mo>+</mo><mn>3</mn><mo>=</mo><mi>a</mi><mrow><mo>(</mo><mrow><mi>x</mi><mo>+</mo><mn>2</mn></mrow><mo>)</mo></mrow><mo>+</mo><mi>b</mi><mrow><mo>(</mo><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow><mo>)</mo></mrow></mrow></math>両辺に分母の積を掛けて得られる等式が恒等式となるように、定数の値を定める。</p>
+          <p>分母をはらって得られる等式が恒等式となるように、<math><mi>a</mi></math>，<math><mi>b</mi></math> の値を定める。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― 両辺に (x + 1)(x + 2) を掛ける</h3>
-          <p>両辺に (x + 1)(x + 2) を掛けると、x + 3 = a(x + 2) + b(x + 1) という等式が得られるよ。</p>
+          <h3>ヒント 2 ― 両辺に (<math><mi>x</mi></math> + 1)(<math><mi>x</mi></math> + 2) を掛ける</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mrow><mo>(</mo><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow><mo>)</mo></mrow><mrow><mo>(</mo><mrow><mi>x</mi><mo>+</mo><mn>2</mn></mrow><mo>)</mo></mrow></mrow></math>両辺にこの式を掛けると分母が消え、多項式の等式になる。</p>
+          <p>両辺に (<math><mi>x</mi></math> + 1)(<math><mi>x</mi></math> + 2) を掛けると、<math><mi>x</mi><mo>+</mo><mn>3</mn><mo>=</mo><mi>a</mi><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo></mrow><mo>+</mo><mi>b</mi><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow></math>という等式が得られるよ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 3 ― 整理して係数を比べる</h3>
-          <p>右辺を x について整理すると (a + b)x + (2a + b) になる。両辺の係数を比べよう。</p>
+          <p>右辺を <math><mi>x</mi></math> について整理すると (<math><mi>a</mi></math> + <math><mi>b</mi></math>)<math><mi>x</mi></math> + (2a + <math><mi>b</mi></math>) になる。<br>両辺の係数を比べよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">a = 2，　b = −1</p>
-          <p>x の係数から 1 = a + b、定数項から 3 = 2a + b。この連立方程式を解くと、次の値になる。</p>
+          <p class="big"><math display="block"><mi>a</mi><mo>=</mo><mn>2</mn><mo>,</mo><mspace width="2em"/><mi>b</mi><mo>=</mo><mo>−</mo><mn>1</mn></math></p><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mi>a</mi><mo>+</mo><mi>b</mi><mo>=</mo><mn>1</mn><mo>,</mo><mn>2</mn><mi>a</mi><mo>+</mo><mi>b</mi><mo>=</mo><mn>3</mn></mrow></math>係数を比べて得た連立方程式を解く。</p>
+          <p><math><mi>x</mi></math> の係数から<math><mn>1</mn><mo>=</mo><mi>a</mi><mo>+</mo><mi>b</mi></math>、定数項から<math><mn>3</mn><mo>=</mo><mn>2</mn><mi>a</mi><mo>+</mo><mi>b</mi></math>。この連立方程式を解くと、次の値になる。</p>
         </div>
         <p class="prob-done">応用例題2 クリア！　分数式の恒等式は、分母をはらって多項式の恒等式に直すのがポイントだね。次は練習21だよ。</p>
       </section>
-      <section class="card prob" id="prob-ren21" data-flow="ren21" data-label="練習21">
+      <section class="nofig card prob" id="prob-ren21" data-flow="ren21" data-label="練習21">
         <div class="prob-head">
           <span class="prob-tag ren">練習 21</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">等式 <span class="frac"><span class="num">1</span><span class="den">x(x + 1)</span></span> = <span class="frac"><span class="num">a</span><span class="den">x</span></span> + <span class="frac"><span class="num">b</span><span class="den">x + 1</span></span> が x についての恒等式となるように、定数 a，b の値を定めよ。</p>
+        <p class="prob-q">等式 <math><mfrac><mn>1</mn><mrow><mi>x</mi><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow></mrow></mfrac><mo>=</mo><mfrac><mi>a</mi><mi>x</mi></mfrac><mo>+</mo><mfrac><mi>b</mi><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow></mfrac></math> が <math><mi>x</mi></math> についての恒等式となるように、定数 <math><mi>a</mi></math>，<math><mi>b</mi></math> の値を定めよ。</p>
           <div class="quiz" id="qz-ren21" data-correct="3">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>a = 1，b = 1</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>a = −1，b = −1</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>a = 1，b = −1</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>a = −1，b = 1</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mi>a</mi></math> = 1，<math><mi>b</mi></math> = 1</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mi>a</mi></math> = −1，<math><mi>b</mi></math> = −1</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mi>a</mi></math> = 1，<math><mi>b</mi></math> = −1</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mi>a</mi></math> = −1，<math><mi>b</mi></math> = 1</span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
@@ -522,18 +595,18 @@
           </div>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 分母をはらう</h3>
-          <p>応用例題2 と同じように、両辺に x(x + 1) を掛けて分母をはらおう。</p>
+          <h3>ヒント 1 ― 分母をはらう</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mi>x</mi><mrow><mo>(</mo><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow><mo>)</mo></mrow></mrow></math>両辺にこの式を掛けて分母をはらう。応用例題2と同じ進め方である。</p>
+          <p>応用例題2 と同じように、両辺に <math><mi>x</mi><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow></math> を掛けて分母をはらおう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 整理して係数を比べる</h3>
-          <p>1 = a(x + 1) + bx となる。右辺を整理すると (a + b)x + a だよ。左辺は x の項がないことに注意して、係数を比べよう。</p>
+          <p><math><mn>1</mn><mo>=</mo><mi>a</mi><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow><mo>+</mo><mi>b</mi><mi>x</mi></math>となる。<br>右辺を整理すると (<math><mi>a</mi></math> + <math><mi>b</mi></math>)<math><mi>x</mi></math> + <math><mi>a</mi></math> だよ。左辺は <math><mi>x</mi></math> の項がないことに注意して、係数を比べよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">a = 1，　b = −1</p>
-          <p>係数を比べて a + b = 0，a = 1。これを解くと、次の値になる。</p>
+          <p class="big"><math display="block"><mi>a</mi><mo>=</mo><mn>1</mn><mo>,</mo><mspace width="2em"/><mi>b</mi><mo>=</mo><mo>−</mo><mn>1</mn></math></p>
+          <p>係数を比べて<math><mi>a</mi><mo>+</mo><mi>b</mi><mo>=</mo><mn>0</mn><mo>,</mo><mi>a</mi><mo>=</mo><mn>1</mn></math>。これを解くと、次の値になる。</p>
         </div>
         <p class="prob-done">練習21 クリア！　この項は終了だよ。</p>
       </section>
@@ -543,10 +616,10 @@
       <section class="card summary" id="summaryCard" style="display:none">
         <h2>この項のポイント</h2>
         <ul>
-          <li><b>恒等式：</b>文字にどんな値を代入しても常に成り立つ等式。特定の値でしか成り立たない等式は方程式。</li>
-          <li><b>恒等式の性質：</b>多項式の恒等式では、両辺の同じ次数の項の係数がそれぞれ等しい。右辺が 0 の形では、すべての係数が 0。</li>
+          <li><p class="cite"><span class="cite-tag">使う定義</span><math><mtext>文字にどんな値を代入しても成り立つ等式</mtext></math>特定の値でしか成り立たない等式は方程式である。</p><b>恒等式：</b>文字にどんな値を代入しても常に成り立つ等式。特定の値でしか成り立たない等式は方程式。</li>
+          <li><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mi>a</mi><mo>=</mo><mi>p</mi><mo>,</mo><mi>b</mi><mo>=</mo><mi>q</mi><mo>,</mo><mi>c</mi><mo>=</mo><mi>r</mi></mrow></math>多項式の恒等式では、両辺の同じ次数の項の係数がそれぞれ等しい。</p><b>恒等式の性質：</b>多項式の恒等式では、両辺の同じ次数の項の係数がそれぞれ等しい。右辺が 0 の形では、すべての係数が 0。</li>
           <li><b>定数を定める手順：</b>片辺を整理 → 次数ごとに係数を比べる → 連立して解く。</li>
-          <li><b>分数式を含む恒等式：</b>両辺に分母の積を掛けて分母をはらってから、係数を比べる。</li>
+          <li><p class="cite"><span class="cite-tag">使う性質</span><math><mfrac><mrow><mi>x</mi><mo>+</mo><mn>3</mn></mrow><mrow><mrow><mo>(</mo><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow><mo>)</mo></mrow><mrow><mo>(</mo><mrow><mi>x</mi><mo>+</mo><mn>2</mn></mrow><mo>)</mo></mrow></mrow></mfrac></math>分数式を含む恒等式は、両辺に分母の積を掛けて分母をはらってから、係数を比べる。</p><b>分数式を含む恒等式：</b>両辺に分母の積を掛けて分母をはらってから、係数を比べる。</li>
         </ul>
       </section>
       <footer>

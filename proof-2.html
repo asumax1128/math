@@ -302,7 +302,64 @@
       table.comp{border-collapse:collapse;margin:0 0 14px;width:100%}
       table.comp th,table.comp td{border:1px solid var(--line);padding:8px 10px;text-align:center;font-size:15px}
       table.comp th{background:var(--surface2)}
-        </style>
+        
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+
+      /* 積分記号は大きめに表示する（元のページの可読化デザインに合わせる） */
+      math .int-op{font-size:1.35em}
+      /* calc-12 世代（.card）と calc-18 世代（.unit）の、図のない問題の全幅化 */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig>.step{position:static !important}
+        .card.nofig>.steps-wrap{max-height:none !important;overflow:visible !important}
+        .unit.nofig{display:block !important}
+        .unit.nofig>.qside{position:static !important}
+        .unit.nofig>.steps-stack{max-height:none !important;overflow:visible !important}
+      }
+
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける・第3弾c） */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig .qside{position:static !important}
+        .card.nofig .steps-wrap,.card.nofig .tabpanel .steps-wrap{max-height:none !important;overflow:visible !important}
+      }
+</style>
   </head>
   <body>
     <div class="wrap">
@@ -321,16 +378,16 @@
       </section>
       <div class="sec-head">
         <span class="sec-tag">解説 A</span>
-        <h2>(a + b)<sup>n</sup> の展開式</h2>
+        <h2><math><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mi>n</mi></msup></math> の展開式</h2>
         <span class="pno">教科書 p.11</span>
       </div>
       <section class="card">
         <p>2 次式、3 次式の展開については、次の式が成り立つことをすでに学んだ。</p>
-        <p class="formula">(a + b)<sup>2</sup> = a<sup>2</sup> + 2ab + b<sup>2</sup><br>(a + b)<sup>3</sup> = a<sup>3</sup> + 3a<sup>2</sup>b + 3ab<sup>2</sup> + b<sup>3</sup></p>
-        <p>ここでは、自然数 n について、(a + b)<sup>n</sup> の展開式はどうなるかを考えていく。</p>
-        <p>まず、(a + b)<sup>4</sup> の展開式は、(a + b)<sup>4</sup> = (a + b)<sup>3</sup>(a + b) を計算することで得られ、次のようになる。</p>
-        <p class="formula">(a + b)<sup>4</sup> = a<sup>4</sup> + 4a<sup>3</sup>b + 6a<sup>2</sup>b<sup>2</sup> + 4ab<sup>3</sup> + b<sup>4</sup></p>
-        <p>この計算は、各項の係数だけを取り出して行うと、次のような計算になる。(a + b)<sup>3</sup> の係数 1, 3, 3, 1 を、そのまま書いたものと 1 つずらして書いたものとで、縦に加える。</p>
+        <p class="formula"><math><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>a</mi><mi>b</mi><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup></math><br><math><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mn>3</mn></msup><mo>=</mo><msup><mi>a</mi><mn>3</mn></msup><mo>+</mo><mn>3</mn><msup><mi>a</mi><mn>2</mn></msup><mi>b</mi><mo>+</mo><mn>3</mn><mi>a</mi><msup><mi>b</mi><mn>2</mn></msup><mo>+</mo><msup><mi>b</mi><mn>3</mn></msup></math></p>
+        <p>ここでは、自然数 <math><mi>n</mi></math> について、<math><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mi>n</mi></msup></math> の展開式はどうなるかを考えていく。</p>
+        <p>まず、<math><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mn>4</mn></msup></math> の展開式は、<math><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mn>4</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mn>3</mn></msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow></math>を計算することで得られ、次のようになる。</p>
+        <p class="formula"><math display="block"><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mn>4</mn></msup><mo>=</mo><msup><mi>a</mi><mn>4</mn></msup><mo>+</mo><mn>4</mn><msup><mi>a</mi><mn>3</mn></msup><mi>b</mi><mo>+</mo><mn>6</mn><msup><mi>a</mi><mn>2</mn></msup><msup><mi>b</mi><mn>2</mn></msup><mo>+</mo><mn>4</mn><mi>a</mi><msup><mi>b</mi><mn>3</mn></msup><mo>+</mo><msup><mi>b</mi><mn>4</mn></msup></math></p>
+        <p>この計算は、各項の係数だけを取り出して行うと、次のような計算になる。<math><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mn>3</mn></msup></math> の係数 1, 3, 3, 1 を、そのまま書いたものと 1 つずらして書いたものとで、縦に加える。</p>
 <figure><div class="figbox"><svg viewBox="0 0 400 176" role="img" aria-label="係数だけを取り出す計算">
 <text x="26" y="62" font-size="18" fill="currentColor">×) 1　1</text>
 <text x="150" y="30" font-size="18" text-anchor="middle" fill="currentColor">1</text>
@@ -352,36 +409,36 @@
 <text x="234" y="162" font-size="18" text-anchor="middle" fill="currentColor">6</text>
 <text x="276" y="162" font-size="18" text-anchor="middle" fill="currentColor">4</text>
 <text x="318" y="162" font-size="18" text-anchor="middle" fill="currentColor">1</text>
-</svg></div><figcaption>(a + b)<sup>3</sup> の係数から (a + b)<sup>4</sup> の係数を作る計算</figcaption></figure>
-        <p>こうして、(a + b)<sup>4</sup> の係数 1, 4, 6, 4, 1 が得られる。</p>
+</svg></div><figcaption><math><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mn>3</mn></msup></math> の係数から<math><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mn>4</mn></msup></math> の係数を作る計算</figcaption></figure>
+        <p>こうして、<math><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mn>4</mn></msup></math> の係数 1, 4, 6, 4, 1 が得られる。</p>
       </section>
       <div class="sec-head">
         <span class="sec-tag">練習</span>
         <h2>練習問題に挑戦</h2>
         <span class="pno">教科書 p.11</span>
       </div>
-      <section class="card prob" id="prob-ren6" data-flow="ren6" data-label="練習6">
+      <section class="nofig card prob" id="prob-ren6" data-flow="ren6" data-label="練習6">
         <div class="prob-head">
           <span class="prob-tag ren">練習 6</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">(a + b)<sup>5</sup> の展開式を、上のような係数だけを取り出す計算によって求めよ。</p>
+        <p class="prob-q"><math><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mn>5</mn></msup></math> の展開式を、上のような係数だけを取り出す計算によって求めよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 係数を 1 つずらして足す</h3>
-          <p>(a + b)<sup>4</sup> の係数 1, 4, 6, 4, 1 を、そのままの列と 1 つ右にずらした列とで縦に加えよう。両端は 1、その内側は 1 + 4、4 + 6、…… となるよ。</p>
+          <h3>ヒント 1 ― 係数を 1 つずらして足す</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mtext>内側の数</mtext><mo>=</mo><mtext>左上の数</mtext><mo>+</mo><mtext>右上の数</mtext></mrow></math>ここでは4乗の係数 1、4、6、4、1 を、そのままの列と1つずらした列とで縦に足す。</p>
+          <p><math><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mn>4</mn></msup></math> の係数 1, 4, 6, 4, 1 を、そのままの列と 1 つ右にずらした列とで縦に加えよう。<br>両端は 1、その内側は 1 + 4、4 + 6、…… となるよ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 係数を項に対応させる</h3>
-          <p>得られた係数 1, 5, 10, 10, 5, 1 を、a<sup>5</sup>、a<sup>4</sup>b、a<sup>3</sup>b<sup>2</sup>、a<sup>2</sup>b<sup>3</sup>、ab<sup>4</sup>、b<sup>5</sup> の順に対応させよう。a の指数が 1 つずつ減り、b の指数が 1 つずつ増えるよ。</p>
+          <p>得られた係数 1, 5, 10, 10, 5, 1 を、<math><msup><mi>a</mi><mn>5</mn></msup></math>、<math><msup><mi>a</mi><mn>4</mn></msup><mi>b</mi></math>、<math><msup><mi>a</mi><mn>3</mn></msup><msup><mi>b</mi><mn>2</mn></msup></math>、<math><msup><mi>a</mi><mn>2</mn></msup><msup><mi>b</mi><mn>3</mn></msup></math>、<math><mi>a</mi><msup><mi>b</mi><mn>4</mn></msup></math>、<math><msup><mi>b</mi><mn>5</mn></msup></math> の順に対応させよう。<br><math><mi>a</mi></math> の指数が 1 つずつ減り、<math><mi>b</mi></math> の指数が 1 つずつ増えるよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">a<sup>5</sup> + 5a<sup>4</sup>b + 10a<sup>3</sup>b<sup>2</sup> + 10a<sup>2</sup>b<sup>3</sup> + 5ab<sup>4</sup> + b<sup>5</sup></p>
-          <p>係数だけの計算で 1, 5, 10, 10, 5, 1 が得られるから、(a + b)<sup>5</sup> = a<sup>5</sup> + 5a<sup>4</sup>b + 10a<sup>3</sup>b<sup>2</sup> + 10a<sup>2</sup>b<sup>3</sup> + 5ab<sup>4</sup> + b<sup>5</sup> となる。</p>
+          <p class="big"><math display="block"><msup><mi>a</mi><mn>5</mn></msup><mo>+</mo><mn>5</mn><msup><mi>a</mi><mn>4</mn></msup><mi>b</mi><mo>+</mo><mn>10</mn><msup><mi>a</mi><mn>3</mn></msup><msup><mi>b</mi><mn>2</mn></msup><mo>+</mo><mn>10</mn><msup><mi>a</mi><mn>2</mn></msup><msup><mi>b</mi><mn>3</mn></msup><mo>+</mo><mn>5</mn><mi>a</mi><msup><mi>b</mi><mn>4</mn></msup><mo>+</mo><msup><mi>b</mi><mn>5</mn></msup></math></p>
+          <p>係数だけの計算で 1, 5, 10, 10, 5, 1 が得られるから、<math><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mn>5</mn></msup><mo>=</mo><msup><mi>a</mi><mn>5</mn></msup><mo>+</mo><mn>5</mn><msup><mi>a</mi><mn>4</mn></msup><mi>b</mi><mo>+</mo><mn>10</mn><msup><mi>a</mi><mn>3</mn></msup><msup><mi>b</mi><mn>2</mn></msup><mo>+</mo><mn>10</mn><msup><mi>a</mi><mn>2</mn></msup><msup><mi>b</mi><mn>3</mn></msup><mo>+</mo><mn>5</mn><mi>a</mi><msup><mi>b</mi><mn>4</mn></msup><mo>+</mo><msup><mi>b</mi><mn>5</mn></msup></math> となる。</p>
         </div>
         <p class="prob-done">練習6 クリア！　次はパスカルの三角形だよ。</p>
       </section>
@@ -391,7 +448,7 @@
         <span class="pno">教科書 p.11〜12</span>
       </div>
       <section class="card">
-        <p>上の方法を繰り返して、(a + b)<sup>n</sup> の展開式の係数を、n = 1, 2, 3, …… について並べると、次のような数の配列が得られる。これを<b>パスカルの三角形</b>という。</p>
+        <p>上の方法を繰り返して、<math><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mi>n</mi></msup></math> の展開式の係数を、<math><mi>n</mi><mo>=</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mo>…</mo><mo>…</mo></math>について並べると、次のような数の配列が得られる。これを<b>パスカルの三角形</b>という。</p>
 <figure><div class="figbox"><svg viewBox="0 0 480 196" role="img" aria-label="パスカルの三角形">
 <line x1="277" y1="38" x2="254" y2="50" stroke="currentColor" stroke-width="1" stroke-dasharray="2.5 3.5" opacity="0.45"/>
 <line x1="277" y1="38" x2="300" y2="50" stroke="currentColor" stroke-width="1" stroke-dasharray="2.5 3.5" opacity="0.45"/>
@@ -459,28 +516,32 @@
         <h2>練習問題に挑戦</h2>
         <span class="pno">教科書 p.12</span>
       </div>
-      <section class="card prob" id="prob-ren7" data-flow="ren7" data-label="練習7">
+      <section class="nofig card prob" id="prob-ren7" data-flow="ren7" data-label="練習7">
         <div class="prob-head">
           <span class="prob-tag ren">練習 7</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">パスカルの三角形の性質を用いて、パスカルの三角形の 6 行目の数の配列を求めよ。また、(a + b)<sup>6</sup> の展開式を求めよ。</p>
+        <p class="prob-q">パスカルの三角形の性質を用いて、パスカルの三角形の 6 行目の数の配列を求めよ。また、<math><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mn>6</mn></msup></math> の展開式を求めよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 5 行目から 6 行目を作る</h3>
-          <p>5 行目は 1, 5, 10, 10, 5, 1。6 行目の両端は 1、その内側は 5 行目の隣り合う 2 数の和 1 + 5、5 + 10、10 + 10、10 + 5、5 + 1 だよ。</p>
+          <h3>ヒント 1 ― 5 行目から 6 行目を作る</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mtext>内側の数</mtext><mo>=</mo><mtext>左上の数</mtext><mo>+</mo><mtext>右上の数</mtext></mrow></math>5行目の隣り合う2数を足して、6行目の内側の数を作る。</p>
+          <p>5 行目は 1, 5, 10, 10, 5, 1。<br>6 行目の両端は 1、その内側は 5 行目の隣り合う 2 数の和 1 + 5、5 + 10、10 + 10、10 + 5、5 + 1 だよ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 係数を項に対応させる</h3>
-          <p>6 行目の係数を a<sup>6</sup>、a<sup>5</sup>b、a<sup>4</sup>b<sup>2</sup>、a<sup>3</sup>b<sup>3</sup>、a<sup>2</sup>b<sup>4</sup>、ab<sup>5</sup>、b<sup>6</sup> に対応させよう。</p>
+          <p>6 行目の係数を<math><msup><mi>a</mi><mn>6</mn></msup></math>、<math><msup><mi>a</mi><mn>5</mn></msup><mi>b</mi></math>、<math><msup><mi>a</mi><mn>4</mn></msup><msup><mi>b</mi><mn>2</mn></msup></math>、<math><msup><mi>a</mi><mn>3</mn></msup><msup><mi>b</mi><mn>3</mn></msup></math>、<math><msup><mi>a</mi><mn>2</mn></msup><msup><mi>b</mi><mn>4</mn></msup></math>、<math><mi>a</mi><msup><mi>b</mi><mn>5</mn></msup></math>、<math><msup><mi>b</mi><mn>6</mn></msup></math> に対応させよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">(a + b)<sup>6</sup> = a<sup>6</sup> + 6a<sup>5</sup>b + 15a<sup>4</sup>b<sup>2</sup> + 20a<sup>3</sup>b<sup>3</sup> + 15a<sup>2</sup>b<sup>4</sup> + 6ab<sup>5</sup> + b<sup>6</sup></p>
-          <p>6 行目の数の配列は、5 行目の隣り合う数の和を並べて　1, 6, 15, 20, 15, 6, 1　となる。これが (a + b)<sup>6</sup> の各項の係数だから、展開式は下のようになる。</p>
+          <p class="mq-wide big"><math display="block"><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mn>6</mn></msup><mo>=</mo><msup><mi>a</mi><mn>6</mn></msup><mo>+</mo><mn>6</mn><msup><mi>a</mi><mn>5</mn></msup><mi>b</mi><mo>+</mo><mn>15</mn><msup><mi>a</mi><mn>4</mn></msup><msup><mi>b</mi><mn>2</mn></msup><mo>+</mo><mn>20</mn><msup><mi>a</mi><mn>3</mn></msup><msup><mi>b</mi><mn>3</mn></msup><mo>+</mo><mn>15</mn><msup><mi>a</mi><mn>2</mn></msup><msup><mi>b</mi><mn>4</mn></msup><mo>+</mo><mn>6</mn><mi>a</mi><msup><mi>b</mi><mn>5</mn></msup><mo>+</mo><msup><mi>b</mi><mn>6</mn></msup></math></p>
+<div class="mq-narrow">
+<p class="formula"><math display="block"><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mn>6</mn></msup><mo>=</mo><msup><mi>a</mi><mn>6</mn></msup><mo>+</mo><mn>6</mn><msup><mi>a</mi><mn>5</mn></msup><mi>b</mi><mo>+</mo><mn>15</mn><msup><mi>a</mi><mn>4</mn></msup><msup><mi>b</mi><mn>2</mn></msup><mo>+</mo><mn>20</mn><msup><mi>a</mi><mn>3</mn></msup><msup><mi>b</mi><mn>3</mn></msup></math></p>
+<p class="formula cont"><math display="block"><mo>+</mo><mn>15</mn><msup><mi>a</mi><mn>2</mn></msup><msup><mi>b</mi><mn>4</mn></msup><mo>+</mo><mn>6</mn><mi>a</mi><msup><mi>b</mi><mn>5</mn></msup><mo>+</mo><msup><mi>b</mi><mn>6</mn></msup></math></p>
+</div>
+          <p>6 行目の数の配列は、5 行目の隣り合う数の和を並べて　1, 6, 15, 20, 15, 6, 1　となる。<br>これが<math><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mn>6</mn></msup></math> の各項の係数だから、展開式は下のようになる。</p>
         </div>
         <p class="prob-done">練習7 クリア！　次は二項定理だよ。</p>
       </section>
@@ -490,44 +551,58 @@
         <span class="pno">教科書 p.12〜13</span>
       </div>
       <section class="card">
-        <p>パスカルの三角形による方法では、大きな n に対しては不便である。そこで、(a + b)<sup>n</sup> の展開式の係数を、直接求める公式を考えよう。</p>
-        <p>たとえば、(a + b)<sup>5</sup> の展開は、5 個の (a + b) の積を展開することである。その計算では、各 (a + b) の中から a または b の一方を取って掛け合わせることになる。ここで、a<sup>3</sup>b<sup>2</sup> となるのは、5 個のうち 3 個から a を取り、残りの 2 個から b を取る場合である。その場合の数は、5 個の中から b を取る 2 個を選ぶ選び方の数 <sub>5</sub>C<sub>2</sub> 通りである。したがって、a<sup>3</sup>b<sup>2</sup> の係数は <sub>5</sub>C<sub>2</sub> = 10 で、実際 (a + b)<sup>5</sup> における a<sup>3</sup>b<sup>2</sup> の係数 10 に一致する。</p>
-        <p>一般に、(a + b)<sup>n</sup> の展開式における a<sup>n−r</sup>b<sup>r</sup> の項の係数は、n 個のうちから b を取る r 個を選ぶ選び方の総数 <sub>n</sub>C<sub>r</sub> 通りである。なお、<sub>n</sub>C<sub>r</sub> の計算は次の公式による。</p>
-        <p class="formula"><sub>n</sub>C<sub>r</sub> = <span class="frac"><span class="num">n(n − 1)……(n − r + 1)</span><span class="den">r(r − 1)……3・2・1</span></span> = <span class="frac"><span class="num">n!</span><span class="den">r!(n − r)!</span></span></p>
-        <p>ただし 0! = 1 であり、<sub>n</sub>C<sub>0</sub> = <sub>n</sub>C<sub>n</sub> = 1 である。以上から、次の<b>二項定理</b>が成り立つ。</p>
+        <p>パスカルの三角形による方法では、大きな <math><mi>n</mi></math> に対しては不便である。そこで、<math><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mi>n</mi></msup></math> の展開式の係数を、直接求める公式を考えよう。</p>
+        <p>たとえば、<math><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mn>5</mn></msup></math> の展開は、5 個の (<math><mi>a</mi></math> + <math><mi>b</mi></math>) の積を展開することである。その計算では、各 (<math><mi>a</mi></math> + <math><mi>b</mi></math>) の中から <math><mi>a</mi></math> または <math><mi>b</mi></math> の一方を取って掛け合わせることになる。ここで、<math><msup><mi>a</mi><mn>3</mn></msup><msup><mi>b</mi><mn>2</mn></msup></math> となるのは、5 個のうち 3 個から <math><mi>a</mi></math> を取り、残りの 2 個から <math><mi>b</mi></math> を取る場合である。その場合の数は、5 個の中から <math><mi>b</mi></math> を取る 2 個を選ぶ選び方の数 <math><msub><mrow></mrow><mn>5</mn></msub><msub><mi>C</mi><mn>2</mn></msub></math> 通りである。したがって、<math><msup><mi>a</mi><mn>3</mn></msup><msup><mi>b</mi><mn>2</mn></msup></math> の係数は <math><msub><mrow></mrow><mn>5</mn></msub><msub><mi>C</mi><mn>2</mn></msub><mo>=</mo><mn>10</mn></math>で、実際<math><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mn>5</mn></msup></math> における<math><msup><mi>a</mi><mn>3</mn></msup><msup><mi>b</mi><mn>2</mn></msup></math> の係数 10 に一致する。</p>
+        <p>一般に、<math><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mi>n</mi></msup></math> の展開式における<math><msup><mi>a</mi><mrow><mi>n</mi><mo>−</mo><mi>r</mi></mrow></msup><msup><mi>b</mi><mi>r</mi></msup></math> の項の係数は、<math><mi>n</mi></math> 個のうちから <math><mi>b</mi></math> を取る <math><mi>r</mi></math> 個を選ぶ選び方の総数 <math><msub><mrow></mrow><mi>n</mi></msub><msub><mi>C</mi><mi>r</mi></msub></math> 通りである。なお、<math><msub><mrow></mrow><mi>n</mi></msub><msub><mi>C</mi><mi>r</mi></msub></math> の計算は次の公式による。</p>
+        <p class="mq-wide formula"><math display="block"><msub><mrow></mrow><mi>n</mi></msub><msub><mi>C</mi><mi>r</mi></msub><mo>=</mo><mfrac><mrow><mi>n</mi><mrow><mo>(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mo>…</mo><mo>…</mo><mrow><mo>(</mo><mi>n</mi><mo>−</mo><mi>r</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow></mrow><mrow><mi>r</mi><mrow><mo>(</mo><mi>r</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mo>…</mo><mo>…</mo><mn>3</mn><mo>⋅</mo><mn>2</mn><mo>⋅</mo><mn>1</mn></mrow></mfrac><mo>=</mo><mfrac><mrow><mi>n</mi><mo>!</mo></mrow><mrow><mi>r</mi><mo>!</mo><mrow><mo>(</mo><mi>n</mi><mo>−</mo><mi>r</mi><mo>)</mo></mrow><mo>!</mo></mrow></mfrac></math></p>
+<div class="mq-narrow">
+<p class="formula"><math display="block"><msub><mrow></mrow><mi>n</mi></msub><msub><mi>C</mi><mi>r</mi></msub><mo>=</mo><mfrac><mrow><mi>n</mi><mrow><mo>(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mo>…</mo><mo>…</mo><mrow><mo>(</mo><mi>n</mi><mo>−</mo><mi>r</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow></mrow><mrow><mi>r</mi><mrow><mo>(</mo><mi>r</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mo>…</mo><mo>…</mo><mn>3</mn><mo>⋅</mo><mn>2</mn><mo>⋅</mo><mn>1</mn></mrow></mfrac></math></p>
+<p class="formula cont"><math display="block"><mo>=</mo><mfrac><mrow><mi>n</mi><mo>!</mo></mrow><mrow><mi>r</mi><mo>!</mo><mrow><mo>(</mo><mi>n</mi><mo>−</mo><mi>r</mi><mo>)</mo></mrow><mo>!</mo></mrow></mfrac></math></p>
+</div>
+        <p>ただし<math><mn>0</mn><mo>!</mo><mo>=</mo><mn>1</mn></math>であり、<math><msub><mrow></mrow><mi>n</mi></msub><msub><mi>C</mi><mn>0</mn></msub><mo>=</mo><msub><mrow></mrow><mi>n</mi></msub><msub><mi>C</mi><mi>n</mi></msub><mo>=</mo><mn>1</mn></math>である。以上から、次の<b>二項定理</b>が成り立つ。</p>
         <div class="def">
           <p><b>二項定理</b></p>
-          <p>(a + b)<sup>n</sup> = <sub>n</sub>C<sub>0</sub>a<sup>n</sup> + <sub>n</sub>C<sub>1</sub>a<sup>n−1</sup>b + …… + <sub>n</sub>C<sub>r</sub>a<sup>n−r</sup>b<sup>r</sup> + …… + <sub>n</sub>C<sub>n</sub>b<sup>n</sup></p>
+          <p class="mq-wide"><math><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mi>n</mi></msup><mo>=</mo><msub><mrow></mrow><mi>n</mi></msub><msub><mi>C</mi><mn>0</mn></msub><msup><mi>a</mi><mi>n</mi></msup><mo>+</mo><msub><mrow></mrow><mi>n</mi></msub><msub><mi>C</mi><mn>1</mn></msub><msup><mi>a</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup><mi>b</mi><mo>+</mo><mo>…</mo><mo>…</mo><mo>+</mo><msub><mrow></mrow><mi>n</mi></msub><msub><mi>C</mi><mi>r</mi></msub><msup><mi>a</mi><mrow><mi>n</mi><mo>−</mo><mi>r</mi></mrow></msup><msup><mi>b</mi><mi>r</mi></msup><mo>+</mo><mo>…</mo><mo>…</mo><mo>+</mo><msub><mrow></mrow><mi>n</mi></msub><msub><mi>C</mi><mi>n</mi></msub><msup><mi>b</mi><mi>n</mi></msup></math></p>
+<div class="mq-narrow">
+<p class="formula"><math display="block"><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mi>n</mi></msup><mo>=</mo><msub><mrow></mrow><mi>n</mi></msub><msub><mi>C</mi><mn>0</mn></msub><msup><mi>a</mi><mi>n</mi></msup><mo>+</mo><msub><mrow></mrow><mi>n</mi></msub><msub><mi>C</mi><mn>1</mn></msub><msup><mi>a</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup><mi>b</mi><mo>+</mo><mo>…</mo><mo>…</mo></math></p>
+<p class="formula cont"><math display="block"><mo>+</mo><msub><mrow></mrow><mi>n</mi></msub><msub><mi>C</mi><mi>r</mi></msub><msup><mi>a</mi><mrow><mi>n</mi><mo>−</mo><mi>r</mi></mrow></msup><msup><mi>b</mi><mi>r</mi></msup><mo>+</mo><mo>…</mo><mo>…</mo><mo>+</mo><msub><mrow></mrow><mi>n</mi></msub><msub><mi>C</mi><mi>n</mi></msub><msup><mi>b</mi><mi>n</mi></msup></math></p>
+</div>
         </div>
-        <p>(a + b)<sup>n</sup> の展開式における <sub>n</sub>C<sub>r</sub>a<sup>n−r</sup>b<sup>r</sup> を (a + b)<sup>n</sup> の展開式の<b>一般項</b>といい、<sub>n</sub>C<sub>r</sub> を<b>二項係数</b>という。パスカルの三角形は、二項係数を並べたものである。</p>
+        <p><math><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mi>n</mi></msup></math> の展開式における <math><msub><mrow></mrow><mi>n</mi></msub><msub><mi>C</mi><mi>r</mi></msub><msup><mi>a</mi><mrow><mi>n</mi><mo>−</mo><mi>r</mi></mrow></msup><msup><mi>b</mi><mi>r</mi></msup></math> を<math><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mi>n</mi></msup></math> の展開式の<b>一般項</b>といい、<math><msub><mrow></mrow><mi>n</mi></msub><msub><mi>C</mi><mi>r</mi></msub></math> を<b>二項係数</b>という。パスカルの三角形は、二項係数を並べたものである。</p>
       </section>
       <div class="sec-head">
         <span class="sec-tag">例</span>
         <h2>例4で解き方を確認</h2>
         <span class="pno">教科書 p.13</span>
       </div>
-      <section class="card prob" id="prob-ex4" data-flow="ex4" data-label="例4">
+      <section class="nofig card prob" id="prob-ex4" data-flow="ex4" data-label="例4">
         <div class="prob-head">
           <span class="prob-tag ">例 4</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">(x − 2)<sup>5</sup></p>
+        <p class="prob-q"><math><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>5</mn></msup></math></p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― (x + (−2))<sup>5</sup> と見て二項定理を使う</h3>
-          <p>二項定理の a = x、b = −2 の場合だよ。一般項は <sub>5</sub>C<sub>r</sub>x<sup>5−r</sup>(−2)<sup>r</sup> となる。</p>
+          <h3>ヒント<math><mn>1</mn><mo>―</mo><msup><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mo>)</mo></mrow><mn>5</mn></msup></math> と見て二項定理を使う</h3><p class="cite"><span class="cite-tag">使う公式</span><math><mrow><msub><mrow></mrow><mi>n</mi></msub><msub><mi>C</mi><mi>r</mi></msub><msup><mi>a</mi><mrow><mi>n</mi><mo>−</mo><mi>r</mi></mrow></msup><msup><mi>b</mi><mi>r</mi></msup></mrow></math>二項定理の一般項。ここでは <math><mi>a</mi><mo>=</mo><mi>x</mi></math>、<math><mi>b</mi><mo>=</mo><mo>−</mo><mn>2</mn></math>、<math><mi>n</mi><mo>=</mo><mn>5</mn></math> として使う。</p>
+          <p>二項定理の<math><mi>a</mi><mo>=</mo><mi>x</mi></math>、<math><mi>b</mi><mo>=</mo><mo>−</mo><mn>2</mn></math>の場合だよ。一般項は <math><msub><mrow></mrow><mn>5</mn></msub><msub><mi>C</mi><mi>r</mi></msub><msup><mi>x</mi><mrow><mn>5</mn><mo>−</mo><mi>r</mi></mrow></msup><msup><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mi>r</mi></msup></math> となる。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― r = 0, 1, 2, …… と当てはめる</h3>
-          <p>各項の係数は、<sub>5</sub>C<sub>0</sub> = 1、<sub>5</sub>C<sub>1</sub>・(−2) = −10、<sub>5</sub>C<sub>2</sub>・(−2)<sup>2</sup> = 40、<sub>5</sub>C<sub>3</sub>・(−2)<sup>3</sup> = −80、<sub>5</sub>C<sub>4</sub>・(−2)<sup>4</sup> = 80、(−2)<sup>5</sup> = −32 となるよ。</p>
+          <h3>ヒント<math><mn>2</mn><mo>―</mo><mi>r</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mo>…</mo><mo>…</mo></math>と当てはめる</h3>
+          <p>各項の係数は、<math><msub><mrow></mrow><mn>5</mn></msub><msub><mi>C</mi><mn>0</mn></msub><mo>=</mo><mn>1</mn></math>、<math><msub><mrow></mrow><mn>5</mn></msub><msub><mi>C</mi><mn>1</mn></msub><mo>⋅</mo><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mo>=</mo><mo>−</mo><mn>10</mn></math>、<math><msub><mrow></mrow><mn>5</mn></msub><msub><mi>C</mi><mn>2</mn></msub><mo>⋅</mo><msup><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>40</mn></math>、<math><msub><mrow></mrow><mn>5</mn></msub><msub><mi>C</mi><mn>3</mn></msub><mo>⋅</mo><msup><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>3</mn></msup><mo>=</mo><mo>−</mo><mn>80</mn></math>、<math><msub><mrow></mrow><mn>5</mn></msub><msub><mi>C</mi><mn>4</mn></msub><mo>⋅</mo><msup><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>4</mn></msup><mo>=</mo><mn>80</mn></math>、<math><msup><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>5</mn></msup><mo>=</mo><mo>−</mo><mn>32</mn></math>となるよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">x<sup>5</sup> − 10x<sup>4</sup> + 40x<sup>3</sup> − 80x<sup>2</sup> + 80x − 32</p>
-          <p>二項定理により (x − 2)<sup>5</sup> = (x + (−2))<sup>5</sup> = <sub>5</sub>C<sub>0</sub>x<sup>5</sup> + <sub>5</sub>C<sub>1</sub>x<sup>4</sup>(−2) + <sub>5</sub>C<sub>2</sub>x<sup>3</sup>(−2)<sup>2</sup> + <sub>5</sub>C<sub>3</sub>x<sup>2</sup>(−2)<sup>3</sup> + <sub>5</sub>C<sub>4</sub>x(−2)<sup>4</sup> + <sub>5</sub>C<sub>5</sub>(−2)<sup>5</sup></p>
+          <p class="big"><math display="block"><msup><mi>x</mi><mn>5</mn></msup><mo>−</mo><mn>10</mn><msup><mi>x</mi><mn>4</mn></msup><mo>+</mo><mn>40</mn><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>80</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>80</mn><mi>x</mi><mo>−</mo><mn>32</mn></math></p><p class="cite"><span class="cite-tag">使う公式</span><math><mrow><msub><mrow></mrow><mi>n</mi></msub><msub><mi>C</mi><mi>r</mi></msub><msup><mi>a</mi><mrow><mi>n</mi><mo>−</mo><mi>r</mi></mrow></msup><msup><mi>b</mi><mi>r</mi></msup></mrow></math>与えられた式を <math><msup><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mo>)</mo></mrow><mn>5</mn></msup></math> と見て、各項の係数を計算する。</p>
+          <p class="mq-wide">二項定理により<math><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>5</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mo>)</mo></mrow><mn>5</mn></msup><mo>=</mo><msub><mrow></mrow><mn>5</mn></msub><msub><mi>C</mi><mn>0</mn></msub><msup><mi>x</mi><mn>5</mn></msup><mo>+</mo><msub><mrow></mrow><mn>5</mn></msub><msub><mi>C</mi><mn>1</mn></msub><msup><mi>x</mi><mn>4</mn></msup><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mo>+</mo><msub><mrow></mrow><mn>5</mn></msub><msub><mi>C</mi><mn>2</mn></msub><msup><mi>x</mi><mn>3</mn></msup><msup><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msub><mrow></mrow><mn>5</mn></msub><msub><mi>C</mi><mn>3</mn></msub><msup><mi>x</mi><mn>2</mn></msup><msup><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>3</mn></msup><mo>+</mo><msub><mrow></mrow><mn>5</mn></msub><msub><mi>C</mi><mn>4</mn></msub><mi>x</mi><msup><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>4</mn></msup><mo>+</mo><msub><mrow></mrow><mn>5</mn></msub><msub><mi>C</mi><mn>5</mn></msub><msup><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>5</mn></msup></math></p>
+<div class="mq-narrow">
+<p>二項定理により</p>
+<p class="formula"><math display="block"><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>5</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mo>)</mo></mrow><mn>5</mn></msup><mo>=</mo><msub><mrow></mrow><mn>5</mn></msub><msub><mi>C</mi><mn>0</mn></msub><msup><mi>x</mi><mn>5</mn></msup><mo>+</mo><msub><mrow></mrow><mn>5</mn></msub><msub><mi>C</mi><mn>1</mn></msub><msup><mi>x</mi><mn>4</mn></msup><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow></math></p>
+<p class="formula cont"><math display="block"><mo>+</mo><msub><mrow></mrow><mn>5</mn></msub><msub><mi>C</mi><mn>2</mn></msub><msup><mi>x</mi><mn>3</mn></msup><msup><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msub><mrow></mrow><mn>5</mn></msub><msub><mi>C</mi><mn>3</mn></msub><msup><mi>x</mi><mn>2</mn></msup><msup><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>3</mn></msup><mo>+</mo><msub><mrow></mrow><mn>5</mn></msub><msub><mi>C</mi><mn>4</mn></msub><mi>x</mi><msup><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>4</mn></msup></math></p>
+<p class="formula cont"><math display="block"><mo>+</mo><msub><mrow></mrow><mn>5</mn></msub><msub><mi>C</mi><mn>5</mn></msub><msup><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>5</mn></msup></math></p>
+</div>
         </div>
         <p class="prob-done">例4 クリア！　次は練習8に挑戦しよう。</p>
       </section>
@@ -536,7 +611,7 @@
         <h2>練習問題に挑戦</h2>
         <span class="pno">教科書 p.13</span>
       </div>
-      <section class="card prob" id="prob-ren8" data-label="練習8">
+      <section class="nofig card prob" id="prob-ren8" data-label="練習8">
         <div class="prob-head">
           <span class="prob-tag ren">練習 8</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
@@ -550,36 +625,45 @@
         </div>
         <div class="tabpanel show" id="panel-ren8-1" data-flow="ren8-1" data-label="練習8 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　(x + 1)<sup>4</sup></span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><msup><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow><mn>4</mn></msup></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 二項定理の a = x、b = 1</h3>
-          <p>係数は <sub>4</sub>C<sub>0</sub>, <sub>4</sub>C<sub>1</sub>, <sub>4</sub>C<sub>2</sub>, <sub>4</sub>C<sub>3</sub>, <sub>4</sub>C<sub>4</sub> で、1, 4, 6, 4, 1 だよ。パスカルの三角形の 4 行目とも一致するね。</p>
+          <h3>ヒント 1 ― 二項定理の<math><mi>a</mi><mo>=</mo><mi>x</mi></math>、<math><mi>b</mi><mo>=</mo><mn>1</mn></math></h3><p class="cite"><span class="cite-tag">使う公式</span><math><mrow><msup><mrow><mo>(</mo><mrow><mi>a</mi><mo>+</mo><mi>b</mi></mrow><mo>)</mo></mrow><mn>4</mn></msup><mo>=</mo><msup><mi>a</mi><mn>4</mn></msup><mo>+</mo><mn>4</mn><msup><mi>a</mi><mn>3</mn></msup><mi>b</mi><mo>+</mo><mn>6</mn><msup><mi>a</mi><mn>2</mn></msup><msup><mi>b</mi><mn>2</mn></msup><mo>+</mo><mn>4</mn><mi>a</mi><msup><mi>b</mi><mn>3</mn></msup><mo>+</mo><msup><mi>b</mi><mn>4</mn></msup></mrow></math>ここでは <math><mi>a</mi><mo>=</mo><mi>x</mi></math>、<math><mi>b</mi><mo>=</mo><mn>1</mn></math>。係数はパスカルの三角形の4行目とも一致する。</p>
+          <p>係数は <math><msub><mrow></mrow><mn>4</mn></msub><msub><mi>C</mi><mn>0</mn></msub><mo>,</mo><msub><mrow></mrow><mn>4</mn></msub><msub><mi>C</mi><mn>1</mn></msub><mo>,</mo><msub><mrow></mrow><mn>4</mn></msub><msub><mi>C</mi><mn>2</mn></msub><mo>,</mo><msub><mrow></mrow><mn>4</mn></msub><msub><mi>C</mi><mn>3</mn></msub><mo>,</mo><msub><mrow></mrow><mn>4</mn></msub><msub><mi>C</mi><mn>4</mn></msub></math> で、1, 4, 6, 4, 1 だよ。<br>パスカルの三角形の 4 行目とも一致するね。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">x<sup>4</sup> + 4x<sup>3</sup> + 6x<sup>2</sup> + 4x + 1</p>
+          <p class="big"><math display="block"><msup><mi>x</mi><mn>4</mn></msup><mo>+</mo><mn>4</mn><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mn>6</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>4</mn><mi>x</mi><mo>+</mo><mn>1</mn></math></p>
         </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren8-2" data-flow="ren8-2" data-label="練習8 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　(x − 2)<sup>6</sup></span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>6</mn></msup></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― (x + (−2))<sup>6</sup> と見て二項定理を使う</h3>
-          <p>一般項は <sub>6</sub>C<sub>r</sub>x<sup>6−r</sup>(−2)<sup>r</sup>。r = 0, 1, …… , 6 の各項の係数を計算しよう。(−2)<sup>r</sup> の符号は r が偶数なら +、奇数なら − だよ。</p>
+          <h3>ヒント<math><mn>1</mn><mo>―</mo><msup><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mo>)</mo></mrow><mn>6</mn></msup></math> と見て二項定理を使う</h3><p class="cite"><span class="cite-tag">使う公式</span><math><mrow><msub><mrow></mrow><mi>n</mi></msub><msub><mi>C</mi><mi>r</mi></msub><msup><mi>a</mi><mrow><mi>n</mi><mo>−</mo><mi>r</mi></mrow></msup><msup><mi>b</mi><mi>r</mi></msup></mrow></math>ここでは <math><mi>a</mi><mo>=</mo><mi>x</mi></math>、<math><mi>b</mi><mo>=</mo><mo>−</mo><mn>2</mn></math>、<math><mi>n</mi><mo>=</mo><mn>6</mn></math> として、各項の係数を計算する。</p>
+          <p>一般項は <math><msub><mrow></mrow><mn>6</mn></msub><msub><mi>C</mi><mi>r</mi></msub><msup><mi>x</mi><mrow><mn>6</mn><mo>−</mo><mi>r</mi></mrow></msup><msup><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mi>r</mi></msup></math>。<br><math><mi>r</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mo>…</mo><mo>…</mo><mo>,</mo><mn>6</mn></math>の各項の係数を計算しよう。<math><msup><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mi>r</mi></msup></math> の符号は <math><mi>r</mi></math> が偶数なら +、奇数なら − だよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">x<sup>6</sup> − 12x<sup>5</sup> + 60x<sup>4</sup> − 160x<sup>3</sup> + 240x<sup>2</sup> − 192x + 64</p>
-          <p>(x − 2)<sup>6</sup> = x<sup>6</sup> + 6x<sup>5</sup>(−2) + 15x<sup>4</sup>(−2)<sup>2</sup> + 20x<sup>3</sup>(−2)<sup>3</sup> + 15x<sup>2</sup>(−2)<sup>4</sup> + 6x(−2)<sup>5</sup> + (−2)<sup>6</sup></p>
+          <p class="mq-wide big"><math display="block"><msup><mi>x</mi><mn>6</mn></msup><mo>−</mo><mn>12</mn><msup><mi>x</mi><mn>5</mn></msup><mo>+</mo><mn>60</mn><msup><mi>x</mi><mn>4</mn></msup><mo>−</mo><mn>160</mn><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mn>240</mn><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>192</mn><mi>x</mi><mo>+</mo><mn>64</mn></math></p>
+<div class="mq-narrow">
+<p class="formula"><math display="block"><msup><mi>x</mi><mn>6</mn></msup><mo>−</mo><mn>12</mn><msup><mi>x</mi><mn>5</mn></msup><mo>+</mo><mn>60</mn><msup><mi>x</mi><mn>4</mn></msup><mo>−</mo><mn>160</mn><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mn>240</mn><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>192</mn><mi>x</mi></math></p>
+<p class="formula cont"><math display="block"><mo>+</mo><mn>64</mn></math></p>
+</div>
+          <p class="mq-wide"><math><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>6</mn></msup><mo>=</mo><msup><mi>x</mi><mn>6</mn></msup><mo>+</mo><mn>6</mn><msup><mi>x</mi><mn>5</mn></msup><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mo>+</mo><mn>15</mn><msup><mi>x</mi><mn>4</mn></msup><msup><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><mn>20</mn><msup><mi>x</mi><mn>3</mn></msup><msup><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>3</mn></msup><mo>+</mo><mn>15</mn><msup><mi>x</mi><mn>2</mn></msup><msup><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>4</mn></msup><mo>+</mo><mn>6</mn><mi>x</mi><msup><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>5</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>6</mn></msup></math></p>
+<div class="mq-narrow">
+<p class="formula"><math display="block"><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>6</mn></msup><mo>=</mo><msup><mi>x</mi><mn>6</mn></msup><mo>+</mo><mn>6</mn><msup><mi>x</mi><mn>5</mn></msup><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mo>+</mo><mn>15</mn><msup><mi>x</mi><mn>4</mn></msup><msup><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup></math></p>
+<p class="formula cont"><math display="block"><mo>+</mo><mn>20</mn><msup><mi>x</mi><mn>3</mn></msup><msup><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>3</mn></msup><mo>+</mo><mn>15</mn><msup><mi>x</mi><mn>2</mn></msup><msup><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>4</mn></msup><mo>+</mo><mn>6</mn><mi>x</mi><msup><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>5</mn></msup></math></p>
+<p class="formula cont"><math display="block"><mo>+</mo><msup><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>6</mn></msup></math></p>
+</div>
         </div>
           <p class="prob-done">(2) クリア！　練習8は全部おわり。次は例題2だよ。</p>
         </div>
@@ -589,28 +673,28 @@
         <h2>例題2に挑戦</h2>
         <span class="pno">教科書 p.14</span>
       </div>
-      <section class="card prob" id="prob-reidai2" data-flow="reidai2" data-label="例題2">
+      <section class="nofig card prob" id="prob-reidai2" data-flow="reidai2" data-label="例題2">
         <div class="prob-head">
           <span class="prob-tag ">例題 2</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">(2x − 1)<sup>6</sup> の展開式における x<sup>3</sup> の項の係数を求めよ。</p>
+        <p class="prob-q"><math><msup><mrow><mo>(</mo><mn>2</mn><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mn>6</mn></msup></math> の展開式における<math><msup><mi>x</mi><mn>3</mn></msup></math> の項の係数を求めよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 一般項を書く</h3>
-          <p>(2x − 1)<sup>6</sup> の展開式の一般項は <sub>6</sub>C<sub>r</sub>(2x)<sup>6−r</sup>(−1)<sup>r</sup> = <sub>6</sub>C<sub>r</sub>2<sup>6−r</sup>(−1)<sup>r</sup>x<sup>6−r</sup> だよ。</p>
+          <h3>ヒント 1 ― 一般項を書く</h3><p class="cite"><span class="cite-tag">使う公式</span><math><mrow><msub><mrow></mrow><mi>n</mi></msub><msub><mi>C</mi><mi>r</mi></msub><msup><mi>a</mi><mrow><mi>n</mi><mo>−</mo><mi>r</mi></mrow></msup><msup><mi>b</mi><mi>r</mi></msup></mrow></math>ここでは <math><mi>a</mi><mo>=</mo><mn>2</mn><mi>x</mi></math>、<math><mi>b</mi><mo>=</mo><mo>−</mo><mn>1</mn></math> と見る。<math><mi>x</mi></math> の指数は <math><mn>6</mn><mo>−</mo><mi>r</mi></math> になる。</p>
+          <p><math><msup><mrow><mo>(</mo><mn>2</mn><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mn>6</mn></msup></math> の展開式の一般項は <math><msub><mrow></mrow><mn>6</mn></msub><msub><mi>C</mi><mi>r</mi></msub><msup><mrow><mo>(</mo><mn>2</mn><mi>x</mi><mo>)</mo></mrow><mrow><mn>6</mn><mo>−</mo><mi>r</mi></mrow></msup><msup><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mi>r</mi></msup><mo>=</mo><msub><mrow></mrow><mn>6</mn></msub><msub><mi>C</mi><mi>r</mi></msub><msup><mn>2</mn><mrow><mn>6</mn><mo>−</mo><mi>r</mi></mrow></msup><msup><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mi>r</mi></msup><msup><mi>x</mi><mrow><mn>6</mn><mo>−</mo><mi>r</mi></mrow></msup></math> だよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― x の指数から r を決める</h3>
-          <p>x<sup>3</sup> の項は 6 − r = 3 のときで、r = 3。あとは <sub>6</sub>C<sub>3</sub>・2<sup>3</sup>・(−1)<sup>3</sup> を計算しよう。<sub>6</sub>C<sub>3</sub> = 20 だよ。</p>
+          <h3>ヒント 2 ― <math><mi>x</mi></math> の指数から <math><mi>r</mi></math> を決める</h3>
+          <p><math><msup><mi>x</mi><mn>3</mn></msup></math> の項は<math><mn>6</mn><mo>−</mo><mi>r</mi><mo>=</mo><mn>3</mn></math>のときで、<math><mi>r</mi><mo>=</mo><mn>3</mn></math>。あとは <math><msub><mrow></mrow><mn>6</mn></msub><msub><mi>C</mi><mn>3</mn></msub><mo>⋅</mo><msup><mn>2</mn><mn>3</mn></msup><mo>⋅</mo><msup><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mn>3</mn></msup></math> を計算しよう。<math><msub><mrow></mrow><mn>6</mn></msub><msub><mi>C</mi><mn>3</mn></msub><mo>=</mo><mn>20</mn></math>だよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">−160</p>
-          <p>(2x − 1)<sup>6</sup> の展開式の一般項は <sub>6</sub>C<sub>r</sub>(2x)<sup>6−r</sup>(−1)<sup>r</sup> = <sub>6</sub>C<sub>r</sub>2<sup>6−r</sup>(−1)<sup>r</sup>x<sup>6−r</sup> である。x<sup>3</sup> の項は 6 − r = 3 すなわち r = 3 のときで、その係数は <sub>6</sub>C<sub>3</sub>・2<sup>3</sup>・(−1)<sup>3</sup> = 20・8・(−1) = −160 である。</p>
+          <p class="big">−160</p><p class="cite"><span class="cite-tag">使う公式</span><math><mrow><msub><mrow></mrow><mi>n</mi></msub><msub><mi>C</mi><mi>r</mi></msub><msup><mi>a</mi><mrow><mi>n</mi><mo>−</mo><mi>r</mi></mrow></msup><msup><mi>b</mi><mi>r</mi></msup></mrow></math>一般項で <math><mn>6</mn><mo>−</mo><mi>r</mi><mo>=</mo><mn>3</mn></math> から <math><mi>r</mi><mo>=</mo><mn>3</mn></math> と決めて、係数を計算する。</p>
+          <p><math><msup><mrow><mo>(</mo><mn>2</mn><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mn>6</mn></msup></math> の展開式の一般項は <math><msub><mrow></mrow><mn>6</mn></msub><msub><mi>C</mi><mi>r</mi></msub><msup><mrow><mo>(</mo><mn>2</mn><mi>x</mi><mo>)</mo></mrow><mrow><mn>6</mn><mo>−</mo><mi>r</mi></mrow></msup><msup><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mi>r</mi></msup><mo>=</mo><msub><mrow></mrow><mn>6</mn></msub><msub><mi>C</mi><mi>r</mi></msub><msup><mn>2</mn><mrow><mn>6</mn><mo>−</mo><mi>r</mi></mrow></msup><msup><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mi>r</mi></msup><msup><mi>x</mi><mrow><mn>6</mn><mo>−</mo><mi>r</mi></mrow></msup></math> である。<br><math><msup><mi>x</mi><mn>3</mn></msup></math> の項は<math><mn>6</mn><mo>−</mo><mi>r</mi><mo>=</mo><mn>3</mn></math>すなわち<math><mi>r</mi><mo>=</mo><mn>3</mn></math>のときで、その係数は <math><msub><mrow></mrow><mn>6</mn></msub><msub><mi>C</mi><mn>3</mn></msub><mo>⋅</mo><msup><mn>2</mn><mn>3</mn></msup><mo>⋅</mo><msup><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mn>3</mn></msup><mo>=</mo><mn>20</mn><mo>⋅</mo><mn>8</mn><mo>⋅</mo><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mo>=</mo><mo>−</mo><mn>160</mn></math>である。</p>
         </div>
         <p class="prob-done">例題2 クリア！　次は練習9に挑戦しよう。</p>
       </section>
@@ -619,7 +703,7 @@
         <h2>練習問題に挑戦</h2>
         <span class="pno">教科書 p.14</span>
       </div>
-      <section class="card prob" id="prob-ren9" data-label="練習9">
+      <section class="nofig card prob" id="prob-ren9" data-label="練習9">
         <div class="prob-head">
           <span class="prob-tag ren">練習 9</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
@@ -633,48 +717,48 @@
         </div>
         <div class="tabpanel show" id="panel-ren9-1" data-flow="ren9-1" data-label="練習9 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　(2x + 3)<sup>4</sup>　　［x<sup>3</sup>］</span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><msup><mrow><mo>(</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>3</mn><mo>)</mo></mrow><mn>4</mn></msup></math>　　<math><mo>［</mo><msup><mi>x</mi><mn>3</mn></msup><mo>］</mo></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
           <div class="quiz" id="qz-ren9-1" data-correct="2">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>24</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>96</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>32</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>216</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mn>24</mn></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mn>96</mn></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mn>32</mn></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mn>216</mn></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
           <p class="verdict"></p>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 一般項を書く</h3>
-          <p>一般項は <sub>4</sub>C<sub>r</sub>(2x)<sup>4−r</sup>・3<sup>r</sup> = <sub>4</sub>C<sub>r</sub>2<sup>4−r</sup>3<sup>r</sup>x<sup>4−r</sup> だよ。x<sup>3</sup> の項になるのは 4 − r = 3、つまり r = 1 のとき。</p>
+          <h3>ヒント 1 ― 一般項を書く</h3><p class="cite"><span class="cite-tag">使う公式</span><math><mrow><msub><mrow></mrow><mi>n</mi></msub><msub><mi>C</mi><mi>r</mi></msub><msup><mi>a</mi><mrow><mi>n</mi><mo>−</mo><mi>r</mi></mrow></msup><msup><mi>b</mi><mi>r</mi></msup></mrow></math>ここでは <math><mi>a</mi><mo>=</mo><mn>2</mn><mi>x</mi></math>、<math><mi>b</mi><mo>=</mo><mn>3</mn></math> として一般項を書く。</p>
+          <p>一般項は <math><msub><mrow></mrow><mn>4</mn></msub><msub><mi>C</mi><mi>r</mi></msub><msup><mrow><mo>(</mo><mn>2</mn><mi>x</mi><mo>)</mo></mrow><mrow><mn>4</mn><mo>−</mo><mi>r</mi></mrow></msup><mo>⋅</mo><msup><mn>3</mn><mi>r</mi></msup><mo>=</mo><msub><mrow></mrow><mn>4</mn></msub><msub><mi>C</mi><mi>r</mi></msub><msup><mn>2</mn><mrow><mn>4</mn><mo>−</mo><mi>r</mi></mrow></msup><msup><mn>3</mn><mi>r</mi></msup><msup><mi>x</mi><mrow><mn>4</mn><mo>−</mo><mi>r</mi></mrow></msup></math> だよ。<br><math><msup><mi>x</mi><mn>3</mn></msup></math> の項になるのは<math><mn>4</mn><mo>−</mo><mi>r</mi><mo>=</mo><mn>3</mn></math>、つまり<math><mi>r</mi><mo>=</mo><mn>1</mn></math>のとき。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
           <p class="big">96</p>
-          <p>係数は <sub>4</sub>C<sub>1</sub>・2<sup>3</sup>・3<sup>1</sup> = 4・8・3 = 96 である。</p>
+          <p>係数は <math><msub><mrow></mrow><mn>4</mn></msub><msub><mi>C</mi><mn>1</mn></msub><mo>⋅</mo><msup><mn>2</mn><mn>3</mn></msup><mo>⋅</mo><msup><mn>3</mn><mn>1</mn></msup><mo>=</mo><mn>4</mn><mo>⋅</mo><mn>8</mn><mo>⋅</mo><mn>3</mn><mo>=</mo><mn>96</mn></math>である。</p>
         </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren9-2" data-flow="ren9-2" data-label="練習9 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　(x − 2y)<sup>5</sup>　　［x<sup>2</sup>y<sup>3</sup>］</span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mi>y</mi><mo>)</mo></mrow><mn>5</mn></msup></math>　　<math><mo>［</mo><msup><mi>x</mi><mn>2</mn></msup><msup><mi>y</mi><mn>3</mn></msup><mo>］</mo></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 一般項を書く</h3>
-          <p>一般項は <sub>5</sub>C<sub>r</sub>x<sup>5−r</sup>(−2y)<sup>r</sup> だよ。x<sup>2</sup>y<sup>3</sup> の項になるのは r = 3 のとき（5 − r = 2 でも確認できる）。</p>
+          <h3>ヒント 1 ― 一般項を書く</h3><p class="cite"><span class="cite-tag">使う公式</span><math><mrow><msub><mrow></mrow><mi>n</mi></msub><msub><mi>C</mi><mi>r</mi></msub><msup><mi>a</mi><mrow><mi>n</mi><mo>−</mo><mi>r</mi></mrow></msup><msup><mi>b</mi><mi>r</mi></msup></mrow></math>ここでは <math><mi>a</mi><mo>=</mo><mi>x</mi></math>、<math><mi>b</mi><mo>=</mo><mo>−</mo><mn>2</mn><mi>y</mi></math>、<math><mi>n</mi><mo>=</mo><mn>5</mn></math> の場合。一般項から求める項の <math><mi>r</mi></math> が分かる。</p>
+          <p>一般項は <math><msub><mrow></mrow><mn>5</mn></msub><msub><mi>C</mi><mi>r</mi></msub><msup><mi>x</mi><mrow><mn>5</mn><mo>−</mo><mi>r</mi></mrow></msup><msup><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mi>y</mi><mo>)</mo></mrow><mi>r</mi></msup></math> だよ。<br><math><msup><mi>x</mi><mn>2</mn></msup><msup><mi>y</mi><mn>3</mn></msup></math> の項になるのは<math><mi>r</mi><mo>=</mo><mn>3</mn></math>のとき<math><mo>(</mo><mn>5</mn><mo>−</mo><mi>r</mi><mo>=</mo><mn>2</mn></math>でも確認できる）。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
           <p class="big">−80</p>
-          <p>係数は <sub>5</sub>C<sub>3</sub>・(−2)<sup>3</sup> = 10・(−8) = −80 である。</p>
+          <p>係数は <math><msub><mrow></mrow><mn>5</mn></msub><msub><mi>C</mi><mn>3</mn></msub><mo>⋅</mo><msup><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>3</mn></msup><mo>=</mo><mn>10</mn><mo>⋅</mo><mrow><mo>(</mo><mo>−</mo><mn>8</mn><mo>)</mo></mrow><mo>=</mo><mo>−</mo><mn>80</mn></math>である。</p>
         </div>
           <p class="prob-done">(2) クリア！　練習9は全部おわり。次は二項定理の応用だよ。</p>
         </div>
@@ -685,36 +769,36 @@
         <span class="pno">教科書 p.14</span>
       </div>
       <section class="card">
-        <p><b>例 5</b>　二項定理において、a = 1、b = x とすると、等式 (1 + x)<sup>n</sup> = <sub>n</sub>C<sub>0</sub> + <sub>n</sub>C<sub>1</sub>x + <sub>n</sub>C<sub>2</sub>x<sup>2</sup> + …… + <sub>n</sub>C<sub>n</sub>x<sup>n</sup>　…… ① が得られる。</p>
-        <p>さらに、この等式に x = 1 を代入すると、2<sup>n</sup> = <sub>n</sub>C<sub>0</sub> + <sub>n</sub>C<sub>1</sub> + <sub>n</sub>C<sub>2</sub> + …… + <sub>n</sub>C<sub>n</sub> という等式が得られる。</p>
+        <p><b>例 5</b>　二項定理において、<math><mi>a</mi><mo>=</mo><mn>1</mn></math>、<math><mi>b</mi><mo>=</mo><mi>x</mi></math>とすると、等式<math><msup><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mi>x</mi><mo>)</mo></mrow><mi>n</mi></msup><mo>=</mo><msub><mrow></mrow><mi>n</mi></msub><msub><mi>C</mi><mn>0</mn></msub><mo>+</mo><msub><mrow></mrow><mi>n</mi></msub><msub><mi>C</mi><mn>1</mn></msub><mi>x</mi><mo>+</mo><msub><mrow></mrow><mi>n</mi></msub><msub><mi>C</mi><mn>2</mn></msub><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mo>…</mo><mo>…</mo><mo>+</mo><msub><mrow></mrow><mi>n</mi></msub><msub><mi>C</mi><mi>n</mi></msub><msup><mi>x</mi><mi>n</mi></msup></math>　…… ① が得られる。</p>
+        <p>さらに、この等式に<math><mi>x</mi><mo>=</mo><mn>1</mn></math>を代入すると、<math><msup><mn>2</mn><mi>n</mi></msup><mo>=</mo><msub><mrow></mrow><mi>n</mi></msub><msub><mi>C</mi><mn>0</mn></msub><mo>+</mo><msub><mrow></mrow><mi>n</mi></msub><msub><mi>C</mi><mn>1</mn></msub><mo>+</mo><msub><mrow></mrow><mi>n</mi></msub><msub><mi>C</mi><mn>2</mn></msub><mo>+</mo><mo>…</mo><mo>…</mo><mo>+</mo><msub><mrow></mrow><mi>n</mi></msub><msub><mi>C</mi><mi>n</mi></msub></math> という等式が得られる。</p>
       </section>
       <div class="sec-head">
         <span class="sec-tag">練習</span>
         <h2>練習問題に挑戦</h2>
         <span class="pno">教科書 p.14</span>
       </div>
-      <section class="card prob" id="prob-ren10" data-flow="ren10" data-label="練習10">
+      <section class="nofig card prob" id="prob-ren10" data-flow="ren10" data-label="練習10">
         <div class="prob-head">
           <span class="prob-tag ren">練習 10</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">上の等式 ① を用いて、次の等式を導け。　<sub>n</sub>C<sub>0</sub> − <sub>n</sub>C<sub>1</sub> + <sub>n</sub>C<sub>2</sub> − …… + (−1)<sup>n</sup><sub>n</sub>C<sub>n</sub> = 0</p>
+        <p class="prob-q">上の等式 ① を用いて、次の等式を導け。　<math><msub><mrow></mrow><mi>n</mi></msub><msub><mi>C</mi><mn>0</mn></msub><mo>−</mo><msub><mrow></mrow><mi>n</mi></msub><msub><mi>C</mi><mn>1</mn></msub><mo>+</mo><msub><mrow></mrow><mi>n</mi></msub><msub><mi>C</mi><mn>2</mn></msub><mo>−</mo><mo>…</mo><mo>…</mo><mo>+</mo><msub><msup><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mi>n</mi></msup><mi>n</mi></msub><msub><mi>C</mi><mi>n</mi></msub><mo>=</mo><mn>0</mn></math></p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― ① に代入する値を考える</h3>
-          <p>右辺が <sub>n</sub>C<sub>0</sub>, −<sub>n</sub>C<sub>1</sub>, +<sub>n</sub>C<sub>2</sub>, …… と符号が交互に変わる形になるには、① の x にどんな値を代入すればよいか考えよう。</p>
+          <h3>ヒント 1 ― ① に代入する値を考える</h3><p class="cite"><span class="cite-tag">使う公式</span><math><mrow><msup><mrow><mo>(</mo><mrow><mn>1</mn><mo>+</mo><mi>x</mi></mrow><mo>)</mo></mrow><mi>n</mi></msup><mo>=</mo><msub><mrow></mrow><mi>n</mi></msub><msub><mi>C</mi><mn>0</mn></msub><mo>+</mo><msub><mrow></mrow><mi>n</mi></msub><msub><mi>C</mi><mn>1</mn></msub><mi>x</mi><mo>+</mo><mo>…</mo></mrow></math>①の <math><mi>x</mi></math> に代入する値を考え、右辺に交互の符号を作る。</p>
+          <p>右辺が <math><msub><mrow></mrow><mi>n</mi></msub><msub><mi>C</mi><mn>0</mn></msub><mo>,</mo><mo>−</mo><msub><mrow></mrow><mi>n</mi></msub><msub><mi>C</mi><mn>1</mn></msub><mo>,</mo><mo>+</mo><msub><mrow></mrow><mi>n</mi></msub><msub><mi>C</mi><mn>2</mn></msub><mo>,</mo><mo>…</mo><mo>…</mo></math>と符号が交互に変わる形になるには、① の <math><mi>x</mi></math> にどんな値を代入すればよいか考えよう。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― x = −1 を代入する</h3>
-          <p>① に x = −1 を代入すると、右辺は <sub>n</sub>C<sub>0</sub> + <sub>n</sub>C<sub>1</sub>(−1) + <sub>n</sub>C<sub>2</sub>(−1)<sup>2</sup> + …… + <sub>n</sub>C<sub>n</sub>(−1)<sup>n</sup> となり、符号が交互に変わる。左辺 (1 + x)<sup>n</sup> はどうなるかな。</p>
+          <h3>ヒント<math><mn>2</mn><mo>―</mo><mi>x</mi><mo>=</mo><mo>−</mo><mn>1</mn></math>を代入する</h3>
+          <p>① に<math><mi>x</mi><mo>=</mo><mo>−</mo><mn>1</mn></math>を代入すると、右辺は <math><msub><mrow></mrow><mi>n</mi></msub><msub><mi>C</mi><mn>0</mn></msub><mo>+</mo><msub><mrow></mrow><mi>n</mi></msub><msub><mi>C</mi><mn>1</mn></msub><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mo>+</mo><msub><mrow></mrow><mi>n</mi></msub><msub><mi>C</mi><mn>2</mn></msub><msup><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><mo>…</mo><mo>…</mo><mo>+</mo><msub><mrow></mrow><mi>n</mi></msub><msub><mi>C</mi><mi>n</mi></msub><msup><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mi>n</mi></msup></math> となり、符号が交互に変わる。<br>左辺<math><msup><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mi>x</mi><mo>)</mo></mrow><mi>n</mi></msup></math> はどうなるかな。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">① に x = −1 を代入すると，左辺 = (1 − 1)<sup>n</sup> = 0</p>
-          <p>① に x = −1 を代入すると、左辺は (1 − 1)<sup>n</sup> = 0<sup>n</sup> = 0 （ただし n は自然数）、右辺は <sub>n</sub>C<sub>0</sub> − <sub>n</sub>C<sub>1</sub> + <sub>n</sub>C<sub>2</sub> − …… + (−1)<sup>n</sup><sub>n</sub>C<sub>n</sub> となる。よって、求める等式が得られる。</p>
+          <p class="big">① に<math><mi>x</mi><mo>=</mo><mo>−</mo><mn>1</mn></math>を代入すると，左辺<math><mo>=</mo><msup><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mi>n</mi></msup><mo>=</mo><mn>0</mn></math></p>
+          <p>① に<math><mi>x</mi><mo>=</mo><mo>−</mo><mn>1</mn></math>を代入すると、左辺は<math><msup><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mi>n</mi></msup><mo>=</mo><msup><mn>0</mn><mi>n</mi></msup><mo>=</mo><mn>0</mn><mo>(</mo></math>ただし <math><mi>n</mi></math> は自然数）、右辺は <math><msub><mrow></mrow><mi>n</mi></msub><msub><mi>C</mi><mn>0</mn></msub><mo>−</mo><msub><mrow></mrow><mi>n</mi></msub><msub><mi>C</mi><mn>1</mn></msub><mo>+</mo><msub><mrow></mrow><mi>n</mi></msub><msub><mi>C</mi><mn>2</mn></msub><mo>−</mo><mo>…</mo><mo>…</mo><mo>+</mo><msub><msup><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mi>n</mi></msup><mi>n</mi></msub><msub><mi>C</mi><mi>n</mi></msub></math> となる。<br>よって、求める等式が得られる。</p>
         </div>
         <p class="prob-done">練習10 クリア！　次は応用例題1だよ。</p>
       </section>
@@ -723,28 +807,28 @@
         <h2>応用例題1に挑戦</h2>
         <span class="pno">教科書 p.14</span>
       </div>
-      <section class="card prob" id="prob-ouyou1" data-flow="ouyou1" data-label="応用例題1">
+      <section class="nofig card prob" id="prob-ouyou1" data-flow="ouyou1" data-label="応用例題1">
         <div class="prob-head">
           <span class="prob-tag ouyou">応用例題 1</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">(a + b + c)<sup>7</sup> の展開式における a<sup>3</sup>b<sup>2</sup>c<sup>2</sup> の項の係数を求めよ。</p>
+        <p class="prob-q"><math><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>+</mo><mi>c</mi><mo>)</mo></mrow><mn>7</mn></msup></math> の展開式における<math><msup><mi>a</mi><mn>3</mn></msup><msup><mi>b</mi><mn>2</mn></msup><msup><mi>c</mi><mn>2</mn></msup></math> の項の係数を求めよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 考え方：a + b を 1 つのまとまりとみる</h3>
-          <p>(a + b + c)<sup>7</sup> を {(a + b) + c}<sup>7</sup> とみて、二項定理を使うと、c<sup>2</sup> を含む項は <sub>7</sub>C<sub>2</sub>(a + b)<sup>5</sup>c<sup>2</sup> だよ。</p>
+          <h3>ヒント 1 ― 考え方：<math><mi>a</mi></math> + <math><mi>b</mi></math> を 1 つのまとまりとみる</h3><p class="cite"><span class="cite-tag">使う性質</span><math><msup><mrow><mo>(</mo><mrow><mrow><mo>(</mo><mrow><mi>a</mi><mo>+</mo><mi>b</mi></mrow><mo>)</mo></mrow><mo>+</mo><mi>c</mi></mrow><mo>)</mo></mrow><mn>7</mn></msup></math>2つを1つのまとまりとみる見方。<math><mi>c</mi></math> の指数が2の項を、まず外側の二項定理で取り出す。</p>
+          <p><math><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>+</mo><mi>c</mi><mo>)</mo></mrow><mn>7</mn></msup></math> を<math><mrow><mo>{</mo><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mo>+</mo><mi>c</mi><mo>}</mo></mrow><msup><mrow></mrow><mn>7</mn></msup></math> とみて、二項定理を使うと、<math><msup><mi>c</mi><mn>2</mn></msup></math> を含む項は <math><msub><mrow></mrow><mn>7</mn></msub><msub><mi>C</mi><mn>2</mn></msub><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mn>5</mn></msup><msup><mi>c</mi><mn>2</mn></msup></math> だよ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― もう一度二項定理を使う</h3>
-          <p>(a + b)<sup>5</sup> の展開式における a<sup>3</sup>b<sup>2</sup> の項の係数は <sub>5</sub>C<sub>2</sub> だよ。係数は全部でどうなるか考えよう。</p>
+          <p><math><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mn>5</mn></msup></math> の展開式における<math><msup><mi>a</mi><mn>3</mn></msup><msup><mi>b</mi><mn>2</mn></msup></math> の項の係数は <math><msub><mrow></mrow><mn>5</mn></msub><msub><mi>C</mi><mn>2</mn></msub></math> だよ。係数は全部でどうなるか考えよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">210</p>
-          <p>(a + b + c)<sup>7</sup> = {(a + b) + c}<sup>7</sup> の展開式において、c<sup>2</sup> を含む項は <sub>7</sub>C<sub>2</sub>(a + b)<sup>5</sup>c<sup>2</sup> である。また、(a + b)<sup>5</sup> の展開式における a<sup>3</sup>b<sup>2</sup> の項の係数は <sub>5</sub>C<sub>2</sub> である。よって、求める係数は <sub>7</sub>C<sub>2</sub>・<sub>5</sub>C<sub>2</sub> = 21・10 = 210 である。</p>
+          <p class="big">210</p><p class="cite"><span class="cite-tag">使う公式</span><math><mrow><msub><mrow></mrow><mn>7</mn></msub><msub><mi>C</mi><mn>2</mn></msub><mo>×</mo><msub><mrow></mrow><mn>5</mn></msub><msub><mi>C</mi><mn>2</mn></msub><mo>=</mo><mn>210</mn></mrow></math>外側で <math><msup><mi>c</mi><mn>2</mn></msup></math> を選び、内側で <math><msup><mi>a</mi><mn>3</mn></msup><msup><mi>b</mi><mn>2</mn></msup></math> を選ぶ係数を掛け合わせる。</p>
+          <p><math><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>+</mo><mi>c</mi><mo>)</mo></mrow><mn>7</mn></msup><mo>=</mo><mrow><mo>{</mo><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mo>+</mo><mi>c</mi><mo>}</mo></mrow><msup><mrow></mrow><mn>7</mn></msup></math> の展開式において、<math><msup><mi>c</mi><mn>2</mn></msup></math> を含む項は <math><msub><mrow></mrow><mn>7</mn></msub><msub><mi>C</mi><mn>2</mn></msub><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mn>5</mn></msup><msup><mi>c</mi><mn>2</mn></msup></math> である。<br>また、<math><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mn>5</mn></msup></math> の展開式における<math><msup><mi>a</mi><mn>3</mn></msup><msup><mi>b</mi><mn>2</mn></msup></math> の項の係数は <math><msub><mrow></mrow><mn>5</mn></msub><msub><mi>C</mi><mn>2</mn></msub></math> である。よって、求める係数は <math><msub><mrow></mrow><mn>7</mn></msub><msub><mi>C</mi><mn>2</mn></msub><mo>⋅</mo><msub><mrow></mrow><mn>5</mn></msub><msub><mi>C</mi><mn>2</mn></msub><mo>=</mo><mn>21</mn><mo>⋅</mo><mn>10</mn><mo>=</mo><mn>210</mn></math>である。</p>
         </div>
         <p class="prob-done">応用例題1 クリア！　次は練習11に挑戦しよう。</p>
       </section>
@@ -753,13 +837,13 @@
         <h2>練習問題に挑戦</h2>
         <span class="pno">教科書 p.14</span>
       </div>
-      <section class="card prob" id="prob-ren11" data-label="練習11">
+      <section class="nofig card prob" id="prob-ren11" data-label="練習11">
         <div class="prob-head">
           <span class="prob-tag ren">練習 11</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
         <div class="qside">
-        <p class="prob-q">(a + b + c)<sup>6</sup> の展開式における次の項の係数を求めよ。</p>
+        <p class="prob-q"><math><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>+</mo><mi>c</mi><mo>)</mo></mrow><mn>6</mn></msup></math> の展開式における次の項の係数を求めよ。</p>
         </div>
         <div class="tabs" role="tablist" aria-label="練習11の小問">
           <button class="tab" role="tab" data-tab="ren11-1" aria-selected="true">(1)</button>
@@ -768,66 +852,66 @@
         </div>
         <div class="tabpanel show" id="panel-ren11-1" data-flow="ren11-1" data-label="練習11 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　a<sup>3</sup>bc<sup>2</sup></span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><msup><mi>a</mi><mn>3</mn></msup><mi>b</mi><msup><mi>c</mi><mn>2</mn></msup></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 応用例題 1 と同じ考え方</h3>
-          <p>{(a + b) + c}<sup>6</sup> とみると、c<sup>2</sup> を含む項は <sub>6</sub>C<sub>2</sub>(a + b)<sup>4</sup>c<sup>2</sup>。次に (a + b)<sup>4</sup> における a<sup>3</sup>b の係数は <sub>4</sub>C<sub>1</sub> だよ。</p>
+          <h3>ヒント 1 ― 応用例題 1 と同じ考え方</h3><p class="cite"><span class="cite-tag">使う性質</span><math><msup><mrow><mo>(</mo><mrow><mrow><mo>(</mo><mrow><mi>a</mi><mo>+</mo><mi>b</mi></mrow><mo>)</mo></mrow><mo>+</mo><mi>c</mi></mrow><mo>)</mo></mrow><mn>6</mn></msup></math>応用例題1と同じく、<math><mi>c</mi></math> の指数が2の項を先に取り出す。</p>
+          <p><math><mrow><mo>{</mo><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mo>+</mo><mi>c</mi><mo>}</mo></mrow><msup><mrow></mrow><mn>6</mn></msup></math> とみると、<math><msup><mi>c</mi><mn>2</mn></msup></math> を含む項は <math><msub><mrow></mrow><mn>6</mn></msub><msub><mi>C</mi><mn>2</mn></msub><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mn>4</mn></msup><msup><mi>c</mi><mn>2</mn></msup></math>。<br>次に<math><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mn>4</mn></msup></math> における<math><msup><mi>a</mi><mn>3</mn></msup><mi>b</mi></math>の係数は <math><msub><mrow></mrow><mn>4</mn></msub><msub><mi>C</mi><mn>1</mn></msub></math> だよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
           <p class="big">60</p>
-          <p>求める係数は <sub>6</sub>C<sub>2</sub>・<sub>4</sub>C<sub>1</sub> = 15・4 = 60 である。</p>
+          <p>求める係数は <math><msub><mrow></mrow><mn>6</mn></msub><msub><mi>C</mi><mn>2</mn></msub><mo>⋅</mo><msub><mrow></mrow><mn>4</mn></msub><msub><mi>C</mi><mn>1</mn></msub><mo>=</mo><mn>15</mn><mo>⋅</mo><mn>4</mn><mo>=</mo><mn>60</mn></math>である。</p>
         </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren11-2" data-flow="ren11-2" data-label="練習11 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　a<sup>2</sup>b<sup>2</sup>c<sup>2</sup></span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><msup><mi>a</mi><mn>2</mn></msup><msup><mi>b</mi><mn>2</mn></msup><msup><mi>c</mi><mn>2</mn></msup></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
           <div class="quiz" id="qz-ren11-2" data-correct="2">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>60</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>90</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>15</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>210</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mn>60</mn></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mn>90</mn></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mn>15</mn></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mn>210</mn></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
           <p class="verdict"></p>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― c の指数から順に決める</h3>
-          <p>c<sup>2</sup> を含む項は <sub>6</sub>C<sub>2</sub>(a + b)<sup>4</sup>c<sup>2</sup>。次に (a + b)<sup>4</sup> における a<sup>2</sup>b<sup>2</sup> の係数は <sub>4</sub>C<sub>2</sub> だよ。</p>
+          <h3>ヒント 1 ― <math><mi>c</mi></math> の指数から順に決める</h3><p class="cite"><span class="cite-tag">使う性質</span><math><msup><mrow><mo>(</mo><mrow><mrow><mo>(</mo><mrow><mi>a</mi><mo>+</mo><mi>b</mi></mrow><mo>)</mo></mrow><mo>+</mo><mi>c</mi></mrow><mo>)</mo></mrow><mn>6</mn></msup></math><math><mi>c</mi></math> の指数から順に決め、次に内側の展開で求める項の係数を決める。</p>
+          <p><math><msup><mi>c</mi><mn>2</mn></msup></math> を含む項は <math><msub><mrow></mrow><mn>6</mn></msub><msub><mi>C</mi><mn>2</mn></msub><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mn>4</mn></msup><msup><mi>c</mi><mn>2</mn></msup></math>。次に<math><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mn>4</mn></msup></math> における<math><msup><mi>a</mi><mn>2</mn></msup><msup><mi>b</mi><mn>2</mn></msup></math> の係数は <math><msub><mrow></mrow><mn>4</mn></msub><msub><mi>C</mi><mn>2</mn></msub></math> だよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
           <p class="big">90</p>
-          <p>求める係数は <sub>6</sub>C<sub>2</sub>・<sub>4</sub>C<sub>2</sub> = 15・6 = 90 である。</p>
+          <p>求める係数は <math><msub><mrow></mrow><mn>6</mn></msub><msub><mi>C</mi><mn>2</mn></msub><mo>⋅</mo><msub><mrow></mrow><mn>4</mn></msub><msub><mi>C</mi><mn>2</mn></msub><mo>=</mo><mn>15</mn><mo>⋅</mo><mn>6</mn><mo>=</mo><mn>90</mn></math>である。</p>
         </div>
           <p class="prob-done">(2) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren11-3" data-flow="ren11-3" data-label="練習11 (3)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(3)　a<sup>2</sup>b<sup>4</sup></span>
+            <span class="sub prob-q" style="margin:0">(3)　<math><msup><mi>a</mi><mn>2</mn></msup><msup><mi>b</mi><mn>4</mn></msup></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― c を含まない項</h3>
-          <p>この項は c を含まないから、(a + b)<sup>6</sup> の展開式における a<sup>2</sup>b<sup>4</sup> の係数そのものだよ。一般項から r を決めよう。</p>
+          <h3>ヒント 1 ― <math><mi>c</mi></math> を含まない項</h3><p class="cite"><span class="cite-tag">使う公式</span><math><mrow><msub><mrow></mrow><mi>n</mi></msub><msub><mi>C</mi><mi>r</mi></msub><msup><mi>a</mi><mrow><mi>n</mi><mo>−</mo><mi>r</mi></mrow></msup><msup><mi>b</mi><mi>r</mi></msup></mrow></math><math><mi>c</mi></math> を含まない項は内側の展開の項そのもの。一般項から <math><mi>r</mi></math> を決める。</p>
+          <p>この項は <math><mi>c</mi></math> を含まないから、<math><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mn>6</mn></msup></math> の展開式における<math><msup><mi>a</mi><mn>2</mn></msup><msup><mi>b</mi><mn>4</mn></msup></math> の係数そのものだよ。<br>一般項から <math><mi>r</mi></math> を決めよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
           <p class="big">15</p>
-          <p>求める係数は <sub>6</sub>C<sub>4</sub> = 15 である。</p>
+          <p>求める係数は <math><msub><mrow></mrow><mn>6</mn></msub><msub><mi>C</mi><mn>4</mn></msub><mo>=</mo><mn>15</mn></math>である。</p>
         </div>
           <p class="prob-done">(3) クリア！　練習11は全部おわり。二項定理は終了だよ。</p>
         </div>
@@ -838,10 +922,10 @@
       <section class="card summary" id="summaryCard" style="display:none">
         <h2>この項のポイント</h2>
         <ul>
-          <li><b>パスカルの三角形：</b>各行の数は二項係数 <sub>n</sub>C<sub>r</sub> を並べたもの。両端は 1、内側は左上と右上の数の和。</li>
-          <li><b>二項定理：</b>(a + b)<sup>n</sup> の一般項は <sub>n</sub>C<sub>r</sub>a<sup>n−r</sup>b<sup>r</sup>。特定の項の係数は、指数の条件から r を決めて計算する。</li>
-          <li><b>等式への利用：</b>(1 + x)<sup>n</sup> の展開式に x = 1 や x = −1 を代入すると、二項係数の和や、符号が交互に変わる和が得られる。</li>
-          <li><b>3 つの文字の展開：</b>2 つを 1 つのまとまりとみて、二項定理を 2 回使う（次のページの研究では、この計算を 1 つの公式にまとめる）。</li>
+          <li><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mtext>内側の数</mtext><mo>=</mo><mtext>左上の数</mtext><mo>+</mo><mtext>右上の数</mtext></mrow></math>各行の数は二項係数を並べたものになっている。</p><b>パスカルの三角形：</b>各行の数は二項係数 <math><msub><mrow></mrow><mi>n</mi></msub><msub><mi>C</mi><mi>r</mi></msub></math> を並べたもの。両端は 1、内側は左上と右上の数の和。</li>
+          <li><p class="cite"><span class="cite-tag">使う公式</span><math><mrow><msub><mrow></mrow><mi>n</mi></msub><msub><mi>C</mi><mi>r</mi></msub><msup><mi>a</mi><mrow><mi>n</mi><mo>−</mo><mi>r</mi></mrow></msup><msup><mi>b</mi><mi>r</mi></msup></mrow></math>特定の項の係数は、指数の条件から <math><mi>r</mi></math> を決めて計算する。</p><b>二項定理：</b><math><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mi>n</mi></msup></math> の一般項は <math><msub><mrow></mrow><mi>n</mi></msub><msub><mi>C</mi><mi>r</mi></msub><msup><mi>a</mi><mrow><mi>n</mi><mo>−</mo><mi>r</mi></mrow></msup><msup><mi>b</mi><mi>r</mi></msup></math>。特定の項の係数は、指数の条件から <math><mi>r</mi></math> を決めて計算する。</li>
+          <li><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><msup><mrow><mo>(</mo><mrow><mn>1</mn><mo>+</mo><mi>x</mi></mrow><mo>)</mo></mrow><mi>n</mi></msup><mo>=</mo><msub><mrow></mrow><mi>n</mi></msub><msub><mi>C</mi><mn>0</mn></msub><mo>+</mo><msub><mrow></mrow><mi>n</mi></msub><msub><mi>C</mi><mn>1</mn></msub><mi>x</mi><mo>+</mo><mo>…</mo></mrow></math><math><mi>x</mi><mo>=</mo><mn>1</mn></math> や <math><mi>x</mi><mo>=</mo><mo>−</mo><mn>1</mn></math> を代入すると、二項係数の和や交互の符号の和が得られる。</p><b>等式への利用：</b><math><msup><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mi>x</mi><mo>)</mo></mrow><mi>n</mi></msup></math> の展開式に<math><mi>x</mi><mo>=</mo><mn>1</mn></math>や<math><mi>x</mi><mo>=</mo><mo>−</mo><mn>1</mn></math>を代入すると、二項係数の和や、符号が交互に変わる和が得られる。</li>
+          <li><p class="cite"><span class="cite-tag">使う性質</span><math><msup><mrow><mo>(</mo><mrow><mrow><mo>(</mo><mrow><mi>a</mi><mo>+</mo><mi>b</mi></mrow><mo>)</mo></mrow><mo>+</mo><mi>c</mi></mrow><mo>)</mo></mrow><mi>n</mi></msup></math>2つを1つのまとまりとみて、二項定理を2回使う。</p><b>3 つの文字の展開：</b>2 つを 1 つのまとまりとみて、二項定理を 2 回使う（次のページの研究では、この計算を 1 つの公式にまとめる）。</li>
         </ul>
       </section>
       <footer>

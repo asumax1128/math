@@ -302,13 +302,70 @@
       table.comp{border-collapse:collapse;margin:0 0 14px;width:100%}
       table.comp th,table.comp td{border:1px solid var(--line);padding:8px 10px;text-align:center;font-size:15px}
       table.comp th{background:var(--surface2)}
-        </style>
+        
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+
+      /* 積分記号は大きめに表示する（元のページの可読化デザインに合わせる） */
+      math .int-op{font-size:1.35em}
+      /* calc-12 世代（.card）と calc-18 世代（.unit）の、図のない問題の全幅化 */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig>.step{position:static !important}
+        .card.nofig>.steps-wrap{max-height:none !important;overflow:visible !important}
+        .unit.nofig{display:block !important}
+        .unit.nofig>.qside{position:static !important}
+        .unit.nofig>.steps-stack{max-height:none !important;overflow:visible !important}
+      }
+
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける・第3弾c） */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig .qside{position:static !important}
+        .card.nofig .steps-wrap,.card.nofig .tabpanel .steps-wrap{max-height:none !important;overflow:visible !important}
+      }
+</style>
   </head>
   <body>
     <div class="wrap">
       <header>
         <span class="badge">数学II　第1章　式と証明</span>
-        <h1><span class="num-badge">研究</span>(a+b+c)<sup>n</sup> の展開式</h1>
+        <h1><span class="num-badge">研究</span><math><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>+</mo><mi>c</mi><mo>)</mo></mrow><mi>n</mi></msup></math> の展開式</h1>
         <p class="page-meta">教科書 <b>p.15</b>　｜　第1節 式と計算 ― 研究</p>
       </header>
       <section class="howto" aria-label="使い方">
@@ -321,18 +378,23 @@
       </section>
       <div class="sec-head">
         <span class="sec-tag">研究</span>
-        <h2>(a + b + c)<sup>n</sup> の展開式</h2>
+        <h2><math><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>+</mo><mi>c</mi><mo>)</mo></mrow><mi>n</mi></msup></math> の展開式</h2>
         <span class="pno">教科書 p.15</span>
       </div>
       <section class="card">
-        <p>(a + b + c)<sup>n</sup> の展開式における a<sup>p</sup>b<sup>q</sup>c<sup>r</sup> の項の係数を求めよう。ただし、p, q, r は 0 以上の整数で、p + q + r = n とする。</p>
-        <p>(a + b + c)<sup>n</sup> を {(a + b) + c}<sup>n</sup> とみて二項定理を使うと、c<sup>r</sup> を含む項は <sub>n</sub>C<sub>r</sub>(a + b)<sup>n−r</sup>c<sup>r</sup> である。</p>
-        <p>また、(a + b)<sup>n−r</sup> の展開式における a<sup>p</sup>b<sup>q</sup> の項は <sub>n−r</sub>C<sub>q</sub>a<sup>p</sup>b<sup>q</sup> である（(n − r) − q = p であることに注意）。</p>
+        <p><math><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>+</mo><mi>c</mi><mo>)</mo></mrow><mi>n</mi></msup></math> の展開式における<math><msup><mi>a</mi><mi>p</mi></msup><msup><mi>b</mi><mi>q</mi></msup><msup><mi>c</mi><mi>r</mi></msup></math> の項の係数を求めよう。ただし、<math><mi>p</mi></math>, <math><mi>q</mi></math>, <math><mi>r</mi></math> は 0 以上の整数で、<math><mi>p</mi><mo>+</mo><mi>q</mi><mo>+</mo><mi>r</mi><mo>=</mo><mi>n</mi></math>とする。</p>
+        <p><math><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>+</mo><mi>c</mi><mo>)</mo></mrow><mi>n</mi></msup></math> を<math><mrow><mo>{</mo><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mo>+</mo><mi>c</mi><mo>}</mo></mrow><msup><mrow></mrow><mi>n</mi></msup></math> とみて二項定理を使うと、<math><msup><mi>c</mi><mi>r</mi></msup></math> を含む項は <math><msub><mrow></mrow><mi>n</mi></msub><msub><mi>C</mi><mi>r</mi></msub><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mrow><mi>n</mi><mo>−</mo><mi>r</mi></mrow></msup><msup><mi>c</mi><mi>r</mi></msup></math> である。</p>
+        <p>また、<math><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mrow><mi>n</mi><mo>−</mo><mi>r</mi></mrow></msup></math> の展開式における<math><msup><mi>a</mi><mi>p</mi></msup><msup><mi>b</mi><mi>q</mi></msup></math> の項は <math><msub><mrow></mrow><mrow><mi>n</mi><mo>−</mo><mi>r</mi></mrow></msub><msub><mi>C</mi><mi>q</mi></msub><msup><mi>a</mi><mi>p</mi></msup><msup><mi>b</mi><mi>q</mi></msup></math> である<math><mo>(</mo><mrow><mo>(</mo><mi>n</mi><mo>−</mo><mi>r</mi><mo>)</mo></mrow><mo>−</mo><mi>q</mi><mo>=</mo><mi>p</mi></math>であることに注意）。</p>
         <p>よって、求める係数は次のようになる。</p>
-        <p class="formula"><sub>n</sub>C<sub>r</sub> × <sub>n−r</sub>C<sub>q</sub> = <span class="frac"><span class="num">n!</span><span class="den">r!(n − r)!</span></span> × <span class="frac"><span class="num">(n − r)!</span><span class="den">q!(n − r − q)!</span></span> = <span class="frac"><span class="num">n!</span><span class="den">p! q! r!</span></span></p>
+        <p class="mq-wide formula"><math display="block"><msub><mrow></mrow><mi>n</mi></msub><msub><mi>C</mi><mi>r</mi></msub><mo>×</mo><msub><mrow></mrow><mrow><mi>n</mi><mo>−</mo><mi>r</mi></mrow></msub><msub><mi>C</mi><mi>q</mi></msub><mo>=</mo><mfrac><mrow><mi>n</mi><mo>!</mo></mrow><mrow><mi>r</mi><mo>!</mo><mrow><mo>(</mo><mi>n</mi><mo>−</mo><mi>r</mi><mo>)</mo></mrow><mo>!</mo></mrow></mfrac><mo>×</mo><mfrac><mrow><mrow><mo>(</mo><mi>n</mi><mo>−</mo><mi>r</mi><mo>)</mo></mrow><mo>!</mo></mrow><mrow><mi>q</mi><mo>!</mo><mrow><mo>(</mo><mi>n</mi><mo>−</mo><mi>r</mi><mo>−</mo><mi>q</mi><mo>)</mo></mrow><mo>!</mo></mrow></mfrac><mo>=</mo><mfrac><mrow><mi>n</mi><mo>!</mo></mrow><mrow><mi>p</mi><mo>!</mo><mi>q</mi><mo>!</mo><mi>r</mi><mo>!</mo></mrow></mfrac></math></p>
+<div class="mq-narrow">
+<p class="formula"><math display="block"><msub><mrow></mrow><mi>n</mi></msub><msub><mi>C</mi><mi>r</mi></msub><mo>×</mo><msub><mrow></mrow><mrow><mi>n</mi><mo>−</mo><mi>r</mi></mrow></msub><msub><mi>C</mi><mi>q</mi></msub></math></p>
+<p class="formula cont"><math display="block"><mo>=</mo><mfrac><mrow><mi>n</mi><mo>!</mo></mrow><mrow><mi>r</mi><mo>!</mo><mrow><mo>(</mo><mi>n</mi><mo>−</mo><mi>r</mi><mo>)</mo></mrow><mo>!</mo></mrow></mfrac><mo>×</mo><mfrac><mrow><mrow><mo>(</mo><mi>n</mi><mo>−</mo><mi>r</mi><mo>)</mo></mrow><mo>!</mo></mrow><mrow><mi>q</mi><mo>!</mo><mrow><mo>(</mo><mi>n</mi><mo>−</mo><mi>r</mi><mo>−</mo><mi>q</mi><mo>)</mo></mrow><mo>!</mo></mrow></mfrac></math></p>
+<p class="formula cont"><math display="block"><mo>=</mo><mfrac><mrow><mi>n</mi><mo>!</mo></mrow><mrow><mi>p</mi><mo>!</mo><mi>q</mi><mo>!</mo><mi>r</mi><mo>!</mo></mrow></mfrac></math></p>
+</div>
         <div class="def">
           <p><b>研究のまとめ</b></p>
-          <p>(a + b + c)<sup>n</sup> の展開式における a<sup>p</sup>b<sup>q</sup>c<sup>r</sup> の項の係数は <span class="frac"><span class="num">n!</span><span class="den">p! q! r!</span></span>（ただし p + q + r = n）</p>
+          <p><math><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>+</mo><mi>c</mi><mo>)</mo></mrow><mi>n</mi></msup></math> の展開式における<math><msup><mi>a</mi><mi>p</mi></msup><msup><mi>b</mi><mi>q</mi></msup><msup><mi>c</mi><mi>r</mi></msup></math> の項の係数は <math><mfrac><mrow><mi>n</mi><mo>!</mo></mrow><mrow><mi>p</mi><mo>!</mo><mi>q</mi><mo>!</mo><mi>r</mi><mo>!</mo></mrow></mfrac><mo>(</mo></math>ただし<math><mi>p</mi><mo>+</mo><mi>q</mi><mo>+</mo><mi>r</mi><mo>=</mo><mi>n</mi><mo>)</mo></math></p>
         </div>
       </section>
       <div class="sec-head">
@@ -340,28 +402,28 @@
         <h2>例1で解き方を確認</h2>
         <span class="pno">教科書 p.15</span>
       </div>
-      <section class="card prob" id="prob-kenrei1" data-flow="kenrei1" data-label="研究例1">
+      <section class="nofig card prob" id="prob-kenrei1" data-flow="kenrei1" data-label="研究例1">
         <div class="prob-head">
           <span class="prob-tag ">例 1</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">(a + b + c)<sup>7</sup> の展開式における a<sup>3</sup>b<sup>2</sup>c<sup>2</sup> の項の係数</p>
+        <p class="prob-q"><math><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>+</mo><mi>c</mi><mo>)</mo></mrow><mn>7</mn></msup></math> の展開式における<math><msup><mi>a</mi><mn>3</mn></msup><msup><mi>b</mi><mn>2</mn></msup><msup><mi>c</mi><mn>2</mn></msup></math> の項の係数</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 公式に当てはめる</h3>
-          <p>n = 7、p = 3、q = 2、r = 2 として、係数 = <span class="frac"><span class="num">n!</span><span class="den">p! q! r!</span></span> に当てはめよう。</p>
+          <h3>ヒント 1 ― 公式に当てはめる</h3><p class="cite"><span class="cite-tag">使う公式</span><math><mfrac><mrow><mi>n</mi><mo>!</mo></mrow><mrow><mi>p</mi><mo>!</mo><mi>q</mi><mo>!</mo><mi>r</mi><mo>!</mo></mrow></mfrac></math>ここでは <math><mi>n</mi><mo>=</mo><mn>7</mn></math>、<math><mi>p</mi><mo>=</mo><mn>3</mn></math>、<math><mi>q</mi><mo>=</mo><mn>2</mn></math>、<math><mi>r</mi><mo>=</mo><mn>2</mn></math> を当てはめる。</p>
+          <p><math><mi>n</mi><mo>=</mo><mn>7</mn></math>、<math><mi>p</mi><mo>=</mo><mn>3</mn></math>、<math><mi>q</mi><mo>=</mo><mn>2</mn></math>、<math><mi>r</mi><mo>=</mo><mn>2</mn></math>として、係数<math><mo>=</mo><mfrac><mrow><mi>n</mi><mo>!</mo></mrow><mrow><mi>p</mi><mo>!</mo><mi>q</mi><mo>!</mo><mi>r</mi><mo>!</mo></mrow></mfrac></math> に当てはめよう。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― 階乗を計算する</h3>
-          <p>7! = 5040、3! = 6、2! = 2 だから、<span class="frac"><span class="num">7!</span><span class="den">3! 2! 2!</span></span> = <span class="frac"><span class="num">5040</span><span class="den">6・2・2</span></span> を計算しよう。前のページの応用例題 1 （二項定理を 2 回使う方法）と同じ答えになるはずだよ。</p>
+          <h3>ヒント 2 ― 階乗を計算する</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mn>7</mn><mo>!</mo><mo>=</mo><mn>5040</mn></mrow></math>あわせて <math><mn>3</mn><mo>!</mo><mo>=</mo><mn>6</mn></math>、<math><mn>2</mn><mo>!</mo><mo>=</mo><mn>2</mn></math> を使って、分数の値を計算する。</p>
+          <p><math><mn>7</mn><mo>!</mo><mo>=</mo><mn>5040</mn></math>、<math><mn>3</mn><mo>!</mo><mo>=</mo><mn>6</mn></math>、<math><mn>2</mn><mo>!</mo><mo>=</mo><mn>2</mn></math>だから、<math><mfrac><mrow><mn>7</mn><mo>!</mo></mrow><mrow><mn>3</mn><mo>!</mo><mn>2</mn><mo>!</mo><mn>2</mn><mo>!</mo></mrow></mfrac><mo>=</mo><mfrac><mn>5040</mn><mrow><mn>6</mn><mo>⋅</mo><mn>2</mn><mo>⋅</mo><mn>2</mn></mrow></mfrac></math> を計算しよう。<br>前のページの応用例題 1 （二項定理を 2 回使う方法）と同じ答えになるはずだよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big"><span class="frac"><span class="num">7!</span><span class="den">3! 2! 2!</span></span> = 210</p>
-          <p>(a + b + c)<sup>7</sup> の展開式における a<sup>3</sup>b<sup>2</sup>c<sup>2</sup> の項の係数は <span class="frac"><span class="num">7!</span><span class="den">3! 2! 2!</span></span> = 210 である。</p>
+          <p class="big"><math display="block"><mfrac><mrow><mn>7</mn><mo>!</mo></mrow><mrow><mn>3</mn><mo>!</mo><mn>2</mn><mo>!</mo><mn>2</mn><mo>!</mo></mrow></mfrac><mo>=</mo><mn>210</mn></math></p><p class="cite"><span class="cite-tag">使う公式</span><math><mfrac><mrow><mi>n</mi><mo>!</mo></mrow><mrow><mi>p</mi><mo>!</mo><mi>q</mi><mo>!</mo><mi>r</mi><mo>!</mo></mrow></mfrac></math><math><mi>n</mi><mo>=</mo><mn>7</mn></math>、<math><mi>p</mi><mo>=</mo><mn>3</mn></math>、<math><mi>q</mi><mo>=</mo><mn>2</mn></math>、<math><mi>r</mi><mo>=</mo><mn>2</mn></math> を当てはめて係数を求める。</p>
+          <p><math><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>+</mo><mi>c</mi><mo>)</mo></mrow><mn>7</mn></msup></math> の展開式における<math><msup><mi>a</mi><mn>3</mn></msup><msup><mi>b</mi><mn>2</mn></msup><msup><mi>c</mi><mn>2</mn></msup></math> の項の係数は <math><mfrac><mrow><mn>7</mn><mo>!</mo></mrow><mrow><mn>3</mn><mo>!</mo><mn>2</mn><mo>!</mo><mn>2</mn><mo>!</mo></mrow></mfrac><mo>=</mo><mn>210</mn></math>である。</p>
         </div>
         <p class="prob-done">例1 クリア！　次は練習1に挑戦しよう。</p>
       </section>
@@ -370,13 +432,13 @@
         <h2>練習問題に挑戦</h2>
         <span class="pno">教科書 p.15</span>
       </div>
-      <section class="card prob" id="prob-kenren1" data-label="研究練習1">
+      <section class="nofig card prob" id="prob-kenren1" data-label="研究練習1">
         <div class="prob-head">
           <span class="prob-tag ren">練習 1</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
         <div class="qside">
-        <p class="prob-q">(a + b + c)<sup>7</sup> の展開式における次の項の係数を求めよ。</p>
+        <p class="prob-q"><math><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>+</mo><mi>c</mi><mo>)</mo></mrow><mn>7</mn></msup></math> の展開式における次の項の係数を求めよ。</p>
         </div>
         <div class="tabs" role="tablist" aria-label="研究練習1の小問">
           <button class="tab" role="tab" data-tab="kenren1-1" aria-selected="true">(1)</button>
@@ -385,63 +447,63 @@
         </div>
         <div class="tabpanel show" id="panel-kenren1-1" data-flow="kenren1-1" data-label="研究練習1 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　a<sup>2</sup>b<sup>2</sup>c<sup>3</sup></span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><msup><mi>a</mi><mn>2</mn></msup><msup><mi>b</mi><mn>2</mn></msup><msup><mi>c</mi><mn>3</mn></msup></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 公式に当てはめる</h3>
-          <p>p = 2、q = 2、r = 3 だから、係数は <span class="frac"><span class="num">7!</span><span class="den">2! 2! 3!</span></span> だよ。</p>
+          <h3>ヒント 1 ― 公式に当てはめる</h3><p class="cite"><span class="cite-tag">使う公式</span><math><mfrac><mrow><mi>n</mi><mo>!</mo></mrow><mrow><mi>p</mi><mo>!</mo><mi>q</mi><mo>!</mo><mi>r</mi><mo>!</mo></mrow></mfrac></math>ここでは <math><mi>p</mi><mo>=</mo><mn>2</mn></math>、<math><mi>q</mi><mo>=</mo><mn>2</mn></math>、<math><mi>r</mi><mo>=</mo><mn>3</mn></math> を分母の階乗に当てはめる。</p>
+          <p><math><mi>p</mi><mo>=</mo><mn>2</mn></math>、<math><mi>q</mi><mo>=</mo><mn>2</mn></math>、<math><mi>r</mi><mo>=</mo><mn>3</mn></math>だから、係数は <math><mfrac><mrow><mn>7</mn><mo>!</mo></mrow><mrow><mn>2</mn><mo>!</mo><mn>2</mn><mo>!</mo><mn>3</mn><mo>!</mo></mrow></mfrac></math> だよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big"><span class="frac"><span class="num">7!</span><span class="den">2! 2! 3!</span></span> = 210</p>
+          <p class="big"><math display="block"><mfrac><mrow><mn>7</mn><mo>!</mo></mrow><mrow><mn>2</mn><mo>!</mo><mn>2</mn><mo>!</mo><mn>3</mn><mo>!</mo></mrow></mfrac><mo>=</mo><mn>210</mn></math></p>
         </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-kenren1-2" data-flow="kenren1-2" data-label="研究練習1 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　ab<sup>3</sup>c<sup>3</sup></span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><mi>a</mi><msup><mi>b</mi><mn>3</mn></msup><msup><mi>c</mi><mn>3</mn></msup></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
           <div class="quiz" id="qz-kenren-2" data-correct="2">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>210</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>140</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>70</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>35</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mn>210</mn></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mn>140</mn></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mn>70</mn></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mn>35</mn></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
           <p class="verdict"></p>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 公式に当てはめる</h3>
-          <p>a の指数は 1 だから p = 1、q = 3、r = 3。係数は <span class="frac"><span class="num">7!</span><span class="den">1! 3! 3!</span></span> だよ。1! = 1 だね。</p>
+          <h3>ヒント 1 ― 公式に当てはめる</h3><p class="cite"><span class="cite-tag">使う公式</span><math><mfrac><mrow><mi>n</mi><mo>!</mo></mrow><mrow><mi>p</mi><mo>!</mo><mi>q</mi><mo>!</mo><mi>r</mi><mo>!</mo></mrow></mfrac></math><math><mi>a</mi></math> の指数から <math><mi>p</mi><mo>=</mo><mn>1</mn></math>、<math><mi>q</mi><mo>=</mo><mn>3</mn></math>、<math><mi>r</mi><mo>=</mo><mn>3</mn></math>。<math><mn>1</mn><mo>!</mo><mo>=</mo><mn>1</mn></math> である。</p>
+          <p><math><mi>a</mi></math> の指数は 1 だから<math><mi>p</mi><mo>=</mo><mn>1</mn></math>、<math><mi>q</mi><mo>=</mo><mn>3</mn></math>、<math><mi>r</mi><mo>=</mo><mn>3</mn></math>。係数は <math><mfrac><mrow><mn>7</mn><mo>!</mo></mrow><mrow><mn>1</mn><mo>!</mo><mn>3</mn><mo>!</mo><mn>3</mn><mo>!</mo></mrow></mfrac></math> だよ。<math><mn>1</mn><mo>!</mo><mo>=</mo><mn>1</mn></math>だね。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big"><span class="frac"><span class="num">7!</span><span class="den">1! 3! 3!</span></span> = 140</p>
+          <p class="big"><math display="block"><mfrac><mrow><mn>7</mn><mo>!</mo></mrow><mrow><mn>1</mn><mo>!</mo><mn>3</mn><mo>!</mo><mn>3</mn><mo>!</mo></mrow></mfrac><mo>=</mo><mn>140</mn></math></p>
         </div>
           <p class="prob-done">(2) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-kenren1-3" data-flow="kenren1-3" data-label="研究練習1 (3)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(3)　a<sup>3</sup>b<sup>4</sup></span>
+            <span class="sub prob-q" style="margin:0">(3)　<math><msup><mi>a</mi><mn>3</mn></msup><msup><mi>b</mi><mn>4</mn></msup></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― c の指数は 0</h3>
-          <p>この項は c を含まないから r = 0。0! = 1 として、係数は <span class="frac"><span class="num">7!</span><span class="den">3! 4! 0!</span></span> だよ。</p>
+          <h3>ヒント 1 ― <math><mi>c</mi></math> の指数は 0</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mn>0</mn><mo>!</mo><mo>=</mo><mn>1</mn></mrow></math><math><mi>c</mi></math> を含まない項は <math><mi>r</mi><mo>=</mo><mn>0</mn></math> として、同じ公式で扱う。</p>
+          <p>この項は <math><mi>c</mi></math> を含まないから<math><mi>r</mi><mo>=</mo><mn>0</mn></math>。<math><mn>0</mn><mo>!</mo><mo>=</mo><mn>1</mn></math>として、係数は <math><mfrac><mrow><mn>7</mn><mo>!</mo></mrow><mrow><mn>3</mn><mo>!</mo><mn>4</mn><mo>!</mo><mn>0</mn><mo>!</mo></mrow></mfrac></math> だよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big"><span class="frac"><span class="num">7!</span><span class="den">3! 4! 0!</span></span> = 35</p>
+          <p class="big"><math display="block"><mfrac><mrow><mn>7</mn><mo>!</mo></mrow><mrow><mn>3</mn><mo>!</mo><mn>4</mn><mo>!</mo><mn>0</mn><mo>!</mo></mrow></mfrac><mo>=</mo><mn>35</mn></math></p><p class="cite"><span class="cite-tag">使う公式</span><math><mfrac><mrow><mi>n</mi><mo>!</mo></mrow><mrow><mi>p</mi><mo>!</mo><mi>q</mi><mo>!</mo><mi>r</mi><mo>!</mo></mrow></mfrac></math><math><mi>p</mi><mo>=</mo><mn>3</mn></math>、<math><mi>q</mi><mo>=</mo><mn>4</mn></math>、<math><mi>r</mi><mo>=</mo><mn>0</mn></math> を当てはめて係数を求める。</p>
         </div>
           <p class="prob-done">(3) クリア！　練習1は全部おわり。研究は終了だよ。</p>
         </div>
@@ -452,9 +514,9 @@
       <section class="card summary" id="summaryCard" style="display:none">
         <h2>この項のポイント</h2>
         <ul>
-          <li><b>3 つの文字の展開の公式：</b>(a + b + c)<sup>n</sup> の a<sup>p</sup>b<sup>q</sup>c<sup>r</sup> の係数は <span class="frac"><span class="num">n!</span><span class="den">p! q! r!</span></span>（p + q + r = n）。</li>
-          <li><b>考え方の出発点：</b>{(a + b) + c}<sup>n</sup> とみて、二項定理を 2 回使うとこの公式が得られる。</li>
-          <li><b>指数が 0 の項：</b>現れない文字は指数 0 とし、0! = 1 として同じ公式で扱える。</li>
+          <li><p class="cite"><span class="cite-tag">使う公式</span><math><mfrac><mrow><mi>n</mi><mo>!</mo></mrow><mrow><mi>p</mi><mo>!</mo><mi>q</mi><mo>!</mo><mi>r</mi><mo>!</mo></mrow></mfrac></math>ただし指数の和 <math><mi>p</mi><mo>+</mo><mi>q</mi><mo>+</mo><mi>r</mi></math> は <math><mi>n</mi></math> に等しい。</p><b>3 つの文字の展開の公式：</b><math><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>+</mo><mi>c</mi><mo>)</mo></mrow><mi>n</mi></msup></math> の<math><msup><mi>a</mi><mi>p</mi></msup><msup><mi>b</mi><mi>q</mi></msup><msup><mi>c</mi><mi>r</mi></msup></math> の係数は <math><mfrac><mrow><mi>n</mi><mo>!</mo></mrow><mrow><mi>p</mi><mo>!</mo><mi>q</mi><mo>!</mo><mi>r</mi><mo>!</mo></mrow></mfrac><mrow><mo>(</mo><mi>p</mi><mo>+</mo><mi>q</mi><mo>+</mo><mi>r</mi><mo>=</mo><mi>n</mi><mo>)</mo></mrow></math>。</li>
+          <li><p class="cite"><span class="cite-tag">使う性質</span><math><msup><mrow><mo>(</mo><mrow><mrow><mo>(</mo><mrow><mi>a</mi><mo>+</mo><mi>b</mi></mrow><mo>)</mo></mrow><mo>+</mo><mi>c</mi></mrow><mo>)</mo></mrow><mi>n</mi></msup></math>2つをまとまりとみて二項定理を2回使うと、この公式が得られる。</p><b>考え方の出発点：</b><math><mrow><mo>{</mo><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mo>+</mo><mi>c</mi><mo>}</mo></mrow><msup><mrow></mrow><mi>n</mi></msup></math> とみて、二項定理を 2 回使うとこの公式が得られる。</li>
+          <li><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mn>0</mn><mo>!</mo><mo>=</mo><mn>1</mn></mrow></math>現れない文字は指数0として、同じ公式で扱える。</p><b>指数が 0 の項：</b>現れない文字は指数 0 とし、<math><mn>0</mn><mo>!</mo><mo>=</mo><mn>1</mn></math>として同じ公式で扱える。</li>
         </ul>
       </section>
       <footer>
@@ -464,7 +526,7 @@
           <a class="back-btn" href="kyokasho.html">教科書解説の一覧に戻る</a>
           <a class="back-btn" href="index.html">Nanryo mathematics portal に戻る</a>
         </div>
-        <p class="foot-note">数学II 第1章 式と証明 ｜ 研究 (a+b+c)ⁿ の展開式（教科書 p.15）</p>
+        <p class="foot-note">数学II 第1章 式と証明 ｜ 研究 (<math><mi>a</mi></math>+<math><mi>b</mi></math>+<math><mi>c</mi></math>)ⁿ の展開式（教科書 p.15）</p>
       </footer>
     </div>
 

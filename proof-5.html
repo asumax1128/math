@@ -297,7 +297,64 @@
       table.comp th,table.comp td{border:1px solid var(--line);padding:8px 10px;text-align:center;font-size:15px}
       table.comp th{background:var(--surface2)}
     
-.next-page{display:block;text-align:center;font-weight:900;font-size:17px;color:#fff;background:var(--accent);border-radius:12px;padding:15px 10px;margin:0 0 14px;text-decoration:none}    </style>
+.next-page{display:block;text-align:center;font-weight:900;font-size:17px;color:#fff;background:var(--accent);border-radius:12px;padding:15px 10px;margin:0 0 14px;text-decoration:none}    
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+
+      /* 積分記号は大きめに表示する（元のページの可読化デザインに合わせる） */
+      math .int-op{font-size:1.35em}
+      /* calc-12 世代（.card）と calc-18 世代（.unit）の、図のない問題の全幅化 */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig>.step{position:static !important}
+        .card.nofig>.steps-wrap{max-height:none !important;overflow:visible !important}
+        .unit.nofig{display:block !important}
+        .unit.nofig>.qside{position:static !important}
+        .unit.nofig>.steps-stack{max-height:none !important;overflow:visible !important}
+      }
+
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける・第3弾c） */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig .qside{position:static !important}
+        .card.nofig .steps-wrap,.card.nofig .tabpanel .steps-wrap{max-height:none !important;overflow:visible !important}
+      }
+</style>
   </head>
   <body>
     <div class="wrap">
@@ -320,9 +377,9 @@
         <span class="pno">教科書 p.19</span>
       </div>
       <section class="card">
-        <p>たとえば <span class="frac"><span class="num">2</span><span class="den">x</span></span> や <span class="frac"><span class="num">2x + 5</span><span class="den">x + 1</span></span> のように、2 つの多項式 A，B によって <span class="frac"><span class="num">A</span><span class="den">B</span></span> の形に表され、B に文字を含む式を<span class="key">分数式</span>という。</p>
-        <p>分数式 <span class="frac"><span class="num">A</span><span class="den">B</span></span> において、B をその<span class="key">分母</span>、A をその<span class="key">分子</span>という。</p>
-        <p class="formula"><span class="frac"><span class="num">A</span><span class="den">B</span></span> = <span class="frac"><span class="num">AC</span><span class="den">BC</span></span> （ただし C ≠ 0），　<span class="frac"><span class="num">AD</span><span class="den">BD</span></span> = <span class="frac"><span class="num">A</span><span class="den">B</span></span></p>
+        <p>たとえば <math><mfrac><mn>2</mn><mi>x</mi></mfrac></math> や <math><mfrac><mrow><mn>2</mn><mi>x</mi><mo>+</mo><mn>5</mn></mrow><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow></mfrac></math> のように、2 つの多項式 <math><mi>A</mi></math>，<math><mi>B</mi></math> によって <math><mfrac><mi>A</mi><mi>B</mi></mfrac></math> の形に表され、<math><mi>B</mi></math> に文字を含む式を<span class="key">分数式</span>という。</p>
+        <p>分数式 <math><mfrac><mi>A</mi><mi>B</mi></mfrac></math> において、<math><mi>B</mi></math> をその<span class="key">分母</span>、<math><mi>A</mi></math> をその<span class="key">分子</span>という。</p>
+        <p class="formula"><math><mfrac><mi>A</mi><mi>B</mi></mfrac><mo>=</mo><mfrac><mi>AC</mi><mi>BC</mi></mfrac><mo>(</mo></math>ただし <math><mi>C</mi></math> ≠ 0），　<math><mfrac><mi>AD</mi><mi>BD</mi></mfrac><mo>=</mo><mfrac><mi>A</mi><mi>B</mi></mfrac></math></p>
         <p>分数式では、分母と分子に 0 でない同じ多項式を掛けても、分母と分子をその共通因数で割っても、もとの式と等しい。</p>
         <p>分母と分子をその共通因数で割ることを<span class="key">約分する</span>という。約分して得られた、これ以上約分できない分数式を<span class="key">既約分数式</span>という。</p>
         <p class="note">※ 与えられた分数式の分母は 0 でないとする。</p>
@@ -332,31 +389,31 @@
         <h2>例7 ― 分数式の約分</h2>
         <span class="pno">教科書 p.19</span>
       </div>
-      <section class="card prob" id="prob-ex7" data-flow="ex7" data-label="例7">
+      <section class="nofig card prob" id="prob-ex7" data-flow="ex7" data-label="例7">
         <div class="prob-head">
           <span class="prob-tag ">例 7</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
         <div class="qside">
-        <p class="prob-q">分数式を約分せよ。<br>(1)　<span class="frac"><span class="num">6ab<sup>4</sup></span><span class="den">4a<sup>2</sup>b<sup>3</sup></span></span><br>(2)　<span class="frac"><span class="num">x<sup>2</sup> − x</span><span class="den">x<sup>2</sup> − 1</span></span></p>
+        <p class="prob-q">分数式を約分せよ。<br>(1)　<math><mfrac><mrow><mn>6</mn><mi>a</mi><msup><mi>b</mi><mn>4</mn></msup></mrow><mrow><mn>4</mn><msup><mi>a</mi><mn>2</mn></msup><msup><mi>b</mi><mn>3</mn></msup></mrow></mfrac></math><br>(2)　<math><mfrac><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>x</mi></mrow><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn></mrow></mfrac></math></p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― (1) 共通因数を探す</h3>
-          <p>(1) は、係数と文字の共通因数を探そう。分子は 6ab<sup>4</sup>、分母は 4a<sup>2</sup>b<sup>3</sup> で、共通因数は 2ab<sup>3</sup> だよ。</p>
+          <h3>ヒント 1 ― (1) 共通因数を探す</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mfrac><mi>a</mi><mi>b</mi></mfrac><mo>=</mo><mfrac><mrow><mi>a</mi><mo>÷</mo><mi>C</mi></mrow><mrow><mi>b</mi><mo>÷</mo><mi>C</mi></mrow></mfrac></mrow></math>ここでは分子と分母を共通因数で割る。(1) の共通因数は <math><mn>2</mn><mi>a</mi><msup><mi>b</mi><mn>3</mn></msup></math> である。</p>
+          <p>(1) は、係数と文字の共通因数を探そう。<br>分子は<math><mn>6</mn><mi>a</mi><msup><mi>b</mi><mn>4</mn></msup></math>、分母は<math><mn>4</mn><msup><mi>a</mi><mn>2</mn></msup><msup><mi>b</mi><mn>3</mn></msup></math> で、共通因数は<math><mn>2</mn><mi>a</mi><msup><mi>b</mi><mn>3</mn></msup></math> だよ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― (1) 共通因数で割る</h3>
-          <p>分子と分母を 2ab<sup>3</sup> で割ると、分子は 3b、分母は 2a になる。</p>
+          <p>分子と分母を<math><mn>2</mn><mi>a</mi><msup><mi>b</mi><mn>3</mn></msup></math> で割ると、分子は 3b、分母は 2a になる。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 3 ― (2) 因数分解してから約分</h3>
-          <p>まず分子と分母を因数分解しよう。分子は x<sup>2</sup> − x = x(x − 1)、分母は x<sup>2</sup> − 1 = (x + 1)(x − 1) だよ。共通因数 (x − 1) で約分しよう。</p>
+          <h3>ヒント 3 ― (2) 因数分解してから約分</h3><p class="cite"><span class="cite-tag">使う公式</span><math><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>=</mo><mrow><mo>(</mo><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow><mo>)</mo></mrow><mrow><mo>(</mo><mrow><mi>x</mi><mo>−</mo><mn>1</mn></mrow><mo>)</mo></mrow></mrow></math>分子も <math><mi>x</mi><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow></math> と因数分解し、共通因数で約分する。</p>
+          <p>まず分子と分母を因数分解しよう。<br>分子は<math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>x</mi><mo>=</mo><mi>x</mi><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow></math>、分母は<math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>=</mo><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow></math>だよ。共通因数 (<math><mi>x</mi></math> − 1) で約分しよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">(1)　<span class="frac"><span class="num">3b</span><span class="den">2a</span></span>　　　(2)　<span class="frac"><span class="num">x</span><span class="den">x + 1</span></span></p>
+          <p class="big">(1)　<math><mfrac><mrow><mn>3</mn><mi>b</mi></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></math>　　　(2)　<math><mfrac><mi>x</mi><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow></mfrac></math></p><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mfrac><mi>a</mi><mi>b</mi></mfrac><mo>=</mo><mfrac><mrow><mi>a</mi><mo>÷</mo><mi>C</mi></mrow><mrow><mi>b</mi><mo>÷</mo><mi>C</mi></mrow></mfrac></mrow></math>(1) は共通因数で割り、(2) は因数分解してから共通因数で割った結果である。</p>
         </div>
         <p class="prob-done">例7 クリア！　次は練習15に挑戦しよう。</p>
       </section>
@@ -365,7 +422,7 @@
         <h2>練習問題に挑戦</h2>
         <span class="pno">教科書 p.19</span>
       </div>
-      <section class="card prob" id="prob-ren15" data-label="練習15">
+      <section class="nofig card prob" id="prob-ren15" data-label="練習15">
         <div class="prob-head">
           <span class="prob-tag ren">練習 15</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
@@ -380,75 +437,75 @@
         </div>
         <div class="tabpanel show" id="panel-ren15-1" data-flow="ren15-1" data-label="練習15 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　<span class="frac"><span class="num">15ab<sup>4</sup></span><span class="den">6a<sup>3</sup>b<sup>2</sup></span></span></span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><mfrac><mrow><mn>15</mn><mi>a</mi><msup><mi>b</mi><mn>4</mn></msup></mrow><mrow><mn>6</mn><msup><mi>a</mi><mn>3</mn></msup><msup><mi>b</mi><mn>2</mn></msup></mrow></mfrac></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― 共通因数を探す</h3>
-          <p>分子と分母の共通因数は 3ab<sup>2</sup> だよ。</p>
+          <p>分子と分母の共通因数は<math><mn>3</mn><mi>a</mi><msup><mi>b</mi><mn>2</mn></msup></math> だよ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 共通因数で割る</h3>
-          <p>分子と分母を 3ab<sup>2</sup> で割ってみよう。分子の係数は 15 ÷ 3、文字は b<sup>4</sup> ÷ b<sup>2</sup> のように計算するよ。</p>
+          <p>分子と分母を<math><mn>3</mn><mi>a</mi><msup><mi>b</mi><mn>2</mn></msup></math> で割ってみよう。分子の係数は 15 ÷ 3、文字は<math><msup><mi>b</mi><mn>4</mn></msup><mo>÷</mo><msup><mi>b</mi><mn>2</mn></msup></math> のように計算するよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big"><span class="frac"><span class="num">5b<sup>2</sup></span><span class="den">2a<sup>2</sup></span></span></p>
+          <p class="big"><math display="block"><mfrac><mrow><mn>5</mn><msup><mi>b</mi><mn>2</mn></msup></mrow><mrow><mn>2</mn><msup><mi>a</mi><mn>2</mn></msup></mrow></mfrac></math></p>
         </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren15-2" data-flow="ren15-2" data-label="練習15 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　<span class="frac"><span class="num">x<sup>2</sup> − 9</span><span class="den">x<sup>2</sup> + 7x + 12</span></span></span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><mfrac><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>9</mn></mrow><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>7</mn><mi>x</mi><mo>+</mo><mn>12</mn></mrow></mfrac></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="quiz" id="qz-ren15-2" data-correct="2">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><span class="frac"><span class="num">x + 3</span><span class="den">x + 4</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><span class="frac"><span class="num">x − 3</span><span class="den">x + 4</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><span class="frac"><span class="num">x − 3</span><span class="den">x − 4</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><span class="frac"><span class="num">x − 3</span><span class="den">x + 12</span></span></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mfrac><mrow><mi>x</mi><mo>+</mo><mn>3</mn></mrow><mrow><mi>x</mi><mo>+</mo><mn>4</mn></mrow></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mfrac><mrow><mi>x</mi><mo>−</mo><mn>3</mn></mrow><mrow><mi>x</mi><mo>+</mo><mn>4</mn></mrow></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mfrac><mrow><mi>x</mi><mo>−</mo><mn>3</mn></mrow><mrow><mi>x</mi><mo>−</mo><mn>4</mn></mrow></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mfrac><mrow><mi>x</mi><mo>−</mo><mn>3</mn></mrow><mrow><mi>x</mi><mo>+</mo><mn>12</mn></mrow></mfrac></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
           <p class="verdict"></p>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 因数分解する</h3>
-          <p>分子と分母を因数分解しよう。分子は (x − 3)(x + 3)。分母は、積が 12、和が 7 になる 2 数を探そう。</p>
+          <h3>ヒント 1 ― 因数分解する</h3><p class="cite"><span class="cite-tag">使う公式</span><math><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>9</mn><mo>=</mo><mrow><mo>(</mo><mrow><mi>x</mi><mo>−</mo><mn>3</mn></mrow><mo>)</mo></mrow><mrow><mo>(</mo><mrow><mi>x</mi><mo>+</mo><mn>3</mn></mrow><mo>)</mo></mrow></mrow></math>分母は、積が12、和が7になる2数を使って因数分解する。</p>
+          <p>分子と分母を因数分解しよう。<br>分子は (<math><mi>x</mi></math> − 3)(<math><mi>x</mi></math> + 3)。分母は、積が 12、和が 7 になる 2 数を探そう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 共通因数で約分</h3>
-          <p>分母は (x + 3)(x + 4) だね。共通因数 (x + 3) で約分しよう。</p>
+          <p>分母は (<math><mi>x</mi></math> + 3)(<math><mi>x</mi></math> + 4) だね。共通因数 (<math><mi>x</mi></math> + 3) で約分しよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big"><span class="frac"><span class="num">x − 3</span><span class="den">x + 4</span></span></p>
+          <p class="big"><math display="block"><mfrac><mrow><mi>x</mi><mo>−</mo><mn>3</mn></mrow><mrow><mi>x</mi><mo>+</mo><mn>4</mn></mrow></mfrac></math></p>
         </div>
           <p class="prob-done">(2) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren15-3" data-flow="ren15-3" data-label="練習15 (3)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(3)　<span class="frac"><span class="num">x<sup>2</sup> − 2x − 3</span><span class="den">2x<sup>2</sup> − 7x + 3</span></span></span>
+            <span class="sub prob-q" style="margin:0">(3)　<math><mfrac><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>x</mi><mo>−</mo><mn>3</mn></mrow><mrow><mn>2</mn><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>7</mn><mi>x</mi><mo>+</mo><mn>3</mn></mrow></mfrac></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 因数分解する</h3>
-          <p>分子は (x − 3)(x + 1) と因数分解できる。分母の 2x<sup>2</sup> − 7x + 3 は、たすき掛けで考えよう。</p>
+          <h3>ヒント 1 ― 因数分解する</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mn>2</mn><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>7</mn><mi>x</mi><mo>+</mo><mn>3</mn><mo>=</mo><mrow><mo>(</mo><mrow><mn>2</mn><mi>x</mi><mo>−</mo><mn>1</mn></mrow><mo>)</mo></mrow><mrow><mo>(</mo><mrow><mi>x</mi><mo>−</mo><mn>3</mn></mrow><mo>)</mo></mrow></mrow></math>たすき掛けによる因数分解。分子との共通因数で約分する。</p>
+          <p>分子は (<math><mi>x</mi></math> − 3)(<math><mi>x</mi></math> + 1) と因数分解できる。分母の<math><mn>2</mn><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>7</mn><mi>x</mi><mo>+</mo><mn>3</mn></math>は、たすき掛けで考えよう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 共通因数で約分</h3>
-          <p>分母は (2x − 1)(x − 3) だよ。共通因数 (x − 3) で約分しよう。</p>
+          <p>分母は (2x − 1)(<math><mi>x</mi></math> − 3) だよ。共通因数 (<math><mi>x</mi></math> − 3) で約分しよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big"><span class="frac"><span class="num">x + 1</span><span class="den">2x − 1</span></span></p>
+          <p class="big"><math display="block"><mfrac><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow><mrow><mn>2</mn><mi>x</mi><mo>−</mo><mn>1</mn></mrow></mfrac></math></p>
         </div>
           <p class="prob-done">(3) クリア！　練習15は全部おわり。次は四則計算だよ。</p>
         </div>
@@ -460,9 +517,13 @@
       </div>
       <section class="card">
         <p>分数式の四則計算は、数の分数の場合と同じように行う。</p>
-        <div class="law"><span class="law-no">分数式の乗法・除法</span><p class="formula"><span class="frac"><span class="num">A</span><span class="den">B</span></span> × <span class="frac"><span class="num">C</span><span class="den">D</span></span> = <span class="frac"><span class="num">AC</span><span class="den">BD</span></span>，　<span class="frac"><span class="num">A</span><span class="den">B</span></span> ÷ <span class="frac"><span class="num">C</span><span class="den">D</span></span> = <span class="frac"><span class="num">A</span><span class="den">B</span></span> × <span class="frac"><span class="num">D</span><span class="den">C</span></span> = <span class="frac"><span class="num">AD</span><span class="den">BC</span></span></p></div>
+        <div class="law"><span class="law-no">分数式の乗法・除法</span><div class="chain-crow formula">
+<div class="crow"><math displaystyle="true"><mfrac><mi>A</mi><mi>B</mi></mfrac><mo>×</mo><mfrac><mi>C</mi><mi>D</mi></mfrac><mo>=</mo><mfrac><mi>AC</mi><mi>BD</mi></mfrac><mo>,</mo><mspace width="2em"/><mfrac><mi>A</mi><mi>B</mi></mfrac><mo>÷</mo><mfrac><mi>C</mi><mi>D</mi></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mfrac><mi>A</mi><mi>B</mi></mfrac><mo>×</mo><mfrac><mi>C</mi><mi>D</mi></mfrac></mphantom><mo>=</mo><mfrac><mi>A</mi><mi>B</mi></mfrac><mo>×</mo><mfrac><mi>D</mi><mi>C</mi></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mfrac><mi>A</mi><mi>B</mi></mfrac><mo>×</mo><mfrac><mi>C</mi><mi>D</mi></mfrac></mphantom><mo>=</mo><mfrac><mi>AD</mi><mi>BC</mi></mfrac></math></div>
+</div></div>
         <p>分数式の計算では、結果は<span class="key">既約分数式または多項式の形</span>にしておく。割り算は、割る式の分子と分母を入れかえて掛け算に直すのがコツだよ。</p>
-        <div class="law"><span class="law-no">分数式の加法・減法</span><p class="formula"><span class="frac"><span class="num">A</span><span class="den">C</span></span> + <span class="frac"><span class="num">B</span><span class="den">C</span></span> = <span class="frac"><span class="num">A + B</span><span class="den">C</span></span>，　<span class="frac"><span class="num">A</span><span class="den">C</span></span> − <span class="frac"><span class="num">B</span><span class="den">C</span></span> = <span class="frac"><span class="num">A − B</span><span class="den">C</span></span></p></div>
+        <div class="law"><span class="law-no">分数式の加法・減法</span><p class="formula"><math display="block"><mfrac><mi>A</mi><mi>C</mi></mfrac><mo>+</mo><mfrac><mi>B</mi><mi>C</mi></mfrac><mo>=</mo><mfrac><mrow><mi>A</mi><mo>+</mo><mi>B</mi></mrow><mi>C</mi></mfrac><mo>,</mo><mspace width="2em"/><mfrac><mi>A</mi><mi>C</mi></mfrac><mo>−</mo><mfrac><mi>B</mi><mi>C</mi></mfrac><mo>=</mo><mfrac><mrow><mi>A</mi><mo>−</mo><mi>B</mi></mrow><mi>C</mi></mfrac></math></p></div>
         <p>分母が同じときは、分子どうしを加えたり引いたりする。引くときは、後ろの分子全体に − がかかることに注意しよう。</p>
       </section>
       <div class="sec-head">
@@ -470,35 +531,35 @@
         <h2>例8 ― 乗法・除法</h2>
         <span class="pno">教科書 p.20</span>
       </div>
-      <section class="card prob" id="prob-ex8" data-flow="ex8" data-label="例8">
+      <section class="nofig card prob" id="prob-ex8" data-flow="ex8" data-label="例8">
         <div class="prob-head">
           <span class="prob-tag ">例 8</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
         <div class="qside">
-        <p class="prob-q">次の式を計算せよ。<br>(1)　<span class="frac"><span class="num">x<sup>2</sup> − x</span><span class="den">x + 1</span></span> × <span class="frac"><span class="num">2</span><span class="den">x − 1</span></span><br>(2)　<span class="frac"><span class="num">x<sup>2</sup> + x</span><span class="den">x + 2</span></span> ÷ <span class="frac"><span class="num">x + 1</span><span class="den">x<sup>2</sup> − 4</span></span></p>
+        <p class="prob-q">次の式を計算せよ。<br>(1)　<math><mfrac><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>x</mi></mrow><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow></mfrac><mo>×</mo><mfrac><mn>2</mn><mrow><mi>x</mi><mo>−</mo><mn>1</mn></mrow></mfrac></math><br>(2)　<math><mfrac><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi></mrow><mrow><mi>x</mi><mo>+</mo><mn>2</mn></mrow></mfrac><mo>÷</mo><mfrac><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn></mrow></mfrac></math></p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― (1) 因数分解して 1 つの分数に</h3>
-          <p>まず、分子の x<sup>2</sup> − x を因数分解して x(x − 1) にしよう。式全体を 1 つの分数に書くと、約分できる因数が見えてくるよ。</p>
+          <h3>ヒント 1 ― (1) 因数分解して 1 つの分数に</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mfrac><mi>a</mi><mi>b</mi></mfrac><mo>×</mo><mfrac><mi>c</mi><mi>D</mi></mfrac><mo>=</mo><mfrac><mrow><mi>a</mi><mi>c</mi></mrow><mrow><mi>b</mi><mi>D</mi></mrow></mfrac></mrow></math>まず分子を <math><mi>x</mi><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow></math> と因数分解して、1つの分数にまとめる。</p>
+          <p>まず、分子の<math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>x</mi></math>を因数分解して <math><mi>x</mi><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow></math> にしよう。<br>式全体を 1 つの分数に書くと、約分できる因数が見えてくるよ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― (1) 約分する</h3>
-          <p><span class="frac"><span class="num">x(x − 1) × 2</span><span class="den">(x + 1)(x − 1)</span></span> と書くと、(x − 1) が約分できるね。</p>
+          <p><math><mfrac><mrow><mi>x</mi><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mo>×</mo><mn>2</mn></mrow><mrow><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow></mrow></mfrac></math> と書くと、(<math><mi>x</mi></math> − 1) が約分できるね。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 3 ― (2) 割り算を掛け算に直す</h3>
-          <p>割る式 <span class="frac"><span class="num">x + 1</span><span class="den">x<sup>2</sup> − 4</span></span> の分子と分母を入れかえて掛け算に直そう。x<sup>2</sup> − 4 = (x + 2)(x − 2)、x<sup>2</sup> + x = x(x + 1) と因数分解するのも忘れずに。</p>
+          <h3>ヒント 3 ― (2) 割り算を掛け算に直す</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mfrac><mi>a</mi><mi>b</mi></mfrac><mo>÷</mo><mfrac><mi>c</mi><mi>D</mi></mfrac><mo>=</mo><mfrac><mi>a</mi><mi>b</mi></mfrac><mo>×</mo><mfrac><mi>D</mi><mi>c</mi></mfrac></mrow></math>割る式の分子と分母を入れかえて、掛け算に直す。</p>
+          <p>割る式 <math><mfrac><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn></mrow></mfrac></math> の分子と分母を入れかえて掛け算に直そう。<br><math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mo>=</mo><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo></mrow><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow></math>、<math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi><mo>=</mo><mi>x</mi><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow></math>と因数分解するのも忘れずに。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">(1)　<span class="frac"><span class="num">2x</span><span class="den">x + 1</span></span>　　　(2)　x(x − 2)</p>
+          <p class="big">(1)　<math><mfrac><mrow><mn>2</mn><mi>x</mi></mrow><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow></mfrac></math>　　　(2)　<math><mi>x</mi><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow></math></p>
         </div>
         <p class="prob-done">例8 クリア！　乗法・除法は、因数分解してから約分するとぐっと楽だね。次は練習16だよ。</p>
       </section>
-      <section class="card prob" id="prob-ren16" data-label="練習16">
+      <section class="nofig card prob" id="prob-ren16" data-label="練習16">
         <div class="prob-head">
           <span class="prob-tag ren">練習 16</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
@@ -514,38 +575,38 @@
         </div>
         <div class="tabpanel show" id="panel-ren16-1" data-flow="ren16-1" data-label="練習16 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　<span class="frac"><span class="num">x<sup>2</sup> − 4</span><span class="den">x<sup>2</sup> − 3x</span></span> × <span class="frac"><span class="num">x</span><span class="den">x + 2</span></span></span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><mfrac><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn></mrow><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>3</mn><mi>x</mi></mrow></mfrac><mo>×</mo><mfrac><mi>x</mi><mrow><mi>x</mi><mo>+</mo><mn>2</mn></mrow></mfrac></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― 因数分解する</h3>
-          <p>分子の x<sup>2</sup> − 4 と、分母の x<sup>2</sup> − 3x を因数分解しよう。</p>
+          <p>分子の<math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn></math>と、分母の<math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>3</mn><mi>x</mi></math>を因数分解しよう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 1 つの分数にして約分</h3>
-          <p>全体を 1 つの分数にすると <span class="frac"><span class="num">(x − 2)(x + 2) × x</span><span class="den">x(x − 3)(x + 2)</span></span> となり、x と (x + 2) が約分できるよ。</p>
+          <p>全体を 1 つの分数にすると <math><mfrac><mrow><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo></mrow><mo>×</mo><mi>x</mi></mrow><mrow><mi>x</mi><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>3</mn><mo>)</mo></mrow><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo></mrow></mrow></mfrac></math> となり、<math><mi>x</mi></math> と (<math><mi>x</mi></math> + 2) が約分できるよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big"><span class="frac"><span class="num">x − 2</span><span class="den">x − 3</span></span></p>
+          <p class="big"><math display="block"><mfrac><mrow><mi>x</mi><mo>−</mo><mn>2</mn></mrow><mrow><mi>x</mi><mo>−</mo><mn>3</mn></mrow></mfrac></math></p>
         </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren16-2" data-flow="ren16-2" data-label="練習16 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　<span class="frac"><span class="num">2x</span><span class="den">2x + 1</span></span> × <span class="frac"><span class="num">2x<sup>2</sup> − 3x − 2</span><span class="den">x − 2</span></span></span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><mfrac><mrow><mn>2</mn><mi>x</mi></mrow><mrow><mn>2</mn><mi>x</mi><mo>+</mo><mn>1</mn></mrow></mfrac><mo>×</mo><mfrac><mrow><mn>2</mn><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>3</mn><mi>x</mi><mo>−</mo><mn>2</mn></mrow><mrow><mi>x</mi><mo>−</mo><mn>2</mn></mrow></mfrac></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― たすき掛けで因数分解</h3>
-          <p>2x<sup>2</sup> − 3x − 2 をたすき掛けで因数分解しよう。</p>
+          <h3>ヒント 1 ― たすき掛けで因数分解</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mn>2</mn><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>3</mn><mi>x</mi><mo>−</mo><mn>2</mn><mo>=</mo><mrow><mo>(</mo><mrow><mn>2</mn><mi>x</mi><mo>+</mo><mn>1</mn></mrow><mo>)</mo></mrow><mrow><mo>(</mo><mrow><mi>x</mi><mo>−</mo><mn>2</mn></mrow><mo>)</mo></mrow></mrow></math>たすき掛けによる因数分解で、約分できる因数が見えてくる。</p>
+          <p><math><mn>2</mn><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>3</mn><mi>x</mi><mo>−</mo><mn>2</mn></math>をたすき掛けで因数分解しよう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 約分する</h3>
-          <p>2x<sup>2</sup> − 3x − 2 = (2x + 1)(x − 2) だね。(2x + 1) と (x − 2) が両方約分できるよ。</p>
+          <p><math><mn>2</mn><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>3</mn><mi>x</mi><mo>−</mo><mn>2</mn><mo>=</mo><mrow><mo>(</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow></math>だね。(2x + 1) と (<math><mi>x</mi></math> − 2) が両方約分できるよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
@@ -556,43 +617,43 @@
         </div>
         <div class="tabpanel" id="panel-ren16-3" data-flow="ren16-3" data-label="練習16 (3)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(3)　<span class="frac"><span class="num">x − 2</span><span class="den">x<sup>2</sup> + 3x</span></span> ÷ <span class="frac"><span class="num">x<sup>2</sup> − 3x</span><span class="den">x<sup>2</sup> − 9</span></span></span>
+            <span class="sub prob-q" style="margin:0">(3)　<math><mfrac><mrow><mi>x</mi><mo>−</mo><mn>2</mn></mrow><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>3</mn><mi>x</mi></mrow></mfrac><mo>÷</mo><mfrac><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>3</mn><mi>x</mi></mrow><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>9</mn></mrow></mfrac></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 割り算を掛け算に直す</h3>
+          <h3>ヒント 1 ― 割り算を掛け算に直す</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mfrac><mi>a</mi><mi>b</mi></mfrac><mo>÷</mo><mfrac><mi>c</mi><mi>D</mi></mfrac><mo>=</mo><mfrac><mi>a</mi><mi>b</mi></mfrac><mo>×</mo><mfrac><mi>D</mi><mi>c</mi></mfrac></mrow></math>割る式を逆数にして掛け算に直してから、因数分解して約分する。</p>
           <p>割る式の分子と分母を入れかえて、掛け算に直そう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 因数分解して約分</h3>
-          <p>x<sup>2</sup> + 3x = x(x + 3)、x<sup>2</sup> − 3x = x(x − 3)、x<sup>2</sup> − 9 = (x + 3)(x − 3) と因数分解して、約分しよう。</p>
+          <p><math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>3</mn><mi>x</mi><mo>=</mo><mi>x</mi><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>3</mn><mo>)</mo></mrow></math>、<math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>3</mn><mi>x</mi><mo>=</mo><mi>x</mi><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>3</mn><mo>)</mo></mrow></math>、<math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>9</mn><mo>=</mo><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>3</mn><mo>)</mo></mrow><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>3</mn><mo>)</mo></mrow></math>と因数分解して、約分しよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big"><span class="frac"><span class="num">x − 2</span><span class="den">x<sup>2</sup></span></span></p>
+          <p class="big"><math display="block"><mfrac><mrow><mi>x</mi><mo>−</mo><mn>2</mn></mrow><msup><mi>x</mi><mn>2</mn></msup></mfrac></math></p>
         </div>
           <p class="prob-done">(3) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren16-4" data-flow="ren16-4" data-label="練習16 (4)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(4)　<span class="frac"><span class="num">x<sup>2</sup> − x</span><span class="den">x − 3</span></span> ÷ <span class="frac"><span class="num">x<sup>2</sup> + 5x</span><span class="den">x<sup>2</sup> + 2x − 15</span></span></span>
+            <span class="sub prob-q" style="margin:0">(4)　<math><mfrac><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>x</mi></mrow><mrow><mi>x</mi><mo>−</mo><mn>3</mn></mrow></mfrac><mo>÷</mo><mfrac><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>5</mn><mi>x</mi></mrow><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>−</mo><mn>15</mn></mrow></mfrac></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 逆数にして因数分解</h3>
-          <p>割る式を逆数にして掛け算に直し、x<sup>2</sup> + 2x − 15 を因数分解しよう。</p>
+          <h3>ヒント 1 ― 逆数にして因数分解</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>−</mo><mn>15</mn><mo>=</mo><mrow><mo>(</mo><mrow><mi>x</mi><mo>+</mo><mn>5</mn></mrow><mo>)</mo></mrow><mrow><mo>(</mo><mrow><mi>x</mi><mo>−</mo><mn>3</mn></mrow><mo>)</mo></mrow></mrow></math>割る式を逆数にしたうえで、この因数分解を使って約分する。</p>
+          <p>割る式を逆数にして掛け算に直し、<math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>−</mo><mn>15</mn></math>を因数分解しよう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 約分する</h3>
-          <p>x<sup>2</sup> + 2x − 15 = (x + 5)(x − 3) だよ。x<sup>2</sup> − x = x(x − 1)、x<sup>2</sup> + 5x = x(x + 5) も使って約分しよう。</p>
+          <p><math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>−</mo><mn>15</mn><mo>=</mo><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>5</mn><mo>)</mo></mrow><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>3</mn><mo>)</mo></mrow></math>だよ。<br><math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>x</mi><mo>=</mo><mi>x</mi><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow></math>、<math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>5</mn><mi>x</mi><mo>=</mo><mi>x</mi><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>5</mn><mo>)</mo></mrow></math>も使って約分しよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">x − 1</p>
+          <p class="big"><math><mi>x</mi></math> − 1</p>
         </div>
           <p class="prob-done">(4) クリア！　練習16は全部おわり。次は加法・減法だよ。</p>
         </div>
@@ -602,32 +663,32 @@
         <h2>例9 ― 加法・減法（分母が同じ）</h2>
         <span class="pno">教科書 p.20</span>
       </div>
-      <section class="card prob" id="prob-ex9" data-flow="ex9" data-label="例9">
+      <section class="nofig card prob" id="prob-ex9" data-flow="ex9" data-label="例9">
         <div class="prob-head">
           <span class="prob-tag ">例 9</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">次の式を計算せよ。<br>(1)　<span class="frac"><span class="num">3x</span><span class="den">x + 2</span></span> + <span class="frac"><span class="num">x</span><span class="den">x + 2</span></span><br>(2)　<span class="frac"><span class="num">3x + 2</span><span class="den">x + 2</span></span> − <span class="frac"><span class="num">x − 2</span><span class="den">x + 2</span></span></p>
+        <p class="prob-q">次の式を計算せよ。<br>(1)　<math><mfrac><mrow><mn>3</mn><mi>x</mi></mrow><mrow><mi>x</mi><mo>+</mo><mn>2</mn></mrow></mfrac><mo>+</mo><mfrac><mi>x</mi><mrow><mi>x</mi><mo>+</mo><mn>2</mn></mrow></mfrac></math><br>(2)　<math><mfrac><mrow><mn>3</mn><mi>x</mi><mo>+</mo><mn>2</mn></mrow><mrow><mi>x</mi><mo>+</mo><mn>2</mn></mrow></mfrac><mo>−</mo><mfrac><mrow><mi>x</mi><mo>−</mo><mn>2</mn></mrow><mrow><mi>x</mi><mo>+</mo><mn>2</mn></mrow></mfrac></math></p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 分子どうしを計算する</h3>
-          <p>分母が同じだから、分子どうしを計算するだけだよ。(1) は分子 3x + x をまとめよう。</p>
+          <h3>ヒント 1 ― 分子どうしを計算する</h3><p class="cite"><span class="cite-tag">使う公式</span><math><mrow><mfrac><mi>a</mi><mi>c</mi></mfrac><mo>+</mo><mfrac><mi>b</mi><mi>c</mi></mfrac><mo>=</mo><mfrac><mrow><mi>a</mi><mo>+</mo><mi>b</mi></mrow><mi>c</mi></mfrac></mrow></math>分母が同じ分数式の和は、分子どうしを足す。</p>
+          <p>分母が同じだから、分子どうしを計算するだけだよ。(1) は分子 3x + <math><mi>x</mi></math> をまとめよう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― (2) 引き算の符号に注意</h3>
-          <p>後ろの分子 (x − 2) 全体に − がかかるから、(3x + 2) − (x − 2) と書いて計算しよう。分子は 2x + 4 になるよ。</p>
+          <p>後ろの分子 (<math><mi>x</mi></math> − 2) 全体に − がかかるから、(3x + 2) − (<math><mi>x</mi></math> − 2) と書いて計算しよう。<br>分子は 2x + 4 になるよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">(1)　<span class="frac"><span class="num">4x</span><span class="den">x + 2</span></span>　　　(2)　2</p>
-          <p>(2) の分子 2x + 4 = 2(x + 2) は、分母 (x + 2) で約分できる。</p>
+          <p class="big">(1)　<math><mfrac><mrow><mn>4</mn><mi>x</mi></mrow><mrow><mi>x</mi><mo>+</mo><mn>2</mn></mrow></mfrac></math>　　　(2)　2</p>
+          <p>(2) の分子<math><mn>2</mn><mi>x</mi><mo>+</mo><mn>4</mn><mo>=</mo><mn>2</mn><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo></mrow></math>は、分母 (<math><mi>x</mi></math> + 2) で約分できる。</p>
         </div>
         <p class="prob-done">例9 クリア！　(2) のように約分できて整数になることもあるね。次は練習17だよ。</p>
       </section>
-      <section class="card prob" id="prob-ren17" data-label="練習17">
+      <section class="nofig card prob" id="prob-ren17" data-label="練習17">
         <div class="prob-head">
           <span class="prob-tag ren">練習 17</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
@@ -643,7 +704,7 @@
         </div>
         <div class="tabpanel show" id="panel-ren17-1" data-flow="ren17-1" data-label="練習17 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　<span class="frac"><span class="num">x</span><span class="den">x − 1</span></span> + <span class="frac"><span class="num">2</span><span class="den">x − 1</span></span></span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><mfrac><mi>x</mi><mrow><mi>x</mi><mo>−</mo><mn>1</mn></mrow></mfrac><mo>+</mo><mfrac><mn>2</mn><mrow><mi>x</mi><mo>−</mo><mn>1</mn></mrow></mfrac></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
@@ -654,34 +715,34 @@
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big"><span class="frac"><span class="num">x + 2</span><span class="den">x − 1</span></span></p>
+          <p class="big"><math display="block"><mfrac><mrow><mi>x</mi><mo>+</mo><mn>2</mn></mrow><mrow><mi>x</mi><mo>−</mo><mn>1</mn></mrow></mfrac></math></p>
         </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren17-2" data-flow="ren17-2" data-label="練習17 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　<span class="frac"><span class="num">2x</span><span class="den">x + 3</span></span> + <span class="frac"><span class="num">x + 9</span><span class="den">x + 3</span></span></span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><mfrac><mrow><mn>2</mn><mi>x</mi></mrow><mrow><mi>x</mi><mo>+</mo><mn>3</mn></mrow></mfrac><mo>+</mo><mfrac><mrow><mi>x</mi><mo>+</mo><mn>9</mn></mrow><mrow><mi>x</mi><mo>+</mo><mn>3</mn></mrow></mfrac></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="quiz" id="qz-ren17-2" data-correct="3">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>2</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><span class="frac"><span class="num">3x</span><span class="den">x + 3</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>3</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><span class="frac"><span class="num">x + 9</span><span class="den">x + 3</span></span></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mn>2</mn></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mfrac><mrow><mn>3</mn><mi>x</mi></mrow><mrow><mi>x</mi><mo>+</mo><mn>3</mn></mrow></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mn>3</mn></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mfrac><mrow><mi>x</mi><mo>+</mo><mn>9</mn></mrow><mrow><mi>x</mi><mo>+</mo><mn>3</mn></mrow></mfrac></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
           <p class="verdict"></p>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 分子どうしを足す</h3>
+          <h3>ヒント 1 ― 分子どうしを足す</h3><p class="cite"><span class="cite-tag">使う公式</span><math><mrow><mfrac><mi>a</mi><mi>c</mi></mfrac><mo>+</mo><mfrac><mi>b</mi><mi>c</mi></mfrac><mo>=</mo><mfrac><mrow><mi>a</mi><mo>+</mo><mi>b</mi></mrow><mi>c</mi></mfrac></mrow></math>分子どうしを足し、出てきた共通因数で約分する。</p>
           <p>分母が同じだよ。分子どうしを足してみよう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 約分する</h3>
-          <p>分子は 2x + (x + 9) = 3x + 9 = 3(x + 3) になる。(x + 3) で約分できるよ。</p>
+          <p>分子は<math><mn>2</mn><mi>x</mi><mo>+</mo><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>9</mn><mo>)</mo></mrow><mo>=</mo><mn>3</mn><mi>x</mi><mo>+</mo><mn>9</mn><mo>=</mo><mn>3</mn><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>3</mn><mo>)</mo></mrow></math>になる。(<math><mi>x</mi></math> + 3) で約分できるよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
@@ -692,38 +753,38 @@
         </div>
         <div class="tabpanel" id="panel-ren17-3" data-flow="ren17-3" data-label="練習17 (3)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(3)　<span class="frac"><span class="num">3x + 1</span><span class="den">2x − 1</span></span> − <span class="frac"><span class="num">2x − 3</span><span class="den">2x − 1</span></span></span>
+            <span class="sub prob-q" style="margin:0">(3)　<math><mfrac><mrow><mn>3</mn><mi>x</mi><mo>+</mo><mn>1</mn></mrow><mrow><mn>2</mn><mi>x</mi><mo>−</mo><mn>1</mn></mrow></mfrac><mo>−</mo><mfrac><mrow><mn>2</mn><mi>x</mi><mo>−</mo><mn>3</mn></mrow><mrow><mn>2</mn><mi>x</mi><mo>−</mo><mn>1</mn></mrow></mfrac></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 引き算の符号に注意</h3>
+          <h3>ヒント 1 ― 引き算の符号に注意</h3><p class="cite"><span class="cite-tag">使う公式</span><math><mrow><mfrac><mi>a</mi><mi>c</mi></mfrac><mo>−</mo><mfrac><mi>b</mi><mi>c</mi></mfrac><mo>=</mo><mfrac><mrow><mi>a</mi><mo>−</mo><mi>b</mi></mrow><mi>c</mi></mfrac></mrow></math>後ろの分子全体に − がかかることに注意して、分子を引き算する。</p>
           <p>後ろの分子 (2x − 3) 全体に − がかかることに注意しよう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 分子を整理する</h3>
-          <p>分子は (3x + 1) − (2x − 3) = 3x + 1 − 2x + 3 だよ。</p>
+          <p>分子は<math><mrow><mo>(</mo><mn>3</mn><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow><mo>−</mo><mrow><mo>(</mo><mn>2</mn><mi>x</mi><mo>−</mo><mn>3</mn><mo>)</mo></mrow><mo>=</mo><mn>3</mn><mi>x</mi><mo>+</mo><mn>1</mn><mo>−</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>3</mn></math>だよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big"><span class="frac"><span class="num">x + 4</span><span class="den">2x − 1</span></span></p>
+          <p class="big"><math display="block"><mfrac><mrow><mi>x</mi><mo>+</mo><mn>4</mn></mrow><mrow><mn>2</mn><mi>x</mi><mo>−</mo><mn>1</mn></mrow></mfrac></math></p>
         </div>
           <p class="prob-done">(3) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren17-4" data-flow="ren17-4" data-label="練習17 (4)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(4)　<span class="frac"><span class="num">2x<sup>2</sup></span><span class="den">x − 1</span></span> − <span class="frac"><span class="num">x + 1</span><span class="den">x − 1</span></span></span>
+            <span class="sub prob-q" style="margin:0">(4)　<math><mfrac><mrow><mn>2</mn><msup><mi>x</mi><mn>2</mn></msup></mrow><mrow><mi>x</mi><mo>−</mo><mn>1</mn></mrow></mfrac><mo>−</mo><mfrac><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow><mrow><mi>x</mi><mo>−</mo><mn>1</mn></mrow></mfrac></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 分子を引き算する</h3>
-          <p>分子は 2x<sup>2</sup> − (x + 1) だよ。</p>
+          <h3>ヒント 1 ― 分子を引き算する</h3><p class="cite"><span class="cite-tag">使う公式</span><math><mrow><mfrac><mi>a</mi><mi>c</mi></mfrac><mo>−</mo><mfrac><mi>b</mi><mi>c</mi></mfrac><mo>=</mo><mfrac><mrow><mi>a</mi><mo>−</mo><mi>b</mi></mrow><mi>c</mi></mfrac></mrow></math>分子を引き算したあと、因数分解して約分する。</p>
+          <p>分子は<math><mn>2</mn><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow></math>だよ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 分子を因数分解して約分</h3>
-          <p>分子 2x<sup>2</sup> − x − 1 は (2x + 1)(x − 1) と因数分解できる。(x − 1) で約分しよう。</p>
+          <p>分子<math><mn>2</mn><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>x</mi><mo>−</mo><mn>1</mn></math>は (2x + 1)(<math><mi>x</mi></math> − 1) と因数分解できる。(<math><mi>x</mi></math> − 1) で約分しよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
@@ -747,39 +808,39 @@
         <h2>例題5 ― 通分して計算</h2>
         <span class="pno">教科書 p.21</span>
       </div>
-      <section class="card prob" id="prob-reidai5" data-flow="reidai5" data-label="例題5">
+      <section class="nofig card prob" id="prob-reidai5" data-flow="reidai5" data-label="例題5">
         <div class="prob-head">
           <span class="prob-tag ">例題 5</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 4</span>
         </div>
         <div class="qside">
-        <p class="prob-q">次の式を計算せよ。<br>(1)　<span class="frac"><span class="num">2</span><span class="den">x + 1</span></span> + <span class="frac"><span class="num">1</span><span class="den">x − 3</span></span><br>(2)　<span class="frac"><span class="num">2</span><span class="den">x<sup>2</sup> − 1</span></span> − <span class="frac"><span class="num">1</span><span class="den">x<sup>2</sup> + x</span></span></p>
+        <p class="prob-q">次の式を計算せよ。<br>(1)　<math><mfrac><mn>2</mn><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow></mfrac><mo>+</mo><mfrac><mn>1</mn><mrow><mi>x</mi><mo>−</mo><mn>3</mn></mrow></mfrac></math><br>(2)　<math><mfrac><mn>2</mn><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn></mrow></mfrac><mo>−</mo><mfrac><mn>1</mn><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi></mrow></mfrac></math></p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― (1) 通分する</h3>
-          <p>分母 (x + 1) と (x − 3) を通分しよう。共通の分母は (x + 1)(x − 3) だよ。1 つ目には (x − 3)、2 つ目には (x + 1) を分子・分母に掛けよう。</p>
+          <h3>ヒント 1 ― (1) 通分する</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mfrac><mi>a</mi><mi>b</mi></mfrac><mo>=</mo><mfrac><mrow><mi>a</mi><mo>×</mo><mi>D</mi></mrow><mrow><mi>b</mi><mo>×</mo><mi>D</mi></mrow></mfrac></mrow></math>分母・分子に同じ式を掛けて、共通の分母にそろえる。</p>
+          <p>分母 (<math><mi>x</mi></math> + 1) と (<math><mi>x</mi></math> − 3) を通分しよう。<br>共通の分母は (<math><mi>x</mi></math> + 1)(<math><mi>x</mi></math> − 3) だよ。1 つ目には (<math><mi>x</mi></math> − 3)、2 つ目には (<math><mi>x</mi></math> + 1) を分子・分母に掛けよう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― (1) 分子を足す</h3>
-          <p>分子は 2(x − 3) + (x + 1) になる。展開してまとめよう。</p>
+          <p>分子は 2(<math><mi>x</mi></math> − 3) + (<math><mi>x</mi></math> + 1) になる。展開してまとめよう。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 3 ― (2) 分母を因数分解して通分</h3>
-          <p>x<sup>2</sup> − 1 = (x + 1)(x − 1)、x<sup>2</sup> + x = x(x + 1) と因数分解すると、共通の分母は x(x + 1)(x − 1) だと分かる。1 つ目には x、2 つ目には (x − 1) を掛けて通分しよう。</p>
+          <h3>ヒント 3 ― (2) 分母を因数分解して通分</h3><p class="cite"><span class="cite-tag">使う公式</span><math><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>=</mo><mrow><mo>(</mo><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow><mo>)</mo></mrow><mrow><mo>(</mo><mrow><mi>x</mi><mo>−</mo><mn>1</mn></mrow><mo>)</mo></mrow></mrow></math>もう一方の分母も因数分解して、共通の分母を決める。</p>
+          <p><math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>=</mo><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow></math>、<math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi><mo>=</mo><mi>x</mi><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow></math>と因数分解すると、共通の分母は <math><mi>x</mi><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow></math>(<math><mi>x</mi></math> − 1) だと分かる。<br>1 つ目には <math><mi>x</mi></math>、2 つ目には (<math><mi>x</mi></math> − 1) を掛けて通分しよう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 4 ― (2) 分子を引いて約分</h3>
-          <p>分子は 2x − (x − 1) = x + 1 になる。(x + 1) で約分できるよ。</p>
+          <p>分子は<math><mn>2</mn><mi>x</mi><mo>−</mo><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mo>=</mo><mi>x</mi><mo>+</mo><mn>1</mn></math>になる。(<math><mi>x</mi></math> + 1) で約分できるよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">(1)　<span class="frac"><span class="num">3x − 5</span><span class="den">(x + 1)(x − 3)</span></span>　　　(2)　<span class="frac"><span class="num">1</span><span class="den">x(x − 1)</span></span></p>
+          <p class="big">(1)　<math><mfrac><mrow><mn>3</mn><mi>x</mi><mo>−</mo><mn>5</mn></mrow><mrow><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>3</mn><mo>)</mo></mrow></mrow></mfrac></math>　　　(2)　<math><mfrac><mn>1</mn><mrow><mi>x</mi><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow></mrow></mfrac></math></p><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mfrac><mi>a</mi><mi>b</mi></mfrac><mo>=</mo><mfrac><mrow><mi>a</mi><mo>×</mo><mi>D</mi></mrow><mrow><mi>b</mi><mo>×</mo><mi>D</mi></mrow></mfrac></mrow></math>(1) は通分して分子を足し、(2) は因数分解して通分し、約分した結果である。</p>
         </div>
         <p class="prob-done">例題5 クリア！　分母を因数分解すると通分しやすくなるね。次は練習18だよ。</p>
       </section>
-      <section class="card prob" id="prob-ren18" data-label="練習18">
+      <section class="nofig card prob" id="prob-ren18" data-label="練習18">
         <div class="prob-head">
           <span class="prob-tag ren">練習 18</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
@@ -795,89 +856,89 @@
         </div>
         <div class="tabpanel show" id="panel-ren18-1" data-flow="ren18-1" data-label="練習18 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　<span class="frac"><span class="num">2</span><span class="den">x + 1</span></span> + <span class="frac"><span class="num">3</span><span class="den">x − 2</span></span></span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><mfrac><mn>2</mn><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow></mfrac><mo>+</mo><mfrac><mn>3</mn><mrow><mi>x</mi><mo>−</mo><mn>2</mn></mrow></mfrac></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― 通分する</h3>
-          <p>分母 (x + 1) と (x − 2) に通分しよう。共通の分母は (x + 1)(x − 2) だよ。</p>
+          <p>分母 (<math><mi>x</mi></math> + 1) と (<math><mi>x</mi></math> − 2) に通分しよう。<br>共通の分母は (<math><mi>x</mi></math> + 1)(<math><mi>x</mi></math> − 2) だよ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 分子を足す</h3>
-          <p>分子は 2(x − 2) + 3(x + 1) になるよ。</p>
+          <p>分子は 2(<math><mi>x</mi></math> − 2) + 3(<math><mi>x</mi></math> + 1) になるよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big"><span class="frac"><span class="num">5x − 1</span><span class="den">(x + 1)(x − 2)</span></span></p>
+          <p class="big"><math display="block"><mfrac><mrow><mn>5</mn><mi>x</mi><mo>−</mo><mn>1</mn></mrow><mrow><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow></mrow></mfrac></math></p>
         </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren18-2" data-flow="ren18-2" data-label="練習18 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　<span class="frac"><span class="num">x</span><span class="den">x − 1</span></span> − <span class="frac"><span class="num">1</span><span class="den">x<sup>2</sup> − x</span></span></span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><mfrac><mi>x</mi><mrow><mi>x</mi><mo>−</mo><mn>1</mn></mrow></mfrac><mo>−</mo><mfrac><mn>1</mn><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>x</mi></mrow></mfrac></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 因数分解して通分</h3>
-          <p>x<sup>2</sup> − x = x(x − 1) と因数分解して、x(x − 1) に通分しよう。1 つ目の分子・分母には x を掛けるよ。</p>
+          <h3>ヒント 1 ― 因数分解して通分</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>x</mi><mo>=</mo><mi>x</mi><mrow><mo>(</mo><mrow><mi>x</mi><mo>−</mo><mn>1</mn></mrow><mo>)</mo></mrow></mrow></math>分母を因数分解してから、共通の分母に通分する。</p>
+          <p><math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>x</mi><mo>=</mo><mi>x</mi><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow></math>と因数分解して、<math><mi>x</mi><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow></math> に通分しよう。<br>1 つ目の分子・分母には <math><mi>x</mi></math> を掛けるよ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 分子を引いて約分</h3>
-          <p>分子は x · x − 1 = x<sup>2</sup> − 1 = (x + 1)(x − 1) になる。(x − 1) で約分しよう。</p>
+          <p>分子は<math><mi>x</mi><mo>·</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>=</mo><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow></math>になる。(<math><mi>x</mi></math> − 1) で約分しよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big"><span class="frac"><span class="num">x + 1</span><span class="den">x</span></span></p>
+          <p class="big"><math display="block"><mfrac><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow><mi>x</mi></mfrac></math></p>
         </div>
           <p class="prob-done">(2) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren18-3" data-flow="ren18-3" data-label="練習18 (3)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(3)　<span class="frac"><span class="num">x</span><span class="den">x + 1</span></span> + <span class="frac"><span class="num">3x − 1</span><span class="den">x<sup>2</sup> − 2x − 3</span></span></span>
+            <span class="sub prob-q" style="margin:0">(3)　<math><mfrac><mi>x</mi><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow></mfrac><mo>+</mo><mfrac><mrow><mn>3</mn><mi>x</mi><mo>−</mo><mn>1</mn></mrow><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>x</mi><mo>−</mo><mn>3</mn></mrow></mfrac></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 因数分解して通分</h3>
-          <p>x<sup>2</sup> − 2x − 3 = (x − 3)(x + 1) と因数分解しよう。通分する分母は (x + 1)(x − 3) だよ。</p>
+          <h3>ヒント 1 ― 因数分解して通分</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>x</mi><mo>−</mo><mn>3</mn><mo>=</mo><mrow><mo>(</mo><mrow><mi>x</mi><mo>−</mo><mn>3</mn></mrow><mo>)</mo></mrow><mrow><mo>(</mo><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow><mo>)</mo></mrow></mrow></math>この因数分解で、共通の分母が分かる。</p>
+          <p><math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>x</mi><mo>−</mo><mn>3</mn><mo>=</mo><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>3</mn><mo>)</mo></mrow><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow></math>と因数分解しよう。<br>通分する分母は (<math><mi>x</mi></math> + 1)(<math><mi>x</mi></math> − 3) だよ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 分子を足して約分</h3>
-          <p>1 つ目には (x − 3) を掛けて通分すると、分子は x(x − 3) + (3x − 1) = x<sup>2</sup> − 1 になる。(x + 1) で約分できるよ。</p>
+          <p>1 つ目には (<math><mi>x</mi></math> − 3) を掛けて通分すると、分子は<math><mi>x</mi><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>3</mn><mo>)</mo></mrow><mo>+</mo><mrow><mo>(</mo><mn>3</mn><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn></math>になる。<br>(<math><mi>x</mi></math> + 1) で約分できるよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big"><span class="frac"><span class="num">x − 1</span><span class="den">x − 3</span></span></p>
+          <p class="big"><math display="block"><mfrac><mrow><mi>x</mi><mo>−</mo><mn>1</mn></mrow><mrow><mi>x</mi><mo>−</mo><mn>3</mn></mrow></mfrac></math></p>
         </div>
           <p class="prob-done">(3) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren18-4" data-flow="ren18-4" data-label="練習18 (4)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(4)　<span class="frac"><span class="num">3x + 5</span><span class="den">x<sup>2</sup> − 1</span></span> − <span class="frac"><span class="num">1</span><span class="den">x<sup>2</sup> + x</span></span></span>
+            <span class="sub prob-q" style="margin:0">(4)　<math><mfrac><mrow><mn>3</mn><mi>x</mi><mo>+</mo><mn>5</mn></mrow><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn></mrow></mfrac><mo>−</mo><mfrac><mn>1</mn><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi></mrow></mfrac></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 因数分解して通分</h3>
-          <p>x<sup>2</sup> − 1 = (x + 1)(x − 1)、x<sup>2</sup> + x = x(x + 1) と因数分解すると、共通の分母は x(x + 1)(x − 1) だよ。</p>
+          <h3>ヒント 1 ― 因数分解して通分</h3><p class="cite"><span class="cite-tag">使う公式</span><math><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>=</mo><mrow><mo>(</mo><mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow><mo>)</mo></mrow><mrow><mo>(</mo><mrow><mi>x</mi><mo>−</mo><mn>1</mn></mrow><mo>)</mo></mrow></mrow></math>もう一方の分母も因数分解して、共通の分母を決める。</p>
+          <p><math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>=</mo><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow></math>、<math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi><mo>=</mo><mi>x</mi><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow></math>と因数分解すると、共通の分母は <math><mi>x</mi><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow></math>(<math><mi>x</mi></math> − 1) だよ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 分子を引き算する</h3>
-          <p>1 つ目には x、2 つ目には (x − 1) を掛けて通分し、分子を引き算しよう。分子は x(3x + 5) − (x − 1) = 3x<sup>2</sup> + 4x + 1 だよ。</p>
+          <p>1 つ目には <math><mi>x</mi></math>、2 つ目には (<math><mi>x</mi></math> − 1) を掛けて通分し、分子を引き算しよう。<br>分子は<math><mi>x</mi><mrow><mo>(</mo><mn>3</mn><mi>x</mi><mo>+</mo><mn>5</mn><mo>)</mo></mrow><mo>−</mo><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mo>=</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>4</mn><mi>x</mi><mo>+</mo><mn>1</mn></math>だよ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 3 ― 分子を因数分解して約分</h3>
-          <p>3x<sup>2</sup> + 4x + 1 = (3x + 1)(x + 1) と因数分解できる。(x + 1) で約分しよう。</p>
+          <p><math><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>4</mn><mi>x</mi><mo>+</mo><mn>1</mn><mo>=</mo><mrow><mo>(</mo><mn>3</mn><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow></math>と因数分解できる。(<math><mi>x</mi></math> + 1) で約分しよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big"><span class="frac"><span class="num">3x + 1</span><span class="den">x(x − 1)</span></span></p>
+          <p class="big"><math display="block"><mfrac><mrow><mn>3</mn><mi>x</mi><mo>+</mo><mn>1</mn></mrow><mrow><mi>x</mi><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow></mrow></mfrac></math></p>
         </div>
           <p class="prob-done">(4) クリア！　練習18は全部おわり。この項は終了だよ。</p>
         </div>
@@ -888,9 +949,9 @@
       <section class="card summary" id="summaryCard" style="display:none">
         <h2>この項のポイント</h2>
         <ul>
-          <li><b>約分：</b>分母と分子の共通因数で割る。まず因数分解すると共通因数が見つかる。結果は既約分数式にする。</li>
-          <li><b>乗法・除法：</b>因数分解して 1 つの分数に書き、約分してから計算する。除法は逆数にして乗法に直す。</li>
-          <li><b>加法・減法：</b>通分してから分子を計算する。分母を因数分解しておくと通分しやすい。引き算は後ろの分子全体に − がかかる。</li>
+          <li><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mfrac><mi>a</mi><mi>b</mi></mfrac><mo>=</mo><mfrac><mrow><mi>a</mi><mo>÷</mo><mi>C</mi></mrow><mrow><mi>b</mi><mo>÷</mo><mi>C</mi></mrow></mfrac></mrow></math>まず因数分解すると共通因数が見つかる。結果は既約分数式にする。</p><b>約分：</b>分母と分子の共通因数で割る。まず因数分解すると共通因数が見つかる。結果は既約分数式にする。</li>
+          <li><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mfrac><mi>a</mi><mi>b</mi></mfrac><mo>×</mo><mfrac><mi>c</mi><mi>D</mi></mfrac><mo>=</mo><mfrac><mrow><mi>a</mi><mi>c</mi></mrow><mrow><mi>b</mi><mi>D</mi></mrow></mfrac></mrow></math>除法は逆数にして乗法に直し、因数分解して1つの分数に書き、約分してから計算する。</p><b>乗法・除法：</b>因数分解して 1 つの分数に書き、約分してから計算する。除法は逆数にして乗法に直す。</li>
+          <li><p class="cite"><span class="cite-tag">使う公式</span><math><mrow><mfrac><mi>a</mi><mi>c</mi></mfrac><mo>+</mo><mfrac><mi>b</mi><mi>c</mi></mfrac><mo>=</mo><mfrac><mrow><mi>a</mi><mo>+</mo><mi>b</mi></mrow><mi>c</mi></mfrac></mrow></math>分母が違うときは通分してから分子を計算する。引き算は後ろの分子全体に − がかかる。</p><b>加法・減法：</b>通分してから分子を計算する。分母を因数分解しておくと通分しやすい。引き算は後ろの分子全体に − がかかる。</li>
           <li><b>仕上げ：</b>計算の結果は、既約分数式または多項式の形にしておく。</li>
         </ul>
       </section>

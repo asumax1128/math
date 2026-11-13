@@ -302,7 +302,64 @@
       table.comp{border-collapse:collapse;margin:0 0 14px;width:100%}
       table.comp th,table.comp td{border:1px solid var(--line);padding:8px 10px;text-align:center;font-size:15px}
       table.comp th{background:var(--surface2)}
-        </style>
+        
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+
+      /* 積分記号は大きめに表示する（元のページの可読化デザインに合わせる） */
+      math .int-op{font-size:1.35em}
+      /* calc-12 世代（.card）と calc-18 世代（.unit）の、図のない問題の全幅化 */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig>.step{position:static !important}
+        .card.nofig>.steps-wrap{max-height:none !important;overflow:visible !important}
+        .unit.nofig{display:block !important}
+        .unit.nofig>.qside{position:static !important}
+        .unit.nofig>.steps-stack{max-height:none !important;overflow:visible !important}
+      }
+
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける・第3弾c） */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig .qside{position:static !important}
+        .card.nofig .steps-wrap,.card.nofig .tabpanel .steps-wrap{max-height:none !important;overflow:visible !important}
+      }
+</style>
   </head>
   <body>
     <div class="wrap">
@@ -325,8 +382,8 @@
         <span class="pno">教科書 p.16〜17</span>
       </div>
       <section class="card">
-        <p>158 を 12 で割ると商は 13、余りは 2 であるから、158 = 12 × 13 + 2 と表される。すなわち　（割られる数） = （割る数）×（商） + （余り）　が成り立つ。多項式についても、整数の場合と同じように、商と余りを求める割り算を考えよう。</p>
-        <p>多項式を多項式で割る計算は、整数の割り算と似た方法で行う。たとえば、x<sup>2</sup> + 5x + 8 を x + 2 で割ると、下の計算のようになる。</p>
+        <p>158 を 12 で割ると商は 13、余りは 2 であるから、<math><mn>158</mn><mo>=</mo><mn>12</mn><mo>×</mo><mn>13</mn><mo>+</mo><mn>2</mn></math>と表される。すなわち　（割られる数） = （割る数）×（商） + （余り）　が成り立つ。多項式についても、整数の場合と同じように、商と余りを求める割り算を考えよう。</p>
+        <p>多項式を多項式で割る計算は、整数の割り算と似た方法で行う。たとえば、<math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>5</mn><mi>x</mi><mo>+</mo><mn>8</mn></math>を <math><mi>x</mi></math> + 2 で割ると、下の計算のようになる。</p>
 <figure><div class="figbox"><svg viewBox="0 0 265 200" role="img" aria-label="割り算の筆算">
 <text x="101" y="26" font-size="19" font-family="monospace" text-anchor="start" fill="currentColor" xml:space="preserve">x + 3</text>
 <line x1="92" y1="36" x2="255" y2="36" stroke="currentColor" stroke-width="1.6"/>
@@ -340,42 +397,42 @@
 <line x1="166" y1="161" x2="246.6" y2="161" stroke="currentColor" stroke-width="1.4"/>
 <text x="231" y="182" font-size="19" font-family="monospace" text-anchor="start" fill="currentColor" xml:space="preserve">2</text>
 </svg></div>
-<figcaption>x² + 5x + 8 を x + 2 で割る計算</figcaption>
+<figcaption><math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>5</mn><mi>x</mi><mo>+</mo><mn>8</mn></math>を <math><mi>x</mi></math> + 2 で割る計算</figcaption>
 </figure>
-        <p>最後の行の 2 は、x + 2 よりも次数が低いので、これ以上計算を続けることができない。このとき、商は x + 3 で、余りは 2 である。したがって、x<sup>2</sup> + 5x + 8 = (x + 2)(x + 3) + 2 が成り立つ。</p>
-        <p>一般に、2 つの多項式 A, B が同じ 1 つの文字についての多項式で、B は 0 でないものとする。A を B で割ったときに得られる商と余りについては、次のことが知られている。</p>
+        <p>最後の行の 2 は、<math><mi>x</mi></math> + 2 よりも次数が低いので、これ以上計算を続けることができない。このとき、商は <math><mi>x</mi></math> + 3 で、余りは 2 である。したがって、<math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>5</mn><mi>x</mi><mo>+</mo><mn>8</mn><mo>=</mo><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo></mrow><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>3</mn><mo>)</mo></mrow><mo>+</mo><mn>2</mn></math>が成り立つ。</p>
+        <p>一般に、2 つの多項式 <math><mi>A</mi></math>, <math><mi>B</mi></math> が同じ 1 つの文字についての多項式で、<math><mi>B</mi></math> は 0 でないものとする。<math><mi>A</mi></math> を <math><mi>B</mi></math> で割ったときに得られる商と余りについては、次のことが知られている。</p>
         <div class="def">
           <p><b>多項式の割り算</b></p>
-          <p>A を B で割った商を Q、余りを R とすると　A = BQ + R　が成り立つ。ただし、R は 0 であるか、B より次数の低い多項式であり、Q と R は 1 通りに定まる。とくに、R = 0 のとき、A は B で<b>割り切れる</b>という。</p>
+          <p><math><mi>A</mi></math> を <math><mi>B</mi></math> で割った商を <math><mi>Q</mi></math>、余りを <math><mi>R</mi></math> とすると　<math><mi>A</mi><mo>=</mo><mi>BQ</mi><mo>+</mo><mi>R</mi></math>　が成り立つ。ただし、<math><mi>R</mi></math> は 0 であるか、<math><mi>B</mi></math> より次数の低い多項式であり、<math><mi>Q</mi></math> と <math><mi>R</mi></math> は 1 通りに定まる。とくに、<math><mi>R</mi><mo>=</mo><mn>0</mn></math>のとき、<math><mi>A</mi></math> は <math><mi>B</mi></math> で<b>割り切れる</b>という。</p>
         </div>
-        <p>なお、計算を行うとき、A, B は x についての<b>降べきの順</b>に整理しておき、割られる式にある次数の項がない場合は、その場所を空けておくと計算しやすい。</p>
+        <p>なお、計算を行うとき、<math><mi>A</mi></math>, <math><mi>B</mi></math> は <math><mi>x</mi></math> についての<b>降べきの順</b>に整理しておき、割られる式にある次数の項がない場合は、その場所を空けておくと計算しやすい。</p>
       </section>
       <div class="sec-head">
         <span class="sec-tag">例題</span>
         <h2>例題3に挑戦</h2>
         <span class="pno">教科書 p.17</span>
       </div>
-      <section class="card prob" id="prob-reidai3" data-flow="reidai3" data-label="例題3">
+      <section class="nofig card prob" id="prob-reidai3" data-flow="reidai3" data-label="例題3">
         <div class="prob-head">
           <span class="prob-tag ">例題 3</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">次の多項式 A, B について、A を B で割った商と余りを求めよ。　A = 2x<sup>3</sup> − 7x<sup>2</sup> + 8，　B = x<sup>2</sup> − 4x + 3</p>
+        <p class="prob-q">次の多項式 <math><mi>A</mi></math>, <math><mi>B</mi></math> について、<math><mi>A</mi></math> を <math><mi>B</mi></math> で割った商と余りを求めよ。　<math><mi>A</mi><mo>=</mo><mn>2</mn><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>7</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>8</mn><mo>,</mo></math>　<math><mi>B</mi><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>x</mi><mo>+</mo><mn>3</mn></math></p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 最高次の項を消す（1 回目）</h3>
-          <p>A には x の項がないので、場所を空けて筆算を始める。第 1 項は 2x<sup>3</sup> ÷ x<sup>2</sup> = 2x を商に立て、B × 2x = 2x<sup>3</sup> − 8x<sup>2</sup> + 6x を A から引くと、x<sup>2</sup> − 6x + 8 が残るよ。</p>
+          <h3>ヒント 1 ― 最高次の項を消す（1 回目）</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mn>2</mn><msup><mi>x</mi><mn>3</mn></msup><mo>÷</mo><msup><mi>x</mi><mn>2</mn></msup><mo>=</mo><mn>2</mn><mi>x</mi></mrow></math>割る式の最高次に合わせて、商の第1項を立てる。</p>
+          <p><math><mi>A</mi></math> には <math><mi>x</mi></math> の項がないので、場所を空けて筆算を始める。<br>第 1 項は<math><mn>2</mn><msup><mi>x</mi><mn>3</mn></msup><mo>÷</mo><msup><mi>x</mi><mn>2</mn></msup><mo>=</mo><mn>2</mn><mi>x</mi></math>を商に立て、<math><mi>B</mi><mo>×</mo><mn>2</mn><mi>x</mi><mo>=</mo><mn>2</mn><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>8</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>6</mn><mi>x</mi></math>を <math><mi>A</mi></math> から引くと、<math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>6</mn><mi>x</mi><mo>+</mo><mn>8</mn></math>が残るよ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 最高次の項を消す（2 回目）</h3>
-          <p>次は x<sup>2</sup> ÷ x<sup>2</sup> = 1 を商に立て、B × 1 = x<sup>2</sup> − 4x + 3 を引くと、−2x + 5 が残る。これは B より次数が低いので、ここで計算は終わりだよ。</p>
+          <p>次は<math><msup><mi>x</mi><mn>2</mn></msup><mo>÷</mo><msup><mi>x</mi><mn>2</mn></msup><mo>=</mo><mn>1</mn></math>を商に立て、<math><mi>B</mi><mo>×</mo><mn>1</mn><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>x</mi><mo>+</mo><mn>3</mn></math>を引くと、−2x + 5 が残る。<br>これは <math><mi>B</mi></math> より次数が低いので、ここで計算は終わりだよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">商　2x + 1，　余り　−2x + 5</p>
+          <p class="big">商　2x + 1，　余り　−2x + 5</p><p class="cite"><span class="cite-tag">使う定義</span><math><mrow><mi>A</mi><mo>=</mo><mi>B</mi><mi>Q</mi><mo>+</mo><mi>R</mi></mrow></math>検算は、商と余りをこの等式に当てはめると割られる式に戻ることで確かめる。</p>
 <figure><div class="figbox"><svg viewBox="0 0 434 200" role="img" aria-label="割り算の筆算">
 <text x="179" y="26" font-size="19" font-family="monospace" text-anchor="start" fill="currentColor" xml:space="preserve">2x + 1</text>
 <line x1="170" y1="36" x2="424" y2="36" stroke="currentColor" stroke-width="1.6"/>
@@ -389,9 +446,9 @@
 <line x1="270" y1="161" x2="415.6" y2="161" stroke="currentColor" stroke-width="1.4"/>
 <text x="322" y="182" font-size="19" font-family="monospace" text-anchor="start" fill="currentColor" xml:space="preserve">−2x + 5</text>
 </svg></div>
-<figcaption>2x³ − 7x² + 8 を x² − 4x + 3 で割る計算（割られる式にない x の項の場所は空けてある）</figcaption>
+<figcaption><math><mn>2</mn><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>7</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>8</mn></math>を<math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>x</mi><mo>+</mo><mn>3</mn></math>で割る計算（割られる式にない <math><mi>x</mi></math> の項の場所は空けてある）</figcaption>
 </figure>
-          <p>よって、商は 2x + 1、余りは −2x + 5 である。検算すると、(x<sup>2</sup> − 4x + 3)(2x + 1) + (−2x + 5) = 2x<sup>3</sup> − 7x<sup>2</sup> + 8 となり、確かに A に戻る。</p>
+          <p>よって、商は 2x + 1、余りは −2x + 5 である。<br>検算すると、<math><mrow><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>x</mi><mo>+</mo><mn>3</mn><mo>)</mo></mrow><mrow><mo>(</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow><mo>+</mo><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>5</mn><mo>)</mo></mrow><mo>=</mo><mn>2</mn><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>7</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>8</mn></math>となり、確かに <math><mi>A</mi></math> に戻る。</p>
         </div>
         <p class="prob-done">例題3 クリア！　次は練習12に挑戦しよう。</p>
       </section>
@@ -400,13 +457,13 @@
         <h2>練習問題に挑戦</h2>
         <span class="pno">教科書 p.17</span>
       </div>
-      <section class="card prob" id="prob-ren12" data-label="練習12">
+      <section class="nofig card prob" id="prob-ren12" data-label="練習12">
         <div class="prob-head">
           <span class="prob-tag ren">練習 12</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
         <div class="qside">
-        <p class="prob-q">次の多項式 A, B について、A を B で割った商と余りを求めよ。</p>
+        <p class="prob-q">次の多項式 <math><mi>A</mi></math>, <math><mi>B</mi></math> について、<math><mi>A</mi></math> を <math><mi>B</mi></math> で割った商と余りを求めよ。</p>
         </div>
         <div class="tabs" role="tablist" aria-label="練習12の小問">
           <button class="tab" role="tab" data-tab="ren12-1" aria-selected="true">(1)</button>
@@ -416,7 +473,7 @@
         </div>
         <div class="tabpanel show" id="panel-ren12-1" data-flow="ren12-1" data-label="練習12 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　A = 3x<sup>2</sup> + 5x + 4，　B = x + 2</span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><mi>A</mi><mo>=</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>5</mn><mi>x</mi><mo>+</mo><mn>4</mn><mo>,</mo></math>　<math><mi>B</mi><mo>=</mo><mi>x</mi><mo>+</mo><mn>2</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
@@ -432,106 +489,110 @@
           <p class="verdict"></p>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 筆算の進め方</h3>
-          <p>まず 3x<sup>2</sup> ÷ x = 3x を商に立て、B × 3x = 3x<sup>2</sup> + 6x を引くと −x + 4 が残る。次に −x ÷ x = −1 を商に立て、B × (−1) = −x − 2 を引こう。</p>
+          <h3>ヒント 1 ― 筆算の進め方</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>÷</mo><mi>x</mi><mo>=</mo><mn>3</mn><mi>x</mi></mrow></math>割る式の最高次に合わせて商を立て、引く操作を繰り返す。</p>
+          <p>まず<math><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>÷</mo><mi>x</mi><mo>=</mo><mn>3</mn><mi>x</mi></math>を商に立て、<math><mi>B</mi><mo>×</mo><mn>3</mn><mi>x</mi><mo>=</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>6</mn><mi>x</mi></math>を引くと −<math><mi>x</mi></math> + 4 が残る。<br>次に<math><mo>−</mo><mi>x</mi><mo>÷</mo><mi>x</mi><mo>=</mo><mo>−</mo><mn>1</mn></math>を商に立て、<math><mi>B</mi><mo>×</mo><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mo>=</mo><mo>−</mo><mi>x</mi><mo>−</mo><mn>2</mn></math>を引こう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
           <p class="big">商　3x − 1，　余り　6</p>
-          <p>(x + 2)(3x − 1) + 6 = 3x<sup>2</sup> + 5x + 4 となるから、商と余りは下の通り。</p>
+          <p><math><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo></mrow><mrow><mo>(</mo><mn>3</mn><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mo>+</mo><mn>6</mn><mo>=</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>5</mn><mi>x</mi><mo>+</mo><mn>4</mn></math>となるから、商と余りは下の通り。</p>
         </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren12-2" data-flow="ren12-2" data-label="練習12 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　A = x<sup>3</sup> − 4x<sup>2</sup> − 5，　B = x − 3</span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><mi>A</mi><mo>=</mo><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>4</mn><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>5</mn><mo>,</mo></math>　<math><mi>B</mi><mo>=</mo><mi>x</mi><mo>−</mo><mn>3</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 筆算の進め方</h3>
-          <p>A には x の項がないので、場所を空けておく。x<sup>3</sup> ÷ x = x<sup>2</sup>、次に残った −x<sup>2</sup> に対して −x<sup>2</sup> ÷ x = −x、最後に −3x ÷ x = −3 と商を立てていこう。</p>
+          <h3>ヒント 1 ― 筆算の進め方</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><msup><mi>x</mi><mn>3</mn></msup><mo>÷</mo><mi>x</mi><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup></mrow></math>割られる式にない項は場所を空けて筆算し、最高次から順に商を立てる。</p>
+          <p><math><mi>A</mi></math> には <math><mi>x</mi></math> の項がないので、場所を空けておく。<br><math><msup><mi>x</mi><mn>3</mn></msup><mo>÷</mo><mi>x</mi><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup></math>、次に残った<math><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup></math> に対して<math><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>÷</mo><mi>x</mi><mo>=</mo><mo>−</mo><mi>x</mi></math>、最後に<math><mo>−</mo><mn>3</mn><mi>x</mi><mo>÷</mo><mi>x</mi><mo>=</mo><mo>−</mo><mn>3</mn></math>と商を立てていこう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">商　x<sup>2</sup> − x − 3，　余り　−14</p>
-          <p>(x − 3)(x<sup>2</sup> − x − 3) − 14 = x<sup>3</sup> − 4x<sup>2</sup> − 5 となるから、商と余りは下の通り。</p>
+          <p class="big">商　<math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>x</mi><mo>−</mo><mn>3</mn><mo>,</mo></math>　余り　−14</p>
+          <p><math><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>3</mn><mo>)</mo></mrow><mrow><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>x</mi><mo>−</mo><mn>3</mn><mo>)</mo></mrow><mo>−</mo><mn>14</mn><mo>=</mo><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>4</mn><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>5</mn></math>となるから、商と余りは下の通り。</p>
         </div>
           <p class="prob-done">(2) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren12-3" data-flow="ren12-3" data-label="練習12 (3)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(3)　A = 2x<sup>3</sup> + 5x<sup>2</sup> − 2x + 4，　B = x<sup>2</sup> − x + 2</span>
+            <span class="sub prob-q" style="margin:0">(3)　<math><mi>A</mi><mo>=</mo><mn>2</mn><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mn>5</mn><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>4</mn><mo>,</mo></math>　<math><mi>B</mi><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>x</mi><mo>+</mo><mn>2</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 筆算の進め方</h3>
-          <p>まず 2x<sup>3</sup> ÷ x<sup>2</sup> = 2x を商に立て、B × 2x = 2x<sup>3</sup> − 2x<sup>2</sup> + 4x を引くと 7x<sup>2</sup> − 6x + 4 が残る。次に 7x<sup>2</sup> ÷ x<sup>2</sup> = 7 を商に立て、B × 7 を引こう。</p>
+          <h3>ヒント 1 ― 筆算の進め方</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mn>2</mn><msup><mi>x</mi><mn>3</mn></msup><mo>÷</mo><msup><mi>x</mi><mn>2</mn></msup><mo>=</mo><mn>2</mn><mi>x</mi></mrow></math>まず最高次を消し、残った式について同じ操作を繰り返す。</p>
+          <p>まず<math><mn>2</mn><msup><mi>x</mi><mn>3</mn></msup><mo>÷</mo><msup><mi>x</mi><mn>2</mn></msup><mo>=</mo><mn>2</mn><mi>x</mi></math>を商に立て、<math><mi>B</mi><mo>×</mo><mn>2</mn><mi>x</mi><mo>=</mo><mn>2</mn><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>2</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>4</mn><mi>x</mi></math>を引くと<math><mn>7</mn><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>6</mn><mi>x</mi><mo>+</mo><mn>4</mn></math>が残る。<br>次に<math><mn>7</mn><msup><mi>x</mi><mn>2</mn></msup><mo>÷</mo><msup><mi>x</mi><mn>2</mn></msup><mo>=</mo><mn>7</mn></math>を商に立て、<math><mi>B</mi></math> × 7 を引こう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">商　2x + 7，　余り　x − 10</p>
-          <p>(x<sup>2</sup> − x + 2)(2x + 7) + (x − 10) = 2x<sup>3</sup> + 5x<sup>2</sup> − 2x + 4 となるから、商と余りは下の通り。</p>
+          <p class="big">商　2x + 7，　余り　<math><mi>x</mi></math> − 10</p>
+          <p><math><mrow><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo></mrow><mrow><mo>(</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>7</mn><mo>)</mo></mrow><mo>+</mo><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>10</mn><mo>)</mo></mrow><mo>=</mo><mn>2</mn><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mn>5</mn><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>4</mn></math>となるから、商と余りは下の通り。</p>
         </div>
           <p class="prob-done">(3) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren12-4" data-flow="ren12-4" data-label="練習12 (4)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(4)　A = x<sup>3</sup> − 7x + 6，　B = x<sup>2</sup> − 3 + 2x</span>
+            <span class="sub prob-q" style="margin:0">(4)　<math><mi>A</mi><mo>=</mo><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>7</mn><mi>x</mi><mo>+</mo><mn>6</mn><mo>,</mo></math>　<math><mi>B</mi><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>3</mn><mo>+</mo><mn>2</mn><mi>x</mi></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― まず B を降べきの順に整理する</h3>
-          <p>B = x<sup>2</sup> − 3 + 2x は、降べきの順に整理すると x<sup>2</sup> + 2x − 3 になる。A には x<sup>2</sup> の項がないので場所を空けて、x<sup>3</sup> ÷ x<sup>2</sup> = x を商に立て、B × x = x<sup>3</sup> + 2x<sup>2</sup> − 3x を引こう。</p>
+          <h3>ヒント 1 ― まず <math><mi>B</mi></math> を降べきの順に整理する</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>3</mn><mo>+</mo><mn>2</mn><mi>x</mi><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>−</mo><mn>3</mn></mrow></math>割る式を降べきの順に整理してから筆算を始める。</p>
+          <p><math><mi>B</mi><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>3</mn><mo>+</mo><mn>2</mn><mi>x</mi></math>は、降べきの順に整理すると<math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>−</mo><mn>3</mn></math>になる。<br><math><mi>A</mi></math> には<math><msup><mi>x</mi><mn>2</mn></msup></math> の項がないので場所を空けて、<math><msup><mi>x</mi><mn>3</mn></msup><mo>÷</mo><msup><mi>x</mi><mn>2</mn></msup><mo>=</mo><mi>x</mi></math>を商に立て、<math><mi>B</mi><mo>×</mo><mi>x</mi><mo>=</mo><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mn>2</mn><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>3</mn><mi>x</mi></math>を引こう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">商　x − 2，　余り　0（割り切れる）</p>
-          <p>引くと −2x<sup>2</sup> − 4x + 6 が残り、次に −2x<sup>2</sup> ÷ x<sup>2</sup> = −2 を商に立てると B × (−2) = −2x<sup>2</sup> − 4x + 6 が引けて、余りは 0 になる。(x<sup>2</sup> + 2x − 3)(x − 2) = x<sup>3</sup> − 7x + 6 となり、割り切れることが確かめられる。</p>
+          <p class="big">商　<math><mi>x</mi></math> − 2，　余り　0（割り切れる）</p>
+          <p>引くと<math><mo>−</mo><mn>2</mn><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>x</mi><mo>+</mo><mn>6</mn></math>が残り、次に<math><mo>−</mo><mn>2</mn><msup><mi>x</mi><mn>2</mn></msup><mo>÷</mo><msup><mi>x</mi><mn>2</mn></msup><mo>=</mo><mo>−</mo><mn>2</mn></math>を商に立てると<math><mi>B</mi><mo>×</mo><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mo>=</mo><mo>−</mo><mn>2</mn><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>x</mi><mo>+</mo><mn>6</mn></math>が引けて、余りは 0 になる。<br><math><mrow><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>−</mo><mn>3</mn><mo>)</mo></mrow><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mo>=</mo><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>7</mn><mi>x</mi><mo>+</mo><mn>6</mn></math>となり、割り切れることが確かめられる。</p>
         </div>
           <p class="prob-done">(4) クリア！　練習12は全部おわり。次は等式の利用だよ。</p>
         </div>
       </section>
       <div class="sec-head">
         <span class="sec-tag">解説 B</span>
-        <h2>等式 A = BQ + R の利用</h2>
+        <h2>等式<math><mi>A</mi><mo>=</mo><mi>BQ</mi><mo>+</mo><mi>R</mi></math>の利用</h2>
         <span class="pno">教科書 p.18</span>
       </div>
       <section class="card">
-        <p>多項式の割り算で成り立つ等式 A = BQ + R が利用できる問題を考えてみよう。</p>
-        <p class="formula">A = BQ + R　　（A：割られる式，　B：割る式，　Q：商，　R：余り）</p>
-        <p>次の例 6 では割られる式 A を、例題 4 では割る式 B を求める。どちらも、等式 A = BQ + R に分かっているものを代入するところから始める。</p>
+        <p>多項式の割り算で成り立つ等式<math><mi>A</mi><mo>=</mo><mi>BQ</mi><mo>+</mo><mi>R</mi></math>が利用できる問題を考えてみよう。</p>
+        <p class="formula"><math><mi>A</mi><mo>=</mo><mi>BQ</mi><mo>+</mo><mi>R</mi></math>　　（<math><mi>A</mi></math>：割られる式，　<math><mi>B</mi></math>：割る式，　<math><mi>Q</mi></math>：商，　<math><mi>R</mi></math>：余り）</p>
+        <p>次の例 6 では割られる式 <math><mi>A</mi></math> を、例題 4 では割る式 <math><mi>B</mi></math> を求める。どちらも、等式<math><mi>A</mi><mo>=</mo><mi>BQ</mi><mo>+</mo><mi>R</mi></math>に分かっているものを代入するところから始める。</p>
       </section>
       <div class="sec-head">
         <span class="sec-tag">例</span>
         <h2>例6で解き方を確認</h2>
         <span class="pno">教科書 p.18</span>
       </div>
-      <section class="card prob" id="prob-rei6" data-flow="rei6" data-label="例6">
+      <section class="nofig card prob" id="prob-rei6" data-flow="rei6" data-label="例6">
         <div class="prob-head">
           <span class="prob-tag ">例 6</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 1</span>
         </div>
         <div class="qside">
-        <p class="prob-q">多項式 A を x − 1 で割ると、商が x<sup>2</sup> − x + 1、余りが 5 である。このとき、多項式 A は</p>
+        <p class="prob-q">多項式 <math><mi>A</mi></math> を <math><mi>x</mi></math> − 1 で割ると、商が<math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>x</mi><mo>+</mo><mn>1</mn></math>、余りが 5 である。このとき、多項式 <math><mi>A</mi></math> は</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 等式 A = BQ + R に代入する</h3>
-          <p>B = x − 1、Q = x<sup>2</sup> − x + 1、R = 5 だから、A = (x − 1)(x<sup>2</sup> − x + 1) + 5 と書けるよ。あとは右辺を展開するだけ。</p>
+          <h3>ヒント 1 ― 等式<math><mi>A</mi><mo>=</mo><mi>BQ</mi><mo>+</mo><mi>R</mi></math>に代入する</h3><p class="cite"><span class="cite-tag">使う定義</span><math><mrow><mi>A</mi><mo>=</mo><mi>B</mi><mi>Q</mi><mo>+</mo><mi>R</mi></mrow></math>ここでは割る式が <math><mi>x</mi><mo>−</mo><mn>1</mn></math>、商が <math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>x</mi><mo>+</mo><mn>1</mn></math>、余りが5。代入して右辺を展開する。</p>
+          <p><math><mi>B</mi><mo>=</mo><mi>x</mi><mo>−</mo><mn>1</mn></math>、<math><mi>Q</mi><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>x</mi><mo>+</mo><mn>1</mn></math>、<math><mi>R</mi><mo>=</mo><mn>5</mn></math>だから、<math><mi>A</mi><mo>=</mo><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mrow><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow><mo>+</mo><mn>5</mn></math>と書けるよ。<br>あとは右辺を展開するだけ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">A = x<sup>3</sup> − 2x<sup>2</sup> + 2x + 4</p>
-          <p>A = (x − 1)(x<sup>2</sup> − x + 1) + 5 = (x<sup>3</sup> − 2x<sup>2</sup> + 2x − 1) + 5 = x<sup>3</sup> − 2x<sup>2</sup> + 2x + 4</p>
-          <p class="mini">（(x − 1)(x<sup>2</sup> − x + 1) は練習 3 などで見た形で、x<sup>3</sup> − 1 と展開できることを使ってもよい。）</p>
+          <p class="big"><math display="block"><mi>A</mi><mo>=</mo><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>2</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>4</mn></math></p><p class="cite"><span class="cite-tag">使う定義</span><math><mrow><mi>A</mi><mo>=</mo><mi>B</mi><mi>Q</mi><mo>+</mo><mi>R</mi></mrow></math>商と余りを代入した式を展開して、割られる式を求める。</p>
+          <div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>A</mi><mo>=</mo><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mrow><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow><mo>+</mo><mn>5</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>A</mi></mphantom><mo>=</mo><mrow><mo>(</mo><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>2</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mo>+</mo><mn>5</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>A</mi></mphantom><mo>=</mo><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>2</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>4</mn></math></div>
+</div>
+          <p class="mini"><math><mo>(</mo><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mrow><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow></math>は練習 3 などで見た形で、<math><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>1</mn></math>と展開できることを使ってもよい。）</p>
         </div>
         <p class="prob-done">例6 クリア！　次は練習13に挑戦しよう。</p>
       </section>
@@ -540,13 +601,13 @@
         <h2>練習問題に挑戦</h2>
         <span class="pno">教科書 p.18</span>
       </div>
-      <section class="card prob" id="prob-ren13" data-label="練習13">
+      <section class="nofig card prob" id="prob-ren13" data-label="練習13">
         <div class="prob-head">
           <span class="prob-tag ren">練習 13</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
         <div class="qside">
-        <p class="prob-q">次の条件を満たす多項式 A を求めよ。</p>
+        <p class="prob-q">次の条件を満たす多項式 <math><mi>A</mi></math> を求めよ。</p>
         </div>
         <div class="tabs" role="tablist" aria-label="練習13の小問">
           <button class="tab" role="tab" data-tab="ren13-1" aria-selected="true">(1)</button>
@@ -554,36 +615,36 @@
         </div>
         <div class="tabpanel show" id="panel-ren13-1" data-flow="ren13-1" data-label="練習13 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　A を x + 2 で割ると、商が x + 3、余りが −1</span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><mi>A</mi></math> を <math><mi>x</mi></math> + 2 で割ると、商が <math><mi>x</mi></math> + 3、余りが −1</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 等式 A = BQ + R に代入する</h3>
-          <p>A = (x + 2)(x + 3) + (−1) と書いて、右辺を展開しよう。</p>
+          <h3>ヒント 1 ― 等式<math><mi>A</mi><mo>=</mo><mi>BQ</mi><mo>+</mo><mi>R</mi></math>に代入する</h3><p class="cite"><span class="cite-tag">使う定義</span><math><mrow><mi>A</mi><mo>=</mo><mi>B</mi><mi>Q</mi><mo>+</mo><mi>R</mi></mrow></math>商が <math><mi>x</mi><mo>+</mo><mn>3</mn></math>、余りが <math><mo>−</mo><mn>1</mn></math> の場合を代入して展開する。</p>
+          <p><math><mi>A</mi><mo>=</mo><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo></mrow><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>3</mn><mo>)</mo></mrow><mo>+</mo><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow></math>と書いて、右辺を展開しよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">A = x<sup>2</sup> + 5x + 5</p>
+          <p class="big"><math display="block"><mi>A</mi><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>5</mn><mi>x</mi><mo>+</mo><mn>5</mn></math></p>
         </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren13-2" data-flow="ren13-2" data-label="練習13 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　A を x<sup>2</sup> + 2x + 3 で割ると、商が x − 1、余りが 2x + 3</span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><mi>A</mi></math> を<math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>3</mn></math>で割ると、商が <math><mi>x</mi></math> − 1、余りが 2x + 3</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 等式 A = BQ + R に代入する</h3>
-          <p>A = (x<sup>2</sup> + 2x + 3)(x − 1) + (2x + 3) と書いて、右辺を展開し、同類項をまとめよう。</p>
+          <h3>ヒント 1 ― 等式<math><mi>A</mi><mo>=</mo><mi>BQ</mi><mo>+</mo><mi>R</mi></math>に代入する</h3><p class="cite"><span class="cite-tag">使う定義</span><math><mrow><mi>A</mi><mo>=</mo><mi>B</mi><mi>Q</mi><mo>+</mo><mi>R</mi></mrow></math>商が <math><mi>x</mi><mo>−</mo><mn>1</mn></math>、余りが <math><mn>2</mn><mi>x</mi><mo>+</mo><mn>3</mn></math> の場合を代入して展開し、同類項をまとめる。</p>
+          <p><math><mi>A</mi><mo>=</mo><mrow><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>3</mn><mo>)</mo></mrow><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mo>+</mo><mrow><mo>(</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>3</mn><mo>)</mo></mrow></math>と書いて、右辺を展開し、同類項をまとめよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">A = x<sup>3</sup> + x<sup>2</sup> + 3x</p>
-          <p>(x<sup>2</sup> + 2x + 3)(x − 1) = x<sup>3</sup> + x<sup>2</sup> + x − 3 だから、A = (x<sup>3</sup> + x<sup>2</sup> + x − 3) + (2x + 3) となる。</p>
+          <p class="big"><math display="block"><mi>A</mi><mo>=</mo><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>3</mn><mi>x</mi></math></p>
+          <p><math><mrow><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>3</mn><mo>)</mo></mrow><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mo>=</mo><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi><mo>−</mo><mn>3</mn></math>だから、<math><mi>A</mi><mo>=</mo><mrow><mo>(</mo><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi><mo>−</mo><mn>3</mn><mo>)</mo></mrow><mo>+</mo><mrow><mo>(</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>3</mn><mo>)</mo></mrow></math>となる。</p>
         </div>
           <p class="prob-done">(2) クリア！　練習13は全部おわり。次は例題4だよ。</p>
         </div>
@@ -593,27 +654,27 @@
         <h2>例題4に挑戦</h2>
         <span class="pno">教科書 p.18</span>
       </div>
-      <section class="card prob" id="prob-reidai4" data-flow="reidai4" data-label="例題4">
+      <section class="nofig card prob" id="prob-reidai4" data-flow="reidai4" data-label="例題4">
         <div class="prob-head">
           <span class="prob-tag ">例題 4</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">多項式 x<sup>3</sup> + 2x − 1 を多項式 B で割ると、商が x + 2、余りが 6x − 1 であるという。このとき、B を求めよ。</p>
+        <p class="prob-q">多項式<math><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>−</mo><mn>1</mn></math>を多項式 <math><mi>B</mi></math> で割ると、商が <math><mi>x</mi></math> + 2、余りが 6x − 1 であるという。このとき、<math><mi>B</mi></math> を求めよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 等式に代入して整理する</h3>
-          <p>等式 A = BQ + R に代入すると x<sup>3</sup> + 2x − 1 = B(x + 2) + 6x − 1 となる。余りの 6x − 1 を移項して整理すると、x<sup>3</sup> − 4x = B(x + 2) が得られるよ。</p>
+          <h3>ヒント 1 ― 等式に代入して整理する</h3><p class="cite"><span class="cite-tag">使う定義</span><math><mrow><mi>A</mi><mo>=</mo><mi>B</mi><mi>Q</mi><mo>+</mo><mi>R</mi></mrow></math>割られる式と商、余りを代入し、余りを移項して整理する。</p>
+          <p>等式<math><mi>A</mi><mo>=</mo><mi>BQ</mi><mo>+</mo><mi>R</mi></math>に代入すると<math><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>−</mo><mn>1</mn><mo>=</mo><mi>B</mi><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo></mrow><mo>+</mo><mn>6</mn><mi>x</mi><mo>−</mo><mn>1</mn></math>となる。<br>余りの 6x − 1 を移項して整理すると、<math><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>4</mn><mi>x</mi><mo>=</mo><mi>B</mi><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo></mrow></math>が得られるよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― B は割り算の商</h3>
-          <p>つまり B は、x<sup>3</sup> − 4x を x + 2 で割った商だ。x<sup>2</sup> の項がないことに注意して筆算しよう。</p>
+          <h3>ヒント 2 ― <math><mi>B</mi></math> は割り算の商</h3>
+          <p>つまり <math><mi>B</mi></math> は、<math><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>4</mn><mi>x</mi></math>を <math><mi>x</mi></math> + 2 で割った商だ。<math><msup><mi>x</mi><mn>2</mn></msup></math> の項がないことに注意して筆算しよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">B = x<sup>2</sup> − 2x</p>
+          <p class="big"><math display="block"><mi>B</mi><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>x</mi></math></p><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mi>b</mi><mo>=</mo><mfrac><mrow><mi>A</mi><mo>−</mo><mi>R</mi></mrow><mi>Q</mi></mfrac></mrow></math>割られる式から余りを引いたものを商で割ると、割る式が得られる。</p>
 <figure><div class="figbox"><svg viewBox="0 0 291 200" role="img" aria-label="割り算の筆算">
 <text x="101" y="26" font-size="19" font-family="monospace" text-anchor="start" fill="currentColor" xml:space="preserve">x² − 2x</text>
 <line x1="92" y1="36" x2="281" y2="36" stroke="currentColor" stroke-width="1.6"/>
@@ -627,9 +688,9 @@
 <line x1="153" y1="161" x2="272.6" y2="161" stroke="currentColor" stroke-width="1.4"/>
 <text x="257" y="182" font-size="19" font-family="monospace" text-anchor="start" fill="currentColor" xml:space="preserve">0</text>
 </svg></div>
-<figcaption>x³ − 4x を x + 2 で割る計算</figcaption>
+<figcaption><math><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>4</mn><mi>x</mi></math>を <math><mi>x</mi></math> + 2 で割る計算</figcaption>
 </figure>
-          <p>x<sup>3</sup> − 4x = (x + 2)(x<sup>2</sup> − 2x) と割り切れるから、B = x<sup>2</sup> − 2x である。</p>
+          <p><math><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>4</mn><mi>x</mi><mo>=</mo><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo></mrow><mrow><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>x</mi><mo>)</mo></mrow></math>と割り切れるから、<math><mi>B</mi><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>x</mi></math>である。</p>
         </div>
         <p class="prob-done">例題4 クリア！　次は練習14に挑戦しよう。</p>
       </section>
@@ -638,13 +699,13 @@
         <h2>練習問題に挑戦</h2>
         <span class="pno">教科書 p.18</span>
       </div>
-      <section class="card prob" id="prob-ren14" data-label="練習14">
+      <section class="nofig card prob" id="prob-ren14" data-label="練習14">
         <div class="prob-head">
           <span class="prob-tag ren">練習 14</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
         <div class="qside">
-        <p class="prob-q">次の条件を満たす多項式 B を求めよ。</p>
+        <p class="prob-q">次の条件を満たす多項式 <math><mi>B</mi></math> を求めよ。</p>
         </div>
         <div class="tabs" role="tablist" aria-label="練習14の小問">
           <button class="tab" role="tab" data-tab="ren14-1" aria-selected="true">(1)</button>
@@ -652,48 +713,48 @@
         </div>
         <div class="tabpanel show" id="panel-ren14-1" data-flow="ren14-1" data-label="練習14 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　3x<sup>2</sup> − 4x + 5 を B で割ると、商が x − 1、余りが 4</span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>x</mi><mo>+</mo><mn>5</mn></math>を <math><mi>B</mi></math> で割ると、商が <math><mi>x</mi></math> − 1、余りが 4</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
           <div class="quiz" id="qz-ren14-1" data-correct="1">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>3x − 1</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>3x + 1</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>x − 3</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>3x − 4</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mn>3</mn><mi>x</mi><mo>−</mo><mn>1</mn></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mn>3</mn><mi>x</mi><mo>+</mo><mn>1</mn></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mi>x</mi><mo>−</mo><mn>3</mn></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mn>3</mn><mi>x</mi><mo>−</mo><mn>4</mn></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
           <p class="verdict"></p>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 例題 4 と同じ進め方</h3>
-          <p>等式に代入すると 3x<sup>2</sup> − 4x + 5 = B(x − 1) + 4。余りを移項して整理すると、3x<sup>2</sup> − 4x + 1 = B(x − 1) となる。B は左辺を x − 1 で割った商だよ。</p>
+          <h3>ヒント 1 ― 例題 4 と同じ進め方</h3><p class="cite"><span class="cite-tag">使う定義</span><math><mrow><mi>A</mi><mo>=</mo><mi>B</mi><mi>Q</mi><mo>+</mo><mi>R</mi></mrow></math>余りを移項して整理すると、左辺が割る式と商の積の形になる。</p>
+          <p>等式に代入すると<math><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>x</mi><mo>+</mo><mn>5</mn><mo>=</mo><mi>B</mi><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mo>+</mo><mn>4</mn></math>。<br>余りを移項して整理すると、<math><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>x</mi><mo>+</mo><mn>1</mn><mo>=</mo><mi>B</mi><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow></math>となる。<math><mi>B</mi></math> は左辺を <math><mi>x</mi></math> − 1 で割った商だよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">B = 3x − 1</p>
-          <p>3x<sup>2</sup> − 4x + 1 = (x − 1)(3x − 1) と割り切れるから、B は下の通り。</p>
+          <p class="big"><math display="block"><mi>B</mi><mo>=</mo><mn>3</mn><mi>x</mi><mo>−</mo><mn>1</mn></math></p>
+          <p><math><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>x</mi><mo>+</mo><mn>1</mn><mo>=</mo><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mrow><mo>(</mo><mn>3</mn><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow></math>と割り切れるから、<math><mi>B</mi></math> は下の通り。</p>
         </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren14-2" data-flow="ren14-2" data-label="練習14 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　x<sup>3</sup> − 2x<sup>2</sup> + 3x − 3 を B で割ると、商が x − 2、余りが −2x + 7</span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>2</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>3</mn><mi>x</mi><mo>−</mo><mn>3</mn></math>を <math><mi>B</mi></math> で割ると、商が <math><mi>x</mi></math> − 2、余りが −2x + 7</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 例題 4 と同じ進め方</h3>
-          <p>等式に代入して余りを移項すると、x<sup>3</sup> − 2x<sup>2</sup> + 5x − 10 = B(x − 2) となる。B は左辺を x − 2 で割った商だよ。</p>
+          <h3>ヒント 1 ― 例題 4 と同じ進め方</h3><p class="cite"><span class="cite-tag">使う定義</span><math><mrow><mi>A</mi><mo>=</mo><mi>B</mi><mi>Q</mi><mo>+</mo><mi>R</mi></mrow></math>余りを移項し、左辺を商で割ったものとして割る式を求める。</p>
+          <p>等式に代入して余りを移項すると、<math><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>2</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>5</mn><mi>x</mi><mo>−</mo><mn>10</mn><mo>=</mo><mi>B</mi><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow></math>となる。<br><math><mi>B</mi></math> は左辺を <math><mi>x</mi></math> − 2 で割った商だよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">B = x<sup>2</sup> + 5</p>
-          <p>x<sup>3</sup> − 2x<sup>2</sup> + 5x − 10 = (x − 2)(x<sup>2</sup> + 5) と割り切れるから、B は下の通り。</p>
+          <p class="big"><math display="block"><mi>B</mi><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>5</mn></math></p>
+          <p><math><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>2</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>5</mn><mi>x</mi><mo>−</mo><mn>10</mn><mo>=</mo><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mrow><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>5</mn><mo>)</mo></mrow></math>と割り切れるから、<math><mi>B</mi></math> は下の通り。</p>
         </div>
           <p class="prob-done">(2) クリア！　練習14は全部おわり。この項は終了だよ。</p>
         </div>
@@ -704,9 +765,9 @@
       <section class="card summary" id="summaryCard" style="display:none">
         <h2>この項のポイント</h2>
         <ul>
-          <li><b>多項式の割り算：</b>A = BQ + R（R は 0 か、B より次数の低い多項式）。計算は A, B を降べきの順に整理し、最高次の項を消しながら進める。</li>
+          <li><p class="cite"><span class="cite-tag">使う定義</span><math><mrow><mi>A</mi><mo>=</mo><mi>B</mi><mi>Q</mi><mo>+</mo><mi>R</mi></mrow></math>余りは0か、割る式より次数の低い多項式。両式を降べきの順に整理して計算する。</p><b>多項式の割り算：</b><math><mi>A</mi><mo>=</mo><mi>BQ</mi><mo>+</mo><mi>R</mi><mo>(</mo><mi>R</mi></math>は 0 か、<math><mi>B</mi></math> より次数の低い多項式）。計算は <math><mi>A</mi></math>, <math><mi>B</mi></math> を降べきの順に整理し、最高次の項を消しながら進める。</li>
           <li><b>筆算のコツ：</b>割られる式にない次数の項は、その場所を空けておくと間違えにくい。</li>
-          <li><b>等式の利用：</b>A を求めるときは A = BQ + R に代入して展開する。B を求めるときは A − R を Q で割る。</li>
+          <li><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mi>b</mi><mo>=</mo><mfrac><mrow><mi>A</mi><mo>−</mo><mi>R</mi></mrow><mi>Q</mi></mfrac></mrow></math>割られる式を求めるときは代入して展開し、割る式を求めるときは余りを引いて商で割る。</p><b>等式の利用：</b><math><mi>A</mi></math> を求めるときは<math><mi>A</mi><mo>=</mo><mi>BQ</mi><mo>+</mo><mi>R</mi></math>に代入して展開する。<math><mi>B</mi></math> を求めるときは <math><mi>A</mi></math> − <math><mi>R</mi></math> を <math><mi>Q</mi></math> で割る。</li>
         </ul>
       </section>
       <footer>
