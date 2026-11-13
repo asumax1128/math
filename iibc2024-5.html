@@ -337,7 +337,57 @@
         }
         .problem .controls { grid-column: 2; grid-row: 2; margin-top: 12px; }
       }
-    </style>
+    
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+
+      /* 積分記号は大きめに表示する（元のページの可読化デザインに合わせる） */
+      math .int-op{font-size:1.35em}
+      /* calc-12 世代（.card）と calc-18 世代（.unit）の、図のない問題の全幅化 */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig>.step{position:static !important}
+        .card.nofig>.steps-wrap{max-height:none !important;overflow:visible !important}
+        .unit.nofig{display:block !important}
+        .unit.nofig>.qside{position:static !important}
+        .unit.nofig>.steps-stack{max-height:none !important;overflow:visible !important}
+      }
+</style>
   </head>
   <body>
     <div class="wrap">
@@ -374,16 +424,16 @@
             <span class="q-points">配点 12点</span>
           </div>
           <p class="q-body">硬貨の表裏が出る確率は等しいものとする。</p>
-          <p class="q-body"><strong>ゲーム(A)</strong>：10円硬貨が3枚ある。3枚の硬貨を同時に投げて、表が出たものをすべて賞金として受け取る。受け取る賞金を <span class="m"><i>X</i></span> 円とする。</p>
-          <p class="q-body"><span class="m"><i>X</i> = 30</span> となる確率は <span class="m"><span class="frac"><span class="num"><span class="blank" data-kana="ア" data-ans="1">ア</span></span><span class="den"><span class="blank" data-kana="イ" data-ans="8">イ</span></span></span></span> である。また <span class="m"><i>X</i></span> の確率分布は下の表のようになる。</p>
+          <p class="q-body"><strong>ゲーム(A)</strong>：10円硬貨が3枚ある。3枚の硬貨を同時に投げて、表が出たものをすべて賞金として受け取る。受け取る賞金を <math><mi>X</mi></math> 円とする。</p>
+          <p class="q-body"><math><mi>X</mi><mo>=</mo><mn>30</mn></math> となる確率は <span class="m"><math><mfrac><mtext><span class="blank" data-kana="ア" data-ans="1">ア</span></mtext><mtext><span class="blank" data-kana="イ" data-ans="8">イ</span></mtext></mfrac></math></span> である。また <math><mi>X</mi></math> の確率分布は下の表のようになる。</p>
           <p class="q-body"><strong>ゲーム(B)</strong>：10円硬貨が3枚ある。3枚の硬貨を1枚ずつ投げて、表が出たものをすべて賞金として受け取る。</p>
-          <p class="q-body">(B) で表が出る回数を <span class="m"><i>Y</i></span> 回とすると、<span class="m"><i>Y</i></span> は二項分布 <span class="m">B(3, <span class="frac"><span class="num">1</span><span class="den">2</span></span>)</span> に従う確率変数であるから、<span class="m">E(<i>Y</i>) = <span class="frac"><span class="num"><span class="blank" data-kana="オ" data-ans="3">オ</span></span><span class="den"><span class="blank" data-kana="カ" data-ans="2">カ</span></span></span></span>、<span class="m">V(<i>Y</i>) = <span class="frac"><span class="num"><span class="blank" data-kana="キ" data-ans="3">キ</span></span><span class="den"><span class="blank" data-kana="ク" data-ans="4">ク</span></span></span></span> となる。</p>
-          <p class="q-body">ゲーム(B) で受け取る賞金を <span class="m"><i>Z</i></span> 円とすると、<span class="m"><i>Z</i> = 10<i>Y</i></span> が成り立つから、<span class="m">E(<i>Z</i>) = <span class="blank" data-kana="ケ" data-ans="④">ケ</span>・E(<i>Y</i>)</span>、<span class="m">V(<i>Z</i>) = <span class="blank" data-kana="コ" data-ans="⑤">コ</span>・V(<i>Y</i>)</span> となる。</p>
-          <p class="q-body">よって <span class="m">E(<i>Z</i>) = <span class="blank" data-kana="サ" data-ans="1">サ</span><span class="blank" data-kana="シ" data-ans="5">シ</span></span>、<span class="m">V(<i>Z</i>) = <span class="blank" data-kana="ス" data-ans="7">ス</span><span class="blank" data-kana="セ" data-ans="5">セ</span></span> である。</p>
-          <p class="q-body">以上のことから、<span class="m">E(<i>X</i>) = E(<i>Z</i>)</span>、<span class="m">V(<i>X</i>) = V(<i>Z</i>)</span> となり、ゲーム(A) はゲーム(B) のように言い換えることができる。</p>
+          <p class="q-body">(B) で表が出る回数を <math><mi>Y</mi></math> 回とすると、<math><mi>Y</mi></math> は二項分布 <math><mi>B</mi><mrow><mo>(</mo><mn>3</mn><mo>,</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo></mrow></math> に従う確率変数であるから、<math><mi>E</mi><mrow><mo>(</mo><mi>Y</mi><mo>)</mo></mrow><mo>=</mo><mfrac><mtext><span class="blank" data-kana="オ" data-ans="3">オ</span></mtext><mtext><span class="blank" data-kana="カ" data-ans="2">カ</span></mtext></mfrac></math>、<math><mi>V</mi><mrow><mo>(</mo><mi>Y</mi><mo>)</mo></mrow><mo>=</mo><mfrac><mtext><span class="blank" data-kana="キ" data-ans="3">キ</span></mtext><mtext><span class="blank" data-kana="ク" data-ans="4">ク</span></mtext></mfrac></math> となる。</p>
+          <p class="q-body">ゲーム(B) で受け取る賞金を <math><mi>Z</mi></math> 円とすると、<math><mi>Z</mi><mo>=</mo><mn>10</mn><mi>Y</mi></math> が成り立つから、<math><mi>E</mi><mrow><mo>(</mo><mi>Z</mi><mo>)</mo></mrow><mo>=</mo><mtext><span class="blank" data-kana="ケ" data-ans="④">ケ</span></mtext><mo>⋅</mo><mi>E</mi><mrow><mo>(</mo><mi>Y</mi><mo>)</mo></mrow></math>、<math><mi>V</mi><mrow><mo>(</mo><mi>Z</mi><mo>)</mo></mrow><mo>=</mo><mtext><span class="blank" data-kana="コ" data-ans="⑤">コ</span></mtext><mo>⋅</mo><mi>V</mi><mrow><mo>(</mo><mi>Y</mi><mo>)</mo></mrow></math> となる。</p>
+          <p class="q-body">よって <math><mi>E</mi><mrow><mo>(</mo><mi>Z</mi><mo>)</mo></mrow><mo>=</mo><mtext><span class="blank" data-kana="サ" data-ans="1">サ</span></mtext><mtext><span class="blank" data-kana="シ" data-ans="5">シ</span></mtext></math>、<math><mi>V</mi><mrow><mo>(</mo><mi>Z</mi><mo>)</mo></mrow><mo>=</mo><mtext><span class="blank" data-kana="ス" data-ans="7">ス</span></mtext><mtext><span class="blank" data-kana="セ" data-ans="5">セ</span></mtext></math> である。</p>
+          <p class="q-body">以上のことから、<math><mi>E</mi><mrow><mo>(</mo><mi>X</mi><mo>)</mo></mrow><mo>=</mo><mi>E</mi><mrow><mo>(</mo><mi>Z</mi><mo>)</mo></mrow></math>、<math><mi>V</mi><mrow><mo>(</mo><mi>X</mi><mo>)</mo></mrow><mo>=</mo><mi>V</mi><mrow><mo>(</mo><mi>Z</mi><mo>)</mo></mrow></math> となり、ゲーム(A) はゲーム(B) のように言い換えることができる。</p>
           <p class="choices">
             <span class="copt"><span class="blank" data-kana="ケ" data-ans="④">ケ</span>，<span class="blank" data-kana="コ" data-ans="⑤">コ</span>の解答群（同じものを繰り返し選んでもよい）：</span>
-            <span class="copt">⓪ <span class="m"><span class="frac"><span class="num">1</span><span class="den">100</span></span></span>　① <span class="m"><span class="frac"><span class="num">1</span><span class="den">10</span></span></span>　② <span class="m"><span class="frac"><span class="num">1</span><span class="den"><span class="sqrt">√<span class="rad">10</span></span></span></span></span>　③ <span class="m"><span class="sqrt">√<span class="rad">10</span></span></span>　④ <span class="m">10</span>　⑤ <span class="m">100</span></span>
+            <span class="copt"><math><mo>⓪</mo><mfrac><mn>1</mn><mn>100</mn></mfrac></math>　<math><mo>①</mo><mfrac><mn>1</mn><mn>10</mn></mfrac></math>　<math><mo>②</mo><mfrac><mn>1</mn><msqrt><mn>10</mn></msqrt></mfrac></math>　<math><mo>③</mo><msqrt><mn>10</mn></msqrt></math>　<math><mo>④</mo><mn>10</mn></math>　<math><mo>⑤</mo><mn>100</mn></math></span>
           </p>
         </div>
 
@@ -391,18 +441,18 @@
           <p class="viz-title">図で見る ― X の確率分布</p>
           <table class="dist-table" aria-label="Xの確率分布表">
             <tr>
-              <th><i>X</i>（円）</th><td>0</td><td>10</td><td>20</td><td>30</td><td>計</td>
+              <th><math><mi>X</mi><mo>(</mo></math>円）</th><td>0</td><td>10</td><td>20</td><td>30</td><td>計</td>
             </tr>
             <tr>
               <th>確率</th>
-              <td><span class="cellval" data-min="2" hidden><span class="frac"><span class="num">1</span><span class="den">8</span></span></span></td>
-              <td><span class="cellval" data-min="2" hidden><span class="frac"><span class="num">3</span><span class="den">8</span></span></span></td>
-              <td><span class="cellval" data-min="3" hidden><span class="frac"><span class="num">3</span><span class="den">8</span></span></span></td>
-              <td><span class="cellval" data-min="1" hidden><span class="frac"><span class="num">1</span><span class="den">8</span></span></span></td>
+              <td><span class="cellval" data-min="2" hidden><math><mfrac><mn>1</mn><mn>8</mn></mfrac></math></span></td>
+              <td><span class="cellval" data-min="2" hidden><math><mfrac><mn>3</mn><mn>8</mn></mfrac></math></span></td>
+              <td><span class="cellval" data-min="3" hidden><math><mfrac><mn>3</mn><mn>8</mn></mfrac></math></span></td>
+              <td><span class="cellval" data-min="1" hidden><math><mfrac><mn>1</mn><mn>8</mn></mfrac></math></span></td>
               <td>1</td>
             </tr>
           </table>
-          <div class="expr-sub" data-min="6" hidden><span class="m">E(<i>X</i>) = E(<i>Z</i>) = <span class="hl">15</span>，　V(<i>X</i>) = V(<i>Z</i>) = <span class="hl">75</span></span></div>
+          <div class="expr-sub" data-min="6" hidden><math><mi>E</mi><mrow><mo>(</mo><mi>X</mi><mo>)</mo></mrow><mo>=</mo><mi>E</mi><mrow><mo>(</mo><mi>Z</mi><mo>)</mo></mrow><mo>=</mo><mn>15</mn><mo>,</mo><mi>V</mi><mrow><mo>(</mo><mi>X</mi><mo>)</mo></mrow><mo>=</mo><mi>V</mi><mrow><mo>(</mo><mi>Z</mi><mo>)</mo></mrow><mo>=</mo><mn>75</mn></math></div>
           <p class="expr-note">確率の欄は、ヒントを進めると少しずつ埋まっていくよ。</p>
         </div>
 
@@ -411,68 +461,76 @@
 
         <div class="stages">
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title"><span class="m"><i>X</i> = 30</span> は「3枚すべて表」</span></div>
-            <p>賞金が30円になるのは、3枚とも表が出たときだけ。1枚の硬貨で表が出る確率は <span class="m"><span class="frac"><span class="num">1</span><span class="den">2</span></span></span> だから、3枚すべて表になる確率は</p>
-            <div class="formula-line"><span class="m">(<span class="frac"><span class="num">1</span><span class="den">2</span></span>)<sup>3</sup> = <span class="frac"><span class="num">1</span><span class="den">8</span></span></span></div>
-            <p>つまり <span class="m"><span class="frac"><span class="num">ア</span><span class="den">イ</span></span> = <span class="frac"><span class="num">1</span><span class="den">8</span></span></span>。左の分布表でも、<span class="m"><i>X</i> = 30</span> の欄に <span class="m"><span class="frac"><span class="num">1</span><span class="den">8</span></span></span> が入ったね。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title"><math><mi>X</mi><mo>=</mo><mn>30</mn></math> は「3枚すべて表」</span></div><p class="cite"><span class="cite-tag">使う性質</span>独立な試行の確率の積 <math><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo></mrow><mn>3</mn></msup><mo>=</mo><mfrac><mn>1</mn><mn>8</mn></mfrac></math>。この問題では、3枚とも表のときだけ賞金が30円になるので、この積がそのまま求める確率になる。</p>
+            <p>賞金が30円になるのは、3枚とも表が出たときだけ。<br>1枚の硬貨で表が出る確率は <math><mfrac><mn>1</mn><mn>2</mn></mfrac></math> だから、3枚すべて表になる確率は</p>
+            <div class="formula-line"><math><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo></mrow><mn>3</mn></msup><mo>=</mo><mfrac><mn>1</mn><mn>8</mn></mfrac></math></div>
+            <p>つまり <span class="m"><math><mfrac><mtext>ア</mtext><mtext>イ</mtext></mfrac><mo>=</mo><mfrac><mn>1</mn><mn>8</mn></mfrac></math></span>。左の分布表でも、<math><mi>X</mi><mo>=</mo><mn>30</mn></math> の欄に <math><mfrac><mn>1</mn><mn>8</mn></mfrac></math> が入ったね。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title"><span class="m"><i>X</i> = 0</span> と <span class="m"><i>X</i> = 10</span> を埋める</span></div>
-            <p><span class="m"><i>X</i> = 0</span> は「3枚すべて裏」。表と裏は対等だから、これも <span class="m">(<span class="frac"><span class="num">1</span><span class="den">2</span></span>)<sup>3</sup> = <span class="frac"><span class="num">1</span><span class="den">8</span></span></span>。</p>
-            <p><span class="m"><i>X</i> = 10</span> は「表が1枚、裏が2枚」。どの1枚が表になるかで <span class="m"><sub>3</sub>C<sub>1</sub> = 3</span> 通りの場合があるから、</p>
-            <div class="formula-line"><span class="m"><sub>3</sub>C<sub>1</sub> × (<span class="frac"><span class="num">1</span><span class="den">2</span></span>)<sup>3</sup> = 3 × <span class="frac"><span class="num">1</span><span class="den">8</span></span> = <span class="frac"><span class="num">3</span><span class="den">8</span></span></span></div>
-            <p>分布表の <span class="m"><i>X</i> = 0</span> と <span class="m"><i>X</i> = 10</span> の欄が埋まった。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title"><math><mi>X</mi><mo>=</mo><mn>0</mn></math> と <math><mi>X</mi><mo>=</mo><mn>10</mn></math> を埋める</span></div>
+            <p><math><mi>X</mi><mo>=</mo><mn>0</mn></math> は「3枚すべて裏」。表と裏は対等だから、これも <math><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo></mrow><mn>3</mn></msup><mo>=</mo><mfrac><mn>1</mn><mn>8</mn></mfrac></math>。</p>
+            <p class="cite"><span class="cite-tag">使う公式</span>組合せ <math><msub><mrow></mrow><mn>3</mn></msub><msub><mi>C</mi><mn>1</mn></msub><mo>=</mo><mn>3</mn></math>。表になる1枚の選び方が3通りあるので、確率はその分だけ3倍になる。</p><p><math><mi>X</mi><mo>=</mo><mn>10</mn></math> は「表が1枚、裏が2枚」。<br>どの1枚が表になるかで <math><msub><mrow></mrow><mn>3</mn></msub><msub><mi>C</mi><mn>1</mn></msub><mo>=</mo><mn>3</mn></math> 通りの場合があるから、</p>
+            <div class="formula-line"><math><msub><mrow></mrow><mn>3</mn></msub><msub><mi>C</mi><mn>1</mn></msub><mo>×</mo><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo></mrow><mn>3</mn></msup><mo>=</mo><mn>3</mn><mo>×</mo><mfrac><mn>1</mn><mn>8</mn></mfrac><mo>=</mo><mfrac><mn>3</mn><mn>8</mn></mfrac></math></div>
+            <p>分布表の <math><mi>X</mi><mo>=</mo><mn>0</mn></math> と <math><mi>X</mi><mo>=</mo><mn>10</mn></math> の欄が埋まった。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title"><span class="m"><i>X</i> = 20</span> で分布表が完成する</span></div>
-            <p><span class="m"><i>X</i> = 20</span> は「表が2枚、裏が1枚」。表になる2枚の選び方は <span class="m"><sub>3</sub>C<sub>2</sub> = 3</span> 通りだから、</p>
-            <div class="formula-line"><span class="m"><sub>3</sub>C<sub>2</sub> × (<span class="frac"><span class="num">1</span><span class="den">2</span></span>)<sup>3</sup> = 3 × <span class="frac"><span class="num">1</span><span class="den">8</span></span> = <span class="frac"><span class="num">3</span><span class="den">8</span></span></span></div>
-            <p>確率を全部足すと <span class="m"><span class="frac"><span class="num">1</span><span class="den">8</span></span> + <span class="frac"><span class="num">3</span><span class="den">8</span></span> + <span class="frac"><span class="num">3</span><span class="den">8</span></span> + <span class="frac"><span class="num">1</span><span class="den">8</span></span> = 1</span> になって、表の「計」と一致する。これで分布（ア〜エ）が決まった。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title"><math><mi>X</mi><mo>=</mo><mn>20</mn></math> で分布表が完成する</span></div><p class="cite"><span class="cite-tag">使う公式</span>組合せ <math><msub><mrow></mrow><mn>3</mn></msub><msub><mi>C</mi><mn>2</mn></msub><mo>=</mo><mn>3</mn></math>。表になる2枚の選び方が3通りあるので、1通りの確率に3を掛ける。</p>
+            <p><math><mi>X</mi><mo>=</mo><mn>20</mn></math> は「表が2枚、裏が1枚」。表になる2枚の選び方は <math><msub><mrow></mrow><mn>3</mn></msub><msub><mi>C</mi><mn>2</mn></msub><mo>=</mo><mn>3</mn></math> 通りだから、</p>
+            <div class="formula-line"><math><msub><mrow></mrow><mn>3</mn></msub><msub><mi>C</mi><mn>2</mn></msub><mo>×</mo><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo></mrow><mn>3</mn></msup><mo>=</mo><mn>3</mn><mo>×</mo><mfrac><mn>1</mn><mn>8</mn></mfrac><mo>=</mo><mfrac><mn>3</mn><mn>8</mn></mfrac></math></div>
+            <p class="cite"><span class="cite-tag">使う性質</span>確率の合計 <math><mfrac><mn>1</mn><mn>8</mn></mfrac><mo>+</mo><mfrac><mn>3</mn><mn>8</mn></mfrac><mo>+</mo><mfrac><mn>3</mn><mn>8</mn></mfrac><mo>+</mo><mfrac><mn>1</mn><mn>8</mn></mfrac><mo>=</mo><mn>1</mn></math>。確率分布では、すべての場合の確率の合計が1になるので、表が完成したかの検算になる。</p><p>確率を全部足すと <math><mfrac><mn>1</mn><mn>8</mn></mfrac><mo>+</mo><mfrac><mn>3</mn><mn>8</mn></mfrac><mo>+</mo><mfrac><mn>3</mn><mn>8</mn></mfrac><mo>+</mo><mfrac><mn>1</mn><mn>8</mn></mfrac><mo>=</mo><mn>1</mn></math> になって、表の「計」と一致する。<br>これで分布（ア〜エ）が決まった。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">二項分布の公式に <span class="m"><i>n</i> = 3, <i>p</i> = 1/2</span> を入れる</span></div>
-            <p>ゲーム(B) の <span class="m"><i>Y</i></span> は二項分布 <span class="m">B(3, <span class="frac"><span class="num">1</span><span class="den">2</span></span>)</span> に従う。二項分布 <span class="m">B(<i>n</i>, <i>p</i>)</span> の期待値と分散には公式がある：<span class="m">E = <i>np</i></span>、<span class="m">V = <i>np</i>(1 − <i>p</i>)</span>。<span class="m"><i>n</i> = 3</span>、<span class="m"><i>p</i> = <span class="frac"><span class="num">1</span><span class="den">2</span></span></span> を代入すると、</p>
-            <div class="formula-line"><span class="m">E(<i>Y</i>) = <i>np</i> = 3 × <span class="frac"><span class="num">1</span><span class="den">2</span></span> = <span class="frac"><span class="num">3</span><span class="den">2</span></span></span></div>
-            <div class="formula-line"><span class="m">V(<i>Y</i>) = <i>np</i>(1 − <i>p</i>) = 3 × <span class="frac"><span class="num">1</span><span class="den">2</span></span> × <span class="frac"><span class="num">1</span><span class="den">2</span></span> = <span class="frac"><span class="num">3</span><span class="den">4</span></span></span></div>
-            <p>よって <span class="m"><span class="frac"><span class="num">オ</span><span class="den">カ</span></span> = <span class="frac"><span class="num">3</span><span class="den">2</span></span></span>、<span class="m"><span class="frac"><span class="num">キ</span><span class="den">ク</span></span> = <span class="frac"><span class="num">3</span><span class="den">4</span></span></span> だね。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">二項分布の公式に <math><mi>n</mi><mo>=</mo><mn>3</mn><mo>,</mo><mi>p</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math> を入れる</span></div><p class="cite"><span class="cite-tag">使う公式</span>二項分布の期待値と分散 <math><mi>E</mi><mrow><mo>(</mo><mi>Y</mi><mo>)</mo></mrow><mo>=</mo><mi>np</mi></math>、<math><mi>V</mi><mrow><mo>(</mo><mi>Y</mi><mo>)</mo></mrow><mo>=</mo><mi>np</mi><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mi>p</mi><mo>)</mo></mrow></math>。この問題では、試行回数と表が出る確率を代入して、期待値と分散を求める。</p>
+            <p>ゲーム(B) の <math><mi>Y</mi></math> は二項分布 <math><mi>B</mi><mrow><mo>(</mo><mn>3</mn><mo>,</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo></mrow></math> に従う。<br>二項分布 <math><mi>B</mi><mrow><mo>(</mo><mi>n</mi><mo>,</mo><mi>p</mi><mo>)</mo></mrow></math> の期待値と分散には公式がある：<math><mi>E</mi><mo>=</mo><mi>np</mi></math>、<math><mi>V</mi><mo>=</mo><mi>np</mi><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mi>p</mi><mo>)</mo></mrow></math>。<math><mi>n</mi><mo>=</mo><mn>3</mn></math>、<math><mi>p</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math> を代入すると、</p>
+            <div class="formula-line"><div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>E</mi><mrow><mo>(</mo><mi>Y</mi><mo>)</mo></mrow><mo>=</mo><mi>np</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>E</mi><mrow><mo>(</mo><mi>Y</mi><mo>)</mo></mrow></mphantom><mo>=</mo><mn>3</mn><mo>×</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>E</mi><mrow><mo>(</mo><mi>Y</mi><mo>)</mo></mrow></mphantom><mo>=</mo><mfrac><mn>3</mn><mn>2</mn></mfrac></math></div>
+</div></div>
+            <div class="formula-line"><div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>V</mi><mrow><mo>(</mo><mi>Y</mi><mo>)</mo></mrow><mo>=</mo><mi>np</mi><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mi>p</mi><mo>)</mo></mrow></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>V</mi><mrow><mo>(</mo><mi>Y</mi><mo>)</mo></mrow></mphantom><mo>=</mo><mn>3</mn><mo>×</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>×</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>V</mi><mrow><mo>(</mo><mi>Y</mi><mo>)</mo></mrow></mphantom><mo>=</mo><mfrac><mn>3</mn><mn>4</mn></mfrac></math></div>
+</div></div>
+            <p>よって <span class="m"><math><mfrac><mtext>オ</mtext><mtext>カ</mtext></mfrac><mo>=</mo><mfrac><mn>3</mn><mn>2</mn></mfrac></math></span>、<span class="m"><math><mfrac><mtext>キ</mtext><mtext>ク</mtext></mfrac><mo>=</mo><mfrac><mn>3</mn><mn>4</mn></mfrac></math></span> だね。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 5</span><span class="stage-title"><span class="m"><i>Z</i> = 10<i>Y</i></span>：期待値は10倍、分散は100倍</span></div>
-            <p>確率変数を <span class="m"><i>a</i></span> 倍したときの公式は2つある。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 5</span><span class="stage-title"><math><mi>Z</mi><mo>=</mo><mn>10</mn><mi>Y</mi></math>：期待値は10倍、分散は100倍</span></div><p class="cite"><span class="cite-tag">使う公式</span>確率変数を定数倍したときの期待値と分散 <math><mi>E</mi><mrow><mo>(</mo><mi>aY</mi><mo>)</mo></mrow><mo>=</mo><mi>a</mi><mo>⋅</mo><mi>E</mi><mrow><mo>(</mo><mi>Y</mi><mo>)</mo></mrow></math>、<math><mi>V</mi><mrow><mo>(</mo><mi>aY</mi><mo>)</mo></mrow><mo>=</mo><msup><mi>a</mi><mn>2</mn></msup><mo>⋅</mo><mi>V</mi><mrow><mo>(</mo><mi>Y</mi><mo>)</mo></mrow></math>。この問題では定数が10なので、期待値の係数と分散の係数を読み取る。</p>
+            <p>確率変数を <math><mi>a</mi></math> 倍したときの公式は2つある。</p>
             <ul class="steps">
-              <li><span class="m">E(<i>aY</i>) = <i>a</i>・E(<i>Y</i>)</span>（期待値はそのまま <span class="m"><i>a</i></span> 倍）</li>
-              <li><span class="m">V(<i>aY</i>) = <i>a</i><sup>2</sup>・V(<i>Y</i>)</span>（分散は <span class="m"><i>a</i></span> の<strong>2乗</strong>倍。ここが一番間違えやすいところ）</li>
+              <li><math><mi>E</mi><mrow><mo>(</mo><mi>aY</mi><mo>)</mo></mrow><mo>=</mo><mi>a</mi><mo>⋅</mo><mi>E</mi><mrow><mo>(</mo><mi>Y</mi><mo>)</mo></mrow><mo>(</mo></math>期待値はそのまま <math><mi>a</mi></math> 倍）</li>
+              <li><math><mi>V</mi><mrow><mo>(</mo><mi>aY</mi><mo>)</mo></mrow><mo>=</mo><msup><mi>a</mi><mn>2</mn></msup><mo>⋅</mo><mi>V</mi><mrow><mo>(</mo><mi>Y</mi><mo>)</mo></mrow><mo>(</mo></math>分散は <math><mi>a</mi></math> の<strong>2乗</strong>倍。ここが一番間違えやすいところ）</li>
             </ul>
-            <p><span class="m"><i>Z</i> = 10<i>Y</i></span> だから <span class="m"><i>a</i> = 10</span>。<span class="m">E(<i>Z</i>)</span> の係数は 10 → ケ は解答群の <strong>④</strong>。<span class="m">V(<i>Z</i>)</span> の係数は <span class="m">10<sup>2</sup> = 100</span> → コ は <strong>⑤</strong>。</p>
+            <p><math><mi>Z</mi><mo>=</mo><mn>10</mn><mi>Y</mi></math> だから<br> <math><mi>a</mi><mo>=</mo><mn>10</mn></math>。<math><mi>E</mi><mrow><mo>(</mo><mi>Z</mi><mo>)</mo></mrow></math> の係数は 10 → ケ は解答群の <strong>④</strong>。<math><mi>V</mi><mrow><mo>(</mo><mi>Z</mi><mo>)</mo></mrow></math> の係数は <math><msup><mn>10</mn><mn>2</mn></msup><mo>=</mo><mn>100</mn><mo>→</mo></math>コ は <strong>⑤</strong>。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 6</span><span class="stage-title">数値を入れて <span class="m">E(<i>Z</i>), V(<i>Z</i>)</span> を出す。<span class="m"><i>X</i></span> とも比べる</span></div>
-            <div class="formula-line"><span class="m">E(<i>Z</i>) = 10 × <span class="frac"><span class="num">3</span><span class="den">2</span></span> = 15</span>，　<span class="m">V(<i>Z</i>) = 100 × <span class="frac"><span class="num">3</span><span class="den">4</span></span> = 75</span></div>
-            <p>よって サシ <span class="m">= 15</span>、スセ <span class="m">= 75</span>。</p>
-            <p>ついでに (A) の <span class="m"><i>X</i></span> も分布表から計算してみると、</p>
-            <div class="formula-line"><span class="m">E(<i>X</i>) = 0 × <span class="frac"><span class="num">1</span><span class="den">8</span></span> + 10 × <span class="frac"><span class="num">3</span><span class="den">8</span></span> + 20 × <span class="frac"><span class="num">3</span><span class="den">8</span></span> + 30 × <span class="frac"><span class="num">1</span><span class="den">8</span></span> = 15</span></div>
-            <p><span class="m">V(<i>X</i>)</span> も 75 になって、(B) とぴったり一致する。これが「(A) は (B) のように言い換えられる」ということだね。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 6</span><span class="stage-title">数値を入れて <math><mi>E</mi><mrow><mo>(</mo><mi>Z</mi><mo>)</mo></mrow><mo>,</mo><mi>V</mi><mrow><mo>(</mo><mi>Z</mi><mo>)</mo></mrow></math> を出す。<math><mi>X</mi></math> とも比べる</span></div>
+            <div class="formula-line"><math><mi>E</mi><mrow><mo>(</mo><mi>Z</mi><mo>)</mo></mrow><mo>=</mo><mn>10</mn><mo>×</mo><mfrac><mn>3</mn><mn>2</mn></mfrac><mo>=</mo><mn>15</mn><mo>,</mo></math>　<math><mi>V</mi><mrow><mo>(</mo><mi>Z</mi><mo>)</mo></mrow><mo>=</mo><mn>100</mn><mo>×</mo><mfrac><mn>3</mn><mn>4</mn></mfrac><mo>=</mo><mn>75</mn></math></div>
+            <p>よって サシ <math><mo>=</mo><mn>15</mn></math>、スセ <math><mo>=</mo><mn>75</mn></math>。</p>
+            <p class="cite"><span class="cite-tag">使う定義</span>期待値の定義 <math><mi>E</mi><mrow><mo>(</mo><mi>X</mi><mo>)</mo></mrow><mo>=</mo><mn>0</mn><mo>×</mo><mfrac><mn>1</mn><mn>8</mn></mfrac><mo>+</mo><mn>10</mn><mo>×</mo><mfrac><mn>3</mn><mn>8</mn></mfrac><mo>+</mo><mn>20</mn><mo>×</mo><mfrac><mn>3</mn><mn>8</mn></mfrac><mo>+</mo><mn>30</mn><mo>×</mo><mfrac><mn>1</mn><mn>8</mn></mfrac><mo>=</mo><mn>15</mn></math>。分布表があれば、期待値は「値×確率」の合計として、定義どおりに計算できる。</p><p>ついでに (A) の <math><mi>X</mi></math> も分布表から計算してみると、</p>
+            <div class="formula-line"><math><mi>E</mi><mrow><mo>(</mo><mi>X</mi><mo>)</mo></mrow><mo>=</mo><mn>0</mn><mo>×</mo><mfrac><mn>1</mn><mn>8</mn></mfrac><mo>+</mo><mn>10</mn><mo>×</mo><mfrac><mn>3</mn><mn>8</mn></mfrac><mo>+</mo><mn>20</mn><mo>×</mo><mfrac><mn>3</mn><mn>8</mn></mfrac><mo>+</mo><mn>30</mn><mo>×</mo><mfrac><mn>1</mn><mn>8</mn></mfrac><mo>=</mo><mn>15</mn></math></div>
+            <p><math><mi>V</mi><mrow><mo>(</mo><mi>X</mi><mo>)</mo></mrow></math> も 75 になって、(B) とぴったり一致する。<br>これが「(A) は (B) のように言い換えられる」ということだね。</p>
           </article>
 
           <article class="stage answer" hidden>
-            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(1) の答え</span></div>
-            <p><span class="m"><i>X</i></span> の確率分布は <span class="m"><span class="frac"><span class="num">1</span><span class="den">8</span></span>, <span class="frac"><span class="num">3</span><span class="den">8</span></span>, <span class="frac"><span class="num">3</span><span class="den">8</span></span>, <span class="frac"><span class="num">1</span><span class="den">8</span></span></span>。二項分布の公式 <span class="m">E(<i>Y</i>) = <i>np</i></span>、<span class="m">V(<i>Y</i>) = <i>np</i>(1 − <i>p</i>)</span> と、定数倍の公式 <span class="m">E(<i>aY</i>) = <i>a</i>・E(<i>Y</i>)</span>、<span class="m">V(<i>aY</i>) = <i>a</i><sup>2</sup>・V(<i>Y</i>)</span> を使うと、<span class="m">E(<i>Z</i>) = 15</span>、<span class="m">V(<i>Z</i>) = 75</span> が得られ、<span class="m"><i>X</i></span> の期待値・分散とも一致する。</p>
+            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(1) の答え</span></div><p class="cite"><span class="cite-tag">使う公式</span>二項分布の期待値 <math><mi>E</mi><mrow><mo>(</mo><mi>Y</mi><mo>)</mo></mrow><mo>=</mo><mi>np</mi></math>。この公式に試行回数と確率を入れることが、(1) の計算の出発点になる。</p>
+            <p><math><mi>X</mi></math> の確率分布は <math><mfrac><mn>1</mn><mn>8</mn></mfrac><mo>,</mo><mfrac><mn>3</mn><mn>8</mn></mfrac><mo>,</mo><mfrac><mn>3</mn><mn>8</mn></mfrac><mo>,</mo><mfrac><mn>1</mn><mn>8</mn></mfrac></math>。<br>二項分布の公式 <math><mi>E</mi><mrow><mo>(</mo><mi>Y</mi><mo>)</mo></mrow><mo>=</mo><mi>np</mi></math>、<math><mi>V</mi><mrow><mo>(</mo><mi>Y</mi><mo>)</mo></mrow><mo>=</mo><mi>np</mi><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mi>p</mi><mo>)</mo></mrow></math> と、定数倍の公式 <math><mi>E</mi><mrow><mo>(</mo><mi>aY</mi><mo>)</mo></mrow><mo>=</mo><mi>a</mi><mo>⋅</mo><mi>E</mi><mrow><mo>(</mo><mi>Y</mi><mo>)</mo></mrow></math>、<math><mi>V</mi><mrow><mo>(</mo><mi>aY</mi><mo>)</mo></mrow><mo>=</mo><msup><mi>a</mi><mn>2</mn></msup><mo>⋅</mo><mi>V</mi><mrow><mo>(</mo><mi>Y</mi><mo>)</mo></mrow></math> を使うと、<br><math><mi>E</mi><mrow><mo>(</mo><mi>Z</mi><mo>)</mo></mrow><mo>=</mo><mn>15</mn></math>、<math><mi>V</mi><mrow><mo>(</mo><mi>Z</mi><mo>)</mo></mrow><mo>=</mo><mn>75</mn></math> が得られ、<math><mi>X</mi></math> の期待値・分散とも一致する。</p>
             <div class="ans-line">
-              <span class="ans-chip"><span class="kana">アイ</span><span class="m"><span class="frac"><span class="num">1</span><span class="den">8</span></span></span></span>
-              <span class="ans-chip"><span class="kana">ウエ</span><span class="m"><span class="frac"><span class="num">3</span><span class="den">8</span></span></span></span>
-              <span class="ans-chip"><span class="kana">オカ</span><span class="m"><span class="frac"><span class="num">3</span><span class="den">2</span></span></span></span>
-              <span class="ans-chip"><span class="kana">キク</span><span class="m"><span class="frac"><span class="num">3</span><span class="den">4</span></span></span></span>
-              <span class="ans-chip"><span class="kana">ケ</span><span class="m">④（10）</span></span>
-              <span class="ans-chip"><span class="kana">コ</span><span class="m">⑤（100）</span></span>
-              <span class="ans-chip"><span class="kana">サシ</span><span class="m">15</span></span>
-              <span class="ans-chip"><span class="kana">スセ</span><span class="m">75</span></span>
+              <span class="ans-chip"><span class="kana">アイ</span><math><mfrac><mn>1</mn><mn>8</mn></mfrac></math></span>
+              <span class="ans-chip"><span class="kana">ウエ</span><math><mfrac><mn>3</mn><mn>8</mn></mfrac></math></span>
+              <span class="ans-chip"><span class="kana">オカ</span><math><mfrac><mn>3</mn><mn>2</mn></mfrac></math></span>
+              <span class="ans-chip"><span class="kana">キク</span><math><mfrac><mn>3</mn><mn>4</mn></mfrac></math></span>
+              <span class="ans-chip"><span class="kana">ケ</span><math><mo>④</mo><mrow><mo>(</mo><mn>10</mn><mo>)</mo></mrow></math></span>
+              <span class="ans-chip"><span class="kana">コ</span><math><mo>⑤</mo><mrow><mo>(</mo><mn>100</mn><mo>)</mo></mrow></math></span>
+              <span class="ans-chip"><span class="kana">サシ</span><math><mn>15</mn></math></span>
+              <span class="ans-chip"><span class="kana">スセ</span><math><mn>75</mn></math></span>
             </div>
-            <div class="point-box"><span class="pt">ポイント</span>二項分布は <span class="m">E = <i>np</i></span>、<span class="m">V = <i>np</i>(1 − <i>p</i>)</span>。定数倍では期待値が <span class="m"><i>a</i></span> 倍、分散が <span class="m"><i>a</i><sup>2</sup></span> 倍になる。「同時に投げる」も「1枚ずつ投げる」も、表の出る枚数の分布はまったく同じ。</div>
+            <div class="point-box"><span class="pt">ポイント</span><p class="cite"><span class="cite-tag">使う公式</span>二項分布の期待値と分散 <math><mi>E</mi><mo>=</mo><mi>np</mi></math>、<math><mi>V</mi><mo>=</mo><mi>np</mi><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mi>p</mi><mo>)</mo></mrow></math>。定数倍では期待値が定数の倍、分散が定数の2乗倍になることと、セットで覚える。</p>二項分布は <math><mi>E</mi><mo>=</mo><mi>np</mi></math>、<math><mi>V</mi><mo>=</mo><mi>np</mi><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mi>p</mi><mo>)</mo></mrow></math>。定数倍では期待値が <math><mi>a</mi></math> 倍、分散が <math><msup><mi>a</mi><mn>2</mn></msup></math> 倍になる。<br>「同時に投げる」も「1枚ずつ投げる」も、<br>表の出る枚数の分布はまったく同じ。</div>
           </article>
         </div>
 
@@ -495,13 +553,13 @@
             <span class="q-points">配点 4点</span>
           </div>
           <p class="q-body">硬貨の表裏が出る確率は等しいものとする。</p>
-          <p class="q-body"><strong>ゲーム(C)</strong>：100円硬貨が <span class="m"><i>a</i></span> 枚、10円硬貨が <span class="m"><i>b</i></span> 枚ある（<span class="m"><i>a</i></span>, <span class="m"><i>b</i></span> は自然数）。これらすべての硬貨を同時に投げて、表が出たものをすべて賞金として受け取る。受け取る賞金を <span class="m"><i>W</i></span> 円とする。</p>
-          <p class="q-body"><span class="m"><i>a</i> = 5</span>、<span class="m"><i>b</i> = 3</span> のとき、<span class="m">E(<i>W</i>) = <span class="blank" data-kana="ソ" data-ans="2">ソ</span><span class="blank" data-kana="タ" data-ans="6">タ</span><span class="blank" data-kana="チ" data-ans="5">チ</span></span> となる。</p>
-          <p class="q-body">また、<span class="m">E(<i>W</i>) = <span class="blank" data-kana="ソ" data-ans="2">ソ</span><span class="blank" data-kana="タ" data-ans="6">タ</span><span class="blank" data-kana="チ" data-ans="5">チ</span></span> となる自然数の組 <span class="m">(<i>a</i>, <i>b</i>)</span> は、全部で <span class="blank" data-kana="ツ" data-ans="5">ツ</span> 組ある。</p>
+          <p class="q-body"><strong>ゲーム(C)</strong>：100円硬貨が <math><mi>a</mi></math> 枚、10円硬貨が <math><mi>b</mi></math> 枚ある<math><mo>(</mo><mi>a</mi><mo>,</mo><mi>b</mi></math> は自然数）。これらすべての硬貨を同時に投げて、表が出たものをすべて賞金として受け取る。受け取る賞金を <math><mi>W</mi></math> 円とする。</p>
+          <p class="q-body"><math><mi>a</mi><mo>=</mo><mn>5</mn></math>、<math><mi>b</mi><mo>=</mo><mn>3</mn></math> のとき、<math><mi>E</mi><mrow><mo>(</mo><mi>W</mi><mo>)</mo></mrow><mo>=</mo><mtext><span class="blank" data-kana="ソ" data-ans="2">ソ</span></mtext><mtext><span class="blank" data-kana="タ" data-ans="6">タ</span></mtext><mtext><span class="blank" data-kana="チ" data-ans="5">チ</span></mtext></math> となる。</p>
+          <p class="q-body">また、<math><mi>E</mi><mrow><mo>(</mo><mi>W</mi><mo>)</mo></mrow><mo>=</mo><mtext><span class="blank" data-kana="ソ" data-ans="2">ソ</span></mtext><mtext><span class="blank" data-kana="タ" data-ans="6">タ</span></mtext><mtext><span class="blank" data-kana="チ" data-ans="5">チ</span></mtext></math> となる自然数の組 <math><mo>(</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo>)</mo></math> は、全部で <span class="blank" data-kana="ツ" data-ans="5">ツ</span> 組ある。</p>
         </div>
 
         <div class="viz" id="viz-2">
-          <p class="viz-title">図で見る ― 10a + b = 53 を満たす格子点 (a, b)</p>
+          <p class="viz-title">図で見る<math><mo>―</mo><mn>10</mn><mi>a</mi><mo>+</mo><mi>b</mi><mo>=</mo><mn>53</mn></math>を満たす格子点<math><mo>(</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo>)</mo></math></p>
           <svg viewBox="0 0 560 470" role="img" aria-label="直線10a+b=53と、その上にある自然数の格子点">
             <!-- grid -->
             <g style="stroke:var(--line)" stroke-width="1">
@@ -564,46 +622,50 @@
         <div class="stages">
           <article class="stage hint" hidden>
             <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">100円と10円を分けて、表の枚数を置く</span></div>
-            <p>100円硬貨で表が出た枚数を <span class="m"><i>Y</i><sub>1</sub></span>、10円硬貨で表が出た枚数を <span class="m"><i>Y</i><sub>2</sub></span> と置く。賞金は「100円 × 枚数」と「10円 × 枚数」の合計だから、</p>
-            <div class="formula-line"><span class="m"><i>W</i> = 100<i>Y</i><sub>1</sub> + 10<i>Y</i><sub>2</sub></span></div>
-            <p><span class="m"><i>Y</i><sub>1</sub></span> と <span class="m"><i>Y</i><sub>2</sub></span> それぞれの期待値が分かれば、(1) で使った「定数倍」と「和」の公式で <span class="m">E(<i>W</i>)</span> が出せる。</p>
+            <p>100円硬貨で表が出た枚数を <math><msub><mi>Y</mi><mn>1</mn></msub></math>、10円硬貨で表が出た枚数を <math><msub><mi>Y</mi><mn>2</mn></msub></math> と置く。<br>賞金は「100円 × 枚数」と「10円 × 枚数」の合計だから、</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>期待値の線形性 <math><mi>W</mi><mo>=</mo><mn>100</mn><msub><mi>Y</mi><mn>1</mn></msub><mo>+</mo><mn>10</mn><msub><mi>Y</mi><mn>2</mn></msub></math>。賞金を種類ごとの「金額×枚数」の和で表しておくと、期待値も種類ごとに分けて足せる。</p><div class="formula-line"><math><mi>W</mi><mo>=</mo><mn>100</mn><msub><mi>Y</mi><mn>1</mn></msub><mo>+</mo><mn>10</mn><msub><mi>Y</mi><mn>2</mn></msub></math></div>
+            <p><math><msub><mi>Y</mi><mn>1</mn></msub></math> と <math><msub><mi>Y</mi><mn>2</mn></msub></math> それぞれの期待値が分かれば、<br>(1) で使った「定数倍」と「和」の公式で <math><mi>E</mi><mrow><mo>(</mo><mi>W</mi><mo>)</mo></mrow></math> が出せる。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title"><span class="m">E(<i>Y</i>₁) = <i>a</i>/2, E(<i>Y</i>₂) = <i>b</i>/2</span> から <span class="m">E(<i>W</i>)</span> の式を作る</span></div>
-            <p><span class="m"><i>Y</i><sub>1</sub></span> は二項分布 <span class="m">B(<i>a</i>, <span class="frac"><span class="num">1</span><span class="den">2</span></span>)</span> に従うから、公式 <span class="m">E = <i>np</i></span> より <span class="m">E(<i>Y</i><sub>1</sub>) = <i>a</i> × <span class="frac"><span class="num">1</span><span class="den">2</span></span> = <span class="frac"><span class="num"><i>a</i></span><span class="den">2</span></span></span>。同様に <span class="m">E(<i>Y</i><sub>2</sub>) = <span class="frac"><span class="num"><i>b</i></span><span class="den">2</span></span></span>。</p>
-            <div class="formula-line"><span class="m">E(<i>W</i>) = 100 × <span class="frac"><span class="num"><i>a</i></span><span class="den">2</span></span> + 10 × <span class="frac"><span class="num"><i>b</i></span><span class="den">2</span></span> = 50<i>a</i> + 5<i>b</i></span></div>
-            <p><span class="m">E(<i>W</i>)</span> を <span class="m"><i>a</i></span>, <span class="m"><i>b</i></span> の式で表せた。これがこの問題の中心になる式だよ。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title"><math><mi>E</mi><mrow><mo>(</mo><mi>Y</mi><mo>₁</mo><mo>)</mo></mrow><mo>=</mo><mfrac><mi>a</mi><mn>2</mn></mfrac><mo>,</mo><mi>E</mi><mrow><mo>(</mo><mi>Y</mi><mo>₂</mo><mo>)</mo></mrow><mo>=</mo><mfrac><mi>b</mi><mn>2</mn></mfrac></math> から <math><mi>E</mi><mrow><mo>(</mo><mi>W</mi><mo>)</mo></mrow></math> の式を作る</span></div><p class="cite"><span class="cite-tag">使う公式</span>二項分布の期待値 <math><mi>E</mi><mo>=</mo><mi>np</mi></math>。表が出る枚数の期待値は、枚数に表が出る確率を掛けて求める。</p>
+            <p><math><msub><mi>Y</mi><mn>1</mn></msub></math> は二項分布 <math><mi>B</mi><mrow><mo>(</mo><mi>a</mi><mo>,</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo></mrow></math> に従うから、<br>公式 <math><mi>E</mi><mo>=</mo><mi>np</mi></math> より <math><mi>E</mi><mrow><mo>(</mo><msub><mi>Y</mi><mn>1</mn></msub><mo>)</mo></mrow><mo>=</mo><mi>a</mi><mo>×</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>=</mo><mfrac><mi>a</mi><mn>2</mn></mfrac></math>。同様に <math><mi>E</mi><mrow><mo>(</mo><msub><mi>Y</mi><mn>2</mn></msub><mo>)</mo></mrow><mo>=</mo><mfrac><mi>b</mi><mn>2</mn></mfrac></math>。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>期待値の線形性 <math><mi>E</mi><mrow><mo>(</mo><mi>W</mi><mo>)</mo></mrow><mo>=</mo><mn>100</mn><mo>×</mo><mfrac><mi>a</mi><mn>2</mn></mfrac><mo>+</mo><mn>10</mn><mo>×</mo><mfrac><mi>b</mi><mn>2</mn></mfrac><mo>=</mo><mn>50</mn><mi>a</mi><mo>+</mo><mn>5</mn><mi>b</mi></math>。定数倍した期待値はそのまま足せるので、全体の期待値は2種類の硬貨の寄与の合計になる。</p><div class="formula-line"><math><mi>E</mi><mrow><mo>(</mo><mi>W</mi><mo>)</mo></mrow><mo>=</mo><mn>100</mn><mo>×</mo><mfrac><mi>a</mi><mn>2</mn></mfrac><mo>+</mo><mn>10</mn><mo>×</mo><mfrac><mi>b</mi><mn>2</mn></mfrac><mo>=</mo><mn>50</mn><mi>a</mi><mo>+</mo><mn>5</mn><mi>b</mi></math></div>
+            <p><math><mi>E</mi><mrow><mo>(</mo><mi>W</mi><mo>)</mo></mrow></math> を <math><mi>a</mi><mo>,</mo><mi>b</mi></math> の式で表せた。これがこの問題の中心になる式だよ。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title"><span class="m"><i>a</i> = 5, <i>b</i> = 3</span> を代入する</span></div>
-            <div class="formula-line"><span class="m">E(<i>W</i>) = 50 × 5 + 5 × 3 = 250 + 15 = 265</span></div>
-            <p>よって ソタチ <span class="m">= 265</span>。次は、この 265 になる組 <span class="m">(<i>a</i>, <i>b</i>)</span> が全部で何組あるかを数える。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title"><math><mi>a</mi><mo>=</mo><mn>5</mn><mo>,</mo><mi>b</mi><mo>=</mo><mn>3</mn></math> を代入する</span></div>
+            <div class="formula-line"><div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>E</mi><mrow><mo>(</mo><mi>W</mi><mo>)</mo></mrow><mo>=</mo><mn>50</mn><mo>×</mo><mn>5</mn><mo>+</mo><mn>5</mn><mo>×</mo><mn>3</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>E</mi><mrow><mo>(</mo><mi>W</mi><mo>)</mo></mrow></mphantom><mo>=</mo><mn>250</mn><mo>+</mo><mn>15</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>E</mi><mrow><mo>(</mo><mi>W</mi><mo>)</mo></mrow></mphantom><mo>=</mo><mn>265</mn></math></div>
+</div></div>
+            <p>よって ソタチ <math><mo>=</mo><mn>265</mn></math>。<br>次は、この 265 になる組 <math><mo>(</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo>)</mo></math> が全部で何組あるかを数える。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title"><span class="m">50<i>a</i> + 5<i>b</i> = 265</span> を整理すると <span class="m">10<i>a</i> + <i>b</i> = 53</span></span></div>
-            <p><span class="m">E(<i>W</i>) = 265</span> となる条件は <span class="m">50<i>a</i> + 5<i>b</i> = 265</span>。両辺を 5 で割ると <span class="m">10<i>a</i> + <i>b</i> = 53</span>、つまり <span class="m"><i>b</i> = 53 − 10<i>a</i></span>。<span class="m"><i>a</i></span> を1つずつ増やして <span class="m"><i>b</i></span> を決めていくと、</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title"><math><mn>50</mn><mi>a</mi><mo>+</mo><mn>5</mn><mi>b</mi><mo>=</mo><mn>265</mn></math> を整理すると <math><mn>10</mn><mi>a</mi><mo>+</mo><mi>b</mi><mo>=</mo><mn>53</mn></math></span></div><p class="cite"><span class="cite-tag">使う定義</span>自然数 <math><mi>b</mi><mo>=</mo><mn>53</mn><mo>−</mo><mn>10</mn><mi>a</mi></math>。自然数は正の整数なので、この式で決まる値が正の整数になる組だけを数える。</p>
+            <p><math><mi>E</mi><mrow><mo>(</mo><mi>W</mi><mo>)</mo></mrow><mo>=</mo><mn>265</mn></math> となる条件は <math><mn>50</mn><mi>a</mi><mo>+</mo><mn>5</mn><mi>b</mi><mo>=</mo><mn>265</mn></math>。<br>両辺を 5 で割ると <math><mn>10</mn><mi>a</mi><mo>+</mo><mi>b</mi><mo>=</mo><mn>53</mn></math>、<br>つまり <math><mi>b</mi><mo>=</mo><mn>53</mn><mo>−</mo><mn>10</mn><mi>a</mi></math>。<math><mi>a</mi></math> を1つずつ増やして <math><mi>b</mi></math> を決めていくと、</p>
             <ul class="steps">
-              <li><span class="m"><i>a</i> = 1</span> → <span class="m"><i>b</i> = 43</span> ○</li>
-              <li><span class="m"><i>a</i> = 2</span> → <span class="m"><i>b</i> = 33</span> ○</li>
-              <li><span class="m"><i>a</i> = 3</span> → <span class="m"><i>b</i> = 23</span> ○</li>
-              <li><span class="m"><i>a</i> = 4</span> → <span class="m"><i>b</i> = 13</span> ○</li>
-              <li><span class="m"><i>a</i> = 5</span> → <span class="m"><i>b</i> = 3</span> ○</li>
-              <li><span class="m"><i>a</i> = 6</span> → <span class="m"><i>b</i> = −7</span> で自然数にならない ×</li>
+              <li><math><mi>a</mi><mo>=</mo><mn>1</mn><mo>→</mo><mi>b</mi><mo>=</mo><mn>43</mn><mo>○</mo></math></li>
+              <li><math><mi>a</mi><mo>=</mo><mn>2</mn><mo>→</mo><mi>b</mi><mo>=</mo><mn>33</mn><mo>○</mo></math></li>
+              <li><math><mi>a</mi><mo>=</mo><mn>3</mn><mo>→</mo><mi>b</mi><mo>=</mo><mn>23</mn><mo>○</mo></math></li>
+              <li><math><mi>a</mi><mo>=</mo><mn>4</mn><mo>→</mo><mi>b</mi><mo>=</mo><mn>13</mn><mo>○</mo></math></li>
+              <li><math><mi>a</mi><mo>=</mo><mn>5</mn><mo>→</mo><mi>b</mi><mo>=</mo><mn>3</mn><mo>○</mo></math></li>
+              <li><math><mi>a</mi><mo>=</mo><mn>6</mn><mo>→</mo><mi>b</mi><mo>=</mo><mo>−</mo><mn>7</mn></math> で自然数にならない ×</li>
             </ul>
-            <p>左の図でも、直線 <span class="m">10<i>a</i> + <i>b</i> = 53</span> の上に自然数の格子点が5つだけあると確認できる。全部で <strong>5組</strong> → ツ <span class="m">= 5</span>。</p>
+            <p>左の図でも、直線 <math><mn>10</mn><mi>a</mi><mo>+</mo><mi>b</mi><mo>=</mo><mn>53</mn></math> の上に自然数の格子点が5つだけあると確認できる。<br>全部で <strong>5組</strong> → ツ <math><mo>=</mo><mn>5</mn></math>。</p>
           </article>
 
           <article class="stage answer" hidden>
-            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(2) の答え</span></div>
-            <p><span class="m"><i>W</i> = 100<i>Y</i><sub>1</sub> + 10<i>Y</i><sub>2</sub></span> と分けると、期待値の線形性から <span class="m">E(<i>W</i>) = 50<i>a</i> + 5<i>b</i></span>。<span class="m"><i>a</i> = 5</span>、<span class="m"><i>b</i> = 3</span> のとき <span class="m">E(<i>W</i>) = 265</span>。また <span class="m">50<i>a</i> + 5<i>b</i> = 265</span>（つまり <span class="m">10<i>a</i> + <i>b</i> = 53</span>）を満たす自然数の組は <span class="m">(1, 43), (2, 33), (3, 23), (4, 13), (5, 3)</span> の5組である。</p>
+            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(2) の答え</span></div><p class="cite"><span class="cite-tag">使う性質</span>期待値の線形性 <math><mi>E</mi><mrow><mo>(</mo><mi>W</mi><mo>)</mo></mrow><mo>=</mo><mn>50</mn><mi>a</mi><mo>+</mo><mn>5</mn><mi>b</mi></math>。種類ごとに分けた期待値を足すことで、全体の期待値を2つの文字の式で表している。</p>
+            <p><math><mi>W</mi><mo>=</mo><mn>100</mn><msub><mi>Y</mi><mn>1</mn></msub><mo>+</mo><mn>10</mn><msub><mi>Y</mi><mn>2</mn></msub></math> と分けると、<br>期待値の線形性から <math><mi>E</mi><mrow><mo>(</mo><mi>W</mi><mo>)</mo></mrow><mo>=</mo><mn>50</mn><mi>a</mi><mo>+</mo><mn>5</mn><mi>b</mi></math>。<math><mi>a</mi><mo>=</mo><mn>5</mn></math>、<math><mi>b</mi><mo>=</mo><mn>3</mn></math> のとき <math><mi>E</mi><mrow><mo>(</mo><mi>W</mi><mo>)</mo></mrow><mo>=</mo><mn>265</mn></math>。<br>また <math><mn>50</mn><mi>a</mi><mo>+</mo><mn>5</mn><mi>b</mi><mo>=</mo><mn>265</mn><mo>(</mo></math>つまり <math><mn>10</mn><mi>a</mi><mo>+</mo><mi>b</mi><mo>=</mo><mn>53</mn><mo>)</mo></math>を満たす自然数の組は <math><mrow><mo>(</mo><mn>1</mn><mo>,</mo><mn>43</mn><mo>)</mo></mrow><mo>,</mo><mrow><mo>(</mo><mn>2</mn><mo>,</mo><mn>33</mn><mo>)</mo></mrow><mo>,</mo><mrow><mo>(</mo><mn>3</mn><mo>,</mo><mn>23</mn><mo>)</mo></mrow><mo>,</mo><mrow><mo>(</mo><mn>4</mn><mo>,</mo><mn>13</mn><mo>)</mo></mrow><mo>,</mo><mrow><mo>(</mo><mn>5</mn><mo>,</mo><mn>3</mn><mo>)</mo></mrow></math> の5組である。</p>
             <div class="ans-line">
-              <span class="ans-chip"><span class="kana">ソタチ</span><span class="m">265</span></span>
-              <span class="ans-chip"><span class="kana">ツ</span><span class="m">5</span></span>
+              <span class="ans-chip"><span class="kana">ソタチ</span><math><mn>265</mn></math></span>
+              <span class="ans-chip"><span class="kana">ツ</span><math><mn>5</mn></math></span>
             </div>
-            <div class="point-box"><span class="pt">ポイント</span>期待値は「種類ごとに分けて、線形性で足す」が基本。組の個数を数えるときは、式を <span class="m"><i>b</i> = 53 − 10<i>a</i></span> の形にして、<span class="m"><i>a</i></span> を小さい順に試し、<span class="m"><i>b</i></span> が自然数でなくなる所で止める。</div>
+            <div class="point-box"><span class="pt">ポイント</span><p class="cite"><span class="cite-tag">使う性質</span>期待値の線形性 <math><mi>W</mi><mo>=</mo><mn>100</mn><msub><mi>Y</mi><mn>1</mn></msub><mo>+</mo><mn>10</mn><msub><mi>Y</mi><mn>2</mn></msub></math>。まず賞金を種類ごとの和で表し、期待値を分けて足すのが基本の流れになる。</p>期待値は「種類ごとに分けて、線形性で足す」が基本。<br>組の個数を数えるときは、式を <math><mi>b</mi><mo>=</mo><mn>53</mn><mo>−</mo><mn>10</mn><mi>a</mi></math> の形にして、<br><math><mi>a</mi></math> を小さい順に試し、<math><mi>b</mi></math> が自然数でなくなる所で止める。</div>
           </article>
         </div>
 
@@ -626,7 +688,7 @@
           <a href="moshi.html">模試解説の一覧に戻る</a>
         </p>
         <p class="portal-back"><a href="index.html">Nanryo mathematics portal に戻る</a></p>
-        2024年2月共通テスト模試（2年）数学II・B・C 第5問（統計的な推測・選択、配点16点）のヒント式解説。(1) ゲーム(A)・(B) 12点：X の確率分布／二項分布の期待値と分散／確率変数の定数倍。(2) ゲーム(C) 4点：期待値の線形性と、<span class="m">E(<i>W</i>)</span> が与えられた値になる自然数の組の個数。
+        2024年2月共通テスト模試（2年）数学II・B・C 第5問（統計的な推測・選択、配点16点）のヒント式解説。(1) ゲーム(A)・(B) 12点：X の確率分布／二項分布の期待値と分散／確率変数の定数倍。(2) ゲーム(C) 4点：期待値の線形性と、<math><mi>E</mi><mrow><mo>(</mo><mi>W</mi><mo>)</mo></mrow></math> が与えられた値になる自然数の組の個数。
       </footer>
     </div>
 

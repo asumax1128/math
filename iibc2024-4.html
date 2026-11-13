@@ -337,7 +337,57 @@
         }
         .problem .controls { grid-column: 2; grid-row: 2; margin-top: 12px; }
       }
-    </style>
+    
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+
+      /* 積分記号は大きめに表示する（元のページの可読化デザインに合わせる） */
+      math .int-op{font-size:1.35em}
+      /* calc-12 世代（.card）と calc-18 世代（.unit）の、図のない問題の全幅化 */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig>.step{position:static !important}
+        .card.nofig>.steps-wrap{max-height:none !important;overflow:visible !important}
+        .unit.nofig{display:block !important}
+        .unit.nofig>.qside{position:static !important}
+        .unit.nofig>.steps-stack{max-height:none !important;overflow:visible !important}
+      }
+</style>
   </head>
   <body>
     <div class="wrap">
@@ -373,7 +423,7 @@
     <div class="q-head">
       <span class="q-num">設定</span><span class="q-title">二つの等差数列</span>
     </div>
-    <p class="q-body">二つの等差数列 <span class="m">{<i>a<sub>n</sub></i>}</span>、<span class="m">{<i>b<sub>n</sub></i>}</span> がある。数列 <span class="m">{<i>a<sub>n</sub></i>}</span> は <span class="m"><i>a</i><sub>2</sub> = 7</span>、<span class="m"><i>a</i><sub>4</sub> = 13</span> である。また、数列 <span class="m">{<i>b<sub>n</sub></i>}</span> は公差が <span class="m">2</span> で、<span class="m"><i>b</i><sub>1</sub> + <i>b</i><sub>2</sub> + <i>b</i><sub>3</sub> = 21</span> である。</p>
+    <p class="q-body">二つの等差数列 <math><mo>{</mo><msub><mi>a</mi><mi>n</mi></msub><mo>}</mo></math>、<math><mo>{</mo><msub><mi>b</mi><mi>n</mi></msub><mo>}</mo></math> がある。数列 <math><mo>{</mo><msub><mi>a</mi><mi>n</mi></msub><mo>}</mo></math> は <math><msub><mi>a</mi><mn>2</mn></msub><mo>=</mo><mn>7</mn></math>、<math><msub><mi>a</mi><mn>4</mn></msub><mo>=</mo><mn>13</mn></math> である。また、数列 <math><mo>{</mo><msub><mi>b</mi><mi>n</mi></msub><mo>}</mo></math> は公差が <math><mn>2</mn></math> で、<math><msub><mi>b</mi><mn>1</mn></msub><mo>+</mo><msub><mi>b</mi><mn>2</mn></msub><mo>+</mo><msub><mi>b</mi><mn>3</mn></msub><mo>=</mo><mn>21</mn></math> である。</p>
   </div>
 
   <!-- ================= 〔一般項〕 ================= -->
@@ -385,11 +435,11 @@
         <span class="q-num">一般項</span><span class="q-title">一般項と共通項</span>
         <span class="q-points">配点 6点</span>
       </div>
-      <p class="q-body">数列 <span class="m">{<i>a<sub>n</sub></i>}</span> の一般項は <span class="m"><i>a<sub>n</sub></i> = <span class="blank" data-kana="ア" data-ans="3">ア</span><i>n</i> + <span class="blank" data-kana="イ" data-ans="1">イ</span></span> であり、数列 <span class="m">{<i>b<sub>n</sub></i>}</span> の一般項は <span class="m"><i>b<sub>n</sub></i> = <span class="blank" data-kana="ウ" data-ans="2">ウ</span><i>n</i> + <span class="blank" data-kana="エ" data-ans="3">エ</span></span> である。</p>
-      <p class="q-body">二つの数列 <span class="m">{<i>a<sub>n</sub></i>}</span>、<span class="m">{<i>b<sub>n</sub></i>}</span> に共通に含まれる数を、小さい方から順に並べてできる数列 <span class="m">{<i>c<sub>n</sub></i>}</span> を考える。このとき、<span class="m"><i>c<sub>n</sub></i> = <i>a</i><sub><span class="blank" data-kana="オ" data-ans="2n">オ</span></sub></span>（<span class="m"><i>n</i> = 1, 2, 3, …</span>）である。</p>
+      <p class="q-body">数列 <math><mo>{</mo><msub><mi>a</mi><mi>n</mi></msub><mo>}</mo></math> の一般項は <math><msub><mi>a</mi><mi>n</mi></msub><mo>=</mo><mtext><span class="blank" data-kana="ア" data-ans="3">ア</span></mtext><mi>n</mi><mo>+</mo><mtext><span class="blank" data-kana="イ" data-ans="1">イ</span></mtext></math> であり、数列 <math><mo>{</mo><msub><mi>b</mi><mi>n</mi></msub><mo>}</mo></math> の一般項は <math><msub><mi>b</mi><mi>n</mi></msub><mo>=</mo><mtext><span class="blank" data-kana="ウ" data-ans="2">ウ</span></mtext><mi>n</mi><mo>+</mo><mtext><span class="blank" data-kana="エ" data-ans="3">エ</span></mtext></math> である。</p>
+      <p class="q-body">二つの数列 <math><mo>{</mo><msub><mi>a</mi><mi>n</mi></msub><mo>}</mo></math>、<math><mo>{</mo><msub><mi>b</mi><mi>n</mi></msub><mo>}</mo></math> に共通に含まれる数を、小さい方から順に並べてできる数列 <math><mo>{</mo><msub><mi>c</mi><mi>n</mi></msub><mo>}</mo></math> を考える。このとき、<math><msub><mi>c</mi><mi>n</mi></msub><mo>=</mo><msub><mi>a</mi><mtext><span class="blank" data-kana="オ" data-ans="2n">オ</span></mtext></msub><mrow><mo>(</mo><mi>n</mi><mo>=</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mo>…</mo><mo>)</mo></mrow></math>である。</p>
       <p class="q-body choices">オ の解答群<br />
-        <span class="copt">⓪ <span class="m">2<i>n</i> − 2</span>　① <span class="m">2<i>n</i> − 1</span>　② <span class="m">2<i>n</i></span>　③ <span class="m">2<i>n</i> + 1</span></span>
-        <span class="copt">④ <span class="m">3<i>n</i> − 2</span>　⑤ <span class="m">3<i>n</i> − 1</span>　⑥ <span class="m">3<i>n</i></span>　⑦ <span class="m">3<i>n</i> + 1</span></span>
+        <span class="copt"><math><mo>⓪</mo><mn>2</mn><mi>n</mi><mo>−</mo><mn>2</mn></math>　<math><mo>①</mo><mn>2</mn><mi>n</mi><mo>−</mo><mn>1</mn></math>　<math><mo>②</mo><mn>2</mn><mi>n</mi></math>　<math><mo>③</mo><mn>2</mn><mi>n</mi><mo>+</mo><mn>1</mn></math></span>
+        <span class="copt"><math><mo>④</mo><mn>3</mn><mi>n</mi><mo>−</mo><mn>2</mn></math>　<math><mo>⑤</mo><mn>3</mn><mi>n</mi><mo>−</mo><mn>1</mn></math>　<math><mo>⑥</mo><mn>3</mn><mi>n</mi></math>　<math><mo>⑦</mo><mn>3</mn><mi>n</mi><mo>+</mo><mn>1</mn></math></span>
       </p>
     </div>
 
@@ -459,53 +509,53 @@
       <p class="expr-note">各数列の値は、ヒントを進めると図に入ってくるよ。共通する数は最後のヒントで結ばれる。</p>
     </div>
 
-    <p class="think-note">等差数列の一般項は「初項」と「公差」が分かれば作れる。まずは <span class="m">{<i>a<sub>n</sub></i>}</span> の公差から考えよう。</p>
+    <p class="think-note">等差数列の一般項は「初項」と「公差」が分かれば作れる。まずは <math><mo>{</mo><msub><mi>a</mi><mi>n</mi></msub><mo>}</mo></math> の公差から考えよう。</p>
     </div>
 
     <div class="stages">
       <article class="stage hint" hidden>
-        <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">まず {<i>a<sub>n</sub></i>} の公差を出す</span></div>
-        <p><span class="m"><i>a</i><sub>2</sub> = 7</span> から <span class="m"><i>a</i><sub>4</sub> = 13</span> まで、項は<strong>2つ進んで</strong>、値は <span class="m">7</span> から <span class="m">13</span> へ増えている。2回分増えた量が <span class="m">13 − 7 = 6</span> だから、1回分（公差）は：</p>
-        <div class="formula-line"><span class="m">公差 = (13 − 7) ÷ 2 = 3</span></div>
+        <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">まず<math><mo>{</mo><msub><mi>a</mi><mi>n</mi></msub><mo>}</mo></math>の公差を出す</span></div><p class="cite"><span class="cite-tag">使う性質</span>等差数列の性質：隣り合う項の差（公差）は、どの項でも一定である。この問題では、<math><mn>13</mn><mo>−</mo><mn>7</mn><mo>=</mo><mn>6</mn></math> を項が進んだ回数で割って公差を求める。</p>
+        <p><math><msub><mi>a</mi><mn>2</mn></msub><mo>=</mo><mn>7</mn></math> から <math><msub><mi>a</mi><mn>4</mn></msub><mo>=</mo><mn>13</mn></math> まで、項は<strong>2つ進んで</strong>、値は <math><mn>7</mn></math> から <math><mn>13</mn></math> へ増えている。2回分増えた量が <math><mn>13</mn><mo>−</mo><mn>7</mn><mo>=</mo><mn>6</mn></math> だから、1回分（公差）は：</p>
+        <div class="formula-line"><span class="m">公差<math><mo>=</mo><mrow><mo>(</mo><mn>13</mn><mo>−</mo><mn>7</mn><mo>)</mo></mrow><mo>÷</mo><mn>2</mn><mo>=</mo><mn>3</mn></math></span></div>
         <p>公差が分かったら、次は初項だ。</p>
       </article>
 
       <article class="stage hint" hidden>
-        <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">初項を戻って求め、一般項を組み立てる</span></div>
-        <p>初項は、<span class="m"><i>a</i><sub>2</sub></span> から公差を1回引けばよい：</p>
-        <div class="formula-line"><span class="m"><i>a</i><sub>1</sub> = <i>a</i><sub>2</sub> − 公差 = 7 − 3 = 4</span></div>
-        <p>等差数列の一般項は「初項 +（<span class="m"><i>n</i> − 1</span>）× 公差」だから：</p>
-        <div class="formula-line"><span class="m"><i>a<sub>n</sub></i> = 4 + (<i>n</i> − 1)·3 = 3<i>n</i> + 1</span></div>
-        <p>これで ア と イ が決まった。上の図にも <span class="m">{<i>a<sub>n</sub></i>}</span> の値が入ったよ。</p>
+        <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">初項を戻って求め、一般項を組み立てる</span></div><p class="cite"><span class="cite-tag">使う公式</span>等差数列の一般項は、初項に (n−1) 回分の公差を加えたものになる。この問題では、<math><msub><mi>a</mi><mi>n</mi></msub><mo>=</mo><mn>4</mn><mo>+</mo><mrow><mo>(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mo>·</mo><mn>3</mn><mo>=</mo><mn>3</mn><mi>n</mi><mo>+</mo><mn>1</mn></math> から始まる式で一般項を組み立てる。</p>
+        <p>初項は、<math><msub><mi>a</mi><mn>2</mn></msub></math> から公差を1回引けばよい：</p>
+        <div class="formula-line"><span class="m"><math><msub><mi>a</mi><mn>1</mn></msub><mo>=</mo><msub><mi>a</mi><mn>2</mn></msub><mo>−</mo></math>公差<math><mo>=</mo><mn>7</mn><mo>−</mo><mn>3</mn><mo>=</mo><mn>4</mn></math></span></div>
+        <p>等差数列の一般項は「初項<math><mo>+</mo><mrow><mo>(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mo>×</mo></math>公差」だから：</p>
+        <div class="formula-line"><math><msub><mi>a</mi><mi>n</mi></msub><mo>=</mo><mn>4</mn><mo>+</mo><mrow><mo>(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mo>·</mo><mn>3</mn><mo>=</mo><mn>3</mn><mi>n</mi><mo>+</mo><mn>1</mn></math></div>
+        <p>これで ア と イ が決まった。上の図にも <math><mo>{</mo><msub><mi>a</mi><mi>n</mi></msub><mo>}</mo></math> の値が入ったよ。</p>
       </article>
 
       <article class="stage hint" hidden>
-        <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">{<i>b<sub>n</sub></i>} は「真ん中の項の3倍」に注目</span></div>
-        <p>等差数列では、3つの並んだ項の和は<strong>真ん中の項の3倍</strong>になる（両側が公差分だけプラスマイナスで打ち消し合うから）。つまり：</p>
-        <div class="formula-line"><span class="m"><i>b</i><sub>1</sub> + <i>b</i><sub>2</sub> + <i>b</i><sub>3</sub> = 3·<i>b</i><sub>2</sub> = 21</span></div>
-        <p>よって <span class="m"><i>b</i><sub>2</sub> = 7</span>。公差は <span class="m">2</span> だから初項は <span class="m"><i>b</i><sub>1</sub> = 7 − 2 = 5</span> で、一般項は：</p>
-        <div class="formula-line"><span class="m"><i>b<sub>n</sub></i> = 5 + (<i>n</i> − 1)·2 = 2<i>n</i> + 3</span></div>
+        <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title"><math><mo>{</mo><msub><mi>b</mi><mi>n</mi></msub><mo>}</mo></math>は「真ん中の項の3倍」に注目</span></div><p class="cite"><span class="cite-tag">使う性質</span>等差数列の性質：連続する3項の和は、真ん中の項の3倍になる <math><mn>3</mn><mo>·</mo><msub><mi>b</mi><mn>2</mn></msub><mo>=</mo><mn>21</mn></math>。この問題では、この関係から真ん中の項を求める。</p>
+        <p>等差数列では、3つの並んだ項の和は<strong>真ん中の項の3倍</strong>になる（両側が公差分だけプラスマイナスで打ち消し合うから）。<br>つまり：</p>
+        <div class="formula-line"><math><msub><mi>b</mi><mn>1</mn></msub><mo>+</mo><msub><mi>b</mi><mn>2</mn></msub><mo>+</mo><msub><mi>b</mi><mn>3</mn></msub><mo>=</mo><mn>3</mn><mo>·</mo><msub><mi>b</mi><mn>2</mn></msub><mo>=</mo><mn>21</mn></math></div>
+        <p>よって <math><msub><mi>b</mi><mn>2</mn></msub><mo>=</mo><mn>7</mn></math>。公差は <math><mn>2</mn></math> だから初項は <math><msub><mi>b</mi><mn>1</mn></msub><mo>=</mo><mn>7</mn><mo>−</mo><mn>2</mn><mo>=</mo><mn>5</mn></math> で、一般項は：</p>
+        <div class="formula-line"><math><msub><mi>b</mi><mi>n</mi></msub><mo>=</mo><mn>5</mn><mo>+</mo><mrow><mo>(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mo>·</mo><mn>2</mn><mo>=</mo><mn>2</mn><mi>n</mi><mo>+</mo><mn>3</mn></math></div>
         <p>これで ウ と エ も決まった。図の下段にも値が入ったよ。</p>
       </article>
 
       <article class="stage hint" hidden>
-        <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">共通項は「奇数かどうか」で見分ける</span></div>
-        <p><span class="m">{<i>b<sub>n</sub></i>}</span> の項を書き並べると <span class="m">5, 7, 9, 11, 13, …</span>、つまり<strong>5以上の奇数</strong>がすべて現れる。だから、<span class="m">{<i>a<sub>n</sub></i>}</span> の項のうち奇数であるものが、そのまま共通項になる。</p>
-        <p><span class="m"><i>a<sub>n</sub></i> = 3<i>n</i> + 1</span> が奇数になるのは、<span class="m">3<i>n</i></span> が偶数のとき、つまり <span class="m"><i>n</i></span> が<strong>偶数</strong>のときだけ。図でも、共通する数（7, 13, 19, …）は <span class="m">{<i>a<sub>n</sub></i>}</span> の偶数番目の項にだけ現れているね。</p>
-        <p>したがって共通項は <span class="m">{<i>a<sub>n</sub></i>}</span> の偶数番目の項だけを並べたものになる。オ の解答群から、添字が偶数番目を表す式を選ぼう。</p>
+        <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">共通項は「奇数かどうか」で見分ける</span></div><p class="cite"><span class="cite-tag">使う性質</span>奇数と偶数の性質：<math><msub><mi>a</mi><mi>n</mi></msub><mo>=</mo><mn>3</mn><mi>n</mi><mo>+</mo><mn>1</mn></math> が奇数になるのは、3n が偶数のとき、つまり n が偶数のときだけである。この問題では、この見分けで共通項を絞り込む。</p>
+        <p><math><mo>{</mo><msub><mi>b</mi><mi>n</mi></msub><mo>}</mo></math> の項を書き並べると <math><mn>5</mn><mo>,</mo><mn>7</mn><mo>,</mo><mn>9</mn><mo>,</mo><mn>11</mn><mo>,</mo><mn>13</mn><mo>,</mo><mo>…</mo></math>、つまり<strong>5以上の奇数</strong>がすべて現れる。だから、<math><mo>{</mo><msub><mi>a</mi><mi>n</mi></msub><mo>}</mo></math> の項のうち奇数であるものが、そのまま共通項になる。</p>
+        <p><math><msub><mi>a</mi><mi>n</mi></msub><mo>=</mo><mn>3</mn><mi>n</mi><mo>+</mo><mn>1</mn></math> が奇数になるのは、<math><mn>3</mn><mi>n</mi></math> が偶数のとき、つまり <math><mi>n</mi></math> が<strong>偶数</strong>のときだけ。<br>図でも、共通する数（7, 13, 19, …）は <math><mo>{</mo><msub><mi>a</mi><mi>n</mi></msub><mo>}</mo></math> の偶数番目の項にだけ現れているね。</p>
+        <p>したがって共通項は <math><mo>{</mo><msub><mi>a</mi><mi>n</mi></msub><mo>}</mo></math> の偶数番目の項だけを並べたものになる。<br>オ の解答群から、添字が偶数番目を表す式を選ぼう。</p>
       </article>
 
       <article class="stage answer" hidden>
-        <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">一般項の答え</span></div>
-        <p><span class="m">{<i>a<sub>n</sub></i>}</span> の公差は <span class="m">(13 − 7) ÷ 2 = 3</span>、初項は <span class="m">7 − 3 = 4</span> だから <span class="m"><i>a<sub>n</sub></i> = 3<i>n</i> + 1</span>。<span class="m">{<i>b<sub>n</sub></i>}</span> は <span class="m">3·<i>b</i><sub>2</sub> = 21</span> より <span class="m"><i>b</i><sub>2</sub> = 7</span>、初項 <span class="m">5</span> で <span class="m"><i>b<sub>n</sub></i> = 2<i>n</i> + 3</span>。共通項は <span class="m">{<i>a<sub>n</sub></i>}</span> の偶数番目の項だけだから <span class="m"><i>c<sub>n</sub></i> = <i>a</i><sub>2<i>n</i></sub></span>。</p>
+        <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">一般項の答え</span></div><p class="cite"><span class="cite-tag">使う公式</span>等差数列の一般項 <math><msub><mi>a</mi><mi>n</mi></msub><mo>=</mo><mn>3</mn><mi>n</mi><mo>+</mo><mn>1</mn></math>。この問題では、一般項と共通項の決め方を並べて答えをまとめる。</p>
+        <p><math><mo>{</mo><msub><mi>a</mi><mi>n</mi></msub><mo>}</mo></math> の公差は <math><mrow><mo>(</mo><mn>13</mn><mo>−</mo><mn>7</mn><mo>)</mo></mrow><mo>÷</mo><mn>2</mn><mo>=</mo><mn>3</mn></math>、初項は <math><mn>7</mn><mo>−</mo><mn>3</mn><mo>=</mo><mn>4</mn></math> だから <math><msub><mi>a</mi><mi>n</mi></msub><mo>=</mo><mn>3</mn><mi>n</mi><mo>+</mo><mn>1</mn></math>。<math><mo>{</mo><msub><mi>b</mi><mi>n</mi></msub><mo>}</mo></math> は <math><mn>3</mn><mo>·</mo><msub><mi>b</mi><mn>2</mn></msub><mo>=</mo><mn>21</mn></math> より <math><msub><mi>b</mi><mn>2</mn></msub><mo>=</mo><mn>7</mn></math>、初項 <math><mn>5</mn></math> で <math><msub><mi>b</mi><mi>n</mi></msub><mo>=</mo><mn>2</mn><mi>n</mi><mo>+</mo><mn>3</mn></math>。共通項は <math><mo>{</mo><msub><mi>a</mi><mi>n</mi></msub><mo>}</mo></math> の偶数番目の項だけだから <math><msub><mi>c</mi><mi>n</mi></msub><mo>=</mo><msub><mi>a</mi><mrow><mn>2</mn><mi>n</mi></mrow></msub></math>。</p>
         <div class="ans-line">
-          <span class="ans-chip"><span class="kana">ア</span><span class="m">3</span></span>
-          <span class="ans-chip"><span class="kana">イ</span><span class="m">1</span></span>
-          <span class="ans-chip"><span class="kana">ウ</span><span class="m">2</span></span>
-          <span class="ans-chip"><span class="kana">エ</span><span class="m">3</span></span>
-          <span class="ans-chip"><span class="kana">オ</span><span class="m">② 2<i>n</i></span></span>
+          <span class="ans-chip"><span class="kana">ア</span><math><mn>3</mn></math></span>
+          <span class="ans-chip"><span class="kana">イ</span><math><mn>1</mn></math></span>
+          <span class="ans-chip"><span class="kana">ウ</span><math><mn>2</mn></math></span>
+          <span class="ans-chip"><span class="kana">エ</span><math><mn>3</mn></math></span>
+          <span class="ans-chip"><span class="kana">オ</span><math><mo>②</mo><mn>2</mn><mi>n</mi></math></span>
         </div>
-        <div class="point-box"><span class="pt">ポイント</span>等差数列は<strong>初項と公差</strong>の2つで決まる。3項の和は「真ん中 × 3」。共通項は、片方の数列の項の性質（ここでは奇数）で絞り込むと見通しが立つ。</div>
+        <div class="point-box"><span class="pt">ポイント</span><p class="cite"><span class="cite-tag">使う公式</span>等差数列は初項と公差で決まり、一般項は <math><msub><mi>a</mi><mi>n</mi></msub><mo>=</mo><mn>3</mn><mi>n</mi><mo>+</mo><mn>1</mn></math> の形になる。このまとめでは、初項と公差から一般項を作る流れを確認する。</p>等差数列は<strong>初項と公差</strong>の2つで決まる。<br>3項の和は「真ん中 × 3」。共通項は、片方の数列の項の性質（ここでは奇数）で絞り込むと見通しが立つ。</div>
       </article>
     </div>
 
@@ -527,8 +577,8 @@
         <span class="q-num">和</span><span class="q-title">二つの和</span>
         <span class="q-points">配点 4点</span>
       </div>
-      <p class="q-body">数列 <span class="m">{<i>a<sub>n</sub></i>}</span> の初項から第20項までの和は <span class="blank" data-kana="カ" data-ans="6">カ</span><span class="blank" data-kana="キ" data-ans="5">キ</span><span class="blank" data-kana="ク" data-ans="0">ク</span> である。</p>
-      <p class="q-body">数列 <span class="m">{<i>c<sub>n</sub></i>}</span> の初項から第10項までの和は <span class="blank" data-kana="ケ" data-ans="3">ケ</span><span class="blank" data-kana="コ" data-ans="4">コ</span><span class="blank" data-kana="サ" data-ans="0">サ</span> である。</p>
+      <p class="q-body">数列 <math><mo>{</mo><msub><mi>a</mi><mi>n</mi></msub><mo>}</mo></math> の初項から第20項までの和は <span class="blank" data-kana="カ" data-ans="6">カ</span><span class="blank" data-kana="キ" data-ans="5">キ</span><span class="blank" data-kana="ク" data-ans="0">ク</span> である。</p>
+      <p class="q-body">数列 <math><mo>{</mo><msub><mi>c</mi><mi>n</mi></msub><mo>}</mo></math> の初項から第10項までの和は <span class="blank" data-kana="ケ" data-ans="3">ケ</span><span class="blank" data-kana="コ" data-ans="4">コ</span><span class="blank" data-kana="サ" data-ans="0">サ</span> である。</p>
     </div>
 
     <div class="viz" id="viz-2">
@@ -560,10 +610,10 @@
         </g>
       </svg>
       <div class="expr-sub" data-min="2" hidden>
-        <span class="m">{<i>a<sub>n</sub></i>}</span> の和： ペア <span class="m">4 + 61 = 65</span> が <span class="m">10</span> 組
+        <math><mo>{</mo><msub><mi>a</mi><mi>n</mi></msub><mo>}</mo></math> の和： ペア <math><mn>4</mn><mo>+</mo><mn>61</mn><mo>=</mo><mn>65</mn></math> が <math><mn>10</mn></math> 組
       </div>
       <div class="expr-sub" data-min="3" hidden>
-        <span class="m">{<i>c<sub>n</sub></i>}</span> の和： ペア <span class="m">7 + 61 = 68</span> が <span class="m">5</span> 組
+        <math><mo>{</mo><msub><mi>c</mi><mi>n</mi></msub><mo>}</mo></math> の和： ペア <math><mn>7</mn><mo>+</mo><mn>61</mn><mo>=</mo><mn>68</mn></math> が <math><mn>5</mn></math> 組
       </div>
       <p class="expr-note">末項の値は、ヒントを進めると図に出てくるよ。</p>
     </div>
@@ -573,38 +623,38 @@
 
     <div class="stages">
       <article class="stage hint" hidden>
-        <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">公式を確認し、まず末項を求める</span></div>
+        <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">公式を確認し、まず末項を求める</span></div><p class="cite"><span class="cite-tag">使う公式</span>等差数列の和の公式：和は（項数÷2）×（初項＋末項）で求める。この問題では、まず一般項から末項 <math><msub><mi>a</mi><mn>20</mn></msub><mo>=</mo><mn>3</mn><mo>·</mo><mn>20</mn><mo>+</mo><mn>1</mn><mo>=</mo><mn>61</mn></math> を求めて材料をそろえる。</p>
         <p>等差数列の和の公式は：</p>
         <div class="formula-line"><span class="m">和 =（項数 ÷ 2）×（初項 + 末項）</span></div>
-        <p>初項は <span class="m"><i>a</i><sub>1</sub> = 4</span>。末項は一般項に <span class="m"><i>n</i> = 20</span> を代入して：</p>
-        <div class="formula-line"><span class="m"><i>a</i><sub>20</sub> = 3·20 + 1 = 61</span></div>
+        <p>初項は <math><msub><mi>a</mi><mn>1</mn></msub><mo>=</mo><mn>4</mn></math>。末項は一般項に <math><mi>n</mi><mo>=</mo><mn>20</mn></math> を代入して：</p>
+        <div class="formula-line"><math><msub><mi>a</mi><mn>20</mn></msub><mo>=</mo><mn>3</mn><mo>·</mo><mn>20</mn><mo>+</mo><mn>1</mn><mo>=</mo><mn>61</mn></math></div>
         <p>材料はそろった。あとは公式に入れるだけだ。</p>
       </article>
 
       <article class="stage hint" hidden>
-        <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">公式に代入して {<i>a<sub>n</sub></i>} の和を出す</span></div>
-        <p>項数は 20、初項は 4、末項は 61。公式に入れると：</p>
-        <div class="formula-line"><span class="m">(20/2)·(4 + 61) = 10·65</span></div>
+        <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">公式に代入して<math><mo>{</mo><msub><mi>a</mi><mi>n</mi></msub><mo>}</mo></math>の和を出す</span></div><p class="cite"><span class="cite-tag">使う公式</span>等差数列の和の公式：和は（項数÷2）×（初項＋末項）で求める。この問題では、<math><mn>4</mn><mo>+</mo><mn>61</mn><mo>=</mo><mn>65</mn></math> を含む式に項数・初項・末項を代入する。</p>
+        <p>項数は 20、初項は 4、末項は 61。<br>公式に入れると：</p>
+        <div class="formula-line"><math><mrow><mo>(</mo><mfrac><mn>20</mn><mn>2</mn></mfrac><mo>)</mo></mrow><mo>·</mo><mrow><mo>(</mo><mn>4</mn><mo>+</mo><mn>61</mn><mo>)</mo></mrow><mo>=</mo><mn>10</mn><mo>·</mo><mn>65</mn></math></div>
         <p>この掛け算の結果が カキク だ。計算してみよう。</p>
       </article>
 
       <article class="stage hint" hidden>
-        <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">{<i>c<sub>n</sub></i>} も等差数列 ― 同じ公式が使える</span></div>
-        <p><span class="m">{<i>c<sub>n</sub></i>}</span> は <span class="m">{<i>a<sub>n</sub></i>}</span> の偶数番目の項を並べたものだから、これも等差数列だ。その初項と第10項は：</p>
-        <div class="formula-line"><span class="m"><i>c</i><sub>1</sub> = <i>a</i><sub>2</sub> = 7，　<i>c</i><sub>10</sub> = <i>a</i><sub>20</sub> = 61</span></div>
+        <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title"><math><mo>{</mo><msub><mi>c</mi><mi>n</mi></msub><mo>}</mo></math>も等差数列 ― 同じ公式が使える</span></div><p class="cite"><span class="cite-tag">使う公式</span>等差数列の和の公式は、共通項の数列にも同じように使える。この問題では、<math><msub><mi>c</mi><mn>1</mn></msub><mo>=</mo><msub><mi>a</mi><mn>2</mn></msub><mo>=</mo><mn>7</mn><mo>,</mo><msub><mi>c</mi><mn>10</mn></msub><mo>=</mo><msub><mi>a</mi><mn>20</mn></msub><mo>=</mo><mn>61</mn></math> などの初項と末項を公式に入れる。</p>
+        <p><math><mo>{</mo><msub><mi>c</mi><mi>n</mi></msub><mo>}</mo></math> は <math><mo>{</mo><msub><mi>a</mi><mi>n</mi></msub><mo>}</mo></math> の偶数番目の項を並べたものだから、これも等差数列だ。その初項と第10項は：</p>
+        <div class="formula-line"><math><msub><mi>c</mi><mn>1</mn></msub><mo>=</mo><msub><mi>a</mi><mn>2</mn></msub><mo>=</mo><mn>7</mn><mo>,</mo><msub><mi>c</mi><mn>10</mn></msub><mo>=</mo><msub><mi>a</mi><mn>20</mn></msub><mo>=</mo><mn>61</mn></math></div>
         <p>項数は 10 だから、同じ公式で：</p>
-        <div class="formula-line"><span class="m">(10/2)·(7 + 61) = 5·68</span></div>
+        <div class="formula-line"><math><mrow><mo>(</mo><mfrac><mn>10</mn><mn>2</mn></mfrac><mo>)</mo></mrow><mo>·</mo><mrow><mo>(</mo><mn>7</mn><mo>+</mo><mn>61</mn><mo>)</mo></mrow><mo>=</mo><mn>5</mn><mo>·</mo><mn>68</mn></math></div>
         <p>この結果が ケコサ になるよ。</p>
       </article>
 
       <article class="stage answer" hidden>
-        <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">和の答え</span></div>
-        <p><span class="m">{<i>a<sub>n</sub></i>}</span> の和は <span class="m">(20/2)·(4 + 61) = 10·65 = 650</span>。<span class="m">{<i>c<sub>n</sub></i>}</span> の和は、<span class="m"><i>c</i><sub>1</sub> = 7</span>、<span class="m"><i>c</i><sub>10</sub> = 61</span> だから <span class="m">(10/2)·(7 + 61) = 5·68 = 340</span>。</p>
+        <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">和の答え</span></div><p class="cite"><span class="cite-tag">使う公式</span>等差数列の和の公式。この問題では、<math><mrow><mo>(</mo><mfrac><mn>10</mn><mn>2</mn></mfrac><mo>)</mo></mrow><mo>·</mo><mrow><mo>(</mo><mn>7</mn><mo>+</mo><mn>61</mn><mo>)</mo></mrow><mo>=</mo><mn>5</mn><mo>·</mo><mn>68</mn></math> のように和の公式で計算して、2つの和をまとめる。</p>
+        <p><math><mo>{</mo><msub><mi>a</mi><mi>n</mi></msub><mo>}</mo></math> の和は <math><mrow><mo>(</mo><mfrac><mn>20</mn><mn>2</mn></mfrac><mo>)</mo></mrow><mo>·</mo><mrow><mo>(</mo><mn>4</mn><mo>+</mo><mn>61</mn><mo>)</mo></mrow><mo>=</mo><mn>10</mn><mo>·</mo><mn>65</mn><mo>=</mo><mn>650</mn></math>。<math><mo>{</mo><msub><mi>c</mi><mi>n</mi></msub><mo>}</mo></math> の和は、<math><msub><mi>c</mi><mn>1</mn></msub><mo>=</mo><mn>7</mn></math>、<math><msub><mi>c</mi><mn>10</mn></msub><mo>=</mo><mn>61</mn></math> だから <math><mrow><mo>(</mo><mfrac><mn>10</mn><mn>2</mn></mfrac><mo>)</mo></mrow><mo>·</mo><mrow><mo>(</mo><mn>7</mn><mo>+</mo><mn>61</mn><mo>)</mo></mrow><mo>=</mo><mn>5</mn><mo>·</mo><mn>68</mn><mo>=</mo><mn>340</mn></math>。</p>
         <div class="ans-line">
-          <span class="ans-chip"><span class="kana">カキク</span><span class="m">650</span></span>
-          <span class="ans-chip"><span class="kana">ケコサ</span><span class="m">340</span></span>
+          <span class="ans-chip"><span class="kana">カキク</span><math><mn>650</mn></math></span>
+          <span class="ans-chip"><span class="kana">ケコサ</span><math><mn>340</mn></math></span>
         </div>
-        <div class="point-box"><span class="pt">ポイント</span>和の公式は「（項数 ÷ 2）×（初項 + 末項）」。共通項の和 <span class="m">340</span> は、次の {<i>d<sub>n</sub></i>} の和でも使うから覚えておこう。</div>
+        <div class="point-box"><span class="pt">ポイント</span><p class="cite"><span class="cite-tag">使う公式</span>等差数列の和の公式：和は（項数÷2）×（初項＋末項）で求め、<math><mrow><mo>(</mo><mfrac><mn>10</mn><mn>2</mn></mfrac><mo>)</mo></mrow><mo>·</mo><mrow><mo>(</mo><mn>7</mn><mo>+</mo><mn>61</mn><mo>)</mo></mrow><mo>=</mo><mn>5</mn><mo>·</mo><mn>68</mn></math> のような計算になる。このまとめでは、和の公式の使い方を確認する。</p>和の公式は「（項数 ÷ 2）×（初項 + 末項）」。<br>共通項の和 <math><mn>340</mn></math> は、次の<math><mo>{</mo><msub><mi>d</mi><mi>n</mi></msub><mo>}</mo></math>の和でも使うから覚えておこう。</div>
       </article>
     </div>
 
@@ -623,12 +673,12 @@
     <div class="qside">
     <div class="qcard">
       <div class="q-head">
-        <span class="q-num">{d<sub>n</sub>}</span><span class="q-title">一方のみに含まれる数</span>
+        <span class="q-num"><math><mo>{</mo><msub><mi>d</mi><mi>n</mi></msub><mo>}</mo></math></span><span class="q-title">一方のみに含まれる数</span>
         <span class="q-points">配点 6点</span>
       </div>
-      <p class="q-body">数列 <span class="m">{<i>a<sub>n</sub></i>}</span> の初項から第20項までと、数列 <span class="m">{<i>b<sub>n</sub></i>}</span> の初項から第30項までの<strong>いずれか一方のみ</strong>に含まれる数を小さい方から順に並べてできる数列を <span class="m">{<i>d<sub>n</sub></i>}</span> とする。</p>
-      <p class="q-body"><span class="m"><i>d</i><sub>1</sub> = <span class="blank" data-kana="シ" data-ans="4">シ</span></span>、<span class="m"><i>d</i><sub>2</sub> = <span class="blank" data-kana="ス" data-ans="5">ス</span></span>、<span class="m"><i>d</i><sub>3</sub> = <span class="blank" data-kana="セ" data-ans="9">セ</span></span> である。</p>
-      <p class="q-body">数列 <span class="m">{<i>d<sub>n</sub></i>}</span> の初項から末項までの和は <span class="blank" data-kana="ソ" data-ans="9">ソ</span><span class="blank" data-kana="タ" data-ans="9">タ</span><span class="blank" data-kana="チ" data-ans="0">チ</span> である。</p>
+      <p class="q-body">数列 <math><mo>{</mo><msub><mi>a</mi><mi>n</mi></msub><mo>}</mo></math> の初項から第20項までと、数列 <math><mo>{</mo><msub><mi>b</mi><mi>n</mi></msub><mo>}</mo></math> の初項から第30項までの<strong>いずれか一方のみ</strong>に含まれる数を小さい方から順に並べてできる数列を <math><mo>{</mo><msub><mi>d</mi><mi>n</mi></msub><mo>}</mo></math> とする。</p>
+      <p class="q-body"><math><msub><mi>d</mi><mn>1</mn></msub><mo>=</mo><mtext><span class="blank" data-kana="シ" data-ans="4">シ</span></mtext></math>、<math><msub><mi>d</mi><mn>2</mn></msub><mo>=</mo><mtext><span class="blank" data-kana="ス" data-ans="5">ス</span></mtext></math>、<math><msub><mi>d</mi><mn>3</mn></msub><mo>=</mo><mtext><span class="blank" data-kana="セ" data-ans="9">セ</span></mtext></math> である。</p>
+      <p class="q-body">数列 <math><mo>{</mo><msub><mi>d</mi><mi>n</mi></msub><mo>}</mo></math> の初項から末項までの和は <span class="blank" data-kana="ソ" data-ans="9">ソ</span><span class="blank" data-kana="タ" data-ans="9">タ</span><span class="blank" data-kana="チ" data-ans="0">チ</span> である。</p>
     </div>
 
     <div class="viz" id="viz-3">
@@ -693,7 +743,7 @@
         </g>
       </svg>
       <div class="expr-sub" data-min="3" hidden>
-        和の組み立て： <span class="m">650（a の和）+ 1020（b の和）− 2×340（共通）</span>
+        和の組み立て： <span class="m">650（a の和）+ 1020（b の和<math><mo>)</mo><mo>−</mo><mn>2</mn><mo>×</mo><mn>340</mn><mo>(</mo></math>共通）</span>
       </div>
       <p class="expr-note">項の値は、ヒント1で書き並べたときに初めて図に出てくるよ。</p>
     </div>
@@ -703,50 +753,50 @@
 
     <div class="stages">
       <article class="stage hint" hidden>
-        <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">まず両方の数列を書き並べる</span></div>
+        <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">まず両方の数列を書き並べる</span></div><p class="cite"><span class="cite-tag">使う公式</span>等差数列の一般項から末項を求めることができる。この問題では、<math><msub><mi>b</mi><mn>30</mn></msub><mo>=</mo><mn>2</mn><mo>·</mo><mn>30</mn><mo>+</mo><mn>3</mn><mo>=</mo><mn>63</mn></math> のように、両方の数列の末項までを確認する。</p>
         <p>一般項から、はじめの部分と末項を書き出そう。</p>
-        <div class="formula-line"><span class="m">{<i>a<sub>n</sub></i>}： 4, 7, 10, 13, …, 61</span>（第20項まで）</div>
-        <div class="formula-line"><span class="m">{<i>b<sub>n</sub></i>}： 5, 7, 9, 11, …, 63</span>（第30項まで）</div>
-        <p class="mini">末項の確認： <span class="m"><i>a</i><sub>20</sub> = 3·20 + 1 = 61</span>、<span class="m"><i>b</i><sub>30</sub> = 2·30 + 3 = 63</span>。上の図にも両方の値が入ったよ。</p>
+        <div class="formula-line"><span class="m"><math><mo>{</mo><msub><mi>a</mi><mi>n</mi></msub><mo>}</mo></math>： 4, 7, 10, 13, …, 61</span>（第20項まで）</div>
+        <div class="formula-line"><span class="m"><math><mo>{</mo><msub><mi>b</mi><mi>n</mi></msub><mo>}</mo></math>： 5, 7, 9, 11, …, 63</span>（第30項まで）</div>
+        <p class="mini">末項の確認： <math><msub><mi>a</mi><mn>20</mn></msub><mo>=</mo><mn>3</mn><mo>·</mo><mn>20</mn><mo>+</mo><mn>1</mn><mo>=</mo><mn>61</mn></math>、<math><msub><mi>b</mi><mn>30</mn></msub><mo>=</mo><mn>2</mn><mo>·</mo><mn>30</mn><mo>+</mo><mn>3</mn><mo>=</mo><mn>63</mn></math>。<br>上の図にも両方の値が入ったよ。</p>
       </article>
 
       <article class="stage hint" hidden>
-        <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">小さい方から「一方のみ」を拾う</span></div>
+        <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">小さい方から「一方のみ」を拾う</span></div><p class="cite"><span class="cite-tag">使う定義</span>「いずれか一方のみに含まれる数」とは、片方の数列だけにあって、両方にある数は除いた数のことである。この問題では、この決まりで小さい方から数を拾っていく。</p>
         <p>書き並べた2列を見比べて、小さい数から順に確かめよう。</p>
         <ul class="steps">
-          <li><span class="m">4</span>： {<i>a<sub>n</sub></i>} のみ → 採用</li>
-          <li><span class="m">5</span>： {<i>b<sub>n</sub></i>} のみ → 採用</li>
-          <li><span class="m">7</span>： <strong>両方</strong>にある → 除く</li>
-          <li>次に小さい「一方のみ」は <span class="m">9</span>（{<i>b<sub>n</sub></i>} のみ）</li>
+          <li><math><mn>4</mn></math>：<math><mo>{</mo><msub><mi>a</mi><mi>n</mi></msub><mo>}</mo></math>のみ → 採用</li>
+          <li><math><mn>5</mn></math>：<math><mo>{</mo><msub><mi>b</mi><mi>n</mi></msub><mo>}</mo></math>のみ → 採用</li>
+          <li><math><mn>7</mn></math>： <strong>両方</strong>にある → 除く</li>
+          <li>次に小さい「一方のみ」は <math><mn>9</mn><mo>(</mo><mrow><mo>{</mo><msub><mi>b</mi><mi>n</mi></msub><mo>}</mo></mrow></math>のみ）</li>
         </ul>
         <p>図では「一方のみ」に金色の丸、両方にある数に × が付いたよ。これで シ、ス、セ が決まるね。</p>
       </article>
 
       <article class="stage hint" hidden>
-        <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">和は「全部足して、共通部分を2回引く」</span></div>
-        <p><span class="m">{<i>d<sub>n</sub></i>}</span> の項を1つずつ足すのは大変だ。代わりに、2つの和を合わせたものから考える。2つの和を足すと、共通項は<strong>2回</strong>数えられてしまう。{<i>d<sub>n</sub></i>} には共通項は入らないから、その2回分を引けばよい：</p>
-        <div class="formula-line"><span class="m">{<i>d<sub>n</sub></i>} の和 =（{<i>a<sub>n</sub></i>} の和）+（{<i>b<sub>n</sub></i>} の和）− 2×（共通項の和）</span></div>
-        <p>{<i>a<sub>n</sub></i>} の和は <span class="m">650</span>、共通項の和は <span class="m">340</span>（どちらも〔和〕で求めた）。残る {<i>b<sub>n</sub></i>} の第30項までの和は、公式で：</p>
-        <div class="formula-line"><span class="m">(30/2)·(5 + 63) = 15·68 = 1020</span></div>
+        <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">和は「全部足して、共通部分を2回引く」</span></div><p class="cite"><span class="cite-tag">使う性質</span>一方のみに含まれる数の和は、2つの和を合わせたものから、共通部分を2回引いて求めることができる。この問題では、この組み立てで和を考える。</p>
+        <p><math><mo>{</mo><msub><mi>d</mi><mi>n</mi></msub><mo>}</mo></math> の項を1つずつ足すのは大変だ。代わりに、2つの和を合わせたものから考える。<br>2つの和を足すと、共通項は<strong>2回</strong>数えられてしまう。<math><mo>{</mo><msub><mi>d</mi><mi>n</mi></msub><mo>}</mo></math>には共通項は入らないから、その2回分を引けばよい：</p>
+        <div class="formula-line"><span class="m"><math><mo>{</mo><msub><mi>d</mi><mi>n</mi></msub><mo>}</mo></math>の和<math><mo>=</mo><mo>(</mo><mrow><mo>{</mo><msub><mi>a</mi><mi>n</mi></msub><mo>}</mo></mrow></math>の和<math><mo>)</mo><mo>+</mo><mo>(</mo><mrow><mo>{</mo><msub><mi>b</mi><mi>n</mi></msub><mo>}</mo></mrow></math>の和）− 2×（共通項の和）</span></div>
+        <p class="cite"><span class="cite-tag">使う公式</span>等差数列の和の公式：和は（項数÷2）×（初項＋末項）で求める。この問題では、この公式で b の数列の和を <math><mrow><mo>(</mo><mfrac><mn>30</mn><mn>2</mn></mfrac><mo>)</mo></mrow><mo>·</mo><mrow><mo>(</mo><mn>5</mn><mo>+</mo><mn>63</mn><mo>)</mo></mrow><mo>=</mo><mn>15</mn><mo>·</mo><mn>68</mn><mo>=</mo><mn>1020</mn></math> と求める。</p><p><math><mo>{</mo><msub><mi>a</mi><mi>n</mi></msub><mo>}</mo></math>の和は <math><mn>650</mn></math>、共通項の和は <math><mn>340</mn><mo>(</mo></math>どちらも〔和〕で求めた）。残る<math><mo>{</mo><msub><mi>b</mi><mi>n</mi></msub><mo>}</mo></math>の第30項までの和は、公式で：</p>
+        <div class="formula-line"><math><mrow><mo>(</mo><mfrac><mn>30</mn><mn>2</mn></mfrac><mo>)</mo></mrow><mo>·</mo><mrow><mo>(</mo><mn>5</mn><mo>+</mo><mn>63</mn><mo>)</mo></mrow><mo>=</mo><mn>15</mn><mo>·</mo><mn>68</mn><mo>=</mo><mn>1020</mn></math></div>
       </article>
 
       <article class="stage hint" hidden>
         <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">3つの数を組み合わせて仕上げる</span></div>
-        <p>材料は <span class="m">650</span>、<span class="m">1020</span>、<span class="m">340</span> の3つ。ヒント3の式に入れると：</p>
-        <div class="formula-line"><span class="m">650 + 1020 − 2×340 = 650 + 1020 − 680</span></div>
+        <p>材料は <math><mn>650</mn></math>、<math><mn>1020</mn></math>、<math><mn>340</mn></math> の3つ。ヒント3の式に入れると：</p>
+        <div class="formula-line"><math><mn>650</mn><mo>+</mo><mn>1020</mn><mo>−</mo><mn>2</mn><mo>×</mo><mn>340</mn><mo>=</mo><mn>650</mn><mo>+</mo><mn>1020</mn><mo>−</mo><mn>680</mn></math></div>
         <p>あとはこの計算結果が ソタチ だ。暗算で確かめてみよう。</p>
       </article>
 
       <article class="stage answer" hidden>
-        <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">{d<sub>n</sub>} の答え</span></div>
-        <p>小さい方から拾うと <span class="m"><i>d</i><sub>1</sub> = 4</span>（{<i>a<sub>n</sub></i>} のみ）、<span class="m"><i>d</i><sub>2</sub> = 5</span>（{<i>b<sub>n</sub></i>} のみ）、<span class="m">7</span> は両方にあるので除き、<span class="m"><i>d</i><sub>3</sub> = 9</span>。和は <span class="m">650 + 1020 − 2×340 = 990</span>。</p>
+        <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title"><math><mo>{</mo><msub><mi>d</mi><mi>n</mi></msub><mo>}</mo></math>の答え</span></div><p class="cite"><span class="cite-tag">使う性質</span>一方のみに含まれる数の和は、全体の和から共通部分を2回引いて求める <math><mn>650</mn><mo>+</mo><mn>1020</mn><mo>−</mo><mn>2</mn><mo>×</mo><mn>340</mn><mo>=</mo><mn>650</mn><mo>+</mo><mn>1020</mn><mo>−</mo><mn>680</mn></math>。この問題では、この計算と、小さい方から拾った数を並べて答えをまとめる。</p>
+        <p>小さい方から拾うと <math><msub><mi>d</mi><mn>1</mn></msub><mo>=</mo><mn>4</mn><mo>(</mo><mrow><mo>{</mo><msub><mi>a</mi><mi>n</mi></msub><mo>}</mo></mrow></math>のみ）、<math><msub><mi>d</mi><mn>2</mn></msub><mo>=</mo><mn>5</mn><mo>(</mo><mrow><mo>{</mo><msub><mi>b</mi><mi>n</mi></msub><mo>}</mo></mrow></math>のみ）、<math><mn>7</mn></math> は両方にあるので除き、<math><msub><mi>d</mi><mn>3</mn></msub><mo>=</mo><mn>9</mn></math>。和は <math><mn>650</mn><mo>+</mo><mn>1020</mn><mo>−</mo><mn>2</mn><mo>×</mo><mn>340</mn><mo>=</mo><mn>990</mn></math>。</p>
         <div class="ans-line">
-          <span class="ans-chip"><span class="kana">シ</span><span class="m">4</span></span>
-          <span class="ans-chip"><span class="kana">ス</span><span class="m">5</span></span>
-          <span class="ans-chip"><span class="kana">セ</span><span class="m">9</span></span>
-          <span class="ans-chip"><span class="kana">ソタチ</span><span class="m">990</span></span>
+          <span class="ans-chip"><span class="kana">シ</span><math><mn>4</mn></math></span>
+          <span class="ans-chip"><span class="kana">ス</span><math><mn>5</mn></math></span>
+          <span class="ans-chip"><span class="kana">セ</span><math><mn>9</mn></math></span>
+          <span class="ans-chip"><span class="kana">ソタチ</span><math><mn>990</mn></math></span>
         </div>
-        <div class="point-box"><span class="pt">ポイント</span>「一方のみ」の和は、<strong>全体の和 − 2×共通部分</strong>。共通項を「1回引く」のは「少なくとも一方（和集合）」のときで、ここでは両方から取り除くので2回引くのがポイント。</div>
+        <div class="point-box"><span class="pt">ポイント</span><p class="cite"><span class="cite-tag">使う性質</span>一方のみに含まれる数の和は、全体の和 <math><mn>650</mn><mo>+</mo><mn>1020</mn><mo>−</mo><mn>2</mn><mo>×</mo><mn>340</mn><mo>=</mo><mn>650</mn><mo>+</mo><mn>1020</mn><mo>−</mo><mn>680</mn></math> から共通部分を2回引いて求める。このまとめでは、共通部分を1回でなく2回引く理由を確認する。</p>「一方のみ」の和は、<strong>全体の和 − 2×共通部分</strong>。<br>共通項を「1回引く」のは「少なくとも一方（和集合）」のときで、ここでは両方から取り除くので2回引くのがポイント。</div>
       </article>
     </div>
 

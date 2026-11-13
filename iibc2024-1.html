@@ -336,14 +336,76 @@
         }
         .problem .controls { grid-column: 2; grid-row: 2; margin-top: 12px; }
       }
-    </style>
+    
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+
+      /* 積分記号は大きめに表示する（元のページの可読化デザインに合わせる） */
+      math .int-op{font-size:1.35em}
+      /* calc-12 世代（.card）と calc-18 世代（.unit）の、図のない問題の全幅化 */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig>.step{position:static !important}
+        .card.nofig>.steps-wrap{max-height:none !important;overflow:visible !important}
+        .unit.nofig{display:block !important}
+        .unit.nofig>.qside{position:static !important}
+        .unit.nofig>.steps-stack{max-height:none !important;overflow:visible !important}
+      }
+
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける・第3弾b） */
+      @media (min-width:1024px){
+        .problem.nofig,.panel.nofig,.prob-sec.nofig{display:block !important}
+        .nofig .cols,.nofig .flow-cols,.nofig .flow-grid,.nofig .flow{display:block !important}
+        .nofig .qside,.nofig .stages,.nofig .hside,.nofig .flow-left,.nofig .flow-right,
+        .nofig .col-left,.nofig .col-right,.nofig .pleft,.nofig .pright,
+        .nofig .steps-wrap,.nofig .steps-stack,.nofig .prob-col,.nofig .hint-col{
+          position:static !important;max-height:none !important;overflow:visible !important;
+          grid-column:auto !important;grid-row:auto !important;
+        }
+      }
+</style>
   </head>
   <body>
     <div class="wrap">
       <header class="doc-head">
         <div class="exam-line"><span>2024年2月共通テスト模試（2年）数学II・B・C</span><span>配点 15 点</span></div>
         <h1><span class="b1">第1問</span>ヒント式解説</h1>
-        <p class="sub">三角関数（必答問題）。関数 <span class="m"><i>y</i> = sin <i>x</i> + √3 cos <i>x</i></span> について、〔1〕値と合成（8点）、〔2〕方程式の解（4点）、〔3〕解の個数（3点）を解きます。ヒントは易しい順に少しずつ開きます。</p>
+        <p class="sub">三角関数（必答問題）。関数 <math><mi>y</mi><mo>=</mo><mi>sin</mi><mi>x</mi><mo>+</mo><msqrt><mn>3</mn></msqrt><mi>cos</mi><mi>x</mi></math> について、〔1〕値と合成（8点）、〔2〕方程式の解（4点）、〔3〕解の個数（3点）を解きます。ヒントは易しい順に少しずつ開きます。</p>
       </header>
 
       <div class="howto">
@@ -374,80 +436,92 @@
           <span class="q-num">第1問</span><span class="q-title">三角関数</span>
           <span class="q-points">必答問題・配点 15点</span>
         </div>
-        <p class="q-body">関数 <span class="m"><i>y</i> = sin <i>x</i> + <span class="sqrt">√<span class="rad">3</span></span> cos <i>x</i></span> がある。次の〔1〕〜〔3〕に答えよ。</p>
+        <p class="q-body">関数 <math><mi>y</mi><mo>=</mo><mi>sin</mi><mi>x</mi><mo>+</mo><msqrt><mn>3</mn></msqrt><mi>cos</mi><mi>x</mi></math> がある。次の〔1〕〜〔3〕に答えよ。</p>
       </div>
 
       <!-- ========== 〔1〕値と合成 ========== -->
-      <section class="problem active" id="p1" data-group="g1">
+      <section class="nofig problem active" id="p1" data-group="g1">
         <div class="qside">
         <div class="qcard">
           <div class="q-head">
             <span class="q-num">〔1〕</span><span class="q-title">値と合成</span>
             <span class="q-points">配点 8点（各2点）</span>
           </div>
-          <p class="q-body"><span class="m"><i>x</i> = 0</span> のとき <span class="m"><i>y</i> = <span class="sqrt">√<span class="rad"><span class="blank" data-kana="ア" data-ans="3">ア</span></span></span></span> であり、<span class="m"><i>x</i> = <span class="frac"><span class="num">π</span><span class="den">6</span></span></span> のとき <span class="m"><i>y</i> = <span class="blank" data-kana="イ" data-ans="2">イ</span></span> である。</p>
-          <p class="q-body">三角関数の合成を用いると、<span class="m"><i>y</i> = <span class="blank" data-kana="ウ" data-ans="2">ウ</span> sin(<i>x</i> + <span class="blank" data-kana="エ" data-ans="π/3">エ</span>)</span> と変形できる。</p>
+          <p class="q-body"><math><mi>x</mi><mo>=</mo><mn>0</mn></math> のとき <math><mi>y</mi><mo>=</mo><msqrt><mtext><span class="blank" data-kana="ア" data-ans="3">ア</span></mtext></msqrt></math> であり、<math><mi>x</mi><mo>=</mo><mfrac><mi>π</mi><mn>6</mn></mfrac></math> のとき <math><mi>y</mi><mo>=</mo><mtext><span class="blank" data-kana="イ" data-ans="2">イ</span></mtext></math> である。</p>
+          <p class="q-body">三角関数の合成を用いると、<math><mi>y</mi><mo>=</mo><mtext><span class="blank" data-kana="ウ" data-ans="2">ウ</span></mtext><mi>sin</mi><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mtext><span class="blank" data-kana="エ" data-ans="π/3">エ</span></mtext><mo>)</mo></mrow></math> と変形できる。</p>
           <p class="choices"><span class="m"><i>エ</i></span> に当てはまるものを、次の解答群のうちから一つ選べ。（<span class="m"><i>エ</i></span> 〜 <span class="m"><i>カ</i></span> の解答群は〔2〕と共通で、同じものを繰り返し選んでもよい。）</p>
           <p class="choices">
-            <span class="copt">⓪ <span class="m"><span class="frac"><span class="num">π</span><span class="den">6</span></span></span>　① <span class="m"><span class="frac"><span class="num">π</span><span class="den">4</span></span></span>　② <span class="m"><span class="frac"><span class="num">π</span><span class="den">3</span></span></span>　③ <span class="m"><span class="frac"><span class="num">5π</span><span class="den">12</span></span></span>　④ <span class="m"><span class="frac"><span class="num">π</span><span class="den">2</span></span></span></span>
-            <span class="copt">⑤ <span class="m"><span class="frac"><span class="num">7π</span><span class="den">12</span></span></span>　⑥ <span class="m"><span class="frac"><span class="num">2π</span><span class="den">3</span></span></span>　⑦ <span class="m"><span class="frac"><span class="num">3π</span><span class="den">4</span></span></span>　⑧ <span class="m"><span class="frac"><span class="num">5π</span><span class="den">6</span></span></span>　⑨ <span class="m"><span class="frac"><span class="num">11π</span><span class="den">12</span></span></span></span>
+            <span class="copt"><math><mo>⓪</mo><mfrac><mi>π</mi><mn>6</mn></mfrac></math>　<math><mo>①</mo><mfrac><mi>π</mi><mn>4</mn></mfrac></math>　<math><mo>②</mo><mfrac><mi>π</mi><mn>3</mn></mfrac></math>　<math><mo>③</mo><mfrac><mrow><mn>5</mn><mi>π</mi></mrow><mn>12</mn></mfrac></math>　<math><mo>④</mo><mfrac><mi>π</mi><mn>2</mn></mfrac></math></span>
+            <span class="copt"><math><mo>⑤</mo><mfrac><mrow><mn>7</mn><mi>π</mi></mrow><mn>12</mn></mfrac></math>　<math><mo>⑥</mo><mfrac><mrow><mn>2</mn><mi>π</mi></mrow><mn>3</mn></mfrac></math>　<math><mo>⑦</mo><mfrac><mrow><mn>3</mn><mi>π</mi></mrow><mn>4</mn></mfrac></math>　<math><mo>⑧</mo><mfrac><mrow><mn>5</mn><mi>π</mi></mrow><mn>6</mn></mfrac></math>　<math><mo>⑨</mo><mfrac><mrow><mn>11</mn><mi>π</mi></mrow><mn>12</mn></mfrac></math></span>
           </p>
         </div>
-        <p class="think-note">前半は代入の計算、後半は「合成」。まず <span class="m"><i>x</i> = 0</span>、次に <span class="m"><i>x</i> = π/6</span> の値を1つずつ出していこう。</p>
+        <p class="think-note">前半は代入の計算、後半は「合成」。まず <math><mi>x</mi><mo>=</mo><mn>0</mn></math>、次に <math><mi>x</mi><mo>=</mo><mfrac><mi>π</mi><mn>6</mn></mfrac></math> の値を1つずつ出していこう。</p>
         </div>
 
         <div class="stages">
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">x = 0 を代入する</span></div>
-            <p>まずは一番簡単な <span class="m"><i>x</i> = 0</span> から。<span class="m">sin 0 = 0</span>、<span class="m">cos 0 = 1</span> だから：</p>
-            <div class="formula-line"><span class="m"><i>y</i> = sin 0 + √3 cos 0 = 0 + √3・1 = √3</span></div>
-            <p>つまり <span class="m"><span class="sqrt">√<span class="rad">ア</span></span> = √3</span>。ア に入る数が分かるね。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title"><math><mi>x</mi><mo>=</mo><mn>0</mn></math>を代入する</span></div><p class="cite"><span class="cite-tag">使う性質</span>三角関数の値 <math><mi>sin</mi><mn>0</mn><mo>=</mo><mn>0</mn></math>、<math><mi>cos</mi><mn>0</mn><mo>=</mo><mn>1</mn></math>。この問題では、まずこの2つの値をそのまま代入して計算する。</p>
+            <p>まずは一番簡単な <math><mi>x</mi><mo>=</mo><mn>0</mn></math> から。<math><mi>sin</mi><mn>0</mn><mo>=</mo><mn>0</mn></math>、<math><mi>cos</mi><mn>0</mn><mo>=</mo><mn>1</mn></math> だから：</p>
+            <div class="formula-line"><div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>y</mi><mo>=</mo><mi>sin</mi><mn>0</mn><mo>+</mo><msqrt><mn>3</mn></msqrt><mi>cos</mi><mn>0</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>y</mi></mphantom><mo>=</mo><mn>0</mn><mo>+</mo><msqrt><mn>3</mn></msqrt><mo>⋅</mo><mn>1</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>y</mi></mphantom><mo>=</mo><msqrt><mn>3</mn></msqrt></math></div>
+</div></div>
+            <p>つまり <span class="m"><math><msqrt><mtext>ア</mtext></msqrt><mo>=</mo><msqrt><mn>3</mn></msqrt></math></span>。ア に入る数が分かるね。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">x = π/6 を代入する</span></div>
-            <p>次は <span class="m"><i>x</i> = <span class="frac"><span class="num">π</span><span class="den">6</span></span></span>（30°）。この角の値は <span class="m">sin <span class="frac"><span class="num">π</span><span class="den">6</span></span> = <span class="frac"><span class="num">1</span><span class="den">2</span></span></span>、<span class="m">cos <span class="frac"><span class="num">π</span><span class="den">6</span></span> = <span class="frac"><span class="num">√3</span><span class="den">2</span></span></span> だから：</p>
-            <div class="formula-line"><span class="m"><i>y</i> = <span class="frac"><span class="num">1</span><span class="den">2</span></span> + √3・<span class="frac"><span class="num">√3</span><span class="den">2</span></span></span></div>
-            <p>あとは <span class="m">√3・<span class="frac"><span class="num">√3</span><span class="den">2</span></span></span> の部分を計算するだけだよ。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title"><math><mi>x</mi><mo>=</mo><mfrac><mi>π</mi><mn>6</mn></mfrac></math>を代入する</span></div><p class="cite"><span class="cite-tag">使う性質</span>特殊な角の三角関数の値 <math><mi>sin</mi><mfrac><mi>π</mi><mn>6</mn></mfrac><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math>、<math><mi>cos</mi><mfrac><mi>π</mi><mn>6</mn></mfrac><mo>=</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac></math>。この問題では、この2つの値を代入して計算する。</p>
+            <p>次は <math><mi>x</mi><mo>=</mo><mfrac><mi>π</mi><mn>6</mn></mfrac><mrow><mo>(</mo><mn>30</mn><mo>°</mo><mo>)</mo></mrow></math>。この角の値は <math><mi>sin</mi><mfrac><mi>π</mi><mn>6</mn></mfrac><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math>、<math><mi>cos</mi><mfrac><mi>π</mi><mn>6</mn></mfrac><mo>=</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac></math> だから：</p>
+            <div class="formula-line"><math><mi>y</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>+</mo><msqrt><mn>3</mn></msqrt><mo>⋅</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac></math></div>
+            <p>あとは <math><msqrt><mn>3</mn></msqrt><mo>⋅</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac></math> の部分を計算するだけだよ。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">√3・(√3/2) を計算する</span></div>
-            <p><span class="m">√3 × √3 = 3</span> だから、<span class="m">√3・<span class="frac"><span class="num">√3</span><span class="den">2</span></span> = <span class="frac"><span class="num">3</span><span class="den">2</span></span></span>。これをヒント2の式に入れると：</p>
-            <div class="formula-line"><span class="m"><i>y</i> = <span class="frac"><span class="num">1</span><span class="den">2</span></span> + <span class="frac"><span class="num">3</span><span class="den">2</span></span> = <span class="frac"><span class="num">4</span><span class="den">2</span></span> = 2</span></div>
+            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title"><math><msqrt><mn>3</mn></msqrt><mo>⋅</mo><mrow><mo>(</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac><mo>)</mo></mrow></math>を計算する</span></div><p class="cite"><span class="cite-tag">使う性質</span>根号の性質 <math><msqrt><mn>3</mn></msqrt><mo>×</mo><msqrt><mn>3</mn></msqrt><mo>=</mo><mn>3</mn></math>。この問題では、この性質を使って根号どうしの積を整数に直す。</p>
+            <p><math><msqrt><mn>3</mn></msqrt><mo>×</mo><msqrt><mn>3</mn></msqrt><mo>=</mo><mn>3</mn></math> だから、<math><msqrt><mn>3</mn></msqrt><mo>⋅</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac><mo>=</mo><mfrac><mn>3</mn><mn>2</mn></mfrac></math>。これをヒント2の式に入れると：</p>
+            <div class="formula-line"><div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>y</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>+</mo><mfrac><mn>3</mn><mn>2</mn></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>y</mi></mphantom><mo>=</mo><mfrac><mn>4</mn><mn>2</mn></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>y</mi></mphantom><mo>=</mo><mn>2</mn></math></div>
+</div></div>
             <p>これで イ が決まった。次は合成に進もう。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">合成の準備： √(a²+b²) でくくる</span></div>
-            <p><span class="m"><i>a</i> sin <i>x</i> + <i>b</i> cos <i>x</i></span> の合成では、まず <span class="m"><span class="sqrt">√<span class="rad"><i>a</i><sup>2</sup> + <i>b</i><sup>2</sup></span></span></span> でくくるのが型。今回は <span class="m"><i>a</i> = 1</span>、<span class="m"><i>b</i> = √3</span> だから：</p>
-            <div class="formula-line"><span class="m"><span class="sqrt">√<span class="rad">1<sup>2</sup> + (√3)<sup>2</sup></span></span> = <span class="sqrt">√<span class="rad">1 + 3</span></span> = 2</span></div>
-            <div class="formula-line"><span class="m"><i>y</i> = 2(<span class="frac"><span class="num">1</span><span class="den">2</span></span> sin <i>x</i> + <span class="frac"><span class="num">√3</span><span class="den">2</span></span> cos <i>x</i>)</span></div>
-            <p>これで ウ が決まる。残りは、カッコの中の係数 <span class="m"><span class="frac"><span class="num">1</span><span class="den">2</span></span></span> と <span class="m"><span class="frac"><span class="num">√3</span><span class="den">2</span></span></span> を、ある角の cos・sin と見ることだよ。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">合成の準備：<math><msqrt><mrow><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup></mrow></msqrt></math>でくくる</span></div><p class="cite"><span class="cite-tag">使う公式</span>三角関数の合成 <math><mi>a</mi><mi>sin</mi><mi>x</mi><mo>+</mo><mi>b</mi><mi>cos</mi><mi>x</mi></math> は、まず <math><msqrt><mrow><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup></mrow></msqrt></math> でくくって変形する。この問題では、この大きさを求めて式をくくり出す。</p>
+            <p><math><mi>a</mi><mi>sin</mi><mi>x</mi><mo>+</mo><mi>b</mi><mi>cos</mi><mi>x</mi></math> の合成では、まず <math><msqrt><mrow><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup></mrow></msqrt></math> でくくるのが型。今回は <math><mi>a</mi><mo>=</mo><mn>1</mn></math>、<math><mi>b</mi><mo>=</mo><msqrt><mn>3</mn></msqrt></math> だから：</p>
+            <div class="formula-line"><math><msqrt><mrow><msup><mn>1</mn><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><msqrt><mn>3</mn></msqrt><mo>)</mo></mrow><mn>2</mn></msup></mrow></msqrt><mo>=</mo><msqrt><mrow><mn>1</mn><mo>+</mo><mn>3</mn></mrow></msqrt><mo>=</mo><mn>2</mn></math></div>
+            <div class="formula-line"><math><mi>y</mi><mo>=</mo><mn>2</mn><mrow><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mi>sin</mi><mi>x</mi><mo>+</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac><mi>cos</mi><mi>x</mi><mo>)</mo></mrow></math></div>
+            <p>これで ウ が決まる。<br>残りは、カッコの中の係数 <math><mfrac><mn>1</mn><mn>2</mn></mfrac></math> と <math><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac></math> を、ある角の cos・sin と見ることだよ。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 5</span><span class="stage-title">係数を cos(π/3), sin(π/3) と見る</span></div>
-            <p><span class="m"><span class="frac"><span class="num">1</span><span class="den">2</span></span> = cos <span class="frac"><span class="num">π</span><span class="den">3</span></span></span>、<span class="m"><span class="frac"><span class="num">√3</span><span class="den">2</span></span> = sin <span class="frac"><span class="num">π</span><span class="den">3</span></span></span> と見ると、カッコの中は <span class="m">sin <i>x</i> cos <span class="frac"><span class="num">π</span><span class="den">3</span></span> + cos <i>x</i> sin <span class="frac"><span class="num">π</span><span class="den">3</span></span></span> の形になる。</p>
-            <p>これは <strong>加法定理の逆向き</strong>。<span class="m">sin <i>A</i> cos <i>B</i> + cos <i>A</i> sin <i>B</i> = sin(<i>A</i> + <i>B</i>)</span> だから：</p>
-            <div class="formula-line"><span class="m"><i>y</i> = 2 sin(<i>x</i> + <span class="frac"><span class="num">π</span><span class="den">3</span></span>)</span></div>
+            <div class="stage-head"><span class="stage-badge">ヒント 5</span><span class="stage-title">係数を<math><mi>cos</mi><mrow><mo>(</mo><mfrac><mi>π</mi><mn>3</mn></mfrac><mo>)</mo></mrow><mo>,</mo><mi>sin</mi><mrow><mo>(</mo><mfrac><mi>π</mi><mn>3</mn></mfrac><mo>)</mo></mrow></math>と見る</span></div><p class="cite"><span class="cite-tag">使う公式</span>加法定理 <math><mi>sin</mi><mi>A</mi><mi>cos</mi><mi>B</mi><mo>+</mo><mi>cos</mi><mi>A</mi><mi>sin</mi><mi>B</mi><mo>=</mo><mi>sin</mi><mrow><mo>(</mo><mi>A</mi><mo>+</mo><mi>B</mi><mo>)</mo></mrow></math>。この問題では、この式を逆向きに使って、カッコの中を1つの sin にまとめる。</p>
+            <p><math><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>=</mo><mi>cos</mi><mfrac><mi>π</mi><mn>3</mn></mfrac></math>、<math><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac><mo>=</mo><mi>sin</mi><mfrac><mi>π</mi><mn>3</mn></mfrac></math> と見ると、カッコの中は <math><mi>sin</mi><mi>x</mi><mi>cos</mi><mfrac><mi>π</mi><mn>3</mn></mfrac><mo>+</mo><mi>cos</mi><mi>x</mi><mi>sin</mi><mfrac><mi>π</mi><mn>3</mn></mfrac></math> の形になる。</p>
+            <p>これは <strong>加法定理の逆向き</strong>。<math><mi>sin</mi><mi>A</mi><mi>cos</mi><mi>B</mi><mo>+</mo><mi>cos</mi><mi>A</mi><mi>sin</mi><mi>B</mi><mo>=</mo><mi>sin</mi><mrow><mo>(</mo><mi>A</mi><mo>+</mo><mi>B</mi><mo>)</mo></mrow></math> だから：</p>
+            <div class="formula-line"><math><mi>y</mi><mo>=</mo><mn>2</mn><mi>sin</mi><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mfrac><mi>π</mi><mn>3</mn></mfrac><mo>)</mo></mrow></math></div>
             <p>エ に入る角と、その番号が分かるね。</p>
           </article>
 
           <article class="stage answer" hidden>
-            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">〔1〕の答え</span></div>
+            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">〔1〕の答え</span></div><p class="cite"><span class="cite-tag">使う公式</span>三角関数の合成の結果 <math><mi>y</mi><mo>=</mo><mn>2</mn><mi>sin</mi><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mfrac><mi>π</mi><mn>3</mn></mfrac><mo>)</mo></mrow></math>。この問題では、代入の値とこの合成の結果を並べて答えをまとめる。</p>
             <ol class="steps">
-              <li><span class="m"><i>x</i> = 0</span> のとき <span class="m"><i>y</i> = 0 + √3・1 = √3</span>。よって ア <span class="m">= 3</span>。</li>
-              <li><span class="m"><i>x</i> = <span class="frac"><span class="num">π</span><span class="den">6</span></span></span> のとき <span class="m"><i>y</i> = <span class="frac"><span class="num">1</span><span class="den">2</span></span> + √3・<span class="frac"><span class="num">√3</span><span class="den">2</span></span> = <span class="frac"><span class="num">1</span><span class="den">2</span></span> + <span class="frac"><span class="num">3</span><span class="den">2</span></span> = 2</span>。よって イ <span class="m">= 2</span>。</li>
-              <li>合成すると <span class="m"><i>y</i> = 2 sin(<i>x</i> + <span class="frac"><span class="num">π</span><span class="den">3</span></span>)</span>。よって ウ <span class="m">= 2</span>、エ は <span class="m"><span class="frac"><span class="num">π</span><span class="den">3</span></span></span> で、解答群の ②。</li>
+              <li><math><mi>x</mi><mo>=</mo><mn>0</mn></math> のとき <math><mi>y</mi><mo>=</mo><mn>0</mn><mo>+</mo><msqrt><mn>3</mn></msqrt><mo>⋅</mo><mn>1</mn><mo>=</mo><msqrt><mn>3</mn></msqrt></math>。よって ア <math><mo>=</mo><mn>3</mn></math>。</li>
+              <li><math><mi>x</mi><mo>=</mo><mfrac><mi>π</mi><mn>6</mn></mfrac></math> のとき <div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>y</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>+</mo><msqrt><mn>3</mn></msqrt><mo>⋅</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>y</mi></mphantom><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>+</mo><mfrac><mn>3</mn><mn>2</mn></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>y</mi></mphantom><mo>=</mo><mn>2</mn></math></div>
+</div>。よって イ <math><mo>=</mo><mn>2</mn></math>。</li>
+              <li>合成すると <math><mi>y</mi><mo>=</mo><mn>2</mn><mi>sin</mi><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mfrac><mi>π</mi><mn>3</mn></mfrac><mo>)</mo></mrow></math>。よって ウ <math><mo>=</mo><mn>2</mn></math>、エ は <math><mfrac><mi>π</mi><mn>3</mn></mfrac></math> で、解答群の ②。</li>
             </ol>
             <div class="ans-line">
-              <span class="ans-chip"><span class="kana">ア</span><span class="m">3</span><span class="pts">2点</span></span>
-              <span class="ans-chip"><span class="kana">イ</span><span class="m">2</span><span class="pts">2点</span></span>
-              <span class="ans-chip"><span class="kana">ウ</span><span class="m">2</span><span class="pts">2点</span></span>
-              <span class="ans-chip"><span class="kana">エ</span><span class="m">② <span class="frac"><span class="num">π</span><span class="den">3</span></span></span><span class="pts">2点</span></span>
+              <span class="ans-chip"><span class="kana">ア</span><math><mn>3</mn></math><span class="pts">2点</span></span>
+              <span class="ans-chip"><span class="kana">イ</span><math><mn>2</mn></math><span class="pts">2点</span></span>
+              <span class="ans-chip"><span class="kana">ウ</span><math><mn>2</mn></math><span class="pts">2点</span></span>
+              <span class="ans-chip"><span class="kana">エ</span><math><mo>②</mo><mfrac><mi>π</mi><mn>3</mn></mfrac></math><span class="pts">2点</span></span>
             </div>
-            <div class="point-box"><span class="pt">ポイント</span>合成の型は「<span class="m"><span class="sqrt">√<span class="rad"><i>a</i><sup>2</sup> + <i>b</i><sup>2</sup></span></span></span> でくくる → 係数を cos・sin の値と見る → 加法定理の逆」。この <span class="m"><i>y</i> = 2 sin(<i>x</i> + π/3)</span> は〔2〕〔3〕でも使うよ。</div>
+            <div class="point-box"><span class="pt">ポイント</span><p class="cite"><span class="cite-tag">使う公式</span>三角関数の合成の型は、<math><msqrt><mrow><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup></mrow></msqrt></math> でくくり、係数を cos・sin の値と見て、加法定理を逆向きに使うこと。このまとめでは、合成の結果 <math><mi>y</mi><mo>=</mo><mn>2</mn><mi>sin</mi><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mfrac><mi>π</mi><mn>3</mn></mfrac><mo>)</mo></mrow></math> を確認する。</p>合成の型は「<math><msqrt><mrow><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup></mrow></msqrt></math> でくくる → 係数を cos・sin の値と見る → 加法定理の逆」。<br>この <math><mi>y</mi><mo>=</mo><mn>2</mn><mi>sin</mi><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mfrac><mi>π</mi><mn>3</mn></mfrac><mo>)</mo></mrow></math> は〔2〕〔3〕でも使うよ。</div>
           </article>
         </div>
 
@@ -467,7 +541,7 @@
           <span class="q-num">第1問</span><span class="q-title">三角関数</span>
           <span class="q-points">必答問題・配点 15点</span>
         </div>
-        <p class="q-body">関数 <span class="m"><i>y</i> = sin <i>x</i> + <span class="sqrt">√<span class="rad">3</span></span> cos <i>x</i></span> がある。〔1〕で求めた合成の結果 <span class="m"><i>y</i> = ウ sin(<i>x</i> + エ)</span> を使って解く問題だよ。</p>
+        <p class="q-body">関数 <math><mi>y</mi><mo>=</mo><mi>sin</mi><mi>x</mi><mo>+</mo><msqrt><mn>3</mn></msqrt><mi>cos</mi><mi>x</mi></math> がある。〔1〕で求めた合成の結果 <span class="m"><math><mi>y</mi><mo>=</mo></math>ウ<math><mi>sin</mi><mo>(</mo><mi>x</mi><mo>+</mo></math>エ)</span> を使って解く問題だよ。</p>
       </div>
 
       <!-- ========== 〔2〕方程式の解 ========== -->
@@ -478,8 +552,8 @@
             <span class="q-num">〔2〕</span><span class="q-title">方程式の解</span>
             <span class="q-points">配点 4点（各2点）</span>
           </div>
-          <p class="q-body"><span class="m">0 ≦ <i>x</i> ≦ π</span> において、<span class="m"><i>y</i> = 1</span> となるのは <span class="m"><i>x</i> = <span class="blank" data-kana="オ" data-ans="π/2">オ</span></span> のときであり、<span class="m"><i>y</i> = <span class="sqrt">√<span class="rad">2</span></span></span> となるのは <span class="m"><i>x</i> = <span class="blank" data-kana="カ" data-ans="5π/12">カ</span></span> のときである。</p>
-          <p class="choices"><span class="m"><i>オ</i></span>，<span class="m"><i>カ</i></span> に当てはまるものを、〔1〕と同じ解答群（⓪ <span class="m">π/6</span>　① <span class="m">π/4</span>　② <span class="m">π/3</span>　③ <span class="m">5π/12</span>　④ <span class="m">π/2</span>　⑤ <span class="m">7π/12</span>　⑥ <span class="m">2π/3</span>　⑦ <span class="m">3π/4</span>　⑧ <span class="m">5π/6</span>　⑨ <span class="m">11π/12</span>）のうちから一つずつ選べ。</p>
+          <p class="q-body"><math><mn>0</mn><mo>≦</mo><mi>x</mi><mo>≦</mo><mi>π</mi></math> において、<math><mi>y</mi><mo>=</mo><mn>1</mn></math> となるのは <math><mi>x</mi><mo>=</mo><mtext><span class="blank" data-kana="オ" data-ans="π/2">オ</span></mtext></math> のときであり、<math><mi>y</mi><mo>=</mo><msqrt><mn>2</mn></msqrt></math> となるのは <math><mi>x</mi><mo>=</mo><mtext><span class="blank" data-kana="カ" data-ans="5π/12">カ</span></mtext></math> のときである。</p>
+          <p class="choices"><span class="m"><i>オ</i></span>，<span class="m"><i>カ</i></span> に当てはまるものを、〔1〕と同じ解答群<math><mo>(</mo><mo>⓪</mo><mfrac><mi>π</mi><mn>6</mn></mfrac></math>　<math><mo>①</mo><mfrac><mi>π</mi><mn>4</mn></mfrac></math>　<math><mo>②</mo><mfrac><mi>π</mi><mn>3</mn></mfrac></math>　<math><mo>③</mo><mn>5</mn><mfrac><mi>π</mi><mn>12</mn></mfrac></math>　<math><mo>④</mo><mfrac><mi>π</mi><mn>2</mn></mfrac></math>　<math><mo>⑤</mo><mn>7</mn><mfrac><mi>π</mi><mn>12</mn></mfrac></math>　<math><mo>⑥</mo><mn>2</mn><mfrac><mi>π</mi><mn>3</mn></mfrac></math>　<math><mo>⑦</mo><mn>3</mn><mfrac><mi>π</mi><mn>4</mn></mfrac></math>　<math><mo>⑧</mo><mn>5</mn><mfrac><mi>π</mi><mn>6</mn></mfrac></math>　<math><mo>⑨</mo><mn>11</mn><mfrac><mi>π</mi><mn>12</mn></mfrac><mo>)</mo></math>のうちから一つずつ選べ。</p>
         </div>
 
         <div class="viz" id="viz-circle">
@@ -517,51 +591,60 @@
           <p class="expr-note">水平線と交点は、ヒントを進めると図に出てくるよ。</p>
         </div>
 
-        <p class="think-note">カギは <span class="m"><i>θ</i> = <i>x</i> + π/3</span> と置き換えること。すると「単位円の上で sin <span class="m"><i>θ</i></span> の値を探す」問題になるよ。</p>
+        <p class="think-note">カギは <math><mi>θ</mi><mo>=</mo><mi>x</mi><mo>+</mo><mfrac><mi>π</mi><mn>3</mn></mfrac></math> と置き換えること。すると「単位円の上で<math><mi>sin</mi><mi>θ</mi></math> の値を探す」問題になるよ。</p>
         </div>
 
         <div class="stages">
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">θ = x + π/3 とおき、θ の範囲を出す</span></div>
-            <p>合成の結果 <span class="m"><i>y</i> = 2 sin(<i>x</i> + π/3)</span> のカッコの中を、まとめて <span class="m"><i>θ</i></span> とおく：<span class="m"><i>θ</i> = <i>x</i> + <span class="frac"><span class="num">π</span><span class="den">3</span></span></span>。</p>
-            <p><span class="m">0 ≦ <i>x</i> ≦ π</span> の各辺に <span class="m"><span class="frac"><span class="num">π</span><span class="den">3</span></span></span> を足すと、<span class="m"><i>θ</i></span> の範囲は：</p>
-            <div class="formula-line"><span class="m"><span class="frac"><span class="num">π</span><span class="den">3</span></span> ≦ <i>θ</i> ≦ <span class="frac"><span class="num">4π</span><span class="den">3</span></span></span></div>
-            <p>上の図の青い弧が、この <span class="m"><i>θ</i></span> の範囲。この範囲の中で考えよう。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title"><math><mi>θ</mi><mo>=</mo><mi>x</mi><mo>+</mo><mfrac><mi>π</mi><mn>3</mn></mfrac></math>とおき、θ の範囲を出す</span></div><p class="cite"><span class="cite-tag">使う性質</span>不等式の性質：不等式の各辺に同じ数を足しても、不等号の向きは変わらない。この問題では、<math><mn>0</mn><mo>≦</mo><mi>x</mi><mo>≦</mo><mi>π</mi></math> の各辺に <math><mfrac><mi>π</mi><mn>3</mn></mfrac></math> を足して <math><mfrac><mi>π</mi><mn>3</mn></mfrac><mo>≦</mo><mi>θ</mi><mo>≦</mo><mfrac><mrow><mn>4</mn><mi>π</mi></mrow><mn>3</mn></mfrac></math> という θ の範囲を作る。</p>
+            <p>合成の結果 <math><mi>y</mi><mo>=</mo><mn>2</mn><mi>sin</mi><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mfrac><mi>π</mi><mn>3</mn></mfrac><mo>)</mo></mrow></math> のカッコの中を、まとめて <math><mi>θ</mi></math> とおく：<math><mi>θ</mi><mo>=</mo><mi>x</mi><mo>+</mo><mfrac><mi>π</mi><mn>3</mn></mfrac></math>。</p>
+            <p><math><mn>0</mn><mo>≦</mo><mi>x</mi><mo>≦</mo><mi>π</mi></math> の各辺に <math><mfrac><mi>π</mi><mn>3</mn></mfrac></math> を足すと、<math><mi>θ</mi></math> の範囲は：</p>
+            <div class="formula-line"><math><mfrac><mi>π</mi><mn>3</mn></mfrac><mo>≦</mo><mi>θ</mi><mo>≦</mo><mfrac><mrow><mn>4</mn><mi>π</mi></mrow><mn>3</mn></mfrac></math></div>
+            <p>上の図の青い弧が、この <math><mi>θ</mi></math> の範囲。この範囲の中で考えよう。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">y = 1 は sin θ = 1/2 のこと</span></div>
-            <p><span class="m"><i>y</i> = 1</span> は <span class="m">2 sin <i>θ</i> = 1</span>、つまり <span class="m">sin <i>θ</i> = <span class="frac"><span class="num">1</span><span class="den">2</span></span></span> のこと。</p>
-            <p>単位円の上で <span class="m">sin <i>θ</i></span> は点の <span class="m"><i>y</i></span> 座標。水平線 <span class="m">sin <i>θ</i> = <span class="frac"><span class="num">1</span><span class="den">2</span></span></span> と青い弧の交点を図で探すと、範囲内にあるのは <span class="m"><i>θ</i> = <span class="frac"><span class="num">5π</span><span class="den">6</span></span></span> の点だけだね。</p>
-            <p class="mini">円全体では <span class="m"><i>θ</i> = π/6</span> でも <span class="m">sin <i>θ</i> = 1/2</span> になるけれど、<span class="m">π/6</span> は範囲（<span class="m">π/3</span> 以上）の外だから採用しないよ。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title"><math><mi>y</mi><mo>=</mo><mn>1</mn></math>は<math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math>のこと</span></div><p class="cite"><span class="cite-tag">使う定義</span>単位円上の点と sin：単位円の上で <math><mi>sin</mi><mi>θ</mi></math> は点の y 座標を表す。この問題では、<math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math> となる点を、水平線と弧の交点として探す。</p>
+            <p><math><mi>y</mi><mo>=</mo><mn>1</mn></math> は <math><mn>2</mn><mi>sin</mi><mi>θ</mi><mo>=</mo><mn>1</mn></math>、つまり <math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math> のこと。</p>
+            <p>単位円の上で <math><mi>sin</mi><mi>θ</mi></math> は点の <math><mi>y</mi></math> 座標。<br>水平線 <math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math> と青い弧の交点を図で探すと、範囲内にあるのは <math><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>5</mn><mi>π</mi></mrow><mn>6</mn></mfrac></math> の点だけだね。</p>
+            <p class="mini">円全体では <math><mi>θ</mi><mo>=</mo><mfrac><mi>π</mi><mn>6</mn></mfrac></math> でも <math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math> になるけれど、<math><mfrac><mi>π</mi><mn>6</mn></mfrac></math> は範囲<math><mo>(</mo><mfrac><mi>π</mi><mn>3</mn></mfrac></math> 以上）の外だから採用しないよ。</p>
           </article>
 
           <article class="stage hint" hidden>
             <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">θ から x に戻す</span></div>
-            <p><span class="m"><i>θ</i> = <i>x</i> + π/3</span> だったから、<span class="m"><i>x</i> = <i>θ</i> − π/3</span> で戻せる：</p>
-            <div class="formula-line"><span class="m"><i>x</i> = <span class="frac"><span class="num">5π</span><span class="den">6</span></span> − <span class="frac"><span class="num">π</span><span class="den">3</span></span> = <span class="frac"><span class="num">5π</span><span class="den">6</span></span> − <span class="frac"><span class="num">2π</span><span class="den">6</span></span> = <span class="frac"><span class="num">3π</span><span class="den">6</span></span> = <span class="frac"><span class="num">π</span><span class="den">2</span></span></span></div>
-            <p>これで オ が決まる。解答群で <span class="m">π/2</span> の番号を確認しておこう。次は <span class="m"><i>y</i> = √2</span> の場合だよ。</p>
+            <p><math><mi>θ</mi><mo>=</mo><mi>x</mi><mo>+</mo><mfrac><mi>π</mi><mn>3</mn></mfrac></math> だったから、<math><mi>x</mi><mo>=</mo><mi>θ</mi><mo>−</mo><mfrac><mi>π</mi><mn>3</mn></mfrac></math> で戻せる：</p>
+            <div class="formula-line"><div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>x</mi><mo>=</mo><mfrac><mrow><mn>5</mn><mi>π</mi></mrow><mn>6</mn></mfrac><mo>−</mo><mfrac><mi>π</mi><mn>3</mn></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>x</mi></mphantom><mo>=</mo><mfrac><mrow><mn>5</mn><mi>π</mi></mrow><mn>6</mn></mfrac><mo>−</mo><mfrac><mrow><mn>2</mn><mi>π</mi></mrow><mn>6</mn></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>x</mi></mphantom><mo>=</mo><mfrac><mrow><mn>3</mn><mi>π</mi></mrow><mn>6</mn></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>x</mi></mphantom><mo>=</mo><mfrac><mi>π</mi><mn>2</mn></mfrac></math></div>
+</div></div>
+            <p>これで オ が決まる。<br>解答群で <math><mfrac><mi>π</mi><mn>2</mn></mfrac></math> の番号を確認しておこう。次は <math><mi>y</mi><mo>=</mo><msqrt><mn>2</mn></msqrt></math> の場合だよ。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">y = √2 は sin θ = √2/2 のこと</span></div>
-            <p>同じやり方で、<span class="m"><i>y</i> = √2</span> は <span class="m">2 sin <i>θ</i> = √2</span>、つまり <span class="m">sin <i>θ</i> = <span class="frac"><span class="num">√2</span><span class="den">2</span></span></span> のこと。</p>
-            <p>単位円で範囲内に探すと <span class="m"><i>θ</i> = <span class="frac"><span class="num">3π</span><span class="den">4</span></span></span>（図の青い点）。あとは <span class="m"><i>x</i></span> に戻すだけ：</p>
-            <div class="formula-line"><span class="m"><i>x</i> = <span class="frac"><span class="num">3π</span><span class="den">4</span></span> − <span class="frac"><span class="num">π</span><span class="den">3</span></span> = <span class="frac"><span class="num">9π</span><span class="den">12</span></span> − <span class="frac"><span class="num">4π</span><span class="den">12</span></span> = <span class="frac"><span class="num">5π</span><span class="den">12</span></span></span></div>
+            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title"><math><mi>y</mi><mo>=</mo><msqrt><mn>2</mn></msqrt></math>は<math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><msqrt><mn>2</mn></msqrt><mn>2</mn></mfrac></math>のこと</span></div><p class="cite"><span class="cite-tag">使う性質</span>単位円の上で <math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><msqrt><mn>2</mn></msqrt><mn>2</mn></mfrac></math> となる角。この問題では、θ の範囲の中にある角を1つ選び出す。</p>
+            <p>同じやり方で、<math><mi>y</mi><mo>=</mo><msqrt><mn>2</mn></msqrt></math> は <math><mn>2</mn><mi>sin</mi><mi>θ</mi><mo>=</mo><msqrt><mn>2</mn></msqrt></math>、つまり <math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><msqrt><mn>2</mn></msqrt><mn>2</mn></mfrac></math> のこと。</p>
+            <p>単位円で範囲内に探すと <math><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>3</mn><mi>π</mi></mrow><mn>4</mn></mfrac><mo>(</mo></math>図の青い点）。あとは <math><mi>x</mi></math> に戻すだけ：</p>
+            <div class="formula-line"><div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>x</mi><mo>=</mo><mfrac><mrow><mn>3</mn><mi>π</mi></mrow><mn>4</mn></mfrac><mo>−</mo><mfrac><mi>π</mi><mn>3</mn></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>x</mi></mphantom><mo>=</mo><mfrac><mrow><mn>9</mn><mi>π</mi></mrow><mn>12</mn></mfrac><mo>−</mo><mfrac><mrow><mn>4</mn><mi>π</mi></mrow><mn>12</mn></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>x</mi></mphantom><mo>=</mo><mfrac><mrow><mn>5</mn><mi>π</mi></mrow><mn>12</mn></mfrac></math></div>
+</div></div>
             <p>カ の値と、解答群の番号が分かるね。</p>
           </article>
 
           <article class="stage answer" hidden>
-            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">〔2〕の答え</span></div>
+            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">〔2〕の答え</span></div><p class="cite"><span class="cite-tag">使う定義</span>単位円上の点と sin：<math><mi>sin</mi><mi>θ</mi></math> は単位円上の点の y 座標を表す。この問題では、この見方で範囲内の θ を決め、x に戻して答えをまとめる。</p>
             <ol class="steps">
-              <li><span class="m"><i>θ</i> = <i>x</i> + π/3</span>（<span class="m">π/3 ≦ <i>θ</i> ≦ 4π/3</span>）とおく。<span class="m"><i>y</i> = 1</span> のとき <span class="m">sin <i>θ</i> = 1/2</span> より範囲内で <span class="m"><i>θ</i> = 5π/6</span>、よって <span class="m"><i>x</i> = 5π/6 − π/3 = π/2</span>。オ は解答群の ④。</li>
-              <li><span class="m"><i>y</i> = √2</span> のとき <span class="m">sin <i>θ</i> = √2/2</span> より範囲内で <span class="m"><i>θ</i> = 3π/4</span>、よって <span class="m"><i>x</i> = 3π/4 − π/3 = 5π/12</span>。カ は解答群の ③。</li>
+              <li><math><mi>θ</mi><mo>=</mo><mi>x</mi><mo>+</mo><mfrac><mi>π</mi><mn>3</mn></mfrac><mrow><mo>(</mo><mfrac><mi>π</mi><mn>3</mn></mfrac><mo>≦</mo><mi>θ</mi><mo>≦</mo><mn>4</mn><mfrac><mi>π</mi><mn>3</mn></mfrac><mo>)</mo></mrow></math>とおく。<math><mi>y</mi><mo>=</mo><mn>1</mn></math> のとき <math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math> より範囲内で <math><mi>θ</mi><mo>=</mo><mn>5</mn><mfrac><mi>π</mi><mn>6</mn></mfrac></math>、よって <math><mi>x</mi><mo>=</mo><mn>5</mn><mfrac><mi>π</mi><mn>6</mn></mfrac><mo>−</mo><mfrac><mi>π</mi><mn>3</mn></mfrac><mo>=</mo><mfrac><mi>π</mi><mn>2</mn></mfrac></math>。オ は解答群の ④。</li>
+              <li><math><mi>y</mi><mo>=</mo><msqrt><mn>2</mn></msqrt></math> のとき <math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><msqrt><mn>2</mn></msqrt><mn>2</mn></mfrac></math> より範囲内で <math><mi>θ</mi><mo>=</mo><mn>3</mn><mfrac><mi>π</mi><mn>4</mn></mfrac></math>、よって <math><mi>x</mi><mo>=</mo><mn>3</mn><mfrac><mi>π</mi><mn>4</mn></mfrac><mo>−</mo><mfrac><mi>π</mi><mn>3</mn></mfrac><mo>=</mo><mn>5</mn><mfrac><mi>π</mi><mn>12</mn></mfrac></math>。カ は解答群の ③。</li>
             </ol>
             <div class="ans-line">
-              <span class="ans-chip"><span class="kana">オ</span><span class="m">④ <span class="frac"><span class="num">π</span><span class="den">2</span></span></span><span class="pts">2点</span></span>
-              <span class="ans-chip"><span class="kana">カ</span><span class="m">③ <span class="frac"><span class="num">5π</span><span class="den">12</span></span></span><span class="pts">2点</span></span>
+              <span class="ans-chip"><span class="kana">オ</span><math><mo>④</mo><mfrac><mi>π</mi><mn>2</mn></mfrac></math><span class="pts">2点</span></span>
+              <span class="ans-chip"><span class="kana">カ</span><math><mo>③</mo><mfrac><mrow><mn>5</mn><mi>π</mi></mrow><mn>12</mn></mfrac></math><span class="pts">2点</span></span>
             </div>
-            <div class="point-box"><span class="pt">ポイント</span>手順は「<span class="m"><i>θ</i></span> に置き換える → 単位円で範囲内の <span class="m"><i>θ</i></span> を探す → <span class="m"><i>x</i></span> に戻す」の3ステップ。範囲外の解（<span class="m">sin <i>θ</i> = 1/2</span> の <span class="m"><i>θ</i> = π/6</span> など）を捨てるのが一番の注意点。</div>
+            <div class="point-box"><span class="pt">ポイント</span><p class="cite"><span class="cite-tag">使う定義</span>単位円上の点と sin：<math><mi>sin</mi><mi>θ</mi></math> は点の y 座標を表す。このまとめでは、<math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math> の範囲外の解を捨てる手順を確認する。</p>手順は「<math><mi>θ</mi></math> に置き換える → 単位円で範囲内の <math><mi>θ</mi></math> を探す<math><mo>→</mo><mi>x</mi></math> に戻す」の3ステップ。<br>範囲外の解<math><mo>(</mo><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math> の <math><mi>θ</mi><mo>=</mo><mfrac><mi>π</mi><mn>6</mn></mfrac></math> など）を捨てるのが一番の注意点。</div>
           </article>
         </div>
 
@@ -581,7 +664,7 @@
           <span class="q-num">第1問</span><span class="q-title">三角関数</span>
           <span class="q-points">必答問題・配点 15点</span>
         </div>
-        <p class="q-body">関数 <span class="m"><i>y</i> = sin <i>x</i> + <span class="sqrt">√<span class="rad">3</span></span> cos <i>x</i></span> がある。〔1〕の合成と〔2〕の単位円の考え方を使って解く問題だよ。</p>
+        <p class="q-body">関数 <math><mi>y</mi><mo>=</mo><mi>sin</mi><mi>x</mi><mo>+</mo><msqrt><mn>3</mn></msqrt><mi>cos</mi><mi>x</mi></math> がある。〔1〕の合成と〔2〕の単位円の考え方を使って解く問題だよ。</p>
       </div>
 
       <!-- ========== 〔3〕解の個数 ========== -->
@@ -592,7 +675,7 @@
             <span class="q-num">〔3〕</span><span class="q-title">解の個数</span>
             <span class="q-points">配点 3点</span>
           </div>
-          <p class="q-body"><span class="m">0 ≦ <i>x</i> ≦ π</span> において、<span class="m">sin <i>x</i> + √3 cos <i>x</i> = <i>k</i></span>（<span class="m"><i>k</i></span> は定数）を満たす <span class="m"><i>x</i></span> の値が2個存在するような <span class="m"><i>k</i></span> の値の範囲は、<span class="m"><span class="sqrt">√<span class="rad"><span class="blank" data-kana="キ" data-ans="3">キ</span></span></span> ≦ <i>k</i> &lt; <span class="blank" data-kana="ク" data-ans="2">ク</span></span> である。</p>
+          <p class="q-body"><math><mn>0</mn><mo>≦</mo><mi>x</mi><mo>≦</mo><mi>π</mi></math> において、<math><mi>sin</mi><mi>x</mi><mo>+</mo><msqrt><mn>3</mn></msqrt><mi>cos</mi><mi>x</mi><mo>=</mo><mi>k</mi><mo>(</mo><mi>k</mi></math> は定数）を満たす <math><mi>x</mi></math> の値が2個存在するような <math><mi>k</mi></math> の値の範囲は、<math><msqrt><mtext><span class="blank" data-kana="キ" data-ans="3">キ</span></mtext></msqrt><mo>≦</mo><mi>k</mi><mo>&lt;</mo><mtext><span class="blank" data-kana="ク" data-ans="2">ク</span></mtext></math> である。</p>
         </div>
 
         <div class="viz" id="viz-k">
@@ -618,10 +701,10 @@
             <circle id="kP2" cx="261.1" cy="64" r="6.5"></circle>
           </svg>
           <div class="k-ctrl">
-            <label for="kRange">定数 <span class="m"><i>k</i></span> を動かす <span class="kval" id="kVal">k = 1.80</span></label>
+            <label for="kRange">定数 <math><mi>k</mi></math> を動かす <span class="kval" id="kVal"><math><mi>k</mi><mo>=</mo><mn>1.80</mn></math></span></label>
             <input type="range" id="kRange" min="-200" max="200" step="5" value="180" aria-label="k の値を変えるスライダー" />
             <div class="k-read">
-              <span>水平線： <span class="m">sin <i>θ</i> = <i>k</i>/2</span>（<span class="m"><i>k</i>/2 = </span><span class="m" id="kHalf">0.90</span>）</span>
+              <span>水平線： <math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mi>k</mi><mn>2</mn></mfrac><mo>(</mo><mfrac><mi>k</mi><mn>2</mn></mfrac><mo>=</mo></math><span class="m" id="kHalf">0.90</span>）</span>
               <span class="cnt" id="kCount">弧との交点： 2 個</span>
             </div>
           </div>
@@ -633,40 +716,40 @@
 
         <div class="stages">
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">合成して sin θ = k/2 の形にする</span></div>
-            <p>〔1〕の合成を使うと、方程式 <span class="m">sin <i>x</i> + √3 cos <i>x</i> = <i>k</i></span> は <span class="m">2 sin <i>θ</i> = <i>k</i></span> と書ける（<span class="m"><i>θ</i> = <i>x</i> + π/3</span>、<span class="m">π/3 ≦ <i>θ</i> ≦ 4π/3</span>）。両辺を2で割ると：</p>
-            <div class="formula-line"><span class="m">sin <i>θ</i> = <span class="frac"><span class="num"><i>k</i></span><span class="den">2</span></span></span></div>
-            <p>つまり「<span class="m">sin <i>θ</i></span> が <span class="m"><i>k</i>/2</span> になる <span class="m"><i>θ</i></span> が、範囲内に何個あるか」という問題になったね。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">合成して<math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mi>k</mi><mn>2</mn></mfrac></math>の形にする</span></div><p class="cite"><span class="cite-tag">使う公式</span>三角関数の合成を使うと、方程式は <math><mn>2</mn><mi>sin</mi><mi>θ</mi><mo>=</mo><mi>k</mi></math> と書ける。この問題では、両辺を2で割って <math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mi>k</mi><mn>2</mn></mfrac></math> の形にする。</p>
+            <p>〔1〕の合成を使うと、方程式 <math><mi>sin</mi><mi>x</mi><mo>+</mo><msqrt><mn>3</mn></msqrt><mi>cos</mi><mi>x</mi><mo>=</mo><mi>k</mi></math> は <math><mn>2</mn><mi>sin</mi><mi>θ</mi><mo>=</mo><mi>k</mi></math> と書ける<math><mo>(</mo><mi>θ</mi><mo>=</mo><mi>x</mi><mo>+</mo><mfrac><mi>π</mi><mn>3</mn></mfrac></math>、<math><mfrac><mi>π</mi><mn>3</mn></mfrac><mo>≦</mo><mi>θ</mi><mo>≦</mo><mn>4</mn><mfrac><mi>π</mi><mn>3</mn></mfrac><mo>)</mo></math>。両辺を2で割ると：</p>
+            <div class="formula-line"><math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mi>k</mi><mn>2</mn></mfrac></math></div>
+            <p>つまり「<math><mi>sin</mi><mi>θ</mi></math> が <math><mfrac><mi>k</mi><mn>2</mn></mfrac></math> になる <math><mi>θ</mi></math> が、範囲内に何個あるか」という問題になったね。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">交点の個数で考える</span></div>
-            <p>単位円の図で、水平線 <span class="m">sin <i>θ</i> = <i>k</i>/2</span> と、青い弧（<span class="m"><i>θ</i></span> の範囲の部分）が交わる点の数が、そのまま解の個数になる。</p>
-            <p>上の図のスライダーで <span class="m"><i>k</i></span> を動かして観察してみよう。交点が2個になるのは、水平線が<strong>弧の両端の点より上</strong>にあって、<strong>弧のてっぺんより下</strong>にあるときだね。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">交点の個数で考える</span></div><p class="cite"><span class="cite-tag">使う性質</span>解の個数は、単位円の弧と水平線 <math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mi>k</mi><mn>2</mn></mfrac></math> の交点の個数と一致する。この問題では、交点が2個になる水平線の位置を図で観察する。</p>
+            <p>単位円の図で、水平線 <math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mi>k</mi><mn>2</mn></mfrac></math> と、青い弧<math><mo>(</mo><mi>θ</mi></math> の範囲の部分）が交わる点の数が、そのまま解の個数になる。</p>
+            <p>上の図のスライダーで <math><mi>k</mi></math> を動かして観察してみよう。<br>交点が2個になるのは、水平線が<strong>弧の両端の点より上</strong>にあって、<strong>弧のてっぺんより下</strong>にあるときだね。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">両端とてっぺんの高さを数値にする</span></div>
-            <p>弧の左端は <span class="m"><i>θ</i> = π/3</span> の点で、その高さは <span class="m">sin <span class="frac"><span class="num">π</span><span class="den">3</span></span> = <span class="frac"><span class="num">√3</span><span class="den">2</span></span></span>（図の点線の高さ）。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">両端とてっぺんの高さを数値にする</span></div><p class="cite"><span class="cite-tag">使う性質</span>特殊な角の値 <math><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac><mo>=</mo><mi>sin</mi><mfrac><mi>π</mi><mn>3</mn></mfrac></math> と、sin の最大値が 1 であること。この問題では、弧の両端とてっぺんの高さをこの値で押さえる。</p>
+            <p>弧の左端は <math><mi>θ</mi><mo>=</mo><mfrac><mi>π</mi><mn>3</mn></mfrac></math> の点で、その高さは <math><mi>sin</mi><mfrac><mi>π</mi><mn>3</mn></mfrac><mo>=</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac><mo>(</mo></math>図の点線の高さ）。</p>
             <ul class="steps">
-              <li>水平線がこの高さ<strong>ちょうど</strong>のとき：交点は左端 <span class="m"><i>θ</i> = π/3</span> と <span class="m"><i>θ</i> = 2π/3</span> の<strong>2個</strong> → 含めてよい（等号が付く）</li>
-              <li>水平線がてっぺん（<span class="m">sin <i>θ</i> = 1</span>）のとき：交点は <span class="m"><i>θ</i> = π/2</span> の<strong>1個</strong>だけ → 含めない（等号は付かない）</li>
+              <li>水平線がこの高さ<strong>ちょうど</strong>のとき：交点は左端 <math><mi>θ</mi><mo>=</mo><mfrac><mi>π</mi><mn>3</mn></mfrac></math> と <math><mi>θ</mi><mo>=</mo><mn>2</mn><mfrac><mi>π</mi><mn>3</mn></mfrac></math> の<strong>2個</strong> → 含めてよい（等号が付く）</li>
+              <li>水平線がてっぺん<math><mo>(</mo><mi>sin</mi><mi>θ</mi><mo>=</mo><mn>1</mn><mo>)</mo></math>のとき：交点は <math><mi>θ</mi><mo>=</mo><mfrac><mi>π</mi><mn>2</mn></mfrac></math> の<strong>1個</strong>だけ → 含めない（等号は付かない）</li>
             </ul>
             <p>だから、交点が2個になる条件は：</p>
-            <div class="formula-line"><span class="m"><span class="frac"><span class="num">√3</span><span class="den">2</span></span> ≦ <span class="frac"><span class="num"><i>k</i></span><span class="den">2</span></span> &lt; 1</span></div>
-            <p>あとは各辺を2倍すれば <span class="m"><i>k</i></span> の範囲になるよ。</p>
+            <div class="formula-line"><math><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac><mo>≦</mo><mfrac><mi>k</mi><mn>2</mn></mfrac><mo>&lt;</mo><mn>1</mn></math></div>
+            <p>あとは各辺を2倍すれば <math><mi>k</mi></math> の範囲になるよ。</p>
           </article>
 
           <article class="stage answer" hidden>
-            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">〔3〕の答え</span></div>
-            <p><span class="m"><span class="frac"><span class="num">√3</span><span class="den">2</span></span> ≦ <span class="frac"><span class="num"><i>k</i></span><span class="den">2</span></span> &lt; 1</span> の各辺を2倍して：</p>
-            <div class="formula-line"><span class="m"><span class="sqrt">√<span class="rad">3</span></span> ≦ <i>k</i> &lt; 2</span></div>
-            <p>よって キ <span class="m">= 3</span>、ク <span class="m">= 2</span>。</p>
+            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">〔3〕の答え</span></div><p class="cite"><span class="cite-tag">使う性質</span>不等式の性質：不等式の各辺に正の数をかけても、不等号の向きは変わらない。この問題では、<math><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac><mo>≦</mo><mfrac><mi>k</mi><mn>2</mn></mfrac><mo>&lt;</mo><mn>1</mn></math> の各辺を2倍して k の範囲に直す。</p>
+            <p><math><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac><mo>≦</mo><mfrac><mi>k</mi><mn>2</mn></mfrac><mo>&lt;</mo><mn>1</mn></math> の各辺を2倍して：</p>
+            <div class="formula-line"><math><msqrt><mn>3</mn></msqrt><mo>≦</mo><mi>k</mi><mo>&lt;</mo><mn>2</mn></math></div>
+            <p>よって キ <math><mo>=</mo><mn>3</mn></math>、ク <math><mo>=</mo><mn>2</mn></math>。</p>
             <div class="ans-line">
-              <span class="ans-chip"><span class="kana">キ</span><span class="m">3</span></span>
-              <span class="ans-chip"><span class="kana">ク</span><span class="m">2</span><span class="pts">合わせて3点</span></span>
+              <span class="ans-chip"><span class="kana">キ</span><math><mn>3</mn></math></span>
+              <span class="ans-chip"><span class="kana">ク</span><math><mn>2</mn></math><span class="pts">合わせて3点</span></span>
             </div>
-            <div class="point-box"><span class="pt">ポイント</span>「解の個数」の問題は、単位円（やグラフ）と水平線の<strong>交点の個数</strong>に読み替える。境界では<strong>等号が付くかどうか</strong>を、交点の個数を実際に数えて確かめるのが大切（左端の高さでは2個、てっぺんでは1個）。</div>
+            <div class="point-box"><span class="pt">ポイント</span><p class="cite"><span class="cite-tag">使う性質</span>解の個数は、弧と水平線 <math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mi>k</mi><mn>2</mn></mfrac></math> の交点の個数と一致する。このまとめでは、境界で等号が付くかどうかを交点の個数で確かめる。</p>「解の個数」の問題は、単位円（やグラフ）と水平線の<strong>交点の個数</strong>に読み替える。<br>境界では<strong>等号が付くかどうか</strong>を、交点の個数を実際に数えて確かめるのが大切（左端の高さでは2個、てっぺんでは1個）。</div>
           </article>
         </div>
 

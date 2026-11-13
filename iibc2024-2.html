@@ -322,7 +322,69 @@
         }
         .problem .controls { grid-column: 2; grid-row: 2; margin-top: 12px; }
       }
-    </style>
+    
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+
+      /* 積分記号は大きめに表示する（元のページの可読化デザインに合わせる） */
+      math .int-op{font-size:1.35em}
+      /* calc-12 世代（.card）と calc-18 世代（.unit）の、図のない問題の全幅化 */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig>.step{position:static !important}
+        .card.nofig>.steps-wrap{max-height:none !important;overflow:visible !important}
+        .unit.nofig{display:block !important}
+        .unit.nofig>.qside{position:static !important}
+        .unit.nofig>.steps-stack{max-height:none !important;overflow:visible !important}
+      }
+
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける・第3弾b） */
+      @media (min-width:1024px){
+        .problem.nofig,.panel.nofig,.prob-sec.nofig{display:block !important}
+        .nofig .cols,.nofig .flow-cols,.nofig .flow-grid,.nofig .flow{display:block !important}
+        .nofig .qside,.nofig .stages,.nofig .hside,.nofig .flow-left,.nofig .flow-right,
+        .nofig .col-left,.nofig .col-right,.nofig .pleft,.nofig .pright,
+        .nofig .steps-wrap,.nofig .steps-stack,.nofig .prob-col,.nofig .hint-col{
+          position:static !important;max-height:none !important;overflow:visible !important;
+          grid-column:auto !important;grid-row:auto !important;
+        }
+      }
+</style>
   </head>
   <body>
     <div class="wrap">
@@ -360,60 +422,65 @@
           <span class="q-num">第2問</span><span class="q-title">指数関数・対数関数</span>
           <span class="q-points">必答・配点 15点</span>
         </div>
-        <p class="q-body"><span class="m">log<sub>10</sub>2 = 0.3010</span>、<span class="m">log<sub>10</sub>3 = 0.4771</span> とする。以下の問いに答えよ。</p>
+        <p class="q-body"><math><msub><mi>log</mi><mn>10</mn></msub><mn>2</mn><mo>=</mo><mn>0.3010</mn></math>、<math><msub><mi>log</mi><mn>10</mn></msub><mn>3</mn><mo>=</mo><mn>0.4771</mn></math> とする。以下の問いに答えよ。</p>
       </div>
 
       <!-- ========== (1) log の値 ========== -->
-      <section class="problem active" id="p1" data-group="g1">
+      <section class="nofig problem active" id="p1" data-group="g1">
         <div class="qside">
         <div class="qcard">
           <div class="q-head">
             <span class="q-num">(1)</span><span class="q-title">log₁₀5 と log₁₀150000</span>
             <span class="q-points">配点 4点</span>
           </div>
-          <p class="q-body"><span class="m">log<sub>10</sub>5 = log<sub>10</sub><span class="frac"><span class="num">10</span><span class="den">2</span></span></span> より、<span class="m">log<sub>10</sub>5 = <span class="blank" data-kana="ア" data-ans="0.6990">ア</span></span> である。</p>
-          <p class="q-body">また、<span class="m">log<sub>10</sub>150000 = log<sub>10</sub>(3·5·10<sup><span class="blank" data-kana="イ" data-ans="4">イ</span></sup>) = <span class="blank" data-kana="ウ" data-ans="5.1761">ウ</span></span> である。</p>
+          <p class="q-body"><math><msub><mi>log</mi><mn>10</mn></msub><mn>5</mn><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><mfrac><mn>10</mn><mn>2</mn></mfrac></math> より、<math><msub><mi>log</mi><mn>10</mn></msub><mn>5</mn><mo>=</mo><mtext><span class="blank" data-kana="ア" data-ans="0.6990">ア</span></mtext></math> である。</p>
+          <p class="q-body">また、<math><msub><mi>log</mi><mn>10</mn></msub><mn>150000</mn><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><mrow><mo>(</mo><mn>3</mn><mo>·</mo><mn>5</mn><mo>·</mo><msup><mn>10</mn><mtext><span class="blank" data-kana="イ" data-ans="4">イ</span></mtext></msup><mo>)</mo></mrow><mo>=</mo><mtext><span class="blank" data-kana="ウ" data-ans="5.1761">ウ</span></mtext></math> である。</p>
           <p class="q-body">ア、ウ に当てはまるものを、次の ⓪〜⑤ のうちから一つずつ選べ。</p>
           <p class="choices">
-            <span class="copt">⓪ <span class="m">0.1436</span>　① <span class="m">0.6990</span>　② <span class="m">0.7781</span></span>
-            <span class="copt">③ <span class="m">5.1761</span>　④ <span class="m">5.8805</span>　⑤ <span class="m">7.9252</span></span>
+            <span class="copt"><math><mo>⓪</mo><mn>0.1436</mn></math>　<math><mo>①</mo><mn>0.6990</mn></math>　<math><mo>②</mo><mn>0.7781</mn></math></span>
+            <span class="copt"><math><mo>③</mo><mn>5.1761</mn></math>　<math><mo>④</mo><mn>5.8805</mn></math>　<math><mo>⑤</mo><mn>7.9252</mn></math></span>
           </p>
         </div>
-        <p class="think-note">武器は対数の性質。<span class="m">log<sub>10</sub><span class="frac"><span class="num"><i>M</i></span><span class="den"><i>N</i></span></span> = log<sub>10</sub><i>M</i> − log<sub>10</sub><i>N</i></span> と、積の対数は和になることを使おう。</p>
+        <p class="think-note">武器は対数の性質。<math><msub><mi>log</mi><mn>10</mn></msub><mfrac><mi>M</mi><mi>N</mi></mfrac><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><mi>M</mi><mo>−</mo><msub><mi>log</mi><mn>10</mn></msub><mi>N</mi></math> と、積の対数は和になることを使おう。</p>
         </div>
 
         <div class="stages">
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">5 = 10/2 と見て、わり算の対数を引き算に</span></div>
-            <p>問題文の通り、<span class="m">5 = <span class="frac"><span class="num">10</span><span class="den">2</span></span></span> と見るのが入口。対数の性質で、わり算の対数は引き算にばらせるよ：</p>
-            <div class="formula-line"><span class="m">log<sub>10</sub><span class="frac"><span class="num">10</span><span class="den">2</span></span> = log<sub>10</sub>10 − log<sub>10</sub>2</span></div>
-            <p>ここで <span class="m">log<sub>10</sub>10 = 1</span>（<span class="m">10<sup>1</sup> = 10</span> だから）、<span class="m">log<sub>10</sub>2 = 0.3010</span> は問題文で与えられている。つまり <span class="m">log<sub>10</sub>5 = 1 − 0.3010</span>。この引き算をすれば ア が決まるよ。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title"><math><mn>5</mn><mo>=</mo><mfrac><mn>10</mn><mn>2</mn></mfrac></math>と見て、わり算の対数を引き算に</span></div><p class="cite"><span class="cite-tag">使う性質</span>対数の性質（商の対数）：わり算の対数は引き算になる <math><msub><mi>log</mi><mn>10</mn></msub><mfrac><mn>10</mn><mn>2</mn></mfrac><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><mn>10</mn><mo>−</mo><msub><mi>log</mi><mn>10</mn></msub><mn>2</mn></math>。この問題では、<math><msub><mi>log</mi><mn>10</mn></msub><mn>5</mn><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><mfrac><mn>10</mn><mn>2</mn></mfrac></math> をこの形に直して計算する。</p>
+            <p>問題文の通り、<math><mn>5</mn><mo>=</mo><mfrac><mn>10</mn><mn>2</mn></mfrac></math> と見るのが入口。<br>対数の性質で、わり算の対数は引き算にばらせるよ：</p>
+            <div class="formula-line"><math><msub><mi>log</mi><mn>10</mn></msub><mfrac><mn>10</mn><mn>2</mn></mfrac><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><mn>10</mn><mo>−</mo><msub><mi>log</mi><mn>10</mn></msub><mn>2</mn></math></div>
+            <p>ここで <math><msub><mi>log</mi><mn>10</mn></msub><mn>10</mn><mo>=</mo><mn>1</mn><mo>(</mo><msup><mn>10</mn><mn>1</mn></msup><mo>=</mo><mn>10</mn></math> だから）、<math><msub><mi>log</mi><mn>10</mn></msub><mn>2</mn><mo>=</mo><mn>0.3010</mn></math> は問題文で与えられている。つまり <math><msub><mi>log</mi><mn>10</mn></msub><mn>5</mn><mo>=</mo><mn>1</mn><mo>−</mo><mn>0.3010</mn></math>。この引き算をすれば ア が決まるよ。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">150000 を 3·5·10 の累乗 に分解する</span></div>
-            <p>こんどは <span class="m">150000</span> を、問題文の形 <span class="m">3·5·10<sup>イ</sup></span> に合わせて分解してみよう。まず <span class="m">150000 = 15 × 10000</span> と分けると：</p>
-            <div class="formula-line"><span class="m">150000 = 3·5·10<sup>4</sup></span></div>
-            <p><span class="m">15 = 3·5</span>、<span class="m">10000 = 10<sup>4</sup></span> だね。だから <strong>イ = 4</strong>。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">150000 を 3·5·10 の累乗 に分解する</span></div><p class="cite"><span class="cite-tag">使う性質</span>累乗の表し方 <math><mn>150000</mn><mo>=</mo><mn>3</mn><mo>·</mo><mn>5</mn><mo>·</mo><msup><mn>10</mn><mn>4</mn></msup></math>。この問題では、10000 を10の累乗と見て、数をこの形に分解する。</p>
+            <p>こんどは <math><mn>150000</mn></math> を、問題文の形 <span class="m"><math><mn>3</mn><mo>·</mo><mn>5</mn><mo>·</mo><msup><mn>10</mn><mtext>イ</mtext></msup></math></span> に合わせて分解してみよう。まず <math><mn>150000</mn><mo>=</mo><mn>15</mn><mo>×</mo><mn>10000</mn></math> と分けると：</p>
+            <div class="formula-line"><math><mn>150000</mn><mo>=</mo><mn>3</mn><mo>·</mo><mn>5</mn><mo>·</mo><msup><mn>10</mn><mn>4</mn></msup></math></div>
+            <p><math><mn>15</mn><mo>=</mo><mn>3</mn><mo>·</mo><mn>5</mn></math>、<math><mn>10000</mn><mo>=</mo><msup><mn>10</mn><mn>4</mn></msup></math> だね。だから <strong>イ<math><mo>=</mo><mn>4</mn></math></strong>。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">積の対数を和にばらして、値を代入</span></div>
-            <p>積の対数は、それぞれの対数の和になる。<span class="m">log<sub>10</sub>150000 = log<sub>10</sub>(3·5·10<sup>4</sup>)</span> をばらすと：</p>
-            <div class="formula-line"><span class="m">log<sub>10</sub>150000 = log<sub>10</sub>3 + log<sub>10</sub>5 + log<sub>10</sub>10<sup>4</sup></span></div>
-            <p><span class="m">log<sub>10</sub>10<sup>4</sup> = 4</span>（<span class="m">10<sup>4</sup></span> の指数がそのまま出てくる）。あとは <span class="m">log<sub>10</sub>3 = 0.4771</span> と、ヒント1で求めた <span class="m">log<sub>10</sub>5</span> の値を代入して足し算するだけ：</p>
-            <div class="formula-line"><span class="m">0.4771 + 0.6990 + 4</span></div>
+            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">積の対数を和にばらして、値を代入</span></div><p class="cite"><span class="cite-tag">使う性質</span>対数の性質（積の対数）：積の対数は和になる <math><msub><mi>log</mi><mn>10</mn></msub><mn>150000</mn><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><mn>3</mn><mo>+</mo><msub><mi>log</mi><mn>10</mn></msub><mn>5</mn><mo>+</mo><msub><mi>log</mi><mn>10</mn></msub><msup><mn>10</mn><mn>4</mn></msup></math>。この問題では、積をばらしてから、それぞれの値を代入する。</p>
+            <p>積の対数は、それぞれの対数の和になる。<br><math><msub><mi>log</mi><mn>10</mn></msub><mn>150000</mn><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><mrow><mo>(</mo><mn>3</mn><mo>·</mo><mn>5</mn><mo>·</mo><msup><mn>10</mn><mn>4</mn></msup><mo>)</mo></mrow></math> をばらすと：</p>
+            <div class="formula-line"><math><msub><mi>log</mi><mn>10</mn></msub><mn>150000</mn><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><mn>3</mn><mo>+</mo><msub><mi>log</mi><mn>10</mn></msub><mn>5</mn><mo>+</mo><msub><mi>log</mi><mn>10</mn></msub><msup><mn>10</mn><mn>4</mn></msup></math></div>
+            <p><math><msub><mi>log</mi><mn>10</mn></msub><msup><mn>10</mn><mn>4</mn></msup><mo>=</mo><mn>4</mn><mo>(</mo><msup><mn>10</mn><mn>4</mn></msup></math> の指数がそのまま出てくる）。あとは <math><msub><mi>log</mi><mn>10</mn></msub><mn>3</mn><mo>=</mo><mn>0.4771</mn></math> と、ヒント1で求めた <math><msub><mi>log</mi><mn>10</mn></msub><mn>5</mn></math> の値を代入して足し算するだけ：</p>
+            <div class="formula-line"><math><mn>0.4771</mn><mo>+</mo><mn>0.6990</mn><mo>+</mo><mn>4</mn></math></div>
           </article>
 
           <article class="stage answer" hidden>
-            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(1) の答え</span></div>
-            <p><span class="m">log<sub>10</sub>5 = log<sub>10</sub>10 − log<sub>10</sub>2 = 1 − 0.3010 = 0.6990</span>。また <span class="m">150000 = 3·5·10<sup>4</sup></span> だから <span class="m">log<sub>10</sub>150000 = 0.4771 + 0.6990 + 4 = 5.1761</span>。</p>
+            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(1) の答え</span></div><p class="cite"><span class="cite-tag">使う性質</span>対数の性質（商の対数と積の対数）。この問題では、<math><msub><mi>log</mi><mn>10</mn></msub><mn>5</mn><mo>=</mo><mn>1</mn><mo>−</mo><mn>0.3010</mn></math> などの計算を並べて答えをまとめる。</p>
+            <div class="chain-crow">
+<div class="crow"><math displaystyle="true"><msub><mi>log</mi><mn>10</mn></msub><mn>5</mn><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><mn>10</mn><mo>−</mo><msub><mi>log</mi><mn>10</mn></msub><mn>2</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msub><mi>log</mi><mn>10</mn></msub><mn>5</mn></mphantom><mo>=</mo><mn>1</mn><mo>−</mo><mn>0.3010</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msub><mi>log</mi><mn>10</mn></msub><mn>5</mn></mphantom><mo>=</mo><mn>0.6990</mn></math></div>
+</div>
+<p>。また <math><mn>150000</mn><mo>=</mo><mn>3</mn><mo>·</mo><mn>5</mn><mo>·</mo><msup><mn>10</mn><mn>4</mn></msup></math> だから <math><msub><mi>log</mi><mn>10</mn></msub><mn>150000</mn><mo>=</mo><mn>0.4771</mn><mo>+</mo><mn>0.6990</mn><mo>+</mo><mn>4</mn><mo>=</mo><mn>5.1761</mn></math>。</p>
             <div class="ans-line">
-              <span class="ans-chip"><span class="kana">ア</span><span class="m">① 0.6990</span><span class="pts">2点</span></span>
-              <span class="ans-chip"><span class="kana">イ</span><span class="m">4</span><span class="pts">1点</span></span>
-              <span class="ans-chip"><span class="kana">ウ</span><span class="m">③ 5.1761</span><span class="pts">1点</span></span>
+              <span class="ans-chip"><span class="kana">ア</span><math><mo>①</mo><mn>0.6990</mn></math><span class="pts">2点</span></span>
+              <span class="ans-chip"><span class="kana">イ</span><math><mn>4</mn></math><span class="pts">1点</span></span>
+              <span class="ans-chip"><span class="kana">ウ</span><math><mo>③</mo><mn>5.1761</mn></math><span class="pts">1点</span></span>
             </div>
-            <div class="point-box"><span class="pt">ポイント</span><strong>わり算の対数は引き算、積の対数は和</strong>。そして <span class="m">log<sub>10</sub>10<sup><i>k</i></sup> = <i>k</i></span>。この (1) の結果（<span class="m">log<sub>10</sub>5</span> と <span class="m">log<sub>10</sub>150000</span>）は、あとの (3) でも使うよ。</div>
+            <div class="point-box"><span class="pt">ポイント</span><p class="cite"><span class="cite-tag">使う性質</span>対数の性質：わり算の対数は引き算、積の対数は和になり、<math><msub><mi>log</mi><mn>10</mn></msub><mn>5</mn><mo>=</mo><mn>1</mn><mo>−</mo><mn>0.3010</mn></math> のように計算できる。このまとめでは、(1) の計算の型を確認する。</p><strong>わり算の対数は引き算、積の対数は和</strong>。<br>そして <math><msub><mi>log</mi><mn>10</mn></msub><msup><mn>10</mn><mi>k</mi></msup><mo>=</mo><mi>k</mi></math>。この (1) の結果<math><mo>(</mo><msub><mi>log</mi><mn>10</mn></msub><mn>5</mn></math> と <math><msub><mi>log</mi><mn>10</mn></msub><mn>150000</mn><mo>)</mo></math>は、あとの (3) でも使うよ。</div>
           </article>
         </div>
 
@@ -435,13 +502,13 @@
             <span class="q-num">(2)</span><span class="q-title">ピアノの鍵盤と周波数</span>
             <span class="q-points">配点 8点</span>
           </div>
-          <p class="q-body">音の高さは周波数を用いて表される。ピアノの鍵盤に 0 から 16 までの番号を割り当てたとき、鍵盤の番号を1だけ大きくした鍵盤の音の周波数は、もとの音の周波数の <span class="m">2<sup><span class="frac"><span class="num">1</span><span class="den">12</span></span></sup></span> 倍である。たとえば 5 の「ファ」の周波数は、4 の「ミ」の周波数の <span class="m">2<sup><span class="frac"><span class="num">1</span><span class="den">12</span></span></sup></span> 倍である。0 の「ド」の周波数を <span class="m"><i>f</i><sub>0</sub></span> とする。</p>
-          <p class="q-body">2 の「レ」の周波数は <span class="m">2<sup><span class="frac"><span class="num">1</span><span class="den">12</span></span></sup>·2<sup><span class="frac"><span class="num">1</span><span class="den">12</span></span></sup>·<i>f</i><sub>0</sub> = <span class="blank" data-kana="エ" data-ans="2^(1/6)">エ</span>·<i>f</i><sub>0</sub></span> であり、14 の「レ」の周波数は <span class="m"><span class="blank" data-kana="オ" data-ans="2^(7/6)">オ</span>·<i>f</i><sub>0</sub></span> である。</p>
+          <p class="q-body">音の高さは周波数を用いて表される。ピアノの鍵盤に 0 から 16 までの番号を割り当てたとき、鍵盤の番号を1だけ大きくした鍵盤の音の周波数は、もとの音の周波数の <math><msup><mn>2</mn><mfrac><mn>1</mn><mn>12</mn></mfrac></msup></math> 倍である。たとえば 5 の「ファ」の周波数は、4 の「ミ」の周波数の <math><msup><mn>2</mn><mfrac><mn>1</mn><mn>12</mn></mfrac></msup></math> 倍である。0 の「ド」の周波数を <math><msub><mi>f</mi><mn>0</mn></msub></math> とする。</p>
+          <p class="q-body">2 の「レ」の周波数は <math><msup><mn>2</mn><mfrac><mn>1</mn><mn>12</mn></mfrac></msup><mo>·</mo><msup><mn>2</mn><mfrac><mn>1</mn><mn>12</mn></mfrac></msup><mo>·</mo><msub><mi>f</mi><mn>0</mn></msub><mo>=</mo><mtext><span class="blank" data-kana="エ" data-ans="2^(1/6)">エ</span></mtext><mo>·</mo><msub><mi>f</mi><mn>0</mn></msub></math> であり、14 の「レ」の周波数は <math><mtext><span class="blank" data-kana="オ" data-ans="2^(7/6)">オ</span></mtext><mo>·</mo><msub><mi>f</mi><mn>0</mn></msub></math> である。</p>
           <p class="q-body">よって、14 の「レ」の周波数は、2 の「レ」の周波数の <span class="m"><span class="blank" data-kana="カ" data-ans="2">カ</span></span> 倍である。</p>
           <p class="q-body">エ〜カ に当てはまるものを、次の ⓪〜⑤ のうちから一つずつ選べ。ただし、同じものを繰り返し選んでもよい。</p>
           <p class="choices">
-            <span class="copt">⓪ <span class="m">1</span>　① <span class="m">2<sup><span class="frac"><span class="num">1</span><span class="den">12</span></span></sup></span>　② <span class="m">2<sup><span class="frac"><span class="num">1</span><span class="den">6</span></span></sup></span></span>
-            <span class="copt">③ <span class="m">2<sup><span class="frac"><span class="num">11</span><span class="den">12</span></span></sup></span>　④ <span class="m">2</span>　⑤ <span class="m">2<sup><span class="frac"><span class="num">7</span><span class="den">6</span></span></sup></span></span>
+            <span class="copt"><math><mo>⓪</mo><mn>1</mn></math>　<math><mo>①</mo><msup><mn>2</mn><mfrac><mn>1</mn><mn>12</mn></mfrac></msup></math>　<math><mo>②</mo><msup><mn>2</mn><mfrac><mn>1</mn><mn>6</mn></mfrac></msup></math></span>
+            <span class="copt"><math><mo>③</mo><msup><mn>2</mn><mfrac><mn>11</mn><mn>12</mn></mfrac></msup></math>　<math><mo>④</mo><mn>2</mn></math>　<math><mo>⑤</mo><msup><mn>2</mn><mfrac><mn>7</mn><mn>6</mn></mfrac></msup></math></span>
           </p>
         </div>
 
@@ -529,42 +596,46 @@
 
         <div class="stages">
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">2つ進む ＝ 2^(1/12) 倍を2回かける</span></div>
-            <p>ルールは「番号を1つ大きくするごとに、周波数は <span class="m">2<sup><span class="frac"><span class="num">1</span><span class="den">12</span></span></sup></span> 倍」。0 の「ド」から 2 の「レ」までは<strong>2つ分</strong>進むから、<span class="m">2<sup><span class="frac"><span class="num">1</span><span class="den">12</span></span></sup></span> 倍を<strong>2回</strong>かけることになる（図の青い矢印を見てみよう）：</p>
-            <div class="formula-line"><span class="m">2<sup><span class="frac"><span class="num">1</span><span class="den">12</span></span></sup>·2<sup><span class="frac"><span class="num">1</span><span class="den">12</span></span></sup>·<i>f</i><sub>0</sub></span></div>
+            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">2つ進む<math><mo>=</mo><mn>2</mn><mo>^</mo><mrow><mo>(</mo><mfrac><mn>1</mn><mn>12</mn></mfrac><mo>)</mo></mrow></math>倍を2回かける</span></div><p class="cite"><span class="cite-tag">使う定義</span>累乗の意味：同じ数をくり返しかけることを累乗と書く。この問題では、<math><msup><mn>2</mn><mfrac><mn>1</mn><mn>12</mn></mfrac></msup><mo>·</mo><msup><mn>2</mn><mfrac><mn>1</mn><mn>12</mn></mfrac></msup><mo>·</mo><msub><mi>f</mi><mn>0</mn></msub></math> のように、2回かけた形から考える。</p>
+            <p>ルールは「番号を1つ大きくするごとに、周波数は <math><msup><mn>2</mn><mfrac><mn>1</mn><mn>12</mn></mfrac></msup></math> 倍」。0 の「ド」から 2 の「レ」までは<strong>2つ分</strong>進むから、<math><msup><mn>2</mn><mfrac><mn>1</mn><mn>12</mn></mfrac></msup></math> 倍を<strong>2回</strong>かけることになる（図の青い矢印を見てみよう）：</p>
+            <div class="formula-line"><math><msup><mn>2</mn><mfrac><mn>1</mn><mn>12</mn></mfrac></msup><mo>·</mo><msup><mn>2</mn><mfrac><mn>1</mn><mn>12</mn></mfrac></msup><mo>·</mo><msub><mi>f</mi><mn>0</mn></msub></math></div>
             <p>あとは、この「同じ底のかけ算」を1つの累乗にまとめるだけだよ。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">指数法則で、指数どうしを足す</span></div>
-            <p>指数法則 <span class="m"><i>a</i><sup><i>p</i></sup>·<i>a</i><sup><i>q</i></sup> = <i>a</i><sup><i>p</i>+<i>q</i></sup></span> を使うと、かけ算は<strong>指数の足し算</strong>になる：</p>
-            <div class="formula-line"><span class="m">2<sup><span class="frac"><span class="num">1</span><span class="den">12</span></span></sup>·2<sup><span class="frac"><span class="num">1</span><span class="den">12</span></span></sup> = 2<sup><span class="frac"><span class="num">1</span><span class="den">12</span></span> + <span class="frac"><span class="num">1</span><span class="den">12</span></span></sup> = 2<sup><span class="frac"><span class="num">2</span><span class="den">12</span></span></sup> = 2<sup><span class="frac"><span class="num">1</span><span class="den">6</span></span></sup></span></div>
-            <p>最後に <span class="m"><span class="frac"><span class="num">2</span><span class="den">12</span></span></span> を約分して <span class="m"><span class="frac"><span class="num">1</span><span class="den">6</span></span></span> にするのを忘れずに。これが エ だよ。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">指数法則で、指数どうしを足す</span></div><p class="cite"><span class="cite-tag">使う公式</span>指数法則 <math><msup><mi>a</mi><mi>p</mi></msup><mo>·</mo><msup><mi>a</mi><mi>q</mi></msup><mo>=</mo><msup><mi>a</mi><mrow><mi>p</mi><mo>+</mo><mi>q</mi></mrow></msup></math>。この問題では、同じ底のかけ算を、指数どうしの足し算に直す。</p>
+            <p>指数法則 <math><msup><mi>a</mi><mi>p</mi></msup><mo>·</mo><msup><mi>a</mi><mi>q</mi></msup><mo>=</mo><msup><mi>a</mi><mrow><mi>p</mi><mo>+</mo><mi>q</mi></mrow></msup></math> を使うと、かけ算は<strong>指数の足し算</strong>になる：</p>
+            <div class="formula-line"><div class="chain-crow">
+<div class="crow"><math displaystyle="true"><msup><mn>2</mn><mfrac><mn>1</mn><mn>12</mn></mfrac></msup><mo>·</mo><msup><mn>2</mn><mfrac><mn>1</mn><mn>12</mn></mfrac></msup><mo>=</mo><msup><mn>2</mn><mrow><mfrac><mn>1</mn><mn>12</mn></mfrac><mo>+</mo><mfrac><mn>1</mn><mn>12</mn></mfrac></mrow></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msup><mn>2</mn><mfrac><mn>1</mn><mn>12</mn></mfrac></msup><mo>·</mo><msup><mn>2</mn><mfrac><mn>1</mn><mn>12</mn></mfrac></msup></mphantom><mo>=</mo><msup><mn>2</mn><mfrac><mn>2</mn><mn>12</mn></mfrac></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msup><mn>2</mn><mfrac><mn>1</mn><mn>12</mn></mfrac></msup><mo>·</mo><msup><mn>2</mn><mfrac><mn>1</mn><mn>12</mn></mfrac></msup></mphantom><mo>=</mo><msup><mn>2</mn><mfrac><mn>1</mn><mn>6</mn></mfrac></msup></math></div>
+</div></div>
+            <p>最後に <math><mfrac><mn>2</mn><mn>12</mn></mfrac></math> を約分して <math><mfrac><mn>1</mn><mn>6</mn></mfrac></math> にするのを忘れずに。これが エ だよ。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">14 の「レ」は 0 から14個分進む</span></div>
-            <p>同じ考え方で、14 の「レ」は 0 の「ド」から<strong>14個分</strong>進んだ音。だから <span class="m">2<sup><span class="frac"><span class="num">1</span><span class="den">12</span></span></sup></span> 倍を14回かけることになり、指数は14個分をまとめて：</p>
-            <div class="formula-line"><span class="m">2<sup><span class="frac"><span class="num">14</span><span class="den">12</span></span></sup>·<i>f</i><sub>0</sub></span></div>
-            <p><span class="m"><span class="frac"><span class="num">14</span><span class="den">12</span></span></span> を約分すると オ が決まるよ（図の長い青い矢印が「14個分」）。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">14 の「レ」は 0 から14個分進む</span></div><p class="cite"><span class="cite-tag">使う公式</span>指数法則：同じ底をくり返しかけると、指数はかけた回数の分だけ積み重なる。この問題では、<math><msup><mn>2</mn><mfrac><mn>14</mn><mn>12</mn></mfrac></msup><mo>·</mo><msub><mi>f</mi><mn>0</mn></msub></math> のように14回分を1つの累乗にまとめる。</p>
+            <p>同じ考え方で、14 の「レ」は 0 の「ド」から<strong>14個分</strong>進んだ音。だから <math><msup><mn>2</mn><mfrac><mn>1</mn><mn>12</mn></mfrac></msup></math> 倍を14回かけることになり、指数は14個分をまとめて：</p>
+            <div class="formula-line"><math><msup><mn>2</mn><mfrac><mn>14</mn><mn>12</mn></mfrac></msup><mo>·</mo><msub><mi>f</mi><mn>0</mn></msub></math></div>
+            <p><math><mfrac><mn>14</mn><mn>12</mn></mfrac></math> を約分すると オ が決まるよ（図の長い青い矢印が「14個分」）。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">「何倍か」は割り算 ― 指数は引き算になる</span></div>
+            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">「何倍か」は割り算 ― 指数は引き算になる</span></div><p class="cite"><span class="cite-tag">使う公式</span>指数法則（商の指数法則）：累乗どうしの割り算では、指数は引き算になる。この問題では、<math><mfrac><mrow><msup><mn>2</mn><mfrac><mn>14</mn><mn>12</mn></mfrac></msup><mo>·</mo><msub><mi>f</mi><mn>0</mn></msub></mrow><mrow><msup><mn>2</mn><mfrac><mn>2</mn><mn>12</mn></mfrac></msup><mo>·</mo><msub><mi>f</mi><mn>0</mn></msub></mrow></mfrac><mo>=</mo><msup><mn>2</mn><mrow><mfrac><mn>14</mn><mn>12</mn></mfrac><mo>−</mo><mfrac><mn>2</mn><mn>12</mn></mfrac></mrow></msup></math> という割り算で、指数の引き算を計算して何倍かを求める。</p>
             <p>「14 の『レ』は 2 の『レ』の何倍か」は、周波数どうしの<strong>割り算</strong>で求める。累乗の割り算では指数が引き算になる：</p>
-            <div class="formula-line"><span class="m"><span class="frac"><span class="num">2<sup><span class="frac"><span class="num">14</span><span class="den">12</span></span></sup>·<i>f</i><sub>0</sub></span><span class="den">2<sup><span class="frac"><span class="num">2</span><span class="den">12</span></span></sup>·<i>f</i><sub>0</sub></span></span> = 2<sup><span class="frac"><span class="num">14</span><span class="den">12</span></span> − <span class="frac"><span class="num">2</span><span class="den">12</span></span></sup></span></div>
-            <p>指数の引き算は <span class="m"><span class="frac"><span class="num">14</span><span class="den">12</span></span> − <span class="frac"><span class="num">2</span><span class="den">12</span></span> = <span class="frac"><span class="num">12</span><span class="den">12</span></span> = 1</span>。鍵盤で12個分進むと、ちょうど<strong>1オクターブ</strong>上の同じ音になる（図の緑の矢印）。あとは <span class="m">2<sup>1</sup></span> の値を選ぶだけだよ。</p>
+            <div class="formula-line"><math><mfrac><mrow><msup><mn>2</mn><mfrac><mn>14</mn><mn>12</mn></mfrac></msup><mo>·</mo><msub><mi>f</mi><mn>0</mn></msub></mrow><mrow><msup><mn>2</mn><mfrac><mn>2</mn><mn>12</mn></mfrac></msup><mo>·</mo><msub><mi>f</mi><mn>0</mn></msub></mrow></mfrac><mo>=</mo><msup><mn>2</mn><mrow><mfrac><mn>14</mn><mn>12</mn></mfrac><mo>−</mo><mfrac><mn>2</mn><mn>12</mn></mfrac></mrow></msup></math></div>
+            <p>指数の引き算は <math><mfrac><mn>14</mn><mn>12</mn></mfrac><mo>−</mo><mfrac><mn>2</mn><mn>12</mn></mfrac><mo>=</mo><mfrac><mn>12</mn><mn>12</mn></mfrac><mo>=</mo><mn>1</mn></math>。鍵盤で12個分進むと、ちょうど<strong>1オクターブ</strong>上の同じ音になる（図の緑の矢印）。あとは <math><msup><mn>2</mn><mn>1</mn></msup></math> の値を選ぶだけだよ。</p>
           </article>
 
           <article class="stage answer" hidden>
-            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(2) の答え</span></div>
-            <p>2 の「レ」は <span class="m">2<sup><span class="frac"><span class="num">1</span><span class="den">6</span></span></sup>·<i>f</i><sub>0</sub></span>、14 の「レ」は <span class="m">2<sup><span class="frac"><span class="num">7</span><span class="den">6</span></span></sup>·<i>f</i><sub>0</sub></span>。その比は <span class="m">2<sup><span class="frac"><span class="num">14</span><span class="den">12</span></span> − <span class="frac"><span class="num">2</span><span class="den">12</span></span></sup> = 2<sup>1</sup> = 2</span> 倍。</p>
+            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(2) の答え</span></div><p class="cite"><span class="cite-tag">使う公式</span>指数法則（積は指数の和、商は指数の差）。この問題では、<math><mfrac><mrow><msup><mn>2</mn><mfrac><mn>14</mn><mn>12</mn></mfrac></msup><mo>·</mo><msub><mi>f</mi><mn>0</mn></msub></mrow><mrow><msup><mn>2</mn><mfrac><mn>2</mn><mn>12</mn></mfrac></msup><mo>·</mo><msub><mi>f</mi><mn>0</mn></msub></mrow></mfrac><mo>=</mo><msup><mn>2</mn><mrow><mfrac><mn>14</mn><mn>12</mn></mfrac><mo>−</mo><mfrac><mn>2</mn><mn>12</mn></mfrac></mrow></msup></math> という割り算までを並べて答えをまとめる。</p>
+            <p>2 の「レ」は <math><msup><mn>2</mn><mfrac><mn>1</mn><mn>6</mn></mfrac></msup><mo>·</mo><msub><mi>f</mi><mn>0</mn></msub></math>、14 の「レ」は <math><msup><mn>2</mn><mfrac><mn>7</mn><mn>6</mn></mfrac></msup><mo>·</mo><msub><mi>f</mi><mn>0</mn></msub></math>。<br>その比は <math><msup><mn>2</mn><mrow><mfrac><mn>14</mn><mn>12</mn></mfrac><mo>−</mo><mfrac><mn>2</mn><mn>12</mn></mfrac></mrow></msup><mo>=</mo><msup><mn>2</mn><mn>1</mn></msup><mo>=</mo><mn>2</mn></math> 倍。</p>
             <div class="ans-line">
-              <span class="ans-chip"><span class="kana">エ</span><span class="m">② 2<sup><span class="frac"><span class="num">1</span><span class="den">6</span></span></sup></span><span class="pts">3点</span></span>
-              <span class="ans-chip"><span class="kana">オ</span><span class="m">⑤ 2<sup><span class="frac"><span class="num">7</span><span class="den">6</span></span></sup></span><span class="pts">3点</span></span>
-              <span class="ans-chip"><span class="kana">カ</span><span class="m">④ 2</span><span class="pts">2点</span></span>
+              <span class="ans-chip"><span class="kana">エ</span><math><mo>②</mo><msup><mn>2</mn><mfrac><mn>1</mn><mn>6</mn></mfrac></msup></math><span class="pts">3点</span></span>
+              <span class="ans-chip"><span class="kana">オ</span><math><mo>⑤</mo><msup><mn>2</mn><mfrac><mn>7</mn><mn>6</mn></mfrac></msup></math><span class="pts">3点</span></span>
+              <span class="ans-chip"><span class="kana">カ</span><math><mo>④</mo><mn>2</mn></math><span class="pts">2点</span></span>
             </div>
-            <div class="point-box"><span class="pt">ポイント</span><strong>かけ算は指数の足し算、割り算は指数の引き算</strong>。鍵盤を12個分進むと指数がちょうど1増えて周波数が2倍になる ― これが「1オクターブ上がると周波数2倍」の正体だよ。</div>
+            <div class="point-box"><span class="pt">ポイント</span><p class="cite"><span class="cite-tag">使う公式</span>指数法則 <math><msup><mi>a</mi><mi>p</mi></msup><mo>·</mo><msup><mi>a</mi><mi>q</mi></msup><mo>=</mo><msup><mi>a</mi><mrow><mi>p</mi><mo>+</mo><mi>q</mi></mrow></msup></math> と、商では指数が引き算になること。このまとめでは、鍵盤を12個分進むと周波数が2倍になる理由を確認する。</p><strong>かけ算は指数の足し算、割り算は指数の引き算</strong>。<br>鍵盤を12個分進むと指数がちょうど1増えて周波数が2倍になる ― これが「1オクターブ上がると周波数2倍」の正体だよ。</div>
           </article>
         </div>
 
@@ -586,7 +657,7 @@
             <span class="q-num">(3)</span><span class="q-title">イルカが聞くことのできる「ラ」</span>
             <span class="q-points">配点 3点</span>
           </div>
-          <p class="q-body">「ラ」の周波数 <span class="m"><i>f</i></span> は、整数 <span class="m"><i>n</i></span> を用いて <span class="m"><i>f</i> = 55·2<sup><i>n</i></sup></span> で表される。イルカが聞くことのできる音の周波数はおよそ <span class="m">150</span> Hz から <span class="m">150000</span> Hz までである。<span class="m">150 ≦ <i>f</i> ≦ 150000</span> …① を満たす <span class="m"><i>n</i></span> の個数を求める。ただし、<span class="m">log<sub>10</sub>55 = 1.7404</span> とする。</p>
+          <p class="q-body">「ラ」の周波数 <math><mi>f</mi></math> は、整数 <math><mi>n</mi></math> を用いて <math><mi>f</mi><mo>=</mo><mn>55</mn><mo>·</mo><msup><mn>2</mn><mi>n</mi></msup></math> で表される。イルカが聞くことのできる音の周波数はおよそ <math><mn>150</mn><mi>H</mi><mi>z</mi></math>から <math><mn>150000</mn><mi>H</mi><mi>z</mi></math>までである。<math><mn>150</mn><mo>≦</mo><mi>f</mi><mo>≦</mo><mn>150000</mn><mo>…</mo><mo>①</mo></math>を満たす <math><mi>n</mi></math> の個数を求める。ただし、<math><msub><mi>log</mi><mn>10</mn></msub><mn>55</mn><mo>=</mo><mn>1.7404</mn></math> とする。</p>
           <p class="q-body">イルカが聞くことのできる異なる音の高さの「ラ」は全部で <span class="m"><span class="blank" data-kana="キク" data-ans="10">キク</span></span> 個ある。</p>
         </div>
 
@@ -634,50 +705,54 @@
               <circle cx="540" cy="100" r="7"></circle><circle cx="588" cy="100" r="7"></circle>
             </g>
           </svg>
-          <p class="expr-note">ヒントを開くと、<span class="m"><i>n</i></span> の範囲が帯で現れ、あてはまる整数が点で強調されるよ。個数は点の数を自分で数えて確かめよう。</p>
+          <p class="expr-note">ヒントを開くと、<math><mi>n</mi></math> の範囲が帯で現れ、あてはまる整数が点で強調されるよ。個数は点の数を自分で数えて確かめよう。</p>
         </div>
 
-        <p class="think-note">入口は「不等式①の各辺の常用対数をとる」こと。対数で <span class="m"><i>n</i></span> の不等式に変形しよう。</p>
+        <p class="think-note">入口は「不等式①の各辺の常用対数をとる」こと。対数で <math><mi>n</mi></math> の不等式に変形しよう。</p>
         </div>
 
         <div class="stages">
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">f = 55·2ⁿ を代入して、各辺の常用対数をとる</span></div>
-            <p>まず ① の <span class="m"><i>f</i></span> に <span class="m"><i>f</i> = 55·2<sup><i>n</i></sup></span> を代入する。次に、3つの辺すべての<strong>常用対数（底10の対数）</strong>をとろう：</p>
-            <div class="formula-line"><span class="m">log<sub>10</sub>150 ≦ log<sub>10</sub>(55·2<sup><i>n</i></sup>) ≦ log<sub>10</sub>150000</span></div>
-            <p>底10は1より大きいので、対数をとっても<strong>不等号の向きは変わらない</strong>。これで「<span class="m"><i>n</i></span> が指数にいる不等式」が「対数の不等式」に変わったよ。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title"><math><mi>f</mi><mo>=</mo><mn>55</mn><mo>·</mo><mn>2</mn><mi>ⁿ</mi></math>を代入して、各辺の常用対数をとる</span></div><p class="cite"><span class="cite-tag">使う性質</span>対数の性質：底が1より大きい常用対数では、対数をとっても不等号の向きは変わらない。この問題では、3つの辺すべてに常用対数をとって <math><msub><mi>log</mi><mn>10</mn></msub><mn>150</mn><mo>≦</mo><msub><mi>log</mi><mn>10</mn></msub><mrow><mo>(</mo><mn>55</mn><mo>·</mo><msup><mn>2</mn><mi>n</mi></msup><mo>)</mo></mrow><mo>≦</mo><msub><mi>log</mi><mn>10</mn></msub><mn>150000</mn></math> から始まる不等式にする。</p>
+            <p>まず ① の <math><mi>f</mi></math> に <math><mi>f</mi><mo>=</mo><mn>55</mn><mo>·</mo><msup><mn>2</mn><mi>n</mi></msup></math> を代入する。<br>次に、3つの辺すべての<strong>常用対数（底10の対数）</strong>をとろう：</p>
+            <div class="formula-line"><math><msub><mi>log</mi><mn>10</mn></msub><mn>150</mn><mo>≦</mo><msub><mi>log</mi><mn>10</mn></msub><mrow><mo>(</mo><mn>55</mn><mo>·</mo><msup><mn>2</mn><mi>n</mi></msup><mo>)</mo></mrow><mo>≦</mo><msub><mi>log</mi><mn>10</mn></msub><mn>150000</mn></math></div>
+            <p>底10は1より大きいので、対数をとっても<strong>不等号の向きは変わらない</strong>。これで「<math><mi>n</mi></math> が指数にいる不等式」が「対数の不等式」に変わったよ。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">log₁₀150 は (1) の結果から作る</span></div>
-            <p>右端の <span class="m">log<sub>10</sub>150000</span> は (1) の ウ で求めた値そのもの。左端の <span class="m">log<sub>10</sub>150</span> は、<span class="m">150 = 150000 × 10<sup>−3</sup></span> と見ると作れるよ：</p>
-            <div class="formula-line"><span class="m">log<sub>10</sub>150 = log<sub>10</sub>150000 + log<sub>10</sub>10<sup>−3</sup> = 5.1761 − 3 = 2.1761</span></div>
-            <p>つまり不等式の両端は <span class="m">2.1761</span> と <span class="m">5.1761</span> に決まった。残るは真ん中の <span class="m">log<sub>10</sub>(55·2<sup><i>n</i></sup>)</span> を <span class="m"><i>n</i></span> の式に直すことだよ。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">log₁₀150 は (1) の結果から作る</span></div><p class="cite"><span class="cite-tag">使う性質</span>対数の性質（積と商の対数）。この問題では、<math displaystyle="true"><msub><mi>log</mi><mn>10</mn></msub><mn>150</mn><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><mn>150000</mn><mo>+</mo><msub><mi>log</mi><mn>10</mn></msub><msup><mn>10</mn><mrow><mo>−</mo><mn>3</mn></mrow></msup></math> と変形して、左端の値を (1) の結果から作る。</p>
+            <p>右端の <math><msub><mi>log</mi><mn>10</mn></msub><mn>150000</mn></math> は (1) の ウ で求めた値そのもの。<br>左端の <math><msub><mi>log</mi><mn>10</mn></msub><mn>150</mn></math> は、<math><mn>150</mn><mo>=</mo><mn>150000</mn><mo>×</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>3</mn></mrow></msup></math> と見ると作れるよ：</p>
+            <div class="formula-line"><div class="chain-crow">
+<div class="crow"><math displaystyle="true"><msub><mi>log</mi><mn>10</mn></msub><mn>150</mn><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><mn>150000</mn><mo>+</mo><msub><mi>log</mi><mn>10</mn></msub><msup><mn>10</mn><mrow><mo>−</mo><mn>3</mn></mrow></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msub><mi>log</mi><mn>10</mn></msub><mn>150</mn></mphantom><mo>=</mo><mn>5.1761</mn><mo>−</mo><mn>3</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msub><mi>log</mi><mn>10</mn></msub><mn>150</mn></mphantom><mo>=</mo><mn>2.1761</mn></math></div>
+</div></div>
+            <p>つまり不等式の両端は <math><mn>2.1761</mn></math> と <math><mn>5.1761</mn></math> に決まった。残るは真ん中の <math><msub><mi>log</mi><mn>10</mn></msub><mrow><mo>(</mo><mn>55</mn><mo>·</mo><msup><mn>2</mn><mi>n</mi></msup><mo>)</mo></mrow></math> を <math><mi>n</mi></math> の式に直すことだよ。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">真ん中を n の式にして、不等式を解く</span></div>
+            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">真ん中を n の式にして、不等式を解く</span></div><p class="cite"><span class="cite-tag">使う性質</span>対数の性質（累乗の対数）：累乗の指数は、対数の前に出すことができる。この問題では、<math><msub><mi>log</mi><mn>10</mn></msub><mrow><mo>(</mo><mn>55</mn><mo>·</mo><msup><mn>2</mn><mi>n</mi></msup><mo>)</mo></mrow><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><mn>55</mn><mo>+</mo><mi>n</mi><mo>·</mo><msub><mi>log</mi><mn>10</mn></msub><mn>2</mn><mo>=</mo><mn>1.7404</mn><mo>+</mo><mn>0.3010</mn><mi>n</mi></math> と変形して、真ん中を n の式に直す。</p>
             <p>積の対数は和、累乗の指数は前に出せる：</p>
-            <div class="formula-line"><span class="m">log<sub>10</sub>(55·2<sup><i>n</i></sup>) = log<sub>10</sub>55 + <i>n</i>·log<sub>10</sub>2 = 1.7404 + 0.3010<i>n</i></span></div>
-            <p>これを不等式に入れて <span class="m"><i>n</i></span> について解くと：</p>
-            <div class="formula-line"><span class="m">2.1761 ≦ 1.7404 + 0.3010<i>n</i> ≦ 5.1761　より　1.4… ≦ <i>n</i> ≦ 11.4…</span></div>
-            <p>数直線の帯がこの範囲だよ。あとは <span class="m"><i>n</i></span> が<strong>整数</strong>であることを使うだけ。</p>
+            <div class="formula-line"><math><msub><mi>log</mi><mn>10</mn></msub><mrow><mo>(</mo><mn>55</mn><mo>·</mo><msup><mn>2</mn><mi>n</mi></msup><mo>)</mo></mrow><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><mn>55</mn><mo>+</mo><mi>n</mi><mo>·</mo><msub><mi>log</mi><mn>10</mn></msub><mn>2</mn><mo>=</mo><mn>1.7404</mn><mo>+</mo><mn>0.3010</mn><mi>n</mi></math></div>
+            <p>これを不等式に入れて <math><mi>n</mi></math> について解くと：</p>
+            <div class="formula-line"><span class="m"><math><mn>2.1761</mn><mo>≦</mo><mn>1.7404</mn><mo>+</mo><mn>0.3010</mn><mi>n</mi><mo>≦</mo><mn>5.1761</mn></math>　より　<math><mn>1.4</mn><mo>…</mo><mo>≦</mo><mi>n</mi><mo>≦</mo><mn>11.4</mn><mo>…</mo></math></span></div>
+            <p>数直線の帯がこの範囲だよ。あとは <math><mi>n</mi></math> が<strong>整数</strong>であることを使うだけ。</p>
           </article>
 
           <article class="stage hint" hidden>
             <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">範囲の中にある整数を数える</span></div>
-            <p><span class="m"><i>n</i></span> は整数だから、<span class="m">1.4… ≦ <i>n</i> ≦ 11.4…</span> を満たすのは：</p>
-            <div class="formula-line"><span class="m"><i>n</i> = 2, 3, …, 11</span></div>
+            <p><math><mi>n</mi></math> は整数だから、<math><mn>1.4</mn><mo>…</mo><mo>≦</mo><mi>n</mi><mo>≦</mo><mn>11.4</mn><mo>…</mo></math> を満たすのは：</p>
+            <div class="formula-line"><math><mi>n</mi><mo>=</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mo>…</mo><mo>,</mo><mn>11</mn></math></div>
             <p>数直線で赤い点が付いた整数がこれらだよ。点の数を数えれば、それがキク（異なる「ラ」の個数）になる。自分で数えてから解答を開こう。</p>
           </article>
 
           <article class="stage answer" hidden>
-            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(3) の答え</span></div>
-            <p>① の各辺の常用対数をとると <span class="m">2.1761 ≦ 1.7404 + 0.3010<i>n</i> ≦ 5.1761</span>、これを解いて <span class="m">1.4… ≦ <i>n</i> ≦ 11.4…</span>。整数 <span class="m"><i>n</i></span> は <span class="m">2</span> から <span class="m">11</span> までの10個。</p>
+            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(3) の答え</span></div><p class="cite"><span class="cite-tag">使う性質</span>対数の性質（累乗の対数）で指数を前に出すと、真ん中は <math><msub><mi>log</mi><mn>10</mn></msub><mrow><mo>(</mo><mn>55</mn><mo>·</mo><msup><mn>2</mn><mi>n</mi></msup><mo>)</mo></mrow><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><mn>55</mn><mo>+</mo><mi>n</mi><mo>·</mo><msub><mi>log</mi><mn>10</mn></msub><mn>2</mn><mo>=</mo><mn>1.7404</mn><mo>+</mo><mn>0.3010</mn><mi>n</mi></math> の右辺の形になる。この問題では、この不等式を解いて整数 n を数える。</p>
+            <p>① の各辺の常用対数をとると <math><mn>2.1761</mn><mo>≦</mo><mn>1.7404</mn><mo>+</mo><mn>0.3010</mn><mi>n</mi><mo>≦</mo><mn>5.1761</mn></math>、これを解いて <math><mn>1.4</mn><mo>…</mo><mo>≦</mo><mi>n</mi><mo>≦</mo><mn>11.4</mn><mo>…</mo></math>。整数 <math><mi>n</mi></math> は <math><mn>2</mn></math> から <math><mn>11</mn></math> までの10個。</p>
             <div class="ans-line">
-              <span class="ans-chip"><span class="kana">キク</span><span class="m">10</span><span class="pts">3点</span></span>
+              <span class="ans-chip"><span class="kana">キク</span><math><mn>10</mn></math><span class="pts">3点</span></span>
             </div>
-            <div class="point-box"><span class="pt">ポイント</span><strong>指数に文字がある不等式は、対数をとって文字を「下に下ろす」</strong>のが型。(1) で求めた <span class="m">log<sub>10</sub>150000</span> を使い回すところも、この大問のつながりのポイントだよ。</div>
+            <div class="point-box"><span class="pt">ポイント</span><p class="cite"><span class="cite-tag">使う性質</span>対数の性質（累乗の対数）で指数を前に出すと、式は <math><msub><mi>log</mi><mn>10</mn></msub><mrow><mo>(</mo><mn>55</mn><mo>·</mo><msup><mn>2</mn><mi>n</mi></msup><mo>)</mo></mrow><mo>=</mo><msub><mi>log</mi><mn>10</mn></msub><mn>55</mn><mo>+</mo><mi>n</mi><mo>·</mo><msub><mi>log</mi><mn>10</mn></msub><mn>2</mn><mo>=</mo><mn>1.7404</mn><mo>+</mo><mn>0.3010</mn><mi>n</mi></math> の形になる。このまとめでは、対数をとって指数の文字を下に下ろす型を確認する。</p><strong>指数に文字がある不等式は、対数をとって文字を「下に下ろす」</strong>のが型。<br>(1) で求めた <math><msub><mi>log</mi><mn>10</mn></msub><mn>150000</mn></math> を使い回すところも、この大問のつながりのポイントだよ。</div>
           </article>
         </div>
 
