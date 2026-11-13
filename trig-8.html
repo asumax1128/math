@@ -310,7 +310,64 @@
       }
       @media (prefers-color-scheme: dark){ .finish-btn{color:#0c1712} }
       .finish-btn:active{transform:scale(.98)}
-    </style>
+    
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+
+      /* 積分記号は大きめに表示する（元のページの可読化デザインに合わせる） */
+      math .int-op{font-size:1.35em}
+      /* calc-12 世代（.card）と calc-18 世代（.unit）の、図のない問題の全幅化 */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig>.step{position:static !important}
+        .card.nofig>.steps-wrap{max-height:none !important;overflow:visible !important}
+        .unit.nofig{display:block !important}
+        .unit.nofig>.qside{position:static !important}
+        .unit.nofig>.steps-stack{max-height:none !important;overflow:visible !important}
+      }
+
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける・第3弾c） */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig .qside{position:static !important}
+        .card.nofig .steps-wrap,.card.nofig .tabpanel .steps-wrap{max-height:none !important;overflow:visible !important}
+      }
+</style>
   </head>
   <body>
     <div class="wrap">
@@ -333,22 +390,27 @@
       </div>
       <section class="card">
         <p>三角関数において，正弦，余弦の積を和や差に変形する次の公式が成り立つ。これらは，右辺を計算して左辺を導くことで得られる。</p>
-        <p class="formula left">1　sin α cos β = <span class="frac"><span class="num">1</span><span class="den">2</span></span>{sin(α + β) + sin(α − β)}</p>
-        <p class="formula left">2　cos α sin β = <span class="frac"><span class="num">1</span><span class="den">2</span></span>{sin(α + β) − sin(α − β)}</p>
-        <p class="formula left">3　cos α cos β = <span class="frac"><span class="num">1</span><span class="den">2</span></span>{cos(α + β) + cos(α − β)}</p>
-        <p class="formula left">4　sin α sin β = −<span class="frac"><span class="num">1</span><span class="den">2</span></span>{cos(α + β) − cos(α − β)}</p>
-        <p>上の公式 1 〜 4 において，α + β = A，α − β = B とおくと　α = <span class="frac"><span class="num">A + B</span><span class="den">2</span></span>，β = <span class="frac"><span class="num">A − B</span><span class="den">2</span></span>　となるから，正弦，余弦の和や差を積に変形する次の公式が得られる。</p>
-        <p class="formula left">5　sin A + sin B = 2 sin <span class="frac"><span class="num">A + B</span><span class="den">2</span></span> cos <span class="frac"><span class="num">A − B</span><span class="den">2</span></span></p>
-        <p class="formula left">6　sin A − sin B = 2 cos <span class="frac"><span class="num">A + B</span><span class="den">2</span></span> sin <span class="frac"><span class="num">A − B</span><span class="den">2</span></span></p>
-        <p class="formula left">7　cos A + cos B = 2 cos <span class="frac"><span class="num">A + B</span><span class="den">2</span></span> cos <span class="frac"><span class="num">A − B</span><span class="den">2</span></span></p>
-        <p class="formula left">8　cos A − cos B = −2 sin <span class="frac"><span class="num">A + B</span><span class="den">2</span></span> sin <span class="frac"><span class="num">A − B</span><span class="den">2</span></span></p>
+        <p class="formula left">1　<math><mi>sin</mi><mi>α</mi><mi>cos</mi><mi>β</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mrow><mo>{</mo><mi>sin</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mo>+</mo><mi>sin</mi><mrow><mo>(</mo><mi>α</mi><mo>−</mo><mi>β</mi><mo>)</mo></mrow><mo>}</mo></mrow></math></p>
+        <p class="formula left">2　<math><mi>cos</mi><mi>α</mi><mi>sin</mi><mi>β</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mrow><mo>{</mo><mi>sin</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mo>−</mo><mi>sin</mi><mrow><mo>(</mo><mi>α</mi><mo>−</mo><mi>β</mi><mo>)</mo></mrow><mo>}</mo></mrow></math></p>
+        <p class="formula left">3　<math><mi>cos</mi><mi>α</mi><mi>cos</mi><mi>β</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mrow><mo>{</mo><mi>cos</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mo>+</mo><mi>cos</mi><mrow><mo>(</mo><mi>α</mi><mo>−</mo><mi>β</mi><mo>)</mo></mrow><mo>}</mo></mrow></math></p>
+        <p class="mq-wide formula left">4　<math><mi>sin</mi><mi>α</mi><mi>sin</mi><mi>β</mi><mo>=</mo><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mrow><mo>{</mo><mi>cos</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mo>−</mo><mi>cos</mi><mrow><mo>(</mo><mi>α</mi><mo>−</mo><mi>β</mi><mo>)</mo></mrow><mo>}</mo></mrow></math></p>
+<div class="mq-narrow">
+<p>4</p>
+<p class="formula"><math display="block"><mi>sin</mi><mi>α</mi><mi>sin</mi><mi>β</mi><mo>=</mo><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>{</mo><mi>cos</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow></math></p>
+<p class="formula cont"><math display="block"><mo>−</mo><mi>cos</mi><mrow><mo>(</mo><mi>α</mi><mo>−</mo><mi>β</mi><mo>)</mo></mrow><mo>}</mo></math></p>
+</div>
+        <p>上の公式 1 〜 4 において<math><mo>,</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>=</mo><mi>A</mi><mo>,</mo><mi>α</mi><mo>−</mo><mi>β</mi><mo>=</mo><mi>B</mi></math>とおくと　<math><mi>α</mi><mo>=</mo><mfrac><mrow><mi>A</mi><mo>+</mo><mi>B</mi></mrow><mn>2</mn></mfrac><mo>,</mo><mi>β</mi><mo>=</mo><mfrac><mrow><mi>A</mi><mo>−</mo><mi>B</mi></mrow><mn>2</mn></mfrac></math>　となるから，正弦，余弦の和や差を積に変形する次の公式が得られる。</p>
+        <p class="formula left">5　<math><mi>sin</mi><mi>A</mi><mo>+</mo><mi>sin</mi><mi>B</mi><mo>=</mo><mn>2</mn><mi>sin</mi><mfrac><mrow><mi>A</mi><mo>+</mo><mi>B</mi></mrow><mn>2</mn></mfrac><mi>cos</mi><mfrac><mrow><mi>A</mi><mo>−</mo><mi>B</mi></mrow><mn>2</mn></mfrac></math></p>
+        <p class="formula left">6　<math><mi>sin</mi><mi>A</mi><mo>−</mo><mi>sin</mi><mi>B</mi><mo>=</mo><mn>2</mn><mi>cos</mi><mfrac><mrow><mi>A</mi><mo>+</mo><mi>B</mi></mrow><mn>2</mn></mfrac><mi>sin</mi><mfrac><mrow><mi>A</mi><mo>−</mo><mi>B</mi></mrow><mn>2</mn></mfrac></math></p>
+        <p class="formula left">7　<math><mi>cos</mi><mi>A</mi><mo>+</mo><mi>cos</mi><mi>B</mi><mo>=</mo><mn>2</mn><mi>cos</mi><mfrac><mrow><mi>A</mi><mo>+</mo><mi>B</mi></mrow><mn>2</mn></mfrac><mi>cos</mi><mfrac><mrow><mi>A</mi><mo>−</mo><mi>B</mi></mrow><mn>2</mn></mfrac></math></p>
+        <p class="formula left">8　<math><mi>cos</mi><mi>A</mi><mo>−</mo><mi>cos</mi><mi>B</mi><mo>=</mo><mo>−</mo><mn>2</mn><mi>sin</mi><mfrac><mrow><mi>A</mi><mo>+</mo><mi>B</mi></mrow><mn>2</mn></mfrac><mi>sin</mi><mfrac><mrow><mi>A</mi><mo>−</mo><mi>B</mi></mrow><mn>2</mn></mfrac></math></p>
       </section>
       <div class="sec-head">
         <span class="sec-tag">例</span>
         <h2>例1 ― 公式を使ってみる</h2>
         <span class="pno">教科書 p.144</span>
       </div>
-      <section class="card prob" id="prob-ex1" data-label="例1">
+      <section class="nofig card prob" id="prob-ex1" data-label="例1">
         <div class="prob-head">
           <span class="prob-tag ren">例 1</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
@@ -362,37 +424,41 @@
         </div>
         <div class="tabpanel show" id="panel-ex1-1" data-flow="ex1-1" data-label="例1 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　sin 3θ cos θ</span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><mi>sin</mi><mn>3</mn><mi>θ</mi><mi>cos</mi><mi>θ</mi></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― 公式 1 を使う</h3>
-          <p>積を和に変形する公式 1 で，α = 3θ，β = θ として当てはめよう。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><mi>sin</mi><mi>α</mi><mi>cos</mi><mi>β</mi><mo>=</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac><mrow><mo>{</mo><mi>sin</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mo>+</mo><mi>sin</mi><mrow><mo>(</mo><mi>α</mi><mo>−</mo><mi>β</mi><mo>)</mo></mrow><mo>}</mo></mrow></math>積を和に変形する公式 1 である。ここでは <math><mi>α</mi><mo>=</mo><mn>3</mn><mi>θ</mi></math>、<math><mi>β</mi><mo>=</mo><mi>θ</mi></math> として当てはめる。</p><p>積を和に変形する公式 1 で<math><mo>,</mo><mi>α</mi><mo>=</mo><mn>3</mn><mi>θ</mi><mo>,</mo><mi>β</mi><mo>=</mo><mi>θ</mi></math>として当てはめよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big"><span class="frac"><span class="num">1</span><span class="den">2</span></span>(sin 4θ + sin 2θ)</p>
-          <p>sin 3θ cos θ = <span class="frac"><span class="num">1</span><span class="den">2</span></span>{sin(3θ + θ) + sin(3θ − θ)}</p>
+          <p class="big"><math display="block"><mfrac><mn>1</mn><mn>2</mn></mfrac><mrow><mo>(</mo><mi>sin</mi><mn>4</mn><mi>θ</mi><mo>+</mo><mi>sin</mi><mn>2</mn><mi>θ</mi><mo>)</mo></mrow></math></p><p class="cite"><span class="cite-tag">使う公式</span><math><mi>sin</mi><mi>α</mi><mi>cos</mi><mi>β</mi><mo>=</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac><mrow><mo>{</mo><mi>sin</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mo>+</mo><mi>sin</mi><mrow><mo>(</mo><mi>α</mi><mo>−</mo><mi>β</mi><mo>)</mo></mrow><mo>}</mo></mrow></math>この公式に <math><mi>α</mi><mo>=</mo><mn>3</mn><mi>θ</mi></math>、<math><mi>β</mi><mo>=</mo><mi>θ</mi></math> を当てはめて、解答の計算を始める。</p>
+          <p><math><mi>sin</mi><mn>3</mn><mi>θ</mi><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mrow><mo>{</mo><mi>sin</mi><mrow><mo>(</mo><mn>3</mn><mi>θ</mi><mo>+</mo><mi>θ</mi><mo>)</mo></mrow><mo>+</mo><mi>sin</mi><mrow><mo>(</mo><mn>3</mn><mi>θ</mi><mo>−</mo><mi>θ</mi><mo>)</mo></mrow><mo>}</mo></mrow></math></p>
         </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ex1-2" data-flow="ex1-2" data-label="例1 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　sin 75° + sin 15° の値</span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><mi>sin</mi><mn>75</mn><mo>°</mo><mo>+</mo><mi>sin</mi><mn>15</mn><mo>°</mo></math>の値</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― 公式 5 を使う</h3>
-          <p>和を積に変形する公式 5 を使う。<span class="frac"><span class="num">75° + 15°</span><span class="den">2</span></span> = 45°，<span class="frac"><span class="num">75° − 15°</span><span class="den">2</span></span> = 30° になるよ。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><mi>sin</mi><mi>A</mi><mo>+</mo><mi>sin</mi><mi>B</mi><mo>=</mo><mn>2</mn><mi>sin</mi><mfrac><mrow><mi>A</mi><mo>+</mo><mi>B</mi></mrow><mrow><mn>2</mn></mrow></mfrac><mi>cos</mi><mfrac><mrow><mi>A</mi><mo>−</mo><mi>B</mi></mrow><mrow><mn>2</mn></mrow></mfrac></math>和を積に変形する公式 5 である。ここでは <math><mi>A</mi><mo>=</mo><mn>75</mn><mo>°</mo></math>、<math><mi>B</mi><mo>=</mo><mn>15</mn><mo>°</mo></math> として当てはめる。</p><p>和を積に変形する公式 5 を使う。<br><math><mfrac><mrow><mn>75</mn><mo>°</mo><mo>+</mo><mn>15</mn><mo>°</mo></mrow><mn>2</mn></mfrac><mo>=</mo><mn>45</mn><mo>°</mo><mo>,</mo><mfrac><mrow><mn>75</mn><mo>°</mo><mo>−</mo><mn>15</mn><mo>°</mo></mrow><mn>2</mn></mfrac><mo>=</mo><mn>30</mn><mo>°</mo></math>になるよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big"><span class="frac"><span class="num">√<span class="rad">6</span></span><span class="den">2</span></span></p>
-          <p>sin 75° + sin 15° = 2 sin 45° cos 30° = 2・<span class="frac"><span class="num">1</span><span class="den">√<span class="rad">2</span></span></span>・<span class="frac"><span class="num">√<span class="rad">3</span></span><span class="den">2</span></span></p>
+          <p class="big"><math display="block"><mfrac><msqrt><mn>6</mn></msqrt><mn>2</mn></mfrac></math></p><p class="cite"><span class="cite-tag">使う公式</span><math><mi>sin</mi><mi>A</mi><mo>+</mo><mi>sin</mi><mi>B</mi><mo>=</mo><mn>2</mn><mi>sin</mi><mfrac><mrow><mi>A</mi><mo>+</mo><mi>B</mi></mrow><mrow><mn>2</mn></mrow></mfrac><mi>cos</mi><mfrac><mrow><mi>A</mi><mo>−</mo><mi>B</mi></mrow><mrow><mn>2</mn></mrow></mfrac></math>この公式に <math><mn>75</mn><mo>°</mo></math> と <math><mn>15</mn><mo>°</mo></math> を当てはめて、解答の計算を始める。</p>
+          <p class="mq-wide"><math><mi>sin</mi><mn>75</mn><mo>°</mo><mo>+</mo><mi>sin</mi><mn>15</mn><mo>°</mo><mo>=</mo><mn>2</mn><mi>sin</mi><mn>45</mn><mo>°</mo><mi>cos</mi><mn>30</mn><mo>°</mo><mo>=</mo><mn>2</mn><mo>⋅</mo><mfrac><mn>1</mn><msqrt><mn>2</mn></msqrt></mfrac><mo>⋅</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac></math></p>
+<div class="mq-narrow">
+<p class="formula"><math display="block"><mi>sin</mi><mn>75</mn><mo>°</mo><mo>+</mo><mi>sin</mi><mn>15</mn><mo>°</mo><mo>=</mo><mn>2</mn><mi>sin</mi><mn>45</mn><mo>°</mo><mi>cos</mi><mn>30</mn><mo>°</mo></math></p>
+<p class="formula cont"><math display="block"><mo>=</mo><mn>2</mn><mo>⋅</mo><mfrac><mn>1</mn><msqrt><mn>2</mn></msqrt></mfrac><mo>⋅</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac></math></p>
+</div>
         </div>
           <p class="prob-done">(2) クリア！　例1は全部おわり。おつかれさま！</p>
         </div>
@@ -403,9 +469,9 @@
       <section class="card summary" id="summaryCard" style="display:none">
         <h2>この項のポイント</h2>
         <ul>
-          <li>積 → 和・差 は公式 1 〜 4，和・差 → 積 は公式 5 〜 8。</li>
-          <li>公式 5 〜 8 は，公式 1 〜 4 で α + β = A，α − β = B とおき換えると得られる。</li>
-          <li>どちらの向きの公式も，右辺を加法定理で計算すれば左辺に戻ることで確かめられる。</li>
+          <li><p class="cite"><span class="cite-tag">使う公式</span><math><mi>sin</mi><mi>α</mi><mi>cos</mi><mi>β</mi><mo>=</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac><mrow><mo>{</mo><mi>sin</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mo>+</mo><mi>sin</mi><mrow><mo>(</mo><mi>α</mi><mo>−</mo><mi>β</mi><mo>)</mo></mrow><mo>}</mo></mrow></math>積を和・差に変形する公式の 1 つである。和・差を積に変形する公式 5 〜 8 とあわせて使う。</p>積 → 和・差 は公式 1 〜 4，和・差 → 積 は公式 5 〜 8。</li>
+          <li>公式 5 〜 8 は，公式 1 〜 4 で<math><mi>α</mi><mo>+</mo><mi>β</mi><mo>=</mo><mi>A</mi><mo>,</mo><mi>α</mi><mo>−</mo><mi>β</mi><mo>=</mo><mi>B</mi></math>とおき換えると得られる。</li>
+          <li><p class="cite"><span class="cite-tag">使う公式</span><math><mi>sin</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mi>sin</mi><mi>α</mi><mi>cos</mi><mi>β</mi><mo>+</mo><mi>cos</mi><mi>α</mi><mi>sin</mi><mi>β</mi></math>右辺をこの加法定理で計算すると左辺に戻るので、公式が正しいことを確かめられる。</p>どちらの向きの公式も，右辺を加法定理で計算すれば左辺に戻ることで確かめられる。</li>
         </ul>
       </section>
       <footer>

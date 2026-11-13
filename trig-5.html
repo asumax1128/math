@@ -302,7 +302,64 @@
       table.comp{border-collapse:collapse;margin:0 0 14px;width:100%}
       table.comp th,table.comp td{border:1px solid var(--line);padding:8px 10px;text-align:center;font-size:15px}
       table.comp th{background:var(--surface2)}
-        </style>
+        
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+
+      /* 積分記号は大きめに表示する（元のページの可読化デザインに合わせる） */
+      math .int-op{font-size:1.35em}
+      /* calc-12 世代（.card）と calc-18 世代（.unit）の、図のない問題の全幅化 */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig>.step{position:static !important}
+        .card.nofig>.steps-wrap{max-height:none !important;overflow:visible !important}
+        .unit.nofig{display:block !important}
+        .unit.nofig>.qside{position:static !important}
+        .unit.nofig>.steps-stack{max-height:none !important;overflow:visible !important}
+      }
+
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける・第3弾c） */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig .qside{position:static !important}
+        .card.nofig .steps-wrap,.card.nofig .tabpanel .steps-wrap{max-height:none !important;overflow:visible !important}
+      }
+</style>
   </head>
   <body>
     <div class="wrap">
@@ -326,39 +383,39 @@
       </div>
       <section class="card">
         <p>三角関数を含む方程式，不等式を，単位円や三角関数の周期性，グラフなどを利用して解いてみよう。</p>
-        <p>単位円の周上の点について，<span class="key">sinθ は y 座標，cosθ は x 座標，tanθ は動径の傾き</span>に等しい。方程式は，まず sinθ =（数）などの形に変形し，直線と単位円の交点の動径が表す角を読む。</p>
+        <p>単位円の周上の点について，<span class="key"><math><mi>sin</mi><mi>θ</mi></math> は <math><mi>y</mi></math> 座標，<math><mi>cos</mi><mi>θ</mi></math> は <math><mi>x</mi></math> 座標，<math><mi>tan</mi><mi>θ</mi></math> は動径の傾き</span>に等しい。方程式は，まず<math><mi>sin</mi><mi>θ</mi><mo>=</mo><mo>(</mo></math>数）などの形に変形し，直線と単位円の交点の動径が表す角を読む。</p>
       </section>
       <div class="sec-head">
         <span class="sec-tag">例</span>
         <h2>例で確認</h2>
         <span class="pno">教科書 p.129〜130</span>
       </div>
-      <section class="card prob" id="prob-ex9" data-flow="ex9" data-label="例9">
+      <section class="nofig card prob" id="prob-ex9" data-flow="ex9" data-label="例9">
         <div class="prob-head">
           <span class="prob-tag ">例 9</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
         <div class="qside">
-        <p class="prob-q">0 ≦ θ &lt; 2π のとき，方程式 2 sinθ + 1 = 0 を解け。</p>
+        <p class="prob-q"><math><mn>0</mn><mo>≦</mo><mi>θ</mi><mo>&lt;</mo><mn>2</mn><mi>π</mi></math>のとき，方程式<math><mn>2</mn><mi>sin</mi><mi>θ</mi><mo>+</mo><mn>1</mn><mo>=</mo><mn>0</mn></math>を解け。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― sinθ = の形に変形</h3>
-          <p>2 sinθ + 1 = 0 を変形すると sinθ = −<span class="frac"><span class="num">1</span><span class="den">2</span></span> になる。</p>
+          <h3>ヒント<math><mn>1</mn><mo>―</mo><mi>sin</mi><mi>θ</mi><mo>=</mo></math>の形に変形</h3>
+          <p class="cite"><span class="cite-tag">使う定義</span><math><mi>sin</mi><mi>θ</mi><mo>=</mo><mi>y</mi></math>単位円では <math><mi>sin</mi><mi>θ</mi></math> は交点の <math><mi>y</mi></math> 座標である。まず方程式を <math><mi>sin</mi><mi>θ</mi><mo>=</mo><mo>−</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac></math> の形に変形する。</p><p><math><mn>2</mn><mi>sin</mi><mi>θ</mi><mo>+</mo><mn>1</mn><mo>=</mo><mn>0</mn></math>を変形すると<math><mi>sin</mi><mi>θ</mi><mo>=</mo><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math> になる。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 単位円の図で交点を見る</h3>
-          <p>直線 y = −<span class="frac"><span class="num">1</span><span class="den">2</span></span> と単位円の交点を P，Q とすると，求める θ は動径 OP，OQ の表す角である。</p>
-<figure><div class="figbox"><svg viewBox="0 0 300 300" role="img" aria-label="直線 y=−1/2 と単位円の交点"><circle cx="150" cy="150" r="100" fill="none" stroke="currentColor" stroke-width="1.5"/><line x1="14" y1="150" x2="288" y2="150" stroke="currentColor" stroke-width="1.2"/><path d="M 288 150 l -7 -3.4 v 6.8 z" fill="currentColor"/><line x1="150" y1="288" x2="150" y2="14" stroke="currentColor" stroke-width="1.2"/><path d="M 150 14 l -3.4 7 h 6.8 z" fill="currentColor"/><text x="284" y="142" font-size="16" text-anchor="middle" fill="currentColor" font-style="italic">x</text><text x="162" y="24" font-size="16" text-anchor="middle" fill="currentColor" font-style="italic">y</text><text x="141" y="167" font-size="15" text-anchor="middle" fill="currentColor">O</text><text x="250" y="167" font-size="13" text-anchor="middle" fill="currentColor">1</text><text x="50" y="167" font-size="13" text-anchor="middle" fill="currentColor">−1</text><text x="161" y="54" font-size="13" text-anchor="middle" fill="currentColor">1</text><text x="163" y="254" font-size="13" text-anchor="middle" fill="currentColor">−1</text><line x1="28" y1="200" x2="272" y2="200" stroke="currentColor" stroke-width="1.5"/><line x1="150" y1="150" x2="63.4" y2="200" stroke="currentColor" stroke-width="1.6"/><line x1="150" y1="150" x2="236.6" y2="200" stroke="currentColor" stroke-width="1.6"/><line x1="63.4" y1="200" x2="63.4" y2="150" stroke="currentColor" stroke-width="1.1" stroke-dasharray="4 3"/><line x1="236.6" y1="200" x2="236.6" y2="150" stroke="currentColor" stroke-width="1.1" stroke-dasharray="4 3"/><circle cx="63.4" cy="200" r="3.4" fill="currentColor"/><circle cx="236.6" cy="200" r="3.4" fill="currentColor"/><text x="57.4" y="220" font-size="15" text-anchor="middle" fill="currentColor">P</text><text x="242.6" y="220" font-size="15" text-anchor="middle" fill="currentColor">Q</text><text x="52" y="192" font-size="13" text-anchor="middle" fill="currentColor">−1/2</text><text x="52" y="232" font-size="13" text-anchor="middle" fill="currentColor">y = −1/2</text></svg></div><figcaption>直線 y = −<span class="frac"><span class="num">1</span><span class="den">2</span></span> と単位円の交点 P，Q。求める θ は動径 OP，OQ の表す角である。</figcaption></figure>
+          <p>直線<math><mi>y</mi><mo>=</mo><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math> と単位円の交点を <math><mi>P</mi></math>，<math><mi>Q</mi></math> とすると，求める <math><mi>θ</mi></math> は動径 <math><mi>OP</mi></math>，<math><mi>OQ</mi></math> の表す角である。</p>
+<figure><div class="figbox"><svg viewBox="0 0 300 300" role="img" aria-label="直線 y=−1/2 と単位円の交点"><circle cx="150" cy="150" r="100" fill="none" stroke="currentColor" stroke-width="1.5"/><line x1="14" y1="150" x2="288" y2="150" stroke="currentColor" stroke-width="1.2"/><path d="M 288 150 l -7 -3.4 v 6.8 z" fill="currentColor"/><line x1="150" y1="288" x2="150" y2="14" stroke="currentColor" stroke-width="1.2"/><path d="M 150 14 l -3.4 7 h 6.8 z" fill="currentColor"/><text x="284" y="142" font-size="16" text-anchor="middle" fill="currentColor" font-style="italic">x</text><text x="162" y="24" font-size="16" text-anchor="middle" fill="currentColor" font-style="italic">y</text><text x="141" y="167" font-size="15" text-anchor="middle" fill="currentColor">O</text><text x="250" y="167" font-size="13" text-anchor="middle" fill="currentColor">1</text><text x="50" y="167" font-size="13" text-anchor="middle" fill="currentColor">−1</text><text x="161" y="54" font-size="13" text-anchor="middle" fill="currentColor">1</text><text x="163" y="254" font-size="13" text-anchor="middle" fill="currentColor">−1</text><line x1="28" y1="200" x2="272" y2="200" stroke="currentColor" stroke-width="1.5"/><line x1="150" y1="150" x2="63.4" y2="200" stroke="currentColor" stroke-width="1.6"/><line x1="150" y1="150" x2="236.6" y2="200" stroke="currentColor" stroke-width="1.6"/><line x1="63.4" y1="200" x2="63.4" y2="150" stroke="currentColor" stroke-width="1.1" stroke-dasharray="4 3"/><line x1="236.6" y1="200" x2="236.6" y2="150" stroke="currentColor" stroke-width="1.1" stroke-dasharray="4 3"/><circle cx="63.4" cy="200" r="3.4" fill="currentColor"/><circle cx="236.6" cy="200" r="3.4" fill="currentColor"/><text x="57.4" y="220" font-size="15" text-anchor="middle" fill="currentColor">P</text><text x="242.6" y="220" font-size="15" text-anchor="middle" fill="currentColor">Q</text><text x="52" y="192" font-size="13" text-anchor="middle" fill="currentColor">−1/2</text><text x="52" y="232" font-size="13" text-anchor="middle" fill="currentColor">y = −1/2</text></svg></div><figcaption>直線<math><mi>y</mi><mo>=</mo><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math> と単位円の交点 <math><mi>P</mi></math>，<math><mi>Q</mi></math>。求める <math><mi>θ</mi></math> は動径 <math><mi>OP</mi></math>，<math><mi>OQ</mi></math> の表す角である。</figcaption></figure>
         </div>
         <div class="step hint">
           <h3>ヒント 3 ― 角を読む</h3>
-          <p>交点の高さが −<span class="frac"><span class="num">1</span><span class="den">2</span></span> になる角は，<span class="frac"><span class="num">π</span><span class="den">6</span></span> を基準に考えると，0 ≦ θ &lt; 2π では θ = <span class="frac"><span class="num">7π</span><span class="den">6</span></span> と <span class="frac"><span class="num">11π</span><span class="den">6</span></span> の 2 つだよ。</p>
+          <p>交点の高さが<math><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math> になる角は<math><mo>,</mo><mfrac><mi>π</mi><mn>6</mn></mfrac></math> を基準に考えると<math><mo>,</mo><mn>0</mn><mo>≦</mo><mi>θ</mi><mo>&lt;</mo><mn>2</mn><mi>π</mi></math>では<math><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>7</mn><mi>π</mi></mrow><mn>6</mn></mfrac></math> と <math><mfrac><mrow><mn>11</mn><mi>π</mi></mrow><mn>6</mn></mfrac></math> の 2 つだよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">θ = <span class="frac"><span class="num">7π</span><span class="den">6</span></span>，<span class="frac"><span class="num">11π</span><span class="den">6</span></span></p>
+          <p class="big"><math display="block"><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>7</mn><mi>π</mi></mrow><mn>6</mn></mfrac><mo>,</mo><mfrac><mrow><mn>11</mn><mi>π</mi></mrow><mn>6</mn></mfrac></math></p>
         </div>
         <p class="prob-done">例9 クリア！　次は練習18に挑戦しよう。</p>
       </section>
@@ -367,13 +424,13 @@
         <h2>練習問題に挑戦</h2>
         <span class="pno">教科書 p.129</span>
       </div>
-      <section class="card prob" id="prob-ren18" data-label="練習18">
+      <section class="nofig card prob" id="prob-ren18" data-label="練習18">
         <div class="prob-head">
           <span class="prob-tag ren">練習 18</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
         <div class="qside">
-        <p class="prob-q">0 ≦ θ &lt; 2π のとき，次の方程式を解け。</p>
+        <p class="prob-q"><math><mn>0</mn><mo>≦</mo><mi>θ</mi><mo>&lt;</mo><mn>2</mn><mi>π</mi></math>のとき，次の方程式を解け。</p>
         </div>
         <div class="tabs" role="tablist" aria-label="練習18の小問">
           <button class="tab" role="tab" data-tab="ren18-1" aria-selected="true">(1)</button>
@@ -382,16 +439,16 @@
         </div>
         <div class="tabpanel show" id="panel-ren18-1" data-flow="ren18-1" data-label="練習18 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　sinθ = <span class="frac"><span class="num">√<span class="rad">3</span></span><span class="den">2</span></span></span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="quiz" id="qz-ren18-1" data-correct="1">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>θ = <span class="frac"><span class="num">π</span><span class="den">3</span></span>，<span class="frac"><span class="num">2π</span><span class="den">3</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>θ = <span class="frac"><span class="num">π</span><span class="den">3</span></span>，<span class="frac"><span class="num">4π</span><span class="den">3</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>θ = <span class="frac"><span class="num">π</span><span class="den">6</span></span>，<span class="frac"><span class="num">5π</span><span class="den">6</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>θ = <span class="frac"><span class="num">2π</span><span class="den">3</span></span>，<span class="frac"><span class="num">5π</span><span class="den">3</span></span></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mi>θ</mi><mo>=</mo><mfrac><mi>π</mi><mn>3</mn></mfrac><mo>,</mo><mfrac><mrow><mn>2</mn><mi>π</mi></mrow><mn>3</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mi>θ</mi><mo>=</mo><mfrac><mi>π</mi><mn>3</mn></mfrac><mo>,</mo><mfrac><mrow><mn>4</mn><mi>π</mi></mrow><mn>3</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mi>θ</mi><mo>=</mo><mfrac><mi>π</mi><mn>6</mn></mfrac><mo>,</mo><mfrac><mrow><mn>5</mn><mi>π</mi></mrow><mn>6</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>2</mn><mi>π</mi></mrow><mn>3</mn></mfrac><mo>,</mo><mfrac><mrow><mn>5</mn><mi>π</mi></mrow><mn>3</mn></mfrac></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
@@ -399,62 +456,62 @@
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― 交点を読む</h3>
-          <p>単位円と直線 y = <span class="frac"><span class="num">√<span class="rad">3</span></span><span class="den">2</span></span> の交点の動径が表す角を読む。sin の値が <span class="frac"><span class="num">√<span class="rad">3</span></span><span class="den">2</span></span> になる基準の角は <span class="frac"><span class="num">π</span><span class="den">3</span></span> だよ。</p>
+          <p>単位円と直線<math><mi>y</mi><mo>=</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac></math> の交点の動径が表す角を読む。<math><mi>sin</mi></math> の値が <math><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac></math> になる基準の角は <math><mfrac><mi>π</mi><mn>3</mn></mfrac></math> だよ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― もう 1 つの交点</h3>
-          <p>もう 1 つの交点は y 軸に関して対称な位置にあり，θ = π − <span class="frac"><span class="num">π</span><span class="den">3</span></span> = <span class="frac"><span class="num">2π</span><span class="den">3</span></span> である。</p>
+          <p>もう 1 つの交点は <math><mi>y</mi></math> 軸に関して対称な位置にあり<math><mo>,</mo><mi>θ</mi><mo>=</mo><mi>π</mi><mo>−</mo><mfrac><mi>π</mi><mn>3</mn></mfrac><mo>=</mo><mfrac><mrow><mn>2</mn><mi>π</mi></mrow><mn>3</mn></mfrac></math> である。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">θ = <span class="frac"><span class="num">π</span><span class="den">3</span></span>，<span class="frac"><span class="num">2π</span><span class="den">3</span></span></p>
+          <p class="big"><math display="block"><mi>θ</mi><mo>=</mo><mfrac><mi>π</mi><mn>3</mn></mfrac><mo>,</mo><mfrac><mrow><mn>2</mn><mi>π</mi></mrow><mn>3</mn></mfrac></math></p>
         </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren18-2" data-flow="ren18-2" data-label="練習18 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　2 cosθ + 1 = 0</span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><mn>2</mn><mi>cos</mi><mi>θ</mi><mo>+</mo><mn>1</mn><mo>=</mo><mn>0</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="quiz" id="qz-ren18-2" data-correct="2">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>θ = <span class="frac"><span class="num">π</span><span class="den">3</span></span>，<span class="frac"><span class="num">5π</span><span class="den">3</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>θ = <span class="frac"><span class="num">2π</span><span class="den">3</span></span>，<span class="frac"><span class="num">4π</span><span class="den">3</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>θ = <span class="frac"><span class="num">π</span><span class="den">6</span></span>，<span class="frac"><span class="num">11π</span><span class="den">6</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>θ = <span class="frac"><span class="num">5π</span><span class="den">6</span></span>，<span class="frac"><span class="num">7π</span><span class="den">6</span></span></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mi>θ</mi><mo>=</mo><mfrac><mi>π</mi><mn>3</mn></mfrac><mo>,</mo><mfrac><mrow><mn>5</mn><mi>π</mi></mrow><mn>3</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>2</mn><mi>π</mi></mrow><mn>3</mn></mfrac><mo>,</mo><mfrac><mrow><mn>4</mn><mi>π</mi></mrow><mn>3</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mi>θ</mi><mo>=</mo><mfrac><mi>π</mi><mn>6</mn></mfrac><mo>,</mo><mfrac><mrow><mn>11</mn><mi>π</mi></mrow><mn>6</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>5</mn><mi>π</mi></mrow><mn>6</mn></mfrac><mo>,</mo><mfrac><mrow><mn>7</mn><mi>π</mi></mrow><mn>6</mn></mfrac></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
           <p class="verdict"></p>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― cosθ = の形に変形</h3>
-          <p>変形すると cosθ = −<span class="frac"><span class="num">1</span><span class="den">2</span></span> になる。</p>
+          <h3>ヒント<math><mn>1</mn><mo>―</mo><mi>cos</mi><mi>θ</mi><mo>=</mo></math>の形に変形</h3>
+          <p class="cite"><span class="cite-tag">使う定義</span><math><mi>cos</mi><mi>θ</mi><mo>=</mo><mi>x</mi></math>単位円では <math><mi>cos</mi><mi>θ</mi></math> は交点の <math><mi>x</mi></math> 座標である。まず方程式を <math><mi>cos</mi><mi>θ</mi><mo>=</mo></math>（数）の形に変形する。</p><p>変形すると<math><mi>cos</mi><mi>θ</mi><mo>=</mo><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math> になる。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 交点を読む</h3>
-          <p>x 座標が −<span class="frac"><span class="num">1</span><span class="den">2</span></span> になる角は，<span class="frac"><span class="num">π</span><span class="den">3</span></span> を基準に θ = <span class="frac"><span class="num">2π</span><span class="den">3</span></span> と <span class="frac"><span class="num">4π</span><span class="den">3</span></span> だよ。</p>
+          <p><math><mi>x</mi></math> 座標が<math><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math> になる角は<math><mo>,</mo><mfrac><mi>π</mi><mn>3</mn></mfrac></math> を基準に<math><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>2</mn><mi>π</mi></mrow><mn>3</mn></mfrac></math> と <math><mfrac><mrow><mn>4</mn><mi>π</mi></mrow><mn>3</mn></mfrac></math> だよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">θ = <span class="frac"><span class="num">2π</span><span class="den">3</span></span>，<span class="frac"><span class="num">4π</span><span class="den">3</span></span></p>
+          <p class="big"><math display="block"><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>2</mn><mi>π</mi></mrow><mn>3</mn></mfrac><mo>,</mo><mfrac><mrow><mn>4</mn><mi>π</mi></mrow><mn>3</mn></mfrac></math></p>
         </div>
           <p class="prob-done">(2) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren18-3" data-flow="ren18-3" data-label="練習18 (3)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(3)　sinθ + 1 = 0</span>
+            <span class="sub prob-q" style="margin:0">(3)　<math><mi>sin</mi><mi>θ</mi><mo>+</mo><mn>1</mn><mo>=</mo><mn>0</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="quiz" id="qz-ren18-3" data-correct="3">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>θ = <span class="frac"><span class="num">π</span><span class="den">2</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>θ = <span class="frac"><span class="num">7π</span><span class="den">6</span></span>，<span class="frac"><span class="num">11π</span><span class="den">6</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>θ = <span class="frac"><span class="num">3π</span><span class="den">2</span></span></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mi>θ</mi><mo>=</mo><mfrac><mi>π</mi><mn>2</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>7</mn><mi>π</mi></mrow><mn>6</mn></mfrac><mo>,</mo><mfrac><mrow><mn>11</mn><mi>π</mi></mrow><mn>6</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>3</mn><mi>π</mi></mrow><mn>2</mn></mfrac></math></span><span class="mark"></span></button>
             <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>θ = π</span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
@@ -462,26 +519,26 @@
           <p class="verdict"></p>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― sinθ = の形に変形</h3>
-          <p>変形すると sinθ = −1 になる。</p>
+          <h3>ヒント<math><mn>1</mn><mo>―</mo><mi>sin</mi><mi>θ</mi><mo>=</mo></math>の形に変形</h3>
+          <p>変形すると<math><mi>sin</mi><mi>θ</mi><mo>=</mo><mo>−</mo><mn>1</mn></math>になる。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 交点は 1 つだけ</h3>
-          <p>y 座標が −1 になるのは単位円のいちばん下の点で，交点は 1 つだけだよ。</p>
+          <p><math><mi>y</mi></math> 座標が −1 になるのは単位円のいちばん下の点で，交点は 1 つだけだよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">θ = <span class="frac"><span class="num">3π</span><span class="den">2</span></span></p>
+          <p class="big"><math display="block"><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>3</mn><mi>π</mi></mrow><mn>2</mn></mfrac></math></p>
         </div>
           <p class="prob-done">(3) クリア！　次の課題に進もう。</p>
         </div>
       </section>
       <section class="card">
-        <p>例 9 で θ の範囲に制限がないとき，127 ページの公式 1 により，解は次のようになる。</p>
-<span class="formula" style="display:block;text-align:center;margin:8px 0">θ = <span class="frac"><span class="num">7π</span><span class="den">6</span></span> + 2nπ，<span class="frac"><span class="num">11π</span><span class="den">6</span></span> + 2nπ　（n は整数）</span>
+        <p>例 9 で <math><mi>θ</mi></math> の範囲に制限がないとき，127 ページの公式 1 により，解は次のようになる。</p>
+<p class="formula"><math><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>7</mn><mi>π</mi></mrow><mn>6</mn></mfrac><mo>+</mo><mn>2</mn><mi>n</mi><mi>π</mi><mo>,</mo><mfrac><mrow><mn>11</mn><mi>π</mi></mrow><mn>6</mn></mfrac><mo>+</mo><mn>2</mn><mi>n</mi><mi>π</mi></math>　（<math><mi>n</mi></math> は整数）</p>
       </section>
-      <section class="card prob" id="prob-ren19" data-label="練習19">
+      <section class="nofig card prob" id="prob-ren19" data-label="練習19">
         <div class="prob-head">
           <span class="prob-tag ren">練習 19</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
@@ -495,118 +552,118 @@
         </div>
         <div class="tabpanel show" id="panel-ren19-1" data-flow="ren19-1" data-label="練習19 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　2 sinθ = −√<span class="rad">3</span></span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><mn>2</mn><mi>sin</mi><mi>θ</mi><mo>=</mo><mo>−</mo><msqrt><mn>3</mn></msqrt></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
           <div class="quiz" id="qz-ren19-1" data-correct="1">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>θ = <span class="frac"><span class="num">4π</span><span class="den">3</span></span> + 2nπ，<span class="frac"><span class="num">5π</span><span class="den">3</span></span> + 2nπ（n は整数）</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>θ = <span class="frac"><span class="num">2π</span><span class="den">3</span></span> + 2nπ，<span class="frac"><span class="num">4π</span><span class="den">3</span></span> + 2nπ（n は整数）</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>θ = <span class="frac"><span class="num">4π</span><span class="den">3</span></span> + nπ，<span class="frac"><span class="num">5π</span><span class="den">3</span></span> + nπ（n は整数）</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>θ = <span class="frac"><span class="num">4π</span><span class="den">3</span></span>，<span class="frac"><span class="num">5π</span><span class="den">3</span></span></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>4</mn><mi>π</mi></mrow><mn>3</mn></mfrac><mo>+</mo><mn>2</mn><mi>n</mi><mi>π</mi><mo>,</mo><mfrac><mrow><mn>5</mn><mi>π</mi></mrow><mn>3</mn></mfrac><mo>+</mo><mn>2</mn><mi>n</mi><mi>π</mi><mo>(</mo><mi>n</mi></math>は整数）</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>2</mn><mi>π</mi></mrow><mn>3</mn></mfrac><mo>+</mo><mn>2</mn><mi>n</mi><mi>π</mi><mo>,</mo><mfrac><mrow><mn>4</mn><mi>π</mi></mrow><mn>3</mn></mfrac><mo>+</mo><mn>2</mn><mi>n</mi><mi>π</mi><mo>(</mo><mi>n</mi></math>は整数）</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>4</mn><mi>π</mi></mrow><mn>3</mn></mfrac><mo>+</mo><mi>n</mi><mi>π</mi><mo>,</mo><mfrac><mrow><mn>5</mn><mi>π</mi></mrow><mn>3</mn></mfrac><mo>+</mo><mi>n</mi><mi>π</mi><mo>(</mo><mi>n</mi></math>は整数）</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>4</mn><mi>π</mi></mrow><mn>3</mn></mfrac><mo>,</mo><mfrac><mrow><mn>5</mn><mi>π</mi></mrow><mn>3</mn></mfrac></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
           <p class="verdict"></p>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― sinθ = の形に変形</h3>
-          <p>両辺を 2 で割ると sinθ = −<span class="frac"><span class="num">√<span class="rad">3</span></span><span class="den">2</span></span> になる。</p>
+          <h3>ヒント<math><mn>1</mn><mo>―</mo><mi>sin</mi><mi>θ</mi><mo>=</mo></math>の形に変形</h3>
+          <p class="cite"><span class="cite-tag">使う定義</span><math><mi>sin</mi><mi>θ</mi><mo>=</mo><mi>y</mi></math>単位円では <math><mi>sin</mi><mi>θ</mi></math> は交点の <math><mi>y</mi></math> 座標である。両辺を 2 で割って、<math><mi>y</mi></math> 座標の値として読む。</p><p>両辺を 2 で割ると<math><mi>sin</mi><mi>θ</mi><mo>=</mo><mo>−</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac></math> になる。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― まず 0 ≦ θ &lt; 2π で解く</h3>
-          <p>y 座標が −<span class="frac"><span class="num">√<span class="rad">3</span></span><span class="den">2</span></span> になる角は θ = <span class="frac"><span class="num">4π</span><span class="den">3</span></span> と <span class="frac"><span class="num">5π</span><span class="den">3</span></span> だよ。</p>
+          <h3>ヒント 2 ― まず<math><mn>0</mn><mo>≦</mo><mi>θ</mi><mo>&lt;</mo><mn>2</mn><mi>π</mi></math>で解く</h3>
+          <p><math><mi>y</mi></math> 座標が<math><mo>−</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac></math> になる角は<math><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>4</mn><mi>π</mi></mrow><mn>3</mn></mfrac></math> と <math><mfrac><mrow><mn>5</mn><mi>π</mi></mrow><mn>3</mn></mfrac></math> だよ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 3 ― 一般解にする</h3>
-          <p>範囲の制限がないから，それぞれの解に 2nπ（n は整数）を付ける。</p>
+          <p class="cite"><span class="cite-tag">使う性質</span><math><mi>sin</mi><mrow><mo>(</mo><mi>θ</mi><mo>+</mo><mn>2</mn><mi>n</mi><mi>π</mi><mo>)</mo></mrow><mo>=</mo><mi>sin</mi><mi>θ</mi></math>範囲の制限がないときは、この周期性を使って一般解にする（<math><mi>n</mi></math> は整数）。</p><p>範囲の制限がないから，それぞれの解に<math><mn>2</mn><mi>n</mi><mi>π</mi><mo>(</mo><mi>n</mi></math>は整数）を付ける。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">θ = <span class="frac"><span class="num">4π</span><span class="den">3</span></span> + 2nπ，<span class="frac"><span class="num">5π</span><span class="den">3</span></span> + 2nπ　（n は整数）</p>
+          <p class="big"><math><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>4</mn><mi>π</mi></mrow><mn>3</mn></mfrac><mo>+</mo><mn>2</mn><mi>n</mi><mi>π</mi><mo>,</mo><mfrac><mrow><mn>5</mn><mi>π</mi></mrow><mn>3</mn></mfrac><mo>+</mo><mn>2</mn><mi>n</mi><mi>π</mi></math>　（<math><mi>n</mi></math> は整数）</p><p class="cite"><span class="cite-tag">使う性質</span><math><mi>sin</mi><mrow><mo>(</mo><mi>θ</mi><mo>+</mo><mn>2</mn><mi>n</mi><mi>π</mi><mo>)</mo></mrow><mo>=</mo><mi>sin</mi><mi>θ</mi></math>基本の解に <math><mn>2</mn><mi>n</mi><mi>π</mi></math> を付けて一般解にする、という流れで解答を組み立てる。</p>
         </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren19-2" data-flow="ren19-2" data-label="練習19 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　√<span class="rad">2</span> cosθ = −1</span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><msqrt><mn>2</mn></msqrt><mi>cos</mi><mi>θ</mi><mo>=</mo><mo>−</mo><mn>1</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
           <div class="quiz" id="qz-ren19-2" data-correct="2">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>θ = <span class="frac"><span class="num">π</span><span class="den">4</span></span> + 2nπ，<span class="frac"><span class="num">7π</span><span class="den">4</span></span> + 2nπ（n は整数）</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>θ = <span class="frac"><span class="num">3π</span><span class="den">4</span></span> + 2nπ，<span class="frac"><span class="num">5π</span><span class="den">4</span></span> + 2nπ（n は整数）</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>θ = <span class="frac"><span class="num">3π</span><span class="den">4</span></span> + nπ，<span class="frac"><span class="num">5π</span><span class="den">4</span></span> + nπ（n は整数）</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>θ = <span class="frac"><span class="num">2π</span><span class="den">3</span></span> + 2nπ，<span class="frac"><span class="num">4π</span><span class="den">3</span></span> + 2nπ（n は整数）</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mi>θ</mi><mo>=</mo><mfrac><mi>π</mi><mn>4</mn></mfrac><mo>+</mo><mn>2</mn><mi>n</mi><mi>π</mi><mo>,</mo><mfrac><mrow><mn>7</mn><mi>π</mi></mrow><mn>4</mn></mfrac><mo>+</mo><mn>2</mn><mi>n</mi><mi>π</mi><mo>(</mo><mi>n</mi></math>は整数）</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>3</mn><mi>π</mi></mrow><mn>4</mn></mfrac><mo>+</mo><mn>2</mn><mi>n</mi><mi>π</mi><mo>,</mo><mfrac><mrow><mn>5</mn><mi>π</mi></mrow><mn>4</mn></mfrac><mo>+</mo><mn>2</mn><mi>n</mi><mi>π</mi><mo>(</mo><mi>n</mi></math>は整数）</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>3</mn><mi>π</mi></mrow><mn>4</mn></mfrac><mo>+</mo><mi>n</mi><mi>π</mi><mo>,</mo><mfrac><mrow><mn>5</mn><mi>π</mi></mrow><mn>4</mn></mfrac><mo>+</mo><mi>n</mi><mi>π</mi><mo>(</mo><mi>n</mi></math>は整数）</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>2</mn><mi>π</mi></mrow><mn>3</mn></mfrac><mo>+</mo><mn>2</mn><mi>n</mi><mi>π</mi><mo>,</mo><mfrac><mrow><mn>4</mn><mi>π</mi></mrow><mn>3</mn></mfrac><mo>+</mo><mn>2</mn><mi>n</mi><mi>π</mi><mo>(</mo><mi>n</mi></math>は整数）</span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
           <p class="verdict"></p>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― cosθ = の形に変形</h3>
-          <p>両辺を √<span class="rad">2</span> で割ると cosθ = −<span class="frac"><span class="num">1</span><span class="den">√<span class="rad">2</span></span></span> になる。</p>
+          <h3>ヒント<math><mn>1</mn><mo>―</mo><mi>cos</mi><mi>θ</mi><mo>=</mo></math>の形に変形</h3>
+          <p class="cite"><span class="cite-tag">使う定義</span><math><mi>cos</mi><mi>θ</mi><mo>=</mo><mi>x</mi></math>単位円では <math><mi>cos</mi><mi>θ</mi></math> は交点の <math><mi>x</mi></math> 座標である。両辺を 2 で割って、<math><mi>x</mi></math> 座標の値として読む。</p><p>両辺を<math><msqrt><mn>2</mn></msqrt></math> で割ると<math><mi>cos</mi><mi>θ</mi><mo>=</mo><mo>−</mo><mfrac><mn>1</mn><msqrt><mn>2</mn></msqrt></mfrac></math> になる。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― まず 0 ≦ θ &lt; 2π で解く</h3>
-          <p>x 座標が −<span class="frac"><span class="num">1</span><span class="den">√<span class="rad">2</span></span></span> になる角は，<span class="frac"><span class="num">π</span><span class="den">4</span></span> を基準に θ = <span class="frac"><span class="num">3π</span><span class="den">4</span></span> と <span class="frac"><span class="num">5π</span><span class="den">4</span></span> だよ。</p>
+          <h3>ヒント 2 ― まず<math><mn>0</mn><mo>≦</mo><mi>θ</mi><mo>&lt;</mo><mn>2</mn><mi>π</mi></math>で解く</h3>
+          <p><math><mi>x</mi></math> 座標が<math><mo>−</mo><mfrac><mn>1</mn><msqrt><mn>2</mn></msqrt></mfrac></math> になる角は<math><mo>,</mo><mfrac><mi>π</mi><mn>4</mn></mfrac></math> を基準に<math><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>3</mn><mi>π</mi></mrow><mn>4</mn></mfrac></math> と <math><mfrac><mrow><mn>5</mn><mi>π</mi></mrow><mn>4</mn></mfrac></math> だよ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 3 ― 一般解にする</h3>
-          <p>それぞれの解に 2nπ（n は整数）を付ける。</p>
+          <p class="cite"><span class="cite-tag">使う性質</span><math><mi>cos</mi><mrow><mo>(</mo><mi>θ</mi><mo>+</mo><mn>2</mn><mi>n</mi><mi>π</mi><mo>)</mo></mrow><mo>=</mo><mi>cos</mi><mi>θ</mi></math>範囲の制限がないときは、この周期性を使って一般解にする（<math><mi>n</mi></math> は整数）。</p><p>それぞれの解に<math><mn>2</mn><mi>n</mi><mi>π</mi><mo>(</mo><mi>n</mi></math>は整数）を付ける。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">θ = <span class="frac"><span class="num">3π</span><span class="den">4</span></span> + 2nπ，<span class="frac"><span class="num">5π</span><span class="den">4</span></span> + 2nπ　（n は整数）</p>
+          <p class="big"><math><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>3</mn><mi>π</mi></mrow><mn>4</mn></mfrac><mo>+</mo><mn>2</mn><mi>n</mi><mi>π</mi><mo>,</mo><mfrac><mrow><mn>5</mn><mi>π</mi></mrow><mn>4</mn></mfrac><mo>+</mo><mn>2</mn><mi>n</mi><mi>π</mi></math>　（<math><mi>n</mi></math> は整数）</p>
         </div>
           <p class="prob-done">(2) クリア！　次の課題に進もう。</p>
         </div>
       </section>
-      <section class="card prob" id="prob-ex10" data-flow="ex10" data-label="例10">
+      <section class="nofig card prob" id="prob-ex10" data-flow="ex10" data-label="例10">
         <div class="prob-head">
           <span class="prob-tag ">例 10</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
         <div class="qside">
-        <p class="prob-q">0 ≦ θ &lt; 2π のとき，方程式 tanθ = √<span class="rad">3</span> を解け。</p>
+        <p class="prob-q"><math><mn>0</mn><mo>≦</mo><mi>θ</mi><mo>&lt;</mo><mn>2</mn><mi>π</mi></math>のとき，方程式<math><mi>tan</mi><mi>θ</mi><mo>=</mo><msqrt><mn>3</mn></msqrt></math> を解け。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― tan は動径の傾き</h3>
-          <p>tanθ は，単位円上の点と原点を結ぶ動径の傾きに等しい。点 T(1, √<span class="rad">3</span>) をとると，直線 OT の傾きが √<span class="rad">3</span> になる。</p>
+          <h3>ヒント 1 ― <math><mi>tan</mi></math> は動径の傾き</h3>
+          <p class="cite"><span class="cite-tag">使う性質</span><math><mi>tan</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mi>y</mi></mrow><mrow><mi>x</mi></mrow></mfrac></math><math><mi>tan</mi><mi>θ</mi></math> は動径の傾きに等しい。ここでは傾きが <math><msqrt><mn>3</mn></msqrt></math> になる動径を探す。</p><p><math><mi>tan</mi><mi>θ</mi></math> は，単位円上の点と原点を結ぶ動径の傾きに等しい。点<math><mi>T</mi><mrow><mo>(</mo><mn>1</mn><mo>,</mo><msqrt><mn>3</mn></msqrt><mo>)</mo></mrow></math>をとると，直線 <math><mi>OT</mi></math> の傾きが<math><msqrt><mn>3</mn></msqrt></math> になる。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 単位円の図で交点を見る</h3>
-          <p>直線 OT と単位円の交点を P，Q とすると，求める θ は動径 OP，OQ の表す角である。</p>
-<figure><div class="figbox"><svg viewBox="0 0 300 330" role="img" aria-label="点T(1, √3) と直線 OT"><circle cx="130" cy="205" r="82" fill="none" stroke="currentColor" stroke-width="1.5"/><line x1="14" y1="205" x2="292" y2="205" stroke="currentColor" stroke-width="1.2"/><path d="M 292 205 l -7 -3.4 v 6.8 z" fill="currentColor"/><line x1="130" y1="320" x2="130" y2="14" stroke="currentColor" stroke-width="1.2"/><path d="M 130 14 l -3.4 7 h 6.8 z" fill="currentColor"/><text x="288" y="197" font-size="16" text-anchor="middle" fill="currentColor" font-style="italic">x</text><text x="142" y="24" font-size="16" text-anchor="middle" fill="currentColor" font-style="italic">y</text><text x="121" y="222" font-size="15" text-anchor="middle" fill="currentColor">O</text><text x="212" y="222" font-size="13" text-anchor="middle" fill="currentColor">1</text><text x="48" y="222" font-size="13" text-anchor="middle" fill="currentColor">−1</text><text x="141" y="127" font-size="13" text-anchor="middle" fill="currentColor">1</text><text x="143" y="291" font-size="13" text-anchor="middle" fill="currentColor">−1</text><line x1="212" y1="26" x2="212" y2="322" stroke="currentColor" stroke-width="1.4"/><line x1="89" y1="276" x2="212" y2="63" stroke="currentColor" stroke-width="1.6"/><line x1="212" y1="63" x2="130" y2="63" stroke="currentColor" stroke-width="1.1" stroke-dasharray="4 3"/><circle cx="171" cy="134" r="3.4" fill="currentColor"/><circle cx="89" cy="276" r="3.4" fill="currentColor"/><circle cx="212" cy="63" r="3.4" fill="currentColor"/><text x="185" y="128" font-size="15" text-anchor="middle" fill="currentColor">P</text><text x="85" y="296" font-size="15" text-anchor="middle" fill="currentColor">Q</text><text x="226" y="67" font-size="15" text-anchor="middle" fill="currentColor">T</text><text x="228" y="22" font-size="13" text-anchor="middle" fill="currentColor">x = 1</text><text x="116" y="67" font-size="13" text-anchor="middle" fill="currentColor">√3</text></svg></div><figcaption>点 T(1, √<span class="rad">3</span>) をとり，直線 OT と単位円の交点を P，Q とすると，求める θ は動径 OP，OQ の表す角である。</figcaption></figure>
+          <p>直線 <math><mi>OT</mi></math> と単位円の交点を <math><mi>P</mi></math>，<math><mi>Q</mi></math> とすると，求める <math><mi>θ</mi></math> は動径 <math><mi>OP</mi></math>，<math><mi>OQ</mi></math> の表す角である。</p>
+<figure><div class="figbox"><svg viewBox="0 0 300 330" role="img" aria-label="点T(1, √3) と直線 OT"><circle cx="130" cy="205" r="82" fill="none" stroke="currentColor" stroke-width="1.5"/><line x1="14" y1="205" x2="292" y2="205" stroke="currentColor" stroke-width="1.2"/><path d="M 292 205 l -7 -3.4 v 6.8 z" fill="currentColor"/><line x1="130" y1="320" x2="130" y2="14" stroke="currentColor" stroke-width="1.2"/><path d="M 130 14 l -3.4 7 h 6.8 z" fill="currentColor"/><text x="288" y="197" font-size="16" text-anchor="middle" fill="currentColor" font-style="italic">x</text><text x="142" y="24" font-size="16" text-anchor="middle" fill="currentColor" font-style="italic">y</text><text x="121" y="222" font-size="15" text-anchor="middle" fill="currentColor">O</text><text x="212" y="222" font-size="13" text-anchor="middle" fill="currentColor">1</text><text x="48" y="222" font-size="13" text-anchor="middle" fill="currentColor">−1</text><text x="141" y="127" font-size="13" text-anchor="middle" fill="currentColor">1</text><text x="143" y="291" font-size="13" text-anchor="middle" fill="currentColor">−1</text><line x1="212" y1="26" x2="212" y2="322" stroke="currentColor" stroke-width="1.4"/><line x1="89" y1="276" x2="212" y2="63" stroke="currentColor" stroke-width="1.6"/><line x1="212" y1="63" x2="130" y2="63" stroke="currentColor" stroke-width="1.1" stroke-dasharray="4 3"/><circle cx="171" cy="134" r="3.4" fill="currentColor"/><circle cx="89" cy="276" r="3.4" fill="currentColor"/><circle cx="212" cy="63" r="3.4" fill="currentColor"/><text x="185" y="128" font-size="15" text-anchor="middle" fill="currentColor">P</text><text x="85" y="296" font-size="15" text-anchor="middle" fill="currentColor">Q</text><text x="226" y="67" font-size="15" text-anchor="middle" fill="currentColor">T</text><text x="228" y="22" font-size="13" text-anchor="middle" fill="currentColor">x = 1</text><text x="116" y="67" font-size="13" text-anchor="middle" fill="currentColor">√3</text></svg></div><figcaption>点<math><mi>T</mi><mrow><mo>(</mo><mn>1</mn><mo>,</mo><msqrt><mn>3</mn></msqrt><mo>)</mo></mrow></math>をとり，直線 <math><mi>OT</mi></math> と単位円の交点を <math><mi>P</mi></math>，<math><mi>Q</mi></math> とすると，求める <math><mi>θ</mi></math> は動径 <math><mi>OP</mi></math>，<math><mi>OQ</mi></math> の表す角である。</figcaption></figure>
         </div>
         <div class="step hint">
           <h3>ヒント 3 ― 角を読む</h3>
-          <p>点 T の高さから，動径 OP の表す角は <span class="frac"><span class="num">π</span><span class="den">3</span></span>。もう 1 つは π を加えた <span class="frac"><span class="num">4π</span><span class="den">3</span></span> だよ。</p>
+          <p>点 <math><mi>T</mi></math> の高さから，動径 <math><mi>OP</mi></math> の表す角は <math><mfrac><mi>π</mi><mn>3</mn></mfrac></math>。もう 1 つは <math><mi>π</mi></math> を加えた <math><mfrac><mrow><mn>4</mn><mi>π</mi></mrow><mn>3</mn></mfrac></math> だよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">θ = <span class="frac"><span class="num">π</span><span class="den">3</span></span>，<span class="frac"><span class="num">4π</span><span class="den">3</span></span></p>
+          <p class="big"><math display="block"><mi>θ</mi><mo>=</mo><mfrac><mi>π</mi><mn>3</mn></mfrac><mo>,</mo><mfrac><mrow><mn>4</mn><mi>π</mi></mrow><mn>3</mn></mfrac></math></p>
         </div>
         <p class="prob-done">例10 クリア！　次は練習20に挑戦しよう。</p>
       </section>
       <section class="card">
-        <p>例 10 で θ の範囲に制限がないとき，解は次のようになる。</p>
-<span class="formula" style="display:block;text-align:center;margin:8px 0">θ = <span class="frac"><span class="num">π</span><span class="den">3</span></span> + nπ　（n は整数）</span>
-        <p>tan の周期は π だから，2 つの解は nπ を使って 1 つにまとめて書ける。</p>
+        <p>例 10 で <math><mi>θ</mi></math> の範囲に制限がないとき，解は次のようになる。</p>
+<p class="formula"><math><mi>θ</mi><mo>=</mo><mfrac><mi>π</mi><mn>3</mn></mfrac><mo>+</mo><mi>n</mi><mi>π</mi></math>　（<math><mi>n</mi></math> は整数）</p>
+        <p><math><mi>tan</mi></math> の周期は <math><mi>π</mi></math> だから，2 つの解は <math><mi>n</mi></math><math><mi>π</mi></math> を使って 1 つにまとめて書ける。</p>
       </section>
-      <section class="card prob" id="prob-ren20" data-label="練習20">
+      <section class="nofig card prob" id="prob-ren20" data-label="練習20">
         <div class="prob-head">
           <span class="prob-tag ren">練習 20</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
         <div class="qside">
-        <p class="prob-q">0 ≦ θ &lt; 2π のとき，次の方程式を解け。また，θ の範囲に制限がないときの解を求めよ。</p>
+        <p class="prob-q"><math><mn>0</mn><mo>≦</mo><mi>θ</mi><mo>&lt;</mo><mn>2</mn><mi>π</mi></math>のとき，次の方程式を解け。また，<math><mi>θ</mi></math> の範囲に制限がないときの解を求めよ。</p>
         </div>
         <div class="tabs" role="tablist" aria-label="練習20の小問">
           <button class="tab" role="tab" data-tab="ren20-1" aria-selected="true">(1)</button>
@@ -614,16 +671,16 @@
         </div>
         <div class="tabpanel show" id="panel-ren20-1" data-flow="ren20-1" data-label="練習20 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　tanθ = <span class="frac"><span class="num">1</span><span class="den">√<span class="rad">3</span></span></span></span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><mi>tan</mi><mi>θ</mi><mo>=</mo><mfrac><mn>1</mn><msqrt><mn>3</mn></msqrt></mfrac></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="quiz" id="qz-ren20-1" data-correct="1">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>θ = <span class="frac"><span class="num">π</span><span class="den">6</span></span>，<span class="frac"><span class="num">7π</span><span class="den">6</span></span>（一般解 θ = <span class="frac"><span class="num">π</span><span class="den">6</span></span> + nπ）</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>θ = <span class="frac"><span class="num">π</span><span class="den">3</span></span>，<span class="frac"><span class="num">4π</span><span class="den">3</span></span>（一般解 θ = <span class="frac"><span class="num">π</span><span class="den">3</span></span> + nπ）</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>θ = <span class="frac"><span class="num">π</span><span class="den">6</span></span>，<span class="frac"><span class="num">5π</span><span class="den">6</span></span>（一般解 θ = <span class="frac"><span class="num">π</span><span class="den">6</span></span> + 2nπ，<span class="frac"><span class="num">5π</span><span class="den">6</span></span> + 2nπ）</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>θ = <span class="frac"><span class="num">5π</span><span class="den">6</span></span>，<span class="frac"><span class="num">11π</span><span class="den">6</span></span>（一般解 θ = <span class="frac"><span class="num">5π</span><span class="den">6</span></span> + nπ）</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mi>θ</mi><mo>=</mo><mfrac><mi>π</mi><mn>6</mn></mfrac><mo>,</mo><mfrac><mrow><mn>7</mn><mi>π</mi></mrow><mn>6</mn></mfrac><mo>(</mo></math>一般解<math><mi>θ</mi><mo>=</mo><mfrac><mi>π</mi><mn>6</mn></mfrac><mo>+</mo><mi>n</mi><mi>π</mi><mo>)</mo></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mi>θ</mi><mo>=</mo><mfrac><mi>π</mi><mn>3</mn></mfrac><mo>,</mo><mfrac><mrow><mn>4</mn><mi>π</mi></mrow><mn>3</mn></mfrac><mo>(</mo></math>一般解<math><mi>θ</mi><mo>=</mo><mfrac><mi>π</mi><mn>3</mn></mfrac><mo>+</mo><mi>n</mi><mi>π</mi><mo>)</mo></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mi>θ</mi><mo>=</mo><mfrac><mi>π</mi><mn>6</mn></mfrac><mo>,</mo><mfrac><mrow><mn>5</mn><mi>π</mi></mrow><mn>6</mn></mfrac><mo>(</mo></math>一般解<math><mi>θ</mi><mo>=</mo><mfrac><mi>π</mi><mn>6</mn></mfrac><mo>+</mo><mn>2</mn><mi>n</mi><mi>π</mi><mo>,</mo><mfrac><mrow><mn>5</mn><mi>π</mi></mrow><mn>6</mn></mfrac><mo>+</mo><mn>2</mn><mi>n</mi><mi>π</mi><mo>)</mo></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>5</mn><mi>π</mi></mrow><mn>6</mn></mfrac><mo>,</mo><mfrac><mrow><mn>11</mn><mi>π</mi></mrow><mn>6</mn></mfrac><mo>(</mo></math>一般解<math><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>5</mn><mi>π</mi></mrow><mn>6</mn></mfrac><mo>+</mo><mi>n</mi><mi>π</mi><mo>)</mo></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
@@ -631,31 +688,31 @@
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― 基準の角</h3>
-          <p>tan の値が <span class="frac"><span class="num">1</span><span class="den">√<span class="rad">3</span></span></span> になる基準の角は <span class="frac"><span class="num">π</span><span class="den">6</span></span>（tan<span class="frac"><span class="num">π</span><span class="den">6</span></span> = <span class="frac"><span class="num">1</span><span class="den">√<span class="rad">3</span></span></span>）だよ。</p>
+          <p class="cite"><span class="cite-tag">使う性質</span><math><mi>tan</mi><mfrac><mrow><mi>π</mi></mrow><mrow><mn>6</mn></mrow></mfrac><mo>=</mo><mfrac><mrow><mn>1</mn></mrow><mrow><msqrt><mn>3</mn></msqrt></mrow></mfrac></math>この値を基準に、単位円で同じ <math><mi>tan</mi></math> の値になる角を読む。</p><p><math><mi>tan</mi></math> の値が <math><mfrac><mn>1</mn><msqrt><mn>3</mn></msqrt></mfrac></math> になる基準の角は <math><mfrac><mi>π</mi><mn>6</mn></mfrac><mrow><mo>(</mo><mi>tan</mi><mfrac><mi>π</mi><mn>6</mn></mfrac><mo>=</mo><mfrac><mn>1</mn><msqrt><mn>3</mn></msqrt></mfrac><mo>)</mo></mrow></math>だよ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― もう 1 つの解と一般解</h3>
-          <p>もう 1 つは π を加えた <span class="frac"><span class="num">7π</span><span class="den">6</span></span>。tan の周期は π だから，一般解は θ = <span class="frac"><span class="num">π</span><span class="den">6</span></span> + nπ（n は整数）とまとめる。</p>
+          <p class="cite"><span class="cite-tag">使う性質</span><math><mi>tan</mi><mrow><mo>(</mo><mi>θ</mi><mo>+</mo><mi>n</mi><mi>π</mi><mo>)</mo></mrow><mo>=</mo><mi>tan</mi><mi>θ</mi></math><math><mi>tan</mi></math> の周期は <math><mi>π</mi></math> だから、解は <math><mi>π</mi></math> ごとに繰り返す。</p><p>もう 1 つは <math><mi>π</mi></math> を加えた <math><mfrac><mrow><mn>7</mn><mi>π</mi></mrow><mn>6</mn></mfrac></math>。<math><mi>tan</mi></math> の周期は <math><mi>π</mi></math> だから，一般解は<math><mi>θ</mi><mo>=</mo><mfrac><mi>π</mi><mn>6</mn></mfrac><mo>+</mo><mi>n</mi><mi>π</mi><mo>(</mo><mi>n</mi></math>は整数）とまとめる。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">θ = <span class="frac"><span class="num">π</span><span class="den">6</span></span>，<span class="frac"><span class="num">7π</span><span class="den">6</span></span>　（一般解　θ = <span class="frac"><span class="num">π</span><span class="den">6</span></span> + nπ）</p>
+          <p class="big"><math><mi>θ</mi><mo>=</mo><mfrac><mi>π</mi><mn>6</mn></mfrac><mo>,</mo><mfrac><mrow><mn>7</mn><mi>π</mi></mrow><mn>6</mn></mfrac></math>　（一般解　<math><mi>θ</mi><mo>=</mo><mfrac><mi>π</mi><mn>6</mn></mfrac><mo>+</mo><mi>n</mi><mi>π</mi><mo>)</mo></math></p>
         </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren20-2" data-flow="ren20-2" data-label="練習20 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　tanθ = −√<span class="rad">3</span></span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><mi>tan</mi><mi>θ</mi><mo>=</mo><mo>−</mo><msqrt><mn>3</mn></msqrt></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="quiz" id="qz-ren20-2" data-correct="3">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>θ = <span class="frac"><span class="num">π</span><span class="den">3</span></span>，<span class="frac"><span class="num">4π</span><span class="den">3</span></span>（一般解 θ = <span class="frac"><span class="num">π</span><span class="den">3</span></span> + nπ）</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>θ = <span class="frac"><span class="num">2π</span><span class="den">3</span></span>，<span class="frac"><span class="num">4π</span><span class="den">3</span></span>（一般解 θ = <span class="frac"><span class="num">2π</span><span class="den">3</span></span> + 2nπ，<span class="frac"><span class="num">4π</span><span class="den">3</span></span> + 2nπ）</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>θ = <span class="frac"><span class="num">2π</span><span class="den">3</span></span>，<span class="frac"><span class="num">5π</span><span class="den">3</span></span>（一般解 θ = <span class="frac"><span class="num">2π</span><span class="den">3</span></span> + nπ）</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>θ = <span class="frac"><span class="num">5π</span><span class="den">6</span></span>，<span class="frac"><span class="num">11π</span><span class="den">6</span></span>（一般解 θ = <span class="frac"><span class="num">5π</span><span class="den">6</span></span> + nπ）</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mi>θ</mi><mo>=</mo><mfrac><mi>π</mi><mn>3</mn></mfrac><mo>,</mo><mfrac><mrow><mn>4</mn><mi>π</mi></mrow><mn>3</mn></mfrac><mo>(</mo></math>一般解<math><mi>θ</mi><mo>=</mo><mfrac><mi>π</mi><mn>3</mn></mfrac><mo>+</mo><mi>n</mi><mi>π</mi><mo>)</mo></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>2</mn><mi>π</mi></mrow><mn>3</mn></mfrac><mo>,</mo><mfrac><mrow><mn>4</mn><mi>π</mi></mrow><mn>3</mn></mfrac><mo>(</mo></math>一般解<math><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>2</mn><mi>π</mi></mrow><mn>3</mn></mfrac><mo>+</mo><mn>2</mn><mi>n</mi><mi>π</mi><mo>,</mo><mfrac><mrow><mn>4</mn><mi>π</mi></mrow><mn>3</mn></mfrac><mo>+</mo><mn>2</mn><mi>n</mi><mi>π</mi><mo>)</mo></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>2</mn><mi>π</mi></mrow><mn>3</mn></mfrac><mo>,</mo><mfrac><mrow><mn>5</mn><mi>π</mi></mrow><mn>3</mn></mfrac><mo>(</mo></math>一般解<math><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>2</mn><mi>π</mi></mrow><mn>3</mn></mfrac><mo>+</mo><mi>n</mi><mi>π</mi><mo>)</mo></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>5</mn><mi>π</mi></mrow><mn>6</mn></mfrac><mo>,</mo><mfrac><mrow><mn>11</mn><mi>π</mi></mrow><mn>6</mn></mfrac><mo>(</mo></math>一般解<math><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>5</mn><mi>π</mi></mrow><mn>6</mn></mfrac><mo>+</mo><mi>n</mi><mi>π</mi><mo>)</mo></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
@@ -663,55 +720,55 @@
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― 負の値になる象限</h3>
-          <p>tan が負になるのは，動径が第 2 象限・第 4 象限にあるとき。基準の角は <span class="frac"><span class="num">2π</span><span class="den">3</span></span>（tan<span class="frac"><span class="num">2π</span><span class="den">3</span></span> = −√<span class="rad">3</span>）だよ。</p>
+          <p class="cite"><span class="cite-tag">使う性質</span><math><mi>tan</mi><mfrac><mrow><mn>2</mn></mrow><mrow><mn>3</mn></mrow></mfrac><mi>π</mi><mo>=</mo><mo>−</mo><msqrt><mn>3</mn></msqrt></math>この基準の角を使って、<math><mi>tan</mi><mi>θ</mi><mo>=</mo><mo>−</mo><msqrt><mn>3</mn></msqrt></math> になる角を読む。</p><p><math><mi>tan</mi></math> が負になるのは，動径が第 2 象限・第 4 象限にあるとき。基準の角は <math><mfrac><mrow><mn>2</mn><mi>π</mi></mrow><mn>3</mn></mfrac><mrow><mo>(</mo><mi>tan</mi><mfrac><mrow><mn>2</mn><mi>π</mi></mrow><mn>3</mn></mfrac><mo>=</mo><mo>−</mo><msqrt><mn>3</mn></msqrt><mo>)</mo></mrow></math>だよ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― もう 1 つの解と一般解</h3>
-          <p>もう 1 つは π を加えた <span class="frac"><span class="num">5π</span><span class="den">3</span></span>。一般解は θ = <span class="frac"><span class="num">2π</span><span class="den">3</span></span> + nπ（n は整数）とまとめる。</p>
+          <p>もう 1 つは <math><mi>π</mi></math> を加えた <math><mfrac><mrow><mn>5</mn><mi>π</mi></mrow><mn>3</mn></mfrac></math>。一般解は<math><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>2</mn><mi>π</mi></mrow><mn>3</mn></mfrac><mo>+</mo><mi>n</mi><mi>π</mi><mo>(</mo><mi>n</mi></math>は整数）とまとめる。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">θ = <span class="frac"><span class="num">2π</span><span class="den">3</span></span>，<span class="frac"><span class="num">5π</span><span class="den">3</span></span>　（一般解　θ = <span class="frac"><span class="num">2π</span><span class="den">3</span></span> + nπ）</p>
+          <p class="big"><math><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>2</mn><mi>π</mi></mrow><mn>3</mn></mfrac><mo>,</mo><mfrac><mrow><mn>5</mn><mi>π</mi></mrow><mn>3</mn></mfrac></math>　（一般解　<math><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>2</mn><mi>π</mi></mrow><mn>3</mn></mfrac><mo>+</mo><mi>n</mi><mi>π</mi><mo>)</mo></math></p>
         </div>
           <p class="prob-done">(2) クリア！　次の課題に進もう。</p>
         </div>
       </section>
-      <section class="card prob" id="prob-oyo3" data-flow="oyo3" data-label="応用例題3">
+      <section class="nofig card prob" id="prob-oyo3" data-flow="oyo3" data-label="応用例題3">
         <div class="prob-head">
           <span class="prob-tag ouyou">応用例題 3</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
         <div class="qside">
-        <p class="prob-q">0 ≦ θ &lt; 2π のとき，方程式 5 sinθ − 2 cos<sup>2</sup>θ + 4 = 0 を解け。</p>
+        <p class="prob-q"><math><mn>0</mn><mo>≦</mo><mi>θ</mi><mo>&lt;</mo><mn>2</mn><mi>π</mi></math>のとき，方程式<math><mn>5</mn><mi>sin</mi><mi>θ</mi><mo>−</mo><mn>2</mn><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><mn>4</mn><mo>=</mo><mn>0</mn></math>を解け。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 考え方：sinθ だけの式にする</h3>
-          <p>cos<sup>2</sup>θ = 1 − sin<sup>2</sup>θ を用いると，sinθ の 2 次方程式が得られる。まず cos<sup>2</sup>θ を sin<sup>2</sup>θ で表そう。</p>
+          <h3>ヒント 1 ― 考え方：<math><mi>sin</mi><mi>θ</mi></math> だけの式にする</h3>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn><mo>−</mo><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi></math>相互関係 <math><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn></math> を変形したものである。方程式の <math><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></math> をこの形に置き換える。</p><p><math><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn><mo>−</mo><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi></math>を用いると，<math><mi>sin</mi><mi>θ</mi></math> の 2 次方程式が得られる。まず<math><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></math>を<math><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi></math>で表そう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 整理して因数分解</h3>
-          <p>代入して整理すると 2 sin<sup>2</sup>θ + 5 sinθ + 2 = 0。因数分解すると (2 sinθ + 1)(sinθ + 2) = 0 になる。</p>
+          <p>代入して整理すると<math><mn>2</mn><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><mn>5</mn><mi>sin</mi><mi>θ</mi><mo>+</mo><mn>2</mn><mo>=</mo><mn>0</mn></math>。因数分解すると<math><mrow><mo>(</mo><mn>2</mn><mi>sin</mi><mi>θ</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow><mrow><mo>(</mo><mi>sin</mi><mi>θ</mi><mo>+</mo><mn>2</mn><mo>)</mo></mrow><mo>=</mo><mn>0</mn></math>になる。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 3 ― ありえない解を捨てる</h3>
-          <p>0 ≦ θ &lt; 2π のとき −1 ≦ sinθ ≦ 1 であるから，sinθ + 2 = 0（sinθ = −2）はありえない。残るのは 2 sinθ + 1 = 0，すなわち sinθ = −<span class="frac"><span class="num">1</span><span class="den">2</span></span> で，これは例 9 と同じ形だよ。</p>
+          <p class="cite"><span class="cite-tag">使う性質</span><math><mo>−</mo><mn>1</mn><mo>≦</mo><mi>sin</mi><mi>θ</mi><mo>≦</mo><mn>1</mn></math>この範囲にない <math><mi>sin</mi><mi>θ</mi><mo>=</mo><mo>−</mo><mn>2</mn></math> は解としてありえないので捨てる。</p><p><math><mn>0</mn><mo>≦</mo><mi>θ</mi><mo>&lt;</mo><mn>2</mn><mi>π</mi></math>のとき<math><mo>−</mo><mn>1</mn><mo>≦</mo><mi>sin</mi><mi>θ</mi><mo>≦</mo><mn>1</mn></math>であるから<math><mo>,</mo><mi>sin</mi><mi>θ</mi><mo>+</mo><mn>2</mn><mo>=</mo><mn>0</mn><mrow><mo>(</mo><mi>sin</mi><mi>θ</mi><mo>=</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow></math>はありえない。<br>残るのは<math><mn>2</mn><mi>sin</mi><mi>θ</mi><mo>+</mo><mn>1</mn><mo>=</mo><mn>0</mn><mo>,</mo></math>すなわち<math><mi>sin</mi><mi>θ</mi><mo>=</mo><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math> で，これは例 9 と同じ形だよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">θ = <span class="frac"><span class="num">7π</span><span class="den">6</span></span>，<span class="frac"><span class="num">11π</span><span class="den">6</span></span></p>
+          <p class="big"><math display="block"><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>7</mn><mi>π</mi></mrow><mn>6</mn></mfrac><mo>,</mo><mfrac><mrow><mn>11</mn><mi>π</mi></mrow><mn>6</mn></mfrac></math></p><p class="cite"><span class="cite-tag">使う公式</span><math><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn><mo>−</mo><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi></math>この置き換えから得た 2 次方程式を解いて、解答の計算を始める。</p>
         </div>
         <p class="prob-done">応用例題3 クリア！　次は練習21に挑戦しよう。</p>
       </section>
-      <section class="card prob" id="prob-ren21" data-label="練習21">
+      <section class="nofig card prob" id="prob-ren21" data-label="練習21">
         <div class="prob-head">
           <span class="prob-tag ren">練習 21</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
         <div class="qside">
-        <p class="prob-q">0 ≦ θ &lt; 2π のとき，次の方程式を解け。</p>
+        <p class="prob-q"><math><mn>0</mn><mo>≦</mo><mi>θ</mi><mo>&lt;</mo><mn>2</mn><mi>π</mi></math>のとき，次の方程式を解け。</p>
         </div>
         <div class="tabs" role="tablist" aria-label="練習21の小問">
           <button class="tab" role="tab" data-tab="ren21-1" aria-selected="true">(1)</button>
@@ -719,65 +776,65 @@
         </div>
         <div class="tabpanel show" id="panel-ren21-1" data-flow="ren21-1" data-label="練習21 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　2 cos<sup>2</sup>θ + 5 sinθ − 4 = 0</span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><mn>2</mn><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><mn>5</mn><mi>sin</mi><mi>θ</mi><mo>−</mo><mn>4</mn><mo>=</mo><mn>0</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="quiz" id="qz-ren21-1" data-correct="2">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>θ = <span class="frac"><span class="num">π</span><span class="den">3</span></span>，<span class="frac"><span class="num">2π</span><span class="den">3</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>θ = <span class="frac"><span class="num">π</span><span class="den">6</span></span>，<span class="frac"><span class="num">5π</span><span class="den">6</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>θ = <span class="frac"><span class="num">π</span><span class="den">6</span></span>，<span class="frac"><span class="num">11π</span><span class="den">6</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>θ = <span class="frac"><span class="num">7π</span><span class="den">6</span></span>，<span class="frac"><span class="num">11π</span><span class="den">6</span></span></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mi>θ</mi><mo>=</mo><mfrac><mi>π</mi><mn>3</mn></mfrac><mo>,</mo><mfrac><mrow><mn>2</mn><mi>π</mi></mrow><mn>3</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mi>θ</mi><mo>=</mo><mfrac><mi>π</mi><mn>6</mn></mfrac><mo>,</mo><mfrac><mrow><mn>5</mn><mi>π</mi></mrow><mn>6</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mi>θ</mi><mo>=</mo><mfrac><mi>π</mi><mn>6</mn></mfrac><mo>,</mo><mfrac><mrow><mn>11</mn><mi>π</mi></mrow><mn>6</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>7</mn><mi>π</mi></mrow><mn>6</mn></mfrac><mo>,</mo><mfrac><mrow><mn>11</mn><mi>π</mi></mrow><mn>6</mn></mfrac></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
           <p class="verdict"></p>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― sinθ だけの式にする</h3>
-          <p>cos<sup>2</sup>θ = 1 − sin<sup>2</sup>θ を代入して整理すると −2 sin<sup>2</sup>θ + 5 sinθ − 2 = 0。両辺に −1 を掛けて 2 sin<sup>2</sup>θ − 5 sinθ + 2 = 0 としよう。</p>
+          <h3>ヒント<math><mn>1</mn><mo>―</mo><mi>sin</mi><mi>θ</mi></math>だけの式にする</h3>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn><mo>−</mo><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi></math>方程式の <math><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></math> をこの形に置き換え、<math><mi>sin</mi><mi>θ</mi></math> だけの式にする。</p><p><math><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn><mo>−</mo><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi></math>を代入して整理すると<math><mo>−</mo><mn>2</mn><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><mn>5</mn><mi>sin</mi><mi>θ</mi><mo>−</mo><mn>2</mn><mo>=</mo><mn>0</mn></math>。<br>両辺に −1 を掛けて<math><mn>2</mn><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>−</mo><mn>5</mn><mi>sin</mi><mi>θ</mi><mo>+</mo><mn>2</mn><mo>=</mo><mn>0</mn></math>としよう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 因数分解と吟味</h3>
-          <p>因数分解すると (2 sinθ − 1)(sinθ − 2) = 0。sinθ ≦ 1 だから sinθ = 2 は不適で，sinθ = <span class="frac"><span class="num">1</span><span class="den">2</span></span> だけが残る。</p>
+          <p>因数分解すると<math><mrow><mo>(</mo><mn>2</mn><mi>sin</mi><mi>θ</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mrow><mo>(</mo><mi>sin</mi><mi>θ</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mo>=</mo><mn>0</mn></math>。<br><math><mi>sin</mi><mi>θ</mi><mo>≦</mo><mn>1</mn></math>だから<math><mi>sin</mi><mi>θ</mi><mo>=</mo><mn>2</mn></math>は不適で<math><mo>,</mo><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math> だけが残る。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">θ = <span class="frac"><span class="num">π</span><span class="den">6</span></span>，<span class="frac"><span class="num">5π</span><span class="den">6</span></span></p>
+          <p class="big"><math display="block"><mi>θ</mi><mo>=</mo><mfrac><mi>π</mi><mn>6</mn></mfrac><mo>,</mo><mfrac><mrow><mn>5</mn><mi>π</mi></mrow><mn>6</mn></mfrac></math></p>
         </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren21-2" data-flow="ren21-2" data-label="練習21 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　2 sin<sup>2</sup>θ + cosθ − 1 = 0</span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><mn>2</mn><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><mi>cos</mi><mi>θ</mi><mo>−</mo><mn>1</mn><mo>=</mo><mn>0</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="quiz" id="qz-ren21-2" data-correct="4">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>θ = <span class="frac"><span class="num">2π</span><span class="den">3</span></span>，<span class="frac"><span class="num">4π</span><span class="den">3</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>θ = 0，<span class="frac"><span class="num">π</span><span class="den">3</span></span>，<span class="frac"><span class="num">5π</span><span class="den">3</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>θ = π，<span class="frac"><span class="num">2π</span><span class="den">3</span></span>，<span class="frac"><span class="num">4π</span><span class="den">3</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>θ = 0，<span class="frac"><span class="num">2π</span><span class="den">3</span></span>，<span class="frac"><span class="num">4π</span><span class="den">3</span></span></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>2</mn><mi>π</mi></mrow><mn>3</mn></mfrac><mo>,</mo><mfrac><mrow><mn>4</mn><mi>π</mi></mrow><mn>3</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mi>θ</mi><mo>=</mo><mn>0</mn><mo>,</mo><mfrac><mi>π</mi><mn>3</mn></mfrac><mo>,</mo><mfrac><mrow><mn>5</mn><mi>π</mi></mrow><mn>3</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mi>θ</mi><mo>=</mo><mi>π</mi><mo>,</mo><mfrac><mrow><mn>2</mn><mi>π</mi></mrow><mn>3</mn></mfrac><mo>,</mo><mfrac><mrow><mn>4</mn><mi>π</mi></mrow><mn>3</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mi>θ</mi><mo>=</mo><mn>0</mn><mo>,</mo><mfrac><mrow><mn>2</mn><mi>π</mi></mrow><mn>3</mn></mfrac><mo>,</mo><mfrac><mrow><mn>4</mn><mi>π</mi></mrow><mn>3</mn></mfrac></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
           <p class="verdict"></p>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― cosθ だけの式にする</h3>
-          <p>sin<sup>2</sup>θ = 1 − cos<sup>2</sup>θ を代入して整理すると −2 cos<sup>2</sup>θ + cosθ + 1 = 0。両辺に −1 を掛けて 2 cos<sup>2</sup>θ − cosθ − 1 = 0 としよう。</p>
+          <h3>ヒント<math><mn>1</mn><mo>―</mo><mi>cos</mi><mi>θ</mi></math>だけの式にする</h3>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn><mo>−</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></math>方程式の <math><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi></math> をこの形に置き換え、<math><mi>cos</mi><mi>θ</mi></math> だけの式にする。</p><p><math><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn><mo>−</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></math>を代入して整理すると<math><mo>−</mo><mn>2</mn><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><mi>cos</mi><mi>θ</mi><mo>+</mo><mn>1</mn><mo>=</mo><mn>0</mn></math>。<br>両辺に −1 を掛けて<math><mn>2</mn><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>−</mo><mi>cos</mi><mi>θ</mi><mo>−</mo><mn>1</mn><mo>=</mo><mn>0</mn></math>としよう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 因数分解</h3>
-          <p>因数分解すると (2 cosθ + 1)(cosθ − 1) = 0 だから，cosθ = −<span class="frac"><span class="num">1</span><span class="den">2</span></span> または cosθ = 1 である。cosθ = 1 のとき θ = 0 も解になることに注意しよう。</p>
+          <p>因数分解すると<math><mrow><mo>(</mo><mn>2</mn><mi>cos</mi><mi>θ</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow><mrow><mo>(</mo><mi>cos</mi><mi>θ</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mo>=</mo><mn>0</mn></math>だから<math><mo>,</mo><mi>cos</mi><mi>θ</mi><mo>=</mo><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math> または<math><mi>cos</mi><mi>θ</mi><mo>=</mo><mn>1</mn></math>である。<br><math><mi>cos</mi><mi>θ</mi><mo>=</mo><mn>1</mn></math>のとき<math><mi>θ</mi><mo>=</mo><mn>0</mn></math>も解になることに注意しよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">θ = 0，<span class="frac"><span class="num">2π</span><span class="den">3</span></span>，<span class="frac"><span class="num">4π</span><span class="den">3</span></span></p>
+          <p class="big"><math display="block"><mi>θ</mi><mo>=</mo><mn>0</mn><mo>,</mo><mfrac><mrow><mn>2</mn><mi>π</mi></mrow><mn>3</mn></mfrac><mo>,</mo><mfrac><mrow><mn>4</mn><mi>π</mi></mrow><mn>3</mn></mfrac></math></p>
         </div>
           <p class="prob-done">(2) クリア！　次の課題に進もう。</p>
         </div>
@@ -789,40 +846,40 @@
       </div>
       <section class="card">
         <p>不等式を解くには，まず等号の場合（方程式）の解を境界として求め，次に単位円の図から，条件を満たす動径の範囲を読む。</p>
-        <p>補足 ― cosθ の値は θ の動径と単位円の交点の x 座標に等しいから，cosθ ≦（数）という不等式は，その x 座標が（数）以下となる θ の値の範囲を求めていることになる。</p>
+        <p>補足 ― <math><mi>cos</mi><mi>θ</mi></math> の値は <math><mi>θ</mi></math> の動径と単位円の交点の <math><mi>x</mi></math> 座標に等しいから<math><mo>,</mo><mi>cos</mi><mi>θ</mi><mo>≦</mo><mo>(</mo></math>数）という不等式は，その <math><mi>x</mi></math> 座標が（数）以下となる <math><mi>θ</mi></math> の値の範囲を求めていることになる。</p>
       </section>
       <div class="sec-head">
         <span class="sec-tag">例題</span>
         <h2>例題で確認</h2>
         <span class="pno">教科書 p.131</span>
       </div>
-      <section class="card prob" id="prob-reidai4" data-flow="reidai4" data-label="例題4">
+      <section class="nofig card prob" id="prob-reidai4" data-flow="reidai4" data-label="例題4">
         <div class="prob-head">
           <span class="prob-tag ">例題 4</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
         <div class="qside">
-        <p class="prob-q">0 ≦ θ &lt; 2π のとき，不等式 cosθ ≦ <span class="frac"><span class="num">1</span><span class="den">√<span class="rad">2</span></span></span> を解け。</p>
+        <p class="prob-q"><math><mn>0</mn><mo>≦</mo><mi>θ</mi><mo>&lt;</mo><mn>2</mn><mi>π</mi></math>のとき，不等式<math><mi>cos</mi><mi>θ</mi><mo>≦</mo><mfrac><mn>1</mn><msqrt><mn>2</mn></msqrt></mfrac></math> を解け。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 1 ― まず境界の角を求める</h3>
-          <p>0 ≦ θ &lt; 2π の範囲で cosθ = <span class="frac"><span class="num">1</span><span class="den">√<span class="rad">2</span></span></span> となる θ は，θ = <span class="frac"><span class="num">π</span><span class="den">4</span></span>，<span class="frac"><span class="num">7π</span><span class="den">4</span></span> である。</p>
+          <p class="cite"><span class="cite-tag">使う定義</span><math><mi>cos</mi><mi>θ</mi><mo>=</mo><mi>x</mi></math>境界の角を求めたら、<math><mi>x</mi></math> 座標がその値以下になる弧の範囲を読む。</p><p><math><mn>0</mn><mo>≦</mo><mi>θ</mi><mo>&lt;</mo><mn>2</mn><mi>π</mi></math>の範囲で<math><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><mn>1</mn><msqrt><mn>2</mn></msqrt></mfrac></math> となる <math><mi>θ</mi></math> は<math><mo>,</mo><mi>θ</mi><mo>=</mo><mfrac><mi>π</mi><mn>4</mn></mfrac><mo>,</mo><mfrac><mrow><mn>7</mn><mi>π</mi></mrow><mn>4</mn></mfrac></math> である。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 単位円の図で範囲を見る</h3>
-          <p>cosθ は単位円上の点の x 座標だから，x 座標が <span class="frac"><span class="num">1</span><span class="den">√<span class="rad">2</span></span></span> 以下になる弧の範囲を読む。</p>
-<figure><div class="figbox"><svg viewBox="0 0 300 300" role="img" aria-label="cosθ ≦ 1/√2 の解の範囲"><path d="M 220.7 79.3 A 100 100 0 1 0 220.7 220.7 L 220.7 220.7 Z" fill="currentColor" opacity="0.14"/><circle cx="150" cy="150" r="100" fill="none" stroke="currentColor" stroke-width="1.5"/><line x1="14" y1="150" x2="288" y2="150" stroke="currentColor" stroke-width="1.2"/><path d="M 288 150 l -7 -3.4 v 6.8 z" fill="currentColor"/><line x1="150" y1="288" x2="150" y2="14" stroke="currentColor" stroke-width="1.2"/><path d="M 150 14 l -3.4 7 h 6.8 z" fill="currentColor"/><text x="284" y="142" font-size="16" text-anchor="middle" fill="currentColor" font-style="italic">x</text><text x="162" y="24" font-size="16" text-anchor="middle" fill="currentColor" font-style="italic">y</text><text x="141" y="167" font-size="15" text-anchor="middle" fill="currentColor">O</text><text x="250" y="167" font-size="13" text-anchor="middle" fill="currentColor">1</text><text x="50" y="167" font-size="13" text-anchor="middle" fill="currentColor">−1</text><text x="161" y="54" font-size="13" text-anchor="middle" fill="currentColor">1</text><text x="163" y="254" font-size="13" text-anchor="middle" fill="currentColor">−1</text><line x1="220.7" y1="34" x2="220.7" y2="266" stroke="currentColor" stroke-width="1.5"/><line x1="150" y1="150" x2="220.7" y2="79.3" stroke="currentColor" stroke-width="1.6"/><line x1="150" y1="150" x2="220.7" y2="220.7" stroke="currentColor" stroke-width="1.6"/><circle cx="220.7" cy="79.3" r="3.4" fill="currentColor"/><circle cx="220.7" cy="220.7" r="3.4" fill="currentColor"/><path d="M 180 150 A 30 30 0 0 0 171.2 128.8" fill="none" stroke="currentColor" stroke-width="1.2"/><text x="198" y="134" font-size="13" text-anchor="middle" fill="currentColor">π/4</text><text x="202" y="188" font-size="13" text-anchor="middle" fill="currentColor">7π/4</text><text x="224.7" y="282" font-size="13" text-anchor="middle" fill="currentColor">1/√2</text><text x="242.7" y="94" font-size="12" text-anchor="middle" fill="currentColor">x = 1/√2</text></svg></div><figcaption>直線 x = <span class="frac"><span class="num">1</span><span class="den">√<span class="rad">2</span></span></span> の左側（色のついた弧の部分）が，解の範囲 <span class="frac"><span class="num">π</span><span class="den">4</span></span> ≦ θ ≦ <span class="frac"><span class="num">7π</span><span class="den">4</span></span> に対応する。</figcaption></figure>
+          <p><math><mi>cos</mi><mi>θ</mi></math> は単位円上の点の <math><mi>x</mi></math> 座標だから，<math><mi>x</mi></math> 座標が <math><mfrac><mn>1</mn><msqrt><mn>2</mn></msqrt></mfrac></math> 以下になる弧の範囲を読む。</p>
+<figure><div class="figbox"><svg viewBox="0 0 300 300" role="img" aria-label="cosθ ≦ 1/√2 の解の範囲"><path d="M 220.7 79.3 A 100 100 0 1 0 220.7 220.7 L 220.7 220.7 Z" fill="currentColor" opacity="0.14"/><circle cx="150" cy="150" r="100" fill="none" stroke="currentColor" stroke-width="1.5"/><line x1="14" y1="150" x2="288" y2="150" stroke="currentColor" stroke-width="1.2"/><path d="M 288 150 l -7 -3.4 v 6.8 z" fill="currentColor"/><line x1="150" y1="288" x2="150" y2="14" stroke="currentColor" stroke-width="1.2"/><path d="M 150 14 l -3.4 7 h 6.8 z" fill="currentColor"/><text x="284" y="142" font-size="16" text-anchor="middle" fill="currentColor" font-style="italic">x</text><text x="162" y="24" font-size="16" text-anchor="middle" fill="currentColor" font-style="italic">y</text><text x="141" y="167" font-size="15" text-anchor="middle" fill="currentColor">O</text><text x="250" y="167" font-size="13" text-anchor="middle" fill="currentColor">1</text><text x="50" y="167" font-size="13" text-anchor="middle" fill="currentColor">−1</text><text x="161" y="54" font-size="13" text-anchor="middle" fill="currentColor">1</text><text x="163" y="254" font-size="13" text-anchor="middle" fill="currentColor">−1</text><line x1="220.7" y1="34" x2="220.7" y2="266" stroke="currentColor" stroke-width="1.5"/><line x1="150" y1="150" x2="220.7" y2="79.3" stroke="currentColor" stroke-width="1.6"/><line x1="150" y1="150" x2="220.7" y2="220.7" stroke="currentColor" stroke-width="1.6"/><circle cx="220.7" cy="79.3" r="3.4" fill="currentColor"/><circle cx="220.7" cy="220.7" r="3.4" fill="currentColor"/><path d="M 180 150 A 30 30 0 0 0 171.2 128.8" fill="none" stroke="currentColor" stroke-width="1.2"/><text x="198" y="134" font-size="13" text-anchor="middle" fill="currentColor">π/4</text><text x="202" y="188" font-size="13" text-anchor="middle" fill="currentColor">7π/4</text><text x="224.7" y="282" font-size="13" text-anchor="middle" fill="currentColor">1/√2</text><text x="242.7" y="94" font-size="12" text-anchor="middle" fill="currentColor">x = 1/√2</text></svg></div><figcaption>直線<math><mi>x</mi><mo>=</mo><mfrac><mn>1</mn><msqrt><mn>2</mn></msqrt></mfrac></math> の左側（色のついた弧の部分）が，解の範囲 <math><mfrac><mi>π</mi><mn>4</mn></mfrac><mo>≦</mo><mi>θ</mi><mo>≦</mo><mfrac><mrow><mn>7</mn><mi>π</mi></mrow><mn>4</mn></mfrac></math> に対応する。</figcaption></figure>
         </div>
         <div class="step hint">
           <h3>ヒント 3 ― 範囲を読み取る</h3>
-          <p>図から，解は <span class="frac"><span class="num">π</span><span class="den">4</span></span> から <span class="frac"><span class="num">7π</span><span class="den">4</span></span> までの範囲で，両端を含む（等号がある）ことがわかる。</p>
+          <p>図から，解は <math><mfrac><mi>π</mi><mn>4</mn></mfrac></math> から <math><mfrac><mrow><mn>7</mn><mi>π</mi></mrow><mn>4</mn></mfrac></math> までの範囲で，両端を含む（等号がある）ことがわかる。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big"><span class="frac"><span class="num">π</span><span class="den">4</span></span> ≦ θ ≦ <span class="frac"><span class="num">7π</span><span class="den">4</span></span></p>
-          <p>なお，y = cosθ のグラフと直線 y = <span class="frac"><span class="num">1</span><span class="den">√<span class="rad">2</span></span></span> の位置関係を利用して解くこともできる。また，不等式 cosθ &gt; <span class="frac"><span class="num">1</span><span class="den">√<span class="rad">2</span></span></span> の解は 0 ≦ θ &lt; <span class="frac"><span class="num">π</span><span class="den">4</span></span>，<span class="frac"><span class="num">7π</span><span class="den">4</span></span> &lt; θ &lt; 2π である。</p>
+          <p class="big"><math display="block"><mfrac><mi>π</mi><mn>4</mn></mfrac><mo>≦</mo><mi>θ</mi><mo>≦</mo><mfrac><mrow><mn>7</mn><mi>π</mi></mrow><mn>4</mn></mfrac></math></p>
+          <p>なお<math><mo>,</mo><mi>y</mi><mo>=</mo><mi>cos</mi><mi>θ</mi></math>のグラフと直線<math><mi>y</mi><mo>=</mo><mfrac><mn>1</mn><msqrt><mn>2</mn></msqrt></mfrac></math> の位置関係を利用して解くこともできる。<br>また，不等式<math><mi>cos</mi><mi>θ</mi><mo>&gt;</mo><mfrac><mn>1</mn><msqrt><mn>2</mn></msqrt></mfrac></math> の解は<math><mn>0</mn><mo>≦</mo><mi>θ</mi><mo>&lt;</mo><mfrac><mi>π</mi><mn>4</mn></mfrac><mo>,</mo><mfrac><mrow><mn>7</mn><mi>π</mi></mrow><mn>4</mn></mfrac><mo>&lt;</mo><mi>θ</mi><mo>&lt;</mo><mn>2</mn><mi>π</mi></math>である。</p>
         </div>
         <p class="prob-done">例題4 クリア！　次は練習22に挑戦しよう。</p>
       </section>
@@ -831,13 +888,13 @@
         <h2>練習問題に挑戦</h2>
         <span class="pno">教科書 p.131</span>
       </div>
-      <section class="card prob" id="prob-ren22" data-label="練習22">
+      <section class="nofig card prob" id="prob-ren22" data-label="練習22">
         <div class="prob-head">
           <span class="prob-tag ren">練習 22</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
         <div class="qside">
-        <p class="prob-q">0 ≦ θ &lt; 2π のとき，次の不等式を解け。</p>
+        <p class="prob-q"><math><mn>0</mn><mo>≦</mo><mi>θ</mi><mo>&lt;</mo><mn>2</mn><mi>π</mi></math>のとき，次の不等式を解け。</p>
         </div>
         <div class="tabs" role="tablist" aria-label="練習22の小問">
           <button class="tab" role="tab" data-tab="ren22-1" aria-selected="true">(1)</button>
@@ -845,16 +902,16 @@
         </div>
         <div class="tabpanel show" id="panel-ren22-1" data-flow="ren22-1" data-label="練習22 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　cosθ ≦ <span class="frac"><span class="num">1</span><span class="den">2</span></span></span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><mi>cos</mi><mi>θ</mi><mo>≦</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="quiz" id="qz-ren22-1" data-correct="1">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><span class="frac"><span class="num">π</span><span class="den">3</span></span> ≦ θ ≦ <span class="frac"><span class="num">5π</span><span class="den">3</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>0 ≦ θ ≦ <span class="frac"><span class="num">π</span><span class="den">3</span></span>，<span class="frac"><span class="num">5π</span><span class="den">3</span></span> ≦ θ &lt; 2π</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><span class="frac"><span class="num">π</span><span class="den">6</span></span> ≦ θ ≦ <span class="frac"><span class="num">11π</span><span class="den">6</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><span class="frac"><span class="num">2π</span><span class="den">3</span></span> ≦ θ ≦ <span class="frac"><span class="num">4π</span><span class="den">3</span></span></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mfrac><mi>π</mi><mn>3</mn></mfrac><mo>≦</mo><mi>θ</mi><mo>≦</mo><mfrac><mrow><mn>5</mn><mi>π</mi></mrow><mn>3</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mn>0</mn><mo>≦</mo><mi>θ</mi><mo>≦</mo><mfrac><mi>π</mi><mn>3</mn></mfrac><mo>,</mo><mfrac><mrow><mn>5</mn><mi>π</mi></mrow><mn>3</mn></mfrac><mo>≦</mo><mi>θ</mi><mo>&lt;</mo><mn>2</mn><mi>π</mi></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mfrac><mi>π</mi><mn>6</mn></mfrac><mo>≦</mo><mi>θ</mi><mo>≦</mo><mfrac><mrow><mn>11</mn><mi>π</mi></mrow><mn>6</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mfrac><mrow><mn>2</mn><mi>π</mi></mrow><mn>3</mn></mfrac><mo>≦</mo><mi>θ</mi><mo>≦</mo><mfrac><mrow><mn>4</mn><mi>π</mi></mrow><mn>3</mn></mfrac></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
@@ -862,31 +919,31 @@
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― まず境界の角を求める</h3>
-          <p>cosθ = <span class="frac"><span class="num">1</span><span class="den">2</span></span> となるのは θ = <span class="frac"><span class="num">π</span><span class="den">3</span></span>，<span class="frac"><span class="num">5π</span><span class="den">3</span></span> である。</p>
+          <p class="cite"><span class="cite-tag">使う定義</span><math><mi>cos</mi><mi>θ</mi><mo>=</mo><mi>x</mi></math>境界の角を求めたら、<math><mi>x</mi></math> 座標がその値以下になる弧の範囲を読む。</p><p><math><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math> となるのは<math><mi>θ</mi><mo>=</mo><mfrac><mi>π</mi><mn>3</mn></mfrac><mo>,</mo><mfrac><mrow><mn>5</mn><mi>π</mi></mrow><mn>3</mn></mfrac></math> である。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 単位円で範囲を読む</h3>
-          <p>x 座標が <span class="frac"><span class="num">1</span><span class="den">2</span></span> 以下になるのは，直線 x = <span class="frac"><span class="num">1</span><span class="den">2</span></span> の左側の弧の範囲で，両端を含むよ。</p>
+          <p><math><mi>x</mi></math> 座標が <math><mfrac><mn>1</mn><mn>2</mn></mfrac></math> 以下になるのは，直線<math><mi>x</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math> の左側の弧の範囲で，両端を含むよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big"><span class="frac"><span class="num">π</span><span class="den">3</span></span> ≦ θ ≦ <span class="frac"><span class="num">5π</span><span class="den">3</span></span></p>
+          <p class="big"><math display="block"><mfrac><mi>π</mi><mn>3</mn></mfrac><mo>≦</mo><mi>θ</mi><mo>≦</mo><mfrac><mrow><mn>5</mn><mi>π</mi></mrow><mn>3</mn></mfrac></math></p>
         </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren22-2" data-flow="ren22-2" data-label="練習22 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　sinθ &gt; <span class="frac"><span class="num">1</span><span class="den">√<span class="rad">2</span></span></span></span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><mi>sin</mi><mi>θ</mi><mo>&gt;</mo><mfrac><mn>1</mn><msqrt><mn>2</mn></msqrt></mfrac></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="quiz" id="qz-ren22-2" data-correct="3">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><span class="frac"><span class="num">π</span><span class="den">4</span></span> ≦ θ ≦ <span class="frac"><span class="num">3π</span><span class="den">4</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>0 ≦ θ &lt; <span class="frac"><span class="num">π</span><span class="den">4</span></span>，<span class="frac"><span class="num">3π</span><span class="den">4</span></span> &lt; θ &lt; 2π</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><span class="frac"><span class="num">π</span><span class="den">4</span></span> &lt; θ &lt; <span class="frac"><span class="num">3π</span><span class="den">4</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><span class="frac"><span class="num">π</span><span class="den">6</span></span> &lt; θ &lt; <span class="frac"><span class="num">5π</span><span class="den">6</span></span></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mfrac><mi>π</mi><mn>4</mn></mfrac><mo>≦</mo><mi>θ</mi><mo>≦</mo><mfrac><mrow><mn>3</mn><mi>π</mi></mrow><mn>4</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mn>0</mn><mo>≦</mo><mi>θ</mi><mo>&lt;</mo><mfrac><mi>π</mi><mn>4</mn></mfrac><mo>,</mo><mfrac><mrow><mn>3</mn><mi>π</mi></mrow><mn>4</mn></mfrac><mo>&lt;</mo><mi>θ</mi><mo>&lt;</mo><mn>2</mn><mi>π</mi></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mfrac><mi>π</mi><mn>4</mn></mfrac><mo>&lt;</mo><mi>θ</mi><mo>&lt;</mo><mfrac><mrow><mn>3</mn><mi>π</mi></mrow><mn>4</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mfrac><mi>π</mi><mn>6</mn></mfrac><mo>&lt;</mo><mi>θ</mi><mo>&lt;</mo><mfrac><mrow><mn>5</mn><mi>π</mi></mrow><mn>6</mn></mfrac></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
@@ -894,16 +951,16 @@
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― まず境界の角を求める</h3>
-          <p>sinθ = <span class="frac"><span class="num">1</span><span class="den">√<span class="rad">2</span></span></span> となるのは θ = <span class="frac"><span class="num">π</span><span class="den">4</span></span>，<span class="frac"><span class="num">3π</span><span class="den">4</span></span> である。</p>
+          <p class="cite"><span class="cite-tag">使う定義</span><math><mi>sin</mi><mi>θ</mi><mo>=</mo><mi>y</mi></math>境界の角を求めたら、<math><mi>y</mi></math> 座標がその値より大きくなる弧の範囲を読む。</p><p><math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mn>1</mn><msqrt><mn>2</mn></msqrt></mfrac></math> となるのは<math><mi>θ</mi><mo>=</mo><mfrac><mi>π</mi><mn>4</mn></mfrac><mo>,</mo><mfrac><mrow><mn>3</mn><mi>π</mi></mrow><mn>4</mn></mfrac></math> である。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 単位円で範囲を読む</h3>
-          <p>y 座標が <span class="frac"><span class="num">1</span><span class="den">√<span class="rad">2</span></span></span> より大きくなるのは，2 つの境界の角の間の弧の範囲だよ。不等号に等号がないので，両端は含まない。</p>
+          <p><math><mi>y</mi></math> 座標が <math><mfrac><mn>1</mn><msqrt><mn>2</mn></msqrt></mfrac></math> より大きくなるのは，2 つの境界の角の間の弧の範囲だよ。不等号に等号がないので，両端は含まない。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big"><span class="frac"><span class="num">π</span><span class="den">4</span></span> &lt; θ &lt; <span class="frac"><span class="num">3π</span><span class="den">4</span></span></p>
+          <p class="big"><math display="block"><mfrac><mi>π</mi><mn>4</mn></mfrac><mo>&lt;</mo><mi>θ</mi><mo>&lt;</mo><mfrac><mrow><mn>3</mn><mi>π</mi></mrow><mn>4</mn></mfrac></math></p>
         </div>
           <p class="prob-done">(2) クリア！　この項は終了だよ。</p>
         </div>
@@ -914,10 +971,10 @@
       <section class="card summary" id="summaryCard" style="display:none">
         <h2>この項のポイント</h2>
         <ul>
-          <li><b>方程式の解き方：</b>sinθ・cosθ・tanθ =（数）の形に変形し，単位円との交点の動径が表す角を読む。</li>
-          <li><b>一般解：</b>範囲に制限がないときは周期性を使う。sin・cos は + 2nπ，tan は + nπ（n は整数）。</li>
-          <li><b>2 次方程式になる場合：</b>sin<sup>2</sup>θ + cos<sup>2</sup>θ = 1 で一方にそろえて因数分解し，−1 ≦ sinθ ≦ 1，−1 ≦ cosθ ≦ 1 を満たさない解は捨てる。</li>
-          <li><b>不等式の解き方：</b>まず等号の解を境界として求め，単位円の図から範囲を読む。</li>
+          <li><p class="cite"><span class="cite-tag">使う定義</span><math><mi>sin</mi><mi>θ</mi><mo>=</mo><mi>y</mi></math>あわせて <math><mi>cos</mi><mi>θ</mi></math> は <math><mi>x</mi></math> 座標として、単位円との交点から角を読む。</p><b>方程式の解き方：</b><math><mi>sin</mi><mi>θ</mi><mo>⋅</mo><mi>cos</mi><mi>θ</mi><mo>⋅</mo><mi>tan</mi><mi>θ</mi><mo>=</mo><mo>(</mo></math>数）の形に変形し，単位円との交点の動径が表す角を読む。</li>
+          <li><p class="cite"><span class="cite-tag">使う性質</span><math><mi>sin</mi><mrow><mo>(</mo><mi>θ</mi><mo>+</mo><mn>2</mn><mi>n</mi><mi>π</mi><mo>)</mo></mrow><mo>=</mo><mi>sin</mi><mi>θ</mi></math><math><mi>tan</mi></math> では <math><mi>tan</mi><mrow><mo>(</mo><mi>θ</mi><mo>+</mo><mi>n</mi><mi>π</mi><mo>)</mo></mrow><mo>=</mo><mi>tan</mi><mi>θ</mi></math> と、周期が <math><mi>π</mi></math> になる。</p><b>一般解：</b>範囲に制限がないときは周期性を使う。<math><mi>sin</mi></math>・<math><mi>cos</mi></math> は<math><mo>+</mo><mn>2</mn><mi>n</mi><mi>π</mi><mo>,</mo><mi>tan</mi></math>は + <math><mi>n</mi></math><math><mi>π</mi></math>（<math><mi>n</mi></math> は整数）。</li>
+          <li><p class="cite"><span class="cite-tag">使う公式</span><math><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn></math>この関係で <math><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn><mo>−</mo><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi></math> のように置き換えて、一方の関数だけの式にする。</p><b>2 次方程式になる場合：</b><math><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn></math>で一方にそろえて因数分解し<math><mo>,</mo><mo>−</mo><mn>1</mn><mo>≦</mo><mi>sin</mi><mi>θ</mi><mo>≦</mo><mn>1</mn><mo>,</mo><mo>−</mo><mn>1</mn><mo>≦</mo><mi>cos</mi><mi>θ</mi><mo>≦</mo><mn>1</mn></math>を満たさない解は捨てる。</li>
+          <li><p class="cite"><span class="cite-tag">使う定義</span><math><mi>cos</mi><mi>θ</mi><mo>=</mo><mi>x</mi></math>等号の解を境界にして、座標の大小から範囲を読む。</p><b>不等式の解き方：</b>まず等号の解を境界として求め，単位円の図から範囲を読む。</li>
         </ul>
       </section>
       <footer>

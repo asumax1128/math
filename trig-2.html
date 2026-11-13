@@ -302,7 +302,64 @@
       table.comp{border-collapse:collapse;margin:0 0 14px;width:100%}
       table.comp th,table.comp td{border:1px solid var(--line);padding:8px 10px;text-align:center;font-size:15px}
       table.comp th{background:var(--surface2)}
-        </style>
+        
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+
+      /* 積分記号は大きめに表示する（元のページの可読化デザインに合わせる） */
+      math .int-op{font-size:1.35em}
+      /* calc-12 世代（.card）と calc-18 世代（.unit）の、図のない問題の全幅化 */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig>.step{position:static !important}
+        .card.nofig>.steps-wrap{max-height:none !important;overflow:visible !important}
+        .unit.nofig{display:block !important}
+        .unit.nofig>.qside{position:static !important}
+        .unit.nofig>.steps-stack{max-height:none !important;overflow:visible !important}
+      }
+
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける・第3弾c） */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig .qside{position:static !important}
+        .card.nofig .steps-wrap,.card.nofig .tabpanel .steps-wrap{max-height:none !important;overflow:visible !important}
+      }
+</style>
   </head>
   <body>
     <div class="wrap">
@@ -325,15 +382,19 @@
         <span class="pno">教科書 p.116</span>
       </div>
       <section class="card">
-        <p>三角比 sin θ、cos θ、tan θ における θ を一般角 θ に拡張してみよう。</p>
-        <p>座標平面上で、右の図のように x 軸の正の部分を始線として、一般角 θ の動径と、原点を中心とする半径 r の円との交点 P の座標を (x, y) とする。</p>
-        <p>このとき、<span class="frac"><span class="num">y</span><span class="den">r</span></span>，<span class="frac"><span class="num">x</span><span class="den">r</span></span>，<span class="frac"><span class="num">y</span><span class="den">x</span></span> の各値は、円の半径 r に関係なく、いずれも θ だけで決まる。そこで、三角比と同様に、sin θ、cos θ、tan θ を</p>
+        <p>三角比 <math><mi>sin</mi></math> <math><mi>θ</mi></math>、<math><mi>cos</mi></math> <math><mi>θ</mi></math>、<math><mi>tan</mi></math> <math><mi>θ</mi></math> における <math><mi>θ</mi></math> を一般角 <math><mi>θ</mi></math> に拡張してみよう。</p>
+        <p>座標平面上で、右の図のように <math><mi>x</mi></math> 軸の正の部分を始線として、一般角 <math><mi>θ</mi></math> の動径と、原点を中心とする半径 <math><mi>r</mi></math> の円との交点 <math><mi>P</mi></math> の座標を<math><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>)</mo></math>とする。</p>
+        <p>このとき、<math><mfrac><mi>y</mi><mi>r</mi></mfrac><mo>,</mo><mfrac><mi>x</mi><mi>r</mi></mfrac><mo>,</mo><mfrac><mi>y</mi><mi>x</mi></mfrac></math> の各値は、円の半径 <math><mi>r</mi></math> に関係なく、いずれも <math><mi>θ</mi></math> だけで決まる。そこで、三角比と同様に、<math><mi>sin</mi></math> <math><mi>θ</mi></math>、<math><mi>cos</mi></math> <math><mi>θ</mi></math>、<math><mi>tan</mi></math> <math><mi>θ</mi></math> を</p>
         <div class="def">
           <p><b>三角関数の定義</b></p>
-          <p class="formula">sin θ = <span class="frac"><span class="num">y</span><span class="den">r</span></span>，　cos θ = <span class="frac"><span class="num">x</span><span class="den">r</span></span>，　tan θ = <span class="frac"><span class="num">y</span><span class="den">x</span></span></p>
-          <p>と定め、それぞれ一般角 θ の<b>正弦</b>、<b>余弦</b>、<b>正接</b>という。これらはいずれも θ の関数であり、まとめて θ の<b>三角関数</b>という。</p>
+          <div class="chain-crow formula">
+<div class="crow"><math displaystyle="true"><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mi>y</mi><mi>r</mi></mfrac><mo>,</mo><mspace width="2em"/><mi>cos</mi><mi>θ</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mi>θ</mi></mphantom><mo>=</mo><mfrac><mi>x</mi><mi>r</mi></mfrac><mo>,</mo><mspace width="2em"/><mi>tan</mi><mi>θ</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mi>θ</mi></mphantom><mo>=</mo><mfrac><mi>y</mi><mi>x</mi></mfrac></math></div>
+</div>
+          <p>と定め、それぞれ一般角 <math><mi>θ</mi></math> の<b>正弦</b>、<b>余弦</b>、<b>正接</b>という。これらはいずれも <math><mi>θ</mi></math> の関数であり、まとめて <math><mi>θ</mi></math> の<b>三角関数</b>という。</p>
         </div>
-        <p class="note">注意 ▶ 点 P が y 軸上にくるような角 θ に対しては、tan θ は定義されない。</p>
+        <p class="note">注意 ▶ 点 <math><mi>P</mi></math> が <math><mi>y</mi></math> 軸上にくるような角 <math><mi>θ</mi></math> に対しては、<math><mi>tan</mi></math> <math><mi>θ</mi></math> は定義されない。</p>
 <figure><div class="figbox"><svg viewBox="0 0 244 204" role="img" aria-label="三角関数の定義の図">
 <line x1="12" y1="102" x2="222" y2="102" stroke="currentColor" stroke-width="1.2"/>
 <path d="M 222 102 l -7 -3.5 v 7 z" fill="currentColor"/>
@@ -359,30 +420,46 @@
         <h2>例3で解き方を確認</h2>
         <span class="pno">教科書 p.116</span>
       </div>
-      <section class="card prob" id="prob-ex3" data-flow="ex3" data-label="例3">
+      <section class="nofig card prob" id="prob-ex3" data-flow="ex3" data-label="例3">
         <div class="prob-head">
           <span class="prob-tag ">例 3</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q"><span class="frac"><span class="num">4</span><span class="den">3</span></span>π の正弦、余弦、正接の値</p>
+        <p class="prob-q"><math><mfrac><mn>4</mn><mn>3</mn></mfrac><mi>π</mi></math>の正弦、余弦、正接の値</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 円との交点 P の座標を考える</h3>
-          <p>θ = <span class="frac"><span class="num">4</span><span class="den">3</span></span>π は第 3 象限の角。半径 r = 2 の円との交点 P は、π/3 の三角比を使うと P(−1, −√3) になるよ（x = −2 cos(π/3) = −1、y = −2 sin(π/3) = −√3）。</p>
+          <h3>ヒント 1 ― 円との交点 <math><mi>P</mi></math> の座標を考える</h3>
+          <p><math><mi>θ</mi><mo>=</mo><mfrac><mn>4</mn><mn>3</mn></mfrac><mi>π</mi></math>は第 3 象限の角。<br>半径<math><mi>r</mi><mo>=</mo><mn>2</mn></math>の円との交点 <math><mi>P</mi></math> は、<math><mfrac><mi>π</mi><mn>3</mn></mfrac></math>の三角比を使うと<math><mi>P</mi><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>,</mo><mo>−</mo><msqrt><mn>3</mn></msqrt><mo>)</mo></mrow></math>になるよ<math><mo>(</mo><mi>x</mi><mo>=</mo><mo>−</mo><mn>2</mn><mi>cos</mi><mrow><mo>(</mo><mfrac><mi>π</mi><mn>3</mn></mfrac><mo>)</mo></mrow><mo>=</mo><mo>−</mo><mn>1</mn></math>、<math><mi>y</mi><mo>=</mo><mo>−</mo><mn>2</mn><mi>sin</mi><mrow><mo>(</mo><mfrac><mi>π</mi><mn>3</mn></mfrac><mo>)</mo></mrow><mo>=</mo><mo>−</mo><msqrt><mn>3</mn></msqrt><mo>)</mo></math>。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 定義に代入する</h3>
-          <p>x = −1、y = −√3、r = 2 として、sin θ = y/r、cos θ = x/r、tan θ = y/x を計算しよう。tan は (−√3)/(−1) で、負どうしの商だから正になるね。</p>
+          <p class="cite"><span class="cite-tag">使う定義</span><math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mi>y</mi></mrow><mrow><mi>r</mi></mrow></mfrac><mo>,</mo><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mi>x</mi></mrow><mrow><mi>r</mi></mrow></mfrac><mo>,</mo><mi>tan</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mi>y</mi></mrow><mrow><mi>x</mi></mrow></mfrac></math>ここでは交点 <math><mi>P</mi></math> の座標 <math><mi>x</mi><mo>=</mo><mo>−</mo><mn>1</mn></math>、<math><mi>y</mi><mo>=</mo><mo>−</mo><msqrt><mn>3</mn></msqrt></math> と <math><mi>r</mi><mo>=</mo><mn>2</mn></math> を代入する。</p><p><math><mi>x</mi><mo>=</mo><mo>−</mo><mn>1</mn></math>、<math><mi>y</mi><mo>=</mo><mo>−</mo><msqrt><mn>3</mn></msqrt></math>、<math><mi>r</mi><mo>=</mo><mn>2</mn></math>として、<math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mi>y</mi><mi>r</mi></mfrac></math>、<math><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><mi>x</mi><mi>r</mi></mfrac></math>、<math><mi>tan</mi><mi>θ</mi><mo>=</mo><mfrac><mi>y</mi><mi>x</mi></mfrac></math>を計算しよう。<br><math><mi>tan</mi></math> は<math><mfrac><mrow><mo>(</mo><mo>−</mo><msqrt><mn>3</mn></msqrt><mo>)</mo></mrow><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow></mfrac></math>で、負どうしの商だから正になるね。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">sin <span class="frac"><span class="num">4</span><span class="den">3</span></span>π = −<span class="frac"><span class="num">√<span class="rad">3</span></span><span class="den">2</span></span>，　cos <span class="frac"><span class="num">4</span><span class="den">3</span></span>π = −<span class="frac"><span class="num">1</span><span class="den">2</span></span>，　tan <span class="frac"><span class="num">4</span><span class="den">3</span></span>π = √<span class="rad">3</span></p>
-          <p class="formula">sin <span class="frac"><span class="num">4</span><span class="den">3</span></span>π = <span class="frac"><span class="num">y</span><span class="den">r</span></span> = <span class="frac"><span class="num">−√3</span><span class="den">2</span></span> = −<span class="frac"><span class="num">√3</span><span class="den">2</span></span></p>
-          <p class="formula">cos <span class="frac"><span class="num">4</span><span class="den">3</span></span>π = <span class="frac"><span class="num">x</span><span class="den">r</span></span> = <span class="frac"><span class="num">−1</span><span class="den">2</span></span> = −<span class="frac"><span class="num">1</span><span class="den">2</span></span></p>
-          <p class="formula">tan <span class="frac"><span class="num">4</span><span class="den">3</span></span>π = <span class="frac"><span class="num">y</span><span class="den">x</span></span> = <span class="frac"><span class="num">−√3</span><span class="den">−1</span></span> = √3</p>
+          <div class="chain-crow big">
+<div class="crow"><math displaystyle="true"><mi>sin</mi><mfrac><mn>4</mn><mn>3</mn></mfrac><mi>π</mi><mo>=</mo><mo>−</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac><mo>,</mo><mspace width="2em"/><mi>cos</mi><mfrac><mn>4</mn><mn>3</mn></mfrac><mi>π</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mfrac><mn>4</mn><mn>3</mn></mfrac><mi>π</mi></mphantom><mo>=</mo><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>,</mo><mspace width="2em"/><mi>tan</mi><mfrac><mn>4</mn><mn>3</mn></mfrac><mi>π</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mfrac><mn>4</mn><mn>3</mn></mfrac><mi>π</mi></mphantom><mo>=</mo><msqrt><mn>3</mn></msqrt></math></div>
+</div>
+          <div class="chain-crow formula">
+<div class="crow"><math displaystyle="true"><mi>sin</mi><mfrac><mn>4</mn><mn>3</mn></mfrac><mi>π</mi><mo>=</mo><mfrac><mi>y</mi><mi>r</mi></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mfrac><mn>4</mn><mn>3</mn></mfrac><mi>π</mi></mphantom><mo>=</mo><mfrac><mrow><mo>−</mo><msqrt><mn>3</mn></msqrt></mrow><mn>2</mn></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mfrac><mn>4</mn><mn>3</mn></mfrac><mi>π</mi></mphantom><mo>=</mo><mo>−</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac></math></div>
+</div>
+          <div class="chain-crow formula">
+<div class="crow"><math displaystyle="true"><mi>cos</mi><mfrac><mn>4</mn><mn>3</mn></mfrac><mi>π</mi><mo>=</mo><mfrac><mi>x</mi><mi>r</mi></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>cos</mi><mfrac><mn>4</mn><mn>3</mn></mfrac><mi>π</mi></mphantom><mo>=</mo><mfrac><mrow><mo>−</mo><mn>1</mn></mrow><mn>2</mn></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>cos</mi><mfrac><mn>4</mn><mn>3</mn></mfrac><mi>π</mi></mphantom><mo>=</mo><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math></div>
+</div>
+          <div class="chain-crow formula">
+<div class="crow"><math displaystyle="true"><mi>tan</mi><mfrac><mn>4</mn><mn>3</mn></mfrac><mi>π</mi><mo>=</mo><mfrac><mi>y</mi><mi>x</mi></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>tan</mi><mfrac><mn>4</mn><mn>3</mn></mfrac><mi>π</mi></mphantom><mo>=</mo><mfrac><mrow><mo>−</mo><msqrt><mn>3</mn></msqrt></mrow><mrow><mo>−</mo><mn>1</mn></mrow></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>tan</mi><mfrac><mn>4</mn><mn>3</mn></mfrac><mi>π</mi></mphantom><mo>=</mo><msqrt><mn>3</mn></msqrt></math></div>
+</div>
 <figure><div class="figbox"><svg viewBox="0 0 252 222" role="img" aria-label="例3の図">
 <line x1="12" y1="106" x2="230" y2="106" stroke="currentColor" stroke-width="1.2"/>
 <path d="M 230 106 l -7 -3.5 v 7 z" fill="currentColor"/>
@@ -411,13 +488,13 @@
         <h2>練習問題に挑戦</h2>
         <span class="pno">教科書 p.117</span>
       </div>
-      <section class="card prob" id="prob-ren6" data-label="練習6">
+      <section class="nofig card prob" id="prob-ren6" data-label="練習6">
         <div class="prob-head">
           <span class="prob-tag ren">練習 6</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
         <div class="qside">
-        <p class="prob-q">次の θ について、sin θ、cos θ、tan θ の値を、それぞれ求めよ。</p>
+        <p class="prob-q">次の <math><mi>θ</mi></math> について、<math><mi>sin</mi></math> <math><mi>θ</mi></math>、<math><mi>cos</mi></math> <math><mi>θ</mi></math>、<math><mi>tan</mi></math> <math><mi>θ</mi></math> の値を、それぞれ求めよ。</p>
         </div>
         <div class="tabs" role="tablist" aria-label="練習6の小問">
           <button class="tab" role="tab" data-tab="ren6-1" aria-selected="true">(1)</button>
@@ -426,20 +503,28 @@
         </div>
         <div class="tabpanel show" id="panel-ren6-1" data-flow="ren6-1" data-label="練習6 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　θ = <span class="frac"><span class="num">5</span><span class="den">4</span></span>π</span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><mi>θ</mi><mo>=</mo><mfrac><mn>5</mn><mn>4</mn></mfrac><mi>π</mi></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― 象限と基準の角を考える</h3>
-          <p><span class="frac"><span class="num">5</span><span class="den">4</span></span>π は第 3 象限の角で、基準になる鋭角は <span class="frac"><span class="num">5</span><span class="den">4</span></span>π − π = <span class="frac"><span class="num">π</span><span class="den">4</span></span>。π/4 の値は sin = cos = <span class="frac"><span class="num">1</span><span class="den">√<span class="rad">2</span></span></span>、tan = 1。第 3 象限では sin、cos は負、tan は正だよ。</p>
+          <p class="cite"><span class="cite-tag">使う定義</span><math><mi>sin</mi><mi>θ</mi><mo>=</mo><mi>y</mi><mo>,</mo><mi>cos</mi><mi>θ</mi><mo>=</mo><mi>x</mi></math>単位円では、<math><mi>sin</mi><mi>θ</mi></math> は交点 <math><mi>P</mi></math> の <math><mi>y</mi></math> 座標、<math><mi>cos</mi><mi>θ</mi></math> は <math><mi>x</mi></math> 座標に等しい。ここでは第 3 象限の符号に注意する。</p><p><math><mfrac><mn>5</mn><mn>4</mn></mfrac><mi>π</mi></math>は第 3 象限の角で、基準になる鋭角は <math><mfrac><mn>5</mn><mn>4</mn></mfrac><mi>π</mi><mo>−</mo><mi>π</mi><mo>=</mo><mfrac><mi>π</mi><mn>4</mn></mfrac></math>。<br><math><mfrac><mi>π</mi><mn>4</mn></mfrac></math>の値は<math><mi>sin</mi><mo>=</mo><mi>cos</mi><mo>=</mo><mfrac><mn>1</mn><msqrt><mn>2</mn></msqrt></mfrac></math>、<math><mi>tan</mi><mo>=</mo><mn>1</mn></math>。第 3 象限では <math><mi>sin</mi></math>、<math><mi>cos</mi></math> は負、<math><mi>tan</mi></math> は正だよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">sin θ = −<span class="frac"><span class="num">1</span><span class="den">√<span class="rad">2</span></span></span>，　cos θ = −<span class="frac"><span class="num">1</span><span class="den">√<span class="rad">2</span></span></span>，　tan θ = 1</p>
-          <p>単位円との交点は P(−<span class="frac"><span class="num">1</span><span class="den">√<span class="rad">2</span></span></span>， −<span class="frac"><span class="num">1</span><span class="den">√<span class="rad">2</span></span></span>) だから</p>
-          <p class="formula">sin θ = −<span class="frac"><span class="num">1</span><span class="den">√<span class="rad">2</span></span></span>，　cos θ = −<span class="frac"><span class="num">1</span><span class="den">√<span class="rad">2</span></span></span>，　tan θ = 1</p>
+          <div class="chain-crow big">
+<div class="crow"><math displaystyle="true"><mi>sin</mi><mi>θ</mi><mo>=</mo><mo>−</mo><mfrac><mn>1</mn><msqrt><mn>2</mn></msqrt></mfrac><mo>,</mo><mspace width="2em"/><mi>cos</mi><mi>θ</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mi>θ</mi></mphantom><mo>=</mo><mo>−</mo><mfrac><mn>1</mn><msqrt><mn>2</mn></msqrt></mfrac><mo>,</mo><mspace width="2em"/><mi>tan</mi><mi>θ</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mi>θ</mi></mphantom><mo>=</mo><mn>1</mn></math></div>
+</div>
+          <p>単位円との交点は<math><mi>P</mi><mrow><mo>(</mo><mo>−</mo><mfrac><mn>1</mn><msqrt><mn>2</mn></msqrt></mfrac><mo>,</mo><mo>−</mo><mfrac><mn>1</mn><msqrt><mn>2</mn></msqrt></mfrac><mo>)</mo></mrow></math>だから</p>
+          <div class="chain-crow formula">
+<div class="crow"><math displaystyle="true"><mi>sin</mi><mi>θ</mi><mo>=</mo><mo>−</mo><mfrac><mn>1</mn><msqrt><mn>2</mn></msqrt></mfrac><mo>,</mo><mspace width="2em"/><mi>cos</mi><mi>θ</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mi>θ</mi></mphantom><mo>=</mo><mo>−</mo><mfrac><mn>1</mn><msqrt><mn>2</mn></msqrt></mfrac><mo>,</mo><mspace width="2em"/><mi>tan</mi><mi>θ</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mi>θ</mi></mphantom><mo>=</mo><mn>1</mn></math></div>
+</div>
 <figure><div class="figbox"><svg viewBox="0 0 192 172" role="img" aria-label="単位円の図">
 <line x1="10" y1="84" x2="172" y2="84" stroke="currentColor" stroke-width="1.1"/>
 <path d="M 172 84 l -7 -3.5 v 7 z" fill="currentColor"/>
@@ -453,23 +538,23 @@
 <text x="49.1" y="117.9" font-size="14" text-anchor="end" fill="currentColor">P</text>
 <text x="81" y="100" font-size="13" fill="currentColor">O</text>
 </svg></div>
-<figcaption>θ = 5π/4 の動径と点 P</figcaption>
+<figcaption><math><mi>θ</mi><mo>=</mo><mn>5</mn><mfrac><mi>π</mi><mn>4</mn></mfrac></math>の動径と点 <math><mi>P</mi></math></figcaption>
 </figure>
         </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren6-2" data-flow="ren6-2" data-label="練習6 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　θ = <span class="frac"><span class="num">11</span><span class="den">6</span></span>π</span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><mi>θ</mi><mo>=</mo><mfrac><mn>11</mn><mn>6</mn></mfrac><mi>π</mi></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
           <div class="quiz" id="q-ren6-2" data-correct="1">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>sin θ = −<span class="frac"><span class="num">1</span><span class="den">2</span></span>，　cos θ = <span class="frac"><span class="num">√<span class="rad">3</span></span><span class="den">2</span></span>，　tan θ = −<span class="frac"><span class="num">1</span><span class="den">√<span class="rad">3</span></span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>sin θ = <span class="frac"><span class="num">1</span><span class="den">2</span></span>，　cos θ = <span class="frac"><span class="num">√<span class="rad">3</span></span><span class="den">2</span></span>，　tan θ = <span class="frac"><span class="num">1</span><span class="den">√<span class="rad">3</span></span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>sin θ = −<span class="frac"><span class="num">1</span><span class="den">2</span></span>，　cos θ = −<span class="frac"><span class="num">√<span class="rad">3</span></span><span class="den">2</span></span>，　tan θ = <span class="frac"><span class="num">1</span><span class="den">√<span class="rad">3</span></span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>sin θ = −<span class="frac"><span class="num">√<span class="rad">3</span></span><span class="den">2</span></span>，　cos θ = <span class="frac"><span class="num">1</span><span class="den">2</span></span>，　tan θ = −√<span class="rad">3</span></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mi>sin</mi><mi>θ</mi><mo>=</mo><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>,</mo></math>　<math><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac><mo>,</mo></math>　<math><mi>tan</mi><mi>θ</mi><mo>=</mo><mo>−</mo><mfrac><mn>1</mn><msqrt><mn>3</mn></msqrt></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>,</mo></math>　<math><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac><mo>,</mo></math>　<math><mi>tan</mi><mi>θ</mi><mo>=</mo><mfrac><mn>1</mn><msqrt><mn>3</mn></msqrt></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mi>sin</mi><mi>θ</mi><mo>=</mo><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>,</mo></math>　<math><mi>cos</mi><mi>θ</mi><mo>=</mo><mo>−</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac><mo>,</mo></math>　<math><mi>tan</mi><mi>θ</mi><mo>=</mo><mfrac><mn>1</mn><msqrt><mn>3</mn></msqrt></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mi>sin</mi><mi>θ</mi><mo>=</mo><mo>−</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac><mo>,</mo></math>　<math><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>,</mo></math>　<math><mi>tan</mi><mi>θ</mi><mo>=</mo><mo>−</mo><msqrt><mn>3</mn></msqrt></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
@@ -477,14 +562,22 @@
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― 象限と基準の角を考える</h3>
-          <p><span class="frac"><span class="num">11</span><span class="den">6</span></span>π は第 4 象限の角で、基準になる鋭角は 2π − <span class="frac"><span class="num">11</span><span class="den">6</span></span>π = <span class="frac"><span class="num">π</span><span class="den">6</span></span>。π/6 の値は sin = <span class="frac"><span class="num">1</span><span class="den">2</span></span>、cos = <span class="frac"><span class="num">√<span class="rad">3</span></span><span class="den">2</span></span>、tan = <span class="frac"><span class="num">1</span><span class="den">√<span class="rad">3</span></span></span>。第 4 象限では sin と tan が負になるよ。</p>
+          <p class="cite"><span class="cite-tag">使う定義</span><math><mi>sin</mi><mi>θ</mi><mo>=</mo><mi>y</mi><mo>,</mo><mi>cos</mi><mi>θ</mi><mo>=</mo><mi>x</mi></math>ここでは <math><mfrac><mrow><mn>11</mn></mrow><mrow><mn>6</mn></mrow></mfrac><mi>π</mi></math> が第 4 象限の角であることから、<math><mi>sin</mi><mi>θ</mi></math> と <math><mi>tan</mi><mi>θ</mi></math> に負の符号をつける。</p><p><math><mfrac><mn>11</mn><mn>6</mn></mfrac><mi>π</mi></math>は第 4 象限の角で、基準になる鋭角は<math><mn>2</mn><mi>π</mi><mo>−</mo><mfrac><mn>11</mn><mn>6</mn></mfrac><mi>π</mi><mo>=</mo><mfrac><mi>π</mi><mn>6</mn></mfrac></math>。<br><math><mfrac><mi>π</mi><mn>6</mn></mfrac></math>の値は<math><mi>sin</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math>、<math><mi>cos</mi><mo>=</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac></math>、<math><mi>tan</mi><mo>=</mo><mfrac><mn>1</mn><msqrt><mn>3</mn></msqrt></mfrac></math>。第 4 象限では <math><mi>sin</mi></math> と <math><mi>tan</mi></math> が負になるよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">sin θ = −<span class="frac"><span class="num">1</span><span class="den">2</span></span>，　cos θ = <span class="frac"><span class="num">√<span class="rad">3</span></span><span class="den">2</span></span>，　tan θ = −<span class="frac"><span class="num">1</span><span class="den">√<span class="rad">3</span></span></span></p>
-          <p>単位円との交点は P(<span class="frac"><span class="num">√<span class="rad">3</span></span><span class="den">2</span></span>， −<span class="frac"><span class="num">1</span><span class="den">2</span></span>) だから</p>
-          <p class="formula">sin θ = −<span class="frac"><span class="num">1</span><span class="den">2</span></span>，　cos θ = <span class="frac"><span class="num">√<span class="rad">3</span></span><span class="den">2</span></span>，　tan θ = −<span class="frac"><span class="num">1</span><span class="den">√<span class="rad">3</span></span></span></p>
+          <div class="chain-crow big">
+<div class="crow"><math displaystyle="true"><mi>sin</mi><mi>θ</mi><mo>=</mo><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>,</mo><mspace width="2em"/><mi>cos</mi><mi>θ</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mi>θ</mi></mphantom><mo>=</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac><mo>,</mo><mspace width="2em"/><mi>tan</mi><mi>θ</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mi>θ</mi></mphantom><mo>=</mo><mo>−</mo><mfrac><mn>1</mn><msqrt><mn>3</mn></msqrt></mfrac></math></div>
+</div>
+          <p>単位円との交点は<math><mi>P</mi><mrow><mo>(</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac><mo>,</mo><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo></mrow></math>だから</p>
+          <div class="chain-crow formula">
+<div class="crow"><math displaystyle="true"><mi>sin</mi><mi>θ</mi><mo>=</mo><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>,</mo><mspace width="2em"/><mi>cos</mi><mi>θ</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mi>θ</mi></mphantom><mo>=</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac><mo>,</mo><mspace width="2em"/><mi>tan</mi><mi>θ</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mi>θ</mi></mphantom><mo>=</mo><mo>−</mo><mfrac><mn>1</mn><msqrt><mn>3</mn></msqrt></mfrac></math></div>
+</div>
 <figure><div class="figbox"><svg viewBox="0 0 192 172" role="img" aria-label="単位円の図">
 <line x1="10" y1="84" x2="172" y2="84" stroke="currentColor" stroke-width="1.1"/>
 <path d="M 172 84 l -7 -3.5 v 7 z" fill="currentColor"/>
@@ -498,27 +591,35 @@
 <text x="151.6" y="106.5" font-size="14" text-anchor="start" fill="currentColor">P</text>
 <text x="81" y="100" font-size="13" fill="currentColor">O</text>
 </svg></div>
-<figcaption>θ = 11π/6 の動径と点 P</figcaption>
+<figcaption><math><mi>θ</mi><mo>=</mo><mn>11</mn><mfrac><mi>π</mi><mn>6</mn></mfrac></math>の動径と点 <math><mi>P</mi></math></figcaption>
 </figure>
         </div>
           <p class="prob-done">(2) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren6-3" data-flow="ren6-3" data-label="練習6 (3)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(3)　θ = −<span class="frac"><span class="num">π</span><span class="den">3</span></span></span>
+            <span class="sub prob-q" style="margin:0">(3)　<math><mi>θ</mi><mo>=</mo><mo>−</mo><mfrac><mi>π</mi><mn>3</mn></mfrac></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― 負の角は時計回り</h3>
-          <p>−<span class="frac"><span class="num">π</span><span class="den">3</span></span> は、始線から時計回りに π/3 回転した第 4 象限の角。π/3 の値は sin = <span class="frac"><span class="num">√<span class="rad">3</span></span><span class="den">2</span></span>、cos = <span class="frac"><span class="num">1</span><span class="den">2</span></span>、tan = √3 で、第 4 象限では sin と tan が負になるよ。</p>
+          <p><math><mo>−</mo><mfrac><mi>π</mi><mn>3</mn></mfrac></math> は、始線から時計回りに<math><mfrac><mi>π</mi><mn>3</mn></mfrac></math>回転した第 4 象限の角。<br><math><mfrac><mi>π</mi><mn>3</mn></mfrac></math>の値は<math><mi>sin</mi><mo>=</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac></math>、<math><mi>cos</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math>、<math><mi>tan</mi><mo>=</mo><msqrt><mn>3</mn></msqrt></math>で、第 4 象限では <math><mi>sin</mi></math> と <math><mi>tan</mi></math> が負になるよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">sin θ = −<span class="frac"><span class="num">√<span class="rad">3</span></span><span class="den">2</span></span>，　cos θ = <span class="frac"><span class="num">1</span><span class="den">2</span></span>，　tan θ = −√<span class="rad">3</span></p>
-          <p>単位円との交点は P(<span class="frac"><span class="num">1</span><span class="den">2</span></span>， −<span class="frac"><span class="num">√<span class="rad">3</span></span><span class="den">2</span></span>) だから</p>
-          <p class="formula">sin θ = −<span class="frac"><span class="num">√<span class="rad">3</span></span><span class="den">2</span></span>，　cos θ = <span class="frac"><span class="num">1</span><span class="den">2</span></span>，　tan θ = −√3</p>
+          <div class="chain-crow big">
+<div class="crow"><math displaystyle="true"><mi>sin</mi><mi>θ</mi><mo>=</mo><mo>−</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac><mo>,</mo><mspace width="2em"/><mi>cos</mi><mi>θ</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mi>θ</mi></mphantom><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>,</mo><mspace width="2em"/><mi>tan</mi><mi>θ</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mi>θ</mi></mphantom><mo>=</mo><mo>−</mo><msqrt><mn>3</mn></msqrt></math></div>
+</div>
+          <p>単位円との交点は<math><mi>P</mi><mrow><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>,</mo><mo>−</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac><mo>)</mo></mrow></math>だから</p>
+          <div class="chain-crow formula">
+<div class="crow"><math displaystyle="true"><mi>sin</mi><mi>θ</mi><mo>=</mo><mo>−</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac><mo>,</mo><mspace width="2em"/><mi>cos</mi><mi>θ</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mi>θ</mi></mphantom><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>,</mo><mspace width="2em"/><mi>tan</mi><mi>θ</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mi>θ</mi></mphantom><mo>=</mo><mo>−</mo><msqrt><mn>3</mn></msqrt></math></div>
+</div>
 <figure><div class="figbox"><svg viewBox="0 0 192 172" role="img" aria-label="単位円の図">
 <line x1="10" y1="84" x2="172" y2="84" stroke="currentColor" stroke-width="1.1"/>
 <path d="M 172 84 l -7 -3.5 v 7 z" fill="currentColor"/>
@@ -532,7 +633,7 @@
 <text x="131.5" y="126.6" font-size="14" text-anchor="start" fill="currentColor">P</text>
 <text x="81" y="100" font-size="13" fill="currentColor">O</text>
 </svg></div>
-<figcaption>θ = −π/3 の動径と点 P</figcaption>
+<figcaption><math><mi>θ</mi><mo>=</mo><mo>−</mo><mfrac><mi>π</mi><mn>3</mn></mfrac></math>の動径と点 <math><mi>P</mi></math></figcaption>
 </figure>
         </div>
           <p class="prob-done">(3) クリア！　練習6 はこれで全部おわり。</p>
@@ -544,15 +645,26 @@
         <span class="pno">教科書 p.117</span>
       </div>
       <section class="card">
-        <p>原点を中心とする半径 1 の円を<b>単位円</b>という。一般角 θ の動径と単位円の交点を P(x, y) とすると</p>
-        <p class="formula">sin θ = <span class="frac"><span class="num">y</span><span class="den">1</span></span> = y，　cos θ = <span class="frac"><span class="num">x</span><span class="den">1</span></span> = x</p>
-        <p>また、直線 OP と直線 x = 1 の交点を T(1, m) とすると、tan θ = <span class="frac"><span class="num">y</span><span class="den">x</span></span> = <span class="frac"><span class="num">m</span><span class="den">1</span></span> = m である。よって</p>
+        <p>原点を中心とする半径 1 の円を<b>単位円</b>という。一般角 <math><mi>θ</mi></math> の動径と単位円の交点を <math><mi>P</mi><mrow><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>)</mo></mrow></math> とすると</p>
+        <div class="chain-crow formula">
+<div class="crow"><math displaystyle="true"><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mi>y</mi><mn>1</mn></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mi>θ</mi></mphantom><mo>=</mo><mi>y</mi><mo>,</mo><mspace width="2em"/><mi>cos</mi><mi>θ</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mi>θ</mi></mphantom><mo>=</mo><mfrac><mi>x</mi><mn>1</mn></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mi>θ</mi></mphantom><mo>=</mo><mi>x</mi></math></div>
+</div>
+        <p>また、直線 <math><mi>OP</mi></math> と直線<math><mi>x</mi><mo>=</mo><mn>1</mn></math>の交点を <math><mi>T</mi><mrow><mo>(</mo><mn>1</mn><mo>,</mo><mi>m</mi><mo>)</mo></mrow></math> とすると、</p>
+<div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>tan</mi><mi>θ</mi><mo>=</mo><mfrac><mi>y</mi><mi>x</mi></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>tan</mi><mi>θ</mi></mphantom><mo>=</mo><mfrac><mi>m</mi><mn>1</mn></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>tan</mi><mi>θ</mi></mphantom><mo>=</mo><mi>m</mi></math></div>
+</div>
+<p>である。よって</p>
         <div class="def">
           <p><b>単位円でみた三角関数</b></p>
-          <p>y = sin θ，　x = cos θ，　m = tan θ</p>
-          <p>−1 ≦ sin θ ≦ 1，　−1 ≦ cos θ ≦ 1，　tan θ の値の範囲は実数全体</p>
+          <p><math><mi>y</mi><mo>=</mo><mi>sin</mi><mi>θ</mi><mo>,</mo></math>　<math><mi>x</mi><mo>=</mo><mi>cos</mi><mi>θ</mi><mo>,</mo></math>　<math><mi>m</mi><mo>=</mo><mi>tan</mi><mi>θ</mi></math></p>
+          <p><math><mo>−</mo><mn>1</mn><mo>≦</mo><mi>sin</mi><mi>θ</mi><mo>≦</mo><mn>1</mn><mo>,</mo></math>　<math><mo>−</mo><mn>1</mn><mo>≦</mo><mi>cos</mi><mi>θ</mi><mo>≦</mo><mn>1</mn><mo>,</mo></math>　<math><mi>tan</mi></math> <math><mi>θ</mi></math> の値の範囲は実数全体</p>
         </div>
-        <p>三角関数 sin θ、cos θ、tan θ の値の符号は、θ の動径がどの象限にあるかで決まる。これを図で示すと、次のようになる。</p>
+        <p>三角関数 <math><mi>sin</mi></math> <math><mi>θ</mi></math>、<math><mi>cos</mi></math> <math><mi>θ</mi></math>、<math><mi>tan</mi></math> <math><mi>θ</mi></math> の値の符号は、<math><mi>θ</mi></math> の動径がどの象限にあるかで決まる。これを図で示すと、次のようになる。</p>
 <figure><div class="figbox"><svg viewBox="0 0 168 138" role="img" aria-label="sin θ の符号">
 <text x="84" y="18" font-size="14" text-anchor="middle" fill="currentColor">sin θ</text>
 <circle cx="84" cy="74" r="37" fill="none" stroke="currentColor" stroke-width="1.1"/>
@@ -587,13 +699,13 @@
         <h2>練習問題に挑戦</h2>
         <span class="pno">教科書 p.117</span>
       </div>
-      <section class="card prob" id="prob-ren7" data-label="練習7">
+      <section class="nofig card prob" id="prob-ren7" data-label="練習7">
         <div class="prob-head">
           <span class="prob-tag ren">練習 7</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
         <div class="qside">
-        <p class="prob-q">次の条件を満たすような θ の動径は、第何象限にあるか。</p>
+        <p class="prob-q">次の条件を満たすような <math><mi>θ</mi></math> の動径は、第何象限にあるか。</p>
         </div>
         <div class="tabs" role="tablist" aria-label="練習7の小問">
           <button class="tab" role="tab" data-tab="ren7-1" aria-selected="true">(1)</button>
@@ -601,7 +713,7 @@
         </div>
         <div class="tabpanel show" id="panel-ren7-1" data-flow="ren7-1" data-label="練習7 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　sin θ &lt; 0　かつ　cos θ &gt; 0</span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><mi>sin</mi><mi>θ</mi><mo>&lt;</mo><mn>0</mn></math>　かつ　<math><mi>cos</mi><mi>θ</mi><mo>&gt;</mo><mn>0</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
@@ -618,31 +730,31 @@
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― 符号の図と見比べる</h3>
-          <p>sin θ &lt; 0 になるのは動径が第 3 象限か第 4 象限にあるとき。cos θ &gt; 0 になるのは第 1 象限か第 4 象限にあるとき。両方にあてはまる象限は 1 つだけだよ。</p>
+          <p><math><mi>sin</mi><mi>θ</mi><mo>&lt;</mo><mn>0</mn></math>になるのは動径が第 3 象限か第 4 象限にあるとき。<br><math><mi>cos</mi><mi>θ</mi><mo>&gt;</mo><mn>0</mn></math>になるのは第 1 象限か第 4 象限にあるとき。両方にあてはまる象限は 1 つだけだよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
           <p class="big">第 4 象限</p>
-          <p>sin θ &lt; 0 は第 3・第 4 象限、cos θ &gt; 0 は第 1・第 4 象限。共通するのは第 4 象限である。</p>
+          <p><math><mi>sin</mi><mi>θ</mi><mo>&lt;</mo><mn>0</mn></math>は第 3・第 4 象限、<math><mi>cos</mi><mi>θ</mi><mo>&gt;</mo><mn>0</mn></math>は第 1・第 4 象限。<br>共通するのは第 4 象限である。</p>
         </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren7-2" data-flow="ren7-2" data-label="練習7 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　cos θ &lt; 0　かつ　tan θ &gt; 0</span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><mi>cos</mi><mi>θ</mi><mo>&lt;</mo><mn>0</mn></math>　かつ　<math><mi>tan</mi><mi>θ</mi><mo>&gt;</mo><mn>0</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― 符号の図と見比べる</h3>
-          <p>cos θ &lt; 0 になるのは第 2 象限か第 3 象限。tan θ &gt; 0 になるのは第 1 象限か第 3 象限（tan は sin と cos が同符号のとき正）。共通する象限を探そう。</p>
+          <p><math><mi>cos</mi><mi>θ</mi><mo>&lt;</mo><mn>0</mn></math>になるのは第 2 象限か第 3 象限。<br><math><mi>tan</mi><mi>θ</mi><mo>&gt;</mo><mn>0</mn></math>になるのは第 1 象限か第 3 象限（<math><mi>tan</mi></math> は <math><mi>sin</mi></math> と <math><mi>cos</mi></math> が同符号のとき正）。共通する象限を探そう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
           <p class="big">第 3 象限</p>
-          <p>cos θ &lt; 0 は第 2・第 3 象限、tan θ &gt; 0 は第 1・第 3 象限。共通するのは第 3 象限である。</p>
+          <p><math><mi>cos</mi><mi>θ</mi><mo>&lt;</mo><mn>0</mn></math>は第 2・第 3 象限、<math><mi>tan</mi><mi>θ</mi><mo>&gt;</mo><mn>0</mn></math>は第 1・第 3 象限。<br>共通するのは第 3 象限である。</p>
         </div>
           <p class="prob-done">(2) クリア！　練習7 はこれで全部おわり。</p>
         </div>
@@ -656,7 +768,7 @@
         <p>三角比と同様に、三角関数についても次の相互関係が成り立つ。</p>
         <div class="def">
           <p><b>三角関数の相互関係</b></p>
-          <p class="formula">1　tan θ = <span class="frac"><span class="num">sin θ</span><span class="den">cos θ</span></span>　　　2　sin<sup>2</sup>θ + cos<sup>2</sup>θ = 1　　　3　1 + tan<sup>2</sup>θ = <span class="frac"><span class="num">1</span><span class="den">cos<sup>2</sup>θ</span></span></p>
+          <p class="formula">1　<math><mi>tan</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mi>sin</mi><mi>θ</mi></mrow><mrow><mi>cos</mi><mi>θ</mi></mrow></mfrac></math>　　　2　<math><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn></math>　　　3　<math><mn>1</mn><mo>+</mo><msup><mi>tan</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mfrac><mn>1</mn><mrow><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></mrow></mfrac></math></p>
         </div>
       </section>
       <div class="sec-head">
@@ -664,35 +776,45 @@
         <h2>例題1で解き方を確認</h2>
         <span class="pno">教科書 p.118</span>
       </div>
-      <section class="card prob" id="prob-reidai1" data-flow="reidai1" data-label="例題1">
+      <section class="nofig card prob" id="prob-reidai1" data-flow="reidai1" data-label="例題1">
         <div class="prob-head">
           <span class="prob-tag ">例題 1</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
         <div class="qside">
-        <p class="prob-q">θ の動径が第 3 象限にあり、cos θ = −<span class="frac"><span class="num">3</span><span class="den">5</span></span> のとき、sin θ、tan θ の値を、それぞれ求めよ。</p>
+        <p class="prob-q"><math><mi>θ</mi></math> の動径が第 3 象限にあり、<math><mi>cos</mi><mi>θ</mi><mo>=</mo><mo>−</mo><mfrac><mn>3</mn><mn>5</mn></mfrac></math> のとき、<math><mi>sin</mi></math> <math><mi>θ</mi></math>、<math><mi>tan</mi></math> <math><mi>θ</mi></math> の値を、それぞれ求めよ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 1 ― 相互関係 2 を使う</h3>
-          <p>sin<sup>2</sup>θ + cos<sup>2</sup>θ = 1 から、sin<sup>2</sup>θ = 1 − cos<sup>2</sup>θ = 1 − (−<span class="frac"><span class="num">3</span><span class="den">5</span></span>)<sup>2</sup> = <span class="frac"><span class="num">16</span><span class="den">25</span></span> になるよ。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn></math>ここでは <math><mi>cos</mi><mi>θ</mi><mo>=</mo><mo>−</mo><mfrac><mrow><mn>3</mn></mrow><mrow><mn>5</mn></mrow></mfrac></math> を代入して、<math><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi></math> を求める。</p><p><math><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn></math>から、</p>
+<div class="chain-crow">
+<div class="crow"><math displaystyle="true"><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn><mo>−</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi></mphantom><mo>=</mo><mn>1</mn><mo>−</mo><msup><mrow><mo>(</mo><mo>−</mo><mfrac><mn>3</mn><mn>5</mn></mfrac><mo>)</mo></mrow><mn>2</mn></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi></mphantom><mo>=</mo><mfrac><mn>16</mn><mn>25</mn></mfrac></math></div>
+</div>
+<p>になるよ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 象限で符号を決める</h3>
-          <p>θ の動径が第 3 象限にあるとき、sin θ &lt; 0 である。だから sin θ = −√<span class="rad"><span class="frac"><span class="num">16</span><span class="den">25</span></span></span> = −<span class="frac"><span class="num">4</span><span class="den">5</span></span> と、負のほうを選ぶよ。</p>
+          <p class="cite"><span class="cite-tag">使う性質</span><math><mi>sin</mi><mi>θ</mi><mo>&lt;</mo><mn>0</mn></math>動径が第 3 象限にあるときはこの符号になる。だから平方根は負のほうを選ぶ。</p><p><math><mi>θ</mi></math> の動径が第 3 象限にあるとき、<math><mi>sin</mi><mi>θ</mi><mo>&lt;</mo><mn>0</mn></math>である。<br>だから<math><mi>sin</mi><mi>θ</mi><mo>=</mo><mo>−</mo><msqrt><mfrac><mn>16</mn><mn>25</mn></mfrac></msqrt><mo>=</mo><mo>−</mo><mfrac><mn>4</mn><mn>5</mn></mfrac></math> と、負のほうを選ぶよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 3 ― tan θ を求める</h3>
-          <p>tan θ = <span class="frac"><span class="num">sin θ</span><span class="den">cos θ</span></span> に、sin θ = −<span class="frac"><span class="num">4</span><span class="den">5</span></span>、cos θ = −<span class="frac"><span class="num">3</span><span class="den">5</span></span> を代入しよう。(−<span class="frac"><span class="num">4</span><span class="den">5</span></span>) ÷ (−<span class="frac"><span class="num">3</span><span class="den">5</span></span>) = (−<span class="frac"><span class="num">4</span><span class="den">5</span></span>) × (−<span class="frac"><span class="num">5</span><span class="den">3</span></span>) だね。</p>
+          <h3>ヒント<math><mn>3</mn><mo>―</mo><mi>tan</mi><mi>θ</mi></math>を求める</h3>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><mi>tan</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mi>sin</mi><mi>θ</mi></mrow><mrow><mi>cos</mi><mi>θ</mi></mrow></mfrac></math>ここでは <math><mi>sin</mi><mi>θ</mi><mo>=</mo><mo>−</mo><mfrac><mrow><mn>4</mn></mrow><mrow><mn>5</mn></mrow></mfrac></math>、<math><mi>cos</mi><mi>θ</mi><mo>=</mo><mo>−</mo><mfrac><mrow><mn>3</mn></mrow><mrow><mn>5</mn></mrow></mfrac></math> を代入する。</p><p><math><mi>tan</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mi>sin</mi><mi>θ</mi></mrow><mrow><mi>cos</mi><mi>θ</mi></mrow></mfrac></math> に、<math><mi>sin</mi><mi>θ</mi><mo>=</mo><mo>−</mo><mfrac><mn>4</mn><mn>5</mn></mfrac></math>、<math><mi>cos</mi><mi>θ</mi><mo>=</mo><mo>−</mo><mfrac><mn>3</mn><mn>5</mn></mfrac></math> を代入しよう。<math><mrow><mo>(</mo><mo>−</mo><mfrac><mn>4</mn><mn>5</mn></mfrac><mo>)</mo></mrow><mo>÷</mo><mrow><mo>(</mo><mo>−</mo><mfrac><mn>3</mn><mn>5</mn></mfrac><mo>)</mo></mrow><mo>=</mo><mrow><mo>(</mo><mo>−</mo><mfrac><mn>4</mn><mn>5</mn></mfrac><mo>)</mo></mrow><mo>×</mo><mrow><mo>(</mo><mo>−</mo><mfrac><mn>5</mn><mn>3</mn></mfrac><mo>)</mo></mrow></math>だね。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">sin θ = −<span class="frac"><span class="num">4</span><span class="den">5</span></span>，　tan θ = <span class="frac"><span class="num">4</span><span class="den">3</span></span></p>
-          <p>sin<sup>2</sup>θ + cos<sup>2</sup>θ = 1 から　sin<sup>2</sup>θ = 1 − (−<span class="frac"><span class="num">3</span><span class="den">5</span></span>)<sup>2</sup> = <span class="frac"><span class="num">16</span><span class="den">25</span></span></p>
-          <p>θ の動径が第 3 象限にあるとき sin θ &lt; 0 であるから</p>
-          <p class="formula">sin θ = −√<span class="rad"><span class="frac"><span class="num">16</span><span class="den">25</span></span></span> = −<span class="frac"><span class="num">4</span><span class="den">5</span></span></p>
-          <p class="formula">tan θ = <span class="frac"><span class="num">sin θ</span><span class="den">cos θ</span></span> = (−<span class="frac"><span class="num">4</span><span class="den">5</span></span>) ÷ (−<span class="frac"><span class="num">3</span><span class="den">5</span></span>) = <span class="frac"><span class="num">4</span><span class="den">3</span></span></p>
+          <p class="big"><math display="block"><mi>sin</mi><mi>θ</mi><mo>=</mo><mo>−</mo><mfrac><mn>4</mn><mn>5</mn></mfrac><mo>,</mo><mspace width="2em"/><mi>tan</mi><mi>θ</mi><mo>=</mo><mfrac><mn>4</mn><mn>3</mn></mfrac></math></p><p class="cite"><span class="cite-tag">使う公式</span><math><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn></math><math><mi>cos</mi><mi>θ</mi><mo>=</mo><mo>−</mo><mfrac><mrow><mn>3</mn></mrow><mrow><mn>5</mn></mrow></mfrac></math> を代入して、解答の計算を始める。</p>
+          <p><math><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn></math>から　<math><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn><mo>−</mo><msup><mrow><mo>(</mo><mo>−</mo><mfrac><mn>3</mn><mn>5</mn></mfrac><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mfrac><mn>16</mn><mn>25</mn></mfrac></math></p>
+          <p><math><mi>θ</mi></math> の動径が第 3 象限にあるとき<math><mi>sin</mi><mi>θ</mi><mo>&lt;</mo><mn>0</mn></math>であるから</p>
+          <p class="formula"><math display="block"><mi>sin</mi><mi>θ</mi><mo>=</mo><mo>−</mo><msqrt><mfrac><mn>16</mn><mn>25</mn></mfrac></msqrt><mo>=</mo><mo>−</mo><mfrac><mn>4</mn><mn>5</mn></mfrac></math></p>
+          <div class="chain-crow formula">
+<div class="crow"><math displaystyle="true"><mi>tan</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mi>sin</mi><mi>θ</mi></mrow><mrow><mi>cos</mi><mi>θ</mi></mrow></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>tan</mi><mi>θ</mi></mphantom><mo>=</mo><mrow><mo>(</mo><mo>−</mo><mfrac><mn>4</mn><mn>5</mn></mfrac><mo>)</mo></mrow><mo>÷</mo><mrow><mo>(</mo><mo>−</mo><mfrac><mn>3</mn><mn>5</mn></mfrac><mo>)</mo></mrow></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>tan</mi><mi>θ</mi></mphantom><mo>=</mo><mfrac><mn>4</mn><mn>3</mn></mfrac></math></div>
+</div>
 <figure><div class="figbox"><svg viewBox="0 0 232 196" role="img" aria-label="例題1の図">
 <line x1="12" y1="96" x2="210" y2="96" stroke="currentColor" stroke-width="1.2"/>
 <path d="M 210 96 l -7 -3.5 v 7 z" fill="currentColor"/>
@@ -719,20 +841,20 @@
         <h2>練習問題に挑戦</h2>
         <span class="pno">教科書 p.118</span>
       </div>
-      <section class="card prob" id="prob-ren8" data-flow="ren8" data-label="練習8">
+      <section class="nofig card prob" id="prob-ren8" data-flow="ren8" data-label="練習8">
         <div class="prob-head">
           <span class="prob-tag ren">練習 8</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">θ の動径が第 4 象限にあり、sin θ = −<span class="frac"><span class="num">1</span><span class="den">3</span></span> のとき、cos θ、tan θ の値を、それぞれ求めよ。</p>
+        <p class="prob-q"><math><mi>θ</mi></math> の動径が第 4 象限にあり、<math><mi>sin</mi><mi>θ</mi><mo>=</mo><mo>−</mo><mfrac><mn>1</mn><mn>3</mn></mfrac></math> のとき、<math><mi>cos</mi></math> <math><mi>θ</mi></math>、<math><mi>tan</mi></math> <math><mi>θ</mi></math> の値を、それぞれ求めよ。</p>
           <div class="quiz" id="q-ren8" data-correct="1">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>cos θ = <span class="frac"><span class="num">2√<span class="rad">2</span></span><span class="den">3</span></span>，　tan θ = −<span class="frac"><span class="num">√<span class="rad">2</span></span><span class="den">4</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>cos θ = −<span class="frac"><span class="num">2√<span class="rad">2</span></span><span class="den">3</span></span>，　tan θ = <span class="frac"><span class="num">√<span class="rad">2</span></span><span class="den">4</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>cos θ = <span class="frac"><span class="num">2√<span class="rad">2</span></span><span class="den">3</span></span>，　tan θ = <span class="frac"><span class="num">√<span class="rad">2</span></span><span class="den">4</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>cos θ = <span class="frac"><span class="num">8</span><span class="den">9</span></span>，　tan θ = −<span class="frac"><span class="num">1</span><span class="den">3</span></span></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>2</mn><msqrt><mn>2</mn></msqrt></mrow><mn>3</mn></mfrac><mo>,</mo></math>　<math><mi>tan</mi><mi>θ</mi><mo>=</mo><mo>−</mo><mfrac><msqrt><mn>2</mn></msqrt><mn>4</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mi>cos</mi><mi>θ</mi><mo>=</mo><mo>−</mo><mfrac><mrow><mn>2</mn><msqrt><mn>2</mn></msqrt></mrow><mn>3</mn></mfrac><mo>,</mo></math>　<math><mi>tan</mi><mi>θ</mi><mo>=</mo><mfrac><msqrt><mn>2</mn></msqrt><mn>4</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>2</mn><msqrt><mn>2</mn></msqrt></mrow><mn>3</mn></mfrac><mo>,</mo></math>　<math><mi>tan</mi><mi>θ</mi><mo>=</mo><mfrac><msqrt><mn>2</mn></msqrt><mn>4</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><mn>8</mn><mn>9</mn></mfrac><mo>,</mo></math>　<math><mi>tan</mi><mi>θ</mi><mo>=</mo><mo>−</mo><mfrac><mn>1</mn><mn>3</mn></mfrac></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
@@ -741,18 +863,27 @@
         </div>
         <div class="step hint">
           <h3>ヒント 1 ― 相互関係 2 を使う</h3>
-          <p>cos<sup>2</sup>θ = 1 − sin<sup>2</sup>θ = 1 − (1/3)<sup>2</sup> = 8/9 になるよ。</p>
+          <div class="chain-crow">
+<div class="crow"><math displaystyle="true"><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn><mo>−</mo><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></mphantom><mo>=</mo><mn>1</mn><mo>−</mo><msup><mrow><mo>(</mo><mn>1</mn><mo>/</mo><mn>3</mn><mo>)</mo></mrow><mn>2</mn></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></mphantom><mo>=</mo><mfrac><mn>8</mn><mn>9</mn></mfrac></math></div>
+</div>
+<p>になるよ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 象限で符号を決める</h3>
-          <p>第 4 象限では cos θ &gt; 0 だから、cos θ = √(8/9) = 2√2/3。次に tan θ = sin θ / cos θ = (−1/3) ÷ (2√2/3) を計算しよう。</p>
+          <p>第 4 象限では<math><mi>cos</mi><mi>θ</mi><mo>&gt;</mo><mn>0</mn></math>だから、<math><mi>cos</mi><mi>θ</mi><mo>=</mo><msqrt><mrow><mn>8</mn><mo>/</mo><mn>9</mn></mrow></msqrt><mo>=</mo><mn>2</mn><mfrac><msqrt><mn>2</mn></msqrt><mn>3</mn></mfrac></math>。次に<math><mi>tan</mi><mi>θ</mi><mo>=</mo><mi>sin</mi><mfrac><mi>θ</mi><mi>cos</mi></mfrac><mi>θ</mi><mo>=</mo><mrow><mo>(</mo><mo>−</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>)</mo></mrow><mo>÷</mo><mrow><mo>(</mo><mn>2</mn><mfrac><msqrt><mn>2</mn></msqrt><mn>3</mn></mfrac><mo>)</mo></mrow></math>を計算しよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">cos θ = <span class="frac"><span class="num">2√<span class="rad">2</span></span><span class="den">3</span></span>，　tan θ = −<span class="frac"><span class="num">√<span class="rad">2</span></span><span class="den">4</span></span></p>
-          <p>cos<sup>2</sup>θ = 1 − (−<span class="frac"><span class="num">1</span><span class="den">3</span></span>)<sup>2</sup> = <span class="frac"><span class="num">8</span><span class="den">9</span></span>。第 4 象限では cos θ &gt; 0 であるから</p>
-          <p class="formula">cos θ = <span class="frac"><span class="num">2√<span class="rad">2</span></span><span class="den">3</span></span>，　　tan θ = <span class="frac"><span class="num">sin θ</span><span class="den">cos θ</span></span> = −<span class="frac"><span class="num">√<span class="rad">2</span></span><span class="den">4</span></span></p>
+          <p class="big"><math display="block"><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>2</mn><msqrt><mn>2</mn></msqrt></mrow><mn>3</mn></mfrac><mo>,</mo><mspace width="2em"/><mi>tan</mi><mi>θ</mi><mo>=</mo><mo>−</mo><mfrac><msqrt><mn>2</mn></msqrt><mn>4</mn></mfrac></math></p>
+          <p><math><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn><mo>−</mo><msup><mrow><mo>(</mo><mo>−</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mfrac><mn>8</mn><mn>9</mn></mfrac></math>。第 4 象限では<math><mi>cos</mi><mi>θ</mi><mo>&gt;</mo><mn>0</mn></math>であるから</p>
+          <div class="chain-crow formula">
+<div class="crow"><math displaystyle="true"><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>2</mn><msqrt><mn>2</mn></msqrt></mrow><mn>3</mn></mfrac><mo>,</mo><mspace width="2em"/><mi>tan</mi><mi>θ</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>cos</mi><mi>θ</mi></mphantom><mo>=</mo><mfrac><mrow><mi>sin</mi><mi>θ</mi></mrow><mrow><mi>cos</mi><mi>θ</mi></mrow></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>cos</mi><mi>θ</mi></mphantom><mo>=</mo><mo>−</mo><mfrac><msqrt><mn>2</mn></msqrt><mn>4</mn></mfrac></math></div>
+</div>
         </div>
         <p class="prob-done">練習8 クリア！　次は例題2に進もう。</p>
       </section>
@@ -761,30 +892,41 @@
         <h2>例題2で解き方を確認</h2>
         <span class="pno">教科書 p.119</span>
       </div>
-      <section class="card prob" id="prob-reidai2" data-flow="reidai2" data-label="例題2">
+      <section class="nofig card prob" id="prob-reidai2" data-flow="reidai2" data-label="例題2">
         <div class="prob-head">
           <span class="prob-tag ">例題 2</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">θ の動径が第 4 象限にあり、tan θ = −2 のとき、sin θ、cos θ の値を、それぞれ求めよ。</p>
+        <p class="prob-q"><math><mi>θ</mi></math> の動径が第 4 象限にあり、<math><mi>tan</mi><mi>θ</mi><mo>=</mo><mo>−</mo><mn>2</mn></math>のとき、<math><mi>sin</mi></math> <math><mi>θ</mi></math>、<math><mi>cos</mi></math> <math><mi>θ</mi></math> の値を、それぞれ求めよ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 1 ― 相互関係 3 を使う</h3>
-          <p>1 + tan<sup>2</sup>θ = 1/cos<sup>2</sup>θ から、cos<sup>2</sup>θ = 1 / (1 + tan<sup>2</sup>θ) = 1 / (1 + (−2)<sup>2</sup>) = 1/5 になるよ。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><mn>1</mn><mo>+</mo><msup><mi>tan</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>1</mn></mrow><mrow><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></mrow></mfrac></math>ここでは <math><mi>tan</mi><mi>θ</mi><mo>=</mo><mo>−</mo><mn>2</mn></math> を代入して、<math><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></math> を求める。</p><p><math><mn>1</mn><mo>+</mo><msup><mi>tan</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mfrac><mn>1</mn><msup><mi>cos</mi><mn>2</mn></msup></mfrac><mi>θ</mi></math>から、</p>
+<div class="chain-crow">
+<div class="crow"><math displaystyle="true"><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mfrac><mn>1</mn><mrow><mo>(</mo><mn>1</mn><mo>+</mo><msup><mi>tan</mi><mn>2</mn></msup><mi>θ</mi><mo>)</mo></mrow></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></mphantom><mo>=</mo><mfrac><mn>1</mn><mrow><mo>(</mo><mn>1</mn><mo>+</mo><msup><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>)</mo></mrow></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></mphantom><mo>=</mo><mfrac><mn>1</mn><mn>5</mn></mfrac></math></div>
+</div>
+<p>になるよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― 象限で符号を決め、sin θ を求める</h3>
-          <p>第 4 象限では cos θ &gt; 0 だから cos θ = √(1/5) = 1/√5。sin θ は、tan θ = sin θ / cos θ を変形して sin θ = tan θ × cos θ で求めよう。</p>
+          <h3>ヒント 2 ― 象限で符号を決め、<math><mi>sin</mi></math> <math><mi>θ</mi></math> を求める</h3>
+          <p>第 4 象限では<math><mi>cos</mi><mi>θ</mi><mo>&gt;</mo><mn>0</mn></math>だから<math><mi>cos</mi><mi>θ</mi><mo>=</mo><msqrt><mrow><mn>1</mn><mo>/</mo><mn>5</mn></mrow></msqrt><mo>=</mo><mfrac><mn>1</mn><msqrt><mn>5</mn></msqrt></mfrac></math>。<math><mi>sin</mi></math> <math><mi>θ</mi></math> は、<math><mi>tan</mi><mi>θ</mi><mo>=</mo><mi>sin</mi><mfrac><mi>θ</mi><mi>cos</mi></mfrac><mi>θ</mi></math>を変形して<math><mi>sin</mi><mi>θ</mi><mo>=</mo><mi>tan</mi><mi>θ</mi><mo>×</mo><mi>cos</mi><mi>θ</mi></math>で求めよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">cos θ = <span class="frac"><span class="num">1</span><span class="den">√<span class="rad">5</span></span></span>，　sin θ = −<span class="frac"><span class="num">2</span><span class="den">√<span class="rad">5</span></span></span></p>
-          <p>1 + tan<sup>2</sup>θ = <span class="frac"><span class="num">1</span><span class="den">cos<sup>2</sup>θ</span></span> から　cos<sup>2</sup>θ = <span class="frac"><span class="num">1</span><span class="den">1 + (−2)<sup>2</sup></span></span> = <span class="frac"><span class="num">1</span><span class="den">5</span></span></p>
-          <p>θ の動径が第 4 象限にあるとき cos θ &gt; 0 であるから</p>
-          <p class="formula">cos θ = <span class="frac"><span class="num">1</span><span class="den">√<span class="rad">5</span></span></span>，　　sin θ = tan θ × cos θ = (−2) × <span class="frac"><span class="num">1</span><span class="den">√<span class="rad">5</span></span></span> = −<span class="frac"><span class="num">2</span><span class="den">√<span class="rad">5</span></span></span></p>
+          <p class="big"><math display="block"><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><mn>1</mn><msqrt><mn>5</mn></msqrt></mfrac><mo>,</mo><mspace width="2em"/><mi>sin</mi><mi>θ</mi><mo>=</mo><mo>−</mo><mfrac><mn>2</mn><msqrt><mn>5</mn></msqrt></mfrac></math></p><p class="cite"><span class="cite-tag">使う公式</span><math><mn>1</mn><mo>+</mo><msup><mi>tan</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>1</mn></mrow><mrow><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></mrow></mfrac></math><math><mi>tan</mi><mi>θ</mi><mo>=</mo><mo>−</mo><mn>2</mn></math> を代入して、解答の計算を始める。</p>
+          <p><math><mn>1</mn><mo>+</mo><msup><mi>tan</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mfrac><mn>1</mn><mrow><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></mrow></mfrac></math> から　<math><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mfrac><mn>1</mn><mrow><mn>1</mn><mo>+</mo><msup><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup></mrow></mfrac><mo>=</mo><mfrac><mn>1</mn><mn>5</mn></mfrac></math></p>
+          <p><math><mi>θ</mi></math> の動径が第 4 象限にあるとき<math><mi>cos</mi><mi>θ</mi><mo>&gt;</mo><mn>0</mn></math>であるから</p>
+          <div class="chain-crow formula">
+<div class="crow"><math displaystyle="true"><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><mn>1</mn><msqrt><mn>5</mn></msqrt></mfrac><mo>,</mo><mspace width="2em"/><mi>sin</mi><mi>θ</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>cos</mi><mi>θ</mi></mphantom><mo>=</mo><mi>tan</mi><mi>θ</mi><mo>×</mo><mi>cos</mi><mi>θ</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>cos</mi><mi>θ</mi></mphantom><mo>=</mo><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mo>×</mo><mfrac><mn>1</mn><msqrt><mn>5</mn></msqrt></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>cos</mi><mi>θ</mi></mphantom><mo>=</mo><mo>−</mo><mfrac><mn>2</mn><msqrt><mn>5</mn></msqrt></mfrac></math></div>
+</div>
         </div>
         <p class="prob-done">例題2 クリア！　次は練習9に挑戦しよう。</p>
       </section>
@@ -793,30 +935,40 @@
         <h2>練習問題に挑戦</h2>
         <span class="pno">教科書 p.119</span>
       </div>
-      <section class="card prob" id="prob-ren9" data-flow="ren9" data-label="練習9">
+      <section class="nofig card prob" id="prob-ren9" data-flow="ren9" data-label="練習9">
         <div class="prob-head">
           <span class="prob-tag ren">練習 9</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">θ の動径が第 3 象限にあり、tan θ = 3 のとき、sin θ、cos θ の値を、それぞれ求めよ。</p>
+        <p class="prob-q"><math><mi>θ</mi></math> の動径が第 3 象限にあり、<math><mi>tan</mi><mi>θ</mi><mo>=</mo><mn>3</mn></math>のとき、<math><mi>sin</mi></math> <math><mi>θ</mi></math>、<math><mi>cos</mi></math> <math><mi>θ</mi></math> の値を、それぞれ求めよ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 1 ― 相互関係 3 を使う</h3>
-          <p>cos<sup>2</sup>θ = 1 / (1 + tan<sup>2</sup>θ) = 1 / (1 + 3<sup>2</sup>) = 1/10 になるよ。</p>
+          <div class="chain-crow">
+<div class="crow"><math displaystyle="true"><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mfrac><mn>1</mn><mrow><mo>(</mo><mn>1</mn><mo>+</mo><msup><mi>tan</mi><mn>2</mn></msup><mi>θ</mi><mo>)</mo></mrow></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></mphantom><mo>=</mo><mfrac><mn>1</mn><mrow><mo>(</mo><mn>1</mn><mo>+</mo><msup><mn>3</mn><mn>2</mn></msup><mo>)</mo></mrow></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></mphantom><mo>=</mo><mfrac><mn>1</mn><mn>10</mn></mfrac></math></div>
+</div>
+<p>になるよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― 象限で符号を決め、sin θ を求める</h3>
-          <p>第 3 象限では cos θ &lt; 0 だから cos θ = −1/√10。sin θ = tan θ × cos θ = 3 × (−1/√10) だね。</p>
+          <h3>ヒント 2 ― 象限で符号を決め、<math><mi>sin</mi></math> <math><mi>θ</mi></math> を求める</h3>
+          <p>第 3 象限では<math><mi>cos</mi><mi>θ</mi><mo>&lt;</mo><mn>0</mn></math>だから<math><mi>cos</mi><mi>θ</mi><mo>=</mo><mo>−</mo><mfrac><mn>1</mn><msqrt><mn>10</mn></msqrt></mfrac></math>。<math><mi>sin</mi><mi>θ</mi><mo>=</mo><mi>tan</mi><mi>θ</mi><mo>×</mo><mi>cos</mi><mi>θ</mi><mo>=</mo><mn>3</mn><mo>×</mo><mrow><mo>(</mo><mo>−</mo><mfrac><mn>1</mn><msqrt><mn>10</mn></msqrt></mfrac><mo>)</mo></mrow></math>だね。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">cos θ = −<span class="frac"><span class="num">1</span><span class="den">√<span class="rad">10</span></span></span>，　sin θ = −<span class="frac"><span class="num">3</span><span class="den">√<span class="rad">10</span></span></span></p>
-          <p>1 + tan<sup>2</sup>θ = <span class="frac"><span class="num">1</span><span class="den">cos<sup>2</sup>θ</span></span> から　cos<sup>2</sup>θ = <span class="frac"><span class="num">1</span><span class="den">1 + 3<sup>2</sup></span></span> = <span class="frac"><span class="num">1</span><span class="den">10</span></span></p>
-          <p>θ の動径が第 3 象限にあるとき cos θ &lt; 0 であるから</p>
-          <p class="formula">cos θ = −<span class="frac"><span class="num">1</span><span class="den">√<span class="rad">10</span></span></span>，　　sin θ = tan θ × cos θ = 3 × (−<span class="frac"><span class="num">1</span><span class="den">√<span class="rad">10</span></span></span>) = −<span class="frac"><span class="num">3</span><span class="den">√<span class="rad">10</span></span></span></p>
+          <p class="big"><math display="block"><mi>cos</mi><mi>θ</mi><mo>=</mo><mo>−</mo><mfrac><mn>1</mn><msqrt><mn>10</mn></msqrt></mfrac><mo>,</mo><mspace width="2em"/><mi>sin</mi><mi>θ</mi><mo>=</mo><mo>−</mo><mfrac><mn>3</mn><msqrt><mn>10</mn></msqrt></mfrac></math></p>
+          <p><math><mn>1</mn><mo>+</mo><msup><mi>tan</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mfrac><mn>1</mn><mrow><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></mrow></mfrac></math> から　<math><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mfrac><mn>1</mn><mrow><mn>1</mn><mo>+</mo><msup><mn>3</mn><mn>2</mn></msup></mrow></mfrac><mo>=</mo><mfrac><mn>1</mn><mn>10</mn></mfrac></math></p>
+          <p><math><mi>θ</mi></math> の動径が第 3 象限にあるとき<math><mi>cos</mi><mi>θ</mi><mo>&lt;</mo><mn>0</mn></math>であるから</p>
+          <div class="chain-crow formula">
+<div class="crow"><math displaystyle="true"><mi>cos</mi><mi>θ</mi><mo>=</mo><mo>−</mo><mfrac><mn>1</mn><msqrt><mn>10</mn></msqrt></mfrac><mo>,</mo><mspace width="2em"/><mi>sin</mi><mi>θ</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>cos</mi><mi>θ</mi></mphantom><mo>=</mo><mi>tan</mi><mi>θ</mi><mo>×</mo><mi>cos</mi><mi>θ</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>cos</mi><mi>θ</mi></mphantom><mo>=</mo><mn>3</mn><mo>×</mo><mrow><mo>(</mo><mo>−</mo><mfrac><mn>1</mn><msqrt><mn>10</mn></msqrt></mfrac><mo>)</mo></mrow></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>cos</mi><mi>θ</mi></mphantom><mo>=</mo><mo>−</mo><mfrac><mn>3</mn><msqrt><mn>10</mn></msqrt></mfrac></math></div>
+</div>
         </div>
         <p class="prob-done">練習9 クリア！　次は等式の問題に進もう。</p>
       </section>
@@ -826,38 +978,38 @@
         <span class="pno">教科書 p.119</span>
       </div>
       <section class="card">
-        <p>sin θ + cos θ のように三角関数を含む式が与えられたとき、相互関係 sin<sup>2</sup>θ + cos<sup>2</sup>θ = 1 を使うと、sin θ cos θ などの値を求めることができる。ポイントは、与えられた式を<b>2 乗する</b>ことである。</p>
+        <p><math><mi>sin</mi></math> <math><mi>θ</mi></math> + <math><mi>cos</mi></math> <math><mi>θ</mi></math> のように三角関数を含む式が与えられたとき、相互関係<math><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn></math>を使うと、<math><mi>sin</mi></math> <math><mi>θ</mi></math> <math><mi>cos</mi></math> <math><mi>θ</mi></math> などの値を求めることができる。ポイントは、与えられた式を<b>2 乗する</b>ことである。</p>
       </section>
       <div class="sec-head">
         <span class="sec-tag">例題</span>
         <h2>例題3で解き方を確認</h2>
         <span class="pno">教科書 p.119</span>
       </div>
-      <section class="card prob" id="prob-reidai3" data-flow="reidai3" data-label="例題3">
+      <section class="nofig card prob" id="prob-reidai3" data-flow="reidai3" data-label="例題3">
         <div class="prob-head">
           <span class="prob-tag ">例題 3</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">sin θ + cos θ = <span class="frac"><span class="num">1</span><span class="den">2</span></span> のとき、sin θ cos θ の値を求めよ。</p>
+        <p class="prob-q"><math><mi>sin</mi><mi>θ</mi><mo>+</mo><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math> のとき、<math><mi>sin</mi></math> <math><mi>θ</mi></math> <math><mi>cos</mi></math> <math><mi>θ</mi></math> の値を求めよ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 1 ― 両辺を 2 乗する</h3>
-          <p>(sin θ + cos θ)<sup>2</sup> = sin<sup>2</sup>θ + 2 sin θ cos θ + cos<sup>2</sup>θ だから、両辺を 2 乗すると sin<sup>2</sup>θ + 2 sin θ cos θ + cos<sup>2</sup>θ = 1/4 になるよ。</p>
+          <p class="cite"><span class="cite-tag">使う性質</span><math><msup><mrow><mo>(</mo><mi>sin</mi><mi>θ</mi><mo>+</mo><mi>cos</mi><mi>θ</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><mn>2</mn><mi>sin</mi><mi>θ</mi><mi>cos</mi><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></math>与えられた和を 2 乗すると、この展開の形が現れる。</p><p><math><msup><mrow><mo>(</mo><mi>sin</mi><mi>θ</mi><mo>+</mo><mi>cos</mi><mi>θ</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><mn>2</mn><mi>sin</mi><mi>θ</mi><mi>cos</mi><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></math>だから、両辺を 2 乗すると<math><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><mn>2</mn><mi>sin</mi><mi>θ</mi><mi>cos</mi><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mfrac><mn>1</mn><mn>4</mn></mfrac></math>になるよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― sin²θ + cos²θ = 1 を使う</h3>
-          <p>sin<sup>2</sup>θ + cos<sup>2</sup>θ = 1 を代入すると、1 + 2 sin θ cos θ = 1/4。あとは sin θ cos θ について解くだけだね。</p>
+          <h3>ヒント<math><mn>2</mn><mo>―</mo><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn></math>を使う</h3>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn></math>展開した式の <math><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></math> の部分に、この関係を代入する。</p><p><math><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn></math>を代入すると、<math><mn>1</mn><mo>+</mo><mn>2</mn><mi>sin</mi><mi>θ</mi><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><mn>1</mn><mn>4</mn></mfrac></math>。あとは <math><mi>sin</mi></math> <math><mi>θ</mi></math> <math><mi>cos</mi></math> <math><mi>θ</mi></math> について解くだけだね。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">sin θ cos θ = −<span class="frac"><span class="num">3</span><span class="den">8</span></span></p>
-          <p>sin θ + cos θ = <span class="frac"><span class="num">1</span><span class="den">2</span></span> の両辺を 2 乗すると</p>
-          <p class="formula">sin<sup>2</sup>θ + 2 sin θ cos θ + cos<sup>2</sup>θ = <span class="frac"><span class="num">1</span><span class="den">4</span></span></p>
-          <p>sin<sup>2</sup>θ + cos<sup>2</sup>θ = 1 であるから　1 + 2 sin θ cos θ = <span class="frac"><span class="num">1</span><span class="den">4</span></span></p>
-          <p class="formula">したがって　sin θ cos θ = −<span class="frac"><span class="num">3</span><span class="den">8</span></span></p>
+          <p class="big"><math display="block"><mi>sin</mi><mi>θ</mi><mi>cos</mi><mi>θ</mi><mo>=</mo><mo>−</mo><mfrac><mn>3</mn><mn>8</mn></mfrac></math></p><p class="cite"><span class="cite-tag">使う公式</span><math><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn></math>両辺を 2 乗した式にこの関係を代入して、解答の計算を進める。</p>
+          <p><math><mi>sin</mi><mi>θ</mi><mo>+</mo><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math> の両辺を 2 乗すると</p>
+          <p class="formula"><math display="block"><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><mn>2</mn><mi>sin</mi><mi>θ</mi><mi>cos</mi><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mfrac><mn>1</mn><mn>4</mn></mfrac></math></p>
+          <p><math><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn></math>であるから　<math><mn>1</mn><mo>+</mo><mn>2</mn><mi>sin</mi><mi>θ</mi><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><mn>1</mn><mn>4</mn></mfrac></math></p>
+          <p class="formula">したがって　<math><mi>sin</mi><mi>θ</mi><mi>cos</mi><mi>θ</mi><mo>=</mo><mo>−</mo><mfrac><mn>3</mn><mn>8</mn></mfrac></math></p>
         </div>
         <p class="prob-done">例題3 クリア！　次は練習10に挑戦しよう。</p>
       </section>
@@ -866,20 +1018,20 @@
         <h2>練習問題に挑戦</h2>
         <span class="pno">教科書 p.119</span>
       </div>
-      <section class="card prob" id="prob-ren10" data-flow="ren10" data-label="練習10">
+      <section class="nofig card prob" id="prob-ren10" data-flow="ren10" data-label="練習10">
         <div class="prob-head">
           <span class="prob-tag ren">練習 10</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">sin θ + cos θ = √<span class="rad">2</span> のとき、sin θ cos θ の値を求めよ。</p>
+        <p class="prob-q"><math><mi>sin</mi><mi>θ</mi><mo>+</mo><mi>cos</mi><mi>θ</mi><mo>=</mo><msqrt><mn>2</mn></msqrt></math> のとき、<math><mi>sin</mi></math> <math><mi>θ</mi></math> <math><mi>cos</mi></math> <math><mi>θ</mi></math> の値を求めよ。</p>
           <div class="quiz" id="q-ren10" data-correct="1">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><span class="frac"><span class="num">1</span><span class="den">2</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>1</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><span class="frac"><span class="num">3</span><span class="den">2</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>−<span class="frac"><span class="num">1</span><span class="den">2</span></span></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mfrac><mn>1</mn><mn>2</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mn>1</mn></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mfrac><mn>3</mn><mn>2</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
@@ -888,18 +1040,18 @@
         </div>
         <div class="step hint">
           <h3>ヒント 1 ― 両辺を 2 乗する</h3>
-          <p>例題3 と同じやり方。両辺を 2 乗すると sin<sup>2</sup>θ + 2 sin θ cos θ + cos<sup>2</sup>θ = (√2)<sup>2</sup> = 2 になるよ。</p>
+          <p>例題3 と同じやり方。両辺を 2 乗すると<math><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><mn>2</mn><mi>sin</mi><mi>θ</mi><mi>cos</mi><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><msup><mrow><mo>(</mo><msqrt><mn>2</mn></msqrt><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>2</mn></math>になるよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― sin²θ + cos²θ = 1 を使う</h3>
-          <p>1 + 2 sin θ cos θ = 2 だから、2 sin θ cos θ = 1。あとは両辺を 2 で割るだけだね。</p>
+          <h3>ヒント<math><mn>2</mn><mo>―</mo><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn></math>を使う</h3>
+          <p><math><mn>1</mn><mo>+</mo><mn>2</mn><mi>sin</mi><mi>θ</mi><mi>cos</mi><mi>θ</mi><mo>=</mo><mn>2</mn></math>だから、<math><mn>2</mn><mi>sin</mi><mi>θ</mi><mi>cos</mi><mi>θ</mi><mo>=</mo><mn>1</mn></math>。あとは両辺を 2 で割るだけだね。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">sin θ cos θ = <span class="frac"><span class="num">1</span><span class="den">2</span></span></p>
-          <p>両辺を 2 乗して sin<sup>2</sup>θ + cos<sup>2</sup>θ = 1 を使うと　1 + 2 sin θ cos θ = 2</p>
-          <p class="formula">したがって　sin θ cos θ = <span class="frac"><span class="num">1</span><span class="den">2</span></span></p>
+          <p class="big"><math display="block"><mi>sin</mi><mi>θ</mi><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math></p>
+          <p>両辺を 2 乗して<math><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn></math>を使うと　<math><mn>1</mn><mo>+</mo><mn>2</mn><mi>sin</mi><mi>θ</mi><mi>cos</mi><mi>θ</mi><mo>=</mo><mn>2</mn></math></p>
+          <p class="formula">したがって　<math><mi>sin</mi><mi>θ</mi><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math></p>
         </div>
         <p class="prob-done">練習10 クリア！　次は応用例題1に進もう。</p>
       </section>
@@ -908,13 +1060,13 @@
         <h2>応用例題1で解き方を確認</h2>
         <span class="pno">教科書 p.120</span>
       </div>
-      <section class="card prob" id="prob-ouyou1" data-label="応用例題1">
+      <section class="nofig card prob" id="prob-ouyou1" data-label="応用例題1">
         <div class="prob-head">
           <span class="prob-tag ren">応用例題 1</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
         <div class="qside">
-        <p class="prob-q">sin θ − cos θ = a のとき、次の式の値を a を用いて表せ。</p>
+        <p class="prob-q"><math><mi>sin</mi><mi>θ</mi><mo>−</mo><mi>cos</mi><mi>θ</mi><mo>=</mo><mi>a</mi></math>のとき、次の式の値を <math><mi>a</mi></math> を用いて表せ。</p>
         </div>
         <div class="tabs" role="tablist" aria-label="応用例題1の小問">
           <button class="tab" role="tab" data-tab="ouyou1-1" aria-selected="true">(1)</button>
@@ -922,42 +1074,51 @@
         </div>
         <div class="tabpanel show" id="panel-ouyou1-1" data-flow="ouyou1-1" data-label="応用例題1 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　sin θ cos θ</span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><mi>sin</mi></math> <math><mi>θ</mi></math> <math><mi>cos</mi></math> <math><mi>θ</mi></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― 両辺を 2 乗する</h3>
-          <p>(sin θ − cos θ)<sup>2</sup> = sin<sup>2</sup>θ − 2 sin θ cos θ + cos<sup>2</sup>θ = 1 − 2 sin θ cos θ。これが a<sup>2</sup> に等しいよ。</p>
+          <p class="mq-wide"><math><msup><mrow><mo>(</mo><mi>sin</mi><mi>θ</mi><mo>−</mo><mi>cos</mi><mi>θ</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>−</mo><mn>2</mn><mi>sin</mi><mi>θ</mi><mi>cos</mi><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn><mo>−</mo><mn>2</mn><mi>sin</mi><mi>θ</mi><mi>cos</mi><mi>θ</mi></math>。これが<math><msup><mi>a</mi><mn>2</mn></msup></math> に等しいよ。</p>
+<div class="mq-narrow">
+<p class="formula"><math display="block"><msup><mrow><mo>(</mo><mi>sin</mi><mi>θ</mi><mo>−</mo><mi>cos</mi><mi>θ</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>−</mo><mn>2</mn><mi>sin</mi><mi>θ</mi><mi>cos</mi><mi>θ</mi></math></p>
+<p class="formula cont"><math display="block"><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn><mo>−</mo><mn>2</mn><mi>sin</mi><mi>θ</mi><mi>cos</mi><mi>θ</mi></math></p>
+<p>。これが<math><msup><mi>a</mi><mn>2</mn></msup></math> に等しいよ。</p>
+</div>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">sin θ cos θ = <span class="frac"><span class="num">1 − a<sup>2</sup></span><span class="den">2</span></span></p>
-          <p>sin θ − cos θ = a の両辺を 2 乗すると　1 − 2 sin θ cos θ = a<sup>2</sup></p>
-          <p class="formula">よって　sin θ cos θ = <span class="frac"><span class="num">1 − a<sup>2</sup></span><span class="den">2</span></span></p>
+          <p class="big"><math display="block"><mi>sin</mi><mi>θ</mi><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>1</mn><mo>−</mo><msup><mi>a</mi><mn>2</mn></msup></mrow><mn>2</mn></mfrac></math></p>
+          <p><math><mi>sin</mi><mi>θ</mi><mo>−</mo><mi>cos</mi><mi>θ</mi><mo>=</mo><mi>a</mi></math>の両辺を 2 乗すると　<math><mn>1</mn><mo>−</mo><mn>2</mn><mi>sin</mi><mi>θ</mi><mi>cos</mi><mi>θ</mi><mo>=</mo><msup><mi>a</mi><mn>2</mn></msup></math></p>
+          <p class="formula">よって　<math><mi>sin</mi><mi>θ</mi><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>1</mn><mo>−</mo><msup><mi>a</mi><mn>2</mn></msup></mrow><mn>2</mn></mfrac></math></p>
         </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ouyou1-2" data-flow="ouyou1-2" data-label="応用例題1 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　sin<sup>3</sup>θ − cos<sup>3</sup>θ</span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><msup><mi>sin</mi><mn>3</mn></msup><mi>θ</mi><mo>−</mo><msup><mi>cos</mi><mn>3</mn></msup><mi>θ</mi></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― 因数分解の公式を使う</h3>
-          <p>考え方 ▶ (2) は p<sup>3</sup> − q<sup>3</sup> = (p − q)(p<sup>2</sup> + pq + q<sup>2</sup>) を利用する。sin<sup>3</sup>θ − cos<sup>3</sup>θ = (sin θ − cos θ)(sin<sup>2</sup>θ + sin θ cos θ + cos<sup>2</sup>θ) と変形しよう。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><msup><mi>p</mi><mn>3</mn></msup><mo>−</mo><msup><mi>q</mi><mn>3</mn></msup><mo>=</mo><mrow><mo>(</mo><mi>p</mi><mo>−</mo><mi>q</mi><mo>)</mo></mrow><mrow><mo>(</mo><msup><mi>p</mi><mn>2</mn></msup><mo>+</mo><mi>p</mi><mi>q</mi><mo>+</mo><msup><mi>q</mi><mn>2</mn></msup><mo>)</mo></mrow></math>ここでは <math><mi>p</mi><mo>=</mo><mi>sin</mi><mi>θ</mi></math>、<math><mi>q</mi><mo>=</mo><mi>cos</mi><mi>θ</mi></math> として、<math><msup><mi>sin</mi><mn>3</mn></msup><mi>θ</mi><mo>−</mo><msup><mi>cos</mi><mn>3</mn></msup><mi>θ</mi></math> を変形する。</p><p>考え方 ▶ (2) は<math><msup><mi>p</mi><mn>3</mn></msup><mo>−</mo><msup><mi>q</mi><mn>3</mn></msup><mo>=</mo><mrow><mo>(</mo><mi>p</mi><mo>−</mo><mi>q</mi><mo>)</mo></mrow><mrow><mo>(</mo><msup><mi>p</mi><mn>2</mn></msup><mo>+</mo><mi>p</mi><mi>q</mi><mo>+</mo><msup><mi>q</mi><mn>2</mn></msup><mo>)</mo></mrow></math>を利用する。<math><msup><mi>sin</mi><mn>3</mn></msup><mi>θ</mi><mo>−</mo><msup><mi>cos</mi><mn>3</mn></msup><mi>θ</mi><mo>=</mo><mrow><mo>(</mo><mi>sin</mi><mi>θ</mi><mo>−</mo><mi>cos</mi><mi>θ</mi><mo>)</mo></mrow><mrow><mo>(</mo><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><mi>sin</mi><mi>θ</mi><mi>cos</mi><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>)</mo></mrow></math>と変形しよう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― (1) の結果を代入する</h3>
-          <p>sin<sup>2</sup>θ + cos<sup>2</sup>θ = 1 と、(1) の sin θ cos θ = (1 − a<sup>2</sup>)/2 を使うと、(sin θ − cos θ)(1 + sin θ cos θ) = a (1 + (1 − a<sup>2</sup>)/2) になるよ。</p>
+          <p><math><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn></math>と、(1) の<math><mi>sin</mi><mi>θ</mi><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mo>(</mo><mn>1</mn><mo>−</mo><msup><mi>a</mi><mn>2</mn></msup><mo>)</mo></mrow><mn>2</mn></mfrac></math>を使うと、<math><mrow><mo>(</mo><mi>sin</mi><mi>θ</mi><mo>−</mo><mi>cos</mi><mi>θ</mi><mo>)</mo></mrow><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mi>sin</mi><mi>θ</mi><mi>cos</mi><mi>θ</mi><mo>)</mo></mrow><mo>=</mo><mi>a</mi><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mfrac><mrow><mo>(</mo><mn>1</mn><mo>−</mo><msup><mi>a</mi><mn>2</mn></msup><mo>)</mo></mrow><mn>2</mn></mfrac><mo>)</mo></mrow></math>になるよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">sin<sup>3</sup>θ − cos<sup>3</sup>θ = <span class="frac"><span class="num">3a − a<sup>3</sup></span><span class="den">2</span></span></p>
-          <p class="formula">sin<sup>3</sup>θ − cos<sup>3</sup>θ = (sin θ − cos θ)(1 + sin θ cos θ) = a (1 + <span class="frac"><span class="num">1 − a<sup>2</sup></span><span class="den">2</span></span>) = <span class="frac"><span class="num">3a − a<sup>3</sup></span><span class="den">2</span></span></p>
+          <p class="big"><math display="block"><msup><mi>sin</mi><mn>3</mn></msup><mi>θ</mi><mo>−</mo><msup><mi>cos</mi><mn>3</mn></msup><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>3</mn><mi>a</mi><mo>−</mo><msup><mi>a</mi><mn>3</mn></msup></mrow><mn>2</mn></mfrac></math></p>
+          <div class="chain-crow formula" style="font-size:15px">
+<div class="crow"><math displaystyle="true"><msup><mi>sin</mi><mn>3</mn></msup><mi>θ</mi><mo>−</mo><msup><mi>cos</mi><mn>3</mn></msup><mi>θ</mi><mo>=</mo><mrow><mo>(</mo><mi>sin</mi><mi>θ</mi><mo>−</mo><mi>cos</mi><mi>θ</mi><mo>)</mo></mrow><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mi>sin</mi><mi>θ</mi><mi>cos</mi><mi>θ</mi><mo>)</mo></mrow></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msup><mi>sin</mi><mn>3</mn></msup><mi>θ</mi><mo>−</mo><msup><mi>cos</mi><mn>3</mn></msup><mi>θ</mi></mphantom><mo>=</mo><mi>a</mi><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mfrac><mrow><mn>1</mn><mo>−</mo><msup><mi>a</mi><mn>2</mn></msup></mrow><mn>2</mn></mfrac><mo>)</mo></mrow></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msup><mi>sin</mi><mn>3</mn></msup><mi>θ</mi><mo>−</mo><msup><mi>cos</mi><mn>3</mn></msup><mi>θ</mi></mphantom><mo>=</mo><mfrac><mrow><mn>3</mn><mi>a</mi><mo>−</mo><msup><mi>a</mi><mn>3</mn></msup></mrow><mn>2</mn></mfrac></math></div>
+</div>
         </div>
           <p class="prob-done">(2) クリア！　応用例題1 はこれで全部おわり。</p>
         </div>
@@ -967,28 +1128,32 @@
         <h2>練習問題に挑戦</h2>
         <span class="pno">教科書 p.120</span>
       </div>
-      <section class="card prob" id="prob-ren11" data-flow="ren11" data-label="練習11">
+      <section class="nofig card prob" id="prob-ren11" data-flow="ren11" data-label="練習11">
         <div class="prob-head">
           <span class="prob-tag ren">練習 11</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">sin θ + cos θ = a のとき、sin<sup>3</sup>θ + cos<sup>3</sup>θ の値を a を用いて表せ。</p>
+        <p class="prob-q"><math><mi>sin</mi><mi>θ</mi><mo>+</mo><mi>cos</mi><mi>θ</mi><mo>=</mo><mi>a</mi></math>のとき、<math><msup><mi>sin</mi><mn>3</mn></msup><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>3</mn></msup><mi>θ</mi></math>の値を <math><mi>a</mi></math> を用いて表せ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― まず sin θ cos θ を a で表す</h3>
-          <p>両辺を 2 乗すると 1 + 2 sin θ cos θ = a<sup>2</sup> だから、sin θ cos θ = (a<sup>2</sup> − 1)/2 になるよ。</p>
+          <h3>ヒント 1 ― まず <math><mi>sin</mi></math> <math><mi>θ</mi></math> <math><mi>cos</mi></math> <math><mi>θ</mi></math> を <math><mi>a</mi></math> で表す</h3>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn></math>両辺を 2 乗してこの関係を使うと、<math><mi>sin</mi><mi>θ</mi><mi>cos</mi><mi>θ</mi></math> を <math><mi>a</mi></math> で表せる。</p><p>両辺を 2 乗すると<math><mn>1</mn><mo>+</mo><mn>2</mn><mi>sin</mi><mi>θ</mi><mi>cos</mi><mi>θ</mi><mo>=</mo><msup><mi>a</mi><mn>2</mn></msup></math> だから、<math><mi>sin</mi><mi>θ</mi><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mo>(</mo><msup><mi>a</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></mfrac></math>になるよ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 立方の和の因数分解を使う</h3>
-          <p>p<sup>3</sup> + q<sup>3</sup> = (p + q)(p<sup>2</sup> − pq + q<sup>2</sup>) を使うと、sin<sup>3</sup>θ + cos<sup>3</sup>θ = (sin θ + cos θ)(1 − sin θ cos θ)。ここに a と (a<sup>2</sup> − 1)/2 を代入しよう。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><msup><mi>p</mi><mn>3</mn></msup><mo>+</mo><msup><mi>q</mi><mn>3</mn></msup><mo>=</mo><mrow><mo>(</mo><mi>p</mi><mo>+</mo><mi>q</mi><mo>)</mo></mrow><mrow><mo>(</mo><msup><mi>p</mi><mn>2</mn></msup><mo>−</mo><mi>p</mi><mi>q</mi><mo>+</mo><msup><mi>q</mi><mn>2</mn></msup><mo>)</mo></mrow></math>ここでは <math><mi>p</mi><mo>=</mo><mi>sin</mi><mi>θ</mi></math>、<math><mi>q</mi><mo>=</mo><mi>cos</mi><mi>θ</mi></math> として、立方の和を変形する。</p><p><math><msup><mi>p</mi><mn>3</mn></msup><mo>+</mo><msup><mi>q</mi><mn>3</mn></msup><mo>=</mo><mrow><mo>(</mo><mi>p</mi><mo>+</mo><mi>q</mi><mo>)</mo></mrow><mrow><mo>(</mo><msup><mi>p</mi><mn>2</mn></msup><mo>−</mo><mi>p</mi><mi>q</mi><mo>+</mo><msup><mi>q</mi><mn>2</mn></msup><mo>)</mo></mrow></math>を使うと、<math><msup><mi>sin</mi><mn>3</mn></msup><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>3</mn></msup><mi>θ</mi><mo>=</mo><mrow><mo>(</mo><mi>sin</mi><mi>θ</mi><mo>+</mo><mi>cos</mi><mi>θ</mi><mo>)</mo></mrow><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mi>sin</mi><mi>θ</mi><mi>cos</mi><mi>θ</mi><mo>)</mo></mrow></math>。ここに <math><mi>a</mi></math> と<math><mfrac><mrow><mo>(</mo><msup><mi>a</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></mfrac></math>を代入しよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">sin<sup>3</sup>θ + cos<sup>3</sup>θ = <span class="frac"><span class="num">3a − a<sup>3</sup></span><span class="den">2</span></span></p>
-          <p class="formula">sin<sup>3</sup>θ + cos<sup>3</sup>θ = (sin θ + cos θ)(1 − sin θ cos θ) = a (1 − <span class="frac"><span class="num">a<sup>2</sup> − 1</span><span class="den">2</span></span>) = <span class="frac"><span class="num">3a − a<sup>3</sup></span><span class="den">2</span></span></p>
+          <p class="big"><math display="block"><msup><mi>sin</mi><mn>3</mn></msup><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>3</mn></msup><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>3</mn><mi>a</mi><mo>−</mo><msup><mi>a</mi><mn>3</mn></msup></mrow><mn>2</mn></mfrac></math></p>
+          <div class="chain-crow formula" style="font-size:15px">
+<div class="crow"><math displaystyle="true"><msup><mi>sin</mi><mn>3</mn></msup><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>3</mn></msup><mi>θ</mi><mo>=</mo><mrow><mo>(</mo><mi>sin</mi><mi>θ</mi><mo>+</mo><mi>cos</mi><mi>θ</mi><mo>)</mo></mrow><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mi>sin</mi><mi>θ</mi><mi>cos</mi><mi>θ</mi><mo>)</mo></mrow></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msup><mi>sin</mi><mn>3</mn></msup><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>3</mn></msup><mi>θ</mi></mphantom><mo>=</mo><mi>a</mi><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mfrac><mrow><msup><mi>a</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn></mrow><mn>2</mn></mfrac><mo>)</mo></mrow></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msup><mi>sin</mi><mn>3</mn></msup><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>3</mn></msup><mi>θ</mi></mphantom><mo>=</mo><mfrac><mrow><mn>3</mn><mi>a</mi><mo>−</mo><msup><mi>a</mi><mn>3</mn></msup></mrow><mn>2</mn></mfrac></math></div>
+</div>
         </div>
         <p class="prob-done">練習11 クリア！　次は応用例題2に進もう。</p>
       </section>
@@ -997,29 +1162,46 @@
         <h2>応用例題2で解き方を確認</h2>
         <span class="pno">教科書 p.120</span>
       </div>
-      <section class="card prob" id="prob-ouyou2" data-flow="ouyou2" data-label="応用例題2">
+      <section class="nofig card prob" id="prob-ouyou2" data-flow="ouyou2" data-label="応用例題2">
         <div class="prob-head">
           <span class="prob-tag ouyou">応用例題 2</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">次の等式を証明せよ。<br>tan θ + <span class="frac"><span class="num">1</span><span class="den">tan θ</span></span> = <span class="frac"><span class="num">1</span><span class="den">sin θ cos θ</span></span></p>
+        <p class="prob-q">次の等式を証明せよ。<br><math><mi>tan</mi><mi>θ</mi><mo>+</mo><mfrac><mn>1</mn><mrow><mi>tan</mi><mi>θ</mi></mrow></mfrac><mo>=</mo><mfrac><mn>1</mn><mrow><mi>sin</mi><mi>θ</mi><mi>cos</mi><mi>θ</mi></mrow></mfrac></math></p>
         </div>
         <div class="step hint">
           <h3>ヒント 1 ― 考え方：左辺を変形して右辺を導く</h3>
-          <p>tan θ = sin θ / cos θ、1/tan θ = cos θ / sin θ と書き直して、左辺を通分してみよう。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><mi>tan</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mi>sin</mi><mi>θ</mi></mrow><mrow><mi>cos</mi><mi>θ</mi></mrow></mfrac></math>左辺の <math><mi>tan</mi><mi>θ</mi></math> と <math><mfrac><mrow><mn>1</mn></mrow><mrow><mi>tan</mi><mi>θ</mi></mrow></mfrac></math> を、<math><mi>sin</mi><mi>θ</mi></math> と <math><mi>cos</mi><mi>θ</mi></math> の商に直してから通分する。</p><p><math><mi>tan</mi><mi>θ</mi><mo>=</mo><mi>sin</mi><mfrac><mi>θ</mi><mi>cos</mi></mfrac><mi>θ</mi></math>、<math><mfrac><mn>1</mn><mi>tan</mi></mfrac><mi>θ</mi><mo>=</mo><mi>cos</mi><mfrac><mi>θ</mi><mi>sin</mi></mfrac><mi>θ</mi></math>と書き直して、左辺を通分してみよう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 通分する</h3>
-          <p>左辺 = sin<sup>2</sup>θ / (sin θ cos θ) + cos<sup>2</sup>θ / (sin θ cos θ)。分子をまとめると sin<sup>2</sup>θ + cos<sup>2</sup>θ が現れるよ。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn></math>通分した分子に現れる <math><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></math> に、この関係を代入する。</p><p>左辺<math><mo>=</mo><msup><mi>sin</mi><mn>2</mn></msup><mfrac><mi>θ</mi><mrow><mo>(</mo><mi>sin</mi><mi>θ</mi><mi>cos</mi><mi>θ</mi><mo>)</mo></mrow></mfrac><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mfrac><mi>θ</mi><mrow><mo>(</mo><mi>sin</mi><mi>θ</mi><mi>cos</mi><mi>θ</mi><mo>)</mo></mrow></mfrac></math>。分子をまとめると<math><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></math>が現れるよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">左辺 = <span class="frac"><span class="num">sin<sup>2</sup>θ + cos<sup>2</sup>θ</span><span class="den">sin θ cos θ</span></span> = <span class="frac"><span class="num">1</span><span class="den">sin θ cos θ</span></span> = 右辺</p>
-          <p class="formula">左辺 = <span class="frac"><span class="num">sin θ</span><span class="den">cos θ</span></span> + <span class="frac"><span class="num">cos θ</span><span class="den">sin θ</span></span> = <span class="frac"><span class="num">sin<sup>2</sup>θ</span><span class="den">sin θ cos θ</span></span> + <span class="frac"><span class="num">cos<sup>2</sup>θ</span><span class="den">sin θ cos θ</span></span> = <span class="frac"><span class="num">sin<sup>2</sup>θ + cos<sup>2</sup>θ</span><span class="den">sin θ cos θ</span></span> = <span class="frac"><span class="num">1</span><span class="den">sin θ cos θ</span></span> = 右辺</p>
-          <p>よって　tan θ + <span class="frac"><span class="num">1</span><span class="den">tan θ</span></span> = <span class="frac"><span class="num">1</span><span class="den">sin θ cos θ</span></span>　が成り立つ。</p>
+          <p class="big">左辺<div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mo>=</mo><mfrac><mrow><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></mrow><mrow><mi>sin</mi><mi>θ</mi><mi>cos</mi><mi>θ</mi></mrow></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo><mfrac><mn>1</mn><mrow><mi>sin</mi><mi>θ</mi><mi>cos</mi><mi>θ</mi></mrow></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo></math></div>
+</div>右辺</p><p class="cite"><span class="cite-tag">使う公式</span><math><mi>tan</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mi>sin</mi><mi>θ</mi></mrow><mrow><mi>cos</mi><mi>θ</mi></mrow></mfrac></math>左辺をこの関係で書き直すところから、解答の証明を始める。</p>
+          <p class="mq-wide formula">左辺<div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mo>=</mo><mfrac><mrow><mi>sin</mi><mi>θ</mi></mrow><mrow><mi>cos</mi><mi>θ</mi></mrow></mfrac><mo>+</mo><mfrac><mrow><mi>cos</mi><mi>θ</mi></mrow><mrow><mi>sin</mi><mi>θ</mi></mrow></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo><mfrac><mrow><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi></mrow><mrow><mi>sin</mi><mi>θ</mi><mi>cos</mi><mi>θ</mi></mrow></mfrac><mo>+</mo><mfrac><mrow><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></mrow><mrow><mi>sin</mi><mi>θ</mi><mi>cos</mi><mi>θ</mi></mrow></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo><mfrac><mrow><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></mrow><mrow><mi>sin</mi><mi>θ</mi><mi>cos</mi><mi>θ</mi></mrow></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo><mfrac><mn>1</mn><mrow><mi>sin</mi><mi>θ</mi><mi>cos</mi><mi>θ</mi></mrow></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo></math></div>
+</div>右辺</p>
+<div class="mq-narrow">
+<p>左辺</p>
+<p class="formula"><math display="block"><mo>=</mo><mfrac><mrow><mi>sin</mi><mi>θ</mi></mrow><mrow><mi>cos</mi><mi>θ</mi></mrow></mfrac><mo>+</mo><mfrac><mrow><mi>cos</mi><mi>θ</mi></mrow><mrow><mi>sin</mi><mi>θ</mi></mrow></mfrac><mo>=</mo><mfrac><mrow><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi></mrow><mrow><mi>sin</mi><mi>θ</mi><mi>cos</mi><mi>θ</mi></mrow></mfrac></math></p>
+<p class="formula cont"><math display="block"><mo>+</mo><mfrac><mrow><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></mrow><mrow><mi>sin</mi><mi>θ</mi><mi>cos</mi><mi>θ</mi></mrow></mfrac><mo>=</mo><mfrac><mrow><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></mrow><mrow><mi>sin</mi><mi>θ</mi><mi>cos</mi><mi>θ</mi></mrow></mfrac></math></p>
+<p class="formula cont"><math display="block"><mo>=</mo><mfrac><mn>1</mn><mrow><mi>sin</mi><mi>θ</mi><mi>cos</mi><mi>θ</mi></mrow></mfrac><mo>=</mo></math></p>
+<p>右辺</p>
+</div>
+          <p>よって　<math><mi>tan</mi><mi>θ</mi><mo>+</mo><mfrac><mn>1</mn><mrow><mi>tan</mi><mi>θ</mi></mrow></mfrac><mo>=</mo><mfrac><mn>1</mn><mrow><mi>sin</mi><mi>θ</mi><mi>cos</mi><mi>θ</mi></mrow></mfrac></math>　が成り立つ。</p>
         </div>
         <p class="prob-done">応用例題2 クリア！　次は練習12に挑戦しよう。</p>
       </section>
@@ -1028,7 +1210,7 @@
         <h2>練習問題に挑戦</h2>
         <span class="pno">教科書 p.120</span>
       </div>
-      <section class="card prob" id="prob-ren12" data-label="練習12">
+      <section class="nofig card prob" id="prob-ren12" data-label="練習12">
         <div class="prob-head">
           <span class="prob-tag ren">練習 12</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
@@ -1042,42 +1224,68 @@
         </div>
         <div class="tabpanel show" id="panel-ren12-1" data-flow="ren12-1" data-label="練習12 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　(sin θ + cos θ)<sup>2</sup> + (sin θ − cos θ)<sup>2</sup> = 2</span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><msup><mrow><mo>(</mo><mi>sin</mi><mi>θ</mi><mo>+</mo><mi>cos</mi><mi>θ</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mi>sin</mi><mi>θ</mi><mo>−</mo><mi>cos</mi><mi>θ</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>2</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― 左辺を展開する</h3>
-          <p>左辺を展開すると、(sin<sup>2</sup>θ + 2 sin θ cos θ + cos<sup>2</sup>θ) + (sin<sup>2</sup>θ − 2 sin θ cos θ + cos<sup>2</sup>θ)。2 sin θ cos θ の項は打ち消し合うよ。</p>
+          <p class="mq-wide">左辺を展開すると、<math><mrow><mo>(</mo><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><mn>2</mn><mi>sin</mi><mi>θ</mi><mi>cos</mi><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>)</mo></mrow><mo>+</mo><mrow><mo>(</mo><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>−</mo><mn>2</mn><mi>sin</mi><mi>θ</mi><mi>cos</mi><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>)</mo></mrow></math>。<math><mn>2</mn><mi>sin</mi><mi>θ</mi><mi>cos</mi><mi>θ</mi></math>の項は打ち消し合うよ。</p>
+<div class="mq-narrow">
+<p>左辺を展開すると、</p>
+<p class="formula"><math display="block"><mo>(</mo><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><mn>2</mn><mi>sin</mi><mi>θ</mi><mi>cos</mi><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>)</mo></math></p>
+<p class="formula cont"><math display="block"><mo>+</mo><mrow><mo>(</mo><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>−</mo><mn>2</mn><mi>sin</mi><mi>θ</mi><mi>cos</mi><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>)</mo></mrow></math></p>
+<p>。<math><mn>2</mn><mi>sin</mi><mi>θ</mi><mi>cos</mi><mi>θ</mi></math>の項は打ち消し合うよ。</p>
+</div>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">左辺 = 2(sin<sup>2</sup>θ + cos<sup>2</sup>θ) = 2 = 右辺</p>
-          <p class="formula">左辺 = 2(sin<sup>2</sup>θ + cos<sup>2</sup>θ) = 2 × 1 = 2 = 右辺</p>
+          <p class="big">左辺<div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mo>=</mo><mn>2</mn><mrow><mo>(</mo><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>)</mo></mrow></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo><mn>2</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo></math></div>
+</div>右辺</p>
+          <p class="formula">左辺<div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mo>=</mo><mn>2</mn><mrow><mo>(</mo><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>)</mo></mrow></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo><mn>2</mn><mo>×</mo><mn>1</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo><mn>2</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo></math></div>
+</div>右辺</p>
           <p>よって、等式が成り立つ。</p>
         </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren12-2" data-flow="ren12-2" data-label="練習12 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　tan<sup>2</sup>θ − sin<sup>2</sup>θ = tan<sup>2</sup>θ sin<sup>2</sup>θ</span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><msup><mi>tan</mi><mn>2</mn></msup><mi>θ</mi><mo>−</mo><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><msup><mi>tan</mi><mn>2</mn></msup><mi>θ</mi><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― tan²θ を sin²θ/cos²θ に直す</h3>
-          <p>左辺 = sin<sup>2</sup>θ / cos<sup>2</sup>θ − sin<sup>2</sup>θ。sin<sup>2</sup>θ でくくると、sin<sup>2</sup>θ (1/cos<sup>2</sup>θ − 1) になるよ。</p>
+          <h3>ヒント<math><mn>1</mn><mo>―</mo><msup><mi>tan</mi><mn>2</mn></msup><mi>θ</mi></math>を<math><msup><mi>sin</mi><mn>2</mn></msup><mfrac><mi>θ</mi><msup><mi>cos</mi><mn>2</mn></msup></mfrac><mi>θ</mi></math>に直す</h3>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><msup><mi>tan</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mfrac><mrow><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi></mrow><mrow><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></mrow></mfrac></math>左辺の <math><msup><mi>tan</mi><mn>2</mn></msup><mi>θ</mi></math> をこの形に直し、<math><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi></math> でくくる。</p><p>左辺<math><mo>=</mo><msup><mi>sin</mi><mn>2</mn></msup><mfrac><mi>θ</mi><msup><mi>cos</mi><mn>2</mn></msup></mfrac><mi>θ</mi><mo>−</mo><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi></math>。<math><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi></math>でくくると、<math><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mrow><mo>(</mo><mfrac><mn>1</mn><msup><mi>cos</mi><mn>2</mn></msup></mfrac><mi>θ</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow></math>になるよ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 相互関係 3 を使う</h3>
-          <p>1 + tan<sup>2</sup>θ = 1/cos<sup>2</sup>θ から、1/cos<sup>2</sup>θ − 1 = tan<sup>2</sup>θ。これを代入すると右辺の形になるね。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><mn>1</mn><mo>+</mo><msup><mi>tan</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>1</mn></mrow><mrow><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></mrow></mfrac></math>この関係から <math><mfrac><mrow><mn>1</mn></mrow><mrow><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></mrow></mfrac><mo>−</mo><mn>1</mn><mo>=</mo><msup><mi>tan</mi><mn>2</mn></msup><mi>θ</mi></math> と変形して代入する。</p><p><math><mn>1</mn><mo>+</mo><msup><mi>tan</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mfrac><mn>1</mn><msup><mi>cos</mi><mn>2</mn></msup></mfrac><mi>θ</mi></math>から、<math><mfrac><mn>1</mn><msup><mi>cos</mi><mn>2</mn></msup></mfrac><mi>θ</mi><mo>−</mo><mn>1</mn><mo>=</mo><msup><mi>tan</mi><mn>2</mn></msup><mi>θ</mi></math>。これを代入すると右辺の形になるね。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">左辺 = sin<sup>2</sup>θ · tan<sup>2</sup>θ = 右辺</p>
-          <p class="formula">左辺 = <span class="frac"><span class="num">sin<sup>2</sup>θ</span><span class="den">cos<sup>2</sup>θ</span></span> − sin<sup>2</sup>θ = sin<sup>2</sup>θ (<span class="frac"><span class="num">1</span><span class="den">cos<sup>2</sup>θ</span></span> − 1) = sin<sup>2</sup>θ · tan<sup>2</sup>θ = 右辺</p>
+          <p class="big">左辺<math><mo>=</mo><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>·</mo><msup><mi>tan</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo></math>右辺</p>
+          <p class="mq-wide formula">左辺<div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mo>=</mo><mfrac><mrow><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi></mrow><mrow><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></mrow></mfrac><mo>−</mo><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mrow><mo>(</mo><mfrac><mn>1</mn><mrow><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></mrow></mfrac><mo>−</mo><mn>1</mn><mo>)</mo></mrow></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>·</mo><msup><mi>tan</mi><mn>2</mn></msup><mi>θ</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo></math></div>
+</div>右辺</p>
+<div class="mq-narrow">
+<p>左辺</p>
+<p class="formula"><math display="block"><mo>=</mo><mfrac><mrow><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi></mrow><mrow><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></mrow></mfrac><mo>−</mo><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mrow><mo>(</mo><mfrac><mn>1</mn><mrow><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></mrow></mfrac><mo>−</mo><mn>1</mn><mo>)</mo></mrow></math></p>
+<p class="formula cont"><math display="block"><mo>=</mo><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>·</mo><msup><mi>tan</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo></math></p>
+<p>右辺</p>
+</div>
           <p>よって、等式が成り立つ。</p>
         </div>
           <p class="prob-done">(2) クリア！　練習12 はこれで全部おわり。</p>
@@ -1089,10 +1297,10 @@
       <section class="card summary" id="summaryCard" style="display:none">
         <h2>この項のポイント</h2>
         <ul>
-          <li><b>三角関数の定義</b>：sin θ = y/r、cos θ = x/r、tan θ = y/x（P(x, y) は動径と半径 r の円の交点）。</li>
-          <li><b>単位円</b>：sin θ は点 P の y 座標、cos θ は x 座標、tan θ は直線 x = 1 との交点 T の y 座標。</li>
-          <li><b>相互関係</b>：tan θ = sin θ / cos θ、sin<sup>2</sup>θ + cos<sup>2</sup>θ = 1、1 + tan<sup>2</sup>θ = 1/cos<sup>2</sup>θ。</li>
-          <li><b>符号</b>は動径のある象限で決まる。値を求めるときは、相互関係で 2 乗の値を出し、象限で符号を選ぶ。</li>
+          <li><p class="cite"><span class="cite-tag">使う定義</span><math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mi>y</mi></mrow><mrow><mi>r</mi></mrow></mfrac><mo>,</mo><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mi>x</mi></mrow><mrow><mi>r</mi></mrow></mfrac><mo>,</mo><mi>tan</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mi>y</mi></mrow><mrow><mi>x</mi></mrow></mfrac></math>点 <math><mi>P</mi></math> の座標 <math><mi>x</mi></math>、<math><mi>y</mi></math> と半径 <math><mi>r</mi></math> から、3 つの値を定義する。</p><b>三角関数の定義</b>：<math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mi>y</mi><mi>r</mi></mfrac></math>、<math><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><mi>x</mi><mi>r</mi></mfrac></math>、<math><mi>tan</mi><mi>θ</mi><mo>=</mo><mfrac><mi>y</mi><mi>x</mi></mfrac><mo>(</mo><mi>P</mi><mrow><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>)</mo></mrow></math>は動径と半径 <math><mi>r</mi></math> の円の交点）。</li>
+          <li><p class="cite"><span class="cite-tag">使う定義</span><math><mi>sin</mi><mi>θ</mi><mo>=</mo><mi>y</mi><mo>,</mo><mi>cos</mi><mi>θ</mi><mo>=</mo><mi>x</mi></math>単位円ではこのように、座標そのものが三角関数の値になる。</p><b>単位円</b>：<math><mi>sin</mi></math> <math><mi>θ</mi></math> は点 <math><mi>P</mi></math> の <math><mi>y</mi></math> 座標、<math><mi>cos</mi></math> <math><mi>θ</mi></math> は <math><mi>x</mi></math> 座標、<math><mi>tan</mi></math> <math><mi>θ</mi></math> は直線<math><mi>x</mi><mo>=</mo><mn>1</mn></math>との交点 <math><mi>T</mi></math> の <math><mi>y</mi></math> 座標。</li>
+          <li><p class="cite"><span class="cite-tag">使う公式</span><math><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn></math>あわせて <math><mi>tan</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mi>sin</mi><mi>θ</mi></mrow><mrow><mi>cos</mi><mi>θ</mi></mrow></mfrac></math> と <math><mn>1</mn><mo>+</mo><msup><mi>tan</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>1</mn></mrow><mrow><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></mrow></mfrac></math> も相互関係として使う。</p><b>相互関係</b>：<math><mi>tan</mi><mi>θ</mi><mo>=</mo><mi>sin</mi><mfrac><mi>θ</mi><mi>cos</mi></mfrac><mi>θ</mi></math>、<math><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn></math>、<math><mn>1</mn><mo>+</mo><msup><mi>tan</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mfrac><mn>1</mn><msup><mi>cos</mi><mn>2</mn></msup></mfrac><mi>θ</mi></math>。</li>
+          <li><p class="cite"><span class="cite-tag">使う性質</span><math><mo>−</mo><mn>1</mn><mo>≦</mo><mi>sin</mi><mi>θ</mi><mo>≦</mo><mn>1</mn></math>単位円の <math><mi>y</mi></math> 座標の範囲から、<math><mi>sin</mi><mi>θ</mi></math> の符号は象限で決まる（<math><mi>cos</mi><mi>θ</mi></math> も同様）。</p><b>符号</b>は動径のある象限で決まる。値を求めるときは、相互関係で 2 乗の値を出し、象限で符号を選ぶ。</li>
         </ul>
       </section>
       <footer>

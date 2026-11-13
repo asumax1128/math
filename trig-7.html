@@ -310,7 +310,64 @@
       }
       @media (prefers-color-scheme: dark){ .finish-btn{color:#0c1712} }
       .finish-btn:active{transform:scale(.98)}
-    </style>
+    
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+
+      /* 積分記号は大きめに表示する（元のページの可読化デザインに合わせる） */
+      math .int-op{font-size:1.35em}
+      /* calc-12 世代（.card）と calc-18 世代（.unit）の、図のない問題の全幅化 */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig>.step{position:static !important}
+        .card.nofig>.steps-wrap{max-height:none !important;overflow:visible !important}
+        .unit.nofig{display:block !important}
+        .unit.nofig>.qside{position:static !important}
+        .unit.nofig>.steps-stack{max-height:none !important;overflow:visible !important}
+      }
+
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける・第3弾c） */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig .qside{position:static !important}
+        .card.nofig .steps-wrap,.card.nofig .tabpanel .steps-wrap{max-height:none !important;overflow:visible !important}
+      }
+</style>
   </head>
   <body>
     <div class="wrap">
@@ -334,45 +391,45 @@
       </div>
       <section class="card">
         <p>正弦，余弦の加法定理</p>
-        <p class="formula left">sin(α + β) = sin α cos β + cos α sin β<br>cos(α + β) = cos α cos β − sin α sin β</p>
-        <p>を使って，sin α，cos α から sin 2α や sin <span class="frac"><span class="num">α</span><span class="den">2</span></span> などを求める公式を導こう。</p>
-        <p>134 ページの正弦，余弦の加法定理の等式 1，3 において，β を α におき換えると，正弦，余弦について，次の <span class="key">2 倍角の公式</span> が得られる。</p>
+        <p class="formula left"><math><mi>sin</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mi>sin</mi><mi>α</mi><mi>cos</mi><mi>β</mi><mo>+</mo><mi>cos</mi><mi>α</mi><mi>sin</mi><mi>β</mi></math><br><math><mi>cos</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mi>cos</mi><mi>α</mi><mi>cos</mi><mi>β</mi><mo>−</mo><mi>sin</mi><mi>α</mi><mi>sin</mi><mi>β</mi></math></p>
+        <p>を使って，<math><mi>sin</mi></math> <math><mi>α</mi></math>，<math><mi>cos</mi></math> <math><mi>α</mi></math> から <math><mi>sin</mi></math> 2<math><mi>α</mi></math> や<math><mi>sin</mi><mfrac><mi>α</mi><mn>2</mn></mfrac></math> などを求める公式を導こう。</p>
+        <p>134 ページの正弦，余弦の加法定理の等式 1，3 において，<math><mi>β</mi></math> を <math><mi>α</mi></math> におき換えると，正弦，余弦について，次の <span class="key">2 倍角の公式</span> が得られる。</p>
         <div class="def">
           <p><b>正弦，余弦の 2 倍角の公式</b></p>
-          <p><span class="law-no">1</span>sin 2α = 2 sin α cos α</p>
-          <p><span class="law-no">2</span>cos 2α = cos² α − sin² α</p>
-          <p>　　　cos 2α = 1 − 2 sin² α</p>
-          <p>　　　cos 2α = 2 cos² α − 1</p>
+          <p><span class="law-no">1</span><math><mi>sin</mi><mn>2</mn><mi>α</mi><mo>=</mo><mn>2</mn><mi>sin</mi><mi>α</mi><mi>cos</mi><mi>α</mi></math></p>
+          <p><span class="law-no">2</span><math><mi>cos</mi><mn>2</mn><mi>α</mi><mo>=</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>α</mi><mo>−</mo><msup><mi>sin</mi><mn>2</mn></msup><mi>α</mi></math></p>
+          <p>　　　<math><mi>cos</mi><mn>2</mn><mi>α</mi><mo>=</mo><mn>1</mn><mo>−</mo><mn>2</mn><msup><mi>sin</mi><mn>2</mn></msup><mi>α</mi></math></p>
+          <p>　　　<math><mi>cos</mi><mn>2</mn><mi>α</mi><mo>=</mo><mn>2</mn><msup><mi>cos</mi><mn>2</mn></msup><mi>α</mi><mo>−</mo><mn>1</mn></math></p>
         </div>
-        <p>cos 2α の 2 つ目，3 つ目の式は，cos² α = 1 − sin² α，sin² α = 1 − cos² α を代入して得られる。</p>
+        <p><math><mi>cos</mi></math> 2<math><mi>α</mi></math> の 2 つ目，3 つ目の式は<math><mo>,</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>α</mi><mo>=</mo><mn>1</mn><mo>−</mo><msup><mi>sin</mi><mn>2</mn></msup><mi>α</mi><mo>,</mo><msup><mi>sin</mi><mn>2</mn></msup><mi>α</mi><mo>=</mo><mn>1</mn><mo>−</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>α</mi></math>を代入して得られる。</p>
       </section>
       <div class="sec-head">
         <span class="sec-tag">例</span>
         <h2>例13 ― 2 倍角の公式を使う</h2>
         <span class="pno">教科書 p.138</span>
       </div>
-      <section class="card prob" id="prob-ex13" data-flow="ex13" data-label="例13">
+      <section class="nofig card prob" id="prob-ex13" data-flow="ex13" data-label="例13">
         <div class="prob-head">
           <span class="prob-tag ">例 13</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">0 < α < <span class="frac"><span class="num">π</span><span class="den">2</span></span> で，sin α = <span class="frac"><span class="num">3</span><span class="den">5</span></span> のとき，sin 2α の値を求めよ。</p>
+        <p class="prob-q"><math><mn>0</mn><mo>&lt;</mo><mi>α</mi><mo>&lt;</mo><mfrac><mi>π</mi><mn>2</mn></mfrac></math> で<math><mo>,</mo><mi>sin</mi><mi>α</mi><mo>=</mo><mfrac><mn>3</mn><mn>5</mn></mfrac></math> のとき，<math><mi>sin</mi></math> 2<math><mi>α</mi></math> の値を求めよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― まず cos α を求める</h3>
-          <p>sin² α + cos² α = 1 に sin α = <span class="frac"><span class="num">3</span><span class="den">5</span></span> を代入しよう。0 < α < <span class="frac"><span class="num">π</span><span class="den">2</span></span> （第 1 象限）だから cos α > 0 だよ。</p>
+          <h3>ヒント 1 ― まず <math><mi>cos</mi></math> <math><mi>α</mi></math> を求める</h3>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><msup><mi>sin</mi><mn>2</mn></msup><mi>α</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>α</mi><mo>=</mo><mn>1</mn></math>ここでは <math><mi>sin</mi><mi>α</mi><mo>=</mo><mfrac><mrow><mn>3</mn></mrow><mrow><mn>5</mn></mrow></mfrac></math> を代入して <math><mi>cos</mi><mi>α</mi></math> を求める。第 1 象限だから符号は正である。</p><p><math><msup><mi>sin</mi><mn>2</mn></msup><mi>α</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>α</mi><mo>=</mo><mn>1</mn></math>に<math><mi>sin</mi><mi>α</mi><mo>=</mo><mfrac><mn>3</mn><mn>5</mn></mfrac></math> を代入しよう。<br><math><mn>0</mn><mo>&lt;</mo><mi>α</mi><mo>&lt;</mo><mfrac><mi>π</mi><mn>2</mn></mfrac><mo>(</mo></math>第 1 象限）だから <math><mi>cos</mi></math> <math><mi>α</mi></math> > 0 だよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― cos α の値を計算する</h3>
-          <p>cos α = √<span class="rad">1 − sin² α</span> = √<span class="rad">1 − (<span class="frac"><span class="num">3</span><span class="den">5</span></span>)²</span> を計算すると cos α = <span class="frac"><span class="num">4</span><span class="den">5</span></span>。あとは 2 倍角の公式 1 に代入しよう。</p>
+          <h3>ヒント 2 ― <math><mi>cos</mi></math> <math><mi>α</mi></math> の値を計算する</h3>
+          <p><math><mi>cos</mi><mi>α</mi><mo>=</mo><msqrt><mrow><mn>1</mn><mo>−</mo><msup><mi>sin</mi><mn>2</mn></msup><mi>α</mi></mrow></msqrt><mo>=</mo><msqrt><mrow><mn>1</mn><mo>−</mo><msup><mrow><mo>(</mo><mfrac><mn>3</mn><mn>5</mn></mfrac><mo>)</mo></mrow><mn>2</mn></msup></mrow></msqrt></math> を計算すると<math><mi>cos</mi><mi>α</mi><mo>=</mo><mfrac><mn>4</mn><mn>5</mn></mfrac></math>。あとは 2 倍角の公式 1 に代入しよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">sin 2α = <span class="frac"><span class="num">24</span><span class="den">25</span></span></p>
-          <p>sin 2α = 2 sin α cos α = 2・<span class="frac"><span class="num">3</span><span class="den">5</span></span>・<span class="frac"><span class="num">4</span><span class="den">5</span></span></p>
+          <p class="big"><math display="block"><mi>sin</mi><mn>2</mn><mi>α</mi><mo>=</mo><mfrac><mn>24</mn><mn>25</mn></mfrac></math></p><p class="cite"><span class="cite-tag">使う公式</span><math><mi>sin</mi><mn>2</mn><mi>α</mi><mo>=</mo><mn>2</mn><mi>sin</mi><mi>α</mi><mi>cos</mi><mi>α</mi></math><math><mi>sin</mi><mi>α</mi><mo>=</mo><mfrac><mrow><mn>3</mn></mrow><mrow><mn>5</mn></mrow></mfrac></math> と求めた <math><mi>cos</mi><mi>α</mi><mo>=</mo><mfrac><mrow><mn>4</mn></mrow><mrow><mn>5</mn></mrow></mfrac></math> を代入して、解答の計算を始める。</p>
+          <p><math><mi>sin</mi><mn>2</mn><mi>α</mi><mo>=</mo><mn>2</mn><mi>sin</mi><mi>α</mi><mi>cos</mi><mi>α</mi><mo>=</mo><mn>2</mn><mo>⋅</mo><mfrac><mn>3</mn><mn>5</mn></mfrac><mo>⋅</mo><mfrac><mn>4</mn><mn>5</mn></mfrac></math></p>
         </div>
         <p class="prob-done">例13 クリア！　次は練習30に挑戦しよう。</p>
       </section>
@@ -381,13 +438,13 @@
         <h2>練習問題に挑戦</h2>
         <span class="pno">教科書 p.138</span>
       </div>
-      <section class="card prob" id="prob-ren30" data-label="練習30">
+      <section class="nofig card prob" id="prob-ren30" data-label="練習30">
         <div class="prob-head">
           <span class="prob-tag ren">練習 30</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
         <div class="qside">
-        <p class="prob-q"><span class="frac"><span class="num">π</span><span class="den">2</span></span> < α < π で，cos α = −<span class="frac"><span class="num">√<span class="rad">5</span></span><span class="den">3</span></span> のとき，次の値を求めよ。</p>
+        <p class="prob-q"><math><mfrac><mi>π</mi><mn>2</mn></mfrac><mo>&lt;</mo><mi>α</mi><mo>&lt;</mo><mi>π</mi></math>で<math><mo>,</mo><mi>cos</mi><mi>α</mi><mo>=</mo><mo>−</mo><mfrac><msqrt><mn>5</mn></msqrt><mn>3</mn></mfrac></math> のとき，次の値を求めよ。</p>
         </div>
         <div class="tabs" role="tablist" aria-label="練習30の小問">
           <button class="tab" role="tab" data-tab="ren30-1" aria-selected="true">(1)</button>
@@ -396,84 +453,84 @@
         </div>
         <div class="tabpanel show" id="panel-ren30-1" data-flow="ren30-1" data-label="練習30 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　sin α</span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><mi>sin</mi></math> <math><mi>α</mi></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="quiz" id="qz-ren30-1" data-correct="1">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><span class="frac"><span class="num">2</span><span class="den">3</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>−<span class="frac"><span class="num">2</span><span class="den">3</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><span class="frac"><span class="num">√<span class="rad">5</span></span><span class="den">3</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>−<span class="frac"><span class="num">√<span class="rad">5</span></span><span class="den">3</span></span></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mfrac><mn>2</mn><mn>3</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mo>−</mo><mfrac><mn>2</mn><mn>3</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mfrac><msqrt><mn>5</mn></msqrt><mn>3</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mo>−</mo><mfrac><msqrt><mn>5</mn></msqrt><mn>3</mn></mfrac></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
           <p class="verdict"></p>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― sin² α を求める</h3>
-          <p>sin² α = 1 − cos² α = 1 − (−<span class="frac"><span class="num">√<span class="rad">5</span></span><span class="den">3</span></span>)² を計算しよう。</p>
+          <h3>ヒント<math><mn>1</mn><mo>―</mo><msup><mi>sin</mi><mn>2</mn></msup><mi>α</mi></math>を求める</h3>
+          <p><math><msup><mi>sin</mi><mn>2</mn></msup><mi>α</mi><mo>=</mo><mn>1</mn><mo>−</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>α</mi><mo>=</mo><mn>1</mn><mo>−</mo><msup><mrow><mo>(</mo><mo>−</mo><mfrac><msqrt><mn>5</mn></msqrt><mn>3</mn></mfrac><mo>)</mo></mrow><mn>2</mn></msup></math>を計算しよう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 符号を判断する</h3>
-          <p>sin² α = 1 − <span class="frac"><span class="num">5</span><span class="den">9</span></span> = <span class="frac"><span class="num">4</span><span class="den">9</span></span>。<span class="frac"><span class="num">π</span><span class="den">2</span></span> < α < π （第 2 象限）では sin α > 0 だから，正の平方根をとる。</p>
+          <p><math><msup><mi>sin</mi><mn>2</mn></msup><mi>α</mi><mo>=</mo><mn>1</mn><mo>−</mo><mfrac><mn>5</mn><mn>9</mn></mfrac><mo>=</mo><mfrac><mn>4</mn><mn>9</mn></mfrac></math>。<br><math><mfrac><mi>π</mi><mn>2</mn></mfrac><mo>&lt;</mo><mi>α</mi><mo>&lt;</mo><mi>π</mi><mo>(</mo></math>第 2 象限）では <math><mi>sin</mi></math> <math><mi>α</mi></math> > 0 だから，正の平方根をとる。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">sin α = <span class="frac"><span class="num">2</span><span class="den">3</span></span></p>
+          <p class="big"><math display="block"><mi>sin</mi><mi>α</mi><mo>=</mo><mfrac><mn>2</mn><mn>3</mn></mfrac></math></p>
         </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren30-2" data-flow="ren30-2" data-label="練習30 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　sin 2α</span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><mi>sin</mi></math> 2<math><mi>α</mi></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― 公式 1 に代入する</h3>
-          <p>2 倍角の公式 1 に，(1) で求めた sin α = <span class="frac"><span class="num">2</span><span class="den">3</span></span> と cos α = −<span class="frac"><span class="num">√<span class="rad">5</span></span><span class="den">3</span></span> を代入しよう。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><mi>sin</mi><mn>2</mn><mi>α</mi><mo>=</mo><mn>2</mn><mi>sin</mi><mi>α</mi><mi>cos</mi><mi>α</mi></math>(1) で求めた <math><mi>sin</mi><mi>α</mi><mo>=</mo><mfrac><mrow><mn>2</mn></mrow><mrow><mn>3</mn></mrow></mfrac></math> と <math><mi>cos</mi><mi>α</mi><mo>=</mo><mo>−</mo><mfrac><mrow><msqrt><mn>5</mn></msqrt></mrow><mrow><mn>3</mn></mrow></mfrac></math> を、この公式に代入する。</p><p>2 倍角の公式 1 に，(1) で求めた<math><mi>sin</mi><mi>α</mi><mo>=</mo><mfrac><mn>2</mn><mn>3</mn></mfrac></math> と<math><mi>cos</mi><mi>α</mi><mo>=</mo><mo>−</mo><mfrac><msqrt><mn>5</mn></msqrt><mn>3</mn></mfrac></math> を代入しよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">sin 2α = −<span class="frac"><span class="num">4√<span class="rad">5</span></span><span class="den">9</span></span></p>
-          <p>sin 2α = 2・<span class="frac"><span class="num">2</span><span class="den">3</span></span>・(−<span class="frac"><span class="num">√<span class="rad">5</span></span><span class="den">3</span></span>)</p>
+          <p class="big"><math display="block"><mi>sin</mi><mn>2</mn><mi>α</mi><mo>=</mo><mo>−</mo><mfrac><mrow><mn>4</mn><msqrt><mn>5</mn></msqrt></mrow><mn>9</mn></mfrac></math></p>
+          <p><math><mi>sin</mi><mn>2</mn><mi>α</mi><mo>=</mo><mn>2</mn><mo>⋅</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mo>⋅</mo><mrow><mo>(</mo><mo>−</mo><mfrac><msqrt><mn>5</mn></msqrt><mn>3</mn></mfrac><mo>)</mo></mrow></math></p>
         </div>
           <p class="prob-done">(2) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren30-3" data-flow="ren30-3" data-label="練習30 (3)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(3)　cos 2α</span>
+            <span class="sub prob-q" style="margin:0">(3)　<math><mi>cos</mi></math> 2<math><mi>α</mi></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― 使う形を選ぶ</h3>
-          <p>cos 2α には 3 つの形がある。cos α の値が分かっているので，cos 2α = 2 cos² α − 1 を使うと速い。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><mi>cos</mi><mn>2</mn><mi>α</mi><mo>=</mo><mn>2</mn><msup><mi>cos</mi><mn>2</mn></msup><mi>α</mi><mo>−</mo><mn>1</mn></math><math><mi>cos</mi><mi>α</mi></math> の値が分かっているときは、<math><mi>cos</mi></math> だけのこの形を使うと速い。</p><p><math><mi>cos</mi></math> 2<math><mi>α</mi></math> には 3 つの形がある。<br><math><mi>cos</mi></math> <math><mi>α</mi></math> の値が分かっているので<math><mo>,</mo><mi>cos</mi><mn>2</mn><mi>α</mi><mo>=</mo><mn>2</mn><msup><mi>cos</mi><mn>2</mn></msup><mi>α</mi><mo>−</mo><mn>1</mn></math>を使うと速い。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 代入して計算する</h3>
-          <p>cos² α = (−<span class="frac"><span class="num">√<span class="rad">5</span></span><span class="den">3</span></span>)² = <span class="frac"><span class="num">5</span><span class="den">9</span></span> を代入しよう。</p>
+          <p><math><msup><mi>cos</mi><mn>2</mn></msup><mi>α</mi><mo>=</mo><msup><mrow><mo>(</mo><mo>−</mo><mfrac><msqrt><mn>5</mn></msqrt><mn>3</mn></mfrac><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mfrac><mn>5</mn><mn>9</mn></mfrac></math> を代入しよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">cos 2α = <span class="frac"><span class="num">1</span><span class="den">9</span></span></p>
-          <p>cos 2α = 2・<span class="frac"><span class="num">5</span><span class="den">9</span></span> − 1</p>
+          <p class="big"><math display="block"><mi>cos</mi><mn>2</mn><mi>α</mi><mo>=</mo><mfrac><mn>1</mn><mn>9</mn></mfrac></math></p>
+          <p><math><mi>cos</mi><mn>2</mn><mi>α</mi><mo>=</mo><mn>2</mn><mo>⋅</mo><mfrac><mn>5</mn><mn>9</mn></mfrac><mo>−</mo><mn>1</mn></math></p>
         </div>
           <p class="prob-done">(3) クリア！　練習30は全部おわり。次は練習31だよ。</p>
         </div>
       </section>
-      <section class="card prob" id="prob-ren31" data-label="練習31">
+      <section class="nofig card prob" id="prob-ren31" data-label="練習31">
         <div class="prob-head">
           <span class="prob-tag ren">練習 31</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
         <div class="qside">
-        <p class="prob-q">3α = 2α + α であることを用いて，次の等式を証明せよ。<p class="note" style="margin-top:8px">★印は発展的な練習問題です。</p></p>
+        <p class="prob-q"><math><mn>3</mn><mi>α</mi><mo>=</mo><mn>2</mn><mi>α</mi><mo>+</mo><mi>α</mi></math>であることを用いて，次の等式を証明せよ。<p class="note" style="margin-top:8px">★印は発展的な練習問題です。</p></p>
         </div>
         <div class="tabs" role="tablist" aria-label="練習31の小問">
           <button class="tab" role="tab" data-tab="ren31-1" aria-selected="true">(1)</button>
@@ -481,41 +538,51 @@
         </div>
         <div class="tabpanel show" id="panel-ren31-1" data-flow="ren31-1" data-label="練習31 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　sin 3α = 3 sin α − 4 sin³ α</span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><mi>sin</mi><mn>3</mn><mi>α</mi><mo>=</mo><mn>3</mn><mi>sin</mi><mi>α</mi><mo>−</mo><mn>4</mn><msup><mi>sin</mi><mn>3</mn></msup><mi>α</mi></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― 加法定理で広げる</h3>
-          <p>sin 3α = sin(2α + α) に加法定理を使うと，sin 2α cos α + cos 2α sin α になる。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><mi>sin</mi><mrow><mo>(</mo><mn>2</mn><mi>α</mi><mo>+</mo><mi>α</mi><mo>)</mo></mrow><mo>=</mo><mi>sin</mi><mn>2</mn><mi>α</mi><mi>cos</mi><mi>α</mi><mo>+</mo><mi>cos</mi><mn>2</mn><mi>α</mi><mi>sin</mi><mi>α</mi></math>ここでは <math><mi>sin</mi><mn>3</mn><mi>α</mi><mo>=</mo><mi>sin</mi><mrow><mo>(</mo><mn>2</mn><mi>α</mi><mo>+</mo><mi>α</mi><mo>)</mo></mrow></math> とみて、加法定理で広げる。</p><p><math><mi>sin</mi><mn>3</mn><mi>α</mi><mo>=</mo><mi>sin</mi><mrow><mo>(</mo><mn>2</mn><mi>α</mi><mo>+</mo><mi>α</mi><mo>)</mo></mrow></math>に加法定理を使うと，<math><mi>sin</mi></math> 2<math><mi>α</mi></math> <math><mi>cos</mi></math> <math><mi>α</mi></math> + <math><mi>cos</mi></math> 2<math><mi>α</mi></math> <math><mi>sin</mi></math> <math><mi>α</mi></math> になる。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 2 倍角の公式を代入する</h3>
-          <p>sin 2α = 2 sin α cos α，cos 2α = 1 − 2 sin² α を代入し，さらに cos² α = 1 − sin² α で cos を消そう。</p>
+          <p><math><mi>sin</mi><mn>2</mn><mi>α</mi><mo>=</mo><mn>2</mn><mi>sin</mi><mi>α</mi><mi>cos</mi><mi>α</mi><mo>,</mo><mi>cos</mi><mn>2</mn><mi>α</mi><mo>=</mo><mn>1</mn><mo>−</mo><mn>2</mn><msup><mi>sin</mi><mn>2</mn></msup><mi>α</mi></math>を代入し，さらに<math><msup><mi>cos</mi><mn>2</mn></msup><mi>α</mi><mo>=</mo><mn>1</mn><mo>−</mo><msup><mi>sin</mi><mn>2</mn></msup><mi>α</mi></math>で <math><mi>cos</mi></math> を消そう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
-          <p>sin 3α = 2 sin α cos² α + (1 − 2 sin² α) sin α = 2 sin α (1 − sin² α) + sin α − 2 sin³ α = 3 sin α − 4 sin³ α。よって，sin 3α = 3 sin α − 4 sin³ α。　（証明終わり）</p>
+          <div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>sin</mi><mn>3</mn><mi>α</mi><mo>=</mo><mn>2</mn><mi>sin</mi><mi>α</mi><msup><mi>cos</mi><mn>2</mn></msup><mi>α</mi><mo>+</mo><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mn>2</mn><msup><mi>sin</mi><mn>2</mn></msup><mi>α</mi><mo>)</mo></mrow><mi>sin</mi><mi>α</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mn>3</mn><mi>α</mi></mphantom><mo>=</mo><mn>2</mn><mi>sin</mi><mi>α</mi><mrow><mo>(</mo><mn>1</mn><mo>−</mo><msup><mi>sin</mi><mn>2</mn></msup><mi>α</mi><mo>)</mo></mrow><mo>+</mo><mi>sin</mi><mi>α</mi><mo>−</mo><mn>2</mn><msup><mi>sin</mi><mn>3</mn></msup><mi>α</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mn>3</mn><mi>α</mi></mphantom><mo>=</mo><mn>3</mn><mi>sin</mi><mi>α</mi><mo>−</mo><mn>4</mn><msup><mi>sin</mi><mn>3</mn></msup><mi>α</mi></math></div>
+</div>
+<p>。よって<math><mo>,</mo><mi>sin</mi><mn>3</mn><mi>α</mi><mo>=</mo><mn>3</mn><mi>sin</mi><mi>α</mi><mo>−</mo><mn>4</mn><msup><mi>sin</mi><mn>3</mn></msup><mi>α</mi></math>。　（証明終わり）</p>
         </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren31-2" data-flow="ren31-2" data-label="練習31 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　cos 3α = −3 cos α + 4 cos³ α</span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><mi>cos</mi><mn>3</mn><mi>α</mi><mo>=</mo><mo>−</mo><mn>3</mn><mi>cos</mi><mi>α</mi><mo>+</mo><mn>4</mn><msup><mi>cos</mi><mn>3</mn></msup><mi>α</mi></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― 加法定理で広げる</h3>
-          <p>cos 3α = cos(2α + α) に加法定理を使うと，cos 2α cos α − sin 2α sin α になる。</p>
+          <p><math><mi>cos</mi><mn>3</mn><mi>α</mi><mo>=</mo><mi>cos</mi><mrow><mo>(</mo><mn>2</mn><mi>α</mi><mo>+</mo><mi>α</mi><mo>)</mo></mrow></math>に加法定理を使うと，<math><mi>cos</mi></math> 2<math><mi>α</mi></math> <math><mi>cos</mi></math> <math><mi>α</mi></math> − <math><mi>sin</mi></math> 2<math><mi>α</mi></math> <math><mi>sin</mi></math> <math><mi>α</mi></math> になる。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 2 倍角の公式を代入する</h3>
-          <p>cos 2α = 2 cos² α − 1，sin 2α = 2 sin α cos α を代入し，sin² α = 1 − cos² α で sin を消そう。</p>
+          <p><math><mi>cos</mi><mn>2</mn><mi>α</mi><mo>=</mo><mn>2</mn><msup><mi>cos</mi><mn>2</mn></msup><mi>α</mi><mo>−</mo><mn>1</mn><mo>,</mo><mi>sin</mi><mn>2</mn><mi>α</mi><mo>=</mo><mn>2</mn><mi>sin</mi><mi>α</mi><mi>cos</mi><mi>α</mi></math>を代入し<math><mo>,</mo><msup><mi>sin</mi><mn>2</mn></msup><mi>α</mi><mo>=</mo><mn>1</mn><mo>−</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>α</mi></math>で <math><mi>sin</mi></math> を消そう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
-          <p>cos 3α = (2 cos² α − 1) cos α − 2 sin² α cos α = 2 cos³ α − cos α − 2(1 − cos² α) cos α = 4 cos³ α − 3 cos α。よって，cos 3α = −3 cos α + 4 cos³ α。　（証明終わり）</p>
+          <div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>cos</mi><mn>3</mn><mi>α</mi><mo>=</mo><mrow><mo>(</mo><mn>2</mn><msup><mi>cos</mi><mn>2</mn></msup><mi>α</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mi>cos</mi><mi>α</mi><mo>−</mo><mn>2</mn><msup><mi>sin</mi><mn>2</mn></msup><mi>α</mi><mi>cos</mi><mi>α</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>cos</mi><mn>3</mn><mi>α</mi></mphantom><mo>=</mo><mn>2</mn><msup><mi>cos</mi><mn>3</mn></msup><mi>α</mi><mo>−</mo><mi>cos</mi><mi>α</mi><mo>−</mo><mn>2</mn><mrow><mo>(</mo><mn>1</mn><mo>−</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>α</mi><mo>)</mo></mrow><mi>cos</mi><mi>α</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>cos</mi><mn>3</mn><mi>α</mi></mphantom><mo>=</mo><mn>4</mn><msup><mi>cos</mi><mn>3</mn></msup><mi>α</mi><mo>−</mo><mn>3</mn><mi>cos</mi><mi>α</mi></math></div>
+</div>
+<p>。よって<math><mo>,</mo><mi>cos</mi><mn>3</mn><mi>α</mi><mo>=</mo><mo>−</mo><mn>3</mn><mi>cos</mi><mi>α</mi><mo>+</mo><mn>4</mn><msup><mi>cos</mi><mn>3</mn></msup><mi>α</mi></math>。　（証明終わり）</p>
         </div>
           <p class="prob-done">(2) クリア！　練習31は全部おわり。次は半角の公式だよ。</p>
         </div>
@@ -526,12 +593,16 @@
         <span class="pno">教科書 p.139</span>
       </div>
       <section class="card">
-        <p>2 倍角の公式 cos 2α = 1 − 2 sin² α，cos 2α = 2 cos² α − 1 において，α を <span class="frac"><span class="num">α</span><span class="den">2</span></span> におき換えると，次の等式が得られる。</p>
-        <p class="formula">cos α = 1 − 2 sin² <span class="frac"><span class="num">α</span><span class="den">2</span></span>，　cos α = 2 cos² <span class="frac"><span class="num">α</span><span class="den">2</span></span> − 1</p>
+        <p>2 倍角の公式<math><mi>cos</mi><mn>2</mn><mi>α</mi><mo>=</mo><mn>1</mn><mo>−</mo><mn>2</mn><msup><mi>sin</mi><mn>2</mn></msup><mi>α</mi><mo>,</mo><mi>cos</mi><mn>2</mn><mi>α</mi><mo>=</mo><mn>2</mn><msup><mi>cos</mi><mn>2</mn></msup><mi>α</mi><mo>−</mo><mn>1</mn></math>において，<math><mi>α</mi></math> を <math><mfrac><mi>α</mi><mn>2</mn></mfrac></math> におき換えると，次の等式が得られる。</p>
+        <p class="mq-wide formula"><math display="block"><mi>cos</mi><mi>α</mi><mo>=</mo><mn>1</mn><mo>−</mo><mn>2</mn><msup><mi>sin</mi><mn>2</mn></msup><mfrac><mi>α</mi><mn>2</mn></mfrac><mo>,</mo><mspace width="2em"/><mi>cos</mi><mi>α</mi><mo>=</mo><mn>2</mn><msup><mi>cos</mi><mn>2</mn></msup><mfrac><mi>α</mi><mn>2</mn></mfrac><mo>−</mo><mn>1</mn></math></p>
+<div class="mq-narrow mq-stack">
+<p class="formula"><math display="block"><mi>cos</mi><mi>α</mi><mo>=</mo><mn>1</mn><mo>−</mo><mn>2</mn><msup><mi>sin</mi><mn>2</mn></msup><mfrac><mi>α</mi><mn>2</mn></mfrac><mo>,</mo></math></p>
+<p class="formula"><math display="block"><mi>cos</mi><mi>α</mi><mo>=</mo><mn>2</mn><msup><mi>cos</mi><mn>2</mn></msup><mfrac><mi>α</mi><mn>2</mn></mfrac><mo>−</mo><mn>1</mn></math></p>
+</div>
         <p>これより，正弦，余弦について，次の <span class="key">半角の公式</span> が得られる。</p>
         <div class="def">
           <p><b>正弦，余弦の半角の公式</b></p>
-          <p>sin² <span class="frac"><span class="num">α</span><span class="den">2</span></span> = <span class="frac"><span class="num">1 − cos α</span><span class="den">2</span></span>，　　cos² <span class="frac"><span class="num">α</span><span class="den">2</span></span> = <span class="frac"><span class="num">1 + cos α</span><span class="den">2</span></span></p>
+          <p><math><msup><mi>sin</mi><mn>2</mn></msup><mfrac><mi>α</mi><mn>2</mn></mfrac><mo>=</mo><mfrac><mrow><mn>1</mn><mo>−</mo><mi>cos</mi><mi>α</mi></mrow><mn>2</mn></mfrac><mo>,</mo></math>　　<math><msup><mi>cos</mi><mn>2</mn></msup><mfrac><mi>α</mi><mn>2</mn></mfrac><mo>=</mo><mfrac><mrow><mn>1</mn><mo>+</mo><mi>cos</mi><mi>α</mi></mrow><mn>2</mn></mfrac></math></p>
         </div>
       </section>
       <div class="sec-head">
@@ -539,32 +610,32 @@
         <h2>例14 ― 半角の公式を使う</h2>
         <span class="pno">教科書 p.139</span>
       </div>
-      <section class="card prob" id="prob-ex14" data-flow="ex14" data-label="例14">
+      <section class="nofig card prob" id="prob-ex14" data-flow="ex14" data-label="例14">
         <div class="prob-head">
           <span class="prob-tag ">例 14</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">半角の公式を用いて，cos <span class="frac"><span class="num">π</span><span class="den">8</span></span> の値を求めよ。</p>
+        <p class="prob-q">半角の公式を用いて<math><mo>,</mo><mi>cos</mi><mfrac><mi>π</mi><mn>8</mn></mfrac></math> の値を求めよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― cos² の公式を使う</h3>
-          <p>cos² <span class="frac"><span class="num">π</span><span class="den">8</span></span> = <span class="frac"><span class="num">1 + cos <span class="frac"><span class="num">π</span><span class="den">4</span></span></span><span class="den">2</span></span> に，cos <span class="frac"><span class="num">π</span><span class="den">4</span></span> = <span class="frac"><span class="num">√<span class="rad">2</span></span><span class="den">2</span></span> を代入しよう。</p>
+          <h3>ヒント<math><mn>1</mn><mo>―</mo><msup><mi>cos</mi><mn>2</mn></msup></math>の公式を使う</h3>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><msup><mi>cos</mi><mn>2</mn></msup><mfrac><mrow><mi>α</mi></mrow><mrow><mn>2</mn></mrow></mfrac><mo>=</mo><mfrac><mrow><mn>1</mn><mo>+</mo><mi>cos</mi><mi>α</mi></mrow><mrow><mn>2</mn></mrow></mfrac></math>ここではもとの角を <math><mfrac><mrow><mi>π</mi></mrow><mrow><mn>4</mn></mrow></mfrac></math> として、<math><mfrac><mrow><mi>π</mi></mrow><mrow><mn>8</mn></mrow></mfrac></math> の 2 乗の値をこの公式で求める。</p><p><math><msup><mi>cos</mi><mn>2</mn></msup><mfrac><mi>π</mi><mn>8</mn></mfrac><mo>=</mo><mfrac><mrow><mn>1</mn><mo>+</mo><mi>cos</mi><mfrac><mi>π</mi><mn>4</mn></mfrac></mrow><mn>2</mn></mfrac></math> に<math><mo>,</mo><mi>cos</mi><mfrac><mi>π</mi><mn>4</mn></mfrac><mo>=</mo><mfrac><msqrt><mn>2</mn></msqrt><mn>2</mn></mfrac></math> を代入しよう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 値と符号を決める</h3>
-          <p>cos² <span class="frac"><span class="num">π</span><span class="den">8</span></span> = <span class="frac"><span class="num">2 + √<span class="rad">2</span></span><span class="den">4</span></span> になる。<span class="frac"><span class="num">π</span><span class="den">8</span></span> は第 1 象限の角だから cos <span class="frac"><span class="num">π</span><span class="den">8</span></span> > 0。正の平方根をとる。</p>
+          <p><math><msup><mi>cos</mi><mn>2</mn></msup><mfrac><mi>π</mi><mn>8</mn></mfrac><mo>=</mo><mfrac><mrow><mn>2</mn><mo>+</mo><msqrt><mn>2</mn></msqrt></mrow><mn>4</mn></mfrac></math> になる。<math><mfrac><mi>π</mi><mn>8</mn></mfrac></math> は第 1 象限の角だから<math><mi>cos</mi><mfrac><mi>π</mi><mn>8</mn></mfrac><mo>&gt;</mo><mn>0</mn></math>。正の平方根をとる。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">cos <span class="frac"><span class="num">π</span><span class="den">8</span></span> = <span class="frac"><span class="num">√<span class="rad">2 + √<span class="rad">2</span></span></span><span class="den">2</span></span></p>
-          <p>cos <span class="frac"><span class="num">π</span><span class="den">8</span></span> = √<span class="rad"><span class="frac"><span class="num">2 + √<span class="rad">2</span></span><span class="den">4</span></span></span> を簡単にすると，次の値になる。</p>
+          <p class="big"><math display="block"><mi>cos</mi><mfrac><mi>π</mi><mn>8</mn></mfrac><mo>=</mo><mfrac><msqrt><mrow><mn>2</mn><mo>+</mo><msqrt><mn>2</mn></msqrt></mrow></msqrt><mn>2</mn></mfrac></math></p>
+          <p><math><mi>cos</mi><mfrac><mi>π</mi><mn>8</mn></mfrac><mo>=</mo><msqrt><mfrac><mrow><mn>2</mn><mo>+</mo><msqrt><mn>2</mn></msqrt></mrow><mn>4</mn></mfrac></msqrt></math> を簡単にすると，次の値になる。</p>
         </div>
         <p class="prob-done">例14 クリア！　次は練習32に挑戦しよう。</p>
       </section>
-      <section class="card prob" id="prob-ren32" data-label="練習32">
+      <section class="nofig card prob" id="prob-ren32" data-label="練習32">
         <div class="prob-head">
           <span class="prob-tag ren">練習 32</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
@@ -579,66 +650,66 @@
         </div>
         <div class="tabpanel show" id="panel-ren32-1" data-flow="ren32-1" data-label="練習32 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　sin <span class="frac"><span class="num">π</span><span class="den">8</span></span></span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><mi>sin</mi><mfrac><mi>π</mi><mn>8</mn></mfrac></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
           <div class="quiz" id="qz-ren32-1" data-correct="1">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><span class="frac"><span class="num">√<span class="rad">2 − √<span class="rad">2</span></span></span><span class="den">2</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><span class="frac"><span class="num">√<span class="rad">2 + √<span class="rad">2</span></span></span><span class="den">2</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><span class="frac"><span class="num">√<span class="rad">2</span></span><span class="den">2</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><span class="frac"><span class="num">1</span><span class="den">2</span></span></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mfrac><msqrt><mrow><mn>2</mn><mo>−</mo><msqrt><mn>2</mn></msqrt></mrow></msqrt><mn>2</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mfrac><msqrt><mrow><mn>2</mn><mo>+</mo><msqrt><mn>2</mn></msqrt></mrow></msqrt><mn>2</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mfrac><msqrt><mn>2</mn></msqrt><mn>2</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mfrac><mn>1</mn><mn>2</mn></mfrac></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
           <p class="verdict"></p>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― sin² の公式を使う</h3>
-          <p>sin² <span class="frac"><span class="num">π</span><span class="den">8</span></span> = <span class="frac"><span class="num">1 − cos <span class="frac"><span class="num">π</span><span class="den">4</span></span></span><span class="den">2</span></span> に，cos <span class="frac"><span class="num">π</span><span class="den">4</span></span> = <span class="frac"><span class="num">√<span class="rad">2</span></span><span class="den">2</span></span> を代入しよう。</p>
+          <h3>ヒント<math><mn>1</mn><mo>―</mo><msup><mi>sin</mi><mn>2</mn></msup></math>の公式を使う</h3>
+          <p><math><msup><mi>sin</mi><mn>2</mn></msup><mfrac><mi>π</mi><mn>8</mn></mfrac><mo>=</mo><mfrac><mrow><mn>1</mn><mo>−</mo><mi>cos</mi><mfrac><mi>π</mi><mn>4</mn></mfrac></mrow><mn>2</mn></mfrac></math> に<math><mo>,</mo><mi>cos</mi><mfrac><mi>π</mi><mn>4</mn></mfrac><mo>=</mo><mfrac><msqrt><mn>2</mn></msqrt><mn>2</mn></mfrac></math> を代入しよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">sin <span class="frac"><span class="num">π</span><span class="den">8</span></span> = <span class="frac"><span class="num">√<span class="rad">2 − √<span class="rad">2</span></span></span><span class="den">2</span></span></p>
-          <p>sin² <span class="frac"><span class="num">π</span><span class="den">8</span></span> = <span class="frac"><span class="num">2 − √<span class="rad">2</span></span><span class="den">4</span></span>。<span class="frac"><span class="num">π</span><span class="den">8</span></span> は第 1 象限だから sin <span class="frac"><span class="num">π</span><span class="den">8</span></span> > 0。</p>
+          <p class="big"><math display="block"><mi>sin</mi><mfrac><mi>π</mi><mn>8</mn></mfrac><mo>=</mo><mfrac><msqrt><mrow><mn>2</mn><mo>−</mo><msqrt><mn>2</mn></msqrt></mrow></msqrt><mn>2</mn></mfrac></math></p>
+          <p><math><msup><mi>sin</mi><mn>2</mn></msup><mfrac><mi>π</mi><mn>8</mn></mfrac><mo>=</mo><mfrac><mrow><mn>2</mn><mo>−</mo><msqrt><mn>2</mn></msqrt></mrow><mn>4</mn></mfrac></math>。<math><mfrac><mi>π</mi><mn>8</mn></mfrac></math> は第 1 象限だから<math><mi>sin</mi><mfrac><mi>π</mi><mn>8</mn></mfrac><mo>&gt;</mo><mn>0</mn></math>。</p>
         </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren32-2" data-flow="ren32-2" data-label="練習32 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　sin <span class="frac"><span class="num">3</span><span class="den">8</span></span> π</span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><mi>sin</mi><mfrac><mn>3</mn><mn>8</mn></mfrac><mi>π</mi></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― sin² の公式を使う</h3>
-          <p>sin² <span class="frac"><span class="num">3</span><span class="den">8</span></span> π = <span class="frac"><span class="num">1 − cos <span class="frac"><span class="num">3</span><span class="den">4</span></span> π</span><span class="den">2</span></span>。cos <span class="frac"><span class="num">3</span><span class="den">4</span></span> π = −<span class="frac"><span class="num">√<span class="rad">2</span></span><span class="den">2</span></span> だよ。</p>
+          <h3>ヒント<math><mn>1</mn><mo>―</mo><msup><mi>sin</mi><mn>2</mn></msup></math>の公式を使う</h3>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><msup><mi>sin</mi><mn>2</mn></msup><mfrac><mrow><mi>α</mi></mrow><mrow><mn>2</mn></mrow></mfrac><mo>=</mo><mfrac><mrow><mn>1</mn><mo>−</mo><mi>cos</mi><mi>α</mi></mrow><mrow><mn>2</mn></mrow></mfrac></math>ここではもとの角を <math><mfrac><mrow><mn>3</mn></mrow><mrow><mn>4</mn></mrow></mfrac><mi>π</mi></math> として、<math><mfrac><mrow><mn>3</mn></mrow><mrow><mn>8</mn></mrow></mfrac><mi>π</mi></math> の 2 乗の値をこの公式で求める。</p><p><math><msup><mi>sin</mi><mn>2</mn></msup><mfrac><mn>3</mn><mn>8</mn></mfrac><mi>π</mi><mo>=</mo><mfrac><mrow><mn>1</mn><mo>−</mo><mi>cos</mi><mfrac><mn>3</mn><mn>4</mn></mfrac><mi>π</mi></mrow><mn>2</mn></mfrac></math>。<math><mi>cos</mi><mfrac><mn>3</mn><mn>4</mn></mfrac><mi>π</mi><mo>=</mo><mo>−</mo><mfrac><msqrt><mn>2</mn></msqrt><mn>2</mn></mfrac></math> だよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">sin <span class="frac"><span class="num">3</span><span class="den">8</span></span> π = <span class="frac"><span class="num">√<span class="rad">2 + √<span class="rad">2</span></span></span><span class="den">2</span></span></p>
-          <p>sin² <span class="frac"><span class="num">3</span><span class="den">8</span></span> π = <span class="frac"><span class="num">2 + √<span class="rad">2</span></span><span class="den">4</span></span>。<span class="frac"><span class="num">3</span><span class="den">8</span></span> π は第 1 象限だから sin は正。</p>
+          <p class="big"><math display="block"><mi>sin</mi><mfrac><mn>3</mn><mn>8</mn></mfrac><mi>π</mi><mo>=</mo><mfrac><msqrt><mrow><mn>2</mn><mo>+</mo><msqrt><mn>2</mn></msqrt></mrow></msqrt><mn>2</mn></mfrac></math></p>
+          <p><math><msup><mi>sin</mi><mn>2</mn></msup><mfrac><mn>3</mn><mn>8</mn></mfrac><mi>π</mi><mo>=</mo><mfrac><mrow><mn>2</mn><mo>+</mo><msqrt><mn>2</mn></msqrt></mrow><mn>4</mn></mfrac></math>。<math><mfrac><mn>3</mn><mn>8</mn></mfrac><mi>π</mi></math>は第 1 象限だから <math><mi>sin</mi></math> は正。</p>
         </div>
           <p class="prob-done">(2) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren32-3" data-flow="ren32-3" data-label="練習32 (3)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(3)　cos <span class="frac"><span class="num">3</span><span class="den">8</span></span> π</span>
+            <span class="sub prob-q" style="margin:0">(3)　<math><mi>cos</mi><mfrac><mn>3</mn><mn>8</mn></mfrac><mi>π</mi></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― cos² の公式を使う</h3>
-          <p>cos² <span class="frac"><span class="num">3</span><span class="den">8</span></span> π = <span class="frac"><span class="num">1 + cos <span class="frac"><span class="num">3</span><span class="den">4</span></span> π</span><span class="den">2</span></span> に，cos <span class="frac"><span class="num">3</span><span class="den">4</span></span> π = −<span class="frac"><span class="num">√<span class="rad">2</span></span><span class="den">2</span></span> を代入しよう。</p>
+          <h3>ヒント<math><mn>1</mn><mo>―</mo><msup><mi>cos</mi><mn>2</mn></msup></math>の公式を使う</h3>
+          <p><math><msup><mi>cos</mi><mn>2</mn></msup><mfrac><mn>3</mn><mn>8</mn></mfrac><mi>π</mi><mo>=</mo><mfrac><mrow><mn>1</mn><mo>+</mo><mi>cos</mi><mfrac><mn>3</mn><mn>4</mn></mfrac><mi>π</mi></mrow><mn>2</mn></mfrac></math> に<math><mo>,</mo><mi>cos</mi><mfrac><mn>3</mn><mn>4</mn></mfrac><mi>π</mi><mo>=</mo><mo>−</mo><mfrac><msqrt><mn>2</mn></msqrt><mn>2</mn></mfrac></math> を代入しよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">cos <span class="frac"><span class="num">3</span><span class="den">8</span></span> π = <span class="frac"><span class="num">√<span class="rad">2 − √<span class="rad">2</span></span></span><span class="den">2</span></span></p>
-          <p>cos² <span class="frac"><span class="num">3</span><span class="den">8</span></span> π = <span class="frac"><span class="num">2 − √<span class="rad">2</span></span><span class="den">4</span></span>。<span class="frac"><span class="num">3</span><span class="den">8</span></span> π は第 1 象限だから cos は正。</p>
+          <p class="big"><math display="block"><mi>cos</mi><mfrac><mn>3</mn><mn>8</mn></mfrac><mi>π</mi><mo>=</mo><mfrac><msqrt><mrow><mn>2</mn><mo>−</mo><msqrt><mn>2</mn></msqrt></mrow></msqrt><mn>2</mn></mfrac></math></p>
+          <p><math><msup><mi>cos</mi><mn>2</mn></msup><mfrac><mn>3</mn><mn>8</mn></mfrac><mi>π</mi><mo>=</mo><mfrac><mrow><mn>2</mn><mo>−</mo><msqrt><mn>2</mn></msqrt></mrow><mn>4</mn></mfrac></math>。<math><mfrac><mn>3</mn><mn>8</mn></mfrac><mi>π</mi></math>は第 1 象限だから <math><mi>cos</mi></math> は正。</p>
         </div>
           <p class="prob-done">(3) クリア！　練習32は全部おわり。次は正接の公式だよ。</p>
         </div>
@@ -647,10 +718,10 @@
         <p>正接の 2 倍角，半角については，次の公式が成り立つ。</p>
         <div class="def">
           <p><b>正接の 2 倍角，半角の公式</b></p>
-          <p>tan 2α = <span class="frac"><span class="num">2 tan α</span><span class="den">1 − tan² α</span></span>，　　tan² <span class="frac"><span class="num">α</span><span class="den">2</span></span> = <span class="frac"><span class="num">1 − cos α</span><span class="den">1 + cos α</span></span></p>
+          <p><math><mi>tan</mi><mn>2</mn><mi>α</mi><mo>=</mo><mfrac><mrow><mn>2</mn><mi>tan</mi><mi>α</mi></mrow><mrow><mn>1</mn><mo>−</mo><msup><mi>tan</mi><mn>2</mn></msup><mi>α</mi></mrow></mfrac><mo>,</mo></math>　　<math><msup><mi>tan</mi><mn>2</mn></msup><mfrac><mi>α</mi><mn>2</mn></mfrac><mo>=</mo><mfrac><mrow><mn>1</mn><mo>−</mo><mi>cos</mi><mi>α</mi></mrow><mrow><mn>1</mn><mo>+</mo><mi>cos</mi><mi>α</mi></mrow></mfrac></math></p>
         </div>
       </section>
-      <section class="card prob" id="prob-ren33" data-label="練習33">
+      <section class="nofig card prob" id="prob-ren33" data-label="練習33">
         <div class="prob-head">
           <span class="prob-tag ren">練習 33</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
@@ -670,31 +741,31 @@
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― tan 2α から確かめる</h3>
-          <p>tan 2α = <span class="frac"><span class="num">sin 2α</span><span class="den">cos 2α</span></span> に 2 倍角の公式を代入し，分母と分子を cos² α で割ってみよう。</p>
+          <h3>ヒント 1 ― <math><mi>tan</mi></math> 2<math><mi>α</mi></math> から確かめる</h3>
+          <p class="cite"><span class="cite-tag">使う定義</span><math><mi>tan</mi><mi>α</mi><mo>=</mo><mfrac><mrow><mi>sin</mi><mi>α</mi></mrow><mrow><mi>cos</mi><mi>α</mi></mrow></mfrac></math><math><mi>tan</mi><mn>2</mn><mi>α</mi></math> を <math><mi>sin</mi><mn>2</mn><mi>α</mi></math> と <math><mi>cos</mi><mn>2</mn><mi>α</mi></math> の商として表し、2 倍角の公式を代入する。</p><p><math><mi>tan</mi><mn>2</mn><mi>α</mi><mo>=</mo><mfrac><mrow><mi>sin</mi><mn>2</mn><mi>α</mi></mrow><mrow><mi>cos</mi><mn>2</mn><mi>α</mi></mrow></mfrac></math> に 2 倍角の公式を代入し，分母と分子を<math><msup><mi>cos</mi><mn>2</mn></msup><mi>α</mi></math>で割ってみよう。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― tan² の公式を確かめる</h3>
-          <p>tan² <span class="frac"><span class="num">α</span><span class="den">2</span></span> = <span class="frac"><span class="num">sin² <span class="frac"><span class="num">α</span><span class="den">2</span></span></span><span class="den">cos² <span class="frac"><span class="num">α</span><span class="den">2</span></span></span></span> に，半角の公式を代入しよう。</p>
+          <h3>ヒント<math><mn>2</mn><mo>―</mo><msup><mi>tan</mi><mn>2</mn></msup></math>の公式を確かめる</h3>
+          <p><math><msup><mi>tan</mi><mn>2</mn></msup><mfrac><mi>α</mi><mn>2</mn></mfrac><mo>=</mo><mfrac><mrow><msup><mi>sin</mi><mn>2</mn></msup><mfrac><mi>α</mi><mn>2</mn></mfrac></mrow><mrow><msup><mi>cos</mi><mn>2</mn></msup><mfrac><mi>α</mi><mn>2</mn></mfrac></mrow></mfrac></math> に，半角の公式を代入しよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
-          <p>tan 2α = <span class="frac"><span class="num">2 sin α cos α</span><span class="den">cos² α − sin² α</span></span> = <span class="frac"><span class="num">2 tan α</span><span class="den">1 − tan² α</span></span>。また，tan² <span class="frac"><span class="num">α</span><span class="den">2</span></span> = <span class="frac"><span class="num"><span class="frac"><span class="num">1 − cos α</span><span class="den">2</span></span></span><span class="den"><span class="frac"><span class="num">1 + cos α</span><span class="den">2</span></span></span></span> = <span class="frac"><span class="num">1 − cos α</span><span class="den">1 + cos α</span></span>。どちらも公式どおりになった。　（確かめ終わり）</p>
+          <p><math><mi>tan</mi><mn>2</mn><mi>α</mi><mo>=</mo><mfrac><mrow><mn>2</mn><mi>sin</mi><mi>α</mi><mi>cos</mi><mi>α</mi></mrow><mrow><msup><mi>cos</mi><mn>2</mn></msup><mi>α</mi><mo>−</mo><msup><mi>sin</mi><mn>2</mn></msup><mi>α</mi></mrow></mfrac><mo>=</mo><mfrac><mrow><mn>2</mn><mi>tan</mi><mi>α</mi></mrow><mrow><mn>1</mn><mo>−</mo><msup><mi>tan</mi><mn>2</mn></msup><mi>α</mi></mrow></mfrac></math>。<br>また<math><mo>,</mo><msup><mi>tan</mi><mn>2</mn></msup><mfrac><mi>α</mi><mn>2</mn></mfrac><mo>=</mo><mfrac><mfrac><mrow><mn>1</mn><mo>−</mo><mi>cos</mi><mi>α</mi></mrow><mn>2</mn></mfrac><mfrac><mrow><mn>1</mn><mo>+</mo><mi>cos</mi><mi>α</mi></mrow><mn>2</mn></mfrac></mfrac><mo>=</mo><mfrac><mrow><mn>1</mn><mo>−</mo><mi>cos</mi><mi>α</mi></mrow><mrow><mn>1</mn><mo>+</mo><mi>cos</mi><mi>α</mi></mrow></mfrac></math>。どちらも公式どおりになった。　（確かめ終わり）</p>
         </div>
           <p class="prob-done">確かめ終わり！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren33-2" data-flow="ren33-2" data-label="練習33 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　tan α = 3 のとき，tan 2α の値</span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><mi>tan</mi><mi>α</mi><mo>=</mo><mn>3</mn></math>のとき，<math><mi>tan</mi></math> 2<math><mi>α</mi></math> の値</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
           <div class="quiz" id="qz-ren33-1" data-correct="1">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>−<span class="frac"><span class="num">3</span><span class="den">4</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><span class="frac"><span class="num">3</span><span class="den">4</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>−<span class="frac"><span class="num">4</span><span class="den">3</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>6</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mo>−</mo><mfrac><mn>3</mn><mn>4</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mfrac><mn>3</mn><mn>4</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mo>−</mo><mfrac><mn>4</mn><mn>3</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mn>6</mn></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
@@ -702,35 +773,35 @@
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― 公式に代入する</h3>
-          <p>tan 2α = <span class="frac"><span class="num">2 tan α</span><span class="den">1 − tan² α</span></span> に tan α = 3 を代入しよう。分母は 1 − 9 = −8 になるよ。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><mi>tan</mi><mn>2</mn><mi>α</mi><mo>=</mo><mfrac><mrow><mn>2</mn><mi>tan</mi><mi>α</mi></mrow><mrow><mn>1</mn><mo>−</mo><msup><mi>tan</mi><mn>2</mn></msup><mi>α</mi></mrow></mfrac></math>ここでは <math><mi>tan</mi><mi>α</mi><mo>=</mo><mn>3</mn></math> を代入する。</p><p><math><mi>tan</mi><mn>2</mn><mi>α</mi><mo>=</mo><mfrac><mrow><mn>2</mn><mi>tan</mi><mi>α</mi></mrow><mrow><mn>1</mn><mo>−</mo><msup><mi>tan</mi><mn>2</mn></msup><mi>α</mi></mrow></mfrac></math> に<math><mi>tan</mi><mi>α</mi><mo>=</mo><mn>3</mn></math>を代入しよう。分母は<math><mn>1</mn><mo>−</mo><mn>9</mn><mo>=</mo><mo>−</mo><mn>8</mn></math>になるよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">tan 2α = −<span class="frac"><span class="num">3</span><span class="den">4</span></span></p>
-          <p>tan 2α = <span class="frac"><span class="num">2・3</span><span class="den">1 − 3²</span></span></p>
+          <p class="big"><math display="block"><mi>tan</mi><mn>2</mn><mi>α</mi><mo>=</mo><mo>−</mo><mfrac><mn>3</mn><mn>4</mn></mfrac></math></p>
+          <p><math><mi>tan</mi><mn>2</mn><mi>α</mi><mo>=</mo><mfrac><mrow><mn>2</mn><mo>⋅</mo><mn>3</mn></mrow><mrow><mn>1</mn><mo>−</mo><msup><mn>3</mn><mn>2</mn></msup></mrow></mfrac></math></p>
         </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren33-3" data-flow="ren33-3" data-label="練習33 (3)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　0 < α < <span class="frac"><span class="num">π</span><span class="den">2</span></span> で，cos α = <span class="frac"><span class="num">2</span><span class="den">3</span></span> のとき，tan <span class="frac"><span class="num">α</span><span class="den">2</span></span> の値</span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><mn>0</mn><mo>&lt;</mo><mi>α</mi><mo>&lt;</mo><mfrac><mi>π</mi><mn>2</mn></mfrac></math> で<math><mo>,</mo><mi>cos</mi><mi>α</mi><mo>=</mo><mfrac><mn>2</mn><mn>3</mn></mfrac></math> のとき<math><mo>,</mo><mi>tan</mi><mfrac><mi>α</mi><mn>2</mn></mfrac></math> の値</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― tan² の公式を使う</h3>
-          <p>tan² <span class="frac"><span class="num">α</span><span class="den">2</span></span> = <span class="frac"><span class="num">1 − cos α</span><span class="den">1 + cos α</span></span> に cos α = <span class="frac"><span class="num">2</span><span class="den">3</span></span> を代入しよう。</p>
+          <h3>ヒント<math><mn>1</mn><mo>―</mo><msup><mi>tan</mi><mn>2</mn></msup></math>の公式を使う</h3>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><msup><mi>tan</mi><mn>2</mn></msup><mfrac><mrow><mi>α</mi></mrow><mrow><mn>2</mn></mrow></mfrac><mo>=</mo><mfrac><mrow><mn>1</mn><mo>−</mo><mi>cos</mi><mi>α</mi></mrow><mrow><mn>1</mn><mo>+</mo><mi>cos</mi><mi>α</mi></mrow></mfrac></math>ここでは <math><mi>cos</mi><mi>α</mi><mo>=</mo><mfrac><mrow><mn>2</mn></mrow><mrow><mn>3</mn></mrow></mfrac></math> を代入する。</p><p><math><msup><mi>tan</mi><mn>2</mn></msup><mfrac><mi>α</mi><mn>2</mn></mfrac><mo>=</mo><mfrac><mrow><mn>1</mn><mo>−</mo><mi>cos</mi><mi>α</mi></mrow><mrow><mn>1</mn><mo>+</mo><mi>cos</mi><mi>α</mi></mrow></mfrac></math> に<math><mi>cos</mi><mi>α</mi><mo>=</mo><mfrac><mn>2</mn><mn>3</mn></mfrac></math> を代入しよう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 符号を判断する</h3>
-          <p>tan² <span class="frac"><span class="num">α</span><span class="den">2</span></span> = <span class="frac"><span class="num">1 − <span class="frac"><span class="num">2</span><span class="den">3</span></span></span><span class="den">1 + <span class="frac"><span class="num">2</span><span class="den">3</span></span></span></span> = <span class="frac"><span class="num">1</span><span class="den">5</span></span>。0 < <span class="frac"><span class="num">α</span><span class="den">2</span></span> < <span class="frac"><span class="num">π</span><span class="den">4</span></span> だから tan <span class="frac"><span class="num">α</span><span class="den">2</span></span> > 0。正の平方根をとる。</p>
+          <p><math><msup><mi>tan</mi><mn>2</mn></msup><mfrac><mi>α</mi><mn>2</mn></mfrac><mo>=</mo><mfrac><mrow><mn>1</mn><mo>−</mo><mfrac><mn>2</mn><mn>3</mn></mfrac></mrow><mrow><mn>1</mn><mo>+</mo><mfrac><mn>2</mn><mn>3</mn></mfrac></mrow></mfrac><mo>=</mo><mfrac><mn>1</mn><mn>5</mn></mfrac></math>。<math><mn>0</mn><mo>&lt;</mo><mfrac><mi>α</mi><mn>2</mn></mfrac><mo>&lt;</mo><mfrac><mi>π</mi><mn>4</mn></mfrac></math> だから<math><mi>tan</mi><mfrac><mi>α</mi><mn>2</mn></mfrac><mo>&gt;</mo><mn>0</mn></math>。正の平方根をとる。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">tan <span class="frac"><span class="num">α</span><span class="den">2</span></span> = <span class="frac"><span class="num">√<span class="rad">5</span></span><span class="den">5</span></span></p>
-          <p>tan <span class="frac"><span class="num">α</span><span class="den">2</span></span> = <span class="frac"><span class="num">1</span><span class="den">√<span class="rad">5</span></span></span> を有理化すると，次の値になる。</p>
+          <p class="big"><math display="block"><mi>tan</mi><mfrac><mi>α</mi><mn>2</mn></mfrac><mo>=</mo><mfrac><msqrt><mn>5</mn></msqrt><mn>5</mn></mfrac></math></p>
+          <p><math><mi>tan</mi><mfrac><mi>α</mi><mn>2</mn></mfrac><mo>=</mo><mfrac><mn>1</mn><msqrt><mn>5</mn></msqrt></mfrac></math> を有理化すると，次の値になる。</p>
         </div>
           <p class="prob-done">(2) クリア！　練習33は全部おわり。次は応用例題4だよ。</p>
         </div>
@@ -740,41 +811,41 @@
         <h2>応用例題4 ― 2 倍角の公式と方程式</h2>
         <span class="pno">教科書 p.140</span>
       </div>
-      <section class="card prob" id="prob-oyo4" data-flow="oyo4" data-label="応用例題4">
+      <section class="nofig card prob" id="prob-oyo4" data-flow="oyo4" data-label="応用例題4">
         <div class="prob-head">
           <span class="prob-tag ouyou">応用例題 4</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
         <div class="qside">
-        <p class="prob-q">0 ≦ θ < 2π のとき，次の方程式を解け。<span class="formula" style="display:block;margin-top:8px">cos 2θ + cos θ + 1 = 0</span></p>
+        <p class="prob-q"><math><mn>0</mn><mo>≦</mo><mi>θ</mi><mo>&lt;</mo><mn>2</mn><mi>π</mi></math>のとき，次の方程式を解け。<p class="formula left"><math display="block"><mi>cos</mi><mn>2</mn><mi>θ</mi><mo>+</mo><mi>cos</mi><mi>θ</mi><mo>+</mo><mn>1</mn><mo>=</mo><mn>0</mn></math></p></p>
         </div>
         <div class="step hint">
           <h3>ヒント 1 ― 考え方</h3>
-          <p>cos θ があるから，2 倍角の公式 cos 2θ = 2 cos² θ − 1 を用いると，cos θ の 2 次方程式が得られる。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><mi>cos</mi><mn>2</mn><mi>θ</mi><mo>=</mo><mn>2</mn><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>−</mo><mn>1</mn></math>方程式に <math><mi>cos</mi><mi>θ</mi></math> が残っているので、<math><mi>cos</mi></math> だけのこの形で置き換える。</p><p><math><mi>cos</mi></math> <math><mi>θ</mi></math> があるから，2 倍角の公式<math><mi>cos</mi><mn>2</mn><mi>θ</mi><mo>=</mo><mn>2</mn><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>−</mo><mn>1</mn></math>を用いると，<math><mi>cos</mi></math> <math><mi>θ</mi></math> の 2 次方程式が得られる。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 因数分解する</h3>
-          <p>代入すると (2 cos² θ − 1) + cos θ + 1 = 0。整理すると cos θ (2 cos θ + 1) = 0 になる。</p>
+          <p>代入すると<math><mrow><mo>(</mo><mn>2</mn><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mo>+</mo><mi>cos</mi><mi>θ</mi><mo>+</mo><mn>1</mn><mo>=</mo><mn>0</mn></math>。整理すると<math><mi>cos</mi><mi>θ</mi><mrow><mo>(</mo><mn>2</mn><mi>cos</mi><mi>θ</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow><mo>=</mo><mn>0</mn></math>になる。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 3 ― それぞれ解く</h3>
-          <p>cos θ = 0 のとき θ = <span class="frac"><span class="num">π</span><span class="den">2</span></span>，<span class="frac"><span class="num">3</span><span class="den">2</span></span>π。cos θ = −<span class="frac"><span class="num">1</span><span class="den">2</span></span> のとき θ = <span class="frac"><span class="num">2</span><span class="den">3</span></span>π，<span class="frac"><span class="num">4</span><span class="den">3</span></span>π（0 ≦ θ < 2π の範囲で）。</p>
+          <p><math><mi>cos</mi><mi>θ</mi><mo>=</mo><mn>0</mn></math>のとき<math><mi>θ</mi><mo>=</mo><mfrac><mi>π</mi><mn>2</mn></mfrac><mo>,</mo><mfrac><mn>3</mn><mn>2</mn></mfrac><mi>π</mi></math>。<math><mi>cos</mi><mi>θ</mi><mo>=</mo><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math> のとき<math><mi>θ</mi><mo>=</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mi>π</mi><mo>,</mo><mfrac><mn>4</mn><mn>3</mn></mfrac><mi>π</mi><mo>(</mo><mn>0</mn><mo>≦</mo><mi>θ</mi><mo>&lt;</mo><mn>2</mn><mi>π</mi></math>の範囲で）。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">θ = <span class="frac"><span class="num">π</span><span class="den">2</span></span>，<span class="frac"><span class="num">3</span><span class="den">2</span></span>π，<span class="frac"><span class="num">2</span><span class="den">3</span></span>π，<span class="frac"><span class="num">4</span><span class="den">3</span></span>π</p>
+          <p class="big"><math display="block"><mi>θ</mi><mo>=</mo><mfrac><mi>π</mi><mn>2</mn></mfrac><mo>,</mo><mfrac><mn>3</mn><mn>2</mn></mfrac><mi>π</mi><mo>,</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mi>π</mi><mo>,</mo><mfrac><mn>4</mn><mn>3</mn></mfrac><mi>π</mi></math></p><p class="cite"><span class="cite-tag">使う公式</span><math><mi>cos</mi><mn>2</mn><mi>θ</mi><mo>=</mo><mn>2</mn><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>−</mo><mn>1</mn></math>この置き換えで得た 2 次方程式を解いて、解答の計算を始める。</p>
         </div>
         <p class="prob-done">応用例題4 クリア！　次は練習34に挑戦しよう。</p>
       </section>
-      <section class="card prob" id="prob-ren34" data-label="練習34">
+      <section class="nofig card prob" id="prob-ren34" data-label="練習34">
         <div class="prob-head">
           <span class="prob-tag ren">練習 34</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
         <div class="qside">
-        <p class="prob-q">0 ≦ θ < 2π のとき，次の方程式を解け。</p>
+        <p class="prob-q"><math><mn>0</mn><mo>≦</mo><mi>θ</mi><mo>&lt;</mo><mn>2</mn><mi>π</mi></math>のとき，次の方程式を解け。</p>
         </div>
         <div class="tabs" role="tablist" aria-label="練習34の小問">
           <button class="tab" role="tab" data-tab="ren34-1" aria-selected="true">(1)</button>
@@ -782,43 +853,43 @@
         </div>
         <div class="tabpanel show" id="panel-ren34-1" data-flow="ren34-1" data-label="練習34 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　cos 2θ + sin θ = 1</span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><mi>cos</mi><mn>2</mn><mi>θ</mi><mo>+</mo><mi>sin</mi><mi>θ</mi><mo>=</mo><mn>1</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― sin θ だけの式にする</h3>
-          <p>sin θ があるから，cos 2θ = 1 − 2 sin² θ を使って，sin θ だけの式にしよう。</p>
+          <h3>ヒント<math><mn>1</mn><mo>―</mo><mi>sin</mi><mi>θ</mi></math>だけの式にする</h3>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><mi>cos</mi><mn>2</mn><mi>θ</mi><mo>=</mo><mn>1</mn><mo>−</mo><mn>2</mn><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi></math>方程式に <math><mi>sin</mi><mi>θ</mi></math> が残っているので、<math><mi>sin</mi></math> だけのこの形で置き換える。</p><p><math><mi>sin</mi></math> <math><mi>θ</mi></math> があるから<math><mo>,</mo><mi>cos</mi><mn>2</mn><mi>θ</mi><mo>=</mo><mn>1</mn><mo>−</mo><mn>2</mn><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi></math>を使って，<math><mi>sin</mi></math> <math><mi>θ</mi></math> だけの式にしよう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 因数分解する</h3>
-          <p>(1 − 2 sin² θ) + sin θ = 1 を整理すると sin θ (1 − 2 sin θ) = 0。sin θ = 0 または sin θ = <span class="frac"><span class="num">1</span><span class="den">2</span></span>。</p>
+          <p><math><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mn>2</mn><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>)</mo></mrow><mo>+</mo><mi>sin</mi><mi>θ</mi><mo>=</mo><mn>1</mn></math>を整理すると<math><mi>sin</mi><mi>θ</mi><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mn>2</mn><mi>sin</mi><mi>θ</mi><mo>)</mo></mrow><mo>=</mo><mn>0</mn></math>。<math><mi>sin</mi><mi>θ</mi><mo>=</mo><mn>0</mn></math>または<math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math>。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">θ = 0，π，<span class="frac"><span class="num">π</span><span class="den">6</span></span>，<span class="frac"><span class="num">5</span><span class="den">6</span></span>π</p>
+          <p class="big"><math display="block"><mi>θ</mi><mo>=</mo><mn>0</mn><mo>,</mo><mi>π</mi><mo>,</mo><mfrac><mi>π</mi><mn>6</mn></mfrac><mo>,</mo><mfrac><mn>5</mn><mn>6</mn></mfrac><mi>π</mi></math></p>
         </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren34-2" data-flow="ren34-2" data-label="練習34 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　sin 2θ + cos θ = 0</span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><mi>sin</mi><mn>2</mn><mi>θ</mi><mo>+</mo><mi>cos</mi><mi>θ</mi><mo>=</mo><mn>0</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― 共通因数をくくる</h3>
-          <p>sin 2θ = 2 sin θ cos θ と変形すると，cos θ が共通因数になる。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><mi>sin</mi><mn>2</mn><mi>θ</mi><mo>=</mo><mn>2</mn><mi>sin</mi><mi>θ</mi><mi>cos</mi><mi>θ</mi></math>左辺の <math><mi>sin</mi><mn>2</mn><mi>θ</mi></math> をこの形に変形すると、<math><mi>cos</mi><mi>θ</mi></math> が共通因数になる。</p><p><math><mi>sin</mi><mn>2</mn><mi>θ</mi><mo>=</mo><mn>2</mn><mi>sin</mi><mi>θ</mi><mi>cos</mi><mi>θ</mi></math>と変形すると，<math><mi>cos</mi></math> <math><mi>θ</mi></math> が共通因数になる。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― それぞれ解く</h3>
-          <p>cos θ (2 sin θ + 1) = 0。cos θ = 0 または sin θ = −<span class="frac"><span class="num">1</span><span class="den">2</span></span>。</p>
+          <p><math><mi>cos</mi><mi>θ</mi><mrow><mo>(</mo><mn>2</mn><mi>sin</mi><mi>θ</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow><mo>=</mo><mn>0</mn></math>。<math><mi>cos</mi><mi>θ</mi><mo>=</mo><mn>0</mn></math>または<math><mi>sin</mi><mi>θ</mi><mo>=</mo><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math>。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">θ = <span class="frac"><span class="num">π</span><span class="den">2</span></span>，<span class="frac"><span class="num">3</span><span class="den">2</span></span>π，<span class="frac"><span class="num">7</span><span class="den">6</span></span>π，<span class="frac"><span class="num">11</span><span class="den">6</span></span>π</p>
+          <p class="big"><math display="block"><mi>θ</mi><mo>=</mo><mfrac><mi>π</mi><mn>2</mn></mfrac><mo>,</mo><mfrac><mn>3</mn><mn>2</mn></mfrac><mi>π</mi><mo>,</mo><mfrac><mn>7</mn><mn>6</mn></mfrac><mi>π</mi><mo>,</mo><mfrac><mn>11</mn><mn>6</mn></mfrac><mi>π</mi></math></p>
         </div>
           <p class="prob-done">(2) クリア！　練習34は全部おわり。次は三角関数の合成だよ。</p>
         </div>
@@ -830,19 +901,25 @@
       </div>
       <section class="card">
         <p>正弦の加法定理を用いると，たとえば</p>
-        <p class="formula left">2 sin(θ + <span class="frac"><span class="num">π</span><span class="den">3</span></span>) = 2(sin θ cos <span class="frac"><span class="num">π</span><span class="den">3</span></span> + cos θ sin <span class="frac"><span class="num">π</span><span class="den">3</span></span>)<br>= 2(<span class="frac"><span class="num">1</span><span class="den">2</span></span> sin θ + <span class="frac"><span class="num">√<span class="rad">3</span></span><span class="den">2</span></span> cos θ) = sin θ + √<span class="rad">3</span> cos θ</p>
+        <p class="formula left"><math><mn>2</mn><mi>sin</mi><mrow><mo>(</mo><mi>θ</mi><mo>+</mo><mfrac><mi>π</mi><mn>3</mn></mfrac><mo>)</mo></mrow><mo>=</mo><mn>2</mn><mrow><mo>(</mo><mi>sin</mi><mi>θ</mi><mi>cos</mi><mfrac><mi>π</mi><mn>3</mn></mfrac><mo>+</mo><mi>cos</mi><mi>θ</mi><mi>sin</mi><mfrac><mi>π</mi><mn>3</mn></mfrac><mo>)</mo></mrow></math><br><math><mo>=</mo><mn>2</mn><mrow><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mi>sin</mi><mi>θ</mi><mo>+</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac><mi>cos</mi><mi>θ</mi><mo>)</mo></mrow><mo>=</mo><mi>sin</mi><mi>θ</mi><mo>+</mo><msqrt><mn>3</mn></msqrt><mi>cos</mi><mi>θ</mi></math></p>
         <p>となる。この計算を逆にたどれば，次の等式が成り立つ。</p>
-        <p class="formula">sin θ + √<span class="rad">3</span> cos θ = 2 sin(θ + <span class="frac"><span class="num">π</span><span class="den">3</span></span>)</p>
-        <p>ここでは，一般に，a sin θ + b cos θ の形の式を r sin(θ + α) の形に変形する方法を考えてみよう。</p>
-        <p>右の図のように，座標が (a, b) である点 P をとる。x 軸の正の部分から線分 OP まで測った角を α とし，OP = r とすると</p>
-<figure><div class="figbox"><svg viewBox="0 0 330 300" role="img" aria-label="座標が (a, b) である点 P。OP = r で，x 軸の正の部分から線分 OP まで測った角が α。"><line x1="44.0" y1="216.9" x2="322.0" y2="216.9" stroke="#33404d" stroke-width="1.5"/><path d="M316.0,212.4 L327.0,216.9 L316.0,221.4 Z" fill="#33404d"/><line x1="90.4" y1="268.0" x2="90.4" y2="12.0" stroke="#33404d" stroke-width="1.5"/><path d="M85.9,18.0 L90.4,7.0 L94.9,18.0 Z" fill="#33404d"/><text x="96.4" y="20.0" class="svg-txt" font-size="14">y</text><text x="314.0" y="209.9" class="svg-txt" font-size="14">x</text><text x="85.4" y="232.9" text-anchor="end" class="svg-txt" font-size="13.5">O</text><line x1="262.9" y1="81.7" x2="262.9" y2="216.9" stroke="#94a3b8" stroke-width="1.1" stroke-dasharray="4 3"/><line x1="262.9" y1="81.7" x2="90.4" y2="81.7" stroke="#94a3b8" stroke-width="1.1" stroke-dasharray="4 3"/><path d="M142.4,216.9 A52.0,52.0 0 0 0 132.8,186.7" fill="none" stroke="#33404d" stroke-width="1.3"/><text x="156.2" y="200.9" text-anchor="middle" class="svg-txt" font-size="13.5">α</text><line x1="90.4" y1="216.9" x2="262.9" y2="81.7" stroke="#1f6fb2" stroke-width="2.4"/><circle cx="262.9" cy="81.7" r="4" fill="#1f6fb2"/><text x="164.7" y="141.3" text-anchor="middle" class="svg-txt" font-size="14">r</text><text x="270.9" y="86.7" class="svg-txt" font-size="14.5">P(a, b)</text></svg></div><figcaption>座標が (a, b) である点 P。OP = r で，x 軸の正の部分から線分 OP まで測った角が α。</figcaption></figure>
-        <p class="formula">a = r cos α，　b = r sin α</p>
-        <p>よって　a sin θ + b cos θ = r cos α sin θ + r sin α cos θ = r (sin θ cos α + cos θ sin α) = r sin(θ + α)。a sin θ + b cos θ のこのような変形を<span class="key">三角関数の合成</span>という。</p>
-        <p>この r，α を求めるには，上で述べたように，点 P(a, b) をとるとよい。ここで，r = √<span class="rad">a² + b²</span> であるから，次のことが成り立つ。</p>
+        <p class="formula"><math display="block"><mi>sin</mi><mi>θ</mi><mo>+</mo><msqrt><mn>3</mn></msqrt><mi>cos</mi><mi>θ</mi><mo>=</mo><mn>2</mn><mi>sin</mi><mrow><mo>(</mo><mi>θ</mi><mo>+</mo><mfrac><mi>π</mi><mn>3</mn></mfrac><mo>)</mo></mrow></math></p>
+        <p>ここでは，一般に，<math><mi>a</mi></math> <math><mi>sin</mi></math> <math><mi>θ</mi></math> + <math><mi>b</mi></math> <math><mi>cos</mi></math> <math><mi>θ</mi></math> の形の式を <math><mi>r</mi></math> <math><mi>sin</mi><mrow><mo>(</mo><mi>θ</mi><mo>+</mo><mi>α</mi><mo>)</mo></mrow></math> の形に変形する方法を考えてみよう。</p>
+        <p>右の図のように，座標が<math><mo>(</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo>)</mo></math>である点 <math><mi>P</mi></math> をとる。<math><mi>x</mi></math> 軸の正の部分から線分 <math><mi>OP</mi></math> まで測った角を <math><mi>α</mi></math> とし<math><mo>,</mo><mi>OP</mi><mo>=</mo><mi>r</mi></math>とすると</p>
+<figure><div class="figbox"><svg viewBox="0 0 330 300" role="img" aria-label="座標が (a, b) である点 P。OP = r で，x 軸の正の部分から線分 OP まで測った角が α。"><line x1="44.0" y1="216.9" x2="322.0" y2="216.9" stroke="#33404d" stroke-width="1.5"/><path d="M316.0,212.4 L327.0,216.9 L316.0,221.4 Z" fill="#33404d"/><line x1="90.4" y1="268.0" x2="90.4" y2="12.0" stroke="#33404d" stroke-width="1.5"/><path d="M85.9,18.0 L90.4,7.0 L94.9,18.0 Z" fill="#33404d"/><text x="96.4" y="20.0" class="svg-txt" font-size="14">y</text><text x="314.0" y="209.9" class="svg-txt" font-size="14">x</text><text x="85.4" y="232.9" text-anchor="end" class="svg-txt" font-size="13.5">O</text><line x1="262.9" y1="81.7" x2="262.9" y2="216.9" stroke="#94a3b8" stroke-width="1.1" stroke-dasharray="4 3"/><line x1="262.9" y1="81.7" x2="90.4" y2="81.7" stroke="#94a3b8" stroke-width="1.1" stroke-dasharray="4 3"/><path d="M142.4,216.9 A52.0,52.0 0 0 0 132.8,186.7" fill="none" stroke="#33404d" stroke-width="1.3"/><text x="156.2" y="200.9" text-anchor="middle" class="svg-txt" font-size="13.5">α</text><line x1="90.4" y1="216.9" x2="262.9" y2="81.7" stroke="#1f6fb2" stroke-width="2.4"/><circle cx="262.9" cy="81.7" r="4" fill="#1f6fb2"/><text x="164.7" y="141.3" text-anchor="middle" class="svg-txt" font-size="14">r</text><text x="270.9" y="86.7" class="svg-txt" font-size="14.5">P(a, b)</text></svg></div><figcaption>座標が<math><mo>(</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo>)</mo></math>である点 <math><mi>P</mi></math>。<math><mi>OP</mi><mo>=</mo><mi>r</mi></math>で，<math><mi>x</mi></math> 軸の正の部分から線分 <math><mi>OP</mi></math> まで測った角が <math><mi>α</mi></math>。</figcaption></figure>
+        <p class="formula"><math display="block"><mi>a</mi><mo>=</mo><mi>r</mi><mi>cos</mi><mi>α</mi><mo>,</mo><mspace width="2em"/><mi>b</mi><mo>=</mo><mi>r</mi><mi>sin</mi><mi>α</mi></math></p>
+        <p>よって</p>
+<div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>a</mi><mi>sin</mi><mi>θ</mi><mo>+</mo><mi>b</mi><mi>cos</mi><mi>θ</mi><mo>=</mo><mi>r</mi><mi>cos</mi><mi>α</mi><mi>sin</mi><mi>θ</mi><mo>+</mo><mi>r</mi><mi>sin</mi><mi>α</mi><mi>cos</mi><mi>θ</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>a</mi><mi>sin</mi><mi>θ</mi><mo>+</mo><mi>b</mi><mi>cos</mi><mi>θ</mi></mphantom><mo>=</mo><mi>r</mi><mrow><mo>(</mo><mi>sin</mi><mi>θ</mi><mi>cos</mi><mi>α</mi><mo>+</mo><mi>cos</mi><mi>θ</mi><mi>sin</mi><mi>α</mi><mo>)</mo></mrow></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>a</mi><mi>sin</mi><mi>θ</mi><mo>+</mo><mi>b</mi><mi>cos</mi><mi>θ</mi></mphantom><mo>=</mo><mi>r</mi><mi>sin</mi><mrow><mo>(</mo><mi>θ</mi><mo>+</mo><mi>α</mi><mo>)</mo></mrow></math></div>
+</div>
+<p>。<math><mi>a</mi></math> <math><mi>sin</mi></math> <math><mi>θ</mi></math> + <math><mi>b</mi></math> <math><mi>cos</mi></math> <math><mi>θ</mi></math> のこのような変形を<span class="key">三角関数の合成</span>という。</p>
+        <p>この <math><mi>r</mi></math>，<math><mi>α</mi></math> を求めるには，上で述べたように，点 <math><mi>P</mi><mrow><mo>(</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo>)</mo></mrow></math> をとるとよい。ここで<math><mo>,</mo><mi>r</mi><mo>=</mo><msqrt><mrow><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup></mrow></msqrt></math> であるから，次のことが成り立つ。</p>
         <div class="def">
           <p><b>三角関数の合成</b></p>
-          <p>a sin θ + b cos θ = √<span class="rad">a² + b²</span> sin(θ + α)</p>
-          <p>ただし　cos α = <span class="frac"><span class="num">a</span><span class="den">√<span class="rad">a² + b²</span></span></span>，　sin α = <span class="frac"><span class="num">b</span><span class="den">√<span class="rad">a² + b²</span></span></span></p>
+          <p><math><mi>a</mi><mi>sin</mi><mi>θ</mi><mo>+</mo><mi>b</mi><mi>cos</mi><mi>θ</mi><mo>=</mo><msqrt><mrow><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup></mrow></msqrt><mi>sin</mi><mrow><mo>(</mo><mi>θ</mi><mo>+</mo><mi>α</mi><mo>)</mo></mrow></math></p>
+          <p>ただし　<math><mi>cos</mi><mi>α</mi><mo>=</mo><mfrac><mi>a</mi><msqrt><mrow><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup></mrow></msqrt></mfrac><mo>,</mo></math>　<math><mi>sin</mi><mi>α</mi><mo>=</mo><mfrac><mi>b</mi><msqrt><mrow><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup></mrow></msqrt></mfrac></math></p>
         </div>
       </section>
       <div class="sec-head">
@@ -850,13 +927,13 @@
         <h2>例15 ― 合成の例</h2>
         <span class="pno">教科書 p.141</span>
       </div>
-      <section class="card prob" id="prob-ex15" data-label="例15">
+      <section class="nofig card prob" id="prob-ex15" data-label="例15">
         <div class="prob-head">
           <span class="prob-tag ren">例 15</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
         <div class="qside">
-        <p class="prob-q">次の式は，三角関数の合成の例である。点 P の図で r と α を確かめよう。</p>
+        <p class="prob-q">次の式は，三角関数の合成の例である。点 <math><mi>P</mi></math> の図で <math><mi>r</mi></math> と <math><mi>α</mi></math> を確かめよう。</p>
         </div>
         <div class="tabs" role="tablist" aria-label="例15の小問">
           <button class="tab" role="tab" data-tab="ex15-1" aria-selected="true">(1)</button>
@@ -864,56 +941,56 @@
         </div>
         <div class="tabpanel show" id="panel-ex15-1" data-flow="ex15-1" data-label="例15 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　sin θ + cos θ</span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><mi>sin</mi></math> <math><mi>θ</mi></math> + <math><mi>cos</mi></math> <math><mi>θ</mi></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 点 P をとる</h3>
-          <p>a = 1，b = 1。点 P(1, 1) をとると，r = √<span class="rad">1² + 1²</span> = √<span class="rad">2</span>。</p>
+          <h3>ヒント 1 ― 点 <math><mi>P</mi></math> をとる</h3>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><mi>a</mi><mi>sin</mi><mi>θ</mi><mo>+</mo><mi>b</mi><mi>cos</mi><mi>θ</mi><mo>=</mo><msqrt><mrow><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup></mrow></msqrt><mi>sin</mi><mrow><mo>(</mo><mi>θ</mi><mo>+</mo><mi>α</mi><mo>)</mo></mrow></math>ここでは <math><mi>a</mi><mo>=</mo><mn>1</mn></math>、<math><mi>b</mi><mo>=</mo><mn>1</mn></math> として、点 <math><mi>P</mi><mrow><mo>(</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>)</mo></mrow></math> から <math><mi>r</mi></math> と <math><mi>α</mi></math> を読み取る。</p><p><math><mi>a</mi><mo>=</mo><mn>1</mn><mo>,</mo><mi>b</mi><mo>=</mo><mn>1</mn></math>。点 <math><mi>P</mi><mrow><mo>(</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>)</mo></mrow></math> をとると<math><mo>,</mo><mi>r</mi><mo>=</mo><msqrt><mrow><msup><mn>1</mn><mn>2</mn></msup><mo>+</mo><msup><mn>1</mn><mn>2</mn></msup></mrow></msqrt><mo>=</mo><msqrt><mn>2</mn></msqrt></math>。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― 角 α を読む</h3>
-          <p>cos α = <span class="frac"><span class="num">1</span><span class="den">√<span class="rad">2</span></span></span>，sin α = <span class="frac"><span class="num">1</span><span class="den">√<span class="rad">2</span></span></span> となる角は α = <span class="frac"><span class="num">π</span><span class="den">4</span></span>。解答の図で確かめよう。</p>
+          <h3>ヒント 2 ― 角 <math><mi>α</mi></math> を読む</h3>
+          <p><math><mi>cos</mi><mi>α</mi><mo>=</mo><mfrac><mn>1</mn><msqrt><mn>2</mn></msqrt></mfrac><mo>,</mo><mi>sin</mi><mi>α</mi><mo>=</mo><mfrac><mn>1</mn><msqrt><mn>2</mn></msqrt></mfrac></math> となる角は<math><mi>α</mi><mo>=</mo><mfrac><mi>π</mi><mn>4</mn></mfrac></math>。解答の図で確かめよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">sin θ + cos θ = √<span class="rad">2</span> sin(θ + <span class="frac"><span class="num">π</span><span class="den">4</span></span>)</p>
-          <p>点 P(1, 1) から r と α を読み取ると，次のようになる。</p><figure><div class="figbox"><svg viewBox="0 0 330 300" role="img" aria-label="例15 (1) の点 P(1, 1)。r = √2 で，角は π/4。"><line x1="44.0" y1="213.2" x2="322.0" y2="213.2" stroke="#33404d" stroke-width="1.5"/><path d="M316.0,208.7 L327.0,213.2 L316.0,217.7 Z" fill="#33404d"/><line x1="103.1" y1="268.0" x2="103.1" y2="12.0" stroke="#33404d" stroke-width="1.5"/><path d="M98.6,18.0 L103.1,7.0 L107.6,18.0 Z" fill="#33404d"/><text x="109.1" y="20.0" class="svg-txt" font-size="14">y</text><text x="314.0" y="206.2" class="svg-txt" font-size="14">x</text><text x="98.1" y="229.2" text-anchor="end" class="svg-txt" font-size="13.5">O</text><line x1="221.4" y1="103.7" x2="221.4" y2="213.2" stroke="#94a3b8" stroke-width="1.1" stroke-dasharray="4 3"/><line x1="221.4" y1="103.7" x2="103.1" y2="103.7" stroke="#94a3b8" stroke-width="1.1" stroke-dasharray="4 3"/><path d="M155.1,213.2 A52.0,52.0 0 0 0 139.9,176.4" fill="none" stroke="#33404d" stroke-width="1.3"/><text x="166.9" y="191.8" text-anchor="middle" class="svg-txt" font-size="13.5">π/4</text><line x1="103.1" y1="213.2" x2="221.4" y2="103.7" stroke="#1f6fb2" stroke-width="2.4"/><circle cx="221.4" cy="103.7" r="4" fill="#1f6fb2"/><text x="150.3" y="150.4" text-anchor="middle" class="svg-txt" font-size="14">√2</text><text x="229.4" y="108.7" class="svg-txt" font-size="14.5">P(1, 1)</text></svg></div><figcaption>例15 (1) の点 P(1, 1)。r = √2 で，角は π/4。</figcaption></figure>
+          <p class="big"><math display="block"><mi>sin</mi><mi>θ</mi><mo>+</mo><mi>cos</mi><mi>θ</mi><mo>=</mo><msqrt><mn>2</mn></msqrt><mi>sin</mi><mrow><mo>(</mo><mi>θ</mi><mo>+</mo><mfrac><mi>π</mi><mn>4</mn></mfrac><mo>)</mo></mrow></math></p>
+          <p>点 <math><mi>P</mi><mrow><mo>(</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>)</mo></mrow></math> から <math><mi>r</mi></math> と <math><mi>α</mi></math> を読み取ると，次のようになる。</p><figure><div class="figbox"><svg viewBox="0 0 330 300" role="img" aria-label="例15 (1) の点 P(1, 1)。r = √2 で，角は π/4。"><line x1="44.0" y1="213.2" x2="322.0" y2="213.2" stroke="#33404d" stroke-width="1.5"/><path d="M316.0,208.7 L327.0,213.2 L316.0,217.7 Z" fill="#33404d"/><line x1="103.1" y1="268.0" x2="103.1" y2="12.0" stroke="#33404d" stroke-width="1.5"/><path d="M98.6,18.0 L103.1,7.0 L107.6,18.0 Z" fill="#33404d"/><text x="109.1" y="20.0" class="svg-txt" font-size="14">y</text><text x="314.0" y="206.2" class="svg-txt" font-size="14">x</text><text x="98.1" y="229.2" text-anchor="end" class="svg-txt" font-size="13.5">O</text><line x1="221.4" y1="103.7" x2="221.4" y2="213.2" stroke="#94a3b8" stroke-width="1.1" stroke-dasharray="4 3"/><line x1="221.4" y1="103.7" x2="103.1" y2="103.7" stroke="#94a3b8" stroke-width="1.1" stroke-dasharray="4 3"/><path d="M155.1,213.2 A52.0,52.0 0 0 0 139.9,176.4" fill="none" stroke="#33404d" stroke-width="1.3"/><text x="166.9" y="191.8" text-anchor="middle" class="svg-txt" font-size="13.5">π/4</text><line x1="103.1" y1="213.2" x2="221.4" y2="103.7" stroke="#1f6fb2" stroke-width="2.4"/><circle cx="221.4" cy="103.7" r="4" fill="#1f6fb2"/><text x="150.3" y="150.4" text-anchor="middle" class="svg-txt" font-size="14">√2</text><text x="229.4" y="108.7" class="svg-txt" font-size="14.5">P(1, 1)</text></svg></div><figcaption>例15 (1) の点 <math><mi>P</mi><mrow><mo>(</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>)</mo></mrow></math>。<math><mi>r</mi><mo>=</mo><msqrt><mn>2</mn></msqrt></math>で，角は<math><mfrac><mi>π</mi><mn>4</mn></mfrac></math>。</figcaption></figure>
         </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ex15-2" data-flow="ex15-2" data-label="例15 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　√<span class="rad">3</span> sin θ − cos θ</span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><msqrt><mn>3</mn></msqrt><mi>sin</mi><mi>θ</mi><mo>−</mo><mi>cos</mi><mi>θ</mi></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 点 P をとる</h3>
-          <p>a = √<span class="rad">3</span>，b = −1。点 P(√<span class="rad">3</span>, −1) をとると，r = √<span class="rad">3 + 1</span> = 2。</p>
+          <h3>ヒント 1 ― 点 <math><mi>P</mi></math> をとる</h3>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><mi>a</mi><mi>sin</mi><mi>θ</mi><mo>+</mo><mi>b</mi><mi>cos</mi><mi>θ</mi><mo>=</mo><msqrt><mrow><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup></mrow></msqrt><mi>sin</mi><mrow><mo>(</mo><mi>θ</mi><mo>+</mo><mi>α</mi><mo>)</mo></mrow></math>ここでは <math><mi>a</mi><mo>=</mo><msqrt><mn>3</mn></msqrt></math>、<math><mi>b</mi><mo>=</mo><mo>−</mo><mn>1</mn></math> として、点 <math><mi>P</mi></math> から <math><mi>r</mi></math> と <math><mi>α</mi></math> を読み取る。</p><p><math><mi>a</mi><mo>=</mo><msqrt><mn>3</mn></msqrt><mo>,</mo><mi>b</mi><mo>=</mo><mo>−</mo><mn>1</mn></math>。点<math><mi>P</mi><mrow><mo>(</mo><msqrt><mn>3</mn></msqrt><mo>,</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow></math>をとると<math><mo>,</mo><mi>r</mi><mo>=</mo><msqrt><mrow><mn>3</mn><mo>+</mo><mn>1</mn></mrow></msqrt><mo>=</mo><mn>2</mn></math>。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― 角 α を読む</h3>
-          <p>cos α = <span class="frac"><span class="num">√<span class="rad">3</span></span><span class="den">2</span></span>，sin α = −<span class="frac"><span class="num">1</span><span class="den">2</span></span> となる角は α = −<span class="frac"><span class="num">π</span><span class="den">6</span></span>。解答の図で確かめよう。</p>
+          <h3>ヒント 2 ― 角 <math><mi>α</mi></math> を読む</h3>
+          <p><math><mi>cos</mi><mi>α</mi><mo>=</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac><mo>,</mo><mi>sin</mi><mi>α</mi><mo>=</mo><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math> となる角は<math><mi>α</mi><mo>=</mo><mo>−</mo><mfrac><mi>π</mi><mn>6</mn></mfrac></math>。解答の図で確かめよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">√<span class="rad">3</span> sin θ − cos θ = 2 sin(θ − <span class="frac"><span class="num">π</span><span class="den">6</span></span>)</p>
-          <p>点 P(√<span class="rad">3</span>, −1) から r と α を読み取ると，次のようになる。</p><figure><div class="figbox"><svg viewBox="0 0 330 300" role="img" aria-label="例15 (2) の点 P(√3, −1)。r = 2 で，角は −π/6。"><line x1="44.0" y1="92.7" x2="322.0" y2="92.7" stroke="#33404d" stroke-width="1.5"/><path d="M316.0,88.2 L327.0,92.7 L316.0,97.2 Z" fill="#33404d"/><line x1="98.4" y1="268.0" x2="98.4" y2="12.0" stroke="#33404d" stroke-width="1.5"/><path d="M93.9,18.0 L98.4,7.0 L102.9,18.0 Z" fill="#33404d"/><text x="104.4" y="20.0" class="svg-txt" font-size="14">y</text><text x="314.0" y="85.7" class="svg-txt" font-size="14">x</text><text x="93.4" y="108.7" text-anchor="end" class="svg-txt" font-size="13.5">O</text><line x1="255.4" y1="202.3" x2="255.4" y2="92.7" stroke="#94a3b8" stroke-width="1.1" stroke-dasharray="4 3"/><line x1="255.4" y1="202.3" x2="98.4" y2="202.3" stroke="#94a3b8" stroke-width="1.1" stroke-dasharray="4 3"/><path d="M150.4,92.7 A52.0,52.0 0 0 1 143.4,118.7" fill="none" stroke="#33404d" stroke-width="1.3"/><text x="165.0" y="115.6" text-anchor="middle" class="svg-txt" font-size="13.5">−π/6</text><line x1="98.4" y1="92.7" x2="255.4" y2="202.3" stroke="#1f6fb2" stroke-width="2.4"/><circle cx="255.4" cy="202.3" r="4" fill="#1f6fb2"/><text x="164.9" y="139.5" text-anchor="middle" class="svg-txt" font-size="14">2</text><text x="263.4" y="207.3" class="svg-txt" font-size="14.5">P(√3, −1)</text></svg></div><figcaption>例15 (2) の点 P(√3, −1)。r = 2 で，角は −π/6。</figcaption></figure>
+          <p class="big"><math display="block"><msqrt><mn>3</mn></msqrt><mi>sin</mi><mi>θ</mi><mo>−</mo><mi>cos</mi><mi>θ</mi><mo>=</mo><mn>2</mn><mi>sin</mi><mrow><mo>(</mo><mi>θ</mi><mo>−</mo><mfrac><mi>π</mi><mn>6</mn></mfrac><mo>)</mo></mrow></math></p>
+          <p>点<math><mi>P</mi><mrow><mo>(</mo><msqrt><mn>3</mn></msqrt><mo>,</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow></math>から <math><mi>r</mi></math> と <math><mi>α</mi></math> を読み取ると，次のようになる。</p><figure><div class="figbox"><svg viewBox="0 0 330 300" role="img" aria-label="例15 (2) の点 P(√3, −1)。r = 2 で，角は −π/6。"><line x1="44.0" y1="92.7" x2="322.0" y2="92.7" stroke="#33404d" stroke-width="1.5"/><path d="M316.0,88.2 L327.0,92.7 L316.0,97.2 Z" fill="#33404d"/><line x1="98.4" y1="268.0" x2="98.4" y2="12.0" stroke="#33404d" stroke-width="1.5"/><path d="M93.9,18.0 L98.4,7.0 L102.9,18.0 Z" fill="#33404d"/><text x="104.4" y="20.0" class="svg-txt" font-size="14">y</text><text x="314.0" y="85.7" class="svg-txt" font-size="14">x</text><text x="93.4" y="108.7" text-anchor="end" class="svg-txt" font-size="13.5">O</text><line x1="255.4" y1="202.3" x2="255.4" y2="92.7" stroke="#94a3b8" stroke-width="1.1" stroke-dasharray="4 3"/><line x1="255.4" y1="202.3" x2="98.4" y2="202.3" stroke="#94a3b8" stroke-width="1.1" stroke-dasharray="4 3"/><path d="M150.4,92.7 A52.0,52.0 0 0 1 143.4,118.7" fill="none" stroke="#33404d" stroke-width="1.3"/><text x="165.0" y="115.6" text-anchor="middle" class="svg-txt" font-size="13.5">−π/6</text><line x1="98.4" y1="92.7" x2="255.4" y2="202.3" stroke="#1f6fb2" stroke-width="2.4"/><circle cx="255.4" cy="202.3" r="4" fill="#1f6fb2"/><text x="164.9" y="139.5" text-anchor="middle" class="svg-txt" font-size="14">2</text><text x="263.4" y="207.3" class="svg-txt" font-size="14.5">P(√3, −1)</text></svg></div><figcaption>例15 (2) の点<math><mi>P</mi><mrow><mo>(</mo><msqrt><mn>3</mn></msqrt><mo>,</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow></math>。<math><mi>r</mi><mo>=</mo><mn>2</mn></math>で，角は<math><mo>−</mo><mfrac><mi>π</mi><mn>6</mn></mfrac></math>。</figcaption></figure>
         </div>
           <p class="prob-done">(2) クリア！　例15は全部おわり。次は練習35だよ。</p>
         </div>
       </section>
-      <section class="card prob" id="prob-ren35" data-label="練習35">
+      <section class="nofig card prob" id="prob-ren35" data-label="練習35">
         <div class="prob-head">
           <span class="prob-tag ren">練習 35</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
         <div class="qside">
-        <p class="prob-q">次の式を r sin(θ + α) の形に表せ。ただし，r > 0，−π < α < π とする。</p>
+        <p class="prob-q">次の式を <math><mi>r</mi></math> <math><mi>sin</mi><mrow><mo>(</mo><mi>θ</mi><mo>+</mo><mi>α</mi><mo>)</mo></mrow></math> の形に表せ。ただし<math><mo>,</mo><mi>r</mi><mo>&gt;</mo><mn>0</mn><mo>,</mo><mo>−</mo><mi>π</mi><mo>&lt;</mo><mi>α</mi><mo>&lt;</mo><mi>π</mi></math>とする。</p>
         </div>
         <div class="tabs" role="tablist" aria-label="練習35の小問">
           <button class="tab" role="tab" data-tab="ren35-1" aria-selected="true">(1)</button>
@@ -921,54 +998,54 @@
         </div>
         <div class="tabpanel show" id="panel-ren35-1" data-flow="ren35-1" data-label="練習35 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　√<span class="rad">3</span> sin θ + cos θ</span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><msqrt><mn>3</mn></msqrt><mi>sin</mi><mi>θ</mi><mo>+</mo><mi>cos</mi><mi>θ</mi></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 点 P をとる</h3>
-          <p>a = √<span class="rad">3</span>，b = 1。点 P(√<span class="rad">3</span>, 1) をとると，r = √<span class="rad">3 + 1</span> = 2。</p>
+          <h3>ヒント 1 ― 点 <math><mi>P</mi></math> をとる</h3>
+          <p><math><mi>a</mi><mo>=</mo><msqrt><mn>3</mn></msqrt><mo>,</mo><mi>b</mi><mo>=</mo><mn>1</mn></math>。点<math><mi>P</mi><mrow><mo>(</mo><msqrt><mn>3</mn></msqrt><mo>,</mo><mn>1</mn><mo>)</mo></mrow></math>をとると<math><mo>,</mo><mi>r</mi><mo>=</mo><msqrt><mrow><mn>3</mn><mo>+</mo><mn>1</mn></mrow></msqrt><mo>=</mo><mn>2</mn></math>。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― 角 α を読む</h3>
-          <p>cos α = <span class="frac"><span class="num">√<span class="rad">3</span></span><span class="den">2</span></span>，sin α = <span class="frac"><span class="num">1</span><span class="den">2</span></span> となる角 α は，−π < α < π の範囲で 1 つに決まる。</p>
+          <h3>ヒント 2 ― 角 <math><mi>α</mi></math> を読む</h3>
+          <p><math><mi>cos</mi><mi>α</mi><mo>=</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac><mo>,</mo><mi>sin</mi><mi>α</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math> となる角 <math><mi>α</mi></math> は，−<math><mi>π</mi></math> < <math><mi>α</mi></math> < <math><mi>π</mi></math> の範囲で 1 つに決まる。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">√<span class="rad">3</span> sin θ + cos θ = 2 sin(θ + <span class="frac"><span class="num">π</span><span class="den">6</span></span>)</p>
+          <p class="big"><math display="block"><msqrt><mn>3</mn></msqrt><mi>sin</mi><mi>θ</mi><mo>+</mo><mi>cos</mi><mi>θ</mi><mo>=</mo><mn>2</mn><mi>sin</mi><mrow><mo>(</mo><mi>θ</mi><mo>+</mo><mfrac><mi>π</mi><mn>6</mn></mfrac><mo>)</mo></mrow></math></p>
         </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren35-2" data-flow="ren35-2" data-label="練習35 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　sin θ − cos θ</span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><mi>sin</mi></math> <math><mi>θ</mi></math> − <math><mi>cos</mi></math> <math><mi>θ</mi></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="quiz" id="qz-ren35-2" data-correct="1">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>√<span class="rad">2</span> sin(θ − <span class="frac"><span class="num">π</span><span class="den">4</span></span>)</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>√<span class="rad">2</span> sin(θ + <span class="frac"><span class="num">π</span><span class="den">4</span></span>)</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>2 sin(θ − <span class="frac"><span class="num">π</span><span class="den">4</span></span>)</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>√<span class="rad">2</span> sin(θ − <span class="frac"><span class="num">3</span><span class="den">4</span></span>π)</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><msqrt><mn>2</mn></msqrt><mi>sin</mi><mrow><mo>(</mo><mi>θ</mi><mo>−</mo><mfrac><mi>π</mi><mn>4</mn></mfrac><mo>)</mo></mrow></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><msqrt><mn>2</mn></msqrt><mi>sin</mi><mrow><mo>(</mo><mi>θ</mi><mo>+</mo><mfrac><mi>π</mi><mn>4</mn></mfrac><mo>)</mo></mrow></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mn>2</mn><mi>sin</mi><mrow><mo>(</mo><mi>θ</mi><mo>−</mo><mfrac><mi>π</mi><mn>4</mn></mfrac><mo>)</mo></mrow></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><msqrt><mn>2</mn></msqrt><mi>sin</mi><mrow><mo>(</mo><mi>θ</mi><mo>−</mo><mfrac><mn>3</mn><mn>4</mn></mfrac><mi>π</mi><mo>)</mo></mrow></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
           <p class="verdict"></p>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 点 P をとる</h3>
-          <p>a = 1，b = −1。点 P(1, −1) をとると，r = √<span class="rad">1 + 1</span> = √<span class="rad">2</span>。</p>
+          <h3>ヒント 1 ― 点 <math><mi>P</mi></math> をとる</h3>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><mi>a</mi><mi>sin</mi><mi>θ</mi><mo>+</mo><mi>b</mi><mi>cos</mi><mi>θ</mi><mo>=</mo><msqrt><mrow><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup></mrow></msqrt><mi>sin</mi><mrow><mo>(</mo><mi>θ</mi><mo>+</mo><mi>α</mi><mo>)</mo></mrow></math>ここでは <math><mi>a</mi><mo>=</mo><mn>1</mn></math>、<math><mi>b</mi><mo>=</mo><mo>−</mo><mn>1</mn></math> として、点 <math><mi>P</mi></math> から <math><mi>r</mi></math> と <math><mi>α</mi></math> を読み取る。</p><p><math><mi>a</mi><mo>=</mo><mn>1</mn><mo>,</mo><mi>b</mi><mo>=</mo><mo>−</mo><mn>1</mn></math>。点 <math><mi>P</mi><mrow><mo>(</mo><mn>1</mn><mo>,</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow></math> をとると<math><mo>,</mo><mi>r</mi><mo>=</mo><msqrt><mrow><mn>1</mn><mo>+</mo><mn>1</mn></mrow></msqrt><mo>=</mo><msqrt><mn>2</mn></msqrt></math>。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― 角 α を読む</h3>
-          <p>cos α = <span class="frac"><span class="num">1</span><span class="den">√<span class="rad">2</span></span></span>，sin α = −<span class="frac"><span class="num">1</span><span class="den">√<span class="rad">2</span></span></span> となる角は α = −<span class="frac"><span class="num">π</span><span class="den">4</span></span>。</p>
+          <h3>ヒント 2 ― 角 <math><mi>α</mi></math> を読む</h3>
+          <p><math><mi>cos</mi><mi>α</mi><mo>=</mo><mfrac><mn>1</mn><msqrt><mn>2</mn></msqrt></mfrac><mo>,</mo><mi>sin</mi><mi>α</mi><mo>=</mo><mo>−</mo><mfrac><mn>1</mn><msqrt><mn>2</mn></msqrt></mfrac></math> となる角は<math><mi>α</mi><mo>=</mo><mo>−</mo><mfrac><mi>π</mi><mn>4</mn></mfrac></math>。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">sin θ − cos θ = √<span class="rad">2</span> sin(θ − <span class="frac"><span class="num">π</span><span class="den">4</span></span>)</p>
+          <p class="big"><math display="block"><mi>sin</mi><mi>θ</mi><mo>−</mo><mi>cos</mi><mi>θ</mi><mo>=</mo><msqrt><mn>2</mn></msqrt><mi>sin</mi><mrow><mo>(</mo><mi>θ</mi><mo>−</mo><mfrac><mi>π</mi><mn>4</mn></mfrac><mo>)</mo></mrow></math></p>
         </div>
           <p class="prob-done">(2) クリア！　練習35は全部おわり。次は例題7だよ。</p>
         </div>
@@ -978,28 +1055,28 @@
         <h2>例題7 ― 合成と最大・最小</h2>
         <span class="pno">教科書 p.142</span>
       </div>
-      <section class="card prob" id="prob-reidai7" data-flow="reidai7" data-label="例題7">
+      <section class="nofig card prob" id="prob-reidai7" data-flow="reidai7" data-label="例題7">
         <div class="prob-head">
           <span class="prob-tag ">例題 7</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">次の関数の最大値，最小値を求めよ。<span class="formula" style="display:block;margin-top:8px">y = sin x + cos x</span></p>
+        <p class="prob-q">次の関数の最大値，最小値を求めよ。<p class="formula left"><math display="block"><mi>y</mi><mo>=</mo><mi>sin</mi><mi>x</mi><mo>+</mo><mi>cos</mi><mi>x</mi></math></p></p>
         </div>
         <div class="step hint">
           <h3>ヒント 1 ― まず合成する</h3>
-          <p>例15 (1) で確かめたとおり，sin x + cos x = √<span class="rad">2</span> sin(x + <span class="frac"><span class="num">π</span><span class="den">4</span></span>) と合成できる。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><mi>a</mi><mi>sin</mi><mi>x</mi><mo>+</mo><mi>b</mi><mi>cos</mi><mi>x</mi><mo>=</mo><msqrt><mrow><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup></mrow></msqrt><mi>sin</mi><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mi>α</mi><mo>)</mo></mrow></math>まず左辺をこの形に合成する。ここでは例15 (1) で確かめた結果を使う。</p><p>例15 (1) で確かめたとおり<math><mo>,</mo><mi>sin</mi><mi>x</mi><mo>+</mo><mi>cos</mi><mi>x</mi><mo>=</mo><msqrt><mn>2</mn></msqrt><mi>sin</mi><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mfrac><mi>π</mi><mn>4</mn></mfrac><mo>)</mo></mrow></math>と合成できる。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― sin の値域を使う</h3>
-          <p>−1 ≦ sin(x + <span class="frac"><span class="num">π</span><span class="den">4</span></span>) ≦ 1 だから，y の値域は −√<span class="rad">2</span> ≦ y ≦ √<span class="rad">2</span> になる。</p>
+          <h3>ヒント 2 ― <math><mi>sin</mi></math> の値域を使う</h3>
+          <p class="cite"><span class="cite-tag">使う性質</span><math><mo>−</mo><mn>1</mn><mo>≦</mo><mi>sin</mi><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mi>α</mi><mo>)</mo></mrow><mo>≦</mo><mn>1</mn></math>合成した <math><mi>sin</mi></math> の値域から、関数の最大値・最小値が決まる。</p><p><math><mo>−</mo><mn>1</mn><mo>≦</mo><mi>sin</mi><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mfrac><mi>π</mi><mn>4</mn></mfrac><mo>)</mo></mrow><mo>≦</mo><mn>1</mn></math>だから，<math><mi>y</mi></math> の値域は<math><mo>−</mo><msqrt><mn>2</mn></msqrt><mo>≦</mo><mi>y</mi><mo>≦</mo><msqrt><mn>2</mn></msqrt></math> になる。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">最大値 √<span class="rad">2</span>，　最小値 −√<span class="rad">2</span></p>
-          <p>関数のグラフは次のようになる。y = √<span class="rad">2</span> sin x のグラフを x 軸方向に −<span class="frac"><span class="num">π</span><span class="den">4</span></span> だけ平行移動したものである。</p><figure><div class="figbox"><svg viewBox="0 0 720 330" role="img" aria-label="y = √2 sin(x + π/4) のグラフ（青）。緑の y = √2 sin x を x 軸方向に −π/4 だけ平行移動したもの。"><line x1="50.0" y1="44.3" x2="702.0" y2="44.3" stroke="#94a3b8" stroke-width="1.1" stroke-dasharray="4 3"/><line x1="50.0" y1="265.7" x2="702.0" y2="265.7" stroke="#94a3b8" stroke-width="1.1" stroke-dasharray="4 3"/><line x1="50.0" y1="155.0" x2="710.0" y2="155.0" stroke="#33404d" stroke-width="1.6"/><path d="M704.0,150.0 L715.0,155.0 L704.0,160.0 Z" fill="#33404d"/><line x1="158.7" y1="292.0" x2="158.7" y2="12.0" stroke="#33404d" stroke-width="1.6"/><path d="M153.7,18.0 L158.7,7.0 L163.7,18.0 Z" fill="#33404d"/><text x="165.7" y="20.0" class="svg-txt" font-size="15">y</text><text x="700.0" y="147.0" class="svg-txt" font-size="15">x</text><text x="152.7" y="172.0" text-anchor="end" class="svg-txt" font-size="14">O</text><line x1="104.3" y1="151.0" x2="104.3" y2="159.0" stroke="#33404d" stroke-width="1.3"/><text x="104.3" y="176.0" text-anchor="middle" class="svg-txt" font-size="13.5">−π/4</text><line x1="213.0" y1="151.0" x2="213.0" y2="159.0" stroke="#33404d" stroke-width="1.3"/><text x="213.0" y="176.0" text-anchor="middle" class="svg-txt" font-size="13.5">π/4</text><line x1="321.7" y1="151.0" x2="321.7" y2="159.0" stroke="#33404d" stroke-width="1.3"/><text x="321.7" y="176.0" text-anchor="middle" class="svg-txt" font-size="13.5">3π/4</text><line x1="430.3" y1="151.0" x2="430.3" y2="159.0" stroke="#33404d" stroke-width="1.3"/><text x="430.3" y="176.0" text-anchor="middle" class="svg-txt" font-size="13.5">5π/4</text><line x1="539.0" y1="151.0" x2="539.0" y2="159.0" stroke="#33404d" stroke-width="1.3"/><text x="539.0" y="176.0" text-anchor="middle" class="svg-txt" font-size="13.5">7π/4</text><line x1="647.7" y1="151.0" x2="647.7" y2="159.0" stroke="#33404d" stroke-width="1.3"/><text x="647.7" y="176.0" text-anchor="middle" class="svg-txt" font-size="13.5">9π/4</text><line x1="154.7" y1="44.3" x2="162.7" y2="44.3" stroke="#33404d" stroke-width="1.3"/><text x="150.7" y="49.3" text-anchor="end" class="svg-txt" font-size="13.5">√2</text><line x1="154.7" y1="76.7" x2="162.7" y2="76.7" stroke="#33404d" stroke-width="1.3"/><text x="150.7" y="81.7" text-anchor="end" class="svg-txt" font-size="13.5">1</text><line x1="154.7" y1="265.7" x2="162.7" y2="265.7" stroke="#33404d" stroke-width="1.3"/><text x="150.7" y="270.7" text-anchor="end" class="svg-txt" font-size="13.5">−√2</text><path d="M50.0,233.3 L52.2,230.8 L54.3,228.2 L56.5,225.6 L58.7,222.9 L60.9,220.1 L63.0,217.2 L65.2,214.3 L67.4,211.4 L69.6,208.3 L71.7,205.3 L73.9,202.1 L76.1,199.0 L78.3,195.8 L80.4,192.5 L82.6,189.2 L84.8,185.9 L86.9,182.5 L89.1,179.2 L91.3,175.7 L93.5,172.3 L95.6,168.9 L97.8,165.4 L100.0,162.0 L102.2,158.5 L104.3,155.0 L106.5,151.5 L108.7,148.0 L110.9,144.6 L113.0,141.1 L115.2,137.7 L117.4,134.3 L119.5,130.8 L121.7,127.5 L123.9,124.1 L126.1,120.8 L128.2,117.5 L130.4,114.2 L132.6,111.0 L134.8,107.9 L136.9,104.7 L139.1,101.7 L141.3,98.6 L143.5,95.7 L145.6,92.8 L147.8,89.9 L150.0,87.1 L152.1,84.4 L154.3,81.8 L156.5,79.2 L158.7,76.7 L160.8,74.3 L163.0,72.0 L165.2,69.7 L167.4,67.5 L169.5,65.4 L171.7,63.4 L173.9,61.5 L176.1,59.7 L178.2,58.0 L180.4,56.4 L182.6,54.8 L184.7,53.4 L186.9,52.1 L189.1,50.8 L191.3,49.7 L193.4,48.7 L195.6,47.8 L197.8,47.0 L200.0,46.2 L202.1,45.7 L204.3,45.2 L206.5,44.8 L208.7,44.5 L210.8,44.3 L213.0,44.3 L215.2,44.3 L217.3,44.5 L219.5,44.8 L221.7,45.2 L223.9,45.7 L226.0,46.2 L228.2,47.0 L230.4,47.8 L232.6,48.7 L234.7,49.7 L236.9,50.8 L239.1,52.1 L241.3,53.4 L243.4,54.8 L245.6,56.4 L247.8,58.0 L249.9,59.7 L252.1,61.5 L254.3,63.4 L256.5,65.4 L258.6,67.5 L260.8,69.7 L263.0,72.0 L265.2,74.3 L267.3,76.7 L269.5,79.2 L271.7,81.8 L273.9,84.4 L276.0,87.1 L278.2,89.9 L280.4,92.8 L282.5,95.7 L284.7,98.6 L286.9,101.7 L289.1,104.7 L291.2,107.9 L293.4,111.0 L295.6,114.2 L297.8,117.5 L299.9,120.8 L302.1,124.1 L304.3,127.5 L306.5,130.8 L308.6,134.3 L310.8,137.7 L313.0,141.1 L315.1,144.6 L317.3,148.0 L319.5,151.5 L321.7,155.0 L323.8,158.5 L326.0,162.0 L328.2,165.4 L330.4,168.9 L332.5,172.3 L334.7,175.7 L336.9,179.2 L339.1,182.5 L341.2,185.9 L343.4,189.2 L345.6,192.5 L347.7,195.8 L349.9,199.0 L352.1,202.1 L354.3,205.3 L356.4,208.3 L358.6,211.4 L360.8,214.3 L363.0,217.2 L365.1,220.1 L367.3,222.9 L369.5,225.6 L371.7,228.2 L373.8,230.8 L376.0,233.3 L378.2,235.7 L380.3,238.0 L382.5,240.3 L384.7,242.5 L386.9,244.6 L389.0,246.6 L391.2,248.5 L393.4,250.3 L395.6,252.0 L397.7,253.6 L399.9,255.2 L402.1,256.6 L404.3,257.9 L406.4,259.2 L408.6,260.3 L410.8,261.3 L412.9,262.2 L415.1,263.0 L417.3,263.8 L419.5,264.3 L421.6,264.8 L423.8,265.2 L426.0,265.5 L428.2,265.7 L430.3,265.7 L432.5,265.7 L434.7,265.5 L436.9,265.2 L439.0,264.8 L441.2,264.3 L443.4,263.8 L445.5,263.0 L447.7,262.2 L449.9,261.3 L452.1,260.3 L454.2,259.2 L456.4,257.9 L458.6,256.6 L460.8,255.2 L462.9,253.6 L465.1,252.0 L467.3,250.3 L469.5,248.5 L471.6,246.6 L473.8,244.6 L476.0,242.5 L478.1,240.3 L480.3,238.0 L482.5,235.7 L484.7,233.3 L486.8,230.8 L489.0,228.2 L491.2,225.6 L493.4,222.9 L495.5,220.1 L497.7,217.2 L499.9,214.3 L502.1,211.4 L504.2,208.3 L506.4,205.3 L508.6,202.1 L510.7,199.0 L512.9,195.8 L515.1,192.5 L517.3,189.2 L519.4,185.9 L521.6,182.5 L523.8,179.2 L526.0,175.7 L528.1,172.3 L530.3,168.9 L532.5,165.4 L534.7,162.0 L536.8,158.5 L539.0,155.0 L541.2,151.5 L543.3,148.0 L545.5,144.6 L547.7,141.1 L549.9,137.7 L552.0,134.3 L554.2,130.8 L556.4,127.5 L558.6,124.1 L560.7,120.8 L562.9,117.5 L565.1,114.2 L567.3,111.0 L569.4,107.9 L571.6,104.7 L573.8,101.7 L575.9,98.6 L578.1,95.7 L580.3,92.8 L582.5,89.9 L584.6,87.1 L586.8,84.4 L589.0,81.8 L591.2,79.2 L593.3,76.7 L595.5,74.3 L597.7,72.0 L599.9,69.7 L602.0,67.5 L604.2,65.4 L606.4,63.4 L608.5,61.5 L610.7,59.7 L612.9,58.0 L615.1,56.4 L617.2,54.8 L619.4,53.4 L621.6,52.1 L623.8,50.8 L625.9,49.7 L628.1,48.7 L630.3,47.8 L632.5,47.0 L634.6,46.2 L636.8,45.7 L639.0,45.2 L641.1,44.8 L643.3,44.5 L645.5,44.3 L647.7,44.3 L649.8,44.3 L652.0,44.5 L654.2,44.8 L656.4,45.2 L658.5,45.7 L660.7,46.2 L662.9,47.0 L665.1,47.8 L667.2,48.7 L669.4,49.7 L671.6,50.8 L673.7,52.1 L675.9,53.4 L678.1,54.8 L680.3,56.4 L682.4,58.0 L684.6,59.7 L686.8,61.5 L689.0,63.4 L691.1,65.4 L693.3,67.5 L695.5,69.7 L697.7,72.0 L699.8,74.3 L702.0,76.7" fill="none" stroke="#1f6fb2" stroke-width="2.6"/><path d="M50.0,265.7 L52.2,265.7 L54.3,265.5 L56.5,265.2 L58.7,264.8 L60.9,264.3 L63.0,263.8 L65.2,263.0 L67.4,262.2 L69.6,261.3 L71.7,260.3 L73.9,259.2 L76.1,257.9 L78.3,256.6 L80.4,255.2 L82.6,253.6 L84.8,252.0 L86.9,250.3 L89.1,248.5 L91.3,246.6 L93.5,244.6 L95.6,242.5 L97.8,240.3 L100.0,238.0 L102.2,235.7 L104.3,233.3 L106.5,230.8 L108.7,228.2 L110.9,225.6 L113.0,222.9 L115.2,220.1 L117.4,217.2 L119.5,214.3 L121.7,211.4 L123.9,208.3 L126.1,205.3 L128.2,202.1 L130.4,199.0 L132.6,195.8 L134.8,192.5 L136.9,189.2 L139.1,185.9 L141.3,182.5 L143.5,179.2 L145.6,175.7 L147.8,172.3 L150.0,168.9 L152.1,165.4 L154.3,162.0 L156.5,158.5 L158.7,155.0 L160.8,151.5 L163.0,148.0 L165.2,144.6 L167.4,141.1 L169.5,137.7 L171.7,134.3 L173.9,130.8 L176.1,127.5 L178.2,124.1 L180.4,120.8 L182.6,117.5 L184.7,114.2 L186.9,111.0 L189.1,107.9 L191.3,104.7 L193.4,101.7 L195.6,98.6 L197.8,95.7 L200.0,92.8 L202.1,89.9 L204.3,87.1 L206.5,84.4 L208.7,81.8 L210.8,79.2 L213.0,76.7 L215.2,74.3 L217.3,72.0 L219.5,69.7 L221.7,67.5 L223.9,65.4 L226.0,63.4 L228.2,61.5 L230.4,59.7 L232.6,58.0 L234.7,56.4 L236.9,54.8 L239.1,53.4 L241.3,52.1 L243.4,50.8 L245.6,49.7 L247.8,48.7 L249.9,47.8 L252.1,47.0 L254.3,46.2 L256.5,45.7 L258.6,45.2 L260.8,44.8 L263.0,44.5 L265.2,44.3 L267.3,44.3 L269.5,44.3 L271.7,44.5 L273.9,44.8 L276.0,45.2 L278.2,45.7 L280.4,46.2 L282.5,47.0 L284.7,47.8 L286.9,48.7 L289.1,49.7 L291.2,50.8 L293.4,52.1 L295.6,53.4 L297.8,54.8 L299.9,56.4 L302.1,58.0 L304.3,59.7 L306.5,61.5 L308.6,63.4 L310.8,65.4 L313.0,67.5 L315.1,69.7 L317.3,72.0 L319.5,74.3 L321.7,76.7 L323.8,79.2 L326.0,81.8 L328.2,84.4 L330.4,87.1 L332.5,89.9 L334.7,92.8 L336.9,95.7 L339.1,98.6 L341.2,101.7 L343.4,104.7 L345.6,107.9 L347.7,111.0 L349.9,114.2 L352.1,117.5 L354.3,120.8 L356.4,124.1 L358.6,127.5 L360.8,130.8 L363.0,134.3 L365.1,137.7 L367.3,141.1 L369.5,144.6 L371.7,148.0 L373.8,151.5 L376.0,155.0 L378.2,158.5 L380.3,162.0 L382.5,165.4 L384.7,168.9 L386.9,172.3 L389.0,175.7 L391.2,179.2 L393.4,182.5 L395.6,185.9 L397.7,189.2 L399.9,192.5 L402.1,195.8 L404.3,199.0 L406.4,202.1 L408.6,205.3 L410.8,208.3 L412.9,211.4 L415.1,214.3 L417.3,217.2 L419.5,220.1 L421.6,222.9 L423.8,225.6 L426.0,228.2 L428.2,230.8 L430.3,233.3 L432.5,235.7 L434.7,238.0 L436.9,240.3 L439.0,242.5 L441.2,244.6 L443.4,246.6 L445.5,248.5 L447.7,250.3 L449.9,252.0 L452.1,253.6 L454.2,255.2 L456.4,256.6 L458.6,257.9 L460.8,259.2 L462.9,260.3 L465.1,261.3 L467.3,262.2 L469.5,263.0 L471.6,263.8 L473.8,264.3 L476.0,264.8 L478.1,265.2 L480.3,265.5 L482.5,265.7 L484.7,265.7 L486.8,265.7 L489.0,265.5 L491.2,265.2 L493.4,264.8 L495.5,264.3 L497.7,263.8 L499.9,263.0 L502.1,262.2 L504.2,261.3 L506.4,260.3 L508.6,259.2 L510.7,257.9 L512.9,256.6 L515.1,255.2 L517.3,253.6 L519.4,252.0 L521.6,250.3 L523.8,248.5 L526.0,246.6 L528.1,244.6 L530.3,242.5 L532.5,240.3 L534.7,238.0 L536.8,235.7 L539.0,233.3 L541.2,230.8 L543.3,228.2 L545.5,225.6 L547.7,222.9 L549.9,220.1 L552.0,217.2 L554.2,214.3 L556.4,211.4 L558.6,208.3 L560.7,205.3 L562.9,202.1 L565.1,199.0 L567.3,195.8 L569.4,192.5 L571.6,189.2 L573.8,185.9 L575.9,182.5 L578.1,179.2 L580.3,175.7 L582.5,172.3 L584.6,168.9 L586.8,165.4 L589.0,162.0 L591.2,158.5 L593.3,155.0 L595.5,151.5 L597.7,148.0 L599.9,144.6 L602.0,141.1 L604.2,137.7 L606.4,134.3 L608.5,130.8 L610.7,127.5 L612.9,124.1 L615.1,120.8 L617.2,117.5 L619.4,114.2 L621.6,111.0 L623.8,107.9 L625.9,104.7 L628.1,101.7 L630.3,98.6 L632.5,95.7 L634.6,92.8 L636.8,89.9 L639.0,87.1 L641.1,84.4 L643.3,81.8 L645.5,79.2 L647.7,76.7 L649.8,74.3 L652.0,72.0 L654.2,69.7 L656.4,67.5 L658.5,65.4 L660.7,63.4 L662.9,61.5 L665.1,59.7 L667.2,58.0 L669.4,56.4 L671.6,54.8 L673.7,53.4 L675.9,52.1 L678.1,50.8 L680.3,49.7 L682.4,48.7 L684.6,47.8 L686.8,47.0 L689.0,46.2 L691.1,45.7 L693.3,45.2 L695.5,44.8 L697.7,44.5 L699.8,44.3 L702.0,44.3" fill="none" stroke="#43a05a" stroke-width="2.0"/><text x="182.9" y="31.3" text-anchor="start" class="svg-txt" font-size="14.5">y = √2 sin(x + π/4)</text><text x="632.5" y="272.4" text-anchor="end" class="svg-txt" font-size="14.5">y = √2 sin x</text></svg></div><figcaption>y = √2 sin(x + π/4) のグラフ（青）。緑の y = √2 sin x を x 軸方向に −π/4 だけ平行移動したもの。</figcaption></figure>
+          <p class="big">最大値<math><msqrt><mn>2</mn></msqrt><mo>,</mo></math>　最小値<math><mo>−</mo><msqrt><mn>2</mn></msqrt></math></p>
+          <p>関数のグラフは次のようになる。<math><mi>y</mi><mo>=</mo><msqrt><mn>2</mn></msqrt><mi>sin</mi><mi>x</mi></math>のグラフを <math><mi>x</mi></math> 軸方向に<math><mo>−</mo><mfrac><mi>π</mi><mn>4</mn></mfrac></math> だけ平行移動したものである。</p><figure><div class="figbox"><svg viewBox="0 0 720 330" role="img" aria-label="y = √2 sin(x + π/4) のグラフ（青）。緑の y = √2 sin x を x 軸方向に −π/4 だけ平行移動したもの。"><line x1="50.0" y1="44.3" x2="702.0" y2="44.3" stroke="#94a3b8" stroke-width="1.1" stroke-dasharray="4 3"/><line x1="50.0" y1="265.7" x2="702.0" y2="265.7" stroke="#94a3b8" stroke-width="1.1" stroke-dasharray="4 3"/><line x1="50.0" y1="155.0" x2="710.0" y2="155.0" stroke="#33404d" stroke-width="1.6"/><path d="M704.0,150.0 L715.0,155.0 L704.0,160.0 Z" fill="#33404d"/><line x1="158.7" y1="292.0" x2="158.7" y2="12.0" stroke="#33404d" stroke-width="1.6"/><path d="M153.7,18.0 L158.7,7.0 L163.7,18.0 Z" fill="#33404d"/><text x="165.7" y="20.0" class="svg-txt" font-size="15">y</text><text x="700.0" y="147.0" class="svg-txt" font-size="15">x</text><text x="152.7" y="172.0" text-anchor="end" class="svg-txt" font-size="14">O</text><line x1="104.3" y1="151.0" x2="104.3" y2="159.0" stroke="#33404d" stroke-width="1.3"/><text x="104.3" y="176.0" text-anchor="middle" class="svg-txt" font-size="13.5">−π/4</text><line x1="213.0" y1="151.0" x2="213.0" y2="159.0" stroke="#33404d" stroke-width="1.3"/><text x="213.0" y="176.0" text-anchor="middle" class="svg-txt" font-size="13.5">π/4</text><line x1="321.7" y1="151.0" x2="321.7" y2="159.0" stroke="#33404d" stroke-width="1.3"/><text x="321.7" y="176.0" text-anchor="middle" class="svg-txt" font-size="13.5">3π/4</text><line x1="430.3" y1="151.0" x2="430.3" y2="159.0" stroke="#33404d" stroke-width="1.3"/><text x="430.3" y="176.0" text-anchor="middle" class="svg-txt" font-size="13.5">5π/4</text><line x1="539.0" y1="151.0" x2="539.0" y2="159.0" stroke="#33404d" stroke-width="1.3"/><text x="539.0" y="176.0" text-anchor="middle" class="svg-txt" font-size="13.5">7π/4</text><line x1="647.7" y1="151.0" x2="647.7" y2="159.0" stroke="#33404d" stroke-width="1.3"/><text x="647.7" y="176.0" text-anchor="middle" class="svg-txt" font-size="13.5">9π/4</text><line x1="154.7" y1="44.3" x2="162.7" y2="44.3" stroke="#33404d" stroke-width="1.3"/><text x="150.7" y="49.3" text-anchor="end" class="svg-txt" font-size="13.5">√2</text><line x1="154.7" y1="76.7" x2="162.7" y2="76.7" stroke="#33404d" stroke-width="1.3"/><text x="150.7" y="81.7" text-anchor="end" class="svg-txt" font-size="13.5">1</text><line x1="154.7" y1="265.7" x2="162.7" y2="265.7" stroke="#33404d" stroke-width="1.3"/><text x="150.7" y="270.7" text-anchor="end" class="svg-txt" font-size="13.5">−√2</text><path d="M50.0,233.3 L52.2,230.8 L54.3,228.2 L56.5,225.6 L58.7,222.9 L60.9,220.1 L63.0,217.2 L65.2,214.3 L67.4,211.4 L69.6,208.3 L71.7,205.3 L73.9,202.1 L76.1,199.0 L78.3,195.8 L80.4,192.5 L82.6,189.2 L84.8,185.9 L86.9,182.5 L89.1,179.2 L91.3,175.7 L93.5,172.3 L95.6,168.9 L97.8,165.4 L100.0,162.0 L102.2,158.5 L104.3,155.0 L106.5,151.5 L108.7,148.0 L110.9,144.6 L113.0,141.1 L115.2,137.7 L117.4,134.3 L119.5,130.8 L121.7,127.5 L123.9,124.1 L126.1,120.8 L128.2,117.5 L130.4,114.2 L132.6,111.0 L134.8,107.9 L136.9,104.7 L139.1,101.7 L141.3,98.6 L143.5,95.7 L145.6,92.8 L147.8,89.9 L150.0,87.1 L152.1,84.4 L154.3,81.8 L156.5,79.2 L158.7,76.7 L160.8,74.3 L163.0,72.0 L165.2,69.7 L167.4,67.5 L169.5,65.4 L171.7,63.4 L173.9,61.5 L176.1,59.7 L178.2,58.0 L180.4,56.4 L182.6,54.8 L184.7,53.4 L186.9,52.1 L189.1,50.8 L191.3,49.7 L193.4,48.7 L195.6,47.8 L197.8,47.0 L200.0,46.2 L202.1,45.7 L204.3,45.2 L206.5,44.8 L208.7,44.5 L210.8,44.3 L213.0,44.3 L215.2,44.3 L217.3,44.5 L219.5,44.8 L221.7,45.2 L223.9,45.7 L226.0,46.2 L228.2,47.0 L230.4,47.8 L232.6,48.7 L234.7,49.7 L236.9,50.8 L239.1,52.1 L241.3,53.4 L243.4,54.8 L245.6,56.4 L247.8,58.0 L249.9,59.7 L252.1,61.5 L254.3,63.4 L256.5,65.4 L258.6,67.5 L260.8,69.7 L263.0,72.0 L265.2,74.3 L267.3,76.7 L269.5,79.2 L271.7,81.8 L273.9,84.4 L276.0,87.1 L278.2,89.9 L280.4,92.8 L282.5,95.7 L284.7,98.6 L286.9,101.7 L289.1,104.7 L291.2,107.9 L293.4,111.0 L295.6,114.2 L297.8,117.5 L299.9,120.8 L302.1,124.1 L304.3,127.5 L306.5,130.8 L308.6,134.3 L310.8,137.7 L313.0,141.1 L315.1,144.6 L317.3,148.0 L319.5,151.5 L321.7,155.0 L323.8,158.5 L326.0,162.0 L328.2,165.4 L330.4,168.9 L332.5,172.3 L334.7,175.7 L336.9,179.2 L339.1,182.5 L341.2,185.9 L343.4,189.2 L345.6,192.5 L347.7,195.8 L349.9,199.0 L352.1,202.1 L354.3,205.3 L356.4,208.3 L358.6,211.4 L360.8,214.3 L363.0,217.2 L365.1,220.1 L367.3,222.9 L369.5,225.6 L371.7,228.2 L373.8,230.8 L376.0,233.3 L378.2,235.7 L380.3,238.0 L382.5,240.3 L384.7,242.5 L386.9,244.6 L389.0,246.6 L391.2,248.5 L393.4,250.3 L395.6,252.0 L397.7,253.6 L399.9,255.2 L402.1,256.6 L404.3,257.9 L406.4,259.2 L408.6,260.3 L410.8,261.3 L412.9,262.2 L415.1,263.0 L417.3,263.8 L419.5,264.3 L421.6,264.8 L423.8,265.2 L426.0,265.5 L428.2,265.7 L430.3,265.7 L432.5,265.7 L434.7,265.5 L436.9,265.2 L439.0,264.8 L441.2,264.3 L443.4,263.8 L445.5,263.0 L447.7,262.2 L449.9,261.3 L452.1,260.3 L454.2,259.2 L456.4,257.9 L458.6,256.6 L460.8,255.2 L462.9,253.6 L465.1,252.0 L467.3,250.3 L469.5,248.5 L471.6,246.6 L473.8,244.6 L476.0,242.5 L478.1,240.3 L480.3,238.0 L482.5,235.7 L484.7,233.3 L486.8,230.8 L489.0,228.2 L491.2,225.6 L493.4,222.9 L495.5,220.1 L497.7,217.2 L499.9,214.3 L502.1,211.4 L504.2,208.3 L506.4,205.3 L508.6,202.1 L510.7,199.0 L512.9,195.8 L515.1,192.5 L517.3,189.2 L519.4,185.9 L521.6,182.5 L523.8,179.2 L526.0,175.7 L528.1,172.3 L530.3,168.9 L532.5,165.4 L534.7,162.0 L536.8,158.5 L539.0,155.0 L541.2,151.5 L543.3,148.0 L545.5,144.6 L547.7,141.1 L549.9,137.7 L552.0,134.3 L554.2,130.8 L556.4,127.5 L558.6,124.1 L560.7,120.8 L562.9,117.5 L565.1,114.2 L567.3,111.0 L569.4,107.9 L571.6,104.7 L573.8,101.7 L575.9,98.6 L578.1,95.7 L580.3,92.8 L582.5,89.9 L584.6,87.1 L586.8,84.4 L589.0,81.8 L591.2,79.2 L593.3,76.7 L595.5,74.3 L597.7,72.0 L599.9,69.7 L602.0,67.5 L604.2,65.4 L606.4,63.4 L608.5,61.5 L610.7,59.7 L612.9,58.0 L615.1,56.4 L617.2,54.8 L619.4,53.4 L621.6,52.1 L623.8,50.8 L625.9,49.7 L628.1,48.7 L630.3,47.8 L632.5,47.0 L634.6,46.2 L636.8,45.7 L639.0,45.2 L641.1,44.8 L643.3,44.5 L645.5,44.3 L647.7,44.3 L649.8,44.3 L652.0,44.5 L654.2,44.8 L656.4,45.2 L658.5,45.7 L660.7,46.2 L662.9,47.0 L665.1,47.8 L667.2,48.7 L669.4,49.7 L671.6,50.8 L673.7,52.1 L675.9,53.4 L678.1,54.8 L680.3,56.4 L682.4,58.0 L684.6,59.7 L686.8,61.5 L689.0,63.4 L691.1,65.4 L693.3,67.5 L695.5,69.7 L697.7,72.0 L699.8,74.3 L702.0,76.7" fill="none" stroke="#1f6fb2" stroke-width="2.6"/><path d="M50.0,265.7 L52.2,265.7 L54.3,265.5 L56.5,265.2 L58.7,264.8 L60.9,264.3 L63.0,263.8 L65.2,263.0 L67.4,262.2 L69.6,261.3 L71.7,260.3 L73.9,259.2 L76.1,257.9 L78.3,256.6 L80.4,255.2 L82.6,253.6 L84.8,252.0 L86.9,250.3 L89.1,248.5 L91.3,246.6 L93.5,244.6 L95.6,242.5 L97.8,240.3 L100.0,238.0 L102.2,235.7 L104.3,233.3 L106.5,230.8 L108.7,228.2 L110.9,225.6 L113.0,222.9 L115.2,220.1 L117.4,217.2 L119.5,214.3 L121.7,211.4 L123.9,208.3 L126.1,205.3 L128.2,202.1 L130.4,199.0 L132.6,195.8 L134.8,192.5 L136.9,189.2 L139.1,185.9 L141.3,182.5 L143.5,179.2 L145.6,175.7 L147.8,172.3 L150.0,168.9 L152.1,165.4 L154.3,162.0 L156.5,158.5 L158.7,155.0 L160.8,151.5 L163.0,148.0 L165.2,144.6 L167.4,141.1 L169.5,137.7 L171.7,134.3 L173.9,130.8 L176.1,127.5 L178.2,124.1 L180.4,120.8 L182.6,117.5 L184.7,114.2 L186.9,111.0 L189.1,107.9 L191.3,104.7 L193.4,101.7 L195.6,98.6 L197.8,95.7 L200.0,92.8 L202.1,89.9 L204.3,87.1 L206.5,84.4 L208.7,81.8 L210.8,79.2 L213.0,76.7 L215.2,74.3 L217.3,72.0 L219.5,69.7 L221.7,67.5 L223.9,65.4 L226.0,63.4 L228.2,61.5 L230.4,59.7 L232.6,58.0 L234.7,56.4 L236.9,54.8 L239.1,53.4 L241.3,52.1 L243.4,50.8 L245.6,49.7 L247.8,48.7 L249.9,47.8 L252.1,47.0 L254.3,46.2 L256.5,45.7 L258.6,45.2 L260.8,44.8 L263.0,44.5 L265.2,44.3 L267.3,44.3 L269.5,44.3 L271.7,44.5 L273.9,44.8 L276.0,45.2 L278.2,45.7 L280.4,46.2 L282.5,47.0 L284.7,47.8 L286.9,48.7 L289.1,49.7 L291.2,50.8 L293.4,52.1 L295.6,53.4 L297.8,54.8 L299.9,56.4 L302.1,58.0 L304.3,59.7 L306.5,61.5 L308.6,63.4 L310.8,65.4 L313.0,67.5 L315.1,69.7 L317.3,72.0 L319.5,74.3 L321.7,76.7 L323.8,79.2 L326.0,81.8 L328.2,84.4 L330.4,87.1 L332.5,89.9 L334.7,92.8 L336.9,95.7 L339.1,98.6 L341.2,101.7 L343.4,104.7 L345.6,107.9 L347.7,111.0 L349.9,114.2 L352.1,117.5 L354.3,120.8 L356.4,124.1 L358.6,127.5 L360.8,130.8 L363.0,134.3 L365.1,137.7 L367.3,141.1 L369.5,144.6 L371.7,148.0 L373.8,151.5 L376.0,155.0 L378.2,158.5 L380.3,162.0 L382.5,165.4 L384.7,168.9 L386.9,172.3 L389.0,175.7 L391.2,179.2 L393.4,182.5 L395.6,185.9 L397.7,189.2 L399.9,192.5 L402.1,195.8 L404.3,199.0 L406.4,202.1 L408.6,205.3 L410.8,208.3 L412.9,211.4 L415.1,214.3 L417.3,217.2 L419.5,220.1 L421.6,222.9 L423.8,225.6 L426.0,228.2 L428.2,230.8 L430.3,233.3 L432.5,235.7 L434.7,238.0 L436.9,240.3 L439.0,242.5 L441.2,244.6 L443.4,246.6 L445.5,248.5 L447.7,250.3 L449.9,252.0 L452.1,253.6 L454.2,255.2 L456.4,256.6 L458.6,257.9 L460.8,259.2 L462.9,260.3 L465.1,261.3 L467.3,262.2 L469.5,263.0 L471.6,263.8 L473.8,264.3 L476.0,264.8 L478.1,265.2 L480.3,265.5 L482.5,265.7 L484.7,265.7 L486.8,265.7 L489.0,265.5 L491.2,265.2 L493.4,264.8 L495.5,264.3 L497.7,263.8 L499.9,263.0 L502.1,262.2 L504.2,261.3 L506.4,260.3 L508.6,259.2 L510.7,257.9 L512.9,256.6 L515.1,255.2 L517.3,253.6 L519.4,252.0 L521.6,250.3 L523.8,248.5 L526.0,246.6 L528.1,244.6 L530.3,242.5 L532.5,240.3 L534.7,238.0 L536.8,235.7 L539.0,233.3 L541.2,230.8 L543.3,228.2 L545.5,225.6 L547.7,222.9 L549.9,220.1 L552.0,217.2 L554.2,214.3 L556.4,211.4 L558.6,208.3 L560.7,205.3 L562.9,202.1 L565.1,199.0 L567.3,195.8 L569.4,192.5 L571.6,189.2 L573.8,185.9 L575.9,182.5 L578.1,179.2 L580.3,175.7 L582.5,172.3 L584.6,168.9 L586.8,165.4 L589.0,162.0 L591.2,158.5 L593.3,155.0 L595.5,151.5 L597.7,148.0 L599.9,144.6 L602.0,141.1 L604.2,137.7 L606.4,134.3 L608.5,130.8 L610.7,127.5 L612.9,124.1 L615.1,120.8 L617.2,117.5 L619.4,114.2 L621.6,111.0 L623.8,107.9 L625.9,104.7 L628.1,101.7 L630.3,98.6 L632.5,95.7 L634.6,92.8 L636.8,89.9 L639.0,87.1 L641.1,84.4 L643.3,81.8 L645.5,79.2 L647.7,76.7 L649.8,74.3 L652.0,72.0 L654.2,69.7 L656.4,67.5 L658.5,65.4 L660.7,63.4 L662.9,61.5 L665.1,59.7 L667.2,58.0 L669.4,56.4 L671.6,54.8 L673.7,53.4 L675.9,52.1 L678.1,50.8 L680.3,49.7 L682.4,48.7 L684.6,47.8 L686.8,47.0 L689.0,46.2 L691.1,45.7 L693.3,45.2 L695.5,44.8 L697.7,44.5 L699.8,44.3 L702.0,44.3" fill="none" stroke="#43a05a" stroke-width="2.0"/><text x="182.9" y="31.3" text-anchor="start" class="svg-txt" font-size="14.5">y = √2 sin(x + π/4)</text><text x="632.5" y="272.4" text-anchor="end" class="svg-txt" font-size="14.5">y = √2 sin x</text></svg></div><figcaption><math><mi>y</mi><mo>=</mo><msqrt><mn>2</mn></msqrt><mi>sin</mi><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mfrac><mi>π</mi><mn>4</mn></mfrac><mo>)</mo></mrow></math>のグラフ（青）。緑の<math><mi>y</mi><mo>=</mo><msqrt><mn>2</mn></msqrt><mi>sin</mi><mi>x</mi></math>を <math><mi>x</mi></math> 軸方向に<math><mo>−</mo><mfrac><mi>π</mi><mn>4</mn></mfrac></math>だけ平行移動したもの。</figcaption></figure>
         </div>
         <p class="prob-done">例題7 クリア！　次は練習36に挑戦しよう。</p>
       </section>
@@ -1008,28 +1085,28 @@
         <h2>練習問題に挑戦</h2>
         <span class="pno">教科書 p.142</span>
       </div>
-      <section class="card prob" id="prob-ren36" data-flow="ren36" data-label="練習36">
+      <section class="nofig card prob" id="prob-ren36" data-flow="ren36" data-label="練習36">
         <div class="prob-head">
           <span class="prob-tag ren">練習 36</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">次の関数の最大値，最小値を求めよ。また，そのグラフをかけ。<span class="formula" style="display:block;margin-top:8px">y = √<span class="rad">3</span> sin x + cos x</span></p>
+        <p class="prob-q">次の関数の最大値，最小値を求めよ。また，そのグラフをかけ。<p class="formula left"><math display="block"><mi>y</mi><mo>=</mo><msqrt><mn>3</mn></msqrt><mi>sin</mi><mi>x</mi><mo>+</mo><mi>cos</mi><mi>x</mi></math></p></p>
         </div>
         <div class="step hint">
           <h3>ヒント 1 ― 合成する</h3>
-          <p>練習35 (1) と同じ式だね。y = 2 sin(x + <span class="frac"><span class="num">π</span><span class="den">6</span></span>) と合成できる。</p>
+          <p>練習35 (1) と同じ式だね。<math><mi>y</mi><mo>=</mo><mn>2</mn><mi>sin</mi><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mfrac><mi>π</mi><mn>6</mn></mfrac><mo>)</mo></mrow></math>と合成できる。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― 最大・最小のときの x も求める</h3>
-          <p>−1 ≦ sin(x + <span class="frac"><span class="num">π</span><span class="den">6</span></span>) ≦ 1 より −2 ≦ y ≦ 2。最大値 2 は sin(x + <span class="frac"><span class="num">π</span><span class="den">6</span></span>) = 1，つまり x = <span class="frac"><span class="num">π</span><span class="den">3</span></span> のとき。最小値 −2 は x = <span class="frac"><span class="num">4</span><span class="den">3</span></span>π のときだよ。</p>
+          <h3>ヒント 2 ― 最大・最小のときの <math><mi>x</mi></math> も求める</h3>
+          <p><math><mo>−</mo><mn>1</mn><mo>≦</mo><mi>sin</mi><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mfrac><mi>π</mi><mn>6</mn></mfrac><mo>)</mo></mrow><mo>≦</mo><mn>1</mn></math>より<math><mo>−</mo><mn>2</mn><mo>≦</mo><mi>y</mi><mo>≦</mo><mn>2</mn></math>。<br>最大値 2 は<math><mi>sin</mi><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mfrac><mi>π</mi><mn>6</mn></mfrac><mo>)</mo></mrow><mo>=</mo><mn>1</mn><mo>,</mo></math>つまり<math><mi>x</mi><mo>=</mo><mfrac><mi>π</mi><mn>3</mn></mfrac></math> のとき。最小値 −2 は<math><mi>x</mi><mo>=</mo><mfrac><mn>4</mn><mn>3</mn></mfrac><mi>π</mi></math>のときだよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">最大値 2（x = <span class="frac"><span class="num">π</span><span class="den">3</span></span> のとき），　最小値 −2（x = <span class="frac"><span class="num">4</span><span class="den">3</span></span>π のとき）</p>
-          <p>グラフは，y = 2 sin x を x 軸方向に −<span class="frac"><span class="num">π</span><span class="den">6</span></span> だけ平行移動したものになる。</p><figure><div class="figbox"><svg viewBox="0 0 720 330" role="img" aria-label="y = √3 sin x + cos x = 2 sin(x + π/6) のグラフ。最大値 2 は x = π/3 のとき，最小値 −2 は x = 4π/3 のとき。"><line x1="50.0" y1="45.4" x2="702.0" y2="45.4" stroke="#94a3b8" stroke-width="1.1" stroke-dasharray="4 3"/><line x1="50.0" y1="264.6" x2="702.0" y2="264.6" stroke="#94a3b8" stroke-width="1.1" stroke-dasharray="4 3"/><line x1="213.1" y1="18.0" x2="213.1" y2="292.0" stroke="#94a3b8" stroke-width="1.1" stroke-dasharray="4 3"/><line x1="476.3" y1="18.0" x2="476.3" y2="292.0" stroke="#94a3b8" stroke-width="1.1" stroke-dasharray="4 3"/><line x1="50.0" y1="155.0" x2="710.0" y2="155.0" stroke="#33404d" stroke-width="1.6"/><path d="M704.0,150.0 L715.0,155.0 L704.0,160.0 Z" fill="#33404d"/><line x1="125.4" y1="292.0" x2="125.4" y2="12.0" stroke="#33404d" stroke-width="1.6"/><path d="M120.4,18.0 L125.4,7.0 L130.4,18.0 Z" fill="#33404d"/><text x="132.4" y="20.0" class="svg-txt" font-size="15">y</text><text x="700.0" y="147.0" class="svg-txt" font-size="15">x</text><text x="119.4" y="172.0" text-anchor="end" class="svg-txt" font-size="14">O</text><line x1="213.1" y1="151.0" x2="213.1" y2="159.0" stroke="#33404d" stroke-width="1.3"/><text x="213.1" y="176.0" text-anchor="middle" class="svg-txt" font-size="13.5">π/3</text><line x1="344.7" y1="151.0" x2="344.7" y2="159.0" stroke="#33404d" stroke-width="1.3"/><text x="344.7" y="176.0" text-anchor="middle" class="svg-txt" font-size="13.5">5π/6</text><line x1="476.3" y1="151.0" x2="476.3" y2="159.0" stroke="#33404d" stroke-width="1.3"/><text x="476.3" y="176.0" text-anchor="middle" class="svg-txt" font-size="13.5">4π/3</text><line x1="607.9" y1="151.0" x2="607.9" y2="159.0" stroke="#33404d" stroke-width="1.3"/><text x="607.9" y="176.0" text-anchor="middle" class="svg-txt" font-size="13.5">11π/6</text><line x1="651.7" y1="151.0" x2="651.7" y2="159.0" stroke="#33404d" stroke-width="1.3"/><text x="651.7" y="176.0" text-anchor="middle" class="svg-txt" font-size="13.5">2π</text><line x1="121.4" y1="45.4" x2="129.4" y2="45.4" stroke="#33404d" stroke-width="1.3"/><text x="117.4" y="50.4" text-anchor="end" class="svg-txt" font-size="13.5">2</text><line x1="121.4" y1="264.6" x2="129.4" y2="264.6" stroke="#33404d" stroke-width="1.3"/><text x="117.4" y="269.6" text-anchor="end" class="svg-txt" font-size="13.5">−2</text><path d="M50.0,195.3 L52.2,192.6 L54.3,189.9 L56.5,187.2 L58.7,184.5 L60.9,181.8 L63.0,179.0 L65.2,176.2 L67.4,173.4 L69.6,170.6 L71.7,167.8 L73.9,165.0 L76.1,162.1 L78.3,159.3 L80.4,156.4 L82.6,153.6 L84.8,150.8 L86.9,147.9 L89.1,145.1 L91.3,142.3 L93.5,139.4 L95.6,136.6 L97.8,133.8 L100.0,131.0 L102.2,128.3 L104.3,125.5 L106.5,122.8 L108.7,120.1 L110.9,117.4 L113.0,114.8 L115.2,112.1 L117.4,109.5 L119.5,107.0 L121.7,104.4 L123.9,101.9 L126.1,99.4 L128.2,97.0 L130.4,94.6 L132.6,92.3 L134.8,90.0 L136.9,87.7 L139.1,85.5 L141.3,83.3 L143.5,81.2 L145.6,79.1 L147.8,77.1 L150.0,75.1 L152.1,73.2 L154.3,71.3 L156.5,69.5 L158.7,67.7 L160.8,66.1 L163.0,64.4 L165.2,62.9 L167.4,61.3 L169.5,59.9 L171.7,58.5 L173.9,57.2 L176.1,56.0 L178.2,54.8 L180.4,53.7 L182.6,52.6 L184.7,51.6 L186.9,50.7 L189.1,49.9 L191.3,49.1 L193.4,48.4 L195.6,47.8 L197.8,47.2 L200.0,46.7 L202.1,46.3 L204.3,46.0 L206.5,45.7 L208.7,45.6 L210.8,45.4 L213.0,45.4 L215.2,45.4 L217.3,45.5 L219.5,45.7 L221.7,46.0 L223.9,46.3 L226.0,46.7 L228.2,47.2 L230.4,47.7 L232.6,48.3 L234.7,49.0 L236.9,49.8 L239.1,50.6 L241.3,51.5 L243.4,52.5 L245.6,53.5 L247.8,54.6 L249.9,55.8 L252.1,57.1 L254.3,58.4 L256.5,59.7 L258.6,61.2 L260.8,62.7 L263.0,64.3 L265.2,65.9 L267.3,67.6 L269.5,69.3 L271.7,71.1 L273.9,73.0 L276.0,74.9 L278.2,76.8 L280.4,78.9 L282.5,80.9 L284.7,83.1 L286.9,85.2 L289.1,87.4 L291.2,89.7 L293.4,92.0 L295.6,94.4 L297.8,96.7 L299.9,99.2 L302.1,101.6 L304.3,104.1 L306.5,106.7 L308.6,109.2 L310.8,111.8 L313.0,114.5 L315.1,117.1 L317.3,119.8 L319.5,122.5 L321.7,125.2 L323.8,128.0 L326.0,130.7 L328.2,133.5 L330.4,136.3 L332.5,139.1 L334.7,142.0 L336.9,144.8 L339.1,147.6 L341.2,150.5 L343.4,153.3 L345.6,156.1 L347.7,159.0 L349.9,161.8 L352.1,164.7 L354.3,167.5 L356.4,170.3 L358.6,173.1 L360.8,175.9 L363.0,178.7 L365.1,181.5 L367.3,184.2 L369.5,186.9 L371.7,189.7 L373.8,192.3 L376.0,195.0 L378.2,197.6 L380.3,200.2 L382.5,202.8 L384.7,205.4 L386.9,207.9 L389.0,210.3 L391.2,212.8 L393.4,215.2 L395.6,217.5 L397.7,219.8 L399.9,222.1 L402.1,224.3 L404.3,226.5 L406.4,228.6 L408.6,230.7 L410.8,232.8 L412.9,234.7 L415.1,236.7 L417.3,238.5 L419.5,240.3 L421.6,242.1 L423.8,243.8 L426.0,245.4 L428.2,247.0 L430.3,248.5 L432.5,250.0 L434.7,251.4 L436.9,252.7 L439.0,253.9 L441.2,255.1 L443.4,256.2 L445.5,257.3 L447.7,258.3 L449.9,259.2 L452.1,260.0 L454.2,260.8 L456.4,261.5 L458.6,262.2 L460.8,262.7 L462.9,263.2 L465.1,263.6 L467.3,264.0 L469.5,264.2 L471.6,264.4 L473.8,264.6 L476.0,264.6 L478.1,264.6 L480.3,264.5 L482.5,264.3 L484.7,264.1 L486.8,263.7 L489.0,263.3 L491.2,262.9 L493.4,262.3 L495.5,261.7 L497.7,261.0 L499.9,260.3 L502.1,259.5 L504.2,258.6 L506.4,257.6 L508.6,256.6 L510.7,255.5 L512.9,254.3 L515.1,253.1 L517.3,251.7 L519.4,250.4 L521.6,248.9 L523.8,247.4 L526.0,245.9 L528.1,244.3 L530.3,242.6 L532.5,240.9 L534.7,239.1 L536.8,237.2 L539.0,235.3 L541.2,233.3 L543.3,231.3 L545.5,229.3 L547.7,227.1 L549.9,225.0 L552.0,222.8 L554.2,220.5 L556.4,218.2 L558.6,215.9 L560.7,213.5 L562.9,211.0 L565.1,208.6 L567.3,206.1 L569.4,203.6 L571.6,201.0 L573.8,198.4 L575.9,195.8 L578.1,193.1 L580.3,190.4 L582.5,187.7 L584.6,185.0 L586.8,182.3 L589.0,179.5 L591.2,176.7 L593.3,173.9 L595.5,171.1 L597.7,168.3 L599.9,165.5 L602.0,162.6 L604.2,159.8 L606.4,157.0 L608.5,154.1 L610.7,151.3 L612.9,148.4 L615.1,145.6 L617.2,142.8 L619.4,140.0 L621.6,137.1 L623.8,134.3 L625.9,131.6 L628.1,128.8 L630.3,126.0 L632.5,123.3 L634.6,120.6 L636.8,117.9 L639.0,115.2 L641.1,112.6 L643.3,110.0 L645.5,107.4 L647.7,104.9 L649.8,102.4 L652.0,99.9 L654.2,97.4 L656.4,95.0 L658.5,92.7 L660.7,90.4 L662.9,88.1 L665.1,85.9 L667.2,83.7 L669.4,81.5 L671.6,79.5 L673.7,77.4 L675.9,75.4 L678.1,73.5 L680.3,71.6 L682.4,69.8 L684.6,68.1 L686.8,66.4 L689.0,64.7 L691.1,63.1 L693.3,61.6 L695.5,60.2 L697.7,58.8 L699.8,57.4 L702.0,56.2" fill="none" stroke="#1f6fb2" stroke-width="2.6"/><circle cx="213.1" cy="45.4" r="4" fill="#c2452d"/><circle cx="476.3" cy="264.6" r="4" fill="#c2452d"/><text x="129.6" y="29.0" text-anchor="start" class="svg-txt" font-size="14.5">y = 2 sin(x + π/6)</text></svg></div><figcaption>y = √3 sin x + cos x = 2 sin(x + π/6) のグラフ。最大値 2 は x = π/3 のとき，最小値 −2 は x = 4π/3 のとき。</figcaption></figure>
+          <p class="big">最大値<math><mn>2</mn><mo>(</mo><mi>x</mi><mo>=</mo><mfrac><mi>π</mi><mn>3</mn></mfrac></math> のとき），　最小値<math><mo>−</mo><mn>2</mn><mo>(</mo><mi>x</mi><mo>=</mo><mfrac><mn>4</mn><mn>3</mn></mfrac><mi>π</mi></math>のとき）</p>
+          <p>グラフは<math><mo>,</mo><mi>y</mi><mo>=</mo><mn>2</mn><mi>sin</mi><mi>x</mi></math>を <math><mi>x</mi></math> 軸方向に<math><mo>−</mo><mfrac><mi>π</mi><mn>6</mn></mfrac></math> だけ平行移動したものになる。</p><figure><div class="figbox"><svg viewBox="0 0 720 330" role="img" aria-label="y = √3 sin x + cos x = 2 sin(x + π/6) のグラフ。最大値 2 は x = π/3 のとき，最小値 −2 は x = 4π/3 のとき。"><line x1="50.0" y1="45.4" x2="702.0" y2="45.4" stroke="#94a3b8" stroke-width="1.1" stroke-dasharray="4 3"/><line x1="50.0" y1="264.6" x2="702.0" y2="264.6" stroke="#94a3b8" stroke-width="1.1" stroke-dasharray="4 3"/><line x1="213.1" y1="18.0" x2="213.1" y2="292.0" stroke="#94a3b8" stroke-width="1.1" stroke-dasharray="4 3"/><line x1="476.3" y1="18.0" x2="476.3" y2="292.0" stroke="#94a3b8" stroke-width="1.1" stroke-dasharray="4 3"/><line x1="50.0" y1="155.0" x2="710.0" y2="155.0" stroke="#33404d" stroke-width="1.6"/><path d="M704.0,150.0 L715.0,155.0 L704.0,160.0 Z" fill="#33404d"/><line x1="125.4" y1="292.0" x2="125.4" y2="12.0" stroke="#33404d" stroke-width="1.6"/><path d="M120.4,18.0 L125.4,7.0 L130.4,18.0 Z" fill="#33404d"/><text x="132.4" y="20.0" class="svg-txt" font-size="15">y</text><text x="700.0" y="147.0" class="svg-txt" font-size="15">x</text><text x="119.4" y="172.0" text-anchor="end" class="svg-txt" font-size="14">O</text><line x1="213.1" y1="151.0" x2="213.1" y2="159.0" stroke="#33404d" stroke-width="1.3"/><text x="213.1" y="176.0" text-anchor="middle" class="svg-txt" font-size="13.5">π/3</text><line x1="344.7" y1="151.0" x2="344.7" y2="159.0" stroke="#33404d" stroke-width="1.3"/><text x="344.7" y="176.0" text-anchor="middle" class="svg-txt" font-size="13.5">5π/6</text><line x1="476.3" y1="151.0" x2="476.3" y2="159.0" stroke="#33404d" stroke-width="1.3"/><text x="476.3" y="176.0" text-anchor="middle" class="svg-txt" font-size="13.5">4π/3</text><line x1="607.9" y1="151.0" x2="607.9" y2="159.0" stroke="#33404d" stroke-width="1.3"/><text x="607.9" y="176.0" text-anchor="middle" class="svg-txt" font-size="13.5">11π/6</text><line x1="651.7" y1="151.0" x2="651.7" y2="159.0" stroke="#33404d" stroke-width="1.3"/><text x="651.7" y="176.0" text-anchor="middle" class="svg-txt" font-size="13.5">2π</text><line x1="121.4" y1="45.4" x2="129.4" y2="45.4" stroke="#33404d" stroke-width="1.3"/><text x="117.4" y="50.4" text-anchor="end" class="svg-txt" font-size="13.5">2</text><line x1="121.4" y1="264.6" x2="129.4" y2="264.6" stroke="#33404d" stroke-width="1.3"/><text x="117.4" y="269.6" text-anchor="end" class="svg-txt" font-size="13.5">−2</text><path d="M50.0,195.3 L52.2,192.6 L54.3,189.9 L56.5,187.2 L58.7,184.5 L60.9,181.8 L63.0,179.0 L65.2,176.2 L67.4,173.4 L69.6,170.6 L71.7,167.8 L73.9,165.0 L76.1,162.1 L78.3,159.3 L80.4,156.4 L82.6,153.6 L84.8,150.8 L86.9,147.9 L89.1,145.1 L91.3,142.3 L93.5,139.4 L95.6,136.6 L97.8,133.8 L100.0,131.0 L102.2,128.3 L104.3,125.5 L106.5,122.8 L108.7,120.1 L110.9,117.4 L113.0,114.8 L115.2,112.1 L117.4,109.5 L119.5,107.0 L121.7,104.4 L123.9,101.9 L126.1,99.4 L128.2,97.0 L130.4,94.6 L132.6,92.3 L134.8,90.0 L136.9,87.7 L139.1,85.5 L141.3,83.3 L143.5,81.2 L145.6,79.1 L147.8,77.1 L150.0,75.1 L152.1,73.2 L154.3,71.3 L156.5,69.5 L158.7,67.7 L160.8,66.1 L163.0,64.4 L165.2,62.9 L167.4,61.3 L169.5,59.9 L171.7,58.5 L173.9,57.2 L176.1,56.0 L178.2,54.8 L180.4,53.7 L182.6,52.6 L184.7,51.6 L186.9,50.7 L189.1,49.9 L191.3,49.1 L193.4,48.4 L195.6,47.8 L197.8,47.2 L200.0,46.7 L202.1,46.3 L204.3,46.0 L206.5,45.7 L208.7,45.6 L210.8,45.4 L213.0,45.4 L215.2,45.4 L217.3,45.5 L219.5,45.7 L221.7,46.0 L223.9,46.3 L226.0,46.7 L228.2,47.2 L230.4,47.7 L232.6,48.3 L234.7,49.0 L236.9,49.8 L239.1,50.6 L241.3,51.5 L243.4,52.5 L245.6,53.5 L247.8,54.6 L249.9,55.8 L252.1,57.1 L254.3,58.4 L256.5,59.7 L258.6,61.2 L260.8,62.7 L263.0,64.3 L265.2,65.9 L267.3,67.6 L269.5,69.3 L271.7,71.1 L273.9,73.0 L276.0,74.9 L278.2,76.8 L280.4,78.9 L282.5,80.9 L284.7,83.1 L286.9,85.2 L289.1,87.4 L291.2,89.7 L293.4,92.0 L295.6,94.4 L297.8,96.7 L299.9,99.2 L302.1,101.6 L304.3,104.1 L306.5,106.7 L308.6,109.2 L310.8,111.8 L313.0,114.5 L315.1,117.1 L317.3,119.8 L319.5,122.5 L321.7,125.2 L323.8,128.0 L326.0,130.7 L328.2,133.5 L330.4,136.3 L332.5,139.1 L334.7,142.0 L336.9,144.8 L339.1,147.6 L341.2,150.5 L343.4,153.3 L345.6,156.1 L347.7,159.0 L349.9,161.8 L352.1,164.7 L354.3,167.5 L356.4,170.3 L358.6,173.1 L360.8,175.9 L363.0,178.7 L365.1,181.5 L367.3,184.2 L369.5,186.9 L371.7,189.7 L373.8,192.3 L376.0,195.0 L378.2,197.6 L380.3,200.2 L382.5,202.8 L384.7,205.4 L386.9,207.9 L389.0,210.3 L391.2,212.8 L393.4,215.2 L395.6,217.5 L397.7,219.8 L399.9,222.1 L402.1,224.3 L404.3,226.5 L406.4,228.6 L408.6,230.7 L410.8,232.8 L412.9,234.7 L415.1,236.7 L417.3,238.5 L419.5,240.3 L421.6,242.1 L423.8,243.8 L426.0,245.4 L428.2,247.0 L430.3,248.5 L432.5,250.0 L434.7,251.4 L436.9,252.7 L439.0,253.9 L441.2,255.1 L443.4,256.2 L445.5,257.3 L447.7,258.3 L449.9,259.2 L452.1,260.0 L454.2,260.8 L456.4,261.5 L458.6,262.2 L460.8,262.7 L462.9,263.2 L465.1,263.6 L467.3,264.0 L469.5,264.2 L471.6,264.4 L473.8,264.6 L476.0,264.6 L478.1,264.6 L480.3,264.5 L482.5,264.3 L484.7,264.1 L486.8,263.7 L489.0,263.3 L491.2,262.9 L493.4,262.3 L495.5,261.7 L497.7,261.0 L499.9,260.3 L502.1,259.5 L504.2,258.6 L506.4,257.6 L508.6,256.6 L510.7,255.5 L512.9,254.3 L515.1,253.1 L517.3,251.7 L519.4,250.4 L521.6,248.9 L523.8,247.4 L526.0,245.9 L528.1,244.3 L530.3,242.6 L532.5,240.9 L534.7,239.1 L536.8,237.2 L539.0,235.3 L541.2,233.3 L543.3,231.3 L545.5,229.3 L547.7,227.1 L549.9,225.0 L552.0,222.8 L554.2,220.5 L556.4,218.2 L558.6,215.9 L560.7,213.5 L562.9,211.0 L565.1,208.6 L567.3,206.1 L569.4,203.6 L571.6,201.0 L573.8,198.4 L575.9,195.8 L578.1,193.1 L580.3,190.4 L582.5,187.7 L584.6,185.0 L586.8,182.3 L589.0,179.5 L591.2,176.7 L593.3,173.9 L595.5,171.1 L597.7,168.3 L599.9,165.5 L602.0,162.6 L604.2,159.8 L606.4,157.0 L608.5,154.1 L610.7,151.3 L612.9,148.4 L615.1,145.6 L617.2,142.8 L619.4,140.0 L621.6,137.1 L623.8,134.3 L625.9,131.6 L628.1,128.8 L630.3,126.0 L632.5,123.3 L634.6,120.6 L636.8,117.9 L639.0,115.2 L641.1,112.6 L643.3,110.0 L645.5,107.4 L647.7,104.9 L649.8,102.4 L652.0,99.9 L654.2,97.4 L656.4,95.0 L658.5,92.7 L660.7,90.4 L662.9,88.1 L665.1,85.9 L667.2,83.7 L669.4,81.5 L671.6,79.5 L673.7,77.4 L675.9,75.4 L678.1,73.5 L680.3,71.6 L682.4,69.8 L684.6,68.1 L686.8,66.4 L689.0,64.7 L691.1,63.1 L693.3,61.6 L695.5,60.2 L697.7,58.8 L699.8,57.4 L702.0,56.2" fill="none" stroke="#1f6fb2" stroke-width="2.6"/><circle cx="213.1" cy="45.4" r="4" fill="#c2452d"/><circle cx="476.3" cy="264.6" r="4" fill="#c2452d"/><text x="129.6" y="29.0" text-anchor="start" class="svg-txt" font-size="14.5">y = 2 sin(x + π/6)</text></svg></div><figcaption><math><mi>y</mi><mo>=</mo><msqrt><mn>3</mn></msqrt><mi>sin</mi><mi>x</mi><mo>+</mo><mi>cos</mi><mi>x</mi><mo>=</mo><mn>2</mn><mi>sin</mi><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mfrac><mi>π</mi><mn>6</mn></mfrac><mo>)</mo></mrow></math>のグラフ。最大値 2 は<math><mi>x</mi><mo>=</mo><mfrac><mi>π</mi><mn>3</mn></mfrac></math>のとき，最小値 −2 は<math><mi>x</mi><mo>=</mo><mn>4</mn><mfrac><mi>π</mi><mn>3</mn></mfrac></math>のとき。</figcaption></figure>
         </div>
         <p class="prob-done">練習36 クリア！　次は応用例題5だよ。</p>
       </section>
@@ -1038,49 +1115,49 @@
         <h2>応用例題5 ― 合成と方程式</h2>
         <span class="pno">教科書 p.143</span>
       </div>
-      <section class="card prob" id="prob-oyo5" data-flow="oyo5" data-label="応用例題5">
+      <section class="nofig card prob" id="prob-oyo5" data-flow="oyo5" data-label="応用例題5">
         <div class="prob-head">
           <span class="prob-tag ouyou">応用例題 5</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
         <div class="qside">
-        <p class="prob-q">0 ≦ x < 2π のとき，次の方程式を解け。<span class="formula" style="display:block;margin-top:8px">√<span class="rad">3</span> sin x − cos x = 1</span></p>
+        <p class="prob-q"><math><mn>0</mn><mo>≦</mo><mi>x</mi><mo>&lt;</mo><mn>2</mn><mi>π</mi></math>のとき，次の方程式を解け。<p class="formula left"><math display="block"><msqrt><mn>3</mn></msqrt><mi>sin</mi><mi>x</mi><mo>−</mo><mi>cos</mi><mi>x</mi><mo>=</mo><mn>1</mn></math></p></p>
         </div>
         <div class="step hint">
           <h3>ヒント 1 ― 考え方</h3>
-          <p>左辺の三角関数を合成して，r sin(x + α) = 1 の形にする。次に，x + α の範囲に注意して，sin(x + α) の値から x + α を求める。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><mi>a</mi><mi>sin</mi><mi>x</mi><mo>+</mo><mi>b</mi><mi>cos</mi><mi>x</mi><mo>=</mo><msqrt><mrow><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup></mrow></msqrt><mi>sin</mi><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mi>α</mi><mo>)</mo></mrow></math>考え方として、まず左辺をこの形に合成して、<math><mi>sin</mi></math> だけの方程式に直す。</p><p>左辺の三角関数を合成して<math><mo>,</mo><mi>r</mi><mi>sin</mi><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mi>α</mi><mo>)</mo></mrow><mo>=</mo><mn>1</mn></math>の形にする。<br>次に，<math><mi>x</mi></math> + <math><mi>α</mi></math> の範囲に注意して，<math><mi>sin</mi><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mi>α</mi><mo>)</mo></mrow></math> の値から <math><mi>x</mi></math> + <math><mi>α</mi></math> を求める。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― 合成して sin だけの方程式にする</h3>
-          <p>例15 (2) で確かめたとおり，左辺は 2 sin(x − <span class="frac"><span class="num">π</span><span class="den">6</span></span>)。方程式は sin(x − <span class="frac"><span class="num">π</span><span class="den">6</span></span>) = <span class="frac"><span class="num">1</span><span class="den">2</span></span> になる。</p>
+          <h3>ヒント 2 ― 合成して <math><mi>sin</mi></math> だけの方程式にする</h3>
+          <p>例15 (2) で確かめたとおり，左辺は<math><mn>2</mn><mi>sin</mi><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mfrac><mi>π</mi><mn>6</mn></mfrac><mo>)</mo></mrow></math>。方程式は<math><mi>sin</mi><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mfrac><mi>π</mi><mn>6</mn></mfrac><mo>)</mo></mrow><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math> になる。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 3 ― 角の範囲で解く</h3>
-          <p>0 ≦ x < 2π のとき −<span class="frac"><span class="num">π</span><span class="den">6</span></span> ≦ x − <span class="frac"><span class="num">π</span><span class="den">6</span></span> < <span class="frac"><span class="num">11</span><span class="den">6</span></span>π。この範囲で sin が <span class="frac"><span class="num">1</span><span class="den">2</span></span> になるのは x − <span class="frac"><span class="num">π</span><span class="den">6</span></span> = <span class="frac"><span class="num">π</span><span class="den">6</span></span>，<span class="frac"><span class="num">5</span><span class="den">6</span></span>π のとき。</p>
+          <p><math><mn>0</mn><mo>≦</mo><mi>x</mi><mo>&lt;</mo><mn>2</mn><mi>π</mi></math>のとき<math><mo>−</mo><mfrac><mi>π</mi><mn>6</mn></mfrac><mo>≦</mo><mi>x</mi><mo>−</mo><mfrac><mi>π</mi><mn>6</mn></mfrac><mo>&lt;</mo><mfrac><mn>11</mn><mn>6</mn></mfrac><mi>π</mi></math>。<br>この範囲で <math><mi>sin</mi></math> が <math><mfrac><mn>1</mn><mn>2</mn></mfrac></math> になるのは<math><mi>x</mi><mo>−</mo><mfrac><mi>π</mi><mn>6</mn></mfrac><mo>=</mo><mfrac><mi>π</mi><mn>6</mn></mfrac><mo>,</mo><mfrac><mn>5</mn><mn>6</mn></mfrac><mi>π</mi></math>のとき。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">x = <span class="frac"><span class="num">π</span><span class="den">3</span></span>，π</p>
-          <p>求めた解は，0 ≦ x < 2π における 2 つの関数 y = √<span class="rad">3</span> sin x − cos x，y = 1 のグラフの交点の x 座標である。</p><figure><div class="figbox"><svg viewBox="0 0 720 330" role="img" aria-label="方程式 √3 sin x − cos x = 1 の解は，2 つの関数 y = √3 sin x − cos x と y = 1 のグラフの交点の x 座標である。"><line x1="50.0" y1="155.0" x2="710.0" y2="155.0" stroke="#33404d" stroke-width="1.6"/><path d="M704.0,150.0 L715.0,155.0 L704.0,160.0 Z" fill="#33404d"/><line x1="111.0" y1="292.0" x2="111.0" y2="12.0" stroke="#33404d" stroke-width="1.6"/><path d="M106.0,18.0 L111.0,7.0 L116.0,18.0 Z" fill="#33404d"/><text x="118.0" y="20.0" class="svg-txt" font-size="15">y</text><text x="700.0" y="147.0" class="svg-txt" font-size="15">x</text><text x="105.0" y="172.0" text-anchor="end" class="svg-txt" font-size="14">O</text><line x1="202.2" y1="151.0" x2="202.2" y2="159.0" stroke="#33404d" stroke-width="1.3"/><text x="202.2" y="176.0" text-anchor="middle" class="svg-txt" font-size="13.5">π/3</text><line x1="384.7" y1="151.0" x2="384.7" y2="159.0" stroke="#33404d" stroke-width="1.3"/><text x="384.7" y="176.0" text-anchor="middle" class="svg-txt" font-size="13.5">π</text><line x1="658.4" y1="151.0" x2="658.4" y2="159.0" stroke="#33404d" stroke-width="1.3"/><text x="658.4" y="176.0" text-anchor="middle" class="svg-txt" font-size="13.5">2π</text><line x1="107.0" y1="100.2" x2="115.0" y2="100.2" stroke="#33404d" stroke-width="1.3"/><text x="103.0" y="105.2" text-anchor="end" class="svg-txt" font-size="13.5">1</text><path d="M50.0,258.1 L52.2,257.1 L54.3,256.1 L56.5,255.0 L58.7,253.8 L60.9,252.6 L63.0,251.3 L65.2,250.0 L67.4,248.6 L69.6,247.2 L71.7,245.7 L73.9,244.1 L76.1,242.5 L78.3,240.8 L80.4,239.1 L82.6,237.3 L84.8,235.5 L86.9,233.6 L89.1,231.7 L91.3,229.7 L93.5,227.7 L95.6,225.6 L97.8,223.5 L100.0,221.3 L102.2,219.1 L104.3,216.9 L106.5,214.6 L108.7,212.3 L110.9,209.9 L113.0,207.6 L115.2,205.2 L117.4,202.7 L119.5,200.2 L121.7,197.7 L123.9,195.2 L126.1,192.6 L128.2,190.1 L130.4,187.5 L132.6,184.8 L134.8,182.2 L136.9,179.5 L139.1,176.9 L141.3,174.2 L143.5,171.5 L145.6,168.8 L147.8,166.1 L150.0,163.3 L152.1,160.6 L154.3,157.9 L156.5,155.1 L158.7,152.4 L160.8,149.7 L163.0,147.0 L165.2,144.2 L167.4,141.5 L169.5,138.8 L171.7,136.1 L173.9,133.4 L176.1,130.7 L178.2,128.1 L180.4,125.4 L182.6,122.8 L184.7,120.2 L186.9,117.6 L189.1,115.1 L191.3,112.5 L193.4,110.0 L195.6,107.6 L197.8,105.1 L200.0,102.7 L202.1,100.3 L204.3,98.0 L206.5,95.6 L208.7,93.4 L210.8,91.1 L213.0,88.9 L215.2,86.8 L217.3,84.6 L219.5,82.6 L221.7,80.5 L223.9,78.6 L226.0,76.6 L228.2,74.7 L230.4,72.9 L232.6,71.1 L234.7,69.4 L236.9,67.7 L239.1,66.1 L241.3,64.5 L243.4,63.0 L245.6,61.5 L247.8,60.1 L249.9,58.8 L252.1,57.5 L254.3,56.3 L256.5,55.1 L258.6,54.0 L260.8,53.0 L263.0,52.0 L265.2,51.1 L267.3,50.3 L269.5,49.5 L271.7,48.8 L273.9,48.2 L276.0,47.6 L278.2,47.1 L280.4,46.6 L282.5,46.3 L284.7,46.0 L286.9,45.7 L289.1,45.5 L291.2,45.4 L293.4,45.4 L295.6,45.4 L297.8,45.5 L299.9,45.7 L302.1,45.9 L304.3,46.2 L306.5,46.6 L308.6,47.1 L310.8,47.6 L313.0,48.1 L315.1,48.8 L317.3,49.5 L319.5,50.3 L321.7,51.1 L323.8,52.0 L326.0,53.0 L328.2,54.0 L330.4,55.1 L332.5,56.2 L334.7,57.4 L336.9,58.7 L339.1,60.1 L341.2,61.5 L343.4,62.9 L345.6,64.4 L347.7,66.0 L349.9,67.6 L352.1,69.3 L354.3,71.0 L356.4,72.8 L358.6,74.6 L360.8,76.5 L363.0,78.4 L365.1,80.4 L367.3,82.5 L369.5,84.5 L371.7,86.6 L373.8,88.8 L376.0,91.0 L378.2,93.2 L380.3,95.5 L382.5,97.8 L384.7,100.2 L386.9,102.6 L389.0,105.0 L391.2,107.4 L393.4,109.9 L395.6,112.4 L397.7,114.9 L399.9,117.5 L402.1,120.1 L404.3,122.7 L406.4,125.3 L408.6,127.9 L410.8,130.6 L412.9,133.3 L415.1,136.0 L417.3,138.7 L419.5,141.4 L421.6,144.1 L423.8,146.8 L426.0,149.5 L428.2,152.3 L430.3,155.0 L432.5,157.7 L434.7,160.5 L436.9,163.2 L439.0,165.9 L441.2,168.6 L443.4,171.3 L445.5,174.0 L447.7,176.7 L449.9,179.4 L452.1,182.1 L454.2,184.7 L456.4,187.3 L458.6,189.9 L460.8,192.5 L462.9,195.1 L465.1,197.6 L467.3,200.1 L469.5,202.6 L471.6,205.0 L473.8,207.4 L476.0,209.8 L478.1,212.2 L480.3,214.5 L482.5,216.8 L484.7,219.0 L486.8,221.2 L489.0,223.4 L491.2,225.5 L493.4,227.5 L495.5,229.6 L497.7,231.6 L499.9,233.5 L502.1,235.4 L504.2,237.2 L506.4,239.0 L508.6,240.7 L510.7,242.4 L512.9,244.0 L515.1,245.6 L517.3,247.1 L519.4,248.5 L521.6,249.9 L523.8,251.3 L526.0,252.6 L528.1,253.8 L530.3,254.9 L532.5,256.0 L534.7,257.0 L536.8,258.0 L539.0,258.9 L541.2,259.7 L543.3,260.5 L545.5,261.2 L547.7,261.9 L549.9,262.4 L552.0,262.9 L554.2,263.4 L556.4,263.8 L558.6,264.1 L560.7,264.3 L562.9,264.5 L565.1,264.6 L567.3,264.6 L569.4,264.6 L571.6,264.5 L573.8,264.3 L575.9,264.0 L578.1,263.7 L580.3,263.4 L582.5,262.9 L584.6,262.4 L586.8,261.8 L589.0,261.2 L591.2,260.5 L593.3,259.7 L595.5,258.9 L597.7,258.0 L599.9,257.0 L602.0,256.0 L604.2,254.9 L606.4,253.7 L608.5,252.5 L610.7,251.2 L612.9,249.9 L615.1,248.5 L617.2,247.0 L619.4,245.5 L621.6,243.9 L623.8,242.3 L625.9,240.6 L628.1,238.9 L630.3,237.1 L632.5,235.3 L634.6,233.4 L636.8,231.4 L639.0,229.5 L641.1,227.4 L643.3,225.4 L645.5,223.2 L647.7,221.1 L649.8,218.9 L652.0,216.6 L654.2,214.4 L656.4,212.0 L658.5,209.7 L660.7,207.3 L662.9,204.9 L665.1,202.4 L667.2,200.0 L669.4,197.5 L671.6,194.9 L673.7,192.4 L675.9,189.8 L678.1,187.2 L680.3,184.6 L682.4,181.9 L684.6,179.3 L686.8,176.6 L689.0,173.9 L691.1,171.2 L693.3,168.5 L695.5,165.8 L697.7,163.0 L699.8,160.3 L702.0,157.6" fill="none" stroke="#1f6fb2" stroke-width="2.6"/><path d="M50.0,100.2 L52.2,100.2 L54.3,100.2 L56.5,100.2 L58.7,100.2 L60.9,100.2 L63.0,100.2 L65.2,100.2 L67.4,100.2 L69.6,100.2 L71.7,100.2 L73.9,100.2 L76.1,100.2 L78.3,100.2 L80.4,100.2 L82.6,100.2 L84.8,100.2 L86.9,100.2 L89.1,100.2 L91.3,100.2 L93.5,100.2 L95.6,100.2 L97.8,100.2 L100.0,100.2 L102.2,100.2 L104.3,100.2 L106.5,100.2 L108.7,100.2 L110.9,100.2 L113.0,100.2 L115.2,100.2 L117.4,100.2 L119.5,100.2 L121.7,100.2 L123.9,100.2 L126.1,100.2 L128.2,100.2 L130.4,100.2 L132.6,100.2 L134.8,100.2 L136.9,100.2 L139.1,100.2 L141.3,100.2 L143.5,100.2 L145.6,100.2 L147.8,100.2 L150.0,100.2 L152.1,100.2 L154.3,100.2 L156.5,100.2 L158.7,100.2 L160.8,100.2 L163.0,100.2 L165.2,100.2 L167.4,100.2 L169.5,100.2 L171.7,100.2 L173.9,100.2 L176.1,100.2 L178.2,100.2 L180.4,100.2 L182.6,100.2 L184.7,100.2 L186.9,100.2 L189.1,100.2 L191.3,100.2 L193.4,100.2 L195.6,100.2 L197.8,100.2 L200.0,100.2 L202.1,100.2 L204.3,100.2 L206.5,100.2 L208.7,100.2 L210.8,100.2 L213.0,100.2 L215.2,100.2 L217.3,100.2 L219.5,100.2 L221.7,100.2 L223.9,100.2 L226.0,100.2 L228.2,100.2 L230.4,100.2 L232.6,100.2 L234.7,100.2 L236.9,100.2 L239.1,100.2 L241.3,100.2 L243.4,100.2 L245.6,100.2 L247.8,100.2 L249.9,100.2 L252.1,100.2 L254.3,100.2 L256.5,100.2 L258.6,100.2 L260.8,100.2 L263.0,100.2 L265.2,100.2 L267.3,100.2 L269.5,100.2 L271.7,100.2 L273.9,100.2 L276.0,100.2 L278.2,100.2 L280.4,100.2 L282.5,100.2 L284.7,100.2 L286.9,100.2 L289.1,100.2 L291.2,100.2 L293.4,100.2 L295.6,100.2 L297.8,100.2 L299.9,100.2 L302.1,100.2 L304.3,100.2 L306.5,100.2 L308.6,100.2 L310.8,100.2 L313.0,100.2 L315.1,100.2 L317.3,100.2 L319.5,100.2 L321.7,100.2 L323.8,100.2 L326.0,100.2 L328.2,100.2 L330.4,100.2 L332.5,100.2 L334.7,100.2 L336.9,100.2 L339.1,100.2 L341.2,100.2 L343.4,100.2 L345.6,100.2 L347.7,100.2 L349.9,100.2 L352.1,100.2 L354.3,100.2 L356.4,100.2 L358.6,100.2 L360.8,100.2 L363.0,100.2 L365.1,100.2 L367.3,100.2 L369.5,100.2 L371.7,100.2 L373.8,100.2 L376.0,100.2 L378.2,100.2 L380.3,100.2 L382.5,100.2 L384.7,100.2 L386.9,100.2 L389.0,100.2 L391.2,100.2 L393.4,100.2 L395.6,100.2 L397.7,100.2 L399.9,100.2 L402.1,100.2 L404.3,100.2 L406.4,100.2 L408.6,100.2 L410.8,100.2 L412.9,100.2 L415.1,100.2 L417.3,100.2 L419.5,100.2 L421.6,100.2 L423.8,100.2 L426.0,100.2 L428.2,100.2 L430.3,100.2 L432.5,100.2 L434.7,100.2 L436.9,100.2 L439.0,100.2 L441.2,100.2 L443.4,100.2 L445.5,100.2 L447.7,100.2 L449.9,100.2 L452.1,100.2 L454.2,100.2 L456.4,100.2 L458.6,100.2 L460.8,100.2 L462.9,100.2 L465.1,100.2 L467.3,100.2 L469.5,100.2 L471.6,100.2 L473.8,100.2 L476.0,100.2 L478.1,100.2 L480.3,100.2 L482.5,100.2 L484.7,100.2 L486.8,100.2 L489.0,100.2 L491.2,100.2 L493.4,100.2 L495.5,100.2 L497.7,100.2 L499.9,100.2 L502.1,100.2 L504.2,100.2 L506.4,100.2 L508.6,100.2 L510.7,100.2 L512.9,100.2 L515.1,100.2 L517.3,100.2 L519.4,100.2 L521.6,100.2 L523.8,100.2 L526.0,100.2 L528.1,100.2 L530.3,100.2 L532.5,100.2 L534.7,100.2 L536.8,100.2 L539.0,100.2 L541.2,100.2 L543.3,100.2 L545.5,100.2 L547.7,100.2 L549.9,100.2 L552.0,100.2 L554.2,100.2 L556.4,100.2 L558.6,100.2 L560.7,100.2 L562.9,100.2 L565.1,100.2 L567.3,100.2 L569.4,100.2 L571.6,100.2 L573.8,100.2 L575.9,100.2 L578.1,100.2 L580.3,100.2 L582.5,100.2 L584.6,100.2 L586.8,100.2 L589.0,100.2 L591.2,100.2 L593.3,100.2 L595.5,100.2 L597.7,100.2 L599.9,100.2 L602.0,100.2 L604.2,100.2 L606.4,100.2 L608.5,100.2 L610.7,100.2 L612.9,100.2 L615.1,100.2 L617.2,100.2 L619.4,100.2 L621.6,100.2 L623.8,100.2 L625.9,100.2 L628.1,100.2 L630.3,100.2 L632.5,100.2 L634.6,100.2 L636.8,100.2 L639.0,100.2 L641.1,100.2 L643.3,100.2 L645.5,100.2 L647.7,100.2 L649.8,100.2 L652.0,100.2 L654.2,100.2 L656.4,100.2 L658.5,100.2 L660.7,100.2 L662.9,100.2 L665.1,100.2 L667.2,100.2 L669.4,100.2 L671.6,100.2 L673.7,100.2 L675.9,100.2 L678.1,100.2 L680.3,100.2 L682.4,100.2 L684.6,100.2 L686.8,100.2 L689.0,100.2 L691.1,100.2 L693.3,100.2 L695.5,100.2 L697.7,100.2 L699.8,100.2 L702.0,100.2" fill="none" stroke="#d96c1e" stroke-width="2.0"/><circle cx="202.2" cy="100.2" r="4" fill="#c2452d"/><circle cx="384.7" cy="100.2" r="4" fill="#c2452d"/><text x="537.9" y="82.7" text-anchor="start" class="svg-txt" font-size="14.5">y = 1</text><text x="446.4" y="276.7" text-anchor="start" class="svg-txt" font-size="14.5">y = √3 sin x − cos x</text></svg></div><figcaption>方程式 √3 sin x − cos x = 1 の解は，2 つの関数 y = √3 sin x − cos x と y = 1 のグラフの交点の x 座標である。</figcaption></figure>
+          <p class="big"><math display="block"><mi>x</mi><mo>=</mo><mfrac><mi>π</mi><mn>3</mn></mfrac><mo>,</mo><mi>π</mi></math></p>
+          <p>求めた解は<math><mo>,</mo><mn>0</mn><mo>≦</mo><mi>x</mi><mo>&lt;</mo><mn>2</mn><mi>π</mi></math>における 2 つの関数<math><mi>y</mi><mo>=</mo><msqrt><mn>3</mn></msqrt><mi>sin</mi><mi>x</mi><mo>−</mo><mi>cos</mi><mi>x</mi><mo>,</mo><mi>y</mi><mo>=</mo><mn>1</mn></math>のグラフの交点の <math><mi>x</mi></math> 座標である。</p><figure><div class="figbox"><svg viewBox="0 0 720 330" role="img" aria-label="方程式 √3 sin x − cos x = 1 の解は，2 つの関数 y = √3 sin x − cos x と y = 1 のグラフの交点の x 座標である。"><line x1="50.0" y1="155.0" x2="710.0" y2="155.0" stroke="#33404d" stroke-width="1.6"/><path d="M704.0,150.0 L715.0,155.0 L704.0,160.0 Z" fill="#33404d"/><line x1="111.0" y1="292.0" x2="111.0" y2="12.0" stroke="#33404d" stroke-width="1.6"/><path d="M106.0,18.0 L111.0,7.0 L116.0,18.0 Z" fill="#33404d"/><text x="118.0" y="20.0" class="svg-txt" font-size="15">y</text><text x="700.0" y="147.0" class="svg-txt" font-size="15">x</text><text x="105.0" y="172.0" text-anchor="end" class="svg-txt" font-size="14">O</text><line x1="202.2" y1="151.0" x2="202.2" y2="159.0" stroke="#33404d" stroke-width="1.3"/><text x="202.2" y="176.0" text-anchor="middle" class="svg-txt" font-size="13.5">π/3</text><line x1="384.7" y1="151.0" x2="384.7" y2="159.0" stroke="#33404d" stroke-width="1.3"/><text x="384.7" y="176.0" text-anchor="middle" class="svg-txt" font-size="13.5">π</text><line x1="658.4" y1="151.0" x2="658.4" y2="159.0" stroke="#33404d" stroke-width="1.3"/><text x="658.4" y="176.0" text-anchor="middle" class="svg-txt" font-size="13.5">2π</text><line x1="107.0" y1="100.2" x2="115.0" y2="100.2" stroke="#33404d" stroke-width="1.3"/><text x="103.0" y="105.2" text-anchor="end" class="svg-txt" font-size="13.5">1</text><path d="M50.0,258.1 L52.2,257.1 L54.3,256.1 L56.5,255.0 L58.7,253.8 L60.9,252.6 L63.0,251.3 L65.2,250.0 L67.4,248.6 L69.6,247.2 L71.7,245.7 L73.9,244.1 L76.1,242.5 L78.3,240.8 L80.4,239.1 L82.6,237.3 L84.8,235.5 L86.9,233.6 L89.1,231.7 L91.3,229.7 L93.5,227.7 L95.6,225.6 L97.8,223.5 L100.0,221.3 L102.2,219.1 L104.3,216.9 L106.5,214.6 L108.7,212.3 L110.9,209.9 L113.0,207.6 L115.2,205.2 L117.4,202.7 L119.5,200.2 L121.7,197.7 L123.9,195.2 L126.1,192.6 L128.2,190.1 L130.4,187.5 L132.6,184.8 L134.8,182.2 L136.9,179.5 L139.1,176.9 L141.3,174.2 L143.5,171.5 L145.6,168.8 L147.8,166.1 L150.0,163.3 L152.1,160.6 L154.3,157.9 L156.5,155.1 L158.7,152.4 L160.8,149.7 L163.0,147.0 L165.2,144.2 L167.4,141.5 L169.5,138.8 L171.7,136.1 L173.9,133.4 L176.1,130.7 L178.2,128.1 L180.4,125.4 L182.6,122.8 L184.7,120.2 L186.9,117.6 L189.1,115.1 L191.3,112.5 L193.4,110.0 L195.6,107.6 L197.8,105.1 L200.0,102.7 L202.1,100.3 L204.3,98.0 L206.5,95.6 L208.7,93.4 L210.8,91.1 L213.0,88.9 L215.2,86.8 L217.3,84.6 L219.5,82.6 L221.7,80.5 L223.9,78.6 L226.0,76.6 L228.2,74.7 L230.4,72.9 L232.6,71.1 L234.7,69.4 L236.9,67.7 L239.1,66.1 L241.3,64.5 L243.4,63.0 L245.6,61.5 L247.8,60.1 L249.9,58.8 L252.1,57.5 L254.3,56.3 L256.5,55.1 L258.6,54.0 L260.8,53.0 L263.0,52.0 L265.2,51.1 L267.3,50.3 L269.5,49.5 L271.7,48.8 L273.9,48.2 L276.0,47.6 L278.2,47.1 L280.4,46.6 L282.5,46.3 L284.7,46.0 L286.9,45.7 L289.1,45.5 L291.2,45.4 L293.4,45.4 L295.6,45.4 L297.8,45.5 L299.9,45.7 L302.1,45.9 L304.3,46.2 L306.5,46.6 L308.6,47.1 L310.8,47.6 L313.0,48.1 L315.1,48.8 L317.3,49.5 L319.5,50.3 L321.7,51.1 L323.8,52.0 L326.0,53.0 L328.2,54.0 L330.4,55.1 L332.5,56.2 L334.7,57.4 L336.9,58.7 L339.1,60.1 L341.2,61.5 L343.4,62.9 L345.6,64.4 L347.7,66.0 L349.9,67.6 L352.1,69.3 L354.3,71.0 L356.4,72.8 L358.6,74.6 L360.8,76.5 L363.0,78.4 L365.1,80.4 L367.3,82.5 L369.5,84.5 L371.7,86.6 L373.8,88.8 L376.0,91.0 L378.2,93.2 L380.3,95.5 L382.5,97.8 L384.7,100.2 L386.9,102.6 L389.0,105.0 L391.2,107.4 L393.4,109.9 L395.6,112.4 L397.7,114.9 L399.9,117.5 L402.1,120.1 L404.3,122.7 L406.4,125.3 L408.6,127.9 L410.8,130.6 L412.9,133.3 L415.1,136.0 L417.3,138.7 L419.5,141.4 L421.6,144.1 L423.8,146.8 L426.0,149.5 L428.2,152.3 L430.3,155.0 L432.5,157.7 L434.7,160.5 L436.9,163.2 L439.0,165.9 L441.2,168.6 L443.4,171.3 L445.5,174.0 L447.7,176.7 L449.9,179.4 L452.1,182.1 L454.2,184.7 L456.4,187.3 L458.6,189.9 L460.8,192.5 L462.9,195.1 L465.1,197.6 L467.3,200.1 L469.5,202.6 L471.6,205.0 L473.8,207.4 L476.0,209.8 L478.1,212.2 L480.3,214.5 L482.5,216.8 L484.7,219.0 L486.8,221.2 L489.0,223.4 L491.2,225.5 L493.4,227.5 L495.5,229.6 L497.7,231.6 L499.9,233.5 L502.1,235.4 L504.2,237.2 L506.4,239.0 L508.6,240.7 L510.7,242.4 L512.9,244.0 L515.1,245.6 L517.3,247.1 L519.4,248.5 L521.6,249.9 L523.8,251.3 L526.0,252.6 L528.1,253.8 L530.3,254.9 L532.5,256.0 L534.7,257.0 L536.8,258.0 L539.0,258.9 L541.2,259.7 L543.3,260.5 L545.5,261.2 L547.7,261.9 L549.9,262.4 L552.0,262.9 L554.2,263.4 L556.4,263.8 L558.6,264.1 L560.7,264.3 L562.9,264.5 L565.1,264.6 L567.3,264.6 L569.4,264.6 L571.6,264.5 L573.8,264.3 L575.9,264.0 L578.1,263.7 L580.3,263.4 L582.5,262.9 L584.6,262.4 L586.8,261.8 L589.0,261.2 L591.2,260.5 L593.3,259.7 L595.5,258.9 L597.7,258.0 L599.9,257.0 L602.0,256.0 L604.2,254.9 L606.4,253.7 L608.5,252.5 L610.7,251.2 L612.9,249.9 L615.1,248.5 L617.2,247.0 L619.4,245.5 L621.6,243.9 L623.8,242.3 L625.9,240.6 L628.1,238.9 L630.3,237.1 L632.5,235.3 L634.6,233.4 L636.8,231.4 L639.0,229.5 L641.1,227.4 L643.3,225.4 L645.5,223.2 L647.7,221.1 L649.8,218.9 L652.0,216.6 L654.2,214.4 L656.4,212.0 L658.5,209.7 L660.7,207.3 L662.9,204.9 L665.1,202.4 L667.2,200.0 L669.4,197.5 L671.6,194.9 L673.7,192.4 L675.9,189.8 L678.1,187.2 L680.3,184.6 L682.4,181.9 L684.6,179.3 L686.8,176.6 L689.0,173.9 L691.1,171.2 L693.3,168.5 L695.5,165.8 L697.7,163.0 L699.8,160.3 L702.0,157.6" fill="none" stroke="#1f6fb2" stroke-width="2.6"/><path d="M50.0,100.2 L52.2,100.2 L54.3,100.2 L56.5,100.2 L58.7,100.2 L60.9,100.2 L63.0,100.2 L65.2,100.2 L67.4,100.2 L69.6,100.2 L71.7,100.2 L73.9,100.2 L76.1,100.2 L78.3,100.2 L80.4,100.2 L82.6,100.2 L84.8,100.2 L86.9,100.2 L89.1,100.2 L91.3,100.2 L93.5,100.2 L95.6,100.2 L97.8,100.2 L100.0,100.2 L102.2,100.2 L104.3,100.2 L106.5,100.2 L108.7,100.2 L110.9,100.2 L113.0,100.2 L115.2,100.2 L117.4,100.2 L119.5,100.2 L121.7,100.2 L123.9,100.2 L126.1,100.2 L128.2,100.2 L130.4,100.2 L132.6,100.2 L134.8,100.2 L136.9,100.2 L139.1,100.2 L141.3,100.2 L143.5,100.2 L145.6,100.2 L147.8,100.2 L150.0,100.2 L152.1,100.2 L154.3,100.2 L156.5,100.2 L158.7,100.2 L160.8,100.2 L163.0,100.2 L165.2,100.2 L167.4,100.2 L169.5,100.2 L171.7,100.2 L173.9,100.2 L176.1,100.2 L178.2,100.2 L180.4,100.2 L182.6,100.2 L184.7,100.2 L186.9,100.2 L189.1,100.2 L191.3,100.2 L193.4,100.2 L195.6,100.2 L197.8,100.2 L200.0,100.2 L202.1,100.2 L204.3,100.2 L206.5,100.2 L208.7,100.2 L210.8,100.2 L213.0,100.2 L215.2,100.2 L217.3,100.2 L219.5,100.2 L221.7,100.2 L223.9,100.2 L226.0,100.2 L228.2,100.2 L230.4,100.2 L232.6,100.2 L234.7,100.2 L236.9,100.2 L239.1,100.2 L241.3,100.2 L243.4,100.2 L245.6,100.2 L247.8,100.2 L249.9,100.2 L252.1,100.2 L254.3,100.2 L256.5,100.2 L258.6,100.2 L260.8,100.2 L263.0,100.2 L265.2,100.2 L267.3,100.2 L269.5,100.2 L271.7,100.2 L273.9,100.2 L276.0,100.2 L278.2,100.2 L280.4,100.2 L282.5,100.2 L284.7,100.2 L286.9,100.2 L289.1,100.2 L291.2,100.2 L293.4,100.2 L295.6,100.2 L297.8,100.2 L299.9,100.2 L302.1,100.2 L304.3,100.2 L306.5,100.2 L308.6,100.2 L310.8,100.2 L313.0,100.2 L315.1,100.2 L317.3,100.2 L319.5,100.2 L321.7,100.2 L323.8,100.2 L326.0,100.2 L328.2,100.2 L330.4,100.2 L332.5,100.2 L334.7,100.2 L336.9,100.2 L339.1,100.2 L341.2,100.2 L343.4,100.2 L345.6,100.2 L347.7,100.2 L349.9,100.2 L352.1,100.2 L354.3,100.2 L356.4,100.2 L358.6,100.2 L360.8,100.2 L363.0,100.2 L365.1,100.2 L367.3,100.2 L369.5,100.2 L371.7,100.2 L373.8,100.2 L376.0,100.2 L378.2,100.2 L380.3,100.2 L382.5,100.2 L384.7,100.2 L386.9,100.2 L389.0,100.2 L391.2,100.2 L393.4,100.2 L395.6,100.2 L397.7,100.2 L399.9,100.2 L402.1,100.2 L404.3,100.2 L406.4,100.2 L408.6,100.2 L410.8,100.2 L412.9,100.2 L415.1,100.2 L417.3,100.2 L419.5,100.2 L421.6,100.2 L423.8,100.2 L426.0,100.2 L428.2,100.2 L430.3,100.2 L432.5,100.2 L434.7,100.2 L436.9,100.2 L439.0,100.2 L441.2,100.2 L443.4,100.2 L445.5,100.2 L447.7,100.2 L449.9,100.2 L452.1,100.2 L454.2,100.2 L456.4,100.2 L458.6,100.2 L460.8,100.2 L462.9,100.2 L465.1,100.2 L467.3,100.2 L469.5,100.2 L471.6,100.2 L473.8,100.2 L476.0,100.2 L478.1,100.2 L480.3,100.2 L482.5,100.2 L484.7,100.2 L486.8,100.2 L489.0,100.2 L491.2,100.2 L493.4,100.2 L495.5,100.2 L497.7,100.2 L499.9,100.2 L502.1,100.2 L504.2,100.2 L506.4,100.2 L508.6,100.2 L510.7,100.2 L512.9,100.2 L515.1,100.2 L517.3,100.2 L519.4,100.2 L521.6,100.2 L523.8,100.2 L526.0,100.2 L528.1,100.2 L530.3,100.2 L532.5,100.2 L534.7,100.2 L536.8,100.2 L539.0,100.2 L541.2,100.2 L543.3,100.2 L545.5,100.2 L547.7,100.2 L549.9,100.2 L552.0,100.2 L554.2,100.2 L556.4,100.2 L558.6,100.2 L560.7,100.2 L562.9,100.2 L565.1,100.2 L567.3,100.2 L569.4,100.2 L571.6,100.2 L573.8,100.2 L575.9,100.2 L578.1,100.2 L580.3,100.2 L582.5,100.2 L584.6,100.2 L586.8,100.2 L589.0,100.2 L591.2,100.2 L593.3,100.2 L595.5,100.2 L597.7,100.2 L599.9,100.2 L602.0,100.2 L604.2,100.2 L606.4,100.2 L608.5,100.2 L610.7,100.2 L612.9,100.2 L615.1,100.2 L617.2,100.2 L619.4,100.2 L621.6,100.2 L623.8,100.2 L625.9,100.2 L628.1,100.2 L630.3,100.2 L632.5,100.2 L634.6,100.2 L636.8,100.2 L639.0,100.2 L641.1,100.2 L643.3,100.2 L645.5,100.2 L647.7,100.2 L649.8,100.2 L652.0,100.2 L654.2,100.2 L656.4,100.2 L658.5,100.2 L660.7,100.2 L662.9,100.2 L665.1,100.2 L667.2,100.2 L669.4,100.2 L671.6,100.2 L673.7,100.2 L675.9,100.2 L678.1,100.2 L680.3,100.2 L682.4,100.2 L684.6,100.2 L686.8,100.2 L689.0,100.2 L691.1,100.2 L693.3,100.2 L695.5,100.2 L697.7,100.2 L699.8,100.2 L702.0,100.2" fill="none" stroke="#d96c1e" stroke-width="2.0"/><circle cx="202.2" cy="100.2" r="4" fill="#c2452d"/><circle cx="384.7" cy="100.2" r="4" fill="#c2452d"/><text x="537.9" y="82.7" text-anchor="start" class="svg-txt" font-size="14.5">y = 1</text><text x="446.4" y="276.7" text-anchor="start" class="svg-txt" font-size="14.5">y = √3 sin x − cos x</text></svg></div><figcaption>方程式<math><msqrt><mn>3</mn></msqrt><mi>sin</mi><mi>x</mi><mo>−</mo><mi>cos</mi><mi>x</mi><mo>=</mo><mn>1</mn></math>の解は，2 つの関数<math><mi>y</mi><mo>=</mo><msqrt><mn>3</mn></msqrt><mi>sin</mi><mi>x</mi><mo>−</mo><mi>cos</mi><mi>x</mi></math>と<math><mi>y</mi><mo>=</mo><mn>1</mn></math>のグラフの交点の <math><mi>x</mi></math> 座標である。</figcaption></figure>
         </div>
         <p class="prob-done">応用例題5 クリア！　次は練習37に挑戦しよう。</p>
       </section>
-      <section class="card prob" id="prob-ren37" data-flow="ren37" data-label="練習37">
+      <section class="nofig card prob" id="prob-ren37" data-flow="ren37" data-label="練習37">
         <div class="prob-head">
           <span class="prob-tag ren">練習 37</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">0 ≦ x < 2π のとき，次の方程式を解け。<span class="formula" style="display:block;margin-top:8px">sin x + √<span class="rad">3</span> cos x = 1</span></p>
+        <p class="prob-q"><math><mn>0</mn><mo>≦</mo><mi>x</mi><mo>&lt;</mo><mn>2</mn><mi>π</mi></math>のとき，次の方程式を解け。<p class="formula left"><math display="block"><mi>sin</mi><mi>x</mi><mo>+</mo><msqrt><mn>3</mn></msqrt><mi>cos</mi><mi>x</mi><mo>=</mo><mn>1</mn></math></p></p>
           <div class="quiz" id="qz-ren37" data-correct="1">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>x = <span class="frac"><span class="num">π</span><span class="den">2</span></span>，<span class="frac"><span class="num">11</span><span class="den">6</span></span>π</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>x = <span class="frac"><span class="num">π</span><span class="den">2</span></span>，<span class="frac"><span class="num">7</span><span class="den">6</span></span>π</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>x = <span class="frac"><span class="num">π</span><span class="den">6</span></span>，<span class="frac"><span class="num">5</span><span class="den">6</span></span>π</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>x = <span class="frac"><span class="num">π</span><span class="den">3</span></span>，π</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mi>x</mi><mo>=</mo><mfrac><mi>π</mi><mn>2</mn></mfrac><mo>,</mo><mfrac><mn>11</mn><mn>6</mn></mfrac><mi>π</mi></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mi>x</mi><mo>=</mo><mfrac><mi>π</mi><mn>2</mn></mfrac><mo>,</mo><mfrac><mn>7</mn><mn>6</mn></mfrac><mi>π</mi></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mi>x</mi><mo>=</mo><mfrac><mi>π</mi><mn>6</mn></mfrac><mo>,</mo><mfrac><mn>5</mn><mn>6</mn></mfrac><mi>π</mi></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mi>x</mi><mo>=</mo><mfrac><mi>π</mi><mn>3</mn></mfrac><mo>,</mo><mi>π</mi></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
@@ -1089,16 +1166,16 @@
         </div>
         <div class="step hint">
           <h3>ヒント 1 ― 合成する</h3>
-          <p>a = 1，b = √<span class="rad">3</span> だから r = 2 で，点 P(1, √<span class="rad">3</span>) の角は <span class="frac"><span class="num">π</span><span class="den">3</span></span>。左辺は 2 sin(x + <span class="frac"><span class="num">π</span><span class="den">3</span></span>) と合成できる。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><mi>a</mi><mi>sin</mi><mi>x</mi><mo>+</mo><mi>b</mi><mi>cos</mi><mi>x</mi><mo>=</mo><msqrt><mrow><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup></mrow></msqrt><mi>sin</mi><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mi>α</mi><mo>)</mo></mrow></math>ここでは <math><mi>a</mi><mo>=</mo><mn>1</mn></math>、<math><mi>b</mi><mo>=</mo><msqrt><mn>3</mn></msqrt></math> として、点 <math><mi>P</mi></math> から <math><mi>r</mi></math> と <math><mi>α</mi></math> を読み取る。</p><p><math><mi>a</mi><mo>=</mo><mn>1</mn><mo>,</mo><mi>b</mi><mo>=</mo><msqrt><mn>3</mn></msqrt></math> だから<math><mi>r</mi><mo>=</mo><mn>2</mn></math>で，点<math><mi>P</mi><mrow><mo>(</mo><mn>1</mn><mo>,</mo><msqrt><mn>3</mn></msqrt><mo>)</mo></mrow></math>の角は <math><mfrac><mi>π</mi><mn>3</mn></mfrac></math>。左辺は<math><mn>2</mn><mi>sin</mi><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mfrac><mi>π</mi><mn>3</mn></mfrac><mo>)</mo></mrow></math>と合成できる。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 角の範囲で解く</h3>
-          <p>sin(x + <span class="frac"><span class="num">π</span><span class="den">3</span></span>) = <span class="frac"><span class="num">1</span><span class="den">2</span></span>。<span class="frac"><span class="num">π</span><span class="den">3</span></span> ≦ x + <span class="frac"><span class="num">π</span><span class="den">3</span></span> < <span class="frac"><span class="num">7</span><span class="den">3</span></span>π の範囲で解くと，x + <span class="frac"><span class="num">π</span><span class="den">3</span></span> = <span class="frac"><span class="num">5</span><span class="den">6</span></span>π，<span class="frac"><span class="num">13</span><span class="den">6</span></span>π。</p>
+          <p><math><mi>sin</mi><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mfrac><mi>π</mi><mn>3</mn></mfrac><mo>)</mo></mrow><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math>。<math><mfrac><mi>π</mi><mn>3</mn></mfrac><mo>≦</mo><mi>x</mi><mo>+</mo><mfrac><mi>π</mi><mn>3</mn></mfrac><mo>&lt;</mo><mfrac><mn>7</mn><mn>3</mn></mfrac><mi>π</mi></math>の範囲で解くと<math><mo>,</mo><mi>x</mi><mo>+</mo><mfrac><mi>π</mi><mn>3</mn></mfrac><mo>=</mo><mfrac><mn>5</mn><mn>6</mn></mfrac><mi>π</mi><mo>,</mo><mfrac><mn>13</mn><mn>6</mn></mfrac><mi>π</mi></math>。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">x = <span class="frac"><span class="num">π</span><span class="den">2</span></span>，<span class="frac"><span class="num">11</span><span class="den">6</span></span>π</p>
+          <p class="big"><math display="block"><mi>x</mi><mo>=</mo><mfrac><mi>π</mi><mn>2</mn></mfrac><mo>,</mo><mfrac><mn>11</mn><mn>6</mn></mfrac><mi>π</mi></math></p>
         </div>
         <p class="prob-done">練習37 クリア！　この項は全部おわり。おつかれさま！</p>
       </section>
@@ -1108,11 +1185,16 @@
       <section class="card summary" id="summaryCard" style="display:none">
         <h2>この項のポイント</h2>
         <ul>
-          <li>2 倍角の公式： sin 2α = 2 sin α cos α，cos 2α = cos² α − sin² α = 1 − 2 sin² α = 2 cos² α − 1。式の中にある関数に合わせて形を選ぶ。</li>
-          <li>半角の公式： sin² <span class="frac"><span class="num">α</span><span class="den">2</span></span> = <span class="frac"><span class="num">1 − cos α</span><span class="den">2</span></span>，cos² <span class="frac"><span class="num">α</span><span class="den">2</span></span> = <span class="frac"><span class="num">1 + cos α</span><span class="den">2</span></span>。平方根をとるときの符号は，角の象限で決める。</li>
-          <li>正接の公式： tan 2α = <span class="frac"><span class="num">2 tan α</span><span class="den">1 − tan² α</span></span>，tan² <span class="frac"><span class="num">α</span><span class="den">2</span></span> = <span class="frac"><span class="num">1 − cos α</span><span class="den">1 + cos α</span></span>。</li>
-          <li>三角関数の合成： a sin θ + b cos θ = √<span class="rad">a² + b²</span> sin(θ + α)。点 P(a, b) をとると r と α が読み取れる。</li>
-          <li>合成すると，最大値・最小値や方程式が sin だけの問題に帰着できる。方程式では，ずれた角（x + α など）の範囲に注意する。</li>
+          <li><p class="cite"><span class="cite-tag">使う公式</span><math><mi>sin</mi><mn>2</mn><mi>α</mi><mo>=</mo><mn>2</mn><mi>sin</mi><mi>α</mi><mi>cos</mi><mi>α</mi></math>あわせて <math><mi>cos</mi><mn>2</mn><mi>α</mi></math> の 3 つの形も、式の中にある関数に合わせて選ぶ。</p>2 倍角の公式：<div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>sin</mi><mn>2</mn><mi>α</mi><mo>=</mo><mn>2</mn><mi>sin</mi><mi>α</mi><mi>cos</mi><mi>α</mi><mo>,</mo><mi>cos</mi><mn>2</mn><mi>α</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mn>2</mn><mi>α</mi></mphantom><mo>=</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>α</mi><mo>−</mo><msup><mi>sin</mi><mn>2</mn></msup><mi>α</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mn>2</mn><mi>α</mi></mphantom><mo>=</mo><mn>1</mn><mo>−</mo><mn>2</mn><msup><mi>sin</mi><mn>2</mn></msup><mi>α</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mn>2</mn><mi>α</mi></mphantom><mo>=</mo><mn>2</mn><msup><mi>cos</mi><mn>2</mn></msup><mi>α</mi><mo>−</mo><mn>1</mn></math></div>
+</div>。式の中にある関数に合わせて形を選ぶ。</li>
+          <li><p class="cite"><span class="cite-tag">使う公式</span><math><msup><mi>sin</mi><mn>2</mn></msup><mfrac><mrow><mi>α</mi></mrow><mrow><mn>2</mn></mrow></mfrac><mo>=</mo><mfrac><mrow><mn>1</mn><mo>−</mo><mi>cos</mi><mi>α</mi></mrow><mrow><mn>2</mn></mrow></mfrac></math>あわせて <math><msup><mi>cos</mi><mn>2</mn></msup><mfrac><mrow><mi>α</mi></mrow><mrow><mn>2</mn></mrow></mfrac><mo>=</mo><mfrac><mrow><mn>1</mn><mo>+</mo><mi>cos</mi><mi>α</mi></mrow><mrow><mn>2</mn></mrow></mfrac></math> も使う。符号は角の象限で決める。</p>半角の公式：<math><msup><mi>sin</mi><mn>2</mn></msup><mfrac><mi>α</mi><mn>2</mn></mfrac><mo>=</mo><mfrac><mrow><mn>1</mn><mo>−</mo><mi>cos</mi><mi>α</mi></mrow><mn>2</mn></mfrac><mo>,</mo><msup><mi>cos</mi><mn>2</mn></msup><mfrac><mi>α</mi><mn>2</mn></mfrac><mo>=</mo><mfrac><mrow><mn>1</mn><mo>+</mo><mi>cos</mi><mi>α</mi></mrow><mn>2</mn></mfrac></math>。平方根をとるときの符号は，角の象限で決める。</li>
+          <li><p class="cite"><span class="cite-tag">使う公式</span><math><mi>tan</mi><mn>2</mn><mi>α</mi><mo>=</mo><mfrac><mrow><mn>2</mn><mi>tan</mi><mi>α</mi></mrow><mrow><mn>1</mn><mo>−</mo><msup><mi>tan</mi><mn>2</mn></msup><mi>α</mi></mrow></mfrac></math>あわせて <math><msup><mi>tan</mi><mn>2</mn></msup><mfrac><mrow><mi>α</mi></mrow><mrow><mn>2</mn></mrow></mfrac><mo>=</mo><mfrac><mrow><mn>1</mn><mo>−</mo><mi>cos</mi><mi>α</mi></mrow><mrow><mn>1</mn><mo>+</mo><mi>cos</mi><mi>α</mi></mrow></mfrac></math> も使う。</p>正接の公式：<math><mi>tan</mi><mn>2</mn><mi>α</mi><mo>=</mo><mfrac><mrow><mn>2</mn><mi>tan</mi><mi>α</mi></mrow><mrow><mn>1</mn><mo>−</mo><msup><mi>tan</mi><mn>2</mn></msup><mi>α</mi></mrow></mfrac><mo>,</mo><msup><mi>tan</mi><mn>2</mn></msup><mfrac><mi>α</mi><mn>2</mn></mfrac><mo>=</mo><mfrac><mrow><mn>1</mn><mo>−</mo><mi>cos</mi><mi>α</mi></mrow><mrow><mn>1</mn><mo>+</mo><mi>cos</mi><mi>α</mi></mrow></mfrac></math>。</li>
+          <li><p class="cite"><span class="cite-tag">使う公式</span><math><mi>a</mi><mi>sin</mi><mi>θ</mi><mo>+</mo><mi>b</mi><mi>cos</mi><mi>θ</mi><mo>=</mo><msqrt><mrow><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup></mrow></msqrt><mi>sin</mi><mrow><mo>(</mo><mi>θ</mi><mo>+</mo><mi>α</mi><mo>)</mo></mrow></math>点 <math><mi>P</mi><mrow><mo>(</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo>)</mo></mrow></math> をとると、<math><mi>r</mi><mo>=</mo><msqrt><mrow><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup></mrow></msqrt></math> と角 <math><mi>α</mi></math> が読み取れる。</p>三角関数の合成：<math><mi>a</mi><mi>sin</mi><mi>θ</mi><mo>+</mo><mi>b</mi><mi>cos</mi><mi>θ</mi><mo>=</mo><msqrt><mrow><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup></mrow></msqrt><mi>sin</mi><mrow><mo>(</mo><mi>θ</mi><mo>+</mo><mi>α</mi><mo>)</mo></mrow></math>。点 <math><mi>P</mi><mrow><mo>(</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo>)</mo></mrow></math> をとると <math><mi>r</mi></math> と <math><mi>α</mi></math> が読み取れる。</li>
+          <li>合成すると，最大値・最小値や方程式が <math><mi>sin</mi></math> だけの問題に帰着できる。方程式では，ずれた角（<math><mi>x</mi></math> + <math><mi>α</mi></math> など）の範囲に注意する。</li>
         </ul>
       </section>
       <footer>

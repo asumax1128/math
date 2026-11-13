@@ -302,7 +302,64 @@
       table.comp{border-collapse:collapse;margin:0 0 14px;width:100%}
       table.comp th,table.comp td{border:1px solid var(--line);padding:8px 10px;text-align:center;font-size:15px}
       table.comp th{background:var(--surface2)}
-        </style>
+        
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+
+      /* 積分記号は大きめに表示する（元のページの可読化デザインに合わせる） */
+      math .int-op{font-size:1.35em}
+      /* calc-12 世代（.card）と calc-18 世代（.unit）の、図のない問題の全幅化 */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig>.step{position:static !important}
+        .card.nofig>.steps-wrap{max-height:none !important;overflow:visible !important}
+        .unit.nofig{display:block !important}
+        .unit.nofig>.qside{position:static !important}
+        .unit.nofig>.steps-stack{max-height:none !important;overflow:visible !important}
+      }
+
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける・第3弾c） */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig .qside{position:static !important}
+        .card.nofig .steps-wrap,.card.nofig .tabpanel .steps-wrap{max-height:none !important;overflow:visible !important}
+      }
+</style>
   </head>
   <body>
     <div class="wrap">
@@ -325,92 +382,134 @@
         <span class="pno">教科書 p.133〜134</span>
       </div>
       <section class="card">
-        <p>2 つの角 α，β の正弦，余弦を用いて，sin(α + β)，cos(α + β) などを表してみよう。また，α，β の正接を用いて，tan(α + β) なども表してみよう。</p>
-        <p>右の図において，点 P の y 座標は sin(α + β) であるから</p>
-<span class="formula" style="display:block;text-align:center;margin:8px 0">sin(α + β) = HK = HQ + QK</span>
-        <p>となる。ここで，HQ = PQ cosβ = sinα cosβ，QK = OQ sinβ = cosα sinβ であるから，よって，次の等式が得られる。</p>
-<span class="formula" style="display:block;text-align:center;margin:8px 0">sin(α + β) = sinα cosβ + cosα sinβ　　…… ①</span>
-        <p>同様に，点 P の x 座標 cos(α + β) について考えると，cos(α + β) = −OS = OK − SK = OK − PH，OK = OQ cosβ = cosα cosβ，PH = PQ sinβ = sinα sinβ であるから，次の等式が得られる。</p>
-<span class="formula" style="display:block;text-align:center;margin:8px 0">cos(α + β) = cosα cosβ − sinα sinβ　　…… ②</span>
-        <p>上で得られた等式 ①，② は，一般角 α，β に対しても成り立つことが知られている。</p>
-<figure><div class="figbox"><svg viewBox="0 0 300 300" role="img" aria-label="加法定理の導出の図"><circle cx="150" cy="165" r="110" fill="none" stroke="currentColor" stroke-width="1.5"/><line x1="14" y1="165" x2="292" y2="165" stroke="currentColor" stroke-width="1.2"/><path d="M 292 165 l -7 -3.4 v 6.8 z" fill="currentColor"/><line x1="150" y1="292" x2="150" y2="14" stroke="currentColor" stroke-width="1.2"/><path d="M 150 14 l -3.4 7 h 6.8 z" fill="currentColor"/><text x="288" y="157" font-size="16" text-anchor="middle" fill="currentColor" font-style="italic">x</text><text x="162" y="24" font-size="16" text-anchor="middle" fill="currentColor" font-style="italic">y</text><text x="141" y="182" font-size="15" text-anchor="middle" fill="currentColor">O</text><text x="260" y="182" font-size="13" text-anchor="middle" fill="currentColor">1</text><text x="40" y="182" font-size="13" text-anchor="middle" fill="currentColor">−1</text><text x="161" y="59" font-size="13" text-anchor="middle" fill="currentColor">1</text><line x1="150" y1="165" x2="95" y2="69.7" stroke="currentColor" stroke-width="1.6"/><line x1="150" y1="165" x2="240.1" y2="101.9" stroke="currentColor" stroke-width="1.6"/><line x1="95" y1="69.7" x2="240.1" y2="101.9" stroke="currentColor" stroke-width="1.6"/><line x1="95" y1="69.7" x2="240.1" y2="69.7" stroke="currentColor" stroke-width="1.3"/><line x1="240.1" y1="69.7" x2="240.1" y2="165" stroke="currentColor" stroke-width="1.3"/><line x1="95" y1="69.7" x2="95" y2="165" stroke="currentColor" stroke-width="1.1" stroke-dasharray="4 3"/><path d="M 240.1 69.7 h -11 v 11" fill="none" stroke="currentColor" stroke-width="1.1"/><path d="M 240.1 165 h -11 v -11" fill="none" stroke="currentColor" stroke-width="1.1"/><circle cx="95" cy="69.7" r="3.4" fill="currentColor"/><circle cx="240.1" cy="101.9" r="3.4" fill="currentColor"/><text x="83" y="63.7" font-size="15" text-anchor="middle" fill="currentColor">P</text><text x="253.1" y="105.9" font-size="15" text-anchor="middle" fill="currentColor">Q</text><text x="253.1" y="73.7" font-size="14" text-anchor="middle" fill="currentColor">H</text><text x="253.1" y="181" font-size="14" text-anchor="middle" fill="currentColor">K</text><text x="93" y="183" font-size="14" text-anchor="middle" fill="currentColor">S</text><text x="110.5" y="117.4" font-size="14" text-anchor="middle" fill="currentColor">1</text><path d="M 177 165 A 27 27 0 0 0 172.1 149.5" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M 188.5 138 A 47 47 0 0 0 126.5 124.3" fill="none" stroke="currentColor" stroke-width="1.2"/><text x="162.9" y="104.4" font-size="15" text-anchor="middle" fill="currentColor">α</text><text x="188.5" y="158" font-size="15" text-anchor="middle" fill="currentColor">β</text></svg></div><figcaption>点 P の y 座標が sin(α + β)，x 座標が cos(α + β) である。</figcaption></figure>
+        <p>2 つの角 <math><mi>α</mi></math>，<math><mi>β</mi></math> の正弦，余弦を用いて，<math><mi>sin</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow></math>，<math><mi>cos</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow></math> などを表してみよう。また，<math><mi>α</mi></math>，<math><mi>β</mi></math> の正接を用いて，<math><mi>tan</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow></math> なども表してみよう。</p>
+        <p>右の図において，点 <math><mi>P</mi></math> の <math><mi>y</mi></math> 座標は <math><mi>sin</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow></math> であるから</p>
+<p class="formula"><math display="block"><mi>sin</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mi>HK</mi><mo>=</mo><mi>HQ</mi><mo>+</mo><mi>QK</mi></math></p>
+        <p>となる。ここで</p>
+<div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mo>,</mo><mi>HQ</mi><mo>=</mo><mi>PQ</mi><mi>cos</mi><mi>β</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mo>,</mo><mi>HQ</mi></mphantom><mo>=</mo><mi>sin</mi><mi>α</mi><mi>cos</mi><mi>β</mi><mo>,</mo><mi>QK</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mo>,</mo><mi>HQ</mi></mphantom><mo>=</mo><mi>OQ</mi><mi>sin</mi><mi>β</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mo>,</mo><mi>HQ</mi></mphantom><mo>=</mo><mi>cos</mi><mi>α</mi><mi>sin</mi><mi>β</mi></math></div>
+</div>
+<p>であるから，よって，次の等式が得られる。</p>
+<p class="formula"><math><mi>sin</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mi>sin</mi><mi>α</mi><mi>cos</mi><mi>β</mi><mo>+</mo><mi>cos</mi><mi>α</mi><mi>sin</mi><mi>β</mi></math>　　…… ①</p>
+        <p>同様に，点 <math><mi>P</mi></math> の <math><mi>x</mi></math> 座標 <math><mi>cos</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow></math> について考えると</p>
+<div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mo>,</mo><mi>cos</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mo>−</mo><mi>OS</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mo>,</mo><mi>cos</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow></mphantom><mo>=</mo><mi>OK</mi><mo>−</mo><mi>SK</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mo>,</mo><mi>cos</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow></mphantom><mo>=</mo><mi>OK</mi><mo>−</mo><mi>PH</mi><mo>,</mo><mi>OK</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mo>,</mo><mi>cos</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow></mphantom><mo>=</mo><mi>OQ</mi><mi>cos</mi><mi>β</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mo>,</mo><mi>cos</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow></mphantom><mo>=</mo><mi>cos</mi><mi>α</mi><mi>cos</mi><mi>β</mi><mo>,</mo><mi>PH</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mo>,</mo><mi>cos</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow></mphantom><mo>=</mo><mi>PQ</mi><mi>sin</mi><mi>β</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mo>,</mo><mi>cos</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow></mphantom><mo>=</mo><mi>sin</mi><mi>α</mi><mi>sin</mi><mi>β</mi></math></div>
+</div>
+<p>であるから，次の等式が得られる。</p>
+<p class="formula"><math><mi>cos</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mi>cos</mi><mi>α</mi><mi>cos</mi><mi>β</mi><mo>−</mo><mi>sin</mi><mi>α</mi><mi>sin</mi><mi>β</mi></math>　　…… ②</p>
+        <p>上で得られた等式 ①，② は，一般角 <math><mi>α</mi></math>，<math><mi>β</mi></math> に対しても成り立つことが知られている。</p>
+<figure><div class="figbox"><svg viewBox="0 0 300 300" role="img" aria-label="加法定理の導出の図"><circle cx="150" cy="165" r="110" fill="none" stroke="currentColor" stroke-width="1.5"/><line x1="14" y1="165" x2="292" y2="165" stroke="currentColor" stroke-width="1.2"/><path d="M 292 165 l -7 -3.4 v 6.8 z" fill="currentColor"/><line x1="150" y1="292" x2="150" y2="14" stroke="currentColor" stroke-width="1.2"/><path d="M 150 14 l -3.4 7 h 6.8 z" fill="currentColor"/><text x="288" y="157" font-size="16" text-anchor="middle" fill="currentColor" font-style="italic">x</text><text x="162" y="24" font-size="16" text-anchor="middle" fill="currentColor" font-style="italic">y</text><text x="141" y="182" font-size="15" text-anchor="middle" fill="currentColor">O</text><text x="260" y="182" font-size="13" text-anchor="middle" fill="currentColor">1</text><text x="40" y="182" font-size="13" text-anchor="middle" fill="currentColor">−1</text><text x="161" y="59" font-size="13" text-anchor="middle" fill="currentColor">1</text><line x1="150" y1="165" x2="95" y2="69.7" stroke="currentColor" stroke-width="1.6"/><line x1="150" y1="165" x2="240.1" y2="101.9" stroke="currentColor" stroke-width="1.6"/><line x1="95" y1="69.7" x2="240.1" y2="101.9" stroke="currentColor" stroke-width="1.6"/><line x1="95" y1="69.7" x2="240.1" y2="69.7" stroke="currentColor" stroke-width="1.3"/><line x1="240.1" y1="69.7" x2="240.1" y2="165" stroke="currentColor" stroke-width="1.3"/><line x1="95" y1="69.7" x2="95" y2="165" stroke="currentColor" stroke-width="1.1" stroke-dasharray="4 3"/><path d="M 240.1 69.7 h -11 v 11" fill="none" stroke="currentColor" stroke-width="1.1"/><path d="M 240.1 165 h -11 v -11" fill="none" stroke="currentColor" stroke-width="1.1"/><circle cx="95" cy="69.7" r="3.4" fill="currentColor"/><circle cx="240.1" cy="101.9" r="3.4" fill="currentColor"/><text x="83" y="63.7" font-size="15" text-anchor="middle" fill="currentColor">P</text><text x="253.1" y="105.9" font-size="15" text-anchor="middle" fill="currentColor">Q</text><text x="253.1" y="73.7" font-size="14" text-anchor="middle" fill="currentColor">H</text><text x="253.1" y="181" font-size="14" text-anchor="middle" fill="currentColor">K</text><text x="93" y="183" font-size="14" text-anchor="middle" fill="currentColor">S</text><text x="110.5" y="117.4" font-size="14" text-anchor="middle" fill="currentColor">1</text><path d="M 177 165 A 27 27 0 0 0 172.1 149.5" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M 188.5 138 A 47 47 0 0 0 126.5 124.3" fill="none" stroke="currentColor" stroke-width="1.2"/><text x="162.9" y="104.4" font-size="15" text-anchor="middle" fill="currentColor">α</text><text x="188.5" y="158" font-size="15" text-anchor="middle" fill="currentColor">β</text></svg></div><figcaption>点 <math><mi>P</mi></math> の <math><mi>y</mi></math> 座標が <math><mi>sin</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow></math>，<math><mi>x</mi></math> 座標が <math><mi>cos</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow></math> である。</figcaption></figure>
       </section>
-      <section class="card prob" id="prob-ren23" data-flow="ren23" data-label="練習23">
+      <section class="nofig card prob" id="prob-ren23" data-flow="ren23" data-label="練習23">
         <div class="prob-head">
           <span class="prob-tag ren">練習 23</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
         <div class="qside">
-        <p class="prob-q">上の ①，② で，β を −β におき換えることにより，次の等式を導け。<br>sin(α − β) = sinα cosβ − cosα sinβ<br>cos(α − β) = cosα cosβ + sinα sinβ</p>
+        <p class="prob-q">上の ①，② で，<math><mi>β</mi></math> を −<math><mi>β</mi></math> におき換えることにより，次の等式を導け。<br><math><mi>sin</mi><mrow><mo>(</mo><mi>α</mi><mo>−</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mi>sin</mi><mi>α</mi><mi>cos</mi><mi>β</mi><mo>−</mo><mi>cos</mi><mi>α</mi><mi>sin</mi><mi>β</mi></math><br><math><mi>cos</mi><mrow><mo>(</mo><mi>α</mi><mo>−</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mi>cos</mi><mi>α</mi><mi>cos</mi><mi>β</mi><mo>+</mo><mi>sin</mi><mi>α</mi><mi>sin</mi><mi>β</mi></math></p>
         </div>
         <div class="step hint">
           <h3>ヒント 1 ― ① に代入する</h3>
-          <p>① の β を −β におき換えると，sin(α + (−β)) = sinα cos(−β) + cosα sin(−β) となる。左辺は sin(α − β) だよ。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><mi>sin</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mi>sin</mi><mi>α</mi><mi>cos</mi><mi>β</mi><mo>+</mo><mi>cos</mi><mi>α</mi><mi>sin</mi><mi>β</mi></math>差の公式は、この和の公式 ① の <math><mi>β</mi></math> を <math><mo>−</mo><mi>β</mi></math> におき換えて得る。</p><p>① の <math><mi>β</mi></math> を −<math><mi>β</mi></math> におき換えると<math><mo>,</mo><mi>sin</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mrow><mo>(</mo><mo>−</mo><mi>β</mi><mo>)</mo></mrow><mo>)</mo></mrow><mo>=</mo><mi>sin</mi><mi>α</mi><mi>cos</mi><mrow><mo>(</mo><mo>−</mo><mi>β</mi><mo>)</mo></mrow><mo>+</mo><mi>cos</mi><mi>α</mi><mi>sin</mi><mrow><mo>(</mo><mo>−</mo><mi>β</mi><mo>)</mo></mrow></math>となる。<br>左辺は <math><mi>sin</mi><mrow><mo>(</mo><mi>α</mi><mo>−</mo><mi>β</mi><mo>)</mo></mrow></math> だよ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 性質の等式を使う</h3>
-          <p>三角関数の性質（公式 2）から，cos(−β) = cosβ，sin(−β) = −sinβ である。これらを代入すると，右辺は sinα cosβ − cosα sinβ になる。</p>
+          <p class="cite"><span class="cite-tag">使う性質</span><math><mi>cos</mi><mrow><mo>(</mo><mo>−</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mi>cos</mi><mi>β</mi><mo>,</mo><mi>sin</mi><mrow><mo>(</mo><mo>−</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mo>−</mo><mi>sin</mi><mi>β</mi></math>三角関数の性質の等式である。<math><mo>−</mo><mi>β</mi></math> におき換えた式の右辺に、これらを代入する。</p><p>三角関数の性質（公式 2）から<math><mo>,</mo><mi>cos</mi><mrow><mo>(</mo><mo>−</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mi>cos</mi><mi>β</mi><mo>,</mo><mi>sin</mi><mrow><mo>(</mo><mo>−</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mo>−</mo><mi>sin</mi><mi>β</mi></math>である。<br>これらを代入すると，右辺は <math><mi>sin</mi><mi>α</mi></math> <math><mi>cos</mi><mi>β</mi></math> − <math><mi>cos</mi><mi>α</mi></math> <math><mi>sin</mi><mi>β</mi></math> になる。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 3 ― ② も同様に</h3>
-          <p>② の β を −β におき換えると，cos(α − β) = cosα cos(−β) − sinα sin(−β) = cosα cosβ + sinα sinβ となる。符号の変化に注意しよう。</p>
+          <p class="mq-wide">② の <math><mi>β</mi></math> を −<math><mi>β</mi></math> におき換えると<math><mo>,</mo><mi>cos</mi><mrow><mo>(</mo><mi>α</mi><mo>−</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mi>cos</mi><mi>α</mi><mi>cos</mi><mrow><mo>(</mo><mo>−</mo><mi>β</mi><mo>)</mo></mrow><mo>−</mo><mi>sin</mi><mi>α</mi><mi>sin</mi><mrow><mo>(</mo><mo>−</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mi>cos</mi><mi>α</mi><mi>cos</mi><mi>β</mi><mo>+</mo><mi>sin</mi><mi>α</mi><mi>sin</mi><mi>β</mi></math>となる。符号の変化に注意しよう。</p>
+<div class="mq-narrow">
+<p>② の <math><mi>β</mi></math> を −<math><mi>β</mi></math> におき換えると</p>
+<p class="formula"><math display="block"><mo>,</mo><mi>cos</mi><mrow><mo>(</mo><mi>α</mi><mo>−</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mi>cos</mi><mi>α</mi><mi>cos</mi><mrow><mo>(</mo><mo>−</mo><mi>β</mi><mo>)</mo></mrow></math></p>
+<p class="formula cont"><math display="block"><mo>−</mo><mi>sin</mi><mi>α</mi><mi>sin</mi><mrow><mo>(</mo><mo>−</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mi>cos</mi><mi>α</mi><mi>cos</mi><mi>β</mi></math></p>
+<p class="formula cont"><math display="block"><mo>+</mo><mi>sin</mi><mi>α</mi><mi>sin</mi><mi>β</mi></math></p>
+<p>となる。符号の変化に注意しよう。</p>
+</div>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">sin(α − β) = sinα cosβ − cosα sinβ<br>cos(α − β) = cosα cosβ + sinα sinβ</p>
-          <p>β を −β におき換え，性質の等式を使うことで，差の公式が得られた。</p>
+          <p class="big"><math><mi>sin</mi><mrow><mo>(</mo><mi>α</mi><mo>−</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mi>sin</mi><mi>α</mi><mi>cos</mi><mi>β</mi><mo>−</mo><mi>cos</mi><mi>α</mi><mi>sin</mi><mi>β</mi></math><br><math><mi>cos</mi><mrow><mo>(</mo><mi>α</mi><mo>−</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mi>cos</mi><mi>α</mi><mi>cos</mi><mi>β</mi><mo>+</mo><mi>sin</mi><mi>α</mi><mi>sin</mi><mi>β</mi></math></p><p class="cite"><span class="cite-tag">使う公式</span><math><mi>sin</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mi>sin</mi><mi>α</mi><mi>cos</mi><mi>β</mi><mo>+</mo><mi>cos</mi><mi>α</mi><mi>sin</mi><mi>β</mi></math>和の公式 ①・② の <math><mi>β</mi></math> を <math><mo>−</mo><mi>β</mi></math> におき換える、という流れで解答を組み立てる。</p>
+          <p><math><mi>β</mi></math> を −<math><mi>β</mi></math> におき換え，性質の等式を使うことで，差の公式が得られた。</p>
         </div>
         <p class="prob-done">練習23 クリア！　公式がそろったよ。</p>
       </section>
       <section class="card">
         <p>一般に，正弦，余弦について，次の<span class="key">加法定理</span>が成り立つ。</p>
-<span class="formula" style="display:block;text-align:center;margin:8px 0">正弦・余弦の加法定理<br>1　sin(α + β) = sinα cosβ + cosα sinβ<br>2　sin(α − β) = sinα cosβ − cosα sinβ<br>3　cos(α + β) = cosα cosβ − sinα sinβ<br>4　cos(α − β) = cosα cosβ + sinα sinβ</span>
-        <p>上の加法定理を使って，75°，15° の正弦，余弦を求めてみよう。</p>
+<p class="formula">正弦・余弦の加法定理<br>1　<math><mi>sin</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mi>sin</mi><mi>α</mi><mi>cos</mi><mi>β</mi><mo>+</mo><mi>cos</mi><mi>α</mi><mi>sin</mi><mi>β</mi></math><br>2　<math><mi>sin</mi><mrow><mo>(</mo><mi>α</mi><mo>−</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mi>sin</mi><mi>α</mi><mi>cos</mi><mi>β</mi><mo>−</mo><mi>cos</mi><mi>α</mi><mi>sin</mi><mi>β</mi></math><br>3　<math><mi>cos</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mi>cos</mi><mi>α</mi><mi>cos</mi><mi>β</mi><mo>−</mo><mi>sin</mi><mi>α</mi><mi>sin</mi><mi>β</mi></math><br>4　<math><mi>cos</mi><mrow><mo>(</mo><mi>α</mi><mo>−</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mi>cos</mi><mi>α</mi><mi>cos</mi><mi>β</mi><mo>+</mo><mi>sin</mi><mi>α</mi><mi>sin</mi><mi>β</mi></math></p>
+        <p>上の加法定理を使って<math><mo>,</mo><mn>75</mn><mo>°</mo><mo>,</mo><mn>15</mn><mo>°</mo></math>の正弦，余弦を求めてみよう。</p>
       </section>
-      <section class="card prob" id="prob-ex11" data-flow="ex11" data-label="例11">
+      <section class="nofig card prob" id="prob-ex11" data-flow="ex11" data-label="例11">
         <div class="prob-head">
           <span class="prob-tag ">例 11</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
         <div class="qside">
-        <p class="prob-q">加法定理を用いて，次の値を求めよ。<br>(1)　sin75°　　　(2)　sin15°</p>
+        <p class="prob-q">加法定理を用いて，次の値を求めよ。<br>(1)　<math><mi>sin</mi><mn>75</mn><mo>°</mo></math>　　　(2)　<math><mi>sin</mi><mn>15</mn><mo>°</mo></math></p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― (1) 75° を和で表す</h3>
-          <p>75° = 45° + 30° と表し，sin の加法定理を使うと，sin75° = sin(45° + 30°) = sin45° cos30° + cos45° sin30° となる。</p>
+          <h3>ヒント<math><mn>1</mn><mo>―</mo><mrow><mo>(</mo><mn>1</mn><mo>)</mo></mrow><mn>75</mn><mo>°</mo></math>を和で表す</h3>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><mi>sin</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mi>sin</mi><mi>α</mi><mi>cos</mi><mi>β</mi><mo>+</mo><mi>cos</mi><mi>α</mi><mi>sin</mi><mi>β</mi></math>ここでは <math><mi>α</mi><mo>=</mo><mn>45</mn><mo>°</mo></math>、<math><mi>β</mi><mo>=</mo><mn>30</mn><mo>°</mo></math> として、<math><mn>75</mn><mo>°</mo><mo>=</mo><mn>45</mn><mo>°</mo><mo>+</mo><mn>30</mn><mo>°</mo></math> に当てはめる。</p><p class="mq-wide"><math><mn>75</mn><mo>°</mo><mo>=</mo><mn>45</mn><mo>°</mo><mo>+</mo><mn>30</mn><mo>°</mo></math>と表し，<math><mi>sin</mi></math> の加法定理を使うと<math><mo>,</mo><mi>sin</mi><mn>75</mn><mo>°</mo><mo>=</mo><mi>sin</mi><mrow><mo>(</mo><mn>45</mn><mo>°</mo><mo>+</mo><mn>30</mn><mo>°</mo><mo>)</mo></mrow><mo>=</mo><mi>sin</mi><mn>45</mn><mo>°</mo><mi>cos</mi><mn>30</mn><mo>°</mo><mo>+</mo><mi>cos</mi><mn>45</mn><mo>°</mo><mi>sin</mi><mn>30</mn><mo>°</mo></math>となる。</p>
+<div class="mq-narrow">
+<p><math><mn>75</mn><mo>°</mo><mo>=</mo><mn>45</mn><mo>°</mo><mo>+</mo><mn>30</mn><mo>°</mo></math>と表し，<math><mi>sin</mi></math> の加法定理を使うと</p>
+<p class="formula"><math display="block"><mo>,</mo><mi>sin</mi><mn>75</mn><mo>°</mo><mo>=</mo><mi>sin</mi><mrow><mo>(</mo><mn>45</mn><mo>°</mo><mo>+</mo><mn>30</mn><mo>°</mo><mo>)</mo></mrow></math></p>
+<p class="formula cont"><math display="block"><mo>=</mo><mi>sin</mi><mn>45</mn><mo>°</mo><mi>cos</mi><mn>30</mn><mo>°</mo><mo>+</mo><mi>cos</mi><mn>45</mn><mo>°</mo><mi>sin</mi><mn>30</mn><mo>°</mo></math></p>
+<p>となる。</p>
+</div>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― (1) 値を代入して有理化</h3>
-          <p>sin45° = cos45° = <span class="frac"><span class="num">1</span><span class="den">√<span class="rad">2</span></span></span>，cos30° = <span class="frac"><span class="num">√<span class="rad">3</span></span><span class="den">2</span></span>，sin30° = <span class="frac"><span class="num">1</span><span class="den">2</span></span> を代入すると <span class="frac"><span class="num">√<span class="rad">3</span> + 1</span><span class="den">2√<span class="rad">2</span></span></span> になる。分母を有理化しよう。</p>
+          <div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>sin</mi><mn>45</mn><mo>°</mo><mo>=</mo><mi>cos</mi><mn>45</mn><mo>°</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mn>45</mn><mo>°</mo></mphantom><mo>=</mo><mfrac><mn>1</mn><msqrt><mn>2</mn></msqrt></mfrac><mo>,</mo><mi>cos</mi><mn>30</mn><mo>°</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mn>45</mn><mo>°</mo></mphantom><mo>=</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac><mo>,</mo><mi>sin</mi><mn>30</mn><mo>°</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mn>45</mn><mo>°</mo></mphantom><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math></div>
+</div>
+<p>を代入すると <math><mfrac><mrow><msqrt><mn>3</mn></msqrt><mo>+</mo><mn>1</mn></mrow><mrow><mn>2</mn><msqrt><mn>2</mn></msqrt></mrow></mfrac></math> になる。分母を有理化しよう。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 3 ― (2) 15° を差で表す</h3>
-          <p>15° = 45° − 30° と表すと，sin15° = sin45° cos30° − cos45° sin30° = <span class="frac"><span class="num">√<span class="rad">3</span> − 1</span><span class="den">2√<span class="rad">2</span></span></span> になる。これも有理化しよう。</p>
+          <h3>ヒント<math><mn>3</mn><mo>―</mo><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow><mn>15</mn><mo>°</mo></math>を差で表す</h3>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><mi>sin</mi><mrow><mo>(</mo><mi>α</mi><mo>−</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mi>sin</mi><mi>α</mi><mi>cos</mi><mi>β</mi><mo>−</mo><mi>cos</mi><mi>α</mi><mi>sin</mi><mi>β</mi></math>ここでは <math><mn>15</mn><mo>°</mo><mo>=</mo><mn>45</mn><mo>°</mo><mo>−</mo><mn>30</mn><mo>°</mo></math> として、<math><mi>α</mi><mo>=</mo><mn>45</mn><mo>°</mo></math>、<math><mi>β</mi><mo>=</mo><mn>30</mn><mo>°</mo></math> を当てはめる。</p><p class="mq-wide"><math><mn>15</mn><mo>°</mo><mo>=</mo><mn>45</mn><mo>°</mo><mo>−</mo><mn>30</mn><mo>°</mo></math>と表すと<math><mo>,</mo><mi>sin</mi><mn>15</mn><mo>°</mo><mo>=</mo><mi>sin</mi><mn>45</mn><mo>°</mo><mi>cos</mi><mn>30</mn><mo>°</mo><mo>−</mo><mi>cos</mi><mn>45</mn><mo>°</mo><mi>sin</mi><mn>30</mn><mo>°</mo><mo>=</mo><mfrac><mrow><msqrt><mn>3</mn></msqrt><mo>−</mo><mn>1</mn></mrow><mrow><mn>2</mn><msqrt><mn>2</mn></msqrt></mrow></mfrac></math> になる。これも有理化しよう。</p>
+<div class="mq-narrow">
+<p><math><mn>15</mn><mo>°</mo><mo>=</mo><mn>45</mn><mo>°</mo><mo>−</mo><mn>30</mn><mo>°</mo></math>と表すと</p>
+<p class="formula"><math display="block"><mo>,</mo><mi>sin</mi><mn>15</mn><mo>°</mo><mo>=</mo><mi>sin</mi><mn>45</mn><mo>°</mo><mi>cos</mi><mn>30</mn><mo>°</mo></math></p>
+<p class="formula cont"><math display="block"><mo>−</mo><mi>cos</mi><mn>45</mn><mo>°</mo><mi>sin</mi><mn>30</mn><mo>°</mo><mo>=</mo><mfrac><mrow><msqrt><mn>3</mn></msqrt><mo>−</mo><mn>1</mn></mrow><mrow><mn>2</mn><msqrt><mn>2</mn></msqrt></mrow></mfrac></math></p>
+<p>になる。これも有理化しよう。</p>
+</div>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">(1)　<span class="frac"><span class="num">√<span class="rad">6</span> + √<span class="rad">2</span></span><span class="den">4</span></span>　　　(2)　<span class="frac"><span class="num">√<span class="rad">6</span> − √<span class="rad">2</span></span><span class="den">4</span></span></p>
+          <p class="big">(1)　<math><mfrac><mrow><msqrt><mn>6</mn></msqrt><mo>+</mo><msqrt><mn>2</mn></msqrt></mrow><mn>4</mn></mfrac></math>　　　(2)　<math><mfrac><mrow><msqrt><mn>6</mn></msqrt><mo>−</mo><msqrt><mn>2</mn></msqrt></mrow><mn>4</mn></mfrac></math></p>
         </div>
         <p class="prob-done">例11 クリア！　次は練習24に挑戦しよう。</p>
       </section>
-      <section class="card prob" id="prob-ren24" data-flow="ren24" data-label="練習24">
+      <section class="nofig card prob" id="prob-ren24" data-flow="ren24" data-label="練習24">
         <div class="prob-head">
           <span class="prob-tag ren">練習 24</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">加法定理を用いて，cos75° の値を求めよ。</p>
+        <p class="prob-q">加法定理を用いて<math><mo>,</mo><mi>cos</mi><mn>75</mn><mo>°</mo></math>の値を求めよ。</p>
           <div class="quiz" id="qz-ren24" data-correct="2">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><span class="frac"><span class="num">√<span class="rad">6</span> + √<span class="rad">2</span></span><span class="den">4</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><span class="frac"><span class="num">√<span class="rad">6</span> − √<span class="rad">2</span></span><span class="den">4</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><span class="frac"><span class="num">√<span class="rad">3</span> − 1</span><span class="den">2</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><span class="frac"><span class="num">1</span><span class="den">2</span></span></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mfrac><mrow><msqrt><mn>6</mn></msqrt><mo>+</mo><msqrt><mn>2</mn></msqrt></mrow><mn>4</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mfrac><mrow><msqrt><mn>6</mn></msqrt><mo>−</mo><msqrt><mn>2</mn></msqrt></mrow><mn>4</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mfrac><mrow><msqrt><mn>3</mn></msqrt><mo>−</mo><mn>1</mn></mrow><mn>2</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mfrac><mn>1</mn><mn>2</mn></mfrac></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
@@ -418,34 +517,39 @@
           </div>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― cos の加法定理を使う</h3>
-          <p>75° = 45° + 30° と表す。cos(α + β) = cosα cosβ − sinα sinβ で，符号は − になることに注意しよう。</p>
+          <h3>ヒント 1 ― <math><mi>cos</mi></math> の加法定理を使う</h3>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><mi>cos</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mi>cos</mi><mi>α</mi><mi>cos</mi><mi>β</mi><mo>−</mo><mi>sin</mi><mi>α</mi><mi>sin</mi><mi>β</mi></math>ここでは <math><mn>75</mn><mo>°</mo><mo>=</mo><mn>45</mn><mo>°</mo><mo>+</mo><mn>30</mn><mo>°</mo></math> として当てはめる。右辺の符号が <math><mo>−</mo></math> になる点に注意する。</p><p><math><mn>75</mn><mo>°</mo><mo>=</mo><mn>45</mn><mo>°</mo><mo>+</mo><mn>30</mn><mo>°</mo></math>と表す。<br><math><mi>cos</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mi>cos</mi><mi>α</mi><mi>cos</mi><mi>β</mi><mo>−</mo><mi>sin</mi><mi>α</mi><mi>sin</mi><mi>β</mi></math>で，符号は − になることに注意しよう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 値を代入して有理化</h3>
-          <p>cos75° = cos45° cos30° − sin45° sin30° = <span class="frac"><span class="num">1</span><span class="den">√<span class="rad">2</span></span></span> × <span class="frac"><span class="num">√<span class="rad">3</span></span><span class="den">2</span></span> − <span class="frac"><span class="num">1</span><span class="den">√<span class="rad">2</span></span></span> × <span class="frac"><span class="num">1</span><span class="den">2</span></span> = <span class="frac"><span class="num">√<span class="rad">3</span> − 1</span><span class="den">2√<span class="rad">2</span></span></span> になる。分母を有理化しよう。</p>
+          <div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>cos</mi><mn>75</mn><mo>°</mo><mo>=</mo><mi>cos</mi><mn>45</mn><mo>°</mo><mi>cos</mi><mn>30</mn><mo>°</mo><mo>−</mo><mi>sin</mi><mn>45</mn><mo>°</mo><mi>sin</mi><mn>30</mn><mo>°</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>cos</mi><mn>75</mn><mo>°</mo></mphantom><mo>=</mo><mfrac><mn>1</mn><msqrt><mn>2</mn></msqrt></mfrac><mo>×</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac><mo>−</mo><mfrac><mn>1</mn><msqrt><mn>2</mn></msqrt></mfrac><mo>×</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>cos</mi><mn>75</mn><mo>°</mo></mphantom><mo>=</mo><mfrac><mrow><msqrt><mn>3</mn></msqrt><mo>−</mo><mn>1</mn></mrow><mrow><mn>2</mn><msqrt><mn>2</mn></msqrt></mrow></mfrac></math></div>
+</div>
+<p>になる。分母を有理化しよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big"><span class="frac"><span class="num">√<span class="rad">6</span> − √<span class="rad">2</span></span><span class="den">4</span></span></p>
+          <p class="big"><math display="block"><mfrac><mrow><msqrt><mn>6</mn></msqrt><mo>−</mo><msqrt><mn>2</mn></msqrt></mrow><mn>4</mn></mfrac></math></p>
         </div>
         <p class="prob-done">練習24 クリア！　次は練習25に挑戦しよう。</p>
       </section>
-      <section class="card prob" id="prob-ren25" data-flow="ren25" data-label="練習25">
+      <section class="nofig card prob" id="prob-ren25" data-flow="ren25" data-label="練習25">
         <div class="prob-head">
           <span class="prob-tag ren">練習 25</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q"><span class="frac"><span class="num">π</span><span class="den">12</span></span> = <span class="frac"><span class="num">π</span><span class="den">4</span></span> − <span class="frac"><span class="num">π</span><span class="den">6</span></span> であることを用いて，cos<span class="frac"><span class="num">π</span><span class="den">12</span></span> の値を求めよ。</p>
+        <p class="prob-q"><math><mfrac><mi>π</mi><mn>12</mn></mfrac><mo>=</mo><mfrac><mi>π</mi><mn>4</mn></mfrac><mo>−</mo><mfrac><mi>π</mi><mn>6</mn></mfrac></math> であることを用いて<math><mo>,</mo><mi>cos</mi><mfrac><mi>π</mi><mn>12</mn></mfrac></math> の値を求めよ。</p>
           <div class="quiz" id="qz-ren25" data-correct="1">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><span class="frac"><span class="num">√<span class="rad">6</span> + √<span class="rad">2</span></span><span class="den">4</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><span class="frac"><span class="num">√<span class="rad">6</span> − √<span class="rad">2</span></span><span class="den">4</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><span class="frac"><span class="num">√<span class="rad">3</span></span><span class="den">2</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><span class="frac"><span class="num">1</span><span class="den">2</span></span></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mfrac><mrow><msqrt><mn>6</mn></msqrt><mo>+</mo><msqrt><mn>2</mn></msqrt></mrow><mn>4</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mfrac><mrow><msqrt><mn>6</mn></msqrt><mo>−</mo><msqrt><mn>2</mn></msqrt></mrow><mn>4</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mfrac><mn>1</mn><mn>2</mn></mfrac></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
@@ -453,17 +557,23 @@
           </div>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― cos の差の公式を使う</h3>
-          <p>cos<span class="frac"><span class="num">π</span><span class="den">12</span></span> = cos(<span class="frac"><span class="num">π</span><span class="den">4</span></span> − <span class="frac"><span class="num">π</span><span class="den">6</span></span>) に，cos(α − β) = cosα cosβ + sinα sinβ を使う。差の公式では符号が + になることに注意しよう。</p>
+          <h3>ヒント 1 ― <math><mi>cos</mi></math> の差の公式を使う</h3>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><mi>cos</mi><mrow><mo>(</mo><mi>α</mi><mo>−</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mi>cos</mi><mi>α</mi><mi>cos</mi><mi>β</mi><mo>+</mo><mi>sin</mi><mi>α</mi><mi>sin</mi><mi>β</mi></math>ここでは <math><mfrac><mrow><mi>π</mi></mrow><mrow><mn>12</mn></mrow></mfrac><mo>=</mo><mfrac><mrow><mi>π</mi></mrow><mrow><mn>4</mn></mrow></mfrac><mo>−</mo><mfrac><mrow><mi>π</mi></mrow><mrow><mn>6</mn></mrow></mfrac></math> として当てはめる。差の公式では右辺の符号が <math><mo>+</mo></math> になる。</p><p><math><mi>cos</mi><mfrac><mi>π</mi><mn>12</mn></mfrac><mo>=</mo><mi>cos</mi><mrow><mo>(</mo><mfrac><mi>π</mi><mn>4</mn></mfrac><mo>−</mo><mfrac><mi>π</mi><mn>6</mn></mfrac><mo>)</mo></mrow></math>に<math><mo>,</mo><mi>cos</mi><mrow><mo>(</mo><mi>α</mi><mo>−</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mi>cos</mi><mi>α</mi><mi>cos</mi><mi>β</mi><mo>+</mo><mi>sin</mi><mi>α</mi><mi>sin</mi><mi>β</mi></math>を使う。<br>差の公式では符号が + になることに注意しよう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 値を代入して有理化</h3>
-          <p>cos<span class="frac"><span class="num">π</span><span class="den">4</span></span> = sin<span class="frac"><span class="num">π</span><span class="den">4</span></span> = <span class="frac"><span class="num">1</span><span class="den">√<span class="rad">2</span></span></span>，cos<span class="frac"><span class="num">π</span><span class="den">6</span></span> = <span class="frac"><span class="num">√<span class="rad">3</span></span><span class="den">2</span></span>，sin<span class="frac"><span class="num">π</span><span class="den">6</span></span> = <span class="frac"><span class="num">1</span><span class="den">2</span></span> を代入すると <span class="frac"><span class="num">√<span class="rad">3</span> + 1</span><span class="den">2√<span class="rad">2</span></span></span> になる。分母を有理化しよう。</p>
+          <div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>cos</mi><mfrac><mi>π</mi><mn>4</mn></mfrac><mo>=</mo><mi>sin</mi><mfrac><mi>π</mi><mn>4</mn></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>cos</mi><mfrac><mi>π</mi><mn>4</mn></mfrac></mphantom><mo>=</mo><mfrac><mn>1</mn><msqrt><mn>2</mn></msqrt></mfrac><mo>,</mo><mi>cos</mi><mfrac><mi>π</mi><mn>6</mn></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>cos</mi><mfrac><mi>π</mi><mn>4</mn></mfrac></mphantom><mo>=</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac><mo>,</mo><mi>sin</mi><mfrac><mi>π</mi><mn>6</mn></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>cos</mi><mfrac><mi>π</mi><mn>4</mn></mfrac></mphantom><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math></div>
+</div>
+<p>を代入すると <math><mfrac><mrow><msqrt><mn>3</mn></msqrt><mo>+</mo><mn>1</mn></mrow><mrow><mn>2</mn><msqrt><mn>2</mn></msqrt></mrow></mfrac></math> になる。分母を有理化しよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big"><span class="frac"><span class="num">√<span class="rad">6</span> + √<span class="rad">2</span></span><span class="den">4</span></span></p>
+          <p class="big"><math display="block"><mfrac><mrow><msqrt><mn>6</mn></msqrt><mo>+</mo><msqrt><mn>2</mn></msqrt></mrow><mn>4</mn></mfrac></math></p>
         </div>
         <p class="prob-done">練習25 クリア！　次は例題5に挑戦しよう。</p>
       </section>
@@ -472,41 +582,49 @@
         <h2>例題で確認</h2>
         <span class="pno">教科書 p.135</span>
       </div>
-      <section class="card prob" id="prob-reidai5" data-flow="reidai5" data-label="例題5">
+      <section class="nofig card prob" id="prob-reidai5" data-flow="reidai5" data-label="例題5">
         <div class="prob-head">
           <span class="prob-tag ">例題 5</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
         <div class="qside">
-        <p class="prob-q">α の動径が第 3 象限，β の動径が第 4 象限にあり，sinα = −<span class="frac"><span class="num">3</span><span class="den">5</span></span>，cosβ = <span class="frac"><span class="num">4</span><span class="den">5</span></span> のとき，次の値を求めよ。<br>(1)　sin(α + β)　　　(2)　cos(α − β)</p>
+        <p class="prob-q"><math><mi>α</mi></math> の動径が第 3 象限，<math><mi>β</mi></math> の動径が第 4 象限にあり<math><mo>,</mo><mi>sin</mi><mi>α</mi><mo>=</mo><mo>−</mo><mfrac><mn>3</mn><mn>5</mn></mfrac><mo>,</mo><mi>cos</mi><mi>β</mi><mo>=</mo><mfrac><mn>4</mn><mn>5</mn></mfrac></math> のとき，次の値を求めよ。<br>(1)　<math><mi>sin</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow></math>　　　(2)　<math><mi>cos</mi><mrow><mo>(</mo><mi>α</mi><mo>−</mo><mi>β</mi><mo>)</mo></mrow></math></p>
         </div>
         <div class="step hint">
           <h3>ヒント 1 ― 足りない値を求める準備</h3>
-          <p>加法定理には cosα と sinβ も必要だ。相互関係 sin<sup>2</sup>α + cos<sup>2</sup>α = 1 から求めよう。符号は象限で決まる：α は第 3 象限だから cosα &lt; 0，β は第 4 象限だから sinβ &lt; 0 だよ。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><msup><mi>sin</mi><mn>2</mn></msup><mi>α</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>α</mi><mo>=</mo><mn>1</mn></math>加法定理に必要な <math><mi>cos</mi><mi>α</mi></math> と <math><mi>sin</mi><mi>β</mi></math> を、まずこの関係から求める。符号は象限で決める。</p><p>加法定理には <math><mi>cos</mi><mi>α</mi></math> と <math><mi>sin</mi><mi>β</mi></math> も必要だ。<br>相互関係<math><msup><mi>sin</mi><mn>2</mn></msup><mi>α</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>α</mi><mo>=</mo><mn>1</mn></math>から求めよう。符号は象限で決まる：<math><mi>α</mi></math> は第 3 象限だから <math><mi>cos</mi><mi>α</mi></math> &lt; 0，<math><mi>β</mi></math> は第 4 象限だから <math><mi>sin</mi><mi>β</mi></math> &lt; 0 だよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― cosα と sinβ</h3>
-          <p>cosα = −√<span class="rad">1 − sin<sup>2</sup>α</span> = −√<span class="rad">1 − (−<span class="frac"><span class="num">3</span><span class="den">5</span></span>)<sup>2</sup></span> = −<span class="frac"><span class="num">4</span><span class="den">5</span></span>，sinβ = −√<span class="rad">1 − cos<sup>2</sup>β</span> = −√<span class="rad">1 − (<span class="frac"><span class="num">4</span><span class="den">5</span></span>)<sup>2</sup></span> = −<span class="frac"><span class="num">3</span><span class="den">5</span></span> である。</p>
+          <h3>ヒント 2 ― <math><mi>cos</mi><mi>α</mi></math> と <math><mi>sin</mi><mi>β</mi></math></h3>
+          <div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>cos</mi><mi>α</mi><mo>=</mo><mo>−</mo><msqrt><mrow><mn>1</mn><mo>−</mo><msup><mi>sin</mi><mn>2</mn></msup><mi>α</mi></mrow></msqrt></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>cos</mi><mi>α</mi></mphantom><mo>=</mo><mo>−</mo><msqrt><mrow><mn>1</mn><mo>−</mo><msup><mrow><mo>(</mo><mo>−</mo><mfrac><mn>3</mn><mn>5</mn></mfrac><mo>)</mo></mrow><mn>2</mn></msup></mrow></msqrt></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>cos</mi><mi>α</mi></mphantom><mo>=</mo><mo>−</mo><mfrac><mn>4</mn><mn>5</mn></mfrac><mo>,</mo><mi>sin</mi><mi>β</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>cos</mi><mi>α</mi></mphantom><mo>=</mo><mo>−</mo><msqrt><mrow><mn>1</mn><mo>−</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>β</mi></mrow></msqrt></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>cos</mi><mi>α</mi></mphantom><mo>=</mo><mo>−</mo><msqrt><mrow><mn>1</mn><mo>−</mo><msup><mrow><mo>(</mo><mfrac><mn>4</mn><mn>5</mn></mfrac><mo>)</mo></mrow><mn>2</mn></msup></mrow></msqrt></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>cos</mi><mi>α</mi></mphantom><mo>=</mo><mo>−</mo><mfrac><mn>3</mn><mn>5</mn></mfrac></math></div>
+</div>
+<p>である。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 3 ― 加法定理に代入</h3>
-          <p>(1) sin(α + β) = sinα cosβ + cosα sinβ = (−<span class="frac"><span class="num">3</span><span class="den">5</span></span>) × <span class="frac"><span class="num">4</span><span class="den">5</span></span> + (−<span class="frac"><span class="num">4</span><span class="den">5</span></span>) × (−<span class="frac"><span class="num">3</span><span class="den">5</span></span>)。(2) cos(α − β) = cosα cosβ + sinα sinβ = (−<span class="frac"><span class="num">4</span><span class="den">5</span></span>) × <span class="frac"><span class="num">4</span><span class="den">5</span></span> + (−<span class="frac"><span class="num">3</span><span class="den">5</span></span>) × (−<span class="frac"><span class="num">3</span><span class="den">5</span></span>)。それぞれ計算しよう。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><mi>sin</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mi>sin</mi><mi>α</mi><mi>cos</mi><mi>β</mi><mo>+</mo><mi>cos</mi><mi>α</mi><mi>sin</mi><mi>β</mi></math>求めた 4 つの値を、この公式に代入する。(2) の <math><mi>cos</mi><mrow><mo>(</mo><mi>α</mi><mo>−</mo><mi>β</mi><mo>)</mo></mrow></math> も同様に、差の公式へ代入する。</p><p><math><mrow><mo>(</mo><mn>1</mn><mo>)</mo></mrow><mi>sin</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mi>sin</mi><mi>α</mi><mi>cos</mi><mi>β</mi><mo>+</mo><mi>cos</mi><mi>α</mi><mi>sin</mi><mi>β</mi><mo>=</mo><mrow><mo>(</mo><mo>−</mo><mfrac><mn>3</mn><mn>5</mn></mfrac><mo>)</mo></mrow><mo>×</mo><mfrac><mn>4</mn><mn>5</mn></mfrac><mo>+</mo><mrow><mo>(</mo><mo>−</mo><mfrac><mn>4</mn><mn>5</mn></mfrac><mo>)</mo></mrow><mo>×</mo><mrow><mo>(</mo><mo>−</mo><mfrac><mn>3</mn><mn>5</mn></mfrac><mo>)</mo></mrow></math>。<br><math><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow><mi>cos</mi><mrow><mo>(</mo><mi>α</mi><mo>−</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mi>cos</mi><mi>α</mi><mi>cos</mi><mi>β</mi><mo>+</mo><mi>sin</mi><mi>α</mi><mi>sin</mi><mi>β</mi><mo>=</mo><mrow><mo>(</mo><mo>−</mo><mfrac><mn>4</mn><mn>5</mn></mfrac><mo>)</mo></mrow><mo>×</mo><mfrac><mn>4</mn><mn>5</mn></mfrac><mo>+</mo><mrow><mo>(</mo><mo>−</mo><mfrac><mn>3</mn><mn>5</mn></mfrac><mo>)</mo></mrow><mo>×</mo><mrow><mo>(</mo><mo>−</mo><mfrac><mn>3</mn><mn>5</mn></mfrac><mo>)</mo></mrow></math>。それぞれ計算しよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">(1)　0　　　(2)　−<span class="frac"><span class="num">7</span><span class="den">25</span></span></p>
+          <p class="big">(1)　0　　　(2)　<math><mo>−</mo><mfrac><mn>7</mn><mn>25</mn></mfrac></math></p>
         </div>
         <p class="prob-done">例題5 クリア！　次は練習26に挑戦しよう。</p>
       </section>
-      <section class="card prob" id="prob-ren26" data-label="練習26">
+      <section class="nofig card prob" id="prob-ren26" data-label="練習26">
         <div class="prob-head">
           <span class="prob-tag ren">練習 26</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
         <div class="qside">
-        <p class="prob-q">α の動径が第 2 象限，β の動径が第 1 象限にあり，sinα = <span class="frac"><span class="num">2</span><span class="den">3</span></span>，cosβ = <span class="frac"><span class="num">3</span><span class="den">5</span></span> のとき，次の値を求めよ。</p>
+        <p class="prob-q"><math><mi>α</mi></math> の動径が第 2 象限，<math><mi>β</mi></math> の動径が第 1 象限にあり<math><mo>,</mo><mi>sin</mi><mi>α</mi><mo>=</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mo>,</mo><mi>cos</mi><mi>β</mi><mo>=</mo><mfrac><mn>3</mn><mn>5</mn></mfrac></math> のとき，次の値を求めよ。</p>
         </div>
         <div class="tabs" role="tablist" aria-label="練習26の小問">
           <button class="tab" role="tab" data-tab="ren26-1" aria-selected="true">(1)</button>
@@ -516,16 +634,16 @@
         </div>
         <div class="tabpanel show" id="panel-ren26-1" data-flow="ren26-1" data-label="練習26 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　sin(α + β)</span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><mi>sin</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="quiz" id="qz-ren26-1" data-correct="1">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><span class="frac"><span class="num">6 − 4√<span class="rad">5</span></span><span class="den">15</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><span class="frac"><span class="num">6 + 4√<span class="rad">5</span></span><span class="den">15</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><span class="frac"><span class="num">−8 − 3√<span class="rad">5</span></span><span class="den">15</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><span class="frac"><span class="num">8 − 3√<span class="rad">5</span></span><span class="den">15</span></span></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mfrac><mrow><mn>6</mn><mo>−</mo><mn>4</mn><msqrt><mn>5</mn></msqrt></mrow><mn>15</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mfrac><mrow><mn>6</mn><mo>+</mo><mn>4</mn><msqrt><mn>5</mn></msqrt></mrow><mn>15</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mfrac><mrow><mo>−</mo><mn>8</mn><mo>−</mo><mn>3</mn><msqrt><mn>5</mn></msqrt></mrow><mn>15</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mfrac><mrow><mn>8</mn><mo>−</mo><mn>3</mn><msqrt><mn>5</mn></msqrt></mrow><mn>15</mn></mfrac></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
@@ -533,31 +651,36 @@
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― 足りない値を求める</h3>
-          <p>まず cosα と sinβ を求める。α は第 2 象限だから cosα &lt; 0 で，cosα = −√<span class="rad">1 − (<span class="frac"><span class="num">2</span><span class="den">3</span></span>)<sup>2</sup></span> = −<span class="frac"><span class="num">√<span class="rad">5</span></span><span class="den">3</span></span>。β は第 1 象限だから sinβ &gt; 0 で，sinβ = √<span class="rad">1 − (<span class="frac"><span class="num">3</span><span class="den">5</span></span>)<sup>2</sup></span> = <span class="frac"><span class="num">4</span><span class="den">5</span></span> である。</p>
+          <p>まず <math><mi>cos</mi><mi>α</mi></math> と <math><mi>sin</mi><mi>β</mi></math> を求める。<br><math><mi>α</mi></math> は第 2 象限だから <math><mi>cos</mi><mi>α</mi></math> &lt; 0 で<math><mo>,</mo><mi>cos</mi><mi>α</mi><mo>=</mo><mo>−</mo><msqrt><mrow><mn>1</mn><mo>−</mo><msup><mrow><mo>(</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mo>)</mo></mrow><mn>2</mn></msup></mrow></msqrt><mo>=</mo><mo>−</mo><mfrac><msqrt><mn>5</mn></msqrt><mn>3</mn></mfrac></math>。<math><mi>β</mi></math> は第 1 象限だから <math><mi>sin</mi><mi>β</mi></math> &gt; 0 で<math><mo>,</mo><mi>sin</mi><mi>β</mi><mo>=</mo><msqrt><mrow><mn>1</mn><mo>−</mo><msup><mrow><mo>(</mo><mfrac><mn>3</mn><mn>5</mn></mfrac><mo>)</mo></mrow><mn>2</mn></msup></mrow></msqrt><mo>=</mo><mfrac><mn>4</mn><mn>5</mn></mfrac></math> である。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 加法定理に代入</h3>
-          <p>sin(α + β) = sinα cosβ + cosα sinβ = <span class="frac"><span class="num">2</span><span class="den">3</span></span> × <span class="frac"><span class="num">3</span><span class="den">5</span></span> + (−<span class="frac"><span class="num">√<span class="rad">5</span></span><span class="den">3</span></span>) × <span class="frac"><span class="num">4</span><span class="den">5</span></span> を計算しよう。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><mi>sin</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mi>sin</mi><mi>α</mi><mi>cos</mi><mi>β</mi><mo>+</mo><mi>cos</mi><mi>α</mi><mi>sin</mi><mi>β</mi></math>求めた値をこの公式に代入する。ここでは <math><mi>sin</mi><mi>α</mi><mo>=</mo><mfrac><mrow><mn>2</mn></mrow><mrow><mn>3</mn></mrow></mfrac></math>、<math><mi>cos</mi><mi>β</mi><mo>=</mo><mfrac><mrow><mn>3</mn></mrow><mrow><mn>5</mn></mrow></mfrac></math> などを使う。</p><p class="mq-wide"><math><mi>sin</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mi>sin</mi><mi>α</mi><mi>cos</mi><mi>β</mi><mo>+</mo><mi>cos</mi><mi>α</mi><mi>sin</mi><mi>β</mi><mo>=</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mo>×</mo><mfrac><mn>3</mn><mn>5</mn></mfrac><mo>+</mo><mrow><mo>(</mo><mo>−</mo><mfrac><msqrt><mn>5</mn></msqrt><mn>3</mn></mfrac><mo>)</mo></mrow><mo>×</mo><mfrac><mn>4</mn><mn>5</mn></mfrac></math> を計算しよう。</p>
+<div class="mq-narrow">
+<p class="formula"><math display="block"><mi>sin</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mi>sin</mi><mi>α</mi><mi>cos</mi><mi>β</mi><mo>+</mo><mi>cos</mi><mi>α</mi><mi>sin</mi><mi>β</mi></math></p>
+<p class="formula cont"><math display="block"><mo>=</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mo>×</mo><mfrac><mn>3</mn><mn>5</mn></mfrac><mo>+</mo><mrow><mo>(</mo><mo>−</mo><mfrac><msqrt><mn>5</mn></msqrt><mn>3</mn></mfrac><mo>)</mo></mrow><mo>×</mo><mfrac><mn>4</mn><mn>5</mn></mfrac></math></p>
+<p>を計算しよう。</p>
+</div>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big"><span class="frac"><span class="num">6 − 4√<span class="rad">5</span></span><span class="den">15</span></span></p>
+          <p class="big"><math display="block"><mfrac><mrow><mn>6</mn><mo>−</mo><mn>4</mn><msqrt><mn>5</mn></msqrt></mrow><mn>15</mn></mfrac></math></p>
         </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren26-2" data-flow="ren26-2" data-label="練習26 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　sin(α − β)</span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><mi>sin</mi><mrow><mo>(</mo><mi>α</mi><mo>−</mo><mi>β</mi><mo>)</mo></mrow></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="quiz" id="qz-ren26-2" data-correct="2">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><span class="frac"><span class="num">6 − 4√<span class="rad">5</span></span><span class="den">15</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><span class="frac"><span class="num">6 + 4√<span class="rad">5</span></span><span class="den">15</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><span class="frac"><span class="num">−8 − 3√<span class="rad">5</span></span><span class="den">15</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><span class="frac"><span class="num">8 − 3√<span class="rad">5</span></span><span class="den">15</span></span></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mfrac><mrow><mn>6</mn><mo>−</mo><mn>4</mn><msqrt><mn>5</mn></msqrt></mrow><mn>15</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mfrac><mrow><mn>6</mn><mo>+</mo><mn>4</mn><msqrt><mn>5</mn></msqrt></mrow><mn>15</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mfrac><mrow><mo>−</mo><mn>8</mn><mo>−</mo><mn>3</mn><msqrt><mn>5</mn></msqrt></mrow><mn>15</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mfrac><mrow><mn>8</mn><mo>−</mo><mn>3</mn><msqrt><mn>5</mn></msqrt></mrow><mn>15</mn></mfrac></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
@@ -565,31 +688,36 @@
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― 足りない値を求める</h3>
-          <p>まず cosα と sinβ を求める。α は第 2 象限だから cosα &lt; 0 で，cosα = −√<span class="rad">1 − (<span class="frac"><span class="num">2</span><span class="den">3</span></span>)<sup>2</sup></span> = −<span class="frac"><span class="num">√<span class="rad">5</span></span><span class="den">3</span></span>。β は第 1 象限だから sinβ &gt; 0 で，sinβ = √<span class="rad">1 − (<span class="frac"><span class="num">3</span><span class="den">5</span></span>)<sup>2</sup></span> = <span class="frac"><span class="num">4</span><span class="den">5</span></span> である。</p>
+          <p>まず <math><mi>cos</mi><mi>α</mi></math> と <math><mi>sin</mi><mi>β</mi></math> を求める。<br><math><mi>α</mi></math> は第 2 象限だから <math><mi>cos</mi><mi>α</mi></math> &lt; 0 で<math><mo>,</mo><mi>cos</mi><mi>α</mi><mo>=</mo><mo>−</mo><msqrt><mrow><mn>1</mn><mo>−</mo><msup><mrow><mo>(</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mo>)</mo></mrow><mn>2</mn></msup></mrow></msqrt><mo>=</mo><mo>−</mo><mfrac><msqrt><mn>5</mn></msqrt><mn>3</mn></mfrac></math>。<math><mi>β</mi></math> は第 1 象限だから <math><mi>sin</mi><mi>β</mi></math> &gt; 0 で<math><mo>,</mo><mi>sin</mi><mi>β</mi><mo>=</mo><msqrt><mrow><mn>1</mn><mo>−</mo><msup><mrow><mo>(</mo><mfrac><mn>3</mn><mn>5</mn></mfrac><mo>)</mo></mrow><mn>2</mn></msup></mrow></msqrt><mo>=</mo><mfrac><mn>4</mn><mn>5</mn></mfrac></math> である。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 加法定理に代入</h3>
-          <p>sin(α − β) = sinα cosβ − cosα sinβ = <span class="frac"><span class="num">2</span><span class="den">3</span></span> × <span class="frac"><span class="num">3</span><span class="den">5</span></span> − (−<span class="frac"><span class="num">√<span class="rad">5</span></span><span class="den">3</span></span>) × <span class="frac"><span class="num">4</span><span class="den">5</span></span> を計算しよう。引く符号に注意だよ。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><mi>sin</mi><mrow><mo>(</mo><mi>α</mi><mo>−</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mi>sin</mi><mi>α</mi><mi>cos</mi><mi>β</mi><mo>−</mo><mi>cos</mi><mi>α</mi><mi>sin</mi><mi>β</mi></math>求めた値をこの公式に代入する。引く符号に注意する。</p><p class="mq-wide"><math><mi>sin</mi><mrow><mo>(</mo><mi>α</mi><mo>−</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mi>sin</mi><mi>α</mi><mi>cos</mi><mi>β</mi><mo>−</mo><mi>cos</mi><mi>α</mi><mi>sin</mi><mi>β</mi><mo>=</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mo>×</mo><mfrac><mn>3</mn><mn>5</mn></mfrac><mo>−</mo><mrow><mo>(</mo><mo>−</mo><mfrac><msqrt><mn>5</mn></msqrt><mn>3</mn></mfrac><mo>)</mo></mrow><mo>×</mo><mfrac><mn>4</mn><mn>5</mn></mfrac></math> を計算しよう。引く符号に注意だよ。</p>
+<div class="mq-narrow">
+<p class="formula"><math display="block"><mi>sin</mi><mrow><mo>(</mo><mi>α</mi><mo>−</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mi>sin</mi><mi>α</mi><mi>cos</mi><mi>β</mi><mo>−</mo><mi>cos</mi><mi>α</mi><mi>sin</mi><mi>β</mi></math></p>
+<p class="formula cont"><math display="block"><mo>=</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mo>×</mo><mfrac><mn>3</mn><mn>5</mn></mfrac><mo>−</mo><mrow><mo>(</mo><mo>−</mo><mfrac><msqrt><mn>5</mn></msqrt><mn>3</mn></mfrac><mo>)</mo></mrow><mo>×</mo><mfrac><mn>4</mn><mn>5</mn></mfrac></math></p>
+<p>を計算しよう。引く符号に注意だよ。</p>
+</div>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big"><span class="frac"><span class="num">6 + 4√<span class="rad">5</span></span><span class="den">15</span></span></p>
+          <p class="big"><math display="block"><mfrac><mrow><mn>6</mn><mo>+</mo><mn>4</mn><msqrt><mn>5</mn></msqrt></mrow><mn>15</mn></mfrac></math></p>
         </div>
           <p class="prob-done">(2) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren26-3" data-flow="ren26-3" data-label="練習26 (3)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(3)　cos(α + β)</span>
+            <span class="sub prob-q" style="margin:0">(3)　<math><mi>cos</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="quiz" id="qz-ren26-3" data-correct="3">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><span class="frac"><span class="num">6 − 4√<span class="rad">5</span></span><span class="den">15</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><span class="frac"><span class="num">6 + 4√<span class="rad">5</span></span><span class="den">15</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><span class="frac"><span class="num">−8 − 3√<span class="rad">5</span></span><span class="den">15</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><span class="frac"><span class="num">8 − 3√<span class="rad">5</span></span><span class="den">15</span></span></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mfrac><mrow><mn>6</mn><mo>−</mo><mn>4</mn><msqrt><mn>5</mn></msqrt></mrow><mn>15</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mfrac><mrow><mn>6</mn><mo>+</mo><mn>4</mn><msqrt><mn>5</mn></msqrt></mrow><mn>15</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mfrac><mrow><mo>−</mo><mn>8</mn><mo>−</mo><mn>3</mn><msqrt><mn>5</mn></msqrt></mrow><mn>15</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mfrac><mrow><mn>8</mn><mo>−</mo><mn>3</mn><msqrt><mn>5</mn></msqrt></mrow><mn>15</mn></mfrac></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
@@ -597,31 +725,36 @@
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― 足りない値を求める</h3>
-          <p>まず cosα と sinβ を求める。α は第 2 象限だから cosα &lt; 0 で，cosα = −√<span class="rad">1 − (<span class="frac"><span class="num">2</span><span class="den">3</span></span>)<sup>2</sup></span> = −<span class="frac"><span class="num">√<span class="rad">5</span></span><span class="den">3</span></span>。β は第 1 象限だから sinβ &gt; 0 で，sinβ = √<span class="rad">1 − (<span class="frac"><span class="num">3</span><span class="den">5</span></span>)<sup>2</sup></span> = <span class="frac"><span class="num">4</span><span class="den">5</span></span> である。</p>
+          <p>まず <math><mi>cos</mi><mi>α</mi></math> と <math><mi>sin</mi><mi>β</mi></math> を求める。<br><math><mi>α</mi></math> は第 2 象限だから <math><mi>cos</mi><mi>α</mi></math> &lt; 0 で<math><mo>,</mo><mi>cos</mi><mi>α</mi><mo>=</mo><mo>−</mo><msqrt><mrow><mn>1</mn><mo>−</mo><msup><mrow><mo>(</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mo>)</mo></mrow><mn>2</mn></msup></mrow></msqrt><mo>=</mo><mo>−</mo><mfrac><msqrt><mn>5</mn></msqrt><mn>3</mn></mfrac></math>。<math><mi>β</mi></math> は第 1 象限だから <math><mi>sin</mi><mi>β</mi></math> &gt; 0 で<math><mo>,</mo><mi>sin</mi><mi>β</mi><mo>=</mo><msqrt><mrow><mn>1</mn><mo>−</mo><msup><mrow><mo>(</mo><mfrac><mn>3</mn><mn>5</mn></mfrac><mo>)</mo></mrow><mn>2</mn></msup></mrow></msqrt><mo>=</mo><mfrac><mn>4</mn><mn>5</mn></mfrac></math> である。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 加法定理に代入</h3>
-          <p>cos(α + β) = cosα cosβ − sinα sinβ = (−<span class="frac"><span class="num">√<span class="rad">5</span></span><span class="den">3</span></span>) × <span class="frac"><span class="num">3</span><span class="den">5</span></span> − <span class="frac"><span class="num">2</span><span class="den">3</span></span> × <span class="frac"><span class="num">4</span><span class="den">5</span></span> を計算しよう。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><mi>cos</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mi>cos</mi><mi>α</mi><mi>cos</mi><mi>β</mi><mo>−</mo><mi>sin</mi><mi>α</mi><mi>sin</mi><mi>β</mi></math>求めた値をこの公式に代入する。右辺の符号が <math><mo>−</mo></math> になる点に注意する。</p><p class="mq-wide"><math><mi>cos</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mi>cos</mi><mi>α</mi><mi>cos</mi><mi>β</mi><mo>−</mo><mi>sin</mi><mi>α</mi><mi>sin</mi><mi>β</mi><mo>=</mo><mrow><mo>(</mo><mo>−</mo><mfrac><msqrt><mn>5</mn></msqrt><mn>3</mn></mfrac><mo>)</mo></mrow><mo>×</mo><mfrac><mn>3</mn><mn>5</mn></mfrac><mo>−</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mo>×</mo><mfrac><mn>4</mn><mn>5</mn></mfrac></math> を計算しよう。</p>
+<div class="mq-narrow">
+<p class="formula"><math display="block"><mi>cos</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mi>cos</mi><mi>α</mi><mi>cos</mi><mi>β</mi><mo>−</mo><mi>sin</mi><mi>α</mi><mi>sin</mi><mi>β</mi></math></p>
+<p class="formula cont"><math display="block"><mo>=</mo><mrow><mo>(</mo><mo>−</mo><mfrac><msqrt><mn>5</mn></msqrt><mn>3</mn></mfrac><mo>)</mo></mrow><mo>×</mo><mfrac><mn>3</mn><mn>5</mn></mfrac><mo>−</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mo>×</mo><mfrac><mn>4</mn><mn>5</mn></mfrac></math></p>
+<p>を計算しよう。</p>
+</div>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big"><span class="frac"><span class="num">−8 − 3√<span class="rad">5</span></span><span class="den">15</span></span></p>
+          <p class="big"><math display="block"><mfrac><mrow><mo>−</mo><mn>8</mn><mo>−</mo><mn>3</mn><msqrt><mn>5</mn></msqrt></mrow><mn>15</mn></mfrac></math></p>
         </div>
           <p class="prob-done">(3) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren26-4" data-flow="ren26-4" data-label="練習26 (4)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(4)　cos(α − β)</span>
+            <span class="sub prob-q" style="margin:0">(4)　<math><mi>cos</mi><mrow><mo>(</mo><mi>α</mi><mo>−</mo><mi>β</mi><mo>)</mo></mrow></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="quiz" id="qz-ren26-4" data-correct="4">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><span class="frac"><span class="num">6 − 4√<span class="rad">5</span></span><span class="den">15</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><span class="frac"><span class="num">6 + 4√<span class="rad">5</span></span><span class="den">15</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><span class="frac"><span class="num">−8 − 3√<span class="rad">5</span></span><span class="den">15</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><span class="frac"><span class="num">8 − 3√<span class="rad">5</span></span><span class="den">15</span></span></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mfrac><mrow><mn>6</mn><mo>−</mo><mn>4</mn><msqrt><mn>5</mn></msqrt></mrow><mn>15</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mfrac><mrow><mn>6</mn><mo>+</mo><mn>4</mn><msqrt><mn>5</mn></msqrt></mrow><mn>15</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mfrac><mrow><mo>−</mo><mn>8</mn><mo>−</mo><mn>3</mn><msqrt><mn>5</mn></msqrt></mrow><mn>15</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mfrac><mrow><mn>8</mn><mo>−</mo><mn>3</mn><msqrt><mn>5</mn></msqrt></mrow><mn>15</mn></mfrac></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
@@ -629,16 +762,21 @@
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― 足りない値を求める</h3>
-          <p>まず cosα と sinβ を求める。α は第 2 象限だから cosα &lt; 0 で，cosα = −√<span class="rad">1 − (<span class="frac"><span class="num">2</span><span class="den">3</span></span>)<sup>2</sup></span> = −<span class="frac"><span class="num">√<span class="rad">5</span></span><span class="den">3</span></span>。β は第 1 象限だから sinβ &gt; 0 で，sinβ = √<span class="rad">1 − (<span class="frac"><span class="num">3</span><span class="den">5</span></span>)<sup>2</sup></span> = <span class="frac"><span class="num">4</span><span class="den">5</span></span> である。</p>
+          <p>まず <math><mi>cos</mi><mi>α</mi></math> と <math><mi>sin</mi><mi>β</mi></math> を求める。<br><math><mi>α</mi></math> は第 2 象限だから <math><mi>cos</mi><mi>α</mi></math> &lt; 0 で<math><mo>,</mo><mi>cos</mi><mi>α</mi><mo>=</mo><mo>−</mo><msqrt><mrow><mn>1</mn><mo>−</mo><msup><mrow><mo>(</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mo>)</mo></mrow><mn>2</mn></msup></mrow></msqrt><mo>=</mo><mo>−</mo><mfrac><msqrt><mn>5</mn></msqrt><mn>3</mn></mfrac></math>。<math><mi>β</mi></math> は第 1 象限だから <math><mi>sin</mi><mi>β</mi></math> &gt; 0 で<math><mo>,</mo><mi>sin</mi><mi>β</mi><mo>=</mo><msqrt><mrow><mn>1</mn><mo>−</mo><msup><mrow><mo>(</mo><mfrac><mn>3</mn><mn>5</mn></mfrac><mo>)</mo></mrow><mn>2</mn></msup></mrow></msqrt><mo>=</mo><mfrac><mn>4</mn><mn>5</mn></mfrac></math> である。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 加法定理に代入</h3>
-          <p>cos(α − β) = cosα cosβ + sinα sinβ = (−<span class="frac"><span class="num">√<span class="rad">5</span></span><span class="den">3</span></span>) × <span class="frac"><span class="num">3</span><span class="den">5</span></span> + <span class="frac"><span class="num">2</span><span class="den">3</span></span> × <span class="frac"><span class="num">4</span><span class="den">5</span></span> を計算しよう。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><mi>cos</mi><mrow><mo>(</mo><mi>α</mi><mo>−</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mi>cos</mi><mi>α</mi><mi>cos</mi><mi>β</mi><mo>+</mo><mi>sin</mi><mi>α</mi><mi>sin</mi><mi>β</mi></math>求めた値をこの公式に代入する。差の公式では右辺の符号が <math><mo>+</mo></math> になる。</p><p class="mq-wide"><math><mi>cos</mi><mrow><mo>(</mo><mi>α</mi><mo>−</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mi>cos</mi><mi>α</mi><mi>cos</mi><mi>β</mi><mo>+</mo><mi>sin</mi><mi>α</mi><mi>sin</mi><mi>β</mi><mo>=</mo><mrow><mo>(</mo><mo>−</mo><mfrac><msqrt><mn>5</mn></msqrt><mn>3</mn></mfrac><mo>)</mo></mrow><mo>×</mo><mfrac><mn>3</mn><mn>5</mn></mfrac><mo>+</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mo>×</mo><mfrac><mn>4</mn><mn>5</mn></mfrac></math> を計算しよう。</p>
+<div class="mq-narrow">
+<p class="formula"><math display="block"><mi>cos</mi><mrow><mo>(</mo><mi>α</mi><mo>−</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mi>cos</mi><mi>α</mi><mi>cos</mi><mi>β</mi><mo>+</mo><mi>sin</mi><mi>α</mi><mi>sin</mi><mi>β</mi></math></p>
+<p class="formula cont"><math display="block"><mo>=</mo><mrow><mo>(</mo><mo>−</mo><mfrac><msqrt><mn>5</mn></msqrt><mn>3</mn></mfrac><mo>)</mo></mrow><mo>×</mo><mfrac><mn>3</mn><mn>5</mn></mfrac><mo>+</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mo>×</mo><mfrac><mn>4</mn><mn>5</mn></mfrac></math></p>
+<p>を計算しよう。</p>
+</div>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big"><span class="frac"><span class="num">8 − 3√<span class="rad">5</span></span><span class="den">15</span></span></p>
+          <p class="big"><math display="block"><mfrac><mrow><mn>8</mn><mo>−</mo><mn>3</mn><msqrt><mn>5</mn></msqrt></mrow><mn>15</mn></mfrac></math></p>
         </div>
           <p class="prob-done">(4) クリア！　次の課題に進もう。</p>
         </div>
@@ -650,56 +788,60 @@
       </div>
       <section class="card">
         <p>正弦，余弦の加法定理から，次の<span class="key">正接の加法定理</span>が得られる。</p>
-<span class="formula" style="display:block;text-align:center;margin:8px 0">正接の加法定理<br>5　tan(α + β) = <span class="frac"><span class="num">tanα + tanβ</span><span class="den">1 − tanα tanβ</span></span><br>6　tan(α − β) = <span class="frac"><span class="num">tanα − tanβ</span><span class="den">1 + tanα tanβ</span></span></span>
-        <p>tan(α + β) = <span class="frac"><span class="num">sin(α + β)</span><span class="den">cos(α + β)</span></span> であるから</p>
-<span class="formula" style="display:block;text-align:center;margin:8px 0">tan(α + β) = <span class="frac"><span class="num">sinα cosβ + cosα sinβ</span><span class="den">cosα cosβ − sinα sinβ</span></span></span>
-        <p>右辺の分母と分子を cosα cosβ で割って変形すると</p>
-<span class="formula" style="display:block;text-align:center;margin:8px 0">tan(α + β) = <span class="frac"><span class="num"><span class="frac"><span class="num">sinα</span><span class="den">cosα</span></span> + <span class="frac"><span class="num">sinβ</span><span class="den">cosβ</span></span></span><span class="den">1 − <span class="frac"><span class="num">sinα</span><span class="den">cosα</span></span>・<span class="frac"><span class="num">sinβ</span><span class="den">cosβ</span></span></span></span> = <span class="frac"><span class="num">tanα + tanβ</span><span class="den">1 − tanα tanβ</span></span></span>
-        <p>等式 5 で β を −β におき換えると，等式 6 が得られる。</p>
-        <p>上の加法定理を使って，75° の正接を求めてみよう。</p>
+<p class="formula">正接の加法定理<br>5　<math><mi>tan</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mfrac><mrow><mi>tan</mi><mi>α</mi><mo>+</mo><mi>tan</mi><mi>β</mi></mrow><mrow><mn>1</mn><mo>−</mo><mi>tan</mi><mi>α</mi><mi>tan</mi><mi>β</mi></mrow></mfrac></math><br>6　<math><mi>tan</mi><mrow><mo>(</mo><mi>α</mi><mo>−</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mfrac><mrow><mi>tan</mi><mi>α</mi><mo>−</mo><mi>tan</mi><mi>β</mi></mrow><mrow><mn>1</mn><mo>+</mo><mi>tan</mi><mi>α</mi><mi>tan</mi><mi>β</mi></mrow></mfrac></math></p>
+        <p><math><mi>tan</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mfrac><mrow><mi>sin</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow></mrow><mrow><mi>cos</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow></mrow></mfrac></math> であるから</p>
+<p class="formula"><math display="block"><mi>tan</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mfrac><mrow><mi>sin</mi><mi>α</mi><mi>cos</mi><mi>β</mi><mo>+</mo><mi>cos</mi><mi>α</mi><mi>sin</mi><mi>β</mi></mrow><mrow><mi>cos</mi><mi>α</mi><mi>cos</mi><mi>β</mi><mo>−</mo><mi>sin</mi><mi>α</mi><mi>sin</mi><mi>β</mi></mrow></mfrac></math></p>
+        <p>右辺の分母と分子を <math><mi>cos</mi><mi>α</mi></math> <math><mi>cos</mi><mi>β</mi></math> で割って変形すると</p>
+<p class="mq-wide formula"><math display="block"><mi>tan</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mfrac><mrow><mfrac><mrow><mi>sin</mi><mi>α</mi></mrow><mrow><mi>cos</mi><mi>α</mi></mrow></mfrac><mo>+</mo><mfrac><mrow><mi>sin</mi><mi>β</mi></mrow><mrow><mi>cos</mi><mi>β</mi></mrow></mfrac></mrow><mrow><mn>1</mn><mo>−</mo><mfrac><mrow><mi>sin</mi><mi>α</mi></mrow><mrow><mi>cos</mi><mi>α</mi></mrow></mfrac><mo>⋅</mo><mfrac><mrow><mi>sin</mi><mi>β</mi></mrow><mrow><mi>cos</mi><mi>β</mi></mrow></mfrac></mrow></mfrac><mo>=</mo><mfrac><mrow><mi>tan</mi><mi>α</mi><mo>+</mo><mi>tan</mi><mi>β</mi></mrow><mrow><mn>1</mn><mo>−</mo><mi>tan</mi><mi>α</mi><mi>tan</mi><mi>β</mi></mrow></mfrac></math></p>
+<div class="mq-narrow">
+<p class="formula"><math display="block"><mi>tan</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mfrac><mrow><mfrac><mrow><mi>sin</mi><mi>α</mi></mrow><mrow><mi>cos</mi><mi>α</mi></mrow></mfrac><mo>+</mo><mfrac><mrow><mi>sin</mi><mi>β</mi></mrow><mrow><mi>cos</mi><mi>β</mi></mrow></mfrac></mrow><mrow><mn>1</mn><mo>−</mo><mfrac><mrow><mi>sin</mi><mi>α</mi></mrow><mrow><mi>cos</mi><mi>α</mi></mrow></mfrac><mo>⋅</mo><mfrac><mrow><mi>sin</mi><mi>β</mi></mrow><mrow><mi>cos</mi><mi>β</mi></mrow></mfrac></mrow></mfrac></math></p>
+<p class="formula cont"><math display="block"><mo>=</mo><mfrac><mrow><mi>tan</mi><mi>α</mi><mo>+</mo><mi>tan</mi><mi>β</mi></mrow><mrow><mn>1</mn><mo>−</mo><mi>tan</mi><mi>α</mi><mi>tan</mi><mi>β</mi></mrow></mfrac></math></p>
+</div>
+        <p>等式 5 で <math><mi>β</mi></math> を −<math><mi>β</mi></math> におき換えると，等式 6 が得られる。</p>
+        <p>上の加法定理を使って<math><mo>,</mo><mn>75</mn><mo>°</mo></math>の正接を求めてみよう。</p>
       </section>
-      <section class="card prob" id="prob-ex12" data-flow="ex12" data-label="例12">
+      <section class="nofig card prob" id="prob-ex12" data-flow="ex12" data-label="例12">
         <div class="prob-head">
           <span class="prob-tag ">例 12</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
         <div class="qside">
-        <p class="prob-q">加法定理を用いて，tan75° の値を求めよ。</p>
+        <p class="prob-q">加法定理を用いて<math><mo>,</mo><mi>tan</mi><mn>75</mn><mo>°</mo></math>の値を求めよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― tan の加法定理を使う</h3>
-          <p>75° = 45° + 30° と表すと，tan75° = tan(45° + 30°) = <span class="frac"><span class="num">tan45° + tan30°</span><span class="den">1 − tan45° tan30°</span></span> となる。</p>
+          <h3>ヒント 1 ― <math><mi>tan</mi></math> の加法定理を使う</h3>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><mi>tan</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mfrac><mrow><mi>tan</mi><mi>α</mi><mo>+</mo><mi>tan</mi><mi>β</mi></mrow><mrow><mn>1</mn><mo>−</mo><mi>tan</mi><mi>α</mi><mi>tan</mi><mi>β</mi></mrow></mfrac></math>ここでは <math><mn>75</mn><mo>°</mo><mo>=</mo><mn>45</mn><mo>°</mo><mo>+</mo><mn>30</mn><mo>°</mo></math> として当てはめる。</p><p><math><mn>75</mn><mo>°</mo><mo>=</mo><mn>45</mn><mo>°</mo><mo>+</mo><mn>30</mn><mo>°</mo></math>と表すと<math><mo>,</mo><mi>tan</mi><mn>75</mn><mo>°</mo><mo>=</mo><mi>tan</mi><mrow><mo>(</mo><mn>45</mn><mo>°</mo><mo>+</mo><mn>30</mn><mo>°</mo><mo>)</mo></mrow><mo>=</mo><mfrac><mrow><mi>tan</mi><mn>45</mn><mo>°</mo><mo>+</mo><mi>tan</mi><mn>30</mn><mo>°</mo></mrow><mrow><mn>1</mn><mo>−</mo><mi>tan</mi><mn>45</mn><mo>°</mo><mi>tan</mi><mn>30</mn><mo>°</mo></mrow></mfrac></math> となる。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 値を代入する</h3>
-          <p>tan45° = 1，tan30° = <span class="frac"><span class="num">1</span><span class="den">√<span class="rad">3</span></span></span> を代入すると <span class="frac"><span class="num">1 + <span class="frac"><span class="num">1</span><span class="den">√<span class="rad">3</span></span></span></span><span class="den">1 − 1 × <span class="frac"><span class="num">1</span><span class="den">√<span class="rad">3</span></span></span></span></span> = <span class="frac"><span class="num">√<span class="rad">3</span> + 1</span><span class="den">√<span class="rad">3</span> − 1</span></span> になる。</p>
+          <p><math><mi>tan</mi><mn>45</mn><mo>°</mo><mo>=</mo><mn>1</mn><mo>,</mo><mi>tan</mi><mn>30</mn><mo>°</mo><mo>=</mo><mfrac><mn>1</mn><msqrt><mn>3</mn></msqrt></mfrac></math> を代入すると <math><mfrac><mrow><mn>1</mn><mo>+</mo><mfrac><mn>1</mn><msqrt><mn>3</mn></msqrt></mfrac></mrow><mrow><mn>1</mn><mo>−</mo><mn>1</mn><mo>×</mo><mfrac><mn>1</mn><msqrt><mn>3</mn></msqrt></mfrac></mrow></mfrac><mo>=</mo><mfrac><mrow><msqrt><mn>3</mn></msqrt><mo>+</mo><mn>1</mn></mrow><mrow><msqrt><mn>3</mn></msqrt><mo>−</mo><mn>1</mn></mrow></mfrac></math> になる。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 3 ― 分母を有理化する</h3>
-          <p>分母と分子に (√<span class="rad">3</span> + 1) を掛けると <span class="frac"><span class="num">(√<span class="rad">3</span> + 1)<sup>2</sup></span><span class="den">(√<span class="rad">3</span>)<sup>2</sup> − 1<sup>2</sup></span></span> = <span class="frac"><span class="num">4 + 2√<span class="rad">3</span></span><span class="den">2</span></span> になる。</p>
+          <p>分母と分子に<math><mo>(</mo><msqrt><mn>3</mn></msqrt><mo>+</mo><mn>1</mn><mo>)</mo></math>を掛けると <math><mfrac><msup><mrow><mo>(</mo><msqrt><mn>3</mn></msqrt><mo>+</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup><mrow><msup><mrow><mo>(</mo><msqrt><mn>3</mn></msqrt><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><msup><mn>1</mn><mn>2</mn></msup></mrow></mfrac><mo>=</mo><mfrac><mrow><mn>4</mn><mo>+</mo><mn>2</mn><msqrt><mn>3</mn></msqrt></mrow><mn>2</mn></mfrac></math> になる。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">2 + √<span class="rad">3</span></p>
+          <p class="big"><math display="block"><mn>2</mn><mo>+</mo><msqrt><mn>3</mn></msqrt></math></p><p class="cite"><span class="cite-tag">使う公式</span><math><mi>tan</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mfrac><mrow><mi>tan</mi><mi>α</mi><mo>+</mo><mi>tan</mi><mi>β</mi></mrow><mrow><mn>1</mn><mo>−</mo><mi>tan</mi><mi>α</mi><mi>tan</mi><mi>β</mi></mrow></mfrac></math>この公式に <math><mi>tan</mi><mn>45</mn><mo>°</mo><mo>=</mo><mn>1</mn></math>、<math><mi>tan</mi><mn>30</mn><mo>°</mo><mo>=</mo><mfrac><mrow><mn>1</mn></mrow><mrow><msqrt><mn>3</mn></msqrt></mrow></mfrac></math> を代入して、解答の計算を始める。</p>
         </div>
         <p class="prob-done">例12 クリア！　次は練習27に挑戦しよう。</p>
       </section>
-      <section class="card prob" id="prob-ren27" data-flow="ren27" data-label="練習27">
+      <section class="nofig card prob" id="prob-ren27" data-flow="ren27" data-label="練習27">
         <div class="prob-head">
           <span class="prob-tag ren">練習 27</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">加法定理を用いて，tan105° の値を求めよ。</p>
+        <p class="prob-q">加法定理を用いて<math><mo>,</mo><mi>tan</mi><mn>105</mn><mo>°</mo></math>の値を求めよ。</p>
           <div class="quiz" id="qz-ren27" data-correct="2">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>2 + √<span class="rad">3</span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>−2 − √<span class="rad">3</span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>2 − √<span class="rad">3</span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>−2 + √<span class="rad">3</span></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mn>2</mn><mo>+</mo><msqrt><mn>3</mn></msqrt></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mo>−</mo><mn>2</mn><mo>−</mo><msqrt><mn>3</mn></msqrt></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mn>2</mn><mo>−</mo><msqrt><mn>3</mn></msqrt></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mo>−</mo><mn>2</mn><mo>+</mo><msqrt><mn>3</mn></msqrt></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
@@ -707,34 +849,34 @@
           </div>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 105° を和で表す</h3>
-          <p>105° = 60° + 45° と表し，tan(60° + 45°) = <span class="frac"><span class="num">tan60° + tan45°</span><span class="den">1 − tan60° tan45°</span></span> を使う。</p>
+          <h3>ヒント<math><mn>1</mn><mo>―</mo><mn>105</mn><mo>°</mo></math>を和で表す</h3>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><mi>tan</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mfrac><mrow><mi>tan</mi><mi>α</mi><mo>+</mo><mi>tan</mi><mi>β</mi></mrow><mrow><mn>1</mn><mo>−</mo><mi>tan</mi><mi>α</mi><mi>tan</mi><mi>β</mi></mrow></mfrac></math>ここでは <math><mn>105</mn><mo>°</mo><mo>=</mo><mn>60</mn><mo>°</mo><mo>+</mo><mn>45</mn><mo>°</mo></math> として当てはめる。</p><p><math><mn>105</mn><mo>°</mo><mo>=</mo><mn>60</mn><mo>°</mo><mo>+</mo><mn>45</mn><mo>°</mo></math>と表し<math><mo>,</mo><mi>tan</mi><mrow><mo>(</mo><mn>60</mn><mo>°</mo><mo>+</mo><mn>45</mn><mo>°</mo><mo>)</mo></mrow><mo>=</mo><mfrac><mrow><mi>tan</mi><mn>60</mn><mo>°</mo><mo>+</mo><mi>tan</mi><mn>45</mn><mo>°</mo></mrow><mrow><mn>1</mn><mo>−</mo><mi>tan</mi><mn>60</mn><mo>°</mo><mi>tan</mi><mn>45</mn><mo>°</mo></mrow></mfrac></math> を使う。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 代入と有理化</h3>
-          <p>tan60° = √<span class="rad">3</span>，tan45° = 1 を代入すると <span class="frac"><span class="num">√<span class="rad">3</span> + 1</span><span class="den">1 − √<span class="rad">3</span></span></span> になる。分母と分子に (1 + √<span class="rad">3</span>) を掛けて有理化すると <span class="frac"><span class="num">4 + 2√<span class="rad">3</span></span><span class="den">−2</span></span> になるよ。</p>
+          <p><math><mi>tan</mi><mn>60</mn><mo>°</mo><mo>=</mo><msqrt><mn>3</mn></msqrt><mo>,</mo><mi>tan</mi><mn>45</mn><mo>°</mo><mo>=</mo><mn>1</mn></math>を代入すると <math><mfrac><mrow><msqrt><mn>3</mn></msqrt><mo>+</mo><mn>1</mn></mrow><mrow><mn>1</mn><mo>−</mo><msqrt><mn>3</mn></msqrt></mrow></mfrac></math> になる。分母と分子に<math><mo>(</mo><mn>1</mn><mo>+</mo><msqrt><mn>3</mn></msqrt><mo>)</mo></math>を掛けて有理化すると <math><mfrac><mrow><mn>4</mn><mo>+</mo><mn>2</mn><msqrt><mn>3</mn></msqrt></mrow><mrow><mo>−</mo><mn>2</mn></mrow></mfrac></math> になるよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">−2 − √<span class="rad">3</span></p>
+          <p class="big"><math display="block"><mo>−</mo><mn>2</mn><mo>−</mo><msqrt><mn>3</mn></msqrt></math></p>
         </div>
         <p class="prob-done">練習27 クリア！　次は練習28に挑戦しよう。</p>
       </section>
-      <section class="card prob" id="prob-ren28" data-flow="ren28" data-label="練習28">
+      <section class="nofig card prob" id="prob-ren28" data-flow="ren28" data-label="練習28">
         <div class="prob-head">
           <span class="prob-tag ren">練習 28</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q"><span class="frac"><span class="num">π</span><span class="den">12</span></span> = <span class="frac"><span class="num">π</span><span class="den">4</span></span> − <span class="frac"><span class="num">π</span><span class="den">6</span></span> であることを用いて，tan<span class="frac"><span class="num">π</span><span class="den">12</span></span> の値を求めよ。</p>
+        <p class="prob-q"><math><mfrac><mi>π</mi><mn>12</mn></mfrac><mo>=</mo><mfrac><mi>π</mi><mn>4</mn></mfrac><mo>−</mo><mfrac><mi>π</mi><mn>6</mn></mfrac></math> であることを用いて<math><mo>,</mo><mi>tan</mi><mfrac><mi>π</mi><mn>12</mn></mfrac></math> の値を求めよ。</p>
           <div class="quiz" id="qz-ren28" data-correct="1">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>2 − √<span class="rad">3</span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>2 + √<span class="rad">3</span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>−2 − √<span class="rad">3</span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><span class="frac"><span class="num">1</span><span class="den">√<span class="rad">3</span></span></span></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mn>2</mn><mo>−</mo><msqrt><mn>3</mn></msqrt></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mn>2</mn><mo>+</mo><msqrt><mn>3</mn></msqrt></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mo>−</mo><mn>2</mn><mo>−</mo><msqrt><mn>3</mn></msqrt></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mfrac><mn>1</mn><msqrt><mn>3</mn></msqrt></mfrac></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
@@ -742,17 +884,17 @@
           </div>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― tan の差の公式を使う</h3>
-          <p>tan<span class="frac"><span class="num">π</span><span class="den">12</span></span> = tan(<span class="frac"><span class="num">π</span><span class="den">4</span></span> − <span class="frac"><span class="num">π</span><span class="den">6</span></span>) = <span class="frac"><span class="num">tan<span class="frac"><span class="num">π</span><span class="den">4</span></span> − tan<span class="frac"><span class="num">π</span><span class="den">6</span></span></span><span class="den">1 + tan<span class="frac"><span class="num">π</span><span class="den">4</span></span> tan<span class="frac"><span class="num">π</span><span class="den">6</span></span></span></span> と変形する。</p>
+          <h3>ヒント 1 ― <math><mi>tan</mi></math> の差の公式を使う</h3>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><mi>tan</mi><mrow><mo>(</mo><mi>α</mi><mo>−</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mfrac><mrow><mi>tan</mi><mi>α</mi><mo>−</mo><mi>tan</mi><mi>β</mi></mrow><mrow><mn>1</mn><mo>+</mo><mi>tan</mi><mi>α</mi><mi>tan</mi><mi>β</mi></mrow></mfrac></math>ここでは <math><mfrac><mrow><mi>π</mi></mrow><mrow><mn>12</mn></mrow></mfrac><mo>=</mo><mfrac><mrow><mi>π</mi></mrow><mrow><mn>4</mn></mrow></mfrac><mo>−</mo><mfrac><mrow><mi>π</mi></mrow><mrow><mn>6</mn></mrow></mfrac></math> として当てはめる。</p><p><math><mi>tan</mi><mfrac><mi>π</mi><mn>12</mn></mfrac><mo>=</mo><mi>tan</mi><mrow><mo>(</mo><mfrac><mi>π</mi><mn>4</mn></mfrac><mo>−</mo><mfrac><mi>π</mi><mn>6</mn></mfrac><mo>)</mo></mrow><mo>=</mo><mfrac><mrow><mi>tan</mi><mfrac><mi>π</mi><mn>4</mn></mfrac><mo>−</mo><mi>tan</mi><mfrac><mi>π</mi><mn>6</mn></mfrac></mrow><mrow><mn>1</mn><mo>+</mo><mi>tan</mi><mfrac><mi>π</mi><mn>4</mn></mfrac><mi>tan</mi><mfrac><mi>π</mi><mn>6</mn></mfrac></mrow></mfrac></math> と変形する。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 代入と有理化</h3>
-          <p>tan<span class="frac"><span class="num">π</span><span class="den">4</span></span> = 1，tan<span class="frac"><span class="num">π</span><span class="den">6</span></span> = <span class="frac"><span class="num">1</span><span class="den">√<span class="rad">3</span></span></span> を代入すると <span class="frac"><span class="num">√<span class="rad">3</span> − 1</span><span class="den">√<span class="rad">3</span> + 1</span></span> になる。分母を有理化すると <span class="frac"><span class="num">(√<span class="rad">3</span> − 1)<sup>2</sup></span><span class="den">2</span></span> = <span class="frac"><span class="num">4 − 2√<span class="rad">3</span></span><span class="den">2</span></span> だよ。</p>
+          <p><math><mi>tan</mi><mfrac><mi>π</mi><mn>4</mn></mfrac><mo>=</mo><mn>1</mn><mo>,</mo><mi>tan</mi><mfrac><mi>π</mi><mn>6</mn></mfrac><mo>=</mo><mfrac><mn>1</mn><msqrt><mn>3</mn></msqrt></mfrac></math> を代入すると <math><mfrac><mrow><msqrt><mn>3</mn></msqrt><mo>−</mo><mn>1</mn></mrow><mrow><msqrt><mn>3</mn></msqrt><mo>+</mo><mn>1</mn></mrow></mfrac></math> になる。分母を有理化すると <math><mfrac><msup><mrow><mo>(</mo><msqrt><mn>3</mn></msqrt><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup><mn>2</mn></mfrac><mo>=</mo><mfrac><mrow><mn>4</mn><mo>−</mo><mn>2</mn><msqrt><mn>3</mn></msqrt></mrow><mn>2</mn></mfrac></math> だよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">2 − √<span class="rad">3</span></p>
+          <p class="big"><math display="block"><mn>2</mn><mo>−</mo><msqrt><mn>3</mn></msqrt></math></p>
         </div>
         <p class="prob-done">練習28 クリア！　次は例題6に挑戦しよう。</p>
       </section>
@@ -762,58 +904,63 @@
         <span class="pno">教科書 p.137</span>
       </div>
       <section class="card">
-        <p>右の図のように，x 軸の正の部分から直線 y = mx まで測った角を θ とすると，tanθ = m である。このことと正接の加法定理を利用して，2 直線のなす角を求めてみよう。</p>
-<figure><div class="figbox"><svg viewBox="0 0 280 280" role="img" aria-label="直線 y=mx と角 θ"><line x1="16" y1="180" x2="268" y2="180" stroke="currentColor" stroke-width="1.2"/><path d="M 268 180 l -7 -3.4 v 6.8 z" fill="currentColor"/><line x1="120" y1="262" x2="120" y2="14" stroke="currentColor" stroke-width="1.2"/><path d="M 120 14 l -3.4 7 h 6.8 z" fill="currentColor"/><text x="264" y="172" font-size="16" text-anchor="middle" fill="currentColor" font-style="italic">x</text><text x="132" y="24" font-size="16" text-anchor="middle" fill="currentColor" font-style="italic">y</text><text x="111" y="197" font-size="15" text-anchor="middle" fill="currentColor">O</text><line x1="90" y1="234" x2="198" y2="39" stroke="currentColor" stroke-width="1.7"/><line x1="195" y1="180" x2="195" y2="45" stroke="currentColor" stroke-width="1.1" stroke-dasharray="4 3"/><line x1="120" y1="45" x2="195" y2="45" stroke="currentColor" stroke-width="1.1" stroke-dasharray="4 3"/><path d="M 195 180 h 10 v -10" fill="none" stroke="currentColor" stroke-width="1.1" transform="translate(-10 0)"/><path d="M 150 180 A 30 30 0 0 0 134.5 153.8" fill="none" stroke="currentColor" stroke-width="1.2"/><text x="195" y="198" font-size="13" text-anchor="middle" fill="currentColor">1</text><text x="108" y="49" font-size="14" text-anchor="middle" fill="currentColor" font-style="italic">m</text><text x="196" y="34" font-size="14" text-anchor="middle" fill="currentColor">y = mx</text><text x="216" y="118" font-size="14" text-anchor="middle" fill="currentColor">tanθ = m</text><text x="158" y="166" font-size="15" text-anchor="middle" fill="currentColor" font-style="italic">θ</text></svg></div><figcaption>x 軸の正の部分から直線 y = mx まで測った角を θ とすると，tanθ = m である。</figcaption></figure>
-        <p>2 直線が x 軸の正の部分となす角をそれぞれ α，β とすると，2 直線のなす角は α − β と表すことができ，tan(α − β) は正接の加法定理で求められる。</p>
+        <p>右の図のように，<math><mi>x</mi></math> 軸の正の部分から直線<math><mi>y</mi><mo>=</mo><mi>m</mi><mi>x</mi></math>まで測った角を <math><mi>θ</mi></math> とすると<math><mo>,</mo><mi>tan</mi><mi>θ</mi><mo>=</mo><mi>m</mi></math>である。このことと正接の加法定理を利用して，2 直線のなす角を求めてみよう。</p>
+<figure><div class="figbox"><svg viewBox="0 0 280 280" role="img" aria-label="直線 y=mx と角 θ"><line x1="16" y1="180" x2="268" y2="180" stroke="currentColor" stroke-width="1.2"/><path d="M 268 180 l -7 -3.4 v 6.8 z" fill="currentColor"/><line x1="120" y1="262" x2="120" y2="14" stroke="currentColor" stroke-width="1.2"/><path d="M 120 14 l -3.4 7 h 6.8 z" fill="currentColor"/><text x="264" y="172" font-size="16" text-anchor="middle" fill="currentColor" font-style="italic">x</text><text x="132" y="24" font-size="16" text-anchor="middle" fill="currentColor" font-style="italic">y</text><text x="111" y="197" font-size="15" text-anchor="middle" fill="currentColor">O</text><line x1="90" y1="234" x2="198" y2="39" stroke="currentColor" stroke-width="1.7"/><line x1="195" y1="180" x2="195" y2="45" stroke="currentColor" stroke-width="1.1" stroke-dasharray="4 3"/><line x1="120" y1="45" x2="195" y2="45" stroke="currentColor" stroke-width="1.1" stroke-dasharray="4 3"/><path d="M 195 180 h 10 v -10" fill="none" stroke="currentColor" stroke-width="1.1" transform="translate(-10 0)"/><path d="M 150 180 A 30 30 0 0 0 134.5 153.8" fill="none" stroke="currentColor" stroke-width="1.2"/><text x="195" y="198" font-size="13" text-anchor="middle" fill="currentColor">1</text><text x="108" y="49" font-size="14" text-anchor="middle" fill="currentColor" font-style="italic">m</text><text x="196" y="34" font-size="14" text-anchor="middle" fill="currentColor">y = mx</text><text x="216" y="118" font-size="14" text-anchor="middle" fill="currentColor">tanθ = m</text><text x="158" y="166" font-size="15" text-anchor="middle" fill="currentColor" font-style="italic">θ</text></svg></div><figcaption><math><mi>x</mi></math> 軸の正の部分から直線<math><mi>y</mi><mo>=</mo><mi>m</mi><mi>x</mi></math>まで測った角を <math><mi>θ</mi></math> とすると<math><mo>,</mo><mi>tan</mi><mi>θ</mi><mo>=</mo><mi>m</mi></math>である。</figcaption></figure>
+        <p>2 直線が <math><mi>x</mi></math> 軸の正の部分となす角をそれぞれ <math><mi>α</mi></math>，<math><mi>β</mi></math> とすると，2 直線のなす角は <math><mi>α</mi></math> − <math><mi>β</mi></math> と表すことができ，<math><mi>tan</mi><mrow><mo>(</mo><mi>α</mi><mo>−</mo><mi>β</mi><mo>)</mo></mrow></math> は正接の加法定理で求められる。</p>
       </section>
       <div class="sec-head">
         <span class="sec-tag">例題</span>
         <h2>例題で確認</h2>
         <span class="pno">教科書 p.137</span>
       </div>
-      <section class="card prob" id="prob-reidai6" data-flow="reidai6" data-label="例題6">
+      <section class="nofig card prob" id="prob-reidai6" data-flow="reidai6" data-label="例題6">
         <div class="prob-head">
           <span class="prob-tag ">例題 6</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
         <div class="qside">
-        <p class="prob-q">2 直線 y = −2x，y = 3x のなす角 θ を求めよ。ただし，0 &lt; θ &lt; <span class="frac"><span class="num">π</span><span class="den">2</span></span> とする。</p>
+        <p class="prob-q">2 直線<math><mi>y</mi><mo>=</mo><mo>−</mo><mn>2</mn><mi>x</mi><mo>,</mo><mi>y</mi><mo>=</mo><mn>3</mn><mi>x</mi></math>のなす角 <math><mi>θ</mi></math> を求めよ。ただし<math><mo>,</mo><mn>0</mn><mo>&lt;</mo><mi>θ</mi><mo>&lt;</mo><mfrac><mi>π</mi><mn>2</mn></mfrac></math> とする。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 角を α，β とおく</h3>
-          <p>x 軸の正の部分から 2 直線 y = −2x，y = 3x まで測った角を，それぞれ α，β とすると，tanα = −2，tanβ = 3 であり，なす角は θ = α − β と表せる。</p>
+          <h3>ヒント 1 ― 角を <math><mi>α</mi></math>，<math><mi>β</mi></math> とおく</h3>
+          <p class="cite"><span class="cite-tag">使う性質</span><math><mi>tan</mi><mi>α</mi><mo>=</mo><mo>−</mo><mn>2</mn><mo>,</mo><mi>tan</mi><mi>β</mi><mo>=</mo><mn>3</mn></math>直線の傾きは、その直線が <math><mi>x</mi></math> 軸の正の部分となす角の <math><mi>tan</mi></math> に等しい。ここでは 2 直線の傾きからこの 2 つの値を読む。</p><p><math><mi>x</mi></math> 軸の正の部分から 2 直線<math><mi>y</mi><mo>=</mo><mo>−</mo><mn>2</mn><mi>x</mi><mo>,</mo><mi>y</mi><mo>=</mo><mn>3</mn><mi>x</mi></math>まで測った角を，それぞれ <math><mi>α</mi></math>，<math><mi>β</mi></math> とすると<math><mo>,</mo><mi>tan</mi><mi>α</mi><mo>=</mo><mo>−</mo><mn>2</mn><mo>,</mo><mi>tan</mi><mi>β</mi><mo>=</mo><mn>3</mn></math>であり，なす角は <math><mi>θ</mi></math> = <math><mi>α</mi></math> − <math><mi>β</mi></math> と表せる。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― tanθ を計算する</h3>
-          <p>tanθ = tan(α − β) = <span class="frac"><span class="num">tanα − tanβ</span><span class="den">1 + tanα tanβ</span></span> = <span class="frac"><span class="num">−2 − 3</span><span class="den">1 + (−2)・3</span></span> を計算しよう。</p>
-<figure><div class="figbox"><svg viewBox="0 0 290 275" role="img" aria-label="2直線のなす角"><line x1="14" y1="155" x2="282" y2="155" stroke="currentColor" stroke-width="1.2"/><path d="M 282 155 l -7 -3.4 v 6.8 z" fill="currentColor"/><line x1="145" y1="262" x2="145" y2="14" stroke="currentColor" stroke-width="1.2"/><path d="M 145 14 l -3.4 7 h 6.8 z" fill="currentColor"/><text x="278" y="147" font-size="16" text-anchor="middle" fill="currentColor" font-style="italic">x</text><text x="157" y="24" font-size="16" text-anchor="middle" fill="currentColor" font-style="italic">y</text><text x="135" y="172" font-size="15" text-anchor="middle" fill="currentColor">O</text><line x1="113.4" y1="249.9" x2="176.6" y2="60.1" stroke="currentColor" stroke-width="1.6"/><line x1="189.7" y1="244.4" x2="100.3" y2="65.6" stroke="currentColor" stroke-width="1.6"/><path d="M 169 155 A 24 24 0 0 0 152.6 132.2" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M 157.6 117.1 A 40 40 0 0 0 127.1 119.2" fill="none" stroke="currentColor" stroke-width="1.2"/><text x="141.1" y="99.1" font-size="15" text-anchor="middle" fill="currentColor" font-style="italic">θ</text><text x="102.5" y="96" font-size="15" text-anchor="middle" fill="currentColor">α</text><text x="176.5" y="133.8" font-size="15" text-anchor="middle" fill="currentColor">β</text><text x="197" y="52" font-size="14" text-anchor="middle" fill="currentColor">y = 3x</text><text x="57" y="62" font-size="14" text-anchor="middle" fill="currentColor">y = −2x</text></svg></div><figcaption>x 軸の正の部分から 2 直線 y = −2x，y = 3x まで測った角を，それぞれ α，β とすると，図より θ = α − β である。</figcaption></figure>
+          <h3>ヒント<math><mn>2</mn><mo>―</mo><mi>tan</mi><mi>θ</mi></math>を計算する</h3>
+          <div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>tan</mi><mi>θ</mi><mo>=</mo><mi>tan</mi><mrow><mo>(</mo><mi>α</mi><mo>−</mo><mi>β</mi><mo>)</mo></mrow></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>tan</mi><mi>θ</mi></mphantom><mo>=</mo><mfrac><mrow><mi>tan</mi><mi>α</mi><mo>−</mo><mi>tan</mi><mi>β</mi></mrow><mrow><mn>1</mn><mo>+</mo><mi>tan</mi><mi>α</mi><mi>tan</mi><mi>β</mi></mrow></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>tan</mi><mi>θ</mi></mphantom><mo>=</mo><mfrac><mrow><mo>−</mo><mn>2</mn><mo>−</mo><mn>3</mn></mrow><mrow><mn>1</mn><mo>+</mo><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mo>⋅</mo><mn>3</mn></mrow></mfrac></math></div>
+</div>
+<p class="cite"><span class="cite-tag">使う公式</span><math><mi>tan</mi><mrow><mo>(</mo><mi>α</mi><mo>−</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mfrac><mrow><mi>tan</mi><mi>α</mi><mo>−</mo><mi>tan</mi><mi>β</mi></mrow><mrow><mn>1</mn><mo>+</mo><mi>tan</mi><mi>α</mi><mi>tan</mi><mi>β</mi></mrow></mfrac></math>なす角 <math><mi>θ</mi><mo>=</mo><mi>α</mi><mo>−</mo><mi>β</mi></math> の <math><mi>tan</mi></math> を、この公式で求める。</p><p>を計算しよう。</p>
+<figure><div class="figbox"><svg viewBox="0 0 290 275" role="img" aria-label="2直線のなす角"><line x1="14" y1="155" x2="282" y2="155" stroke="currentColor" stroke-width="1.2"/><path d="M 282 155 l -7 -3.4 v 6.8 z" fill="currentColor"/><line x1="145" y1="262" x2="145" y2="14" stroke="currentColor" stroke-width="1.2"/><path d="M 145 14 l -3.4 7 h 6.8 z" fill="currentColor"/><text x="278" y="147" font-size="16" text-anchor="middle" fill="currentColor" font-style="italic">x</text><text x="157" y="24" font-size="16" text-anchor="middle" fill="currentColor" font-style="italic">y</text><text x="135" y="172" font-size="15" text-anchor="middle" fill="currentColor">O</text><line x1="113.4" y1="249.9" x2="176.6" y2="60.1" stroke="currentColor" stroke-width="1.6"/><line x1="189.7" y1="244.4" x2="100.3" y2="65.6" stroke="currentColor" stroke-width="1.6"/><path d="M 169 155 A 24 24 0 0 0 152.6 132.2" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M 157.6 117.1 A 40 40 0 0 0 127.1 119.2" fill="none" stroke="currentColor" stroke-width="1.2"/><text x="141.1" y="99.1" font-size="15" text-anchor="middle" fill="currentColor" font-style="italic">θ</text><text x="102.5" y="96" font-size="15" text-anchor="middle" fill="currentColor">α</text><text x="176.5" y="133.8" font-size="15" text-anchor="middle" fill="currentColor">β</text><text x="197" y="52" font-size="14" text-anchor="middle" fill="currentColor">y = 3x</text><text x="57" y="62" font-size="14" text-anchor="middle" fill="currentColor">y = −2x</text></svg></div><figcaption><math><mi>x</mi></math> 軸の正の部分から 2 直線<math><mi>y</mi><mo>=</mo><mo>−</mo><mn>2</mn><mi>x</mi><mo>,</mo><mi>y</mi><mo>=</mo><mn>3</mn><mi>x</mi></math>まで測った角を，それぞれ <math><mi>α</mi></math>，<math><mi>β</mi></math> とすると，図より <math><mi>θ</mi></math> = <math><mi>α</mi></math> − <math><mi>β</mi></math> である。</figcaption></figure>
         </div>
         <div class="step hint">
-          <h3>ヒント 3 ― θ を決める</h3>
-          <p>tanθ = 1 になった。0 &lt; θ &lt; <span class="frac"><span class="num">π</span><span class="den">2</span></span> の範囲で tanθ = 1 となる θ は 1 つだけだよ。</p>
+          <h3>ヒント<math><mn>3</mn><mo>―</mo><mi>θ</mi></math>を決める</h3>
+          <p><math><mi>tan</mi><mi>θ</mi><mo>=</mo><mn>1</mn></math>になった。<math><mn>0</mn><mo>&lt;</mo><mi>θ</mi><mo>&lt;</mo><mfrac><mi>π</mi><mn>2</mn></mfrac></math> の範囲で<math><mi>tan</mi><mi>θ</mi><mo>=</mo><mn>1</mn></math>となる <math><mi>θ</mi></math> は 1 つだけだよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">θ = <span class="frac"><span class="num">π</span><span class="den">4</span></span></p>
+          <p class="big"><math display="block"><mi>θ</mi><mo>=</mo><mfrac><mi>π</mi><mn>4</mn></mfrac></math></p>
         </div>
         <p class="prob-done">例題6 クリア！　次は練習29に挑戦しよう。</p>
       </section>
-      <section class="card prob" id="prob-ren29" data-flow="ren29" data-label="練習29">
+      <section class="nofig card prob" id="prob-ren29" data-flow="ren29" data-label="練習29">
         <div class="prob-head">
           <span class="prob-tag ren">練習 29</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">2 直線 y = 2x，y = <span class="frac"><span class="num">1</span><span class="den">3</span></span>x のなす角 θ を求めよ。ただし，0 &lt; θ &lt; <span class="frac"><span class="num">π</span><span class="den">2</span></span> とする。</p>
+        <p class="prob-q">2 直線<math><mi>y</mi><mo>=</mo><mn>2</mn><mi>x</mi><mo>,</mo><mi>y</mi><mo>=</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mi>x</mi></math>のなす角 <math><mi>θ</mi></math> を求めよ。ただし<math><mo>,</mo><mn>0</mn><mo>&lt;</mo><mi>θ</mi><mo>&lt;</mo><mfrac><mi>π</mi><mn>2</mn></mfrac></math> とする。</p>
           <div class="quiz" id="qz-ren29" data-correct="1">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>θ = <span class="frac"><span class="num">π</span><span class="den">4</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>θ = <span class="frac"><span class="num">π</span><span class="den">3</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>θ = <span class="frac"><span class="num">π</span><span class="den">6</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>θ = <span class="frac"><span class="num">3π</span><span class="den">4</span></span></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mi>θ</mi><mo>=</mo><mfrac><mi>π</mi><mn>4</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mi>θ</mi><mo>=</mo><mfrac><mi>π</mi><mn>3</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mi>θ</mi><mo>=</mo><mfrac><mi>π</mi><mn>6</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>3</mn><mi>π</mi></mrow><mn>4</mn></mfrac></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
@@ -821,17 +968,22 @@
           </div>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 角を α，β とおく</h3>
-          <p>2 直線が x 軸の正の部分となす角を，傾きの大きい方から α（y = 2x），β（y = <span class="frac"><span class="num">1</span><span class="den">3</span></span>x）とすると，tanα = 2，tanβ = <span class="frac"><span class="num">1</span><span class="den">3</span></span> で，θ = α − β である。</p>
+          <h3>ヒント 1 ― 角を <math><mi>α</mi></math>，<math><mi>β</mi></math> とおく</h3>
+          <p>2 直線が <math><mi>x</mi></math> 軸の正の部分となす角を，傾きの大きい方から<math><mi>α</mi><mrow><mo>(</mo><mi>y</mi><mo>=</mo><mn>2</mn><mi>x</mi><mo>)</mo></mrow><mo>,</mo><mi>β</mi><mrow><mo>(</mo><mi>y</mi><mo>=</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mi>x</mi><mo>)</mo></mrow></math>とすると<math><mo>,</mo><mi>tan</mi><mi>α</mi><mo>=</mo><mn>2</mn><mo>,</mo><mi>tan</mi><mi>β</mi><mo>=</mo><mfrac><mn>1</mn><mn>3</mn></mfrac></math> で，<math><mi>θ</mi></math> = <math><mi>α</mi></math> − <math><mi>β</mi></math> である。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― tanθ を計算する</h3>
-          <p>tanθ = tan(α − β) = <span class="frac"><span class="num">2 − <span class="frac"><span class="num">1</span><span class="den">3</span></span></span><span class="den">1 + 2・<span class="frac"><span class="num">1</span><span class="den">3</span></span></span></span> = <span class="frac"><span class="num"><span class="frac"><span class="num">5</span><span class="den">3</span></span></span><span class="den"><span class="frac"><span class="num">5</span><span class="den">3</span></span></span></span> を計算しよう。</p>
+          <h3>ヒント<math><mn>2</mn><mo>―</mo><mi>tan</mi><mi>θ</mi></math>を計算する</h3>
+          <div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>tan</mi><mi>θ</mi><mo>=</mo><mi>tan</mi><mrow><mo>(</mo><mi>α</mi><mo>−</mo><mi>β</mi><mo>)</mo></mrow></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>tan</mi><mi>θ</mi></mphantom><mo>=</mo><mfrac><mrow><mn>2</mn><mo>−</mo><mfrac><mn>1</mn><mn>3</mn></mfrac></mrow><mrow><mn>1</mn><mo>+</mo><mn>2</mn><mo>⋅</mo><mfrac><mn>1</mn><mn>3</mn></mfrac></mrow></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>tan</mi><mi>θ</mi></mphantom><mo>=</mo><mfrac><mfrac><mn>5</mn><mn>3</mn></mfrac><mfrac><mn>5</mn><mn>3</mn></mfrac></mfrac></math></div>
+</div>
+<p>を計算しよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">θ = <span class="frac"><span class="num">π</span><span class="den">4</span></span></p>
+          <p class="big"><math display="block"><mi>θ</mi><mo>=</mo><mfrac><mi>π</mi><mn>4</mn></mfrac></math></p>
         </div>
         <p class="prob-done">練習29 クリア！　この項は終了だよ。</p>
       </section>
@@ -841,10 +993,10 @@
       <section class="card summary" id="summaryCard" style="display:none">
         <h2>この項のポイント</h2>
         <ul>
-          <li><b>正弦・余弦の加法定理：</b>sin(α ± β) = sinα cosβ ± cosα sinβ，cos(α ± β) = cosα cosβ ∓ sinα sinβ。</li>
-          <li><b>正接の加法定理：</b>tan(α ± β) = (tanα ± tanβ) / (1 ∓ tanα tanβ)。</li>
-          <li><b>象限と符号：</b>加法定理を使う前に，相互関係 sin<sup>2</sup>θ + cos<sup>2</sup>θ = 1 で足りない値を求め，符号は動径の象限で決める。</li>
-          <li><b>2 直線のなす角：</b>各直線が x 軸となす角の差として，tan の加法定理で求める。</li>
+          <li><p class="cite"><span class="cite-tag">使う公式</span><math><mi>sin</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mi>sin</mi><mi>α</mi><mi>cos</mi><mi>β</mi><mo>+</mo><mi>cos</mi><mi>α</mi><mi>sin</mi><mi>β</mi></math>あわせて <math><mi>cos</mi><mrow><mo>(</mo><mi>α</mi><mo>±</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mi>cos</mi><mi>α</mi><mi>cos</mi><mi>β</mi><mo>∓</mo><mi>sin</mi><mi>α</mi><mi>sin</mi><mi>β</mi></math> も使う。符号の対応に注意する。</p><b>正弦・余弦の加法定理：</b><math><mi>sin</mi><mrow><mo>(</mo><mi>α</mi><mo>±</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mi>sin</mi><mi>α</mi><mi>cos</mi><mi>β</mi><mo>±</mo><mi>cos</mi><mi>α</mi><mi>sin</mi><mi>β</mi><mo>,</mo><mi>cos</mi><mrow><mo>(</mo><mi>α</mi><mo>±</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mi>cos</mi><mi>α</mi><mi>cos</mi><mi>β</mi><mo>∓</mo><mi>sin</mi><mi>α</mi><mi>sin</mi><mi>β</mi></math>。</li>
+          <li><p class="cite"><span class="cite-tag">使う公式</span><math><mi>tan</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mfrac><mrow><mi>tan</mi><mi>α</mi><mo>+</mo><mi>tan</mi><mi>β</mi></mrow><mrow><mn>1</mn><mo>−</mo><mi>tan</mi><mi>α</mi><mi>tan</mi><mi>β</mi></mrow></mfrac></math>差の形は <math><mi>tan</mi><mrow><mo>(</mo><mi>α</mi><mo>−</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mfrac><mrow><mi>tan</mi><mi>α</mi><mo>−</mo><mi>tan</mi><mi>β</mi></mrow><mrow><mn>1</mn><mo>+</mo><mi>tan</mi><mi>α</mi><mi>tan</mi><mi>β</mi></mrow></mfrac></math> である。</p><b>正接の加法定理：</b><math><mi>tan</mi><mrow><mo>(</mo><mi>α</mi><mo>±</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mfrac><mrow><mo>(</mo><mi>tan</mi><mi>α</mi><mo>±</mo><mi>tan</mi><mi>β</mi><mo>)</mo></mrow><mrow><mo>(</mo><mn>1</mn><mo>∓</mo><mi>tan</mi><mi>α</mi><mi>tan</mi><mi>β</mi><mo>)</mo></mrow></mfrac></math>。</li>
+          <li><p class="cite"><span class="cite-tag">使う公式</span><math><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn></math>この関係で足りない値を求め、符号は動径のある象限で決める。</p><b>象限と符号：</b>加法定理を使う前に，相互関係<math><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn></math>で足りない値を求め，符号は動径の象限で決める。</li>
+          <li><p class="cite"><span class="cite-tag">使う公式</span><math><mi>tan</mi><mrow><mo>(</mo><mi>α</mi><mo>−</mo><mi>β</mi><mo>)</mo></mrow><mo>=</mo><mfrac><mrow><mi>tan</mi><mi>α</mi><mo>−</mo><mi>tan</mi><mi>β</mi></mrow><mrow><mn>1</mn><mo>+</mo><mi>tan</mi><mi>α</mi><mi>tan</mi><mi>β</mi></mrow></mfrac></math>2 直線のなす角は、角の差の <math><mi>tan</mi></math> としてこの公式で求める。</p><b>2 直線のなす角：</b>各直線が <math><mi>x</mi></math> 軸となす角の差として，<math><mi>tan</mi></math> の加法定理で求める。</li>
         </ul>
       </section>
       <footer>
