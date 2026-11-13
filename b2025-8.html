@@ -404,7 +404,57 @@
         .btn-next { flex: 1 1 100%; order: 3; }
         .card .formula, .ans-card .final { font-size: 16px; }
       }
-    </style>
+    
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+
+      /* 積分記号は大きめに表示する（元のページの可読化デザインに合わせる） */
+      math .int-op{font-size:1.35em}
+      /* calc-12 世代（.card）と calc-18 世代（.unit）の、図のない問題の全幅化 */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig>.step{position:static !important}
+        .card.nofig>.steps-wrap{max-height:none !important;overflow:visible !important}
+        .unit.nofig{display:block !important}
+        .unit.nofig>.qside{position:static !important}
+        .unit.nofig>.steps-stack{max-height:none !important;overflow:visible !important}
+      }
+</style>
   </head>
   <body>
     <div class="wrap">
@@ -433,7 +483,7 @@
       <section class="box" aria-label="問題の設定">
         <h2>問題の設定（大問8 共通）</h2>
         <p>平行四辺形 OACB があり、辺 OA を三等分する点を O に近い方から順に D、E とし、辺 AC の中点を F とする。また、
-          <span class="vec">OA</span>＝<span class="vec">a</span>、<span class="vec">OB</span>＝<span class="vec">b</span> とおく。</p>
+          <math><mover><mi>OA</mi><mo>→</mo></mover><mo>=</mo><mover><mi>a</mi><mo>→</mo></mover></math>、<math><mover><mi>OB</mi><mo>→</mo></mover><mo>=</mo><mover><mi>b</mi><mo>→</mo></mover></math> とおく。</p>
       </section>
 
       <!-- ======== 全体進捗 ======== -->
@@ -463,8 +513,8 @@
       <section class="panel" id="panel-0" role="tabpanel" aria-labelledby="tab-0">
         <div class="flow-cols">
         <div class="flow-left">
-        <h2>(1) <span class="vec">OE</span>、<span class="vec">BE</span> を表す<span class="pts">5点</span></h2>
-        <p class="q-text"><span class="vec">OE</span> を <span class="vec">a</span> を用いて表せ。また、<span class="vec">BE</span> を <span class="vec">a</span>、<span class="vec">b</span> を用いて表せ。</p>
+        <h2><math><mrow><mo>(</mo><mn>1</mn><mo>)</mo></mrow><mover><mi>OE</mi><mo>→</mo></mover></math>、<math><mover><mi>BE</mi><mo>→</mo></mover></math> を表す<span class="pts">5点</span></h2>
+        <p class="q-text"><math><mover><mi>OE</mi><mo>→</mo></mover></math> を <math><mover><mi>a</mi><mo>→</mo></mover></math> を用いて表せ。また、<math><mover><mi>BE</mi><mo>→</mo></mover></math> を <math><mover><mi>a</mi><mo>→</mo></mover></math>、<math><mover><mi>b</mi><mo>→</mo></mover></math> を用いて表せ。</p>
 
         <div class="figbox">
           <svg class="fig" viewBox="0 0 430 305" role="img" aria-label="平行四辺形OACBの図">
@@ -507,27 +557,27 @@
         <div class="card-stack">
         <div class="card hint-card" data-card>
           <div class="c-head">ヒント 1 ― E の位置を確認しよう</div>
-          <p>E は辺 OA を三等分する点のうち、O から数えて2つ目の点です。つまり E は、辺 OA を <span class="m">2 : 1</span> に<strong>内分する点</strong>です（O 側が 2、A 側が 1）。</p>
-          <p>図に三等分の目盛りと点 D、E が現れました。OD : DE : EA がすべて等しいことを確認しましょう。</p>
+          <p class="cite"><span class="cite-tag">使う定義</span>内分する点 <math><mn>2</mn><mo>:</mo><mn>1</mn></math>。辺をこの比に分ける点が、求める点である。</p><p>E は辺 OA を三等分する点のうち、O から数えて2つ目の点です。<br>つまり E は、辺 OA を <math><mn>2</mn><mo>:</mo><mn>1</mn></math> に<strong>内分する点</strong>です（O 側が 2、A 側が 1）。</p>
+          <p>図に三等分の目盛りと点 D、E が現れました。<br>OD : DE : EA がすべて等しいことを確認しましょう。</p>
         </div>
 
         <div class="card hint-card" data-card>
-          <div class="c-head">ヒント 2 ― <span class="vec">OE</span> を書き表そう</div>
-          <p>E は OA を 2 : 1 に内分するので、<span class="vec">OE</span> は <span class="vec">OA</span> の <span class="frac"><span class="num">2</span><span class="den">3</span></span> 倍です。<span class="vec">OA</span>＝<span class="vec">a</span> だから、そのまま代入します。</p>
-          <div class="formula"><span class="vec">OE</span> ＝ <span class="frac"><span class="num">2</span><span class="den">3</span></span><span class="vec">OA</span> ＝ <span class="frac"><span class="num">2</span><span class="den">3</span></span><span class="vec">a</span></div>
+          <div class="c-head">ヒント<math><mn>2</mn><mo>―</mo><mover><mi>OE</mi><mo>→</mo></mover></math> を書き表そう</div>
+          <p>E は OA を<math><mn>2</mn><mo>:</mo><mn>1</mn></math>に内分するので、<br><math><mover><mi>OE</mi><mo>→</mo></mover></math> は <math><mover><mi>OA</mi><mo>→</mo></mover></math> の <math><mfrac><mn>2</mn><mn>3</mn></mfrac></math> 倍です。<math><mover><mi>OA</mi><mo>→</mo></mover><mo>=</mo><mover><mi>a</mi><mo>→</mo></mover></math> だから、そのまま代入します。</p>
+          <p class="cite"><span class="cite-tag">使う性質</span>内分する点の位置ベクトル <math><mover><mi>OE</mi><mo>→</mo></mover><mo>=</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mover><mi>OA</mi><mo>→</mo></mover><mo>=</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mover><mi>a</mi><mo>→</mo></mover></math>。辺を2対1に内分する点の位置ベクトルは、もとのベクトルの3分の2倍になる。</p><div class="formula"><math display="block"><mover><mi>OE</mi><mo>→</mo></mover><mo>=</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mover><mi>OA</mi><mo>→</mo></mover><mo>=</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mover><mi>a</mi><mo>→</mo></mover></math></div>
         </div>
 
         <div class="card hint-card" data-card>
-          <div class="c-head">ヒント 3 ― <span class="vec">BE</span> は始点を O にそろえる</div>
+          <div class="c-head">ヒント<math><mn>3</mn><mo>―</mo><mover><mi>BE</mi><mo>→</mo></mover></math> は始点を O にそろえる</div>
           <p>始点が B のベクトルは、始点を O にそろえて引き算で表します（終点 − 始点 のルール）。</p>
-          <div class="formula"><span class="vec">BE</span> ＝ <span class="vec">OE</span> − <span class="vec">OB</span></div>
-          <p>ここに <span class="vec">OE</span>＝<span class="frac"><span class="num">2</span><span class="den">3</span></span><span class="vec">a</span> と <span class="vec">OB</span>＝<span class="vec">b</span> を代入すれば完成です。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span>ベクトルの減法 <math><mover><mi>BE</mi><mo>→</mo></mover><mo>=</mo><mover><mi>OE</mi><mo>→</mo></mover><mo>−</mo><mover><mi>OB</mi><mo>→</mo></mover></math>。始点をそろえたベクトルは、終点のベクトルから始点のベクトルを引いて表す。</p><div class="formula"><math display="block"><mover><mi>BE</mi><mo>→</mo></mover><mo>=</mo><mover><mi>OE</mi><mo>→</mo></mover><mo>−</mo><mover><mi>OB</mi><mo>→</mo></mover></math></div>
+          <p>ここに <math><mover><mi>OE</mi><mo>→</mo></mover><mo>=</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mover><mi>a</mi><mo>→</mo></mover></math> と <math><mover><mi>OB</mi><mo>→</mo></mover><mo>=</mo><mover><mi>b</mi><mo>→</mo></mover></math> を代入すれば完成です。</p>
         </div>
 
         <div class="card ans-card" data-card>
           <div class="c-head">解答 (1)</div>
-          <div class="final"><span class="vec">OE</span> ＝ <span class="frac"><span class="num">2</span><span class="den">3</span></span><span class="vec">a</span>，　<span class="vec">BE</span> ＝ <span class="frac"><span class="num">2</span><span class="den">3</span></span><span class="vec">a</span> − <span class="vec">b</span></div>
-          <p><span class="vec">BE</span> は (2) でも使うので、しっかり覚えておきましょう。</p>
+          <div class="final"><math><mover><mi>OE</mi><mo>→</mo></mover><mo>=</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mover><mi>a</mi><mo>→</mo></mover><mo>,</mo></math>　<math><mover><mi>BE</mi><mo>→</mo></mover><mo>=</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mover><mi>a</mi><mo>→</mo></mover><mo>−</mo><mover><mi>b</mi><mo>→</mo></mover></math></div>
+          <p><math><mover><mi>BE</mi><mo>→</mo></mover></math> は (2) でも使うので、しっかり覚えておきましょう。</p>
         </div>
         </div>
         </div>
@@ -538,8 +588,8 @@
       <section class="panel" id="panel-1" role="tabpanel" aria-labelledby="tab-1" hidden>
         <div class="flow-cols">
         <div class="flow-left">
-        <h2>(2) 点 P の位置ベクトルと <span class="m">s</span> の値<span class="pts">7点</span></h2>
-        <p class="q-text">直線 BE 上に点 P をとり、<span class="vec">BP</span>＝<span class="m">s</span><span class="vec">BE</span>（<span class="m">s</span> は実数）とおく。<span class="vec">OP</span> を <span class="vec">a</span>、<span class="vec">b</span>、<span class="m">s</span> を用いて表せ。さらに、点 P が直線 DF 上にあるとき、<span class="m">s</span> の値を求めよ。</p>
+        <h2>(2) 点 P の位置ベクトルと <math><mi>s</mi></math> の値<span class="pts">7点</span></h2>
+        <p class="q-text">直線 BE 上に点 P をとり、<math><mover><mi>BP</mi><mo>→</mo></mover><mo>=</mo><mi>s</mi><mover><mi>BE</mi><mo>→</mo></mover><mo>(</mo><mi>s</mi></math> は実数）とおく。<math><mover><mi>OP</mi><mo>→</mo></mover></math> を <math><mover><mi>a</mi><mo>→</mo></mover></math>、<math><mover><mi>b</mi><mo>→</mo></mover></math>、<math><mi>s</mi></math> を用いて表せ。さらに、点 P が直線 DF 上にあるとき、<math><mi>s</mi></math> の値を求めよ。</p>
 
         <div class="figbox">
           <svg class="fig" viewBox="0 0 430 305" role="img" aria-label="直線BEと直線DFの交点Pの図">
@@ -588,48 +638,48 @@
         <div class="flow-right">
         <div class="card-stack">
         <div class="card hint-card" data-card>
-          <div class="c-head">ヒント 1 ― <span class="vec">OP</span>＝<span class="vec">OB</span>＋<span class="vec">BP</span> と分解する</div>
+          <div class="c-head">ヒント<math><mn>1</mn><mo>―</mo><mover><mi>OP</mi><mo>→</mo></mover><mo>=</mo><mover><mi>OB</mi><mo>→</mo></mover><mo>+</mo><mover><mi>BP</mi><mo>→</mo></mover></math> と分解する</div>
           <p>P は直線 BE 上にあるので、O → B → P とたどることができます。</p>
-          <div class="formula"><span class="vec">OP</span> ＝ <span class="vec">OB</span> ＋ <span class="vec">BP</span> ＝ <span class="vec">b</span> ＋ <span class="m">s</span><span class="vec">BE</span></div>
-          <p>(1) で求めた <span class="vec">BE</span>＝<span class="frac"><span class="num">2</span><span class="den">3</span></span><span class="vec">a</span> − <span class="vec">b</span> を代入して整理すると、<span class="vec">OP</span>＝<span class="frac"><span class="num">2</span><span class="den">3</span></span><span class="m">s</span><span class="vec">a</span> ＋ (1−<span class="m">s</span>)<span class="vec">b</span> となります。これが前半の答えです。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span>ベクトルの加法 <math><mover><mi>OP</mi><mo>→</mo></mover><mo>=</mo><mover><mi>OB</mi><mo>→</mo></mover><mo>+</mo><mover><mi>BP</mi><mo>→</mo></mover><mo>=</mo><mover><mi>b</mi><mo>→</mo></mover><mo>+</mo><mi>s</mi><mover><mi>BE</mi><mo>→</mo></mover></math>。経由する点を順にたどるベクトルの和で、位置ベクトルを表す。</p><div class="formula"><math display="block"><mover><mi>OP</mi><mo>→</mo></mover><mo>=</mo><mover><mi>OB</mi><mo>→</mo></mover><mo>+</mo><mover><mi>BP</mi><mo>→</mo></mover><mo>=</mo><mover><mi>b</mi><mo>→</mo></mover><mo>+</mo><mi>s</mi><mover><mi>BE</mi><mo>→</mo></mover></math></div>
+          <p>(1) で求めた <math><mover><mi>BE</mi><mo>→</mo></mover><mo>=</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mover><mi>a</mi><mo>→</mo></mover><mo>−</mo><mover><mi>b</mi><mo>→</mo></mover></math> を代入して整理すると、<math><mover><mi>OP</mi><mo>→</mo></mover><mo>=</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mi>s</mi><mover><mi>a</mi><mo>→</mo></mover><mo>+</mo><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mi>s</mi><mo>)</mo></mrow><mover><mi>b</mi><mo>→</mo></mover></math> となります。<br>これが前半の答えです。</p>
         </div>
 
         <div class="card hint-card" data-card>
           <div class="c-head">ヒント 2 ― もう1通りの表し方のために、D と F の位置ベクトルを用意する</div>
           <p>P が直線 DF 上にあることを使うには、D と F の位置ベクトルが必要です。</p>
-          <p>D は OA の三等分点だから</p>
-          <div class="formula"><span class="vec">OD</span> ＝ <span class="frac"><span class="num">1</span><span class="den">3</span></span><span class="vec">a</span></div>
-          <p>F は辺 AC の中点です。まず <span class="vec">OC</span>＝<span class="vec">a</span>＋<span class="vec">b</span>（平行四辺形の対角線）を使って、中点の公式で求めます。</p>
-          <div class="formula"><span class="vec">OF</span> ＝ <span class="frac"><span class="num"><span class="vec">OA</span>＋<span class="vec">OC</span></span><span class="den">2</span></span> ＝ <span class="vec">a</span> ＋ <span class="frac"><span class="num">1</span><span class="den">2</span></span><span class="vec">b</span></div>
+          <p class="cite"><span class="cite-tag">使う性質</span>三等分点の位置ベクトル <math><mover><mi>OD</mi><mo>→</mo></mover><mo>=</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mover><mi>a</mi><mo>→</mo></mover></math>。三等分点の位置ベクトルは、もとのベクトルの3分の1倍になる。</p><p>D は OA の三等分点だから</p>
+          <div class="formula"><math display="block"><mover><mi>OD</mi><mo>→</mo></mover><mo>=</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mover><mi>a</mi><mo>→</mo></mover></math></div>
+          <p class="cite"><span class="cite-tag">使う公式</span>中点の位置ベクトル <math><mover><mi>OF</mi><mo>→</mo></mover><mo>=</mo><mfrac><mrow><mover><mi>OA</mi><mo>→</mo></mover><mo>+</mo><mover><mi>OC</mi><mo>→</mo></mover></mrow><mn>2</mn></mfrac><mo>=</mo><mover><mi>a</mi><mo>→</mo></mover><mo>+</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mover><mi>b</mi><mo>→</mo></mover></math>。中点の位置ベクトルは、両端の位置ベクトルの平均になる。</p><p>F は辺 AC の中点です。<br>まず <math><mover><mi>OC</mi><mo>→</mo></mover><mo>=</mo><mover><mi>a</mi><mo>→</mo></mover><mo>+</mo><mover><mi>b</mi><mo>→</mo></mover><mo>(</mo></math>平行四辺形の対角線）を使って、中点の公式で求めます。</p>
+          <div class="formula"><math display="block"><mover><mi>OF</mi><mo>→</mo></mover><mo>=</mo><mfrac><mrow><mover><mi>OA</mi><mo>→</mo></mover><mo>+</mo><mover><mi>OC</mi><mo>→</mo></mover></mrow><mn>2</mn></mfrac><mo>=</mo><mover><mi>a</mi><mo>→</mo></mover><mo>+</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mover><mi>b</mi><mo>→</mo></mover></math></div>
           <p>図に点 F が現れました。</p>
         </div>
 
         <div class="card hint-card" data-card>
-          <div class="c-head">ヒント 3 ― <span class="vec">DP</span>＝<span class="m">t</span><span class="vec">DF</span> と置いて、<span class="vec">OP</span> をもう一度表す</div>
-          <p>P が直線 DF 上にあるので、実数 <span class="m">t</span> を使って <span class="vec">DP</span>＝<span class="m">t</span><span class="vec">DF</span> と置けます。O → D → P とたどると</p>
-          <div class="formula"><span class="vec">OP</span> ＝ <span class="vec">OD</span> ＋ <span class="m">t</span><span class="vec">DF</span></div>
-          <p><span class="vec">DF</span>＝<span class="vec">OF</span>−<span class="vec">OD</span>＝<span class="frac"><span class="num">2</span><span class="den">3</span></span><span class="vec">a</span>＋<span class="frac"><span class="num">1</span><span class="den">2</span></span><span class="vec">b</span> を代入して整理すると</p>
-          <div class="formula"><span class="vec">OP</span> ＝ <span class="m">(</span><span class="frac"><span class="num">1</span><span class="den">3</span></span>＋<span class="frac"><span class="num">2</span><span class="den">3</span></span><span class="m">t)</span><span class="vec">a</span> ＋ <span class="frac"><span class="num"><span class="m">t</span></span><span class="den">2</span></span><span class="vec">b</span></div>
-          <p>図に直線 DF と交点 P が現れました。P は2つの直線の交点です。</p>
+          <div class="c-head">ヒント<math><mn>3</mn><mo>―</mo><mover><mi>DP</mi><mo>→</mo></mover><mo>=</mo><mi>t</mi><mover><mi>DF</mi><mo>→</mo></mover></math> と置いて、<math><mover><mi>OP</mi><mo>→</mo></mover></math> をもう一度表す</div>
+          <p>P が直線 DF 上にあるので、実数 <math><mi>t</mi></math> を使って <math><mover><mi>DP</mi><mo>→</mo></mover><mo>=</mo><mi>t</mi><mover><mi>DF</mi><mo>→</mo></mover></math> と置けます。<br>O → D → P とたどると</p>
+          <div class="formula"><math display="block"><mover><mi>OP</mi><mo>→</mo></mover><mo>=</mo><mover><mi>OD</mi><mo>→</mo></mover><mo>+</mo><mi>t</mi><mover><mi>DF</mi><mo>→</mo></mover></math></div>
+          <p class="cite"><span class="cite-tag">使う公式</span>ベクトルの減法 <math><mover><mi>DF</mi><mo>→</mo></mover><mo>=</mo><mover><mi>OF</mi><mo>→</mo></mover><mo>−</mo><mover><mi>OD</mi><mo>→</mo></mover><mo>=</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mover><mi>a</mi><mo>→</mo></mover><mo>+</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mover><mi>b</mi><mo>→</mo></mover></math>。始点をそろえたベクトルも、終点のベクトルから始点のベクトルを引いて表す。</p><p><math><mover><mi>DF</mi><mo>→</mo></mover><mo>=</mo><mover><mi>OF</mi><mo>→</mo></mover><mo>−</mo><mover><mi>OD</mi><mo>→</mo></mover><mo>=</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mover><mi>a</mi><mo>→</mo></mover><mo>+</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mover><mi>b</mi><mo>→</mo></mover></math> を代入して整理すると</p>
+          <div class="formula"><math display="block"><mover><mi>OP</mi><mo>→</mo></mover><mo>=</mo><mrow><mo>(</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>+</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mi>t</mi><mo>)</mo></mrow><mover><mi>a</mi><mo>→</mo></mover><mo>+</mo><mfrac><mi>t</mi><mn>2</mn></mfrac><mover><mi>b</mi><mo>→</mo></mover></math></div>
+          <p>図に直線 DF と交点 P が現れました。<br>P は2つの直線の交点です。</p>
         </div>
 
         <div class="card hint-card" data-card>
-          <div class="c-head">ヒント 4 ― <span class="vec">a</span> と <span class="vec">b</span> の係数を比べる</div>
-          <p><span class="vec">a</span> と <span class="vec">b</span> は平行ではない（一次独立）ので、同じベクトルを表す2つの式は、<span class="vec">a</span> の係数どうし、<span class="vec">b</span> の係数どうしが等しくなります。ヒント1とヒント3の式を見比べて、連立方程式を立てましょう。</p>
-          <div class="formula"><span class="frac"><span class="num">2</span><span class="den">3</span></span><span class="m">s</span> ＝ <span class="frac"><span class="num">1</span><span class="den">3</span></span>＋<span class="frac"><span class="num">2</span><span class="den">3</span></span><span class="m">t</span>，　1−<span class="m">s</span> ＝ <span class="frac"><span class="num"><span class="m">t</span></span><span class="den">2</span></span></div>
+          <div class="c-head">ヒント<math><mn>4</mn><mo>―</mo><mover><mi>a</mi><mo>→</mo></mover></math> と <math><mover><mi>b</mi><mo>→</mo></mover></math> の係数を比べる</div>
+          <p><math><mover><mi>a</mi><mo>→</mo></mover></math> と <math><mover><mi>b</mi><mo>→</mo></mover></math> は平行ではない（一次独立）ので、<br>同じベクトルを表す2つの式は、<math><mover><mi>a</mi><mo>→</mo></mover></math> の係数どうし、<math><mover><mi>b</mi><mo>→</mo></mover></math> の係数どうしが等しくなります。<br>ヒント1とヒント3の式を見比べて、連立方程式を立てましょう。</p>
+          <p class="cite"><span class="cite-tag">使う性質</span>一次独立と係数の比較 <math><mfrac><mn>2</mn><mn>3</mn></mfrac><mi>s</mi><mo>=</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>+</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mi>t</mi><mo>,</mo><mspace width="2em"/><mn>1</mn><mo>−</mo><mi>s</mi><mo>=</mo><mfrac><mi>t</mi><mn>2</mn></mfrac></math>。平行でない2つのベクトルで表した式は、係数どうしが等しくなる。</p><div class="formula"><math display="block"><mfrac><mn>2</mn><mn>3</mn></mfrac><mi>s</mi><mo>=</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>+</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mi>t</mi><mo>,</mo><mspace width="2em"/><mn>1</mn><mo>−</mo><mi>s</mi><mo>=</mo><mfrac><mi>t</mi><mn>2</mn></mfrac></math></div>
         </div>
 
         <div class="card hint-card" data-card>
           <div class="c-head">ヒント 5 ― 連立方程式を解く</div>
-          <p>2つ目の式から <span class="m">t</span>＝2(1−<span class="m">s</span>) と表せます。これを1つ目の式に代入すると、<span class="m">s</span> だけの式になります。</p>
-          <div class="formula"><span class="frac"><span class="num">2</span><span class="den">3</span></span><span class="m">s</span> ＝ <span class="frac"><span class="num">1</span><span class="den">3</span></span>＋<span class="frac"><span class="num">4</span><span class="den">3</span></span>(1−<span class="m">s</span>)　→　2<span class="m">s</span> ＝ 5−4<span class="m">s</span></div>
-          <p>あとは <span class="m">s</span> について解くだけです（このとき <span class="m">t</span>＝<span class="frac"><span class="num">1</span><span class="den">3</span></span> で、<span class="vec">OP</span>＝<span class="frac"><span class="num">5</span><span class="den">9</span></span><span class="vec">a</span>＋<span class="frac"><span class="num">1</span><span class="den">6</span></span><span class="vec">b</span> となります。この <span class="vec">OP</span> は (3) で使います）。</p>
+          <p>2つ目の式から <math><mi>t</mi><mo>=</mo><mn>2</mn><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mi>s</mi><mo>)</mo></mrow></math>と表せます。<br>これを1つ目の式に代入すると、<math><mi>s</mi></math> だけの式になります。</p>
+          <div class="formula"><math><mfrac><mn>2</mn><mn>3</mn></mfrac><mi>s</mi><mo>=</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>+</mo><mfrac><mn>4</mn><mn>3</mn></mfrac><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mi>s</mi><mo>)</mo></mrow></math>　→　<math><mn>2</mn><mi>s</mi><mo>=</mo><mn>5</mn><mo>−</mo><mn>4</mn><mi>s</mi></math></div>
+          <p>あとは <math><mi>s</mi></math> について解くだけです（このとき <math><mi>t</mi><mo>=</mo><mfrac><mn>1</mn><mn>3</mn></mfrac></math> で、<math><mover><mi>OP</mi><mo>→</mo></mover><mo>=</mo><mfrac><mn>5</mn><mn>9</mn></mfrac><mover><mi>a</mi><mo>→</mo></mover><mo>+</mo><mfrac><mn>1</mn><mn>6</mn></mfrac><mover><mi>b</mi><mo>→</mo></mover></math> となります。この <math><mover><mi>OP</mi><mo>→</mo></mover></math> は (3) で使います）。</p>
         </div>
 
         <div class="card ans-card" data-card>
           <div class="c-head">解答 (2)</div>
-          <div class="final"><span class="vec">OP</span> ＝ <span class="frac"><span class="num">2</span><span class="den">3</span></span><span class="m">s</span><span class="vec">a</span> ＋ (1−<span class="m">s</span>)<span class="vec">b</span>，　<span class="m">s</span> ＝ <span class="frac"><span class="num">5</span><span class="den">6</span></span></div>
-          <p>ポイントは「1つのベクトルを2通りに表して係数を比べる」ことです。交点の問題の基本テクニックです。</p>
+          <div class="final"><math><mover><mi>OP</mi><mo>→</mo></mover><mo>=</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mi>s</mi><mover><mi>a</mi><mo>→</mo></mover><mo>+</mo><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mi>s</mi><mo>)</mo></mrow><mover><mi>b</mi><mo>→</mo></mover><mo>,</mo></math>　<math><mi>s</mi><mo>=</mo><mfrac><mn>5</mn><mn>6</mn></mfrac></math></div>
+          <p class="cite"><span class="cite-tag">使う性質</span>一次独立と係数の比較 <math><mfrac><mn>2</mn><mn>3</mn></mfrac><mi>s</mi><mo>=</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>+</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mi>t</mi><mo>,</mo><mspace width="2em"/><mn>1</mn><mo>−</mo><mi>s</mi><mo>=</mo><mfrac><mi>t</mi><mn>2</mn></mfrac></math>。2通りの表し方から立てたこの連立方程式を解いて、文字の値を決める。</p><p>ポイントは「1つのベクトルを2通りに表して係数を比べる」ことです。<br>交点の問題の基本テクニックです。</p>
         </div>
         </div>
         </div>
@@ -640,8 +690,8 @@
       <section class="panel" id="panel-2" role="tabpanel" aria-labelledby="tab-2" hidden>
         <div class="flow-cols">
         <div class="flow-left">
-        <h2>(3) 垂線の足 H と |<span class="vec">PH</span>|<span class="pts">8点</span></h2>
-        <p class="q-text">(2) の点 P が直線 DF 上にあるとする。また、|<span class="vec">a</span>|＝3、|<span class="vec">b</span>|＝2、内積 <span class="vec">a</span>・<span class="vec">b</span>＝2 とし、さらに、点 P から直線 OB に垂線を引き、直線 OB との交点を H とする。<span class="vec">PH</span> を <span class="vec">a</span>、<span class="vec">b</span> を用いて表せ。また、このとき、|<span class="vec">PH</span>| を求めよ。</p>
+        <h2>(3) 垂線の足 H と<math><mo>|</mo><mover><mi>PH</mi><mo>→</mo></mover><mo>|</mo></math><span class="pts">8点</span></h2>
+        <p class="q-text">(2) の点 P が直線 DF 上にあるとする。また、<math><mrow><mo>|</mo><mover><mi>a</mi><mo>→</mo></mover><mo>|</mo></mrow><mo>=</mo><mn>3</mn></math>、<math><mrow><mo>|</mo><mover><mi>b</mi><mo>→</mo></mover><mo>|</mo></mrow><mo>=</mo><mn>2</mn></math>、内積 <math><mover><mi>a</mi><mo>→</mo></mover><mo>⋅</mo><mover><mi>b</mi><mo>→</mo></mover><mo>=</mo><mn>2</mn></math>とし、さらに、点 P から直線 OB に垂線を引き、直線 OB との交点を H とする。<math><mover><mi>PH</mi><mo>→</mo></mover></math> を <math><mover><mi>a</mi><mo>→</mo></mover></math>、<math><mover><mi>b</mi><mo>→</mo></mover></math> を用いて表せ。また、このとき、<math><mo>|</mo><mover><mi>PH</mi><mo>→</mo></mover><mo>|</mo></math>を求めよ。</p>
 
         <div class="figbox">
           <svg class="fig" viewBox="0 0 430 305" role="img" aria-label="点Pから直線OBへ下ろした垂線PHの図">
@@ -688,56 +738,56 @@
         <div class="flow-right">
         <div class="card-stack">
         <div class="card hint-card" data-card>
-          <div class="c-head">ヒント 1 ― まず <span class="vec">OP</span> を確定させる</div>
-          <p>(2) の答え <span class="vec">OP</span>＝<span class="frac"><span class="num">2</span><span class="den">3</span></span><span class="m">s</span><span class="vec">a</span>＋(1−<span class="m">s</span>)<span class="vec">b</span> に、<span class="m">s</span>＝<span class="frac"><span class="num">5</span><span class="den">6</span></span> を代入します。</p>
-          <div class="formula"><span class="vec">OP</span> ＝ <span class="frac"><span class="num">5</span><span class="den">9</span></span><span class="vec">a</span> ＋ <span class="frac"><span class="num">1</span><span class="den">6</span></span><span class="vec">b</span></div>
+          <div class="c-head">ヒント 1 ― まず <math><mover><mi>OP</mi><mo>→</mo></mover></math> を確定させる</div>
+          <p class="cite"><span class="cite-tag">使う公式</span>(2) で求めた位置ベクトル <math><mover><mi>OP</mi><mo>→</mo></mover><mo>=</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mi>s</mi><mover><mi>a</mi><mo>→</mo></mover><mo>+</mo><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mi>s</mi><mo>)</mo></mrow><mover><mi>b</mi><mo>→</mo></mover></math>。この表し方に、(2)で求めた文字の値を代入して位置ベクトルを確定させる。</p><p>(2) の答え <math><mover><mi>OP</mi><mo>→</mo></mover><mo>=</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mi>s</mi><mover><mi>a</mi><mo>→</mo></mover><mo>+</mo><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mi>s</mi><mo>)</mo></mrow><mover><mi>b</mi><mo>→</mo></mover></math> に、<math><mi>s</mi><mo>=</mo><mfrac><mn>5</mn><mn>6</mn></mfrac></math> を代入します。</p>
+          <div class="formula"><math display="block"><mover><mi>OP</mi><mo>→</mo></mover><mo>=</mo><mfrac><mn>5</mn><mn>9</mn></mfrac><mover><mi>a</mi><mo>→</mo></mover><mo>+</mo><mfrac><mn>1</mn><mn>6</mn></mfrac><mover><mi>b</mi><mo>→</mo></mover></math></div>
         </div>
 
         <div class="card hint-card" data-card>
-          <div class="c-head">ヒント 2 ― H は直線 OB 上にあるので、<span class="vec">OH</span>＝<span class="m">k</span><span class="vec">b</span> と置く</div>
-          <p>H は直線 OB 上の点です。直線 OB 上の点の位置ベクトルは、実数 <span class="m">k</span> を使って <span class="vec">OH</span>＝<span class="m">k</span><span class="vec">b</span> と表せます。この <span class="m">k</span> をあとで垂直の条件から決めます。</p>
+          <div class="c-head">ヒント 2 ― H は直線 OB 上にあるので、<math><mover><mi>OH</mi><mo>→</mo></mover><mo>=</mo><mi>k</mi><mover><mi>b</mi><mo>→</mo></mover></math> と置く</div>
+          <p class="cite"><span class="cite-tag">使う定義</span>直線上の点の位置ベクトル <math><mover><mi>OH</mi><mo>→</mo></mover><mo>=</mo><mi>k</mi><mover><mi>b</mi><mo>→</mo></mover></math>。直線上の点の位置ベクトルは、その直線の方向ベクトルの実数倍で表せる。</p><p>H は直線 OB 上の点です。<br>直線 OB 上の点の位置ベクトルは、実数 <math><mi>k</mi></math> を使って <math><mover><mi>OH</mi><mo>→</mo></mover><mo>=</mo><mi>k</mi><mover><mi>b</mi><mo>→</mo></mover></math> と表せます。<br>この <math><mi>k</mi></math> をあとで垂直の条件から決めます。</p>
           <p>図に垂線 PH と点 H が現れました。H が辺 OB の上にあることを確認しましょう。</p>
         </div>
 
         <div class="card hint-card" data-card>
-          <div class="c-head">ヒント 3 ― <span class="vec">PH</span> を <span class="m">k</span> を使って表す</div>
-          <p><span class="vec">PH</span> も始点を O にそろえて、終点 − 始点 で表します。</p>
-          <div class="formula"><span class="vec">PH</span> ＝ <span class="vec">OH</span> − <span class="vec">OP</span> ＝ −<span class="frac"><span class="num">5</span><span class="den">9</span></span><span class="vec">a</span> ＋ <span class="m">(k</span>−<span class="frac"><span class="num">1</span><span class="den">6</span></span><span class="m">)</span><span class="vec">b</span></div>
+          <div class="c-head">ヒント<math><mn>3</mn><mo>―</mo><mover><mi>PH</mi><mo>→</mo></mover></math> を <math><mi>k</mi></math> を使って表す</div>
+          <p><math><mover><mi>PH</mi><mo>→</mo></mover></math> も始点を O にそろえて、終点 − 始点 で表します。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span>ベクトルの減法 <math><mover><mi>PH</mi><mo>→</mo></mover><mo>=</mo><mover><mi>OH</mi><mo>→</mo></mover><mo>−</mo><mover><mi>OP</mi><mo>→</mo></mover><mo>=</mo><mo>−</mo><mfrac><mn>5</mn><mn>9</mn></mfrac><mover><mi>a</mi><mo>→</mo></mover><mo>+</mo><mrow><mo>(</mo><mi>k</mi><mo>−</mo><mfrac><mn>1</mn><mn>6</mn></mfrac><mo>)</mo></mrow><mover><mi>b</mi><mo>→</mo></mover></math>。求めるベクトルも、終点のベクトルから始点のベクトルを引いて表す。</p><div class="formula"><math display="block"><mover><mi>PH</mi><mo>→</mo></mover><mo>=</mo><mover><mi>OH</mi><mo>→</mo></mover><mo>−</mo><mover><mi>OP</mi><mo>→</mo></mover><mo>=</mo><mo>−</mo><mfrac><mn>5</mn><mn>9</mn></mfrac><mover><mi>a</mi><mo>→</mo></mover><mo>+</mo><mrow><mo>(</mo><mi>k</mi><mo>−</mo><mfrac><mn>1</mn><mn>6</mn></mfrac><mo>)</mo></mrow><mover><mi>b</mi><mo>→</mo></mover></math></div>
         </div>
 
         <div class="card hint-card" data-card>
-          <div class="c-head">ヒント 4 ― 垂直の条件 <span class="vec">PH</span>・<span class="vec">b</span>＝0 を使う</div>
-          <p>PH は直線 OB に垂直で、<span class="vec">b</span> は直線 OB の方向ベクトルです。垂直なら内積が 0 になります。</p>
-          <div class="formula"><span class="vec">PH</span>・<span class="vec">b</span> ＝ −<span class="frac"><span class="num">5</span><span class="den">9</span></span>(<span class="vec">a</span>・<span class="vec">b</span>) ＋ <span class="m">(k</span>−<span class="frac"><span class="num">1</span><span class="den">6</span></span><span class="m">)</span>|<span class="vec">b</span>|<sup>2</sup> ＝ 0</div>
-          <p><span class="vec">a</span>・<span class="vec">b</span>＝2、|<span class="vec">b</span>|<sup>2</sup>＝2<sup>2</sup>＝4 を代入すると</p>
-          <div class="formula">−<span class="frac"><span class="num">5</span><span class="den">9</span></span>・2 ＋ 4<span class="m">(k</span>−<span class="frac"><span class="num">1</span><span class="den">6</span></span><span class="m">)</span> ＝ 0</div>
+          <div class="c-head">ヒント 4 ― 垂直の条件 <math><mover><mi>PH</mi><mo>→</mo></mover><mo>⋅</mo><mover><mi>b</mi><mo>→</mo></mover><mo>=</mo><mn>0</mn></math>を使う</div>
+          <p>PH は直線 OB に垂直で、<math><mover><mi>b</mi><mo>→</mo></mover></math> は直線 OB の方向ベクトルです。<br>垂直なら内積が 0 になります。</p>
+          <p class="cite"><span class="cite-tag">使う性質</span>垂直と内積 <math><mover><mi>PH</mi><mo>→</mo></mover><mo>⋅</mo><mover><mi>b</mi><mo>→</mo></mover><mo>=</mo><mo>−</mo><mfrac><mn>5</mn><mn>9</mn></mfrac><mrow><mo>(</mo><mover><mi>a</mi><mo>→</mo></mover><mo>⋅</mo><mover><mi>b</mi><mo>→</mo></mover><mo>)</mo></mrow><mo>+</mo><mrow><mo>(</mo><mi>k</mi><mo>−</mo><mfrac><mn>1</mn><mn>6</mn></mfrac><mo>)</mo></mrow><msup><mrow><mo>|</mo><mover><mi>b</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>0</mn></math>。2つのベクトルが垂直なのは、その内積が0のときである。</p><div class="formula"><math display="block"><mover><mi>PH</mi><mo>→</mo></mover><mo>⋅</mo><mover><mi>b</mi><mo>→</mo></mover><mo>=</mo><mo>−</mo><mfrac><mn>5</mn><mn>9</mn></mfrac><mrow><mo>(</mo><mover><mi>a</mi><mo>→</mo></mover><mo>⋅</mo><mover><mi>b</mi><mo>→</mo></mover><mo>)</mo></mrow><mo>+</mo><mrow><mo>(</mo><mi>k</mi><mo>−</mo><mfrac><mn>1</mn><mn>6</mn></mfrac><mo>)</mo></mrow><msup><mrow><mo>|</mo><mover><mi>b</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>0</mn></math></div>
+          <p><math><mover><mi>a</mi><mo>→</mo></mover><mo>⋅</mo><mover><mi>b</mi><mo>→</mo></mover><mo>=</mo><mn>2</mn></math>、<math><msup><mrow><mo>|</mo><mover><mi>b</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mn>2</mn><mn>2</mn></msup><mo>=</mo><mn>4</mn></math>を代入すると</p>
+          <div class="formula"><math display="block"><mo>−</mo><mfrac><mn>5</mn><mn>9</mn></mfrac><mo>⋅</mo><mn>2</mn><mo>+</mo><mn>4</mn><mrow><mo>(</mo><mi>k</mi><mo>−</mo><mfrac><mn>1</mn><mn>6</mn></mfrac><mo>)</mo></mrow><mo>=</mo><mn>0</mn></math></div>
         </div>
 
         <div class="card hint-card" data-card>
-          <div class="c-head">ヒント 5 ― <span class="m">k</span> を求めて <span class="vec">PH</span> を確定する</div>
-          <p>ヒント4の式を解くと <span class="m">k</span>−<span class="frac"><span class="num">1</span><span class="den">6</span></span>＝<span class="frac"><span class="num">5</span><span class="den">18</span></span> となり、<span class="m">k</span>＝<span class="frac"><span class="num">4</span><span class="den">9</span></span> が得られます。これをヒント3の式に入れると <span class="vec">PH</span> が確定します。</p>
-          <div class="formula"><span class="vec">PH</span> ＝ −<span class="frac"><span class="num">5</span><span class="den">9</span></span><span class="vec">a</span> ＋ <span class="frac"><span class="num">5</span><span class="den">18</span></span><span class="vec">b</span></div>
-          <p>前半の答えが出ました。あとは長さ |<span class="vec">PH</span>| です。</p>
+          <div class="c-head">ヒント<math><mn>5</mn><mo>―</mo><mi>k</mi></math> を求めて <math><mover><mi>PH</mi><mo>→</mo></mover></math> を確定する</div>
+          <p>ヒント4の式を解くと <math><mi>k</mi><mo>−</mo><mfrac><mn>1</mn><mn>6</mn></mfrac><mo>=</mo><mfrac><mn>5</mn><mn>18</mn></mfrac></math> となり、<math><mi>k</mi><mo>=</mo><mfrac><mn>4</mn><mn>9</mn></mfrac></math> が得られます。<br>これをヒント3の式に入れると <math><mover><mi>PH</mi><mo>→</mo></mover></math> が確定します。</p>
+          <div class="formula"><math display="block"><mover><mi>PH</mi><mo>→</mo></mover><mo>=</mo><mo>−</mo><mfrac><mn>5</mn><mn>9</mn></mfrac><mover><mi>a</mi><mo>→</mo></mover><mo>+</mo><mfrac><mn>5</mn><mn>18</mn></mfrac><mover><mi>b</mi><mo>→</mo></mover></math></div>
+          <p>前半の答えが出ました。あとは長さ<math><mo>|</mo><mover><mi>PH</mi><mo>→</mo></mover><mo>|</mo></math>です。</p>
         </div>
 
         <div class="card hint-card" data-card>
-          <div class="c-head">ヒント 6 ― |<span class="vec">PH</span>|<sup>2</sup> を計算する（先にくくると楽）</div>
-          <p>長さは2乗してから計算するのが基本です。<span class="vec">PH</span>＝−<span class="frac"><span class="num">5</span><span class="den">18</span></span>(2<span class="vec">a</span>−<span class="vec">b</span>) と係数をくくると、展開がきれいになります。</p>
-          <div class="formula">|<span class="vec">PH</span>|<sup>2</sup> ＝ <span class="m">(</span><span class="frac"><span class="num">5</span><span class="den">18</span></span><span class="m">)</span><sup>2</sup>(4|<span class="vec">a</span>|<sup>2</sup> − 4<span class="vec">a</span>・<span class="vec">b</span> ＋ |<span class="vec">b</span>|<sup>2</sup>)</div>
-          <p>|<span class="vec">a</span>|＝3、|<span class="vec">b</span>|＝2、<span class="vec">a</span>・<span class="vec">b</span>＝2 を代入すると、カッコの中は 4・9 − 4・2 ＋ 4 ＝ 32 になります。</p>
-          <div class="formula">|<span class="vec">PH</span>|<sup>2</sup> ＝ <span class="m">(</span><span class="frac"><span class="num">5</span><span class="den">18</span></span><span class="m">)</span><sup>2</sup> × 32</div>
+          <div class="c-head">ヒント<math><mn>6</mn><mo>―</mo><msup><mrow><mo>|</mo><mover><mi>PH</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup></math> を計算する（先にくくると楽）</div>
+          <p>長さは2乗してから計算するのが基本です。<br><math><mover><mi>PH</mi><mo>→</mo></mover><mo>=</mo><mo>−</mo><mfrac><mn>5</mn><mn>18</mn></mfrac><mrow><mo>(</mo><mn>2</mn><mover><mi>a</mi><mo>→</mo></mover><mo>−</mo><mover><mi>b</mi><mo>→</mo></mover><mo>)</mo></mrow></math>と係数をくくると、展開がきれいになります。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span>ベクトルの大きさの2乗 <math><msup><mrow><mo>|</mo><mover><mi>PH</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><mfrac><mn>5</mn><mn>18</mn></mfrac><mo>)</mo></mrow><mn>2</mn></msup><mrow><mo>(</mo><mn>4</mn><msup><mrow><mo>|</mo><mover><mi>a</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>4</mn><mover><mi>a</mi><mo>→</mo></mover><mo>⋅</mo><mover><mi>b</mi><mo>→</mo></mover><mo>+</mo><msup><mrow><mo>|</mo><mover><mi>b</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup><mo>)</mo></mrow></math>。大きさの2乗を内積で展開し、長さと内積の値を代入して計算する。</p><div class="formula"><math display="block"><msup><mrow><mo>|</mo><mover><mi>PH</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><mfrac><mn>5</mn><mn>18</mn></mfrac><mo>)</mo></mrow><mn>2</mn></msup><mrow><mo>(</mo><mn>4</mn><msup><mrow><mo>|</mo><mover><mi>a</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>4</mn><mover><mi>a</mi><mo>→</mo></mover><mo>⋅</mo><mover><mi>b</mi><mo>→</mo></mover><mo>+</mo><msup><mrow><mo>|</mo><mover><mi>b</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup><mo>)</mo></mrow></math></div>
+          <p><math><mrow><mo>|</mo><mover><mi>a</mi><mo>→</mo></mover><mo>|</mo></mrow><mo>=</mo><mn>3</mn></math>、<math><mrow><mo>|</mo><mover><mi>b</mi><mo>→</mo></mover><mo>|</mo></mrow><mo>=</mo><mn>2</mn></math>、<math><mover><mi>a</mi><mo>→</mo></mover><mo>⋅</mo><mover><mi>b</mi><mo>→</mo></mover><mo>=</mo><mn>2</mn></math>を代入すると、<br>カッコの中は<math><mn>4</mn><mo>⋅</mo><mn>9</mn><mo>−</mo><mn>4</mn><mo>⋅</mo><mn>2</mn><mo>+</mo><mn>4</mn><mo>=</mo><mn>32</mn></math>になります。</p>
+          <div class="formula"><math display="block"><msup><mrow><mo>|</mo><mover><mi>PH</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><mfrac><mn>5</mn><mn>18</mn></mfrac><mo>)</mo></mrow><mn>2</mn></msup><mo>×</mo><mn>32</mn></math></div>
         </div>
 
         <div class="card hint-card" data-card>
           <div class="c-head">ヒント 7 ― 平方根をとって仕上げる</div>
-          <p>|<span class="vec">PH</span>| は 0 以上なので、正の平方根をとります。√32 ＝ 4√<span class="rad">2</span> と変形できることがポイントです。</p>
-          <div class="formula">|<span class="vec">PH</span>| ＝ <span class="frac"><span class="num">5</span><span class="den">18</span></span>・√<span class="rad">32</span> ＝ <span class="frac"><span class="num">5</span><span class="den">18</span></span>・4√<span class="rad">2</span></div>
+          <p><math><mo>|</mo><mover><mi>PH</mi><mo>→</mo></mover><mo>|</mo></math>は 0 以上なので、<br>正の平方根をとります。<math><msqrt><mn>32</mn></msqrt><mo>=</mo><mn>4</mn><msqrt><mn>2</mn></msqrt></math> と変形できることがポイントです。</p>
+          <p class="cite"><span class="cite-tag">使う性質</span>平方根の変形 <math><msqrt><mn>32</mn></msqrt><mo>=</mo><mn>4</mn><msqrt><mn>2</mn></msqrt></math>。根号の中を平方数でくくって変形し、正の平方根をとる。</p><div class="formula"><math display="block"><mrow><mo>|</mo><mover><mi>PH</mi><mo>→</mo></mover><mo>|</mo></mrow><mo>=</mo><mfrac><mn>5</mn><mn>18</mn></mfrac><mo>⋅</mo><msqrt><mn>32</mn></msqrt><mo>=</mo><mfrac><mn>5</mn><mn>18</mn></mfrac><mo>⋅</mo><mn>4</mn><msqrt><mn>2</mn></msqrt></math></div>
         </div>
 
         <div class="card ans-card" data-card>
           <div class="c-head">解答 (3)</div>
-          <div class="final"><span class="vec">PH</span> ＝ −<span class="frac"><span class="num">5</span><span class="den">9</span></span><span class="vec">a</span> ＋ <span class="frac"><span class="num">5</span><span class="den">18</span></span><span class="vec">b</span>，　|<span class="vec">PH</span>| ＝ <span class="frac"><span class="num">10√<span class="rad">2</span></span><span class="den">9</span></span></div>
-          <p>流れは「垂線の足を文字（<span class="m">k</span>）で置く → 垂直条件（内積＝0）で文字を決める → 長さは2乗して計算」の3ステップです。</p>
+          <div class="final"><math><mover><mi>PH</mi><mo>→</mo></mover><mo>=</mo><mo>−</mo><mfrac><mn>5</mn><mn>9</mn></mfrac><mover><mi>a</mi><mo>→</mo></mover><mo>+</mo><mfrac><mn>5</mn><mn>18</mn></mfrac><mover><mi>b</mi><mo>→</mo></mover><mo>,</mo></math>　<math><mrow><mo>|</mo><mover><mi>PH</mi><mo>→</mo></mover><mo>|</mo></mrow><mo>=</mo><mfrac><mrow><mn>10</mn><msqrt><mn>2</mn></msqrt></mrow><mn>9</mn></mfrac></math></div>
+          <p class="cite"><span class="cite-tag">使う性質</span>垂直と内積 <math><mover><mi>PH</mi><mo>→</mo></mover><mo>⋅</mo><mover><mi>b</mi><mo>→</mo></mover><mo>=</mo><mo>−</mo><mfrac><mn>5</mn><mn>9</mn></mfrac><mrow><mo>(</mo><mover><mi>a</mi><mo>→</mo></mover><mo>⋅</mo><mover><mi>b</mi><mo>→</mo></mover><mo>)</mo></mrow><mo>+</mo><mrow><mo>(</mo><mi>k</mi><mo>−</mo><mfrac><mn>1</mn><mn>6</mn></mfrac><mo>)</mo></mrow><msup><mrow><mo>|</mo><mover><mi>b</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>0</mn></math>。垂直の条件を内積が0という式で表して、置いた文字を決める。</p><p>流れは「垂線の足を文字<math><mo>(</mo><mi>k</mi><mo>)</mo></math>で置く → 垂直条件（内積<math><mo>=</mo><mn>0</mn><mo>)</mo></math>で文字を決める → 長さは2乗して計算」の3ステップです。</p>
         </div>
         </div>
         </div>

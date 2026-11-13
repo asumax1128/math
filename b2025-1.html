@@ -344,7 +344,57 @@
         }
         .problem .controls { grid-column: 1 / -1; }
       }
-    </style>
+    
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+
+      /* 積分記号は大きめに表示する（元のページの可読化デザインに合わせる） */
+      math .int-op{font-size:1.35em}
+      /* calc-12 世代（.card）と calc-18 世代（.unit）の、図のない問題の全幅化 */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig>.step{position:static !important}
+        .card.nofig>.steps-wrap{max-height:none !important;overflow:visible !important}
+        .unit.nofig{display:block !important}
+        .unit.nofig>.qside{position:static !important}
+        .unit.nofig>.steps-stack{max-height:none !important;overflow:visible !important}
+      }
+</style>
   </head>
   <body>
     <div class="wrap">
@@ -391,11 +441,11 @@
             <span class="q-num">(1)</span><span class="q-title">絶対値</span>
             <span class="q-points">配点 4点（各2点）</span>
           </div>
-          <p class="q-body"><span class="m"><i>P</i> = |<i>a</i> − 1| + |<i>a</i> − 2|</span> とする。<span class="m"><i>a</i> = <span class="sqrt">√<span class="rad">5</span></span></span> のとき <span class="m"><i>P</i> =</span><span class="blank" data-kana="ア" data-ans="2√5−3">ア</span>であり、<span class="m">1 &lt; <i>a</i> &lt; 2</span> のとき <span class="m"><i>P</i> =</span><span class="blank" data-kana="イ" data-ans="1">イ</span>である。</p>
+          <p class="q-body"><math><mi>P</mi><mo>=</mo><mrow><mo>|</mo><mi>a</mi><mo>−</mo><mn>1</mn><mo>|</mo></mrow><mo>+</mo><mrow><mo>|</mo><mi>a</mi><mo>−</mo><mn>2</mn><mo>|</mo></mrow></math> とする。<math><mi>a</mi><mo>=</mo><msqrt><mn>5</mn></msqrt></math> のとき <math><mi>P</mi><mo>=</mo></math><span class="blank" data-kana="ア" data-ans="2√5−3">ア</span>であり、<math><mn>1</mn><mo>&lt;</mo><mi>a</mi><mo>&lt;</mo><mn>2</mn></math> のとき <math><mi>P</mi><mo>=</mo></math><span class="blank" data-kana="イ" data-ans="1">イ</span>である。</p>
         </div>
 
         <div class="viz" id="viz1">
-          <p class="viz-title">図で見る ― 数直線と √5 の位置</p>
+          <p class="viz-title">図で見る ― 数直線と<math><msqrt><mn>5</mn></msqrt></math>の位置</p>
           <svg viewBox="0 0 640 130" role="img" aria-label="0から3までの数直線。ヒントを進めるとルート5の点が現れる">
             <g data-min="1" hidden>
               <rect x="380" y="66" width="160" height="14" style="fill:var(--blue-soft)"></rect>
@@ -415,7 +465,7 @@
               <text x="418" y="26" font-size="15" font-weight="900" text-anchor="middle" style="fill:var(--accent-deep)">√5 ≒ 2.24</text>
             </g>
           </svg>
-          <p class="expr-note">目盛りの 1 と 2 は最初から見えている。√5 の点は、ヒントを進めると現れるよ。</p>
+          <p class="expr-note">目盛りの 1 と 2 は最初から見えている。<math><msqrt><mn>5</mn></msqrt></math>の点は、ヒントを進めると現れるよ。</p>
         </div>
 
         <p class="think-note">絶対値を外すときの合言葉は「<strong>中身の符号</strong>を先に調べる」。符号が分かれば、絶対値はただの計算になるよ。</p>
@@ -424,53 +474,53 @@
 
         <div class="stages">
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">まず √5 の大きさをはさむ</span></div>
-            <p><span class="m"><i>a</i> = <span class="sqrt">√<span class="rad">5</span></span></span> のときを考えるには、√5 がだいたいどの辺の数かを知るのが先。2乗が 5 に近い整数で、√5 をはさんでみよう：</p>
-            <div class="formula-line"><span class="m"><span class="sqrt">√<span class="rad">4</span></span> &lt; <span class="sqrt">√<span class="rad">5</span></span> &lt; <span class="sqrt">√<span class="rad">9</span></span></span>　つまり　<span class="m">2 &lt; <span class="sqrt">√<span class="rad">5</span></span> &lt; 3</span></div>
-            <p>上の数直線でも、√5 が 2 と 3 の間のどこかにあることが分かるね。この「2 より大きい」が次のヒントのカギになるよ。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">まず<math><msqrt><mn>5</mn></msqrt></math>の大きさをはさむ</span></div><p class="cite"><span class="cite-tag">使う性質</span>平方根の大小 <math><msqrt><mn>4</mn></msqrt><mo>&lt;</mo><msqrt><mn>5</mn></msqrt><mo>&lt;</mo><msqrt><mn>9</mn></msqrt></math>。このステップでは、√5を2と3ではさんで「2より大きい」ことを押さえます。</p>
+            <p><math><mi>a</mi><mo>=</mo><msqrt><mn>5</mn></msqrt></math> のときを考えるには、<math><msqrt><mn>5</mn></msqrt></math>がだいたいどの辺の数かを知るのが先。<br>2乗が 5 に近い整数で、<math><msqrt><mn>5</mn></msqrt></math>をはさんでみよう：</p>
+            <div class="formula-line"><math><msqrt><mn>4</mn></msqrt><mo>&lt;</mo><msqrt><mn>5</mn></msqrt><mo>&lt;</mo><msqrt><mn>9</mn></msqrt></math>　つまり　<math><mn>2</mn><mo>&lt;</mo><msqrt><mn>5</mn></msqrt><mo>&lt;</mo><mn>3</mn></math></div>
+            <p>上の数直線でも、<math><msqrt><mn>5</mn></msqrt></math>が 2 と 3 の間のどこかにあることが分かるね。この「2 より大きい」が次のヒントのカギになるよ。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">中身の符号を2つとも調べる</span></div>
-            <p>絶対値の中身は <span class="m"><i>a</i> − 1</span> と <span class="m"><i>a</i> − 2</span>。ここに <span class="m"><i>a</i> = <span class="sqrt">√<span class="rad">5</span></span></span> を当てはめると <span class="m"><span class="sqrt">√<span class="rad">5</span></span> − 1</span> と <span class="m"><span class="sqrt">√<span class="rad">5</span></span> − 2</span> になる。</p>
-            <p>ヒント1で <span class="m"><span class="sqrt">√<span class="rad">5</span></span> &gt; 2</span> と分かったから、<span class="m"><span class="sqrt">√<span class="rad">5</span></span> − 2</span> は<strong>プラス</strong>。もちろん <span class="m"><span class="sqrt">√<span class="rad">5</span></span> − 1</span> も<strong>プラス</strong>だ。数直線に √5 の点が出たので、1 と 2 のどちらよりも右にあることを目でも確認しよう。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">中身の符号を2つとも調べる</span></div><p class="cite"><span class="cite-tag">使う定義</span>絶対値の中身の符号 <math><msqrt><mn>5</mn></msqrt><mo>−</mo><mn>2</mn></math>。このステップでは、ヒント1の結果を使って2つの中身の符号を調べます。</p>
+            <p>絶対値の中身は <math><mi>a</mi><mo>−</mo><mn>1</mn></math> と <math><mi>a</mi><mo>−</mo><mn>2</mn></math>。ここに <math><mi>a</mi><mo>=</mo><msqrt><mn>5</mn></msqrt></math> を当てはめると <math><msqrt><mn>5</mn></msqrt><mo>−</mo><mn>1</mn></math> と <math><msqrt><mn>5</mn></msqrt><mo>−</mo><mn>2</mn></math> になる。</p>
+            <p>ヒント1で <math><msqrt><mn>5</mn></msqrt><mo>&gt;</mo><mn>2</mn></math> と分かったから、<math><msqrt><mn>5</mn></msqrt><mo>−</mo><mn>2</mn></math> は<strong>プラス</strong>。もちろん <math><msqrt><mn>5</mn></msqrt><mo>−</mo><mn>1</mn></math> も<strong>プラス</strong>だ。数直線に<math><msqrt><mn>5</mn></msqrt></math>の点が出たので、1 と 2 のどちらよりも右にあることを目でも確認しよう。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">中身がプラスなら、絶対値はそのまま外す</span></div>
+            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">中身がプラスなら、絶対値はそのまま外す</span></div><p class="cite"><span class="cite-tag">使う定義</span>絶対値（中身が正のとき） <math><mi>P</mi><mo>=</mo><mrow><mo>(</mo><msqrt><mn>5</mn></msqrt><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mo>+</mo><mrow><mo>(</mo><msqrt><mn>5</mn></msqrt><mo>−</mo><mn>2</mn><mo>)</mo></mrow></math>。このステップでは、2つとも中身が正なので絶対値をそのまま外してPの式を作ります。</p>
             <p>ルールはこれだけ：<strong>中身がプラスのとき、|　| はそのまま外れる</strong>。2つともプラスだと分かったので：</p>
-            <div class="formula-line"><span class="m"><i>P</i> = (<span class="sqrt">√<span class="rad">5</span></span> − 1) + (<span class="sqrt">√<span class="rad">5</span></span> − 2)</span></div>
-            <p>あとは √5 の項と整数の項を別々にまとめるだけ。最後の計算は自分でやって、ア の値を出してみよう。</p>
+            <div class="formula-line"><math><mi>P</mi><mo>=</mo><mrow><mo>(</mo><msqrt><mn>5</mn></msqrt><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mo>+</mo><mrow><mo>(</mo><msqrt><mn>5</mn></msqrt><mo>−</mo><mn>2</mn><mo>)</mo></mrow></math></div>
+            <p>あとは<math><msqrt><mn>5</mn></msqrt></math>の項と整数の項を別々にまとめるだけ。最後の計算は自分でやって、ア の値を出してみよう。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">場面が変わる：1 &lt; a &lt; 2 のときの符号</span></div>
-            <p>後半は <span class="m">1 &lt; <i>a</i> &lt; 2</span>、つまり <span class="m"><i>a</i></span> が 1 と 2 の間にある場合。このとき中身の符号は：</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">場面が変わる：1 &lt; a &lt; 2 のときの符号</span></div><p class="cite"><span class="cite-tag">使う定義</span>絶対値の中身の符号 <math><mi>a</mi><mo>−</mo><mn>2</mn><mo>&lt;</mo><mn>0</mn></math>。このステップでは、1と2の間にあるaについて、2つの中身の符号がそろわないことを確認します。</p>
+            <p>後半は <math><mn>1</mn><mo>&lt;</mo><mi>a</mi><mo>&lt;</mo><mn>2</mn></math>、つまり <math><mi>a</mi></math> が 1 と 2 の間にある場合。このとき中身の符号は：</p>
             <ul class="steps">
-              <li><span class="m"><i>a</i> − 1</span>：<span class="m"><i>a</i></span> は 1 より大きい → <strong>プラス</strong></li>
-              <li><span class="m"><i>a</i> − 2</span>：<span class="m"><i>a</i></span> は 2 より小さい → <strong>マイナス</strong></li>
+              <li><math><mi>a</mi><mo>−</mo><mn>1</mn></math>：<math><mi>a</mi></math> は 1 より大きい → <strong>プラス</strong></li>
+              <li><math><mi>a</mi><mo>−</mo><mn>2</mn></math>：<math><mi>a</mi></math> は 2 より小さい → <strong>マイナス</strong></li>
             </ul>
             <p>前半と違って、符号が<strong>そろっていない</strong>。ここが後半のポイントだよ。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 5</span><span class="stage-title">マイナスの方は、符号を変えて外す</span></div>
-            <p>もう1つのルール：<strong>中身がマイナスのときは、中身全体の符号を変えて |　| を外す</strong>。つまり <span class="m">|<i>a</i> − 2| = −(<i>a</i> − 2) = 2 − <i>a</i></span>。</p>
-            <div class="formula-line"><span class="m"><i>P</i> = (<i>a</i> − 1) + (2 − <i>a</i>)</span></div>
-            <p>この式を整理すると、<span class="m"><i>a</i></span> がきれいに消えるはず。イ の値を自分で出してみよう。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 5</span><span class="stage-title">マイナスの方は、符号を変えて外す</span></div><p class="cite"><span class="cite-tag">使う定義</span>絶対値（中身が負のとき） <math><mrow><mo>|</mo><mi>a</mi><mo>−</mo><mn>2</mn><mo>|</mo></mrow><mo>=</mo><mo>−</mo><mrow><mo>(</mo><mi>a</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mo>=</mo><mn>2</mn><mo>−</mo><mi>a</mi></math>。このステップでは、中身が負の絶対値だけ符号を変えて外します。</p>
+            <p>もう1つのルール：<strong>中身がマイナスのときは、中身全体の符号を変えて |　| を外す</strong>。つまり <math><mrow><mo>|</mo><mi>a</mi><mo>−</mo><mn>2</mn><mo>|</mo></mrow><mo>=</mo><mo>−</mo><mrow><mo>(</mo><mi>a</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mo>=</mo><mn>2</mn><mo>−</mo><mi>a</mi></math>。</p>
+            <div class="formula-line"><math><mi>P</mi><mo>=</mo><mrow><mo>(</mo><mi>a</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mo>+</mo><mrow><mo>(</mo><mn>2</mn><mo>−</mo><mi>a</mi><mo>)</mo></mrow></math></div>
+            <p>この式を整理すると、<math><mi>a</mi></math> がきれいに消えるはず。<br>イ の値を自分で出してみよう。</p>
           </article>
 
           <article class="stage answer" hidden>
-            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(1) の答え</span></div>
+            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(1) の答え</span></div><p class="cite"><span class="cite-tag">使う定義</span>絶対値 <math><mi>P</mi><mo>=</mo><mrow><mo>(</mo><mi>a</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mo>+</mo><mrow><mo>(</mo><mn>2</mn><mo>−</mo><mi>a</mi><mo>)</mo></mrow><mo>=</mo><mn>1</mn></math>。このステップでは、符号に合わせた外し方を使い分けて、2つの場合の答えをまとめます。</p>
             <ol class="steps">
-              <li><span class="m">2 &lt; <span class="sqrt">√<span class="rad">5</span></span> &lt; 3</span> だから <span class="m"><span class="sqrt">√<span class="rad">5</span></span> − 1 &gt; 0</span>、<span class="m"><span class="sqrt">√<span class="rad">5</span></span> − 2 &gt; 0</span>。よって <span class="m"><i>P</i> = (<span class="sqrt">√<span class="rad">5</span></span> − 1) + (<span class="sqrt">√<span class="rad">5</span></span> − 2) = 2<span class="sqrt">√<span class="rad">5</span></span> − 3</span>。</li>
-              <li><span class="m">1 &lt; <i>a</i> &lt; 2</span> のとき <span class="m"><i>a</i> − 1 &gt; 0</span>、<span class="m"><i>a</i> − 2 &lt; 0</span> だから、<span class="m"><i>P</i> = (<i>a</i> − 1) + (2 − <i>a</i>) = 1</span>。</li>
+              <li><math><mn>2</mn><mo>&lt;</mo><msqrt><mn>5</mn></msqrt><mo>&lt;</mo><mn>3</mn></math> だから <math><msqrt><mn>5</mn></msqrt><mo>−</mo><mn>1</mn><mo>&gt;</mo><mn>0</mn></math>、<math><msqrt><mn>5</mn></msqrt><mo>−</mo><mn>2</mn><mo>&gt;</mo><mn>0</mn></math>。よって <math><mi>P</mi><mo>=</mo><mrow><mo>(</mo><msqrt><mn>5</mn></msqrt><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mo>+</mo><mrow><mo>(</mo><msqrt><mn>5</mn></msqrt><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mo>=</mo><mn>2</mn><msqrt><mn>5</mn></msqrt><mo>−</mo><mn>3</mn></math>。</li>
+              <li><math><mn>1</mn><mo>&lt;</mo><mi>a</mi><mo>&lt;</mo><mn>2</mn></math> のとき <math><mi>a</mi><mo>−</mo><mn>1</mn><mo>&gt;</mo><mn>0</mn></math>、<math><mi>a</mi><mo>−</mo><mn>2</mn><mo>&lt;</mo><mn>0</mn></math> だから、<math><mi>P</mi><mo>=</mo><mrow><mo>(</mo><mi>a</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mo>+</mo><mrow><mo>(</mo><mn>2</mn><mo>−</mo><mi>a</mi><mo>)</mo></mrow><mo>=</mo><mn>1</mn></math>。</li>
             </ol>
             <div class="ans-line">
-              <span class="ans-chip"><span class="kana">ア</span><span class="m">2√5 − 3</span><span class="pts">2点</span></span>
-              <span class="ans-chip"><span class="kana">イ</span><span class="m">1</span><span class="pts">2点</span></span>
+              <span class="ans-chip"><span class="kana">ア</span><math><mn>2</mn><msqrt><mn>5</mn></msqrt><mo>−</mo><mn>3</mn></math><span class="pts">2点</span></span>
+              <span class="ans-chip"><span class="kana">イ</span><math><mn>1</mn></math><span class="pts">2点</span></span>
             </div>
-            <div class="point-box"><span class="pt">ポイント</span>絶対値は「<strong>中身の符号を調べてから外す</strong>」が鉄則。プラスならそのまま、マイナスなら符号を変えて外す。後半のように <span class="m"><i>a</i></span> が消えて定数になる形は、絶対値の典型パターンだよ。</div>
+            <p class="cite"><span class="cite-tag">使う定義</span>絶対値 <math><mrow><mo>|</mo><mi>a</mi><mo>−</mo><mn>2</mn><mo>|</mo></mrow><mo>=</mo><mo>−</mo><mrow><mo>(</mo><mi>a</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mo>=</mo><mn>2</mn><mo>−</mo><mi>a</mi></math>。まとめの計算でも、中身の符号を調べてから外すという順序は変わりません。</p><div class="point-box"><span class="pt">ポイント</span>絶対値は「<strong>中身の符号を調べてから外す</strong>」が鉄則。プラスならそのまま、マイナスなら符号を変えて外す。後半のように <math><mi>a</mi></math> が消えて定数になる形は、絶対値の典型パターンだよ。</div>
           </article>
         </div>
 
@@ -490,7 +540,7 @@
             <span class="q-num">(2)</span><span class="q-title">2次関数の平行移動</span>
             <span class="q-points">配点 4点（各2点）</span>
           </div>
-          <p class="q-body">放物線 <span class="m"><i>y</i> = <i>x</i><sup>2</sup></span> を <span class="m"><i>x</i></span> 軸方向に <span class="m">−2</span>、<span class="m"><i>y</i></span> 軸方向に <span class="m">−2</span> だけ平行移動した放物線を <span class="m"><i>y</i> = <i>f</i>(<i>x</i>)</span> とすると、<span class="m"><i>f</i>(<i>x</i>) =</span><span class="blank" data-kana="ウ" data-ans="x²＋4x＋2">ウ</span>である。また、<span class="m">0 ≦ <i>x</i> ≦ 3</span> における <span class="m"><i>f</i>(<i>x</i>)</span> の最小値は<span class="blank" data-kana="エ" data-ans="2">エ</span>である。</p>
+          <p class="q-body">放物線 <math><mi>y</mi><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup></math> を <math><mi>x</mi></math> 軸方向に <math><mo>−</mo><mn>2</mn></math>、<math><mi>y</mi></math> 軸方向に <math><mo>−</mo><mn>2</mn></math> だけ平行移動した放物線を <math><mi>y</mi><mo>=</mo><mi>f</mi><mrow><mo>(</mo><mi>x</mi><mo>)</mo></mrow></math> とすると、<math><mi>f</mi><mrow><mo>(</mo><mi>x</mi><mo>)</mo></mrow><mo>=</mo></math><span class="blank" data-kana="ウ" data-ans="x²＋4x＋2">ウ</span>である。また、<math><mn>0</mn><mo>≦</mo><mi>x</mi><mo>≦</mo><mn>3</mn></math> における <math><mi>f</mi><mrow><mo>(</mo><mi>x</mi><mo>)</mo></mrow></math> の最小値は<span class="blank" data-kana="エ" data-ans="2">エ</span>である。</p>
         </div>
 
         <div class="viz" id="viz2">
@@ -502,52 +552,52 @@
             <g id="vtxG2" data-min="1" hidden></g>
             <g id="domG2" data-min="3" hidden></g>
           </svg>
-          <p class="expr-note">破線が元の <span class="m"><i>y</i> = <i>x</i><sup>2</sup></span>、実線が移動後の <span class="m"><i>y</i> = <i>f</i>(<i>x</i>)</span>。区間の様子はヒントを進めると出てくる。</p>
+          <p class="expr-note">破線が元の <math><mi>y</mi><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup></math>、実線が移動後の <math><mi>y</mi><mo>=</mo><mi>f</mi><mrow><mo>(</mo><mi>x</mi><mo>)</mo></mrow></math>。区間の様子はヒントを進めると出てくる。</p>
         </div>
 
-        <p class="think-note">仕事は2つ：先に <span class="m"><i>f</i>(<i>x</i>)</span> の式を作って、それから区間での最小値を探す。頂点に注目するのが近道だよ。</p>
+        <p class="think-note">仕事は2つ：先に <math><mi>f</mi><mrow><mo>(</mo><mi>x</mi><mo>)</mo></mrow></math> の式を作って、それから区間での最小値を探す。頂点に注目するのが近道だよ。</p>
 
         </div>
 
         <div class="stages">
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">頂点がどこへ移るかを追う</span></div>
-            <p>放物線 <span class="m"><i>y</i> = <i>x</i><sup>2</sup></span> の頂点は原点 <span class="m">(0, 0)</span>。平行移動は<strong>形を変えずに全体をずらす</strong>だけだから、頂点も同じだけ動く：</p>
-            <div class="formula-line"><span class="m">(0, 0)</span> → <span class="m"><i>x</i></span> 方向に <span class="m">−2</span>、<span class="m"><i>y</i></span> 方向に <span class="m">−2</span> → <span class="m">(−2, −2)</span></div>
-            <p>上の図に新しい頂点が出たので確認しよう。頂点が分かれば、式は「頂点形」で書けるよ。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">頂点がどこへ移るかを追う</span></div><p class="cite"><span class="cite-tag">使う性質</span>平行移動と頂点 <math><mo>(</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>)</mo></math>。このステップでは、形が変わらない平行移動では頂点も同じだけ動くことを使って、新しい頂点を求めます。</p>
+            <p>放物線 <math><mi>y</mi><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup></math> の頂点は原点 <math><mo>(</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>)</mo></math>。平行移動は<strong>形を変えずに全体をずらす</strong>だけだから、頂点も同じだけ動く：</p>
+            <div class="formula-line"><math><mrow><mo>(</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>)</mo></mrow><mo>→</mo><mi>x</mi></math> 方向に <math><mo>−</mo><mn>2</mn></math>、<math><mi>y</mi></math> 方向に <math><mo>−</mo><mn>2</mn><mo>→</mo><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>,</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow></math></div>
+            <p>上の図に新しい頂点が出たので確認しよう。<br>頂点が分かれば、式は「頂点形」で書けるよ。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">頂点形を書いて、展開する</span></div>
-            <p>頂点が <span class="m">(−2, −2)</span> の放物線は、頂点形でこう書ける（<span class="m"><i>x</i></span> 座標は符号が反対になって入ることに注意）：</p>
-            <div class="formula-line"><span class="m"><i>f</i>(<i>x</i>) = (<i>x</i> + 2)<sup>2</sup> − 2</span></div>
-            <p>あとは <span class="m">(<i>x</i> + 2)<sup>2</sup> = <i>x</i><sup>2</sup> + 4<i>x</i> + 4</span> と展開して、後ろの <span class="m">−2</span> とまとめれば ウ の形になる。自分で展開してみよう。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">頂点形を書いて、展開する</span></div><p class="cite"><span class="cite-tag">使う公式</span>2次関数の頂点形 <math><mi>f</mi><mrow><mo>(</mo><mi>x</mi><mo>)</mo></mrow><mo>=</mo><msup><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>2</mn></math>。このステップでは、頂点(−2,−2)を頂点形に当てはめてf(x)の式を作ります。</p>
+            <p>頂点が <math><mo>(</mo><mo>−</mo><mn>2</mn><mo>,</mo><mo>−</mo><mn>2</mn><mo>)</mo></math> の放物線は、頂点形でこう書ける<math><mo>(</mo><mi>x</mi></math> 座標は符号が反対になって入ることに注意）：</p>
+            <div class="formula-line"><math><mi>f</mi><mrow><mo>(</mo><mi>x</mi><mo>)</mo></mrow><mo>=</mo><msup><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>2</mn></math></div>
+            <p>あとは <math><msup><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>4</mn><mi>x</mi><mo>+</mo><mn>4</mn></math> と展開して、後ろの <math><mo>−</mo><mn>2</mn></math> とまとめれば ウ の形になる。<br>自分で展開してみよう。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">軸の位置と区間を見比べる</span></div>
-            <p>後半は区間 <span class="m">0 ≦ <i>x</i> ≦ 3</span> での最小値。カギは<strong>軸</strong>（頂点を通る縦の中心線）の位置だ。頂点の <span class="m"><i>x</i></span> 座標が <span class="m">−2</span> だから、軸は直線 <span class="m"><i>x</i> = −2</span>。</p>
-            <p>軸 <span class="m"><i>x</i> = −2</span> は区間 <span class="m">0 ≦ <i>x</i> ≦ 3</span> の<strong>左外</strong>にある。上の図で区間の部分が赤く光ったので見てみよう：区間の中では、グラフは右へ行くほど上がり続ける（<strong>増加する</strong>）形になっているね。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">軸の位置と区間を見比べる</span></div><p class="cite"><span class="cite-tag">使う性質</span>2次関数の増減と軸 <math><mi>x</mi><mo>=</mo><mo>−</mo><mn>2</mn></math>。このステップでは、軸が区間の左外にあることから、区間の中でグラフが増加すると判断します。</p>
+            <p>後半は区間 <math><mn>0</mn><mo>≦</mo><mi>x</mi><mo>≦</mo><mn>3</mn></math> での最小値。カギは<strong>軸</strong>（頂点を通る縦の中心線）の位置だ。<br>頂点の <math><mi>x</mi></math> 座標が <math><mo>−</mo><mn>2</mn></math> だから、軸は直線 <math><mi>x</mi><mo>=</mo><mo>−</mo><mn>2</mn></math>。</p>
+            <p>軸 <math><mi>x</mi><mo>=</mo><mo>−</mo><mn>2</mn></math> は区間 <math><mn>0</mn><mo>≦</mo><mi>x</mi><mo>≦</mo><mn>3</mn></math> の<strong>左外</strong>にある。上の図で区間の部分が赤く光ったので見てみよう：区間の中では、グラフは右へ行くほど上がり続ける（<strong>増加する</strong>）形になっているね。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">増加する区間では、最小値は左端</span></div>
-            <p>区間の中でずっと増加するなら、いちばん小さい値は<strong>左端</strong> <span class="m"><i>x</i> = 0</span> のとき。だから求めるのは <span class="m"><i>f</i>(0)</span> だ。</p>
-            <div class="formula-line"><span class="m"><i>f</i>(0) = 0<sup>2</sup> + 4·0 + 2</span></div>
+            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">増加する区間では、最小値は左端</span></div><p class="cite"><span class="cite-tag">使う性質</span>増加する区間での最小値 <math><mi>f</mi><mrow><mo>(</mo><mn>0</mn><mo>)</mo></mrow></math>。このステップでは、ずっと増加する区間では左端で最小になることから、f(0)を計算します。</p>
+            <p>区間の中でずっと増加するなら、いちばん小さい値は<strong>左端</strong> <math><mi>x</mi><mo>=</mo><mn>0</mn></math> のとき。だから求めるのは <math><mi>f</mi><mrow><mo>(</mo><mn>0</mn><mo>)</mo></mrow></math> だ。</p>
+            <div class="formula-line"><math><mi>f</mi><mrow><mo>(</mo><mn>0</mn><mo>)</mo></mrow><mo>=</mo><msup><mn>0</mn><mn>2</mn></msup><mo>+</mo><mn>4</mn><mo>·</mo><mn>0</mn><mo>+</mo><mn>2</mn></math></div>
             <p>最後の値を自分で計算して、エ を出してみよう。</p>
           </article>
 
           <article class="stage answer" hidden>
-            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(2) の答え</span></div>
+            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(2) の答え</span></div><p class="cite"><span class="cite-tag">使う公式</span>2次関数の頂点形 <math><mi>f</mi><mrow><mo>(</mo><mi>x</mi><mo>)</mo></mrow><mo>=</mo><msup><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>2</mn><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>4</mn><mi>x</mi><mo>+</mo><mn>2</mn></math>。このステップでは、頂点形を展開してf(x)を求め、軸の位置から最小値を決めます。</p>
             <ol class="steps">
-              <li>頂点 <span class="m">(0, 0)</span> が <span class="m">(−2, −2)</span> へ移るので、<span class="m"><i>f</i>(<i>x</i>) = (<i>x</i> + 2)<sup>2</sup> − 2 = <i>x</i><sup>2</sup> + 4<i>x</i> + 2</span>。</li>
-              <li>軸は <span class="m"><i>x</i> = −2</span> で、区間 <span class="m">0 ≦ <i>x</i> ≦ 3</span> の左外にある。この区間で <span class="m"><i>f</i></span> は増加するので、最小値は左端 <span class="m"><i>x</i> = 0</span> のときで、<span class="m"><i>f</i>(0) = 2</span>。</li>
+              <li>頂点 <math><mo>(</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>)</mo></math> が <math><mo>(</mo><mo>−</mo><mn>2</mn><mo>,</mo><mo>−</mo><mn>2</mn><mo>)</mo></math> へ移るので、<math><mi>f</mi><mrow><mo>(</mo><mi>x</mi><mo>)</mo></mrow><mo>=</mo><msup><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>2</mn><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>4</mn><mi>x</mi><mo>+</mo><mn>2</mn></math>。</li>
+              <li>軸は <math><mi>x</mi><mo>=</mo><mo>−</mo><mn>2</mn></math> で、区間 <math><mn>0</mn><mo>≦</mo><mi>x</mi><mo>≦</mo><mn>3</mn></math> の左外にある。この区間で <math><mi>f</mi></math> は増加するので、最小値は左端 <math><mi>x</mi><mo>=</mo><mn>0</mn></math> のときで、<math><mi>f</mi><mrow><mo>(</mo><mn>0</mn><mo>)</mo></mrow><mo>=</mo><mn>2</mn></math>。</li>
             </ol>
             <div class="ans-line">
-              <span class="ans-chip"><span class="kana">ウ</span><span class="m"><i>x</i><sup>2</sup> + 4<i>x</i> + 2</span><span class="pts">2点</span></span>
-              <span class="ans-chip"><span class="kana">エ</span><span class="m">2</span><span class="pts">2点</span></span>
+              <span class="ans-chip"><span class="kana">ウ</span><math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>4</mn><mi>x</mi><mo>+</mo><mn>2</mn></math><span class="pts">2点</span></span>
+              <span class="ans-chip"><span class="kana">エ</span><math><mn>2</mn></math><span class="pts">2点</span></span>
             </div>
-            <div class="point-box"><span class="pt">ポイント</span>平行移動は「<strong>頂点の移動</strong>」で式を作るのが確実。区間での最小値・最大値は、まず<strong>軸が区間の内か外か</strong>を確認する。軸が外なら、値は端のどちらかで決まるよ。</div>
+            <p class="cite"><span class="cite-tag">使う性質</span>軸と区間の位置関係 <math><mi>x</mi><mo>=</mo><mo>−</mo><mn>2</mn></math>。まとめでも、区間の最小値・最大値は軸が区間の内か外かで決まります。</p><div class="point-box"><span class="pt">ポイント</span>平行移動は「<strong>頂点の移動</strong>」で式を作るのが確実。区間での最小値・最大値は、まず<strong>軸が区間の内か外か</strong>を確認する。軸が外なら、値は端のどちらかで決まるよ。</div>
           </article>
         </div>
 
@@ -567,11 +617,11 @@
             <span class="q-num">(3)</span><span class="q-title">三角比の計算</span>
             <span class="q-points">配点 4点</span>
           </div>
-          <p class="q-body"><span class="m">(sin 60° + cos 60°)<sup>2</sup> + (sin 120° + cos 120°)<sup>2</sup> =</span><span class="blank" data-kana="オ" data-ans="2">オ</span>である。</p>
+          <p class="q-body"><math><msup><mrow><mo>(</mo><mi>sin</mi><mn>60</mn><mo>°</mo><mo>+</mo><mi>cos</mi><mn>60</mn><mo>°</mo><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mi>sin</mi><mn>120</mn><mo>°</mo><mo>+</mo><mi>cos</mi><mn>120</mn><mo>°</mo><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo></math><span class="blank" data-kana="オ" data-ans="2">オ</span>である。</p>
         </div>
 
         <div class="viz" id="viz3">
-          <p class="viz-title">図で見る ― 単位円の 60° と 120°</p>
+          <p class="viz-title">図で見る ― 単位円の<math><mn>60</mn><mo>°</mo></math>と<math><mn>120</mn><mo>°</mo></math></p>
           <svg viewBox="0 0 640 330" role="img" aria-label="単位円。ヒントを進めると60度と120度の動径と点が現れる">
             <line x1="40" y1="165" x2="600" y2="165" style="stroke:var(--line-strong)" stroke-width="1.6"></line>
             <line x1="320" y1="15" x2="320" y2="315" style="stroke:var(--line-strong)" stroke-width="1.6"></line>
@@ -604,55 +654,55 @@
               <text x="120" y="70" font-size="13.5" style="fill:var(--blue)">sin 120° = √3/2</text>
             </g>
           </svg>
-          <p class="expr-note">単位円では、点の <span class="m"><i>y</i></span> 座標が sin、<span class="m"><i>x</i></span> 座標が cos。2つの点の高さ（sin）は同じで、横（cos）の符号だけが違うよ。</p>
+          <p class="expr-note">単位円では、点の <math><mi>y</mi></math> 座標が sin、<math><mi>x</mi></math> 座標が cos。2つの点の高さ（sin）は同じで、横（cos）の符号だけが違うよ。</p>
         </div>
 
-        <p class="think-note">出てくる角は 60° と 120° の2種類だけ。まず知っている値に直してから計算する作戦でいこう。</p>
+        <p class="think-note">出てくる角は<math><mn>60</mn><mo>°</mo></math>と<math><mn>120</mn><mo>°</mo></math>の2種類だけ。まず知っている値に直してから計算する作戦でいこう。</p>
 
         </div>
 
         <div class="stages">
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">60° の値を書き出す</span></div>
-            <p>まずは基本の 60° から。単位円に 60° の点が出たので、座標と見比べて覚え直そう：</p>
-            <div class="formula-line"><span class="m">sin 60° = <span class="frac"><span class="num">√3</span><span class="den">2</span></span></span>，<span class="m">cos 60° = <span class="frac"><span class="num">1</span><span class="den">2</span></span></span></div>
-            <p class="mini">30°・60° の値は、辺の比 <span class="m">1 : 2 : √3</span> の直角三角形から出てくる、覚えておくべき基本値だよ。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title"><math><mn>60</mn><mo>°</mo></math>の値を書き出す</span></div><p class="cite"><span class="cite-tag">使う定義</span>三角比の基本値 <math><mi>sin</mi><mn>60</mn><mo>°</mo><mo>=</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac><mo>,</mo><mi>cos</mi><mn>60</mn><mo>°</mo><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math>。このステップでは、60°のsinとcosの値を書き出して、計算の材料をそろえます。</p>
+            <p>まずは基本の<math><mn>60</mn><mo>°</mo></math>から。単位円に<math><mn>60</mn><mo>°</mo></math>の点が出たので、座標と見比べて覚え直そう：</p>
+            <div class="formula-line"><math><mi>sin</mi><mn>60</mn><mo>°</mo><mo>=</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac><mo>,</mo><mi>cos</mi><mn>60</mn><mo>°</mo><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math></div>
+            <p class="mini"><math><mn>30</mn><mo>°</mo><mo>⋅</mo><mn>60</mn><mo>°</mo></math>の値は、辺の比 <math><mn>1</mn><mo>:</mo><mn>2</mn><mo>:</mo><msqrt><mn>3</mn></msqrt></math> の直角三角形から出てくる、覚えておくべき基本値だよ。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">120° は 60° と「高さ同じ・横は反対」</span></div>
-            <p>単位円に 120° の点も出た。60° の点と見比べると、<span class="m"><i>y</i></span> 軸をはさんで<strong>左右対称</strong>の位置にある。だから：</p>
-            <div class="formula-line"><span class="m">sin 120° = sin 60° = <span class="frac"><span class="num">√3</span><span class="den">2</span></span></span>，<span class="m">cos 120° = −cos 60° = −<span class="frac"><span class="num">1</span><span class="den">2</span></span></span></div>
+            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title"><math><mn>120</mn><mo>°</mo></math>は<math><mn>60</mn><mo>°</mo></math>と「高さ同じ・横は反対」</span></div><p class="cite"><span class="cite-tag">使う性質</span>単位円の対称性 <math><mi>sin</mi><mn>120</mn><mo>°</mo><mo>=</mo><mi>sin</mi><mn>60</mn><mo>°</mo><mo>=</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac><mo>,</mo><mi>cos</mi><mn>120</mn><mo>°</mo><mo>=</mo><mo>−</mo><mi>cos</mi><mn>60</mn><mo>°</mo><mo>=</mo><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math>。このステップでは、120°の値を対称な60°の値に直して、4つの値をそろえます。</p>
+            <p>単位円に<math><mn>120</mn><mo>°</mo></math>の点も出た。<math><mn>60</mn><mo>°</mo></math>の点と見比べると、<math><mi>y</mi></math> 軸をはさんで<strong>左右対称</strong>の位置にある。だから：</p>
+            <div class="formula-line"><math><mi>sin</mi><mn>120</mn><mo>°</mo><mo>=</mo><mi>sin</mi><mn>60</mn><mo>°</mo><mo>=</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac><mo>,</mo><mi>cos</mi><mn>120</mn><mo>°</mo><mo>=</mo><mo>−</mo><mi>cos</mi><mn>60</mn><mo>°</mo><mo>=</mo><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math></div>
             <p>sin（高さ）は同じ、cos（横）は符号だけ反対。これで式に出てくる4つの値が全部そろったよ。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">値を代入して、それぞれ展開する</span></div>
+            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">値を代入して、それぞれ展開する</span></div><p class="cite"><span class="cite-tag">使う公式</span>乗法公式 <math><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>a</mi><mi>b</mi><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup></math>。このステップでは、値を代入した式を乗法公式で展開します。</p>
             <p>4つの値を元の式に入れると：</p>
-            <div class="formula-line"><span class="m">(<span class="frac"><span class="num">√3</span><span class="den">2</span></span> + <span class="frac"><span class="num">1</span><span class="den">2</span></span>)<sup>2</sup> + (<span class="frac"><span class="num">√3</span><span class="den">2</span></span> − <span class="frac"><span class="num">1</span><span class="den">2</span></span>)<sup>2</sup></span></div>
-            <p>展開は公式 <span class="m">(<i>a</i> + <i>b</i>)<sup>2</sup> = <i>a</i><sup>2</sup> + 2<i>a</i><i>b</i> + <i>b</i><sup>2</sup></span> を使う。前半は <span class="m"><i>a</i> = <span class="frac"><span class="num">√3</span><span class="den">2</span></span></span>、<span class="m"><i>b</i> = <span class="frac"><span class="num">1</span><span class="den">2</span></span></span> として、まず前半だけ展開してみよう。</p>
+            <div class="formula-line"><math><msup><mrow><mo>(</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac><mo>+</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo></mrow><mn>2</mn></msup></math></div>
+            <p>展開は公式 <math><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>a</mi><mi>b</mi><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup></math> を使う。前半は <math><mi>a</mi><mo>=</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac></math>、<math><mi>b</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math> として、まず前半だけ展開してみよう。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">2√3 の項が打ち消し合うのを見る</span></div>
+            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title"><math><mn>2</mn><msqrt><mn>3</mn></msqrt></math>の項が打ち消し合うのを見る</span></div><p class="cite"><span class="cite-tag">使う公式</span>乗法公式 <math><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>a</mi><mi>b</mi><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup></math>。このステップでは、(a+b)の2乗と(a−b)の2乗を足すと真ん中の項が消えることを使います。</p>
             <p>2つを展開すると、真ん中の項だけ符号が逆になる：</p>
             <div class="formula-line">
-              前半 <span class="m">= <span class="frac"><span class="num">3</span><span class="den">4</span></span> + <span class="frac"><span class="num">√3</span><span class="den">2</span></span> + <span class="frac"><span class="num">1</span><span class="den">4</span></span></span>，後半 <span class="m">= <span class="frac"><span class="num">3</span><span class="den">4</span></span> − <span class="frac"><span class="num">√3</span><span class="den">2</span></span> + <span class="frac"><span class="num">1</span><span class="den">4</span></span></span>
+              前半 <math><mo>=</mo><mfrac><mn>3</mn><mn>4</mn></mfrac><mo>+</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac><mo>+</mo><mfrac><mn>1</mn><mn>4</mn></mfrac><mo>,</mo></math>後半 <math><mo>=</mo><mfrac><mn>3</mn><mn>4</mn></mfrac><mo>−</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac><mo>+</mo><mfrac><mn>1</mn><mn>4</mn></mfrac></math>
             </div>
-            <p>前半と後半を足すと、<span class="m">+<span class="frac"><span class="num">√3</span><span class="den">2</span></span></span> と <span class="m">−<span class="frac"><span class="num">√3</span><span class="den">2</span></span></span> が<strong>打ち消し合って消える</strong>。残りは分数の足し算だけ。最後の合計を自分で出してみよう。</p>
+            <p>前半と後半を足すと、<math><mo>+</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac></math> と <math><mo>−</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac></math> が<strong>打ち消し合って消える</strong>。残りは分数の足し算だけ。最後の合計を自分で出してみよう。</p>
           </article>
 
           <article class="stage answer" hidden>
-            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(3) の答え</span></div>
+            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(3) の答え</span></div><p class="cite"><span class="cite-tag">使う性質</span>単位円の対称性 <math><mi>sin</mi><mn>120</mn><mo>°</mo><mo>=</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac></math>。このステップでは、120°の値を60°に直し、乗法公式で展開して合計を求めます。</p>
             <ol class="steps">
-              <li><span class="m">sin 60° = <span class="frac"><span class="num">√3</span><span class="den">2</span></span></span>、<span class="m">cos 60° = <span class="frac"><span class="num">1</span><span class="den">2</span></span></span>、<span class="m">sin 120° = <span class="frac"><span class="num">√3</span><span class="den">2</span></span></span>、<span class="m">cos 120° = −<span class="frac"><span class="num">1</span><span class="den">2</span></span></span>。</li>
-              <li>代入して展開すると <span class="m">(<span class="frac"><span class="num">√3+1</span><span class="den">2</span></span>)<sup>2</sup> + (<span class="frac"><span class="num">√3−1</span><span class="den">2</span></span>)<sup>2</sup> = <span class="frac"><span class="num">4 + 2√3</span><span class="den">4</span></span> + <span class="frac"><span class="num">4 − 2√3</span><span class="den">4</span></span></span>。</li>
-              <li><span class="m">2√3</span> の項が消えて、<span class="m"><span class="frac"><span class="num">8</span><span class="den">4</span></span> = 2</span>。</li>
+              <li><math><mi>sin</mi><mn>60</mn><mo>°</mo><mo>=</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac></math>、<math><mi>cos</mi><mn>60</mn><mo>°</mo><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math>、<math><mi>sin</mi><mn>120</mn><mo>°</mo><mo>=</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac></math>、<math><mi>cos</mi><mn>120</mn><mo>°</mo><mo>=</mo><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math>。</li>
+              <li>代入して展開すると <math><msup><mrow><mo>(</mo><mfrac><mrow><msqrt><mn>3</mn></msqrt><mo>+</mo><mn>1</mn></mrow><mn>2</mn></mfrac><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mfrac><mrow><msqrt><mn>3</mn></msqrt><mo>−</mo><mn>1</mn></mrow><mn>2</mn></mfrac><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mfrac><mrow><mn>4</mn><mo>+</mo><mn>2</mn><msqrt><mn>3</mn></msqrt></mrow><mn>4</mn></mfrac><mo>+</mo><mfrac><mrow><mn>4</mn><mo>−</mo><mn>2</mn><msqrt><mn>3</mn></msqrt></mrow><mn>4</mn></mfrac></math>。</li>
+              <li><math><mn>2</mn><msqrt><mn>3</mn></msqrt></math> の項が消えて、<math><mfrac><mn>8</mn><mn>4</mn></mfrac><mo>=</mo><mn>2</mn></math>。</li>
             </ol>
             <div class="ans-line">
-              <span class="ans-chip"><span class="kana">オ</span><span class="m">2</span><span class="pts">4点</span></span>
+              <span class="ans-chip"><span class="kana">オ</span><math><mn>2</mn></math><span class="pts">4点</span></span>
             </div>
-            <div class="point-box"><span class="pt">ポイント</span>120° のような鈍角は、単位円で「<strong>対称な鋭角</strong>」に直して値を出す。<span class="m">(<i>a</i>+<i>b</i>)<sup>2</sup></span> と <span class="m">(<i>a</i>−<i>b</i>)<sup>2</sup></span> を足すと真ん中の項が消える、という計算の型も覚えておこう。</div>
+            <p class="cite"><span class="cite-tag">使う性質</span>単位円の対称性 <math><mi>sin</mi><mn>120</mn><mo>°</mo><mo>=</mo><mi>sin</mi><mn>60</mn><mo>°</mo><mo>=</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac><mo>,</mo><mi>cos</mi><mn>120</mn><mo>°</mo><mo>=</mo><mo>−</mo><mi>cos</mi><mn>60</mn><mo>°</mo><mo>=</mo><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math>。まとめでも、鈍角の三角比は対称な鋭角に直してから計算します。</p><div class="point-box"><span class="pt">ポイント</span><math><mn>120</mn><mo>°</mo></math>のような鈍角は、単位円で「<strong>対称な鋭角</strong>」に直して値を出す。<math><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mn>2</mn></msup></math> と <math><msup><mrow><mo>(</mo><mi>a</mi><mo>−</mo><mi>b</mi><mo>)</mo></mrow><mn>2</mn></msup></math> を足すと真ん中の項が消える、という計算の型も覚えておこう。</div>
           </article>
         </div>
 
@@ -678,7 +728,7 @@
         <div class="viz" id="viz4">
           <p class="viz-title">図で見る ― 1回引くときの割合と、4回の並び</p>
           <div data-min="1" hidden>
-            <div class="prow"><span class="pl">1回の試行</span><span class="track"><span class="hit" style="width:33.3%"></span><span class="miss"></span></span><span class="pv">当たり <b>3/9 = 1/3</b></span></div>
+            <div class="prow"><span class="pl">1回の試行</span><span class="track"><span class="hit" style="width:33.3%"></span><span class="miss"></span></span><span class="pv">当たり <b><math><mfrac><mn>3</mn><mn>9</mn></mfrac><mo>=</mo><mfrac><mn>1</mn><mn>3</mn></mfrac></math></b></span></div>
             <p class="expr-note">色の部分が当たり（9本中3本）、白い部分がはずれ（9本中6本）だよ。</p>
           </div>
           <div class="pat-list" data-min="3" hidden>
@@ -687,8 +737,8 @@
             <div class="pat-row"><span class="pat-name">パターン2</span><span class="pat-cell">×</span><span class="pat-cell hit">○</span><span class="pat-cell hit">○</span><span class="pat-cell">×</span></div>
             <div class="pat-row"><span class="pat-name">パターン3</span><span class="pat-cell">×</span><span class="pat-cell">×</span><span class="pat-cell hit">○</span><span class="pat-cell hit">○</span></div>
           </div>
-          <div class="expr-sub" data-min="2" hidden>カ の形： <span class="hlb">1/3</span> × <span class="hlb">1/3</span> × <span class="hlb">1/3</span> × <span class="hlb">1/3</span>（4回とも当たり）</div>
-          <div class="expr-sub" data-min="4" hidden>キ の形： 1通りあたり <span class="hlb">(1/3)<sup>2</sup></span> × <span class="hl">(2/3)<sup>2</sup></span>、それが <span class="hl">3通り</span>分</div>
+          <div class="expr-sub" data-min="2" hidden>カ の形： <span class="hlb"><math><mfrac><mn>1</mn><mn>3</mn></mfrac></math></span> × <span class="hlb"><math><mfrac><mn>1</mn><mn>3</mn></mfrac></math></span> × <span class="hlb"><math><mfrac><mn>1</mn><mn>3</mn></mfrac></math></span> × <span class="hlb"><math><mfrac><mn>1</mn><mn>3</mn></mfrac></math></span>（4回とも当たり）</div>
+          <div class="expr-sub" data-min="4" hidden>キ の形： 1通りあたり <span class="hlb"><math><msup><mrow><mo>(</mo><mn>1</mn><mo>/</mo><mn>3</mn><mo>)</mo></mrow><mn>2</mn></msup></math></span> × <span class="hl"><math><msup><mrow><mo>(</mo><mn>2</mn><mo>/</mo><mn>3</mn><mo>)</mo></mrow><mn>2</mn></msup></math></span>、それが <span class="hl">3通り</span>分</div>
         </div>
 
         <p class="think-note">カギの言葉は「戻す」。戻すから、毎回の条件はまったく同じになるよ。</p>
@@ -697,21 +747,21 @@
 
         <div class="stages">
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">1回だけの確率と、「戻す」の意味</span></div>
+            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">1回だけの確率と、「戻す」の意味</span></div><p class="cite"><span class="cite-tag">使う定義</span>確率 <math><mo>=</mo><mfrac><mn>3</mn><mn>9</mn></mfrac><mo>=</mo><mfrac><mn>1</mn><mn>3</mn></mfrac></math>。このステップでは、9本中3本という割合で1回当たりの確率を求め、戻す試行では各回が独立であることを確認します。</p>
             <p>まず1回だけ引く場合を考える。当たりは9本中3本だから：</p>
-            <div class="formula-line"><span class="m">当たりの確率 = <span class="frac"><span class="num">3</span><span class="den">9</span></span> = <span class="frac"><span class="num">1</span><span class="den">3</span></span></span>　（はずれは <span class="m"><span class="frac"><span class="num">6</span><span class="den">9</span></span> = <span class="frac"><span class="num">2</span><span class="den">3</span></span></span>）</div>
-            <p>引いたくじは<strong>毎回戻す</strong>ので、2回目以降も中身は9本のまま。つまり4回とも条件は同じで、各回の結果は互いに影響しない（<strong>独立</strong>）。上のバーで割合を確認しておこう。</p>
+            <div class="formula-line"><span class="m">当たりの確率<math><mo>=</mo><mfrac><mn>3</mn><mn>9</mn></mfrac><mo>=</mo><mfrac><mn>1</mn><mn>3</mn></mfrac></math></span>　（はずれは <math><mfrac><mn>6</mn><mn>9</mn></mfrac><mo>=</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mo>)</mo></math></div>
+            <p>引いたくじは<strong>毎回戻す</strong>ので、2回目以降も中身は9本のまま。<br>つまり4回とも条件は同じで、各回の結果は互いに影響しない（<strong>独立</strong>）。上のバーで割合を確認しておこう。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">「4回とも」は掛け算を4回</span></div>
+            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">「4回とも」は掛け算を4回</span></div><p class="cite"><span class="cite-tag">使う性質</span>独立試行の確率 <math><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>)</mo></mrow><mn>4</mn></msup></math>。このステップでは、独立な試行が続く確率は各回の確率の積になることから、1回の確率を4乗します。</p>
             <p>独立な出来事が全部同時に起こる確率は、それぞれの確率の<strong>掛け算</strong>。「4回とも当たり」は当たりが4回続くことだから：</p>
-            <div class="formula-line"><span class="m">(<span class="frac"><span class="num">1</span><span class="den">3</span></span>)<sup>4</sup></span></div>
-            <p><span class="m">3<sup>4</sup></span> を計算すれば カ の分母が出る。自分で計算してみよう。</p>
+            <div class="formula-line"><math><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>)</mo></mrow><mn>4</mn></msup></math></div>
+            <p><math><msup><mn>3</mn><mn>4</mn></msup></math> を計算すれば カ の分母が出る。自分で計算してみよう。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">後半は、まず「並びのパターン」を数える</span></div>
+            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">後半は、まず「並びのパターン」を数える</span></div><p class="cite"><span class="cite-tag">使う性質</span>並びの場合の数 <math><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>)</mo></mrow><mn>2</mn></msup><mo>×</mo><msup><mrow><mo>(</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mo>)</mo></mrow><mn>2</mn></msup></math>。このステップでは、当・外の並びのうち「当たり2回連続」に当てはまる並びが何通りあるかを数え、1通りあたりの確率を掛ける準備をします。</p>
             <p>後半は「当たりが<strong>2回連続</strong>で出て、残り2回ははずれ」。○（当たり）と ×（はずれ）で4回の並びを書くと、○○ のかたまりが入る場所は3か所だけ：</p>
             <ul class="steps">
               <li>○○××（1・2回目が当たり）</li>
@@ -722,23 +772,23 @@
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">1通りの確率を出して、3倍する</span></div>
+            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">1通りの確率を出して、3倍する</span></div><p class="cite"><span class="cite-tag">使う性質</span>確率の加法 <math><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>)</mo></mrow><mn>2</mn></msup><mo>×</mo><msup><mrow><mo>(</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mo>)</mo></mrow><mn>2</mn></msup></math>。このステップでは、1通りあたりの確率を求め、重ならない3通り分を足し合わせます。</p>
             <p>どのパターンも「当たり2回・はずれ2回」の掛け算だから、1通りの確率は全部同じ：</p>
-            <div class="formula-line"><span class="m">(<span class="frac"><span class="num">1</span><span class="den">3</span></span>)<sup>2</sup> × (<span class="frac"><span class="num">2</span><span class="den">3</span></span>)<sup>2</sup></span></div>
+            <div class="formula-line"><math><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>)</mo></mrow><mn>2</mn></msup><mo>×</mo><msup><mrow><mo>(</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mo>)</mo></mrow><mn>2</mn></msup></math></div>
             <p>パターンは3通りあるので、答えはこの <strong>3倍</strong>。計算して約分すれば キ が出る。最後まで自分でやってみよう。</p>
           </article>
 
           <article class="stage answer" hidden>
-            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(4) の答え</span></div>
+            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(4) の答え</span></div><p class="cite"><span class="cite-tag">使う性質</span>独立試行の確率 <math><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>)</mo></mrow><mn>4</mn></msup><mo>=</mo><mfrac><mn>1</mn><mn>81</mn></mfrac></math>。このステップでは、独立試行の積と並びの数の掛け算で、2つの確率をまとめて求めます。</p>
             <ol class="steps">
-              <li>1回の当たりの確率は <span class="m"><span class="frac"><span class="num">3</span><span class="den">9</span></span> = <span class="frac"><span class="num">1</span><span class="den">3</span></span></span>。戻すので各回は独立で、4回とも当たりの確率は <span class="m">(<span class="frac"><span class="num">1</span><span class="den">3</span></span>)<sup>4</sup> = <span class="frac"><span class="num">1</span><span class="den">81</span></span></span>。</li>
-              <li>当たり2回連続の並びは ○○××、×○○×、××○○ の3通り。1通りあたり <span class="m">(<span class="frac"><span class="num">1</span><span class="den">3</span></span>)<sup>2</sup>(<span class="frac"><span class="num">2</span><span class="den">3</span></span>)<sup>2</sup> = <span class="frac"><span class="num">4</span><span class="den">81</span></span></span> だから、求める確率は <span class="m">3 × <span class="frac"><span class="num">4</span><span class="den">81</span></span> = <span class="frac"><span class="num">4</span><span class="den">27</span></span></span>。</li>
+              <li>1回の当たりの確率は <math><mfrac><mn>3</mn><mn>9</mn></mfrac><mo>=</mo><mfrac><mn>1</mn><mn>3</mn></mfrac></math>。戻すので各回は独立で、<br>4回とも当たりの確率は <math><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>)</mo></mrow><mn>4</mn></msup><mo>=</mo><mfrac><mn>1</mn><mn>81</mn></mfrac></math>。</li>
+              <li>当たり2回連続の並びは ○○××、×○○×、××○○ の3通り。1通りあたり <math><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>)</mo></mrow><mn>2</mn></msup><msup><mrow><mo>(</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mfrac><mn>4</mn><mn>81</mn></mfrac></math> だから、求める確率は <math><mn>3</mn><mo>×</mo><mfrac><mn>4</mn><mn>81</mn></mfrac><mo>=</mo><mfrac><mn>4</mn><mn>27</mn></mfrac></math>。</li>
             </ol>
             <div class="ans-line">
-              <span class="ans-chip"><span class="kana">カ</span><span class="m"><span class="frac"><span class="num">1</span><span class="den">81</span></span></span><span class="pts">2点</span></span>
-              <span class="ans-chip"><span class="kana">キ</span><span class="m"><span class="frac"><span class="num">4</span><span class="den">27</span></span></span><span class="pts">2点</span></span>
+              <span class="ans-chip"><span class="kana">カ</span><math><mfrac><mn>1</mn><mn>81</mn></mfrac></math><span class="pts">2点</span></span>
+              <span class="ans-chip"><span class="kana">キ</span><math><mfrac><mn>4</mn><mn>27</mn></mfrac></math><span class="pts">2点</span></span>
             </div>
-            <div class="point-box"><span class="pt">ポイント</span>「戻す試行」は毎回の確率が変わらない<strong>独立試行</strong>。確率は掛け算で出し、条件に合う<strong>並びのパターンの数</strong>を最後に掛けるのを忘れないこと。</div>
+            <p class="cite"><span class="cite-tag">使う性質</span>独立試行の確率 <math><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>)</mo></mrow><mn>4</mn></msup></math>。まとめでも、戻す試行の確率は各回の確率の積に並びの数を掛けて求めます。</p><div class="point-box"><span class="pt">ポイント</span>「戻す試行」は毎回の確率が変わらない<strong>独立試行</strong>。確率は掛け算で出し、条件に合う<strong>並びのパターンの数</strong>を最後に掛けるのを忘れないこと。</div>
           </article>
         </div>
 
@@ -821,52 +871,52 @@
 
         <div class="stages">
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">箱ひげ図から読める5つの値を書き出す</span></div>
+            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">箱ひげ図から読める5つの値を書き出す</span></div><p class="cite"><span class="cite-tag">使う定義</span>箱ひげ図の5つの値 <math><mo>=</mo><mn>4</mn><mo>,</mo></math>。このステップでは、箱ひげ図の各部分が表す5つの値を読み取ります。</p>
             <p>箱ひげ図の各部分が何を表すか、図と照らして書き出そう：</p>
-            <div class="formula-line">最小値 <span class="m">= 1</span>，第1四分位数 <span class="m">= 4</span>，中央値 <span class="m">= 5</span>，第3四分位数 <span class="m">= 7</span>，最大値 <span class="m">= 9</span></div>
-            <p class="mini">読み方のおさらい：ひげの左端が最小値、箱の左端が第1四分位数、箱の中の線が中央値、箱の右端が第3四分位数、ひげの右端が最大値。</p>
+            <div class="formula-line">最小値 <math><mo>=</mo><mn>1</mn><mo>,</mo></math>第1四分位数 <math><mo>=</mo><mn>4</mn><mo>,</mo></math>中央値 <math><mo>=</mo><mn>5</mn><mo>,</mo></math>第3四分位数 <math><mo>=</mo><mn>7</mn><mo>,</mo></math>最大値 <math><mo>=</mo><mn>9</mn></math></div>
+            <p class="mini">読み方のおさらい：ひげの左端が最小値、箱の左端が第1四分位数、<br>箱の中の線が中央値、箱の右端が第3四分位数、ひげの右端が最大値。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">「何番目」に対応させる：15人の場合</span></div>
-            <p>得点を低い方から <span class="m"><i>x</i><sub>1</sub>, <i>x</i><sub>2</sub>, …, <i>x</i><sub>15</sub></span> と並べる。人数が15人のとき：</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">「何番目」に対応させる：15人の場合</span></div><p class="cite"><span class="cite-tag">使う定義</span>四分位数と中央値の位置 <math><msub><mi>x</mi><mn>8</mn></msub><mo>(</mo></math>。このステップでは、15人のデータでは第1四分位数が4番目、中央値が8番目になることを確認します。</p>
+            <p>得点を低い方から <math><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>x</mi><mn>2</mn></msub><mo>,</mo><mo>…</mo><mo>,</mo><msub><mi>x</mi><mn>15</mn></msub></math> と並べる。人数が15人のとき：</p>
             <ul class="steps">
-              <li>中央値は真ん中の <span class="m"><i>x</i><sub>8</sub></span>（前後に7人ずつ）</li>
-              <li>第1四分位数は <span class="m"><i>x</i><sub>4</sub></span>、第3四分位数は <span class="m"><i>x</i><sub>12</sub></span></li>
+              <li>中央値は真ん中の <math><msub><mi>x</mi><mn>8</mn></msub><mo>(</mo></math>前後に7人ずつ）</li>
+              <li>第1四分位数は <math><msub><mi>x</mi><mn>4</mn></msub></math>、第3四分位数は <math><msub><mi>x</mi><mn>12</mn></msub></math></li>
             </ul>
             <p>下の並び図にも目印がついたよ。つまり、聞かれている「4番目の得点」と「8番目の得点」は、ヒント1で書き出した値のうちの<strong>どれか</strong>だね。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">x₄ と x₈ の値を当てはめて、平均を取る</span></div>
-            <div class="formula-line"><span class="m"><i>x</i><sub>4</sub> = 4</span>（第1四分位数），<span class="m"><i>x</i><sub>8</sub> = 5</span>（中央値）</div>
-            <p>この2つの平均 <span class="m"><span class="frac"><span class="num">4 + 5</span><span class="den">2</span></span></span> を計算すれば ク が出る。自分で計算してみよう。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">x₄ と x₈ の値を当てはめて、平均を取る</span></div><p class="cite"><span class="cite-tag">使う定義</span>平均 <math><mfrac><mrow><mn>4</mn><mo>+</mo><mn>5</mn></mrow><mn>2</mn></mfrac></math>。このステップでは、4番目と8番目の得点を平均してクを求めます。</p>
+            <div class="formula-line"><math><msub><mi>x</mi><mn>4</mn></msub><mo>=</mo><mn>4</mn><mo>(</mo></math>第1四分位数<math><mo>)</mo><mo>,</mo><msub><mi>x</mi><mn>8</mn></msub><mo>=</mo><mn>5</mn><mo>(</mo></math>中央値）</div>
+            <p>この2つの平均 <math><mfrac><mrow><mn>4</mn><mo>+</mo><mn>5</mn></mrow><mn>2</mn></mfrac></math> を計算すれば ク が出る。自分で計算してみよう。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">平均を最小にする作戦：決まっていない値は左端に寄せる</span></div>
-            <p>後半は「箱ひげ図と矛盾しない範囲で、平均をいちばん小さくする」問題。決まっているのは <span class="m"><i>x</i><sub>1</sub> = 1</span>、<span class="m"><i>x</i><sub>4</sub> = 4</span>、<span class="m"><i>x</i><sub>8</sub> = 5</span>、<span class="m"><i>x</i><sub>12</sub> = 7</span>、<span class="m"><i>x</i><sub>15</sub> = 9</span> の5つだけ。</p>
-            <p>残りの値は「両隣の決まった値の間」という条件さえ守れば自由。平均を小さくしたいから、<strong>各区間で許される最小の値（左端の値）にそろえる</strong>のが作戦だ。下の並び図に、その最小の並びが入ったので眺めてみよう（得点は整数値、という条件も使うよ）。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">平均を最小にする作戦：決まっていない値は左端に寄せる</span></div><p class="cite"><span class="cite-tag">使う性質</span>平均の最小化 <math><msub><mi>x</mi><mn>1</mn></msub><mo>=</mo><mn>1</mn></math>。このステップでは、決まっていない値を各区間の最小値にそろえると平均が最小になることを使います。</p>
+            <p>後半は「箱ひげ図と矛盾しない範囲で、平均をいちばん小さくする」問題。決まっているのは <math><msub><mi>x</mi><mn>1</mn></msub><mo>=</mo><mn>1</mn></math>、<math><msub><mi>x</mi><mn>4</mn></msub><mo>=</mo><mn>4</mn></math>、<math><msub><mi>x</mi><mn>8</mn></msub><mo>=</mo><mn>5</mn></math>、<math><msub><mi>x</mi><mn>12</mn></msub><mo>=</mo><mn>7</mn></math>、<math><msub><mi>x</mi><mn>15</mn></msub><mo>=</mo><mn>9</mn></math> の5つだけ。</p>
+            <p>残りの値は「両隣の決まった値の間」という条件さえ守れば自由。<br>平均を小さくしたいから、<strong>各区間で許される最小の値（左端の値）にそろえる</strong>のが作戦だ。下の並び図に、その最小の並びが入ったので眺めてみよう（得点は整数値、という条件も使うよ）。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 5</span><span class="stage-title">並びを書き出して、合計を出す</span></div>
+            <div class="stage-head"><span class="stage-badge">ヒント 5</span><span class="stage-title">並びを書き出して、合計を出す</span></div><p class="cite"><span class="cite-tag">使う定義</span>平均 <math><mn>1</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>4</mn><mo>,</mo><mn>4</mn><mo>,</mo><mn>4</mn><mo>,</mo><mn>4</mn><mo>,</mo><mn>5</mn><mo>,</mo><mn>5</mn><mo>,</mo><mn>5</mn><mo>,</mo><mn>5</mn><mo>,</mo><mn>7</mn><mo>,</mo><mn>7</mn><mo>,</mo><mn>7</mn><mo>,</mo><mn>9</mn></math>。このステップでは、最小になる並びの合計を出し、人数で割って平均を求めます。</p>
             <p>作戦どおりに左端へ寄せた並びは：</p>
-            <div class="formula-line"><span class="m">1, 1, 1, 4, 4, 4, 4, 5, 5, 5, 5, 7, 7, 7, 9</span></div>
-            <p>区間ごとに確認すると：<span class="m"><i>x</i><sub>2</sub>, <i>x</i><sub>3</sub></span> は 1〜4 の範囲で最小の 1、<span class="m"><i>x</i><sub>5</sub>〜<i>x</i><sub>7</sub></span> は 4〜5 の範囲で最小の 4、という具合だね。この15個を全部足すと合計はいくつになるか、自分で計算してみよう。</p>
+            <div class="formula-line"><math><mn>1</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>4</mn><mo>,</mo><mn>4</mn><mo>,</mo><mn>4</mn><mo>,</mo><mn>4</mn><mo>,</mo><mn>5</mn><mo>,</mo><mn>5</mn><mo>,</mo><mn>5</mn><mo>,</mo><mn>5</mn><mo>,</mo><mn>7</mn><mo>,</mo><mn>7</mn><mo>,</mo><mn>7</mn><mo>,</mo><mn>9</mn></math></div>
+            <p>区間ごとに確認すると：<math><msub><mi>x</mi><mn>2</mn></msub><mo>,</mo><msub><mi>x</mi><mn>3</mn></msub></math> は 1〜4 の範囲で最小の 1、<span class="m"><math><msub><mi>x</mi><mn>5</mn></msub></math>〜<math><msub><mi>x</mi><mn>7</mn></msub></math></span> は 4〜5 の範囲で最小の 4、という具合だね。<br>この15個を全部足すと合計はいくつになるか、自分で計算してみよう。</p>
           </article>
 
           <article class="stage answer" hidden>
-            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(5) の答え</span></div>
+            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(5) の答え</span></div><p class="cite"><span class="cite-tag">使う定義</span>四分位数と平均 <math><mfrac><mrow><mn>4</mn><mo>+</mo><mn>5</mn></mrow><mn>2</mn></mfrac><mo>=</mo><mn>4.5</mn></math>。このステップでは、四分位数と中央値の対応から2つの得点を決め、その平均と全体の平均の最小値を求めます。</p>
             <ol class="steps">
-              <li>15人では第1四分位数は低い方から4番目、中央値は8番目だから、<span class="m"><i>x</i><sub>4</sub> = 4</span>、<span class="m"><i>x</i><sub>8</sub> = 5</span>。その平均は <span class="m"><span class="frac"><span class="num">4 + 5</span><span class="den">2</span></span> = 4.5</span>。</li>
-              <li>平均が最小になるのは、各区間の値を左端に寄せた <span class="m">1, 1, 1, 4, 4, 4, 4, 5, 5, 5, 5, 7, 7, 7, 9</span> のとき。合計は <span class="m">69</span> だから、平均は <span class="m"><span class="frac"><span class="num">69</span><span class="den">15</span></span> = 4.6</span>。</li>
+              <li>15人では第1四分位数は低い方から4番目、中央値は8番目だから、<math><msub><mi>x</mi><mn>4</mn></msub><mo>=</mo><mn>4</mn></math>、<math><msub><mi>x</mi><mn>8</mn></msub><mo>=</mo><mn>5</mn></math>。その平均は <math><mfrac><mrow><mn>4</mn><mo>+</mo><mn>5</mn></mrow><mn>2</mn></mfrac><mo>=</mo><mn>4.5</mn></math>。</li>
+              <li>平均が最小になるのは、各区間の値を左端に寄せた <math><mn>1</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>4</mn><mo>,</mo><mn>4</mn><mo>,</mo><mn>4</mn><mo>,</mo><mn>4</mn><mo>,</mo><mn>5</mn><mo>,</mo><mn>5</mn><mo>,</mo><mn>5</mn><mo>,</mo><mn>5</mn><mo>,</mo><mn>7</mn><mo>,</mo><mn>7</mn><mo>,</mo><mn>7</mn><mo>,</mo><mn>9</mn></math> のとき。合計は <math><mn>69</mn></math> だから、平均は <math><mfrac><mn>69</mn><mn>15</mn></mfrac><mo>=</mo><mn>4.6</mn></math>。</li>
             </ol>
             <div class="ans-line">
-              <span class="ans-chip"><span class="kana">ク</span><span class="m">4.5</span><span class="pts">2点</span></span>
-              <span class="ans-chip"><span class="kana">ケ</span><span class="m">4.6</span><span class="pts">2点</span></span>
+              <span class="ans-chip"><span class="kana">ク</span><math><mn>4.5</mn></math><span class="pts">2点</span></span>
+              <span class="ans-chip"><span class="kana">ケ</span><math><mn>4.6</mn></math><span class="pts">2点</span></span>
             </div>
-            <div class="point-box"><span class="pt">ポイント</span>箱ひげ図の問題は「<strong>5つの値 ↔ 何番目か</strong>」の対応が第一歩。平均の最小・最大を問われたら、決まっていない値を<strong>区間の端に寄せる</strong>と考えると、並びが1通りに決まるよ。</div>
+            <p class="cite"><span class="cite-tag">使う定義</span>四分位数 <math><msub><mi>x</mi><mn>4</mn></msub><mo>=</mo><mn>4</mn><mo>(</mo></math>。まとめでも、箱ひげ図では5つの値と順番の対応を先に押さえます。</p><div class="point-box"><span class="pt">ポイント</span>箱ひげ図の問題は「<strong>5つの値 ↔ 何番目か</strong>」の対応が第一歩。平均の最小・最大を問われたら、決まっていない値を<strong>区間の端に寄せる</strong>と考えると、並びが1通りに決まるよ。</div>
           </article>
         </div>
 

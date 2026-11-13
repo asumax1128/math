@@ -321,7 +321,57 @@
           padding:2px 6px 2px 2px;
         }
       }
-    </style>
+    
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+
+      /* 積分記号は大きめに表示する（元のページの可読化デザインに合わせる） */
+      math .int-op{font-size:1.35em}
+      /* calc-12 世代（.card）と calc-18 世代（.unit）の、図のない問題の全幅化 */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig>.step{position:static !important}
+        .card.nofig>.steps-wrap{max-height:none !important;overflow:visible !important}
+        .unit.nofig{display:block !important}
+        .unit.nofig>.qside{position:static !important}
+        .unit.nofig>.steps-stack{max-height:none !important;overflow:visible !important}
+      }
+</style>
   </head>
   <body>
     <div class="wrap">
@@ -363,17 +413,17 @@
           </div>
           <div class="defbox">
             <span class="dlabel">問題文（B4 共通）</span>
-            座標平面上に2点 <span class="m"><i>A</i>(4, 0)</span>、<span class="m"><i>B</i>(0, 4)</span> がある。線分 <span class="m"><i>AB</i></span> の中点を <span class="m"><i>M</i></span> とし、2点 <span class="m"><i>A</i></span>、<span class="m"><i>B</i></span> を直径の両端とする円を <span class="m"><i>C</i></span> とする。また、直線 <span class="m"><i>ℓ</i></span>：<span class="m"><i>y</i> = <i>x</i> + 2</span> があり、円 <span class="m"><i>C</i></span> と直線 <span class="m"><i>ℓ</i></span> の2つの交点を <span class="m"><i>D</i></span>、<span class="m"><i>E</i></span> とする。
+            座標平面上に2点 <math><mi>A</mi><mrow><mo>(</mo><mn>4</mn><mo>,</mo><mn>0</mn><mo>)</mo></mrow></math>、<math><mi>B</mi><mrow><mo>(</mo><mn>0</mn><mo>,</mo><mn>4</mn><mo>)</mo></mrow></math> がある。線分 <math><mi>AB</mi></math> の中点を <math><mi>M</mi></math> とし、2点 <math><mi>A</mi></math>、<math><mi>B</mi></math> を直径の両端とする円を <math><mi>C</mi></math> とする。また、直線 <math><mi>ℓ</mi></math>：<math><mi>y</mi><mo>=</mo><mi>x</mi><mo>+</mo><mn>2</mn></math> があり、円 <math><mi>C</mi></math> と直線 <math><mi>ℓ</mi></math> の2つの交点を <math><mi>D</mi></math>、<math><mi>E</mi></math> とする。
           </div>
-          <p class="q-body">(1) 点 <span class="m"><i>M</i></span> の座標を求めよ。また、線分 <span class="m"><i>AB</i></span> の長さを求めよ。</p>
+          <p class="q-body">(1) 点 <math><mi>M</mi></math> の座標を求めよ。また、線分 <math><mi>AB</mi></math> の長さを求めよ。</p>
         </div>
 
         <div class="viz" id="viz1">
           <p class="viz-title">図で見る ― 2点 A, B は分かっている。中点 M はまだ出ていない</p>
           <svg id="fig1" viewBox="0 0 640 460" role="img" aria-label="座標平面に点A(4, 0)と点B(0, 4)と線分ABが描かれている。ヒントを進めると中点Mが現れ、横と縦の変化を示す破線が出る"></svg>
-          <p class="viz-note" data-min="0" data-max="0">いま分かっているのは2点 <span class="m"><i>A</i></span>, <span class="m"><i>B</i></span> だけ。中点 <span class="m"><i>M</i></span> は線分 <span class="m"><i>AB</i></span> のちょうど真ん中にあるはずだね。</p>
-          <p class="viz-note" data-min="1" data-max="1" hidden>点 <span class="m"><i>M</i></span> が現れた。中点の座標は、2点の座標の「平均」になる。</p>
-          <p class="viz-note" data-min="2" hidden>破線は「横の変化 4」と「縦の変化 4」。斜辺 <span class="m"><i>AB</i></span> の長さは、2点間の距離の公式（＝三平方の定理）で出る。</p>
+          <p class="viz-note" data-min="0" data-max="0">いま分かっているのは2点 <math><mi>A</mi><mo>,</mo><mi>B</mi></math> だけ。中点 <math><mi>M</mi></math> は線分 <math><mi>AB</mi></math> のちょうど真ん中にあるはずだね。</p>
+          <p class="viz-note" data-min="1" data-max="1" hidden>点 <math><mi>M</mi></math> が現れた。中点の座標は、2点の座標の「平均」になる。</p>
+          <p class="viz-note" data-min="2" hidden>破線は「横の変化 4」と「縦の変化 4」。斜辺 <math><mi>AB</mi></math> の長さは、2点間の距離の公式（＝三平方の定理）で出る。</p>
         </div>
         </div>
 
@@ -381,31 +431,35 @@
 
         <div class="stages">
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">中点の座標は、2点の座標の「平均」</span></div>
-            <p>線分 <span class="m"><i>AB</i></span> の中点 <span class="m"><i>M</i></span> の座標は、<span class="m"><i>x</i></span> 座標どうし、<span class="m"><i>y</i></span> 座標どうしをそれぞれ平均したものになる：</p>
-            <div class="formula-line"><span class="m"><i>M</i></span> の座標 ＝ <span class="m">(<span class="frac"><span class="num">4 + 0</span><span class="den">2</span></span>, <span class="frac"><span class="num">0 + 4</span><span class="den">2</span></span>)</span></div>
-            <p>分子は <span class="m"><i>A</i>(4, 0)</span> と <span class="m"><i>B</i>(0, 4)</span> の座標をそのまま足したものだね。割り算まで計算すると、<span class="m"><i>M</i></span> の座標が決まる。図にも点 <span class="m"><i>M</i></span> が現れたよ。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">中点の座標は、2点の座標の「平均」</span></div><p class="cite"><span class="cite-tag">使う公式</span>中点の座標 <math><mo>=</mo><mrow><mo>(</mo><mfrac><mrow><mn>4</mn><mo>+</mo><mn>0</mn></mrow><mn>2</mn></mfrac><mo>,</mo><mfrac><mrow><mn>0</mn><mo>+</mo><mn>4</mn></mrow><mn>2</mn></mfrac><mo>)</mo></mrow></math>。このステップでは、AとBの座標をそれぞれ平均して中点Mの座標を求めます。</p>
+            <p>線分 <math><mi>AB</mi></math> の中点 <math><mi>M</mi></math> の座標は、<math><mi>x</mi></math> 座標どうし、<math><mi>y</mi></math> 座標どうしをそれぞれ平均したものになる：</p>
+            <div class="formula-line"><math><mi>M</mi></math> の座標<math><mo>=</mo><mrow><mo>(</mo><mfrac><mrow><mn>4</mn><mo>+</mo><mn>0</mn></mrow><mn>2</mn></mfrac><mo>,</mo><mfrac><mrow><mn>0</mn><mo>+</mo><mn>4</mn></mrow><mn>2</mn></mfrac><mo>)</mo></mrow></math></div>
+            <p>分子は <math><mi>A</mi><mrow><mo>(</mo><mn>4</mn><mo>,</mo><mn>0</mn><mo>)</mo></mrow></math> と <math><mi>B</mi><mrow><mo>(</mo><mn>0</mn><mo>,</mo><mn>4</mn><mo>)</mo></mrow></math> の座標をそのまま足したものだね。割り算まで計算すると、<math><mi>M</mi></math> の座標が決まる。図にも点 <math><mi>M</mi></math> が現れたよ。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">線分ABの長さは、2点間の距離の公式で</span></div>
-            <p>2点 <span class="m">(<i>x</i><sub>1</sub>, <i>y</i><sub>1</sub>)</span>, <span class="m">(<i>x</i><sub>2</sub>, <i>y</i><sub>2</sub>)</span> の距離は <span class="m">√{(<i>x</i><sub>2</sub> − <i>x</i><sub>1</sub>)<sup>2</sup> + (<i>y</i><sub>2</sub> − <i>y</i><sub>1</sub>)<sup>2</sup>}</span>。<span class="m"><i>A</i>(4, 0)</span>, <span class="m"><i>B</i>(0, 4)</span> を代入すると：</p>
-            <div class="formula-line"><span class="m"><i>AB</i> = √{(0 − 4)<sup>2</sup> + (4 − 0)<sup>2</sup>} = √(4<sup>2</sup> + 4<sup>2</sup>)</span></div>
-            <p>図の破線が示す通り、「横の変化 4」「縦の変化 4」を2乗して足し、ルートを取る。あとは <span class="m">√(16 + 16) = √32</span> を、ルートの中を小さくして簡単にしよう。</p>
-            <p class="mini">つまずき注意：<span class="m">√32 = √(16·2) = 4√2</span>。「16で割り切れる数」が中に入っていないか探すのが、ルートを簡単にするコツだよ。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">線分ABの長さは、2点間の距離の公式で</span></div><p class="cite"><span class="cite-tag">使う公式</span>2点間の距離 <math><mi>AB</mi><mo>=</mo><msqrt><mo>{</mo></msqrt><msup><mrow><mo>(</mo><mn>0</mn><mo>−</mo><mn>4</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mn>4</mn><mo>−</mo><mn>0</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>}</mo><mo>=</mo><msqrt><mrow><msup><mn>4</mn><mn>2</mn></msup><mo>+</mo><msup><mn>4</mn><mn>2</mn></msup></mrow></msqrt></math>。このステップでは、横の変化と縦の変化を2乗して足し、平方根を取ってABの長さを求めます。</p>
+            <p>2点 <math><mrow><mo>(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>y</mi><mn>1</mn></msub><mo>)</mo></mrow><mo>,</mo><mrow><mo>(</mo><msub><mi>x</mi><mn>2</mn></msub><mo>,</mo><msub><mi>y</mi><mn>2</mn></msub><mo>)</mo></mrow></math> の距離は <math><msqrt><mo>{</mo></msqrt><msup><mrow><mo>(</mo><msub><mi>x</mi><mn>2</mn></msub><mo>−</mo><msub><mi>x</mi><mn>1</mn></msub><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><msub><mi>y</mi><mn>2</mn></msub><mo>−</mo><msub><mi>y</mi><mn>1</mn></msub><mo>)</mo></mrow><mn>2</mn></msup><mo>}</mo></math>。<math><mi>A</mi><mrow><mo>(</mo><mn>4</mn><mo>,</mo><mn>0</mn><mo>)</mo></mrow><mo>,</mo><mi>B</mi><mrow><mo>(</mo><mn>0</mn><mo>,</mo><mn>4</mn><mo>)</mo></mrow></math> を代入すると：</p>
+            <div class="formula-line"><math><mi>AB</mi><mo>=</mo><msqrt><mo>{</mo></msqrt><msup><mrow><mo>(</mo><mn>0</mn><mo>−</mo><mn>4</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mn>4</mn><mo>−</mo><mn>0</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>}</mo><mo>=</mo><msqrt><mrow><msup><mn>4</mn><mn>2</mn></msup><mo>+</mo><msup><mn>4</mn><mn>2</mn></msup></mrow></msqrt></math></div>
+            <p>図の破線が示す通り、「横の変化 4」「縦の変化 4」を2乗して足し、ルートを取る。あとは <math><msqrt><mrow><mn>16</mn><mo>+</mo><mn>16</mn></mrow></msqrt><mo>=</mo><msqrt><mn>32</mn></msqrt></math> を、ルートの中を小さくして簡単にしよう。</p>
+            <p class="mini">つまずき注意：<math><msqrt><mn>32</mn></msqrt><mo>=</mo><msqrt><mrow><mn>16</mn><mo>·</mo><mn>2</mn></mrow></msqrt><mo>=</mo><mn>4</mn><msqrt><mn>2</mn></msqrt></math>。「16で割り切れる数」が中に入っていないか探すのが、ルートを簡単にするコツだよ。</p>
           </article>
 
           <article class="stage answer" hidden>
-            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(1) の答え</span></div>
+            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(1) の答え</span></div><p class="cite"><span class="cite-tag">使う公式</span>中点の座標と2点間の距離 <math><mi>M</mi><mrow><mo>(</mo><mfrac><mrow><mn>4</mn><mo>+</mo><mn>0</mn></mrow><mn>2</mn></mfrac><mo>,</mo><mfrac><mrow><mn>0</mn><mo>+</mo><mn>4</mn></mrow><mn>2</mn></mfrac><mo>)</mo></mrow><mo>=</mo><mi>M</mi><mrow><mo>(</mo><mn>2</mn><mo>,</mo><mn>2</mn><mo>)</mo></mrow></math>。このステップでは、座標の平均で中点を、距離の公式でABの長さをまとめて求めます。</p>
             <ol class="steps">
-              <li>中点の座標は2点の座標の平均だから、<span class="m"><i>M</i>(<span class="frac"><span class="num">4 + 0</span><span class="den">2</span></span>, <span class="frac"><span class="num">0 + 4</span><span class="den">2</span></span>) = <i>M</i>(2, 2)</span>。</li>
-              <li>2点間の距離の公式より、<span class="m"><i>AB</i> = √(4<sup>2</sup> + 4<sup>2</sup>) = √32 = 4√2</span>。</li>
+              <li>中点の座標は2点の座標の平均だから、<math><mi>M</mi><mrow><mo>(</mo><mfrac><mrow><mn>4</mn><mo>+</mo><mn>0</mn></mrow><mn>2</mn></mfrac><mo>,</mo><mfrac><mrow><mn>0</mn><mo>+</mo><mn>4</mn></mrow><mn>2</mn></mfrac><mo>)</mo></mrow><mo>=</mo><mi>M</mi><mrow><mo>(</mo><mn>2</mn><mo>,</mo><mn>2</mn><mo>)</mo></mrow></math>。</li>
+              <li>2点間の距離の公式より、<div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>AB</mi><mo>=</mo><msqrt><mrow><msup><mn>4</mn><mn>2</mn></msup><mo>+</mo><msup><mn>4</mn><mn>2</mn></msup></mrow></msqrt></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>AB</mi></mphantom><mo>=</mo><msqrt><mn>32</mn></msqrt></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>AB</mi></mphantom><mo>=</mo><mn>4</mn><msqrt><mn>2</mn></msqrt></math></div>
+</div>。</li>
             </ol>
             <div class="ans-line">
-              <span class="ans-chip"><span class="kana">答</span><span class="m"><i>M</i>(2, 2)</span></span>
-              <span class="ans-chip"><span class="m"><i>AB</i> = 4√2</span><span class="pts">5点</span></span>
+              <span class="ans-chip"><span class="kana">答</span><math><mi>M</mi><mrow><mo>(</mo><mn>2</mn><mo>,</mo><mn>2</mn><mo>)</mo></mrow></math></span>
+              <span class="ans-chip"><math><mi>AB</mi><mo>=</mo><mn>4</mn><msqrt><mn>2</mn></msqrt></math><span class="pts">5点</span></span>
             </div>
-            <div class="point-box"><span class="pt">ポイント</span>この2つの結果は、この大問の「部品」になる。中点 <span class="m"><i>M</i>(2, 2)</span> は (2) で円 <span class="m"><i>C</i></span> の中心に、<span class="m"><i>AB</i> = 4√2</span> の半分は円 <span class="m"><i>C</i></span> の半径になるよ。</div>
+            <p class="cite"><span class="cite-tag">使う定義</span>円の中心と半径 <math><mi>M</mi><mrow><mo>(</mo><mfrac><mrow><mn>4</mn><mo>+</mo><mn>0</mn></mrow><mn>2</mn></mfrac><mo>,</mo><mfrac><mrow><mn>0</mn><mo>+</mo><mn>4</mn></mrow><mn>2</mn></mfrac><mo>)</mo></mrow><mo>=</mo><mi>M</mi><mrow><mo>(</mo><mn>2</mn><mo>,</mo><mn>2</mn><mo>)</mo></mrow></math>。まとめでも、中点は円の中心に、直径の半分は半径になるというつながりが大切です。</p><div class="point-box"><span class="pt">ポイント</span>この2つの結果は、この大問の「部品」になる。中点 <math><mi>M</mi><mrow><mo>(</mo><mn>2</mn><mo>,</mo><mn>2</mn><mo>)</mo></mrow></math> は (2) で円 <math><mi>C</mi></math> の中心に、<math><mi>AB</mi><mo>=</mo><mn>4</mn><msqrt><mn>2</mn></msqrt></math> の半分は円 <math><mi>C</mi></math> の半径になるよ。</div>
           </article>
         </div>
         </div>
@@ -429,20 +483,20 @@
           </div>
           <div class="defbox">
             <span class="dlabel">問題文（B4 共通）</span>
-            座標平面上に2点 <span class="m"><i>A</i>(4, 0)</span>、<span class="m"><i>B</i>(0, 4)</span> がある。線分 <span class="m"><i>AB</i></span> の中点を <span class="m"><i>M</i></span> とし、2点 <span class="m"><i>A</i></span>、<span class="m"><i>B</i></span> を直径の両端とする円を <span class="m"><i>C</i></span> とする。また、直線 <span class="m"><i>ℓ</i></span>：<span class="m"><i>y</i> = <i>x</i> + 2</span> があり、円 <span class="m"><i>C</i></span> と直線 <span class="m"><i>ℓ</i></span> の2つの交点を <span class="m"><i>D</i></span>、<span class="m"><i>E</i></span> とする。
+            座標平面上に2点 <math><mi>A</mi><mrow><mo>(</mo><mn>4</mn><mo>,</mo><mn>0</mn><mo>)</mo></mrow></math>、<math><mi>B</mi><mrow><mo>(</mo><mn>0</mn><mo>,</mo><mn>4</mn><mo>)</mo></mrow></math> がある。線分 <math><mi>AB</mi></math> の中点を <math><mi>M</mi></math> とし、2点 <math><mi>A</mi></math>、<math><mi>B</mi></math> を直径の両端とする円を <math><mi>C</mi></math> とする。また、直線 <math><mi>ℓ</mi></math>：<math><mi>y</mi><mo>=</mo><mi>x</mi><mo>+</mo><mn>2</mn></math> があり、円 <math><mi>C</mi></math> と直線 <math><mi>ℓ</mi></math> の2つの交点を <math><mi>D</mi></math>、<math><mi>E</mi></math> とする。
           </div>
-          <p class="q-body">(2) 円 <span class="m"><i>C</i></span> の方程式を求めよ。また、線分 <span class="m"><i>DE</i></span> の長さを求めよ。（(1) の結果： <span class="m"><i>M</i>(2, 2)</span>、<span class="m"><i>AB</i> = 4√2</span>）</p>
+          <p class="q-body">(2) 円 <math><mi>C</mi></math> の方程式を求めよ。また、線分 <math><mi>DE</mi></math> の長さを求めよ。（(1) の結果： <math><mi>M</mi><mrow><mo>(</mo><mn>2</mn><mo>,</mo><mn>2</mn><mo>)</mo></mrow></math>、<math><mi>AB</mi><mo>=</mo><mn>4</mn><msqrt><mn>2</mn></msqrt><mo>)</mo></math></p>
         </div>
 
         <div class="viz" id="viz2">
           <p class="viz-title">図で見る ― 円C、直線ℓ、弦DE、垂線MNが、ヒントに合わせて組み上がる</p>
           <svg id="fig2" viewBox="0 0 640 480" role="img" aria-label="点A、B、Mと直線エルが描かれた座標平面。ヒントを進めると円C、交点D、Eと弦DE、中心から直線へ下ろした垂線MNが順に現れる"></svg>
-          <p class="viz-note" data-min="0" data-max="0">舞台は点 <span class="m"><i>A</i></span>, <span class="m"><i>B</i></span>, <span class="m"><i>M</i></span> と直線 <span class="m"><i>ℓ</i></span>。円 <span class="m"><i>C</i></span> はまだ描かれていない。</p>
-          <p class="viz-note" data-min="1" data-max="1" hidden>円 <span class="m"><i>C</i></span> が現れた。直径の両端が <span class="m"><i>A</i></span>, <span class="m"><i>B</i></span> だから、中心は中点 <span class="m"><i>M</i></span>、半径は <span class="m"><i>AB</i></span> の半分だ。</p>
-          <p class="viz-note" data-min="2" data-max="2" hidden>円の方程式が決まった。次は、この円と直線 <span class="m"><i>ℓ</i></span> の交点 <span class="m"><i>D</i></span>, <span class="m"><i>E</i></span> を結ぶ弦の長さだ。</p>
-          <p class="viz-note" data-min="3" data-max="3" hidden>交点 <span class="m"><i>D</i></span>, <span class="m"><i>E</i></span> と弦 <span class="m"><i>DE</i></span>、中心 <span class="m"><i>M</i></span> から直線 <span class="m"><i>ℓ</i></span> へ下ろした垂線 <span class="m"><i>MN</i></span> が現れた。</p>
-          <p class="viz-note" data-min="4" data-max="4" hidden>垂線の足 <span class="m"><i>N</i></span> が決まった。中心と直線の距離 <span class="m"><i>MN</i></span> が分かれば、弦の半分は三平方の定理で出る。</p>
-          <p class="viz-note" data-min="5" hidden>直角三角形 <span class="m"><i>MDN</i></span> に注目。斜辺 <span class="m"><i>MD</i></span> は半径、<span class="m"><i>MN</i></span> は中心と直線の距離、残りの辺 <span class="m"><i>DN</i></span> が弦の半分だ。</p>
+          <p class="viz-note" data-min="0" data-max="0">舞台は点 <math><mi>A</mi><mo>,</mo><mi>B</mi><mo>,</mo><mi>M</mi></math> と直線 <math><mi>ℓ</mi></math>。円 <math><mi>C</mi></math> はまだ描かれていない。</p>
+          <p class="viz-note" data-min="1" data-max="1" hidden>円 <math><mi>C</mi></math> が現れた。直径の両端が <math><mi>A</mi><mo>,</mo><mi>B</mi></math> だから、中心は中点 <math><mi>M</mi></math>、半径は <math><mi>AB</mi></math> の半分だ。</p>
+          <p class="viz-note" data-min="2" data-max="2" hidden>円の方程式が決まった。次は、この円と直線 <math><mi>ℓ</mi></math> の交点 <math><mi>D</mi><mo>,</mo><mi>E</mi></math> を結ぶ弦の長さだ。</p>
+          <p class="viz-note" data-min="3" data-max="3" hidden>交点 <math><mi>D</mi><mo>,</mo><mi>E</mi></math> と弦 <math><mi>DE</mi></math>、中心 <math><mi>M</mi></math> から直線 <math><mi>ℓ</mi></math> へ下ろした垂線 <math><mi>MN</mi></math> が現れた。</p>
+          <p class="viz-note" data-min="4" data-max="4" hidden>垂線の足 <math><mi>N</mi></math> が決まった。中心と直線の距離 <math><mi>MN</mi></math> が分かれば、弦の半分は三平方の定理で出る。</p>
+          <p class="viz-note" data-min="5" hidden>直角三角形 <math><mi>MDN</mi></math> に注目。斜辺 <math><mi>MD</mi></math> は半径、<math><mi>MN</mi></math> は中心と直線の距離、残りの辺 <math><mi>DN</mi></math> が弦の半分だ。</p>
         </div>
         </div>
 
@@ -450,55 +504,55 @@
 
         <div class="stages">
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">円Cの中心と半径を、(1) の結果から決める</span></div>
-            <p>円 <span class="m"><i>C</i></span> は、2点 <span class="m"><i>A</i></span>, <span class="m"><i>B</i></span> を<strong>直径の両端</strong>とする円だ。直径の真ん中が円の中心になるから：</p>
-            <div class="formula-line">中心は線分 <span class="m"><i>AB</i></span> の中点 <span class="m"><i>M</i>(2, 2)</span></div>
-            <p>半径は、直径 <span class="m"><i>AB</i></span> の半分。(1) で <span class="m"><i>AB</i> = 4√2</span> と求めたから：</p>
-            <div class="formula-line">半径 ＝ <span class="m"><span class="frac"><span class="num">4√2</span><span class="den">2</span></span> = 2√2</span></div>
-            <p>図に円 <span class="m"><i>C</i></span> が現れた。中心 <span class="m"><i>M</i></span> から <span class="m"><i>A</i></span> までの金色の線分が半径だよ。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">円Cの中心と半径を、(1) の結果から決める</span></div><p class="cite"><span class="cite-tag">使う定義</span>円の中心と半径 <math><mi>M</mi><mrow><mo>(</mo><mn>2</mn><mo>,</mo><mn>2</mn><mo>)</mo></mrow></math>。このステップでは、直径の中点が中心、直径の半分が半径になることから、円Cの中心と半径を決めます。</p>
+            <p>円 <math><mi>C</mi></math> は、2点 <math><mi>A</mi><mo>,</mo><mi>B</mi></math> を<strong>直径の両端</strong>とする円だ。直径の真ん中が円の中心になるから：</p>
+            <div class="formula-line">中心は線分 <math><mi>AB</mi></math> の中点 <math><mi>M</mi><mrow><mo>(</mo><mn>2</mn><mo>,</mo><mn>2</mn><mo>)</mo></mrow></math></div>
+            <p>半径は、直径 <math><mi>AB</mi></math> の半分。(1) で <math><mi>AB</mi><mo>=</mo><mn>4</mn><msqrt><mn>2</mn></msqrt></math> と求めたから：</p>
+            <div class="formula-line">半径<math><mo>=</mo><mfrac><mrow><mn>4</mn><msqrt><mn>2</mn></msqrt></mrow><mn>2</mn></mfrac><mo>=</mo><mn>2</mn><msqrt><mn>2</mn></msqrt></math></div>
+            <p>図に円 <math><mi>C</mi></math> が現れた。中心 <math><mi>M</mi></math> から <math><mi>A</mi></math> までの金色の線分が半径だよ。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">円の方程式の形に当てはめる</span></div>
-            <p>中心 <span class="m">(<i>p</i>, <i>q</i>)</span>、半径 <span class="m"><i>r</i></span> の円の方程式は <span class="m">(<i>x</i> − <i>p</i>)<sup>2</sup> + (<i>y</i> − <i>q</i>)<sup>2</sup> = <i>r</i><sup>2</sup></span>。中心 <span class="m">(2, 2)</span>、半径 <span class="m">2√2</span> を当てはめると：</p>
-            <div class="formula-line"><span class="m">(<i>x</i> − 2)<sup>2</sup> + (<i>y</i> − 2)<sup>2</sup> = (2√2)<sup>2</sup></span></div>
-            <p>右辺は <span class="m">(2√2)<sup>2</sup> = 4·2 = 8</span>。これで円 <span class="m"><i>C</i></span> の方程式は完成だ。前半はここまで。後半は弦 <span class="m"><i>DE</i></span> の長さに進もう。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">円の方程式の形に当てはめる</span></div><p class="cite"><span class="cite-tag">使う公式</span>円の方程式 <math><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mi>y</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><mn>2</mn><msqrt><mn>2</mn></msqrt><mo>)</mo></mrow><mn>2</mn></msup></math>。このステップでは、中心(2,2)と半径を円の方程式の形に当てはめて、円Cの方程式を作ります。</p>
+            <p>中心 <math><mo>(</mo><mi>p</mi><mo>,</mo><mi>q</mi><mo>)</mo></math>、半径 <math><mi>r</mi></math> の円の方程式は <math><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mi>p</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mi>y</mi><mo>−</mo><mi>q</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mi>r</mi><mn>2</mn></msup></math>。中心 <math><mo>(</mo><mn>2</mn><mo>,</mo><mn>2</mn><mo>)</mo></math>、半径 <math><mn>2</mn><msqrt><mn>2</mn></msqrt></math> を当てはめると：</p>
+            <div class="formula-line"><math><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mi>y</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><mn>2</mn><msqrt><mn>2</mn></msqrt><mo>)</mo></mrow><mn>2</mn></msup></math></div>
+            <p>右辺は <math><msup><mrow><mo>(</mo><mn>2</mn><msqrt><mn>2</mn></msqrt><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>4</mn><mo>·</mo><mn>2</mn><mo>=</mo><mn>8</mn></math>。これで円 <math><mi>C</mi></math> の方程式は完成だ。前半はここまで。<br>後半は弦 <math><mi>DE</mi></math> の長さに進もう。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">弦DEの長さは「中心から垂線を下ろして」考える</span></div>
-            <p>交点 <span class="m"><i>D</i></span>, <span class="m"><i>E</i></span> の座標を直接出す方法もあるけれど、ここでは図形的に攻める。中心 <span class="m"><i>M</i></span> から直線 <span class="m"><i>ℓ</i></span> に垂線を下ろし、その足を <span class="m"><i>N</i></span> とする（図に現れた）。</p>
-            <p>距離の計算のために、直線 <span class="m"><i>ℓ</i></span>：<span class="m"><i>y</i> = <i>x</i> + 2</span> を、<span class="m"><i>x</i></span> と <span class="m"><i>y</i></span> を左辺に集めた形に変形しておこう：</p>
-            <div class="formula-line"><span class="m"><i>ℓ</i></span>： <span class="m"><i>x</i> − <i>y</i> + 2 = 0</span></div>
-            <p class="mini">垂線の足 <span class="m"><i>N</i></span> は、弦 <span class="m"><i>DE</i></span> の<strong>中点</strong>になる（円の中心から弦に下ろした垂線は、弦を2等分する）。だから <span class="m"><i>DN</i></span> が分かれば <span class="m"><i>DE</i> = 2·<i>DN</i></span> だね。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">弦DEの長さは「中心から垂線を下ろして」考える</span></div><p class="cite"><span class="cite-tag">使う性質</span>中心から弦に下ろした垂線 <math><mi>x</mi><mo>−</mo><mi>y</mi><mo>+</mo><mn>2</mn><mo>=</mo><mn>0</mn></math>。このステップでは、垂線の足が弦の中点になることを使って、DNが分かればDEが求まるという方針を立てます。</p>
+            <p>交点 <math><mi>D</mi><mo>,</mo><mi>E</mi></math> の座標を直接出す方法もあるけれど、ここでは図形的に攻める。<br>中心 <math><mi>M</mi></math> から直線 <math><mi>ℓ</mi></math> に垂線を下ろし、その足を <math><mi>N</mi></math> とする（図に現れた）。</p>
+            <p>距離の計算のために、直線 <math><mi>ℓ</mi></math>：<math><mi>y</mi><mo>=</mo><mi>x</mi><mo>+</mo><mn>2</mn></math> を、<math><mi>x</mi></math> と <math><mi>y</mi></math> を左辺に集めた形に変形しておこう：</p>
+            <div class="formula-line"><math><mi>ℓ</mi></math>： <math><mi>x</mi><mo>−</mo><mi>y</mi><mo>+</mo><mn>2</mn><mo>=</mo><mn>0</mn></math></div>
+            <p class="mini">垂線の足 <math><mi>N</mi></math> は、弦 <math><mi>DE</mi></math> の<strong>中点</strong>になる（円の中心から弦に下ろした垂線は、弦を2等分する）。だから <math><mi>DN</mi></math> が分かれば <math><mi>DE</mi><mo>=</mo><mn>2</mn><mo>·</mo><mi>DN</mi></math> だね。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">点と直線の距離の公式で、MN を出す</span></div>
-            <p>点 <span class="m">(<i>x</i><sub>0</sub>, <i>y</i><sub>0</sub>)</span> と直線 <span class="m"><i>ax</i> + <i>by</i> + <i>c</i> = 0</span> の距離は <span class="m"><span class="frac"><span class="num">|<i>ax</i><sub>0</sub> + <i>by</i><sub>0</sub> + <i>c</i>|</span><span class="den">√(<i>a</i><sup>2</sup> + <i>b</i><sup>2</sup>)</span></span></span>。中心 <span class="m"><i>M</i>(2, 2)</span> と直線 <span class="m"><i>x</i> − <i>y</i> + 2 = 0</span> に当てはめると：</p>
-            <div class="formula-line"><span class="m"><i>MN</i> = <span class="frac"><span class="num">|2 − 2 + 2|</span><span class="den">√(1<sup>2</sup> + (−1)<sup>2</sup>)</span></span> = <span class="frac"><span class="num">2</span><span class="den">√2</span></span></span></div>
-            <p>分母・分子に <span class="m">√2</span> をかけて有理化すると <span class="m"><i>MN</i> = √2</span> になる。図で <span class="m"><i>N</i></span> の位置と直角の印を確認しよう。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">点と直線の距離の公式で、MN を出す</span></div><p class="cite"><span class="cite-tag">使う公式</span>点と直線の距離 <math><mi>MN</mi><mo>=</mo><mfrac><mrow><mo>|</mo><mn>2</mn><mo>−</mo><mn>2</mn><mo>+</mo><mn>2</mn><mo>|</mo></mrow><msqrt><mrow><msup><mn>1</mn><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup></mrow></msqrt></mfrac><mo>=</mo><mfrac><mn>2</mn><msqrt><mn>2</mn></msqrt></mfrac></math>。このステップでは、中心Mと直線ℓを距離の公式に当てはめてMNの長さを求めます。</p>
+            <p>点 <math><mo>(</mo><msub><mi>x</mi><mn>0</mn></msub><mo>,</mo><msub><mi>y</mi><mn>0</mn></msub><mo>)</mo></math> と直線 <math><mi>ax</mi><mo>+</mo><mi>by</mi><mo>+</mo><mi>c</mi><mo>=</mo><mn>0</mn></math> の距離は <math><mfrac><mrow><mo>|</mo><msub><mi>ax</mi><mn>0</mn></msub><mo>+</mo><msub><mi>by</mi><mn>0</mn></msub><mo>+</mo><mi>c</mi><mo>|</mo></mrow><msqrt><mrow><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup></mrow></msqrt></mfrac></math>。中心 <math><mi>M</mi><mrow><mo>(</mo><mn>2</mn><mo>,</mo><mn>2</mn><mo>)</mo></mrow></math> と直線 <math><mi>x</mi><mo>−</mo><mi>y</mi><mo>+</mo><mn>2</mn><mo>=</mo><mn>0</mn></math> に当てはめると：</p>
+            <div class="formula-line"><math><mi>MN</mi><mo>=</mo><mfrac><mrow><mo>|</mo><mn>2</mn><mo>−</mo><mn>2</mn><mo>+</mo><mn>2</mn><mo>|</mo></mrow><msqrt><mrow><msup><mn>1</mn><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup></mrow></msqrt></mfrac><mo>=</mo><mfrac><mn>2</mn><msqrt><mn>2</mn></msqrt></mfrac></math></div>
+            <p>分母・分子に <math><msqrt><mn>2</mn></msqrt></math> をかけて有理化すると <math><mi>MN</mi><mo>=</mo><msqrt><mn>2</mn></msqrt></math> になる。図で <math><mi>N</mi></math> の位置と直角の印を確認しよう。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 5</span><span class="stage-title">三平方の定理で DN を出し、2倍して DE へ</span></div>
-            <p>直角三角形 <span class="m"><i>MDN</i></span>（直角は <span class="m"><i>N</i></span>）に注目する。斜辺 <span class="m"><i>MD</i></span> は円の半径だから <span class="m">2√2</span>、もう1辺は <span class="m"><i>MN</i> = √2</span>。三平方の定理より：</p>
-            <div class="formula-line"><span class="m"><i>DN</i> = √{(2√2)<sup>2</sup> − (√2)<sup>2</sup>} = √(8 − 2)</span></div>
-            <p><span class="m">√(8 − 2) = √6</span> だから <span class="m"><i>DN</i> = √6</span>。ヒント3で確認した通り、<span class="m"><i>N</i></span> は弦 <span class="m"><i>DE</i></span> の中点だから、最後に2倍すれば <span class="m"><i>DE</i></span> の長さが出るよ。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 5</span><span class="stage-title">三平方の定理で DN を出し、2倍して DE へ</span></div><p class="cite"><span class="cite-tag">使う公式</span>三平方の定理 <math><mi>DN</mi><mo>=</mo><msqrt><mo>{</mo></msqrt><msup><mrow><mo>(</mo><mn>2</mn><msqrt><mn>2</mn></msqrt><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><msup><mrow><mo>(</mo><msqrt><mn>2</mn></msqrt><mo>)</mo></mrow><mn>2</mn></msup><mo>}</mo><mo>=</mo><msqrt><mrow><mn>8</mn><mo>−</mo><mn>2</mn></mrow></msqrt></math>。このステップでは、直角三角形MDNに三平方の定理を使ってDNを求め、2倍してDEの長さにします。</p>
+            <p>直角三角形 <math><mi>MDN</mi><mo>(</mo></math>直角は <math><mi>N</mi><mo>)</mo></math>に注目する。<br>斜辺 <math><mi>MD</mi></math> は円の半径だから <math><mn>2</mn><msqrt><mn>2</mn></msqrt></math>、もう1辺は <math><mi>MN</mi><mo>=</mo><msqrt><mn>2</mn></msqrt></math>。三平方の定理より：</p>
+            <div class="formula-line"><math><mi>DN</mi><mo>=</mo><msqrt><mo>{</mo></msqrt><msup><mrow><mo>(</mo><mn>2</mn><msqrt><mn>2</mn></msqrt><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><msup><mrow><mo>(</mo><msqrt><mn>2</mn></msqrt><mo>)</mo></mrow><mn>2</mn></msup><mo>}</mo><mo>=</mo><msqrt><mrow><mn>8</mn><mo>−</mo><mn>2</mn></mrow></msqrt></math></div>
+            <p><math><msqrt><mrow><mn>8</mn><mo>−</mo><mn>2</mn></mrow></msqrt><mo>=</mo><msqrt><mn>6</mn></msqrt></math> だから <math><mi>DN</mi><mo>=</mo><msqrt><mn>6</mn></msqrt></math>。ヒント3で確認した通り、<math><mi>N</mi></math> は弦 <math><mi>DE</mi></math> の中点だから、最後に2倍すれば <math><mi>DE</mi></math> の長さが出るよ。</p>
           </article>
 
           <article class="stage answer" hidden>
-            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(2) の答え</span></div>
+            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(2) の答え</span></div><p class="cite"><span class="cite-tag">使う公式</span>点と直線の距離と三平方の定理 <math><mi>DE</mi><mo>=</mo><mn>2</mn><mo>·</mo><mi>DN</mi><mo>=</mo><mn>2</mn><msqrt><mn>6</mn></msqrt></math>。このステップでは、距離の公式でMNを求め、三平方の定理でDNを出して弦DEの長さをまとめます。</p>
             <ol class="steps">
-              <li>円 <span class="m"><i>C</i></span> の中心は直径 <span class="m"><i>AB</i></span> の中点 <span class="m"><i>M</i>(2, 2)</span>、半径は <span class="m"><i>AB</i></span> の半分で <span class="m">2√2</span>。よって <span class="m"><i>C</i></span>：<span class="m">(<i>x</i> − 2)<sup>2</sup> + (<i>y</i> − 2)<sup>2</sup> = 8</span>。</li>
-              <li>中心 <span class="m"><i>M</i></span> から直線 <span class="m"><i>ℓ</i></span>：<span class="m"><i>x</i> − <i>y</i> + 2 = 0</span> に下ろした垂線の足を <span class="m"><i>N</i></span> とすると、<span class="m"><i>MN</i> = <span class="frac"><span class="num">|2 − 2 + 2|</span><span class="den">√2</span></span> = √2</span>。</li>
-              <li>直角三角形 <span class="m"><i>MDN</i></span> で三平方の定理より <span class="m"><i>DN</i> = √(8 − 2) = √6</span>。<span class="m"><i>N</i></span> は弦 <span class="m"><i>DE</i></span> の中点だから、<span class="m"><i>DE</i> = 2·<i>DN</i> = 2√6</span>。</li>
+              <li>円 <math><mi>C</mi></math> の中心は直径 <math><mi>AB</mi></math> の中点 <math><mi>M</mi><mrow><mo>(</mo><mn>2</mn><mo>,</mo><mn>2</mn><mo>)</mo></mrow></math>、半径は <math><mi>AB</mi></math> の半分で <math><mn>2</mn><msqrt><mn>2</mn></msqrt></math>。よって <math><mi>C</mi></math>：<math><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mi>y</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>8</mn></math>。</li>
+              <li>中心 <math><mi>M</mi></math> から直線 <math><mi>ℓ</mi></math>：<math><mi>x</mi><mo>−</mo><mi>y</mi><mo>+</mo><mn>2</mn><mo>=</mo><mn>0</mn></math> に下ろした垂線の足を <math><mi>N</mi></math> とすると、<math><mi>MN</mi><mo>=</mo><mfrac><mrow><mo>|</mo><mn>2</mn><mo>−</mo><mn>2</mn><mo>+</mo><mn>2</mn><mo>|</mo></mrow><msqrt><mn>2</mn></msqrt></mfrac><mo>=</mo><msqrt><mn>2</mn></msqrt></math>。</li>
+              <li>直角三角形 <math><mi>MDN</mi></math> で三平方の定理より <math><mi>DN</mi><mo>=</mo><msqrt><mrow><mn>8</mn><mo>−</mo><mn>2</mn></mrow></msqrt><mo>=</mo><msqrt><mn>6</mn></msqrt></math>。<math><mi>N</mi></math> は弦 <math><mi>DE</mi></math> の中点だから、<math><mi>DE</mi><mo>=</mo><mn>2</mn><mo>·</mo><mi>DN</mi><mo>=</mo><mn>2</mn><msqrt><mn>6</mn></msqrt></math>。</li>
             </ol>
             <div class="ans-line">
-              <span class="ans-chip"><span class="kana">答</span><span class="m"><i>C</i>：(<i>x</i> − 2)<sup>2</sup> + (<i>y</i> − 2)<sup>2</sup> = 8</span></span>
-              <span class="ans-chip"><span class="m"><i>DE</i> = 2√6</span><span class="pts">7点</span></span>
+              <span class="ans-chip"><span class="kana">答</span><span class="m"><math><mi>C</mi></math>：<math><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mi>y</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>8</mn></math></span></span>
+              <span class="ans-chip"><math><mi>DE</mi><mo>=</mo><mn>2</mn><msqrt><mn>6</mn></msqrt></math><span class="pts">7点</span></span>
             </div>
-            <div class="point-box"><span class="pt">別解</span>円 <span class="m"><i>C</i></span> と直線 <span class="m"><i>ℓ</i></span> を連立して交点を求める方法でも解ける。<span class="m"><i>y</i> = <i>x</i> + 2</span> を円の式に代入すると <span class="m"><i>x</i><sup>2</sup> − 2<i>x</i> − 2 = 0</span> となり、交点は <span class="m"><i>D</i>(1 + √3, 3 + √3)</span>、<span class="m"><i>E</i>(1 − √3, 3 − √3)</span>。この2点の距離を計算しても <span class="m"><i>DE</i> = 2√6</span> が得られる。ただし計算は重めなので、垂線を使う解法が本筋だよ。</div>
+            <p class="cite"><span class="cite-tag">使う公式</span>円と直線の連立 <math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>x</mi><mo>−</mo><mn>2</mn><mo>=</mo><mn>0</mn></math>。別解では、円と直線を連立して交点の座標を出し、2点間の距離でDEを求めます。</p><div class="point-box"><span class="pt">別解</span>円 <math><mi>C</mi></math> と直線 <math><mi>ℓ</mi></math> を連立して交点を求める方法でも解ける。<math><mi>y</mi><mo>=</mo><mi>x</mi><mo>+</mo><mn>2</mn></math> を円の式に代入すると <math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>x</mi><mo>−</mo><mn>2</mn><mo>=</mo><mn>0</mn></math> となり、交点は <math><mi>D</mi><mrow><mo>(</mo><mn>1</mn><mo>+</mo><msqrt><mn>3</mn></msqrt><mo>,</mo><mn>3</mn><mo>+</mo><msqrt><mn>3</mn></msqrt><mo>)</mo></mrow></math>、<math><mi>E</mi><mrow><mo>(</mo><mn>1</mn><mo>−</mo><msqrt><mn>3</mn></msqrt><mo>,</mo><mn>3</mn><mo>−</mo><msqrt><mn>3</mn></msqrt><mo>)</mo></mrow></math>。この2点の距離を計算しても <math><mi>DE</mi><mo>=</mo><mn>2</mn><msqrt><mn>6</mn></msqrt></math> が得られる。ただし計算は重めなので、垂線を使う解法が本筋だよ。</div>
           </article>
         </div>
         </div>
@@ -522,31 +576,31 @@
           </div>
           <div class="defbox">
             <span class="dlabel">問題文（B4 共通）</span>
-            座標平面上に2点 <span class="m"><i>A</i>(4, 0)</span>、<span class="m"><i>B</i>(0, 4)</span> がある。線分 <span class="m"><i>AB</i></span> の中点を <span class="m"><i>M</i></span> とし、2点 <span class="m"><i>A</i></span>、<span class="m"><i>B</i></span> を直径の両端とする円を <span class="m"><i>C</i></span> とする。また、直線 <span class="m"><i>ℓ</i></span>：<span class="m"><i>y</i> = <i>x</i> + 2</span> があり、円 <span class="m"><i>C</i></span> と直線 <span class="m"><i>ℓ</i></span> の2つの交点を <span class="m"><i>D</i></span>、<span class="m"><i>E</i></span> とする。
+            座標平面上に2点 <math><mi>A</mi><mrow><mo>(</mo><mn>4</mn><mo>,</mo><mn>0</mn><mo>)</mo></mrow></math>、<math><mi>B</mi><mrow><mo>(</mo><mn>0</mn><mo>,</mo><mn>4</mn><mo>)</mo></mrow></math> がある。線分 <math><mi>AB</mi></math> の中点を <math><mi>M</mi></math> とし、2点 <math><mi>A</mi></math>、<math><mi>B</mi></math> を直径の両端とする円を <math><mi>C</mi></math> とする。また、直線 <math><mi>ℓ</mi></math>：<math><mi>y</mi><mo>=</mo><mi>x</mi><mo>+</mo><mn>2</mn></math> があり、円 <math><mi>C</mi></math> と直線 <math><mi>ℓ</mi></math> の2つの交点を <math><mi>D</mi></math>、<math><mi>E</mi></math> とする。
           </div>
-          <p class="q-body">(3) 点 <span class="m"><i>F</i>(6, 2)</span> とし、円 <span class="m"><i>C</i></span> 上に点 <span class="m"><i>Q</i></span> をとり、線分 <span class="m"><i>QF</i></span> の中点を <span class="m"><i>P</i></span> とする。点 <span class="m"><i>Q</i></span> が円 <span class="m"><i>C</i></span> 上を動くとき、点 <span class="m"><i>P</i></span> の描く図形の方程式を求めよ。また、このとき、<span class="m">△<i>DEP</i></span> の面積の最大値を求めよ。（(2) の結果： <span class="m"><i>C</i></span>：<span class="m">(<i>x</i> − 2)<sup>2</sup> + (<i>y</i> − 2)<sup>2</sup> = 8</span>、<span class="m"><i>DE</i> = 2√6</span>）</p>
+          <p class="q-body">(3) 点 <math><mi>F</mi><mrow><mo>(</mo><mn>6</mn><mo>,</mo><mn>2</mn><mo>)</mo></mrow></math> とし、円 <math><mi>C</mi></math> 上に点 <math><mi>Q</mi></math> をとり、線分 <math><mi>QF</mi></math> の中点を <math><mi>P</mi></math> とする。点 <math><mi>Q</mi></math> が円 <math><mi>C</mi></math> 上を動くとき、点 <math><mi>P</mi></math> の描く図形の方程式を求めよ。また、このとき、<math><mo>△</mo><mi>DEP</mi></math> の面積の最大値を求めよ。（(2) の結果： <math><mi>C</mi></math>：<math><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mi>y</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>8</mn></math>、<math><mi>DE</mi><mo>=</mo><mn>2</mn><msqrt><mn>6</mn></msqrt><mo>)</mo></math></p>
         </div>
 
         <div class="viz" id="viz3">
           <p class="viz-title">図で見る ― スライダーで Q を動かすと、中点 P が連動して動く</p>
           <svg id="fig3" viewBox="0 0 640 480" role="img" aria-label="円Cと直線エル、点Fが描かれた座標平面。スライダーで円C上の点Qを動かすと、線分QFの中点Pが連動して動く。ヒントを進めるとPの軌跡の円と、面積が最大になる位置関係が現れる"></svg>
-          <p class="viz-note" data-min="0" data-max="2">下のスライダーで点 <span class="m"><i>Q</i></span> を円 <span class="m"><i>C</i></span> の上で動かしてみよう。緑の点 <span class="m"><i>P</i></span> は線分 <span class="m"><i>QF</i></span> の中点。<span class="m"><i>P</i></span> はどんな図形の上を動いているように見えるかな。</p>
-          <p class="viz-note" data-min="3" data-max="3" hidden>緑の破線の円が、点 <span class="m"><i>P</i></span> の軌跡。中心は <span class="m"><i>R</i>(4, 2)</span>、半径は <span class="m">√2</span> で、円 <span class="m"><i>C</i></span> を「半分に縮めた」形になっている。</p>
-          <p class="viz-note" data-min="4" data-max="4" hidden><span class="m">△<i>DEP</i></span> の高さは、点 <span class="m"><i>P</i></span> から直線 <span class="m"><i>ℓ</i></span> へ下ろした垂線の長さ（金色の破線）。スライダーを動かすと、この長さが伸び縮みするのが分かる。</p>
-          <p class="viz-note" data-min="5" hidden>面積が最大になるのは、高さが最大のとき。<span class="m"><i>P</i></span>、軌跡の中心 <span class="m"><i>R</i></span>、垂線の足 <span class="m"><i>H</i></span> が一直線に並んだ位置（金色の実線）が、その場所だ。</p>
+          <p class="viz-note" data-min="0" data-max="2">下のスライダーで点 <math><mi>Q</mi></math> を円 <math><mi>C</mi></math> の上で動かしてみよう。緑の点 <math><mi>P</mi></math> は線分 <math><mi>QF</mi></math> の中点。<math><mi>P</mi></math> はどんな図形の上を動いているように見えるかな。</p>
+          <p class="viz-note" data-min="3" data-max="3" hidden>緑の破線の円が、点 <math><mi>P</mi></math> の軌跡。中心は <math><mi>R</mi><mrow><mo>(</mo><mn>4</mn><mo>,</mo><mn>2</mn><mo>)</mo></mrow></math>、半径は <math><msqrt><mn>2</mn></msqrt></math> で、円 <math><mi>C</mi></math> を「半分に縮めた」形になっている。</p>
+          <p class="viz-note" data-min="4" data-max="4" hidden><math><mo>△</mo><mi>DEP</mi></math> の高さは、点 <math><mi>P</mi></math> から直線 <math><mi>ℓ</mi></math> へ下ろした垂線の長さ（金色の破線）。スライダーを動かすと、この長さが伸び縮みするのが分かる。</p>
+          <p class="viz-note" data-min="5" hidden>面積が最大になるのは、高さが最大のとき。<math><mi>P</mi></math>、軌跡の中心 <math><mi>R</mi></math>、垂線の足 <math><mi>H</mi></math> が一直線に並んだ位置（金色の実線）が、その場所だ。</p>
           <div class="slider-box">
             <div class="slider-row">
-              <label for="qSlider">点Qの位置 <span class="m"><i>θ</i></span></label>
+              <label for="qSlider">点Qの位置 <math><mi>θ</mi></math></label>
               <input type="range" id="qSlider" min="0" max="360" step="1" value="40" />
-              <span class="slider-val" id="qVal">θ = 40°</span>
+              <span class="slider-val" id="qVal"><math><mi>θ</mi><mo>=</mo><mn>40</mn><mo>°</mo></math></span>
               <button class="preset-btn" type="button" id="qPreset" data-min="5" hidden>面積が最大になる位置に合わせる</button>
             </div>
             <p class="slider-msg" id="qMsg"></p>
           </div>
           <div class="readouts">
-            <span class="readout">Q <b id="roQ">―</b></span>
-            <span class="readout">P <b id="roP">―</b></span>
-            <span class="readout" data-min="4" hidden>Pと直線ℓの距離（高さ） <b id="roH">―</b></span>
+            <span class="readout"><math><mi>Q</mi></math><b id="roQ">―</b></span>
+            <span class="readout"><math><mi>P</mi></math><b id="roP">―</b></span>
+            <span class="readout" data-min="4" hidden>Pと直線ℓの距離（高さ<math><mo>)</mo></math><b id="roH">―</b></span>
           </div>
         </div>
         </div>
@@ -555,68 +609,72 @@
 
         <div class="stages">
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">動く点に文字を置く ― Q(s, t)、P(x, y)</span></div>
-            <p>軌跡の問題では、まず動く点に文字を割り当てる。円 <span class="m"><i>C</i></span> 上の点を <span class="m"><i>Q</i>(<i>s</i>, <i>t</i>)</span>、求めたい軌跡の点を <span class="m"><i>P</i>(<i>x</i>, <i>y</i>)</span> と置こう。</p>
-            <p><span class="m"><i>Q</i></span> は円 <span class="m"><i>C</i></span> の上にあるから、座標は円の方程式を満たす：</p>
-            <div class="formula-line"><span class="m">(<i>s</i> − 2)<sup>2</sup> + (<i>t</i> − 2)<sup>2</sup> = 8</span>　……①</div>
-            <p>ゴールは、<span class="m"><i>s</i></span>, <span class="m"><i>t</i></span> を消して <span class="m"><i>x</i></span>, <span class="m"><i>y</i></span> だけの式を作ること。そのために次は「<span class="m"><i>P</i></span> は <span class="m"><i>QF</i></span> の中点」という条件を式にするよ。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">動く点に文字を置く ― Q(s, t)、P(x, y)</span></div><p class="cite"><span class="cite-tag">使う定義</span>軌跡 <math><msup><mrow><mo>(</mo><mi>s</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mi>t</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>8</mn></math>。このステップでは、Qが円C上にあるという条件を式①として立て、軌跡を求める準備をします。</p>
+            <p>軌跡の問題では、まず動く点に文字を割り当てる。<br>円 <math><mi>C</mi></math> 上の点を <math><mi>Q</mi><mrow><mo>(</mo><mi>s</mi><mo>,</mo><mi>t</mi><mo>)</mo></mrow></math>、求めたい軌跡の点を <math><mi>P</mi><mrow><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>)</mo></mrow></math> と置こう。</p>
+            <p><math><mi>Q</mi></math> は円 <math><mi>C</mi></math> の上にあるから、座標は円の方程式を満たす：</p>
+            <div class="formula-line"><math><msup><mrow><mo>(</mo><mi>s</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mi>t</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>8</mn></math>　……①</div>
+            <p>ゴールは、<math><mi>s</mi><mo>,</mo><mi>t</mi></math> を消して <math><mi>x</mi><mo>,</mo><mi>y</mi></math> だけの式を作ること。そのために次は「<math><mi>P</mi></math> は <math><mi>QF</mi></math> の中点」という条件を式にするよ。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">中点の式を、s と t について解く</span></div>
-            <p><span class="m"><i>P</i>(<i>x</i>, <i>y</i>)</span> は <span class="m"><i>Q</i>(<i>s</i>, <i>t</i>)</span> と <span class="m"><i>F</i>(6, 2)</span> の中点だから、中点の公式（座標の平均）より：</p>
-            <div class="formula-line"><span class="m"><i>x</i> = <span class="frac"><span class="num"><i>s</i> + 6</span><span class="den">2</span></span></span>，　<span class="m"><i>y</i> = <span class="frac"><span class="num"><i>t</i> + 2</span><span class="den">2</span></span></span></div>
-            <p>この式を「<span class="m"><i>s</i> =</span>」「<span class="m"><i>t</i> =</span>」の形に変形する。両辺を2倍して、定数を移項すると：</p>
-            <div class="formula-line"><span class="m"><i>s</i> = 2<i>x</i> − 6</span>，　<span class="m"><i>t</i> = 2<i>y</i> − 2</span></div>
-            <p>これで <span class="m"><i>s</i></span>, <span class="m"><i>t</i></span> を <span class="m"><i>x</i></span>, <span class="m"><i>y</i></span> で表せた。次はこれを ① に代入するよ。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">中点の式を、s と t について解く</span></div><p class="cite"><span class="cite-tag">使う公式</span>中点の座標 <math><mi>x</mi><mo>=</mo><mfrac><mrow><mi>s</mi><mo>+</mo><mn>6</mn></mrow><mn>2</mn></mfrac><mo>,</mo></math>。このステップでは、中点の公式でPとQの座標を結び、sとtをxとyで表します。</p>
+            <p><math><mi>P</mi><mrow><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>)</mo></mrow></math> は <math><mi>Q</mi><mrow><mo>(</mo><mi>s</mi><mo>,</mo><mi>t</mi><mo>)</mo></mrow></math> と <math><mi>F</mi><mrow><mo>(</mo><mn>6</mn><mo>,</mo><mn>2</mn><mo>)</mo></mrow></math> の中点だから、中点の公式（座標の平均）より：</p>
+            <div class="formula-line"><math><mi>x</mi><mo>=</mo><mfrac><mrow><mi>s</mi><mo>+</mo><mn>6</mn></mrow><mn>2</mn></mfrac><mo>,</mo></math>　<math><mi>y</mi><mo>=</mo><mfrac><mrow><mi>t</mi><mo>+</mo><mn>2</mn></mrow><mn>2</mn></mfrac></math></div>
+            <p>この式を「<math><mi>s</mi><mo>=</mo></math>」「<math><mi>t</mi><mo>=</mo></math>」の形に変形する。両辺を2倍して、定数を移項すると：</p>
+            <div class="formula-line"><math><mi>s</mi><mo>=</mo><mn>2</mn><mi>x</mi><mo>−</mo><mn>6</mn><mo>,</mo></math>　<math><mi>t</mi><mo>=</mo><mn>2</mn><mi>y</mi><mo>−</mo><mn>2</mn></math></div>
+            <p>これで <math><mi>s</mi><mo>,</mo><mi>t</mi></math> を <math><mi>x</mi><mo>,</mo><mi>y</mi></math> で表せた。次はこれを ① に代入するよ。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">① に代入して整理すると、P の軌跡が出る</span></div>
-            <p>① の <span class="m"><i>s</i></span> に <span class="m">2<i>x</i> − 6</span>、<span class="m"><i>t</i></span> に <span class="m">2<i>y</i> − 2</span> を代入する。まず中身を計算すると <span class="m"><i>s</i> − 2 = 2<i>x</i> − 8</span>、<span class="m"><i>t</i> − 2 = 2<i>y</i> − 4</span> だから：</p>
-            <div class="formula-line"><span class="m">(2<i>x</i> − 8)<sup>2</sup> + (2<i>y</i> − 4)<sup>2</sup> = 8</span></div>
-            <p>各項から <span class="m">2</span> をくくり出すと <span class="m">2<i>x</i> − 8 = 2(<i>x</i> − 4)</span>、<span class="m">2<i>y</i> − 4 = 2(<i>y</i> − 2)</span>。2乗すると係数 <span class="m">4</span> が出るので：</p>
-            <div class="formula-line"><span class="m">4(<i>x</i> − 4)<sup>2</sup> + 4(<i>y</i> − 2)<sup>2</sup> = 8</span></div>
-            <p>両辺を <span class="m">4</span> で割れば、円の標準形になる。図に軌跡の円が現れたよ。中心と半径を読み取ってみよう。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">① に代入して整理すると、P の軌跡が出る</span></div><p class="cite"><span class="cite-tag">使う性質</span>軌跡の求め方（代入） <math><mn>4</mn><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>4</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><mn>4</mn><msup><mrow><mo>(</mo><mi>y</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>8</mn></math>。このステップでは、sとtの式を①に代入して文字を消し、Pの軌跡の方程式を出します。</p>
+            <p>① の <math><mi>s</mi></math> に <math><mn>2</mn><mi>x</mi><mo>−</mo><mn>6</mn></math>、<math><mi>t</mi></math> に <math><mn>2</mn><mi>y</mi><mo>−</mo><mn>2</mn></math> を代入する。<br>まず中身を計算すると <math><mi>s</mi><mo>−</mo><mn>2</mn><mo>=</mo><mn>2</mn><mi>x</mi><mo>−</mo><mn>8</mn></math>、<math><mi>t</mi><mo>−</mo><mn>2</mn><mo>=</mo><mn>2</mn><mi>y</mi><mo>−</mo><mn>4</mn></math> だから：</p>
+            <div class="formula-line"><math><msup><mrow><mo>(</mo><mn>2</mn><mi>x</mi><mo>−</mo><mn>8</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mn>2</mn><mi>y</mi><mo>−</mo><mn>4</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>8</mn></math></div>
+            <p>各項から <math><mn>2</mn></math> をくくり出すと <math><mn>2</mn><mi>x</mi><mo>−</mo><mn>8</mn><mo>=</mo><mn>2</mn><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>4</mn><mo>)</mo></mrow></math>、<math><mn>2</mn><mi>y</mi><mo>−</mo><mn>4</mn><mo>=</mo><mn>2</mn><mrow><mo>(</mo><mi>y</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow></math>。2乗すると係数 <math><mn>4</mn></math> が出るので：</p>
+            <div class="formula-line"><math><mn>4</mn><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>4</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><mn>4</mn><msup><mrow><mo>(</mo><mi>y</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>8</mn></math></div>
+            <p>両辺を <math><mn>4</mn></math> で割れば、円の標準形になる。図に軌跡の円が現れたよ。中心と半径を読み取ってみよう。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">面積は「底辺DEは固定、高さだけが動く」と見る</span></div>
-            <p>後半は <span class="m">△<i>DEP</i></span> の面積の最大値。底辺 <span class="m"><i>DE</i></span> は直線 <span class="m"><i>ℓ</i></span> の上の弦で、長さは (2) で求めた <span class="m">2√6</span> のまま動かない。</p>
-            <p>三角形の面積は <span class="m"><span class="frac"><span class="num">1</span><span class="den">2</span></span> × 底辺 × 高さ</span>。底辺が固定なら、面積が最大になるのは<strong>高さが最大のとき</strong>。ここで高さとは、点 <span class="m"><i>P</i></span> から直線 <span class="m"><i>ℓ</i></span>（直線 <span class="m"><i>DE</i></span>）までの距離のことだ。</p>
-            <p class="mini">図のスライダーで <span class="m"><i>Q</i></span> を動かすと、金色の破線（＝高さ）が伸び縮みする。一番長くなるのは、<span class="m"><i>P</i></span> が直線 <span class="m"><i>ℓ</i></span> から一番遠くに来たときだね。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">面積は「底辺DEは固定、高さだけが動く」と見る</span></div><p class="cite"><span class="cite-tag">使う公式</span>三角形の面積 <math><mo>△</mo><mi>DEP</mi></math>。このステップでは、底辺DEが固定されているので、高さが最大のときに面積も最大になると考えます。</p>
+            <p>後半は <math><mo>△</mo><mi>DEP</mi></math> の面積の最大値。底辺 <math><mi>DE</mi></math> は直線 <math><mi>ℓ</mi></math> の上の弦で、長さは (2) で求めた <math><mn>2</mn><msqrt><mn>6</mn></msqrt></math> のまま動かない。<br></p>
+            <p>三角形の面積は <span class="m"><math><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>×</mo></math>底辺 × 高さ</span>。底辺が固定なら、面積が最大になるのは<strong>高さが最大のとき</strong>。ここで高さとは、点 <math><mi>P</mi></math> から直線 <math><mi>ℓ</mi><mo>(</mo></math>直線 <math><mi>DE</mi><mo>)</mo></math>までの距離のことだ。</p>
+            <p class="mini">図のスライダーで <math><mi>Q</mi></math> を動かすと、金色の破線（＝高さ）が伸び縮みする。一番長くなるのは、<math><mi>P</mi></math> が直線 <math><mi>ℓ</mi></math> から一番遠くに来たときだね。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 5</span><span class="stage-title">距離の最大は「中心からの距離 ＋ 半径」</span></div>
-            <p>点 <span class="m"><i>P</i></span> は、ヒント3で求めた軌跡の円（中心 <span class="m"><i>R</i>(4, 2)</span>、半径 <span class="m">√2</span>）の上を動く。まず、中心 <span class="m"><i>R</i></span> から直線 <span class="m"><i>ℓ</i></span>：<span class="m"><i>x</i> − <i>y</i> + 2 = 0</span> までの距離 <span class="m"><i>RH</i></span>（<span class="m"><i>H</i></span> は垂線の足）を、点と直線の距離の公式で出す：</p>
-            <div class="formula-line"><span class="m"><i>RH</i> = <span class="frac"><span class="num">|4 − 2 + 2|</span><span class="den">√(1<sup>2</sup> + (−1)<sup>2</sup>)</span></span> = <span class="frac"><span class="num">4</span><span class="den">√2</span></span> = 2√2</span></div>
-            <p><span class="m"><i>P</i></span> は中心 <span class="m"><i>R</i></span> から半径 <span class="m">√2</span> の範囲で動けるから、直線 <span class="m"><i>ℓ</i></span> からの距離が最大になるのは、<span class="m"><i>P</i></span>、<span class="m"><i>R</i></span>、<span class="m"><i>H</i></span> が<strong>一直線に並び</strong>、<span class="m"><i>P</i></span> が <span class="m"><i>R</i></span> の向こう側に来たとき。そのとき距離は：</p>
-            <div class="formula-line">距離の最大値 ＝ <span class="m"><i>RH</i> + 半径 = 2√2 + √2 = 3√2</span></div>
+            <div class="stage-head"><span class="stage-badge">ヒント 5</span><span class="stage-title">距離の最大は「中心からの距離 ＋ 半径」</span></div><p class="cite"><span class="cite-tag">使う性質</span>円上の点と直線の距離の最大値 <math displaystyle="true"><mi>RH</mi><mo>=</mo><mfrac><mrow><mo>|</mo><mn>4</mn><mo>−</mo><mn>2</mn><mo>+</mo><mn>2</mn><mo>|</mo></mrow><msqrt><mrow><msup><mn>1</mn><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup></mrow></msqrt></mfrac></math>。このステップでは、中心Rと直線の距離に半径を足したものが、Pと直線の距離の最大値になることを使います。</p>
+            <p>点 <math><mi>P</mi></math> は、ヒント3で求めた軌跡の円（中心 <math><mi>R</mi><mrow><mo>(</mo><mn>4</mn><mo>,</mo><mn>2</mn><mo>)</mo></mrow></math>、半径 <math><msqrt><mn>2</mn></msqrt><mo>)</mo></math>の上を動く。まず、中心 <math><mi>R</mi></math> から直線 <math><mi>ℓ</mi></math>：<math><mi>x</mi><mo>−</mo><mi>y</mi><mo>+</mo><mn>2</mn><mo>=</mo><mn>0</mn></math> までの距離 <math><mi>RH</mi><mo>(</mo><mi>H</mi></math> は垂線の足）を、点と直線の距離の公式で出す：</p>
+            <div class="formula-line"><div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>RH</mi><mo>=</mo><mfrac><mrow><mo>|</mo><mn>4</mn><mo>−</mo><mn>2</mn><mo>+</mo><mn>2</mn><mo>|</mo></mrow><msqrt><mrow><msup><mn>1</mn><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup></mrow></msqrt></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>RH</mi></mphantom><mo>=</mo><mfrac><mn>4</mn><msqrt><mn>2</mn></msqrt></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>RH</mi></mphantom><mo>=</mo><mn>2</mn><msqrt><mn>2</mn></msqrt></math></div>
+</div></div>
+            <p><math><mi>P</mi></math> は中心 <math><mi>R</mi></math> から半径 <math><msqrt><mn>2</mn></msqrt></math> の範囲で動けるから、直線 <math><mi>ℓ</mi></math> からの距離が最大になるのは、<math><mi>P</mi></math>、<math><mi>R</mi></math>、<math><mi>H</mi></math> が<strong>一直線に並び</strong>、<math><mi>P</mi></math> が <math><mi>R</mi></math> の向こう側に来たとき。<br>そのとき距離は：</p>
+            <div class="formula-line">距離の最大値 ＝ <span class="m"><math><mi>RH</mi><mo>+</mo></math>半径<math><mo>=</mo><mn>2</mn><msqrt><mn>2</mn></msqrt><mo>+</mo><msqrt><mn>2</mn></msqrt><mo>=</mo><mn>3</mn><msqrt><mn>2</mn></msqrt></math></span></div>
             <p class="mini">図の金色の実線がその位置関係だ。「最大になる位置に合わせる」ボタンで、スライダーでも確かめてみよう。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 6</span><span class="stage-title">面積の式に、底辺と高さの最大値を入れる</span></div>
-            <p>材料はそろった。底辺 <span class="m"><i>DE</i> = 2√6</span>、高さの最大値 <span class="m">3√2</span> を、面積の公式に入れる：</p>
-            <div class="formula-line"><span class="m">△<i>DEP</i></span> の面積の最大値 ＝ <span class="m"><span class="frac"><span class="num">1</span><span class="den">2</span></span> · 2√6 · 3√2</span></div>
-            <p>計算の途中では <span class="m">√6 · √2 = √12 = 2√3</span> を使うよ。最後まで自分で計算して、答えを出してみよう。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 6</span><span class="stage-title">面積の式に、底辺と高さの最大値を入れる</span></div><p class="cite"><span class="cite-tag">使う公式</span>三角形の面積 <math><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>·</mo><mn>2</mn><msqrt><mn>6</mn></msqrt><mo>·</mo><mn>3</mn><msqrt><mn>2</mn></msqrt></math>。このステップでは、底辺DEと高さの最大値を面積の公式に入れて、面積の最大値を計算します。</p>
+            <p>材料はそろった。<br>底辺 <math><mi>DE</mi><mo>=</mo><mn>2</mn><msqrt><mn>6</mn></msqrt></math>、高さの最大値 <math><mn>3</mn><msqrt><mn>2</mn></msqrt></math> を、面積の公式に入れる：</p>
+            <div class="formula-line"><math><mo>△</mo><mi>DEP</mi></math> の面積の最大値<math><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>·</mo><mn>2</mn><msqrt><mn>6</mn></msqrt><mo>·</mo><mn>3</mn><msqrt><mn>2</mn></msqrt></math></div>
+            <p>計算の途中では <math><msqrt><mn>6</mn></msqrt><mo>·</mo><msqrt><mn>2</mn></msqrt><mo>=</mo><msqrt><mn>12</mn></msqrt><mo>=</mo><mn>2</mn><msqrt><mn>3</mn></msqrt></math> を使うよ。最後まで自分で計算して、答えを出してみよう。</p>
           </article>
 
           <article class="stage answer" hidden>
-            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(3) の答え</span></div>
+            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(3) の答え</span></div><p class="cite"><span class="cite-tag">使う公式</span>中点の座標 <math><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>4</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mi>y</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>2</mn></math>。このステップでは、中点の式を円Cの式に代入して軌跡を求め、距離の最大値から面積の最大値を出します。</p>
             <ol class="steps">
-              <li><span class="m"><i>Q</i>(<i>s</i>, <i>t</i>)</span>、<span class="m"><i>P</i>(<i>x</i>, <i>y</i>)</span> と置く。<span class="m"><i>Q</i></span> は円 <span class="m"><i>C</i></span> 上にあるから <span class="m">(<i>s</i> − 2)<sup>2</sup> + (<i>t</i> − 2)<sup>2</sup> = 8</span> ……①。</li>
-              <li><span class="m"><i>P</i></span> は線分 <span class="m"><i>QF</i></span> の中点だから <span class="m"><i>x</i> = <span class="frac"><span class="num"><i>s</i> + 6</span><span class="den">2</span></span></span>、<span class="m"><i>y</i> = <span class="frac"><span class="num"><i>t</i> + 2</span><span class="den">2</span></span></span>。よって <span class="m"><i>s</i> = 2<i>x</i> − 6</span>、<span class="m"><i>t</i> = 2<i>y</i> − 2</span>。</li>
-              <li>これらを ① に代入すると <span class="m">4(<i>x</i> − 4)<sup>2</sup> + 4(<i>y</i> − 2)<sup>2</sup> = 8</span>、整理して <span class="m">(<i>x</i> − 4)<sup>2</sup> + (<i>y</i> − 2)<sup>2</sup> = 2</span>。よって、点 <span class="m"><i>P</i></span> の描く図形は中心 <span class="m">(4, 2)</span>、半径 <span class="m">√2</span> の円である。</li>
-              <li><span class="m">△<i>DEP</i></span> は底辺 <span class="m"><i>DE</i> = 2√6</span> が固定だから、高さ（点 <span class="m"><i>P</i></span> と直線 <span class="m"><i>ℓ</i></span> の距離）が最大のとき面積も最大になる。軌跡の中心 <span class="m"><i>R</i>(4, 2)</span> と直線 <span class="m"><i>ℓ</i></span> の距離は <span class="m"><span class="frac"><span class="num">|4 − 2 + 2|</span><span class="den">√2</span></span> = 2√2</span> だから、距離の最大値は <span class="m">2√2 + √2 = 3√2</span>（<span class="m"><i>P</i></span>, <span class="m"><i>R</i></span>, <span class="m"><i>H</i></span> が一直線に並ぶとき）。</li>
-              <li>したがって面積の最大値は <span class="m"><span class="frac"><span class="num">1</span><span class="den">2</span></span> · 2√6 · 3√2 = 6√3</span>。</li>
+              <li><math><mi>Q</mi><mrow><mo>(</mo><mi>s</mi><mo>,</mo><mi>t</mi><mo>)</mo></mrow></math>、<math><mi>P</mi><mrow><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>)</mo></mrow></math> と置く。<math><mi>Q</mi></math> は円 <math><mi>C</mi></math> 上にあるから <math><msup><mrow><mo>(</mo><mi>s</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mi>t</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>8</mn><mo>…</mo><mo>…</mo><mo>①</mo></math>。</li>
+              <li><math><mi>P</mi></math> は線分 <math><mi>QF</mi></math> の中点だから <math><mi>x</mi><mo>=</mo><mfrac><mrow><mi>s</mi><mo>+</mo><mn>6</mn></mrow><mn>2</mn></mfrac></math>、<math><mi>y</mi><mo>=</mo><mfrac><mrow><mi>t</mi><mo>+</mo><mn>2</mn></mrow><mn>2</mn></mfrac></math>。よって <math><mi>s</mi><mo>=</mo><mn>2</mn><mi>x</mi><mo>−</mo><mn>6</mn></math>、<math><mi>t</mi><mo>=</mo><mn>2</mn><mi>y</mi><mo>−</mo><mn>2</mn></math>。</li>
+              <li>これらを ① に代入すると <math><mn>4</mn><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>4</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><mn>4</mn><msup><mrow><mo>(</mo><mi>y</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>8</mn></math>、整理して <math><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>4</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mi>y</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>2</mn></math>。よって、点 <math><mi>P</mi></math> の描く図形は中心 <math><mo>(</mo><mn>4</mn><mo>,</mo><mn>2</mn><mo>)</mo></math>、半径 <math><msqrt><mn>2</mn></msqrt></math> の円である。</li>
+              <li><math><mo>△</mo><mi>DEP</mi></math> は底辺 <math><mi>DE</mi><mo>=</mo><mn>2</mn><msqrt><mn>6</mn></msqrt></math> が固定だから、高さ（点 <math><mi>P</mi></math> と直線 <math><mi>ℓ</mi></math> の距離）が最大のとき面積も最大になる。軌跡の中心 <math><mi>R</mi><mrow><mo>(</mo><mn>4</mn><mo>,</mo><mn>2</mn><mo>)</mo></mrow></math> と直線 <math><mi>ℓ</mi></math> の距離は <math><mfrac><mrow><mo>|</mo><mn>4</mn><mo>−</mo><mn>2</mn><mo>+</mo><mn>2</mn><mo>|</mo></mrow><msqrt><mn>2</mn></msqrt></mfrac><mo>=</mo><mn>2</mn><msqrt><mn>2</mn></msqrt></math> だから、距離の最大値は <math><mn>2</mn><msqrt><mn>2</mn></msqrt><mo>+</mo><msqrt><mn>2</mn></msqrt><mo>=</mo><mn>3</mn><msqrt><mn>2</mn></msqrt><mo>(</mo><mi>P</mi><mo>,</mo><mi>R</mi><mo>,</mo><mi>H</mi></math> が一直線に並ぶとき）。</li>
+              <li>したがって面積の最大値は <math><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>·</mo><mn>2</mn><msqrt><mn>6</mn></msqrt><mo>·</mo><mn>3</mn><msqrt><mn>2</mn></msqrt><mo>=</mo><mn>6</mn><msqrt><mn>3</mn></msqrt></math>。</li>
             </ol>
             <div class="ans-line">
-              <span class="ans-chip"><span class="kana">答</span><span class="m">(<i>x</i> − 4)<sup>2</sup> + (<i>y</i> − 2)<sup>2</sup> = 2</span></span>
-              <span class="ans-chip"><span class="kana">面積の最大値</span><span class="m">6√3</span><span class="pts">8点</span></span>
+              <span class="ans-chip"><span class="kana">答</span><math><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>4</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mi>y</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>2</mn></math></span>
+              <span class="ans-chip"><span class="kana">面積の最大値</span><math><mn>6</mn><msqrt><mn>3</mn></msqrt></math><span class="pts">8点</span></span>
             </div>
-            <div class="point-box"><span class="pt">ポイント</span>軌跡が円 <span class="m"><i>C</i></span> の「半分の縮図」になるのは、中点は座標を平均（＝半分）にする操作だからだ。面積の最大値では、「動く点 <span class="m"><i>P</i></span> と直線の距離の最大 ＝ 中心と直線の距離 ＋ 半径」という、円の最大・最小の型もセットで覚えておこう。なお、最大になるのは <span class="m"><i>Q</i></span> が点 <span class="m"><i>A</i>(4, 0)</span> の位置にあるときで、そのとき <span class="m"><i>P</i>(5, 1)</span> になることも図で確認できるよ。</div>
+            <p class="cite"><span class="cite-tag">使う性質</span>円上の点と直線の距離の最大値 <math><mi>R</mi><mrow><mo>(</mo><mn>4</mn><mo>,</mo><mn>2</mn><mo>)</mo></mrow></math>。まとめでも、距離の最大値は「中心と直線の距離＋半径」で求める型を使います。</p><div class="point-box"><span class="pt">ポイント</span>軌跡が円 <math><mi>C</mi></math> の「半分の縮図」になるのは、中点は座標を平均（＝半分）にする操作だからだ。面積の最大値では、「動く点 <math><mi>P</mi></math> と直線の距離の最大 ＝ 中心と直線の距離 ＋ 半径」という、円の最大・最小の型もセットで覚えておこう。なお、最大になるのは <math><mi>Q</mi></math> が点 <math><mi>A</mi><mrow><mo>(</mo><mn>4</mn><mo>,</mo><mn>0</mn><mo>)</mo></mrow></math> の位置にあるときで、そのとき <math><mi>P</mi><mrow><mo>(</mo><mn>5</mn><mo>,</mo><mn>1</mn><mo>)</mo></mrow></math> になることも図で確認できるよ。</div>
           </article>
         </div>
         </div>
