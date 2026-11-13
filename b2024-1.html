@@ -335,7 +335,57 @@
         /* 操作バーは右カラムの下に置き、常に見える位置に保つ */
         .problem .controls { grid-column: 2; grid-row: 2; margin-top: 12px; }
       }
-    </style>
+    
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+
+      /* 積分記号は大きめに表示する（元のページの可読化デザインに合わせる） */
+      math .int-op{font-size:1.35em}
+      /* calc-12 世代（.card）と calc-18 世代（.unit）の、図のない問題の全幅化 */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig>.step{position:static !important}
+        .card.nofig>.steps-wrap{max-height:none !important;overflow:visible !important}
+        .unit.nofig{display:block !important}
+        .unit.nofig>.qside{position:static !important}
+        .unit.nofig>.steps-stack{max-height:none !important;overflow:visible !important}
+      }
+</style>
   </head>
   <body>
     <div class="wrap">
@@ -382,15 +432,15 @@
             <span class="q-num">(1)</span><span class="q-title">分母の有理化</span>
             <span class="q-points">配点 4点（各2点）</span>
           </div>
-          <p class="q-body"><span class="m"><i>a</i>=<span class="frac"><span class="num">4</span><span class="den">3+<span class="sqrt">√<span class="rad">5</span></span></span></span></span> の分母を有理化すると <span class="m"><i>a</i>=</span><span class="blank" data-kana="ア" data-ans="3−√5">ア</span>であり、<span class="m"><i>a</i><sup>2</sup>+2<span class="sqrt">√<span class="rad">5</span></span><i>a</i></span> の値は<span class="blank" data-kana="イ" data-ans="4">イ</span>である。</p>
+          <p class="q-body"><math><mi>a</mi><mo>=</mo><mfrac><mn>4</mn><mrow><mn>3</mn><mo>+</mo><msqrt><mn>5</mn></msqrt></mrow></mfrac></math> の分母を有理化すると <math><mi>a</mi><mo>=</mo></math><span class="blank" data-kana="ア" data-ans="3−√5">ア</span>であり、<math><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><msqrt><mn>5</mn></msqrt><mi>a</mi></math> の値は<span class="blank" data-kana="イ" data-ans="4">イ</span>である。</p>
         </div>
 
         <div class="viz" id="viz1">
           <p class="viz-title">図で見る ― 有理化の計算と、a の大きさ</p>
-          <div class="expr"><i>a</i> = <span class="frac"><span class="num">4</span><span class="den">3+√5</span></span></div>
-          <div class="expr-sub" data-min="1" hidden>分母・分子に <span class="hl">3−√5</span> を掛ける → <i>a</i> = <span class="frac"><span class="num">4(3−√5)</span><span class="den">(3+√5)(3−√5)</span></span></div>
-          <div class="expr-sub" data-min="2" hidden>分母は (3+√5)(3−√5) = 9−5 = <span class="hlb">4</span></div>
-          <div class="expr-sub" data-min="3" hidden>約分すると <i>a</i> = <span class="frac"><span class="num">4(3−√5)</span><span class="den">4</span></span> = <span class="hl">3−√5</span></div>
+          <div class="expr"><math><mi>a</mi><mo>=</mo><mfrac><mn>4</mn><mrow><mn>3</mn><mo>+</mo><msqrt><mn>5</mn></msqrt></mrow></mfrac></math></div>
+          <div class="expr-sub" data-min="1" hidden>分母・分子に <span class="hl"><math><mn>3</mn><mo>−</mo><msqrt><mn>5</mn></msqrt></math></span> を掛ける<math><mo>→</mo><mi>a</mi><mo>=</mo><mfrac><mrow><mn>4</mn><mrow><mo>(</mo><mn>3</mn><mo>−</mo><msqrt><mn>5</mn></msqrt><mo>)</mo></mrow></mrow><mrow><mrow><mo>(</mo><mn>3</mn><mo>+</mo><msqrt><mn>5</mn></msqrt><mo>)</mo></mrow><mrow><mo>(</mo><mn>3</mn><mo>−</mo><msqrt><mn>5</mn></msqrt><mo>)</mo></mrow></mrow></mfrac></math></div>
+          <div class="expr-sub" data-min="2" hidden>分母は<math><mrow><mo>(</mo><mn>3</mn><mo>+</mo><msqrt><mn>5</mn></msqrt><mo>)</mo></mrow><mrow><mo>(</mo><mn>3</mn><mo>−</mo><msqrt><mn>5</mn></msqrt><mo>)</mo></mrow><mo>=</mo><mn>9</mn><mo>−</mo><mn>5</mn><mo>=</mo></math><span class="hlb">4</span></div>
+          <div class="expr-sub" data-min="3" hidden>約分すると <math><mi>a</mi><mo>=</mo><mfrac><mrow><mn>4</mn><mrow><mo>(</mo><mn>3</mn><mo>−</mo><msqrt><mn>5</mn></msqrt><mo>)</mo></mrow></mrow><mn>4</mn></mfrac><mo>=</mo></math><span class="hl"><math><mn>3</mn><mo>−</mo><msqrt><mn>5</mn></msqrt></math></span></div>
           <svg viewBox="0 0 640 120" role="img" aria-label="数直線上の3マイナスルート5の位置" style="margin-top:14px">
             <line x1="40" y1="72" x2="600" y2="72" style="stroke:var(--line-strong)" stroke-width="2"></line>
             <g stroke-width="1.5" style="stroke:var(--line-strong)">
@@ -407,7 +457,7 @@
               <text x="183" y="48" font-size="15" font-weight="900" text-anchor="middle" style="fill:var(--accent-deep)">a = 3−√5 ≒ 0.76</text>
             </g>
           </svg>
-          <p class="expr-note" data-min="3" hidden>√5 は 2.24 くらい。だから a = 3−√5 は 0 と 1 の間にある数だよ。</p>
+          <p class="expr-note" data-min="3" hidden><math><msqrt><mn>5</mn></msqrt></math>は 2.24 くらい。だから<math><mi>a</mi><mo>=</mo><mn>3</mn><mo>−</mo><msqrt><mn>5</mn></msqrt></math>は 0 と 1 の間にある数だよ。</p>
         </div>
 
         <p class="think-note">まずはノートで有理化をやってみよう。詰まったら下の「次へ」でヒントを1つ開く。</p>
@@ -415,49 +465,63 @@
 
         <div class="stages">
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">有理化の合言葉：「共役」を掛ける</span></div>
-            <p><strong>分母の有理化</strong>を噛み砕くと、「分母にある √ を消すこと」。消すための道具が、符号を1か所だけ変えた相方の数 <span class="m">3−<span class="sqrt">√<span class="rad">5</span></span></span>。これを「<strong>共役（きょうやく）</strong>」という。</p>
-            <p>やることは1つだけ：<strong>分母にも分子にも</strong> <span class="m">3−<span class="sqrt">√<span class="rad">5</span></span></span> を掛ける。両方に掛けるから、分数の値そのものは変わらないよ。上の図に式が出たので、まずこの形をノートに書いてみよう。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">有理化の合言葉：「共役」を掛ける</span></div><p class="cite"><span class="cite-tag">使う定義</span>共役 <math><mn>3</mn><mo>−</mo><msqrt><mn>5</mn></msqrt></math>。分母の根号を消すために、この共役を分母と分子の両方に掛ける。</p>
+            <p><strong>分母の有理化</strong>を噛み砕くと、「分母にある<math><mo>√</mo></math>を消すこと」。<br>消すための道具が、符号を1か所だけ変えた相方の数 <math><mn>3</mn><mo>−</mo><msqrt><mn>5</mn></msqrt></math>。<br>これを「<strong>共役（きょうやく）</strong>」という。</p>
+            <p>やることは1つだけ：<strong>分母にも分子にも</strong> <math><mn>3</mn><mo>−</mo><msqrt><mn>5</mn></msqrt></math> を掛ける。<br>両方に掛けるから、分数の値そのものは変わらないよ。<br>上の図に式が出たので、まずこの形をノートに書いてみよう。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">分母だけ先に計算する</span></div>
-            <p>分母は <span class="m">(3+<span class="sqrt">√<span class="rad">5</span></span>)(3−<span class="sqrt">√<span class="rad">5</span></span>)</span>。「和と差の積」の公式 <span class="m">(○+△)(○−△)=○<sup>2</sup>−△<sup>2</sup></span> が使える形だね。</p>
-            <div class="formula-line"><span class="m">(3+<span class="sqrt">√<span class="rad">5</span></span>)(3−<span class="sqrt">√<span class="rad">5</span></span>) = 3<sup>2</sup> − (<span class="sqrt">√<span class="rad">5</span></span>)<sup>2</sup> = 9 − 5 = 4</span></div>
-            <p>√ が消えて、分母はただの <span class="m">4</span> になった。これが共役を掛ける狙いだよ。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">分母だけ先に計算する</span></div><p class="cite"><span class="cite-tag">使う公式</span>和と差の積 <math><mrow><mo>(</mo><mo>○</mo><mo>+</mo><mo>△</mo><mo>)</mo></mrow><mrow><mo>(</mo><mo>○</mo><mo>−</mo><mo>△</mo><mo>)</mo></mrow><mo>=</mo><msup><mo>○</mo><mn>2</mn></msup><mo>−</mo><msup><mo>△</mo><mn>2</mn></msup></math>。分母の積はこの公式で計算でき、根号が消える。</p>
+            <p>分母は <math><mrow><mo>(</mo><mn>3</mn><mo>+</mo><msqrt><mn>5</mn></msqrt><mo>)</mo></mrow><mrow><mo>(</mo><mn>3</mn><mo>−</mo><msqrt><mn>5</mn></msqrt><mo>)</mo></mrow></math>。<br>「和と差の積」の公式 <math><mrow><mo>(</mo><mo>○</mo><mo>+</mo><mo>△</mo><mo>)</mo></mrow><mrow><mo>(</mo><mo>○</mo><mo>−</mo><mo>△</mo><mo>)</mo></mrow><mo>=</mo><msup><mo>○</mo><mn>2</mn></msup><mo>−</mo><msup><mo>△</mo><mn>2</mn></msup></math> が使える形だね。</p>
+            <div class="formula-line"><div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mrow><mo>(</mo><mn>3</mn><mo>+</mo><msqrt><mn>5</mn></msqrt><mo>)</mo></mrow><mrow><mo>(</mo><mn>3</mn><mo>−</mo><msqrt><mn>5</mn></msqrt><mo>)</mo></mrow><mo>=</mo><msup><mn>3</mn><mn>2</mn></msup><mo>−</mo><msup><mrow><mo>(</mo><msqrt><mn>5</mn></msqrt><mo>)</mo></mrow><mn>2</mn></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mrow><mo>(</mo><mn>3</mn><mo>+</mo><msqrt><mn>5</mn></msqrt><mo>)</mo></mrow><mrow><mo>(</mo><mn>3</mn><mo>−</mo><msqrt><mn>5</mn></msqrt><mo>)</mo></mrow></mphantom><mo>=</mo><mn>9</mn><mo>−</mo><mn>5</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mrow><mo>(</mo><mn>3</mn><mo>+</mo><msqrt><mn>5</mn></msqrt><mo>)</mo></mrow><mrow><mo>(</mo><mn>3</mn><mo>−</mo><msqrt><mn>5</mn></msqrt><mo>)</mo></mrow></mphantom><mo>=</mo><mn>4</mn></math></div>
+</div></div>
+            <p><math><mo>√</mo></math>が消えて、分母はただの <math><mn>4</mn></math> になった。これが共役を掛ける狙いだよ。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">約分して a の姿を出す</span></div>
-            <p>分子は <span class="m">4(3−<span class="sqrt">√<span class="rad">5</span></span>)</span>、分母は <span class="m">4</span>。上下の <span class="m">4</span> で約分すると：</p>
-            <div class="formula-line"><span class="m"><i>a</i> = <span class="frac"><span class="num">4(3−√5)</span><span class="den">4</span></span> = 3 − <span class="sqrt">√<span class="rad">5</span></span></span></div>
-            <p>これで ア の中身が決まった。数直線の図でも、<span class="m">3−<span class="sqrt">√<span class="rad">5</span></span></span> が 0 と 1 の間（≒0.76）にあることを確認しておこう。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">約分して a の姿を出す</span></div><p class="cite"><span class="cite-tag">使う性質</span>約分 <math><mi>a</mi><mo>=</mo><mfrac><mrow><mn>4</mn><mrow><mo>(</mo><mn>3</mn><mo>−</mo><msqrt><mn>5</mn></msqrt><mo>)</mo></mrow></mrow><mn>4</mn></mfrac><mo>=</mo><mn>3</mn><mo>−</mo><msqrt><mn>5</mn></msqrt></math>。分子と分母に共通する4で約分して、aの形を出す。</p>
+            <p>分子は <math><mn>4</mn><mrow><mo>(</mo><mn>3</mn><mo>−</mo><msqrt><mn>5</mn></msqrt><mo>)</mo></mrow></math>、分母は <math><mn>4</mn></math>。上下の <math><mn>4</mn></math> で約分すると：</p>
+            <div class="formula-line"><math><mi>a</mi><mo>=</mo><mfrac><mrow><mn>4</mn><mrow><mo>(</mo><mn>3</mn><mo>−</mo><msqrt><mn>5</mn></msqrt><mo>)</mo></mrow></mrow><mn>4</mn></mfrac><mo>=</mo><mn>3</mn><mo>−</mo><msqrt><mn>5</mn></msqrt></math></div>
+            <p>これで ア の中身が決まった。<br>数直線の図でも、<math><mn>3</mn><mo>−</mo><msqrt><mn>5</mn></msqrt></math> が 0 と 1 の間<math><mo>(</mo><mo>≒</mo><mn>0.76</mn><mo>)</mo></math>にあることを確認しておこう。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">a²+2√5a は、いきなり代入しない。まず a でくくる</span></div>
-            <p><span class="m"><i>a</i><sup>2</sup>+2<span class="sqrt">√<span class="rad">5</span></span><i>a</i></span> をそのまま計算すると2乗が重くてミスしやすい。2つの項に共通する <span class="m"><i>a</i></span> を前に出す（これを「<strong>くくり出す</strong>」という）と：</p>
-            <div class="formula-line"><span class="m"><i>a</i><sup>2</sup> + 2<span class="sqrt">√<span class="rad">5</span></span><i>a</i> = <i>a</i>(<i>a</i> + 2<span class="sqrt">√<span class="rad">5</span></span>)</span></div>
-            <p>ここで後ろのかっこの中を先に計算する：<span class="m"><i>a</i>+2<span class="sqrt">√<span class="rad">5</span></span> = (3−<span class="sqrt">√<span class="rad">5</span></span>)+2<span class="sqrt">√<span class="rad">5</span></span> = 3+<span class="sqrt">√<span class="rad">5</span></span></span>。√ の部分が <span class="m">−√5+2√5=+√5</span> と、きれいにまとまったね。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title"><math><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><msqrt><mn>5</mn></msqrt><mi>a</mi></math>は、いきなり代入しない。まず a でくくる</span></div><p class="cite"><span class="cite-tag">使う性質</span>共通因数でくくり出す <math><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><msqrt><mn>5</mn></msqrt><mi>a</mi><mo>=</mo><mi>a</mi><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mn>2</mn><msqrt><mn>5</mn></msqrt><mo>)</mo></mrow></math>。共通するaを前に出すと、後ろのかっこの計算が先にできる。</p>
+            <p><math><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><msqrt><mn>5</mn></msqrt><mi>a</mi></math> をそのまま計算すると2乗が重くてミスしやすい。<br>2つの項に共通する <math><mi>a</mi></math> を前に出す（これを「<strong>くくり出す</strong>」という）と：</p>
+            <div class="formula-line"><math><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><msqrt><mn>5</mn></msqrt><mi>a</mi><mo>=</mo><mi>a</mi><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mn>2</mn><msqrt><mn>5</mn></msqrt><mo>)</mo></mrow></math></div>
+            <p>ここで後ろのかっこの中を先に計算する：<math><mi>a</mi><mo>+</mo><mn>2</mn><msqrt><mn>5</mn></msqrt><mo>=</mo><mrow><mo>(</mo><mn>3</mn><mo>−</mo><msqrt><mn>5</mn></msqrt><mo>)</mo></mrow><mo>+</mo><mn>2</mn><msqrt><mn>5</mn></msqrt><mo>=</mo><mn>3</mn><mo>+</mo><msqrt><mn>5</mn></msqrt></math>。<br><math><mo>√</mo></math>の部分が <math><mo>−</mo><msqrt><mn>5</mn></msqrt><mo>+</mo><mn>2</mn><msqrt><mn>5</mn></msqrt><mo>=</mo><mo>+</mo><msqrt><mn>5</mn></msqrt></math> と、きれいにまとまったね。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 5</span><span class="stage-title">最後は、見覚えのある掛け算</span></div>
-            <p>式は <span class="m"><i>a</i>(<i>a</i>+2<span class="sqrt">√<span class="rad">5</span></span>) = (3−<span class="sqrt">√<span class="rad">5</span></span>)(3+<span class="sqrt">√<span class="rad">5</span></span>)</span> となった。</p>
-            <p>この形、ヒント2で計算した分母と<strong>まったく同じ形</strong>だね。値はいくつになるか、自分で最後の1行を書いてみよう。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 5</span><span class="stage-title">最後は、見覚えのある掛け算</span></div><p class="cite"><span class="cite-tag">使う公式</span>和と差の積 <math><mi>a</mi><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mn>2</mn><msqrt><mn>5</mn></msqrt><mo>)</mo></mrow><mo>=</mo><mrow><mo>(</mo><mn>3</mn><mo>−</mo><msqrt><mn>5</mn></msqrt><mo>)</mo></mrow><mrow><mo>(</mo><mn>3</mn><mo>+</mo><msqrt><mn>5</mn></msqrt><mo>)</mo></mrow></math>。この積も和と差の積の形なので、根号が消えて計算できる。</p>
+            <p>式は <math><mi>a</mi><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mn>2</mn><msqrt><mn>5</mn></msqrt><mo>)</mo></mrow><mo>=</mo><mrow><mo>(</mo><mn>3</mn><mo>−</mo><msqrt><mn>5</mn></msqrt><mo>)</mo></mrow><mrow><mo>(</mo><mn>3</mn><mo>+</mo><msqrt><mn>5</mn></msqrt><mo>)</mo></mrow></math> となった。</p>
+            <p>この形、ヒント2で計算した分母と<strong>まったく同じ形</strong>だね。<br>値はいくつになるか、自分で最後の1行を書いてみよう。</p>
           </article>
 
           <article class="stage answer" hidden>
-            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(1) の答え</span></div>
+            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(1) の答え</span></div><p class="cite"><span class="cite-tag">使う定義</span>分母の有理化 <math displaystyle="true"><mi>a</mi><mo>=</mo><mfrac><mn>4</mn><mrow><mn>3</mn><mo>+</mo><msqrt><mn>5</mn></msqrt></mrow></mfrac></math>。共役を掛けて分母の根号を消すところから、解答の計算を始める。</p>
             <div class="formula-line">
-              <span class="m"><i>a</i> = <span class="frac"><span class="num">4</span><span class="den">3+√5</span></span> = <span class="frac"><span class="num">4(3−√5)</span><span class="den">(3+√5)(3−√5)</span></span> = <span class="frac"><span class="num">4(3−√5)</span><span class="den">4</span></span> = 3−<span class="sqrt">√<span class="rad">5</span></span></span><br />
-              <span class="m"><i>a</i><sup>2</sup>+2<span class="sqrt">√<span class="rad">5</span></span><i>a</i> = <i>a</i>(<i>a</i>+2<span class="sqrt">√<span class="rad">5</span></span>) = (3−<span class="sqrt">√<span class="rad">5</span></span>)(3+<span class="sqrt">√<span class="rad">5</span></span>) = 9−5 = 4</span>
+              <div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>a</mi><mo>=</mo><mfrac><mn>4</mn><mrow><mn>3</mn><mo>+</mo><msqrt><mn>5</mn></msqrt></mrow></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>a</mi></mphantom><mo>=</mo><mfrac><mrow><mn>4</mn><mrow><mo>(</mo><mn>3</mn><mo>−</mo><msqrt><mn>5</mn></msqrt><mo>)</mo></mrow></mrow><mrow><mrow><mo>(</mo><mn>3</mn><mo>+</mo><msqrt><mn>5</mn></msqrt><mo>)</mo></mrow><mrow><mo>(</mo><mn>3</mn><mo>−</mo><msqrt><mn>5</mn></msqrt><mo>)</mo></mrow></mrow></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>a</mi></mphantom><mo>=</mo><mfrac><mrow><mn>4</mn><mrow><mo>(</mo><mn>3</mn><mo>−</mo><msqrt><mn>5</mn></msqrt><mo>)</mo></mrow></mrow><mn>4</mn></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>a</mi></mphantom><mo>=</mo><mn>3</mn><mo>−</mo><msqrt><mn>5</mn></msqrt></math></div>
+</div><br />
+              <div class="chain-crow">
+<div class="crow"><math displaystyle="true"><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><msqrt><mn>5</mn></msqrt><mi>a</mi><mo>=</mo><mi>a</mi><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mn>2</mn><msqrt><mn>5</mn></msqrt><mo>)</mo></mrow></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><msqrt><mn>5</mn></msqrt><mi>a</mi></mphantom><mo>=</mo><mrow><mo>(</mo><mn>3</mn><mo>−</mo><msqrt><mn>5</mn></msqrt><mo>)</mo></mrow><mrow><mo>(</mo><mn>3</mn><mo>+</mo><msqrt><mn>5</mn></msqrt><mo>)</mo></mrow></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><msqrt><mn>5</mn></msqrt><mi>a</mi></mphantom><mo>=</mo><mn>9</mn><mo>−</mo><mn>5</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><msqrt><mn>5</mn></msqrt><mi>a</mi></mphantom><mo>=</mo><mn>4</mn></math></div>
+</div>
             </div>
             <div class="ans-line">
-              <span class="ans-chip"><span class="kana">ア</span><span class="m">3−√5</span><span class="pts">2点</span></span>
-              <span class="ans-chip"><span class="kana">イ</span><span class="m">4</span><span class="pts">2点</span></span>
+              <span class="ans-chip"><span class="kana">ア</span><math><mn>3</mn><mo>−</mo><msqrt><mn>5</mn></msqrt></math><span class="pts">2点</span></span>
+              <span class="ans-chip"><span class="kana">イ</span><math><mn>4</mn></math><span class="pts">2点</span></span>
             </div>
-            <div class="point-box"><span class="pt">ポイント</span>有理化は「共役を分母・分子に掛ける」が合言葉。後半は <span class="m"><i>a</i></span> でくくり出すと、共役どうしの積が再び現れて √ が消える。</div>
+            <div class="point-box"><span class="pt">ポイント</span><p class="cite"><span class="cite-tag">使う定義</span>共役 <math><mn>3</mn><mo>−</mo><msqrt><mn>5</mn></msqrt></math>。有理化と後半の積のどちらでも、共役どうしの積で根号が消える。</p>有理化は「共役を分母・分子に掛ける」が合言葉。後半は <math><mi>a</mi></math> でくくり出すと、共役どうしの積が再び現れて<math><mo>√</mo></math>が消える。</div>
           </article>
         </div>
 
@@ -477,7 +541,7 @@
             <span class="q-num">(2)</span><span class="q-title">2次関数の最大・最小</span>
             <span class="q-points">配点 4点（各2点）</span>
           </div>
-          <p class="q-body"><span class="m"><i>a</i></span> は定数とする。2次関数 <span class="m"><i>f</i>(<i>x</i>)=<i>x</i><sup>2</sup>−2<i>x</i>+<i>a</i></span> の最小値が <span class="m">−6</span> であるとき、<span class="m"><i>a</i></span> の値は<span class="blank" data-kana="ウ" data-ans="−5">ウ</span>である。また、このとき <span class="m">0≦<i>x</i>≦4</span> における <span class="m"><i>f</i>(<i>x</i>)</span> の最大値は<span class="blank" data-kana="エ" data-ans="3">エ</span>である。</p>
+          <p class="q-body"><math><mi>a</mi></math> は定数とする。2次関数 <math><mi>f</mi><mrow><mo>(</mo><mi>x</mi><mo>)</mo></mrow><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>x</mi><mo>+</mo><mi>a</mi></math> の最小値が <math><mo>−</mo><mn>6</mn></math> であるとき、<math><mi>a</mi></math> の値は<span class="blank" data-kana="ウ" data-ans="−5">ウ</span>である。また、このとき <math><mn>0</mn><mo>≦</mo><mi>x</mi><mo>≦</mo><mn>4</mn></math> における <math><mi>f</mi><mrow><mo>(</mo><mi>x</mi><mo>)</mo></mrow></math> の最大値は<span class="blank" data-kana="エ" data-ans="3">エ</span>である。</p>
         </div>
 
         <div class="viz" id="viz2">
@@ -489,65 +553,65 @@
             <g id="vtxG" data-min="2" hidden></g>
             <g id="maxG" data-min="4" hidden></g>
           </svg>
-          <p class="expr-note">赤い部分が <span class="m">0≦<i>x</i>≦4</span> の範囲。ヒントを進めると頂点と最大値の点が出てくる。</p>
+          <p class="expr-note">赤い部分が <math><mn>0</mn><mo>≦</mo><mi>x</mi><mo>≦</mo><mn>4</mn></math> の範囲。ヒントを進めると頂点と最大値の点が出てくる。</p>
         </div>
 
-        <p class="think-note">仕事は2つ：先に <span class="m"><i>a</i></span> を決めて、それから最大値を探す。順番に片づけよう。</p>
+        <p class="think-note">仕事は2つ：先に <math><mi>a</mi></math> を決めて、それから最大値を探す。順番に片づけよう。</p>
         </div>
 
         <div class="stages">
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">平方完成をして、頂点の形にする</span></div>
-            <p>最小値を読むには「<strong>平方完成</strong>」＝式を <span class="m">(<i>x</i>−○)<sup>2</sup>+△</span> の形に直す変形を使う。途中まで一緒にやろう：</p>
-            <div class="formula-line"><span class="m"><i>f</i>(<i>x</i>) = <i>x</i><sup>2</sup>−2<i>x</i>+<i>a</i> = (<i>x</i>−1)<sup>2</sup> − 1 + <i>a</i></span></div>
-            <p class="mini">確かめ方：<span class="m">(<i>x</i>−1)<sup>2</sup>=<i>x</i><sup>2</sup>−2<i>x</i>+1</span> だから、余分な <span class="m">+1</span> を引いて <span class="m">−1</span> としてある。残りの <span class="m">+<i>a</i></span> はそのまま後ろにつく。</p>
-            <p>この形になると、放物線の<strong>頂点</strong>が <span class="m">(1, −1+<i>a</i>)</span> だと読み取れる。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">平方完成をして、頂点の形にする</span></div><p class="cite"><span class="cite-tag">使う公式</span>平方完成 <math><mi>f</mi><mrow><mo>(</mo><mi>x</mi><mo>)</mo></mrow><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>x</mi><mo>+</mo><mi>a</mi><mo>=</mo><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>+</mo><mi>a</mi></math>。式をこの形に直すと、頂点の座標が読み取れる。</p>
+            <p>最小値を読むには「<strong>平方完成</strong>」＝式を <math><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mo>○</mo><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><mo>△</mo></math> の形に直す変形を使う。<br>途中まで一緒にやろう：</p>
+            <div class="formula-line"><math><mi>f</mi><mrow><mo>(</mo><mi>x</mi><mo>)</mo></mrow><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>x</mi><mo>+</mo><mi>a</mi><mo>=</mo><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>+</mo><mi>a</mi></math></div>
+            <p class="mini">確かめ方：<math><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>1</mn></math> だから、余分な <math><mo>+</mo><mn>1</mn></math> を引いて <math><mo>−</mo><mn>1</mn></math> としてある。<br>残りの <math><mo>+</mo><mi>a</mi></math> はそのまま後ろにつく。</p>
+            <p>この形になると、放物線の<strong>頂点</strong>が <math><mo>(</mo><mn>1</mn><mo>,</mo><mo>−</mo><mn>1</mn><mo>+</mo><mi>a</mi><mo>)</mo></math> だと読み取れる。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">最小値＝頂点の y 座標、と置き換える</span></div>
-            <p>下に開いた（谷型の）放物線では、いちばん低い点＝<strong>頂点</strong>の <span class="m"><i>y</i></span> 座標が最小値になる。上の図に頂点が出たので確認しよう。</p>
-            <p>問題文の「最小値が <span class="m">−6</span>」を式にすると：</p>
-            <div class="formula-line"><span class="m">−1 + <i>a</i> = −6</span></div>
-            <p>あとはこの方程式を解くだけ。自分の力で <span class="m"><i>a</i></span> を求めてみよう。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">最小値＝頂点の y 座標、と置き換える</span></div><p class="cite"><span class="cite-tag">使う性質</span>頂点と最小値 <math><mo>(</mo><mn>1</mn><mo>,</mo><mo>−</mo><mn>1</mn><mo>+</mo><mi>a</mi><mo>)</mo></math>。下に凸の放物線では頂点のy座標が最小値になるので、それを−6と置く。</p>
+            <p>下に開いた（谷型の）放物線では、いちばん低い点＝<strong>頂点</strong>の <math><mi>y</mi></math> 座標が最小値になる。<br>上の図に頂点が出たので確認しよう。</p>
+            <p>問題文の「最小値が <math><mo>−</mo><mn>6</mn></math>」を式にすると：</p>
+            <div class="formula-line"><math><mo>−</mo><mn>1</mn><mo>+</mo><mi>a</mi><mo>=</mo><mo>−</mo><mn>6</mn></math></div>
+            <p>あとはこの方程式を解くだけ。自分の力で <math><mi>a</mi></math> を求めてみよう。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">a を決めて、式を完成させる</span></div>
-            <p><span class="m">−1+<i>a</i>=−6</span> を解くと <span class="m"><i>a</i>=−5</span>。これで ウ が決まった。この <span class="m"><i>a</i></span> を入れると関数は：</p>
-            <div class="formula-line"><span class="m"><i>f</i>(<i>x</i>) = (<i>x</i>−1)<sup>2</sup> − 6</span></div>
-            <p>頂点は <span class="m">(1, −6)</span>、軸（放物線の中心線）は直線 <span class="m"><i>x</i>=1</span>。ここから後半戦：範囲 <span class="m">0≦<i>x</i>≦4</span> での最大値を探すよ。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">a を決めて、式を完成させる</span></div><p class="cite"><span class="cite-tag">使う性質</span>平方完成した形 <math><mi>f</mi><mrow><mo>(</mo><mi>x</mi><mo>)</mo></mrow><mo>=</mo><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>6</mn></math>。求めたaを入れると頂点が決まり、最大値を探す準備ができる。</p>
+            <p><math><mo>−</mo><mn>1</mn><mo>+</mo><mi>a</mi><mo>=</mo><mo>−</mo><mn>6</mn></math> を解くと <math><mi>a</mi><mo>=</mo><mo>−</mo><mn>5</mn></math>。<br>これで ウ が決まった。<br>この <math><mi>a</mi></math> を入れると関数は：</p>
+            <div class="formula-line"><math><mi>f</mi><mrow><mo>(</mo><mi>x</mi><mo>)</mo></mrow><mo>=</mo><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>6</mn></math></div>
+            <p>頂点は <math><mo>(</mo><mn>1</mn><mo>,</mo><mo>−</mo><mn>6</mn><mo>)</mo></math>、軸（放物線の中心線）は直線 <math><mi>x</mi><mo>=</mo><mn>1</mn></math>。<br>ここから後半戦：範囲 <math><mn>0</mn><mo>≦</mo><mi>x</mi><mo>≦</mo><mn>4</mn></math> での最大値を探すよ。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">最大値は「軸からいちばん遠い端」で起こる</span></div>
-            <p>谷型の放物線は、軸から<strong>遠ざかるほど</strong>値が大きくなる。だから範囲の両端のうち、軸 <span class="m"><i>x</i>=1</span> から遠い方で最大になる。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">最大値は「軸からいちばん遠い端」で起こる</span></div><p class="cite"><span class="cite-tag">使う性質</span>軸からの距離と最大値 <math><mn>0</mn><mo>≦</mo><mi>x</mi><mo>≦</mo><mn>4</mn></math>。この範囲では軸から最も遠い端の点で関数の値が最大になる。</p>
+            <p>谷型の放物線は、軸から<strong>遠ざかるほど</strong>値が大きくなる。<br>だから範囲の両端のうち、軸 <math><mi>x</mi><mo>=</mo><mn>1</mn></math> から遠い方で最大になる。</p>
             <ul class="steps">
-              <li>左端 <span class="m"><i>x</i>=0</span>：軸からの距離は <span class="m">1</span></li>
-              <li>右端 <span class="m"><i>x</i>=4</span>：軸からの距離は <span class="m">3</span></li>
+              <li>左端 <math><mi>x</mi><mo>=</mo><mn>0</mn></math>：軸からの距離は <math><mn>1</mn></math></li>
+              <li>右端 <math><mi>x</mi><mo>=</mo><mn>4</mn></math>：軸からの距離は <math><mn>3</mn></math></li>
             </ul>
-            <p>遠いのは右端 <span class="m"><i>x</i>=4</span>。上の図にその点が出たので、位置を確認しよう。あとは <span class="m"><i>f</i>(4)</span> を計算するだけだね。</p>
+            <p>遠いのは右端 <math><mi>x</mi><mo>=</mo><mn>4</mn></math>。上の図にその点が出たので、位置を確認しよう。<br>あとは <math><mi>f</mi><mrow><mo>(</mo><mn>4</mn><mo>)</mo></mrow></math> を計算するだけだね。</p>
           </article>
 
           <article class="stage hint" hidden>
             <div class="stage-head"><span class="stage-badge">ヒント 5</span><span class="stage-title">f(4) を計算する。途中まで一緒に</span></div>
-            <div class="formula-line"><span class="m"><i>f</i>(4) = (4−1)<sup>2</sup> − 6 = 3<sup>2</sup> − 6</span></div>
-            <p><span class="m">3<sup>2</sup></span> を計算して引けば完成。最後の1行は自分で書いてみよう。</p>
-            <p class="mini">参考までに左端は <span class="m"><i>f</i>(0)=1−6=−5</span>。やっぱり右端の方が大きいね。</p>
+            <div class="formula-line"><math><mi>f</mi><mrow><mo>(</mo><mn>4</mn><mo>)</mo></mrow><mo>=</mo><msup><mrow><mo>(</mo><mn>4</mn><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>6</mn><mo>=</mo><msup><mn>3</mn><mn>2</mn></msup><mo>−</mo><mn>6</mn></math></div>
+            <p><math><msup><mn>3</mn><mn>2</mn></msup></math> を計算して引けば完成。最後の1行は自分で書いてみよう。</p>
+            <p class="mini">参考までに左端は <math><mi>f</mi><mrow><mo>(</mo><mn>0</mn><mo>)</mo></mrow><mo>=</mo><mn>1</mn><mo>−</mo><mn>6</mn><mo>=</mo><mo>−</mo><mn>5</mn></math>。やっぱり右端の方が大きいね。</p>
           </article>
 
           <article class="stage answer" hidden>
-            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(2) の答え</span></div>
+            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(2) の答え</span></div><p class="cite"><span class="cite-tag">使う公式</span>平方完成 <math><mi>f</mi><mrow><mo>(</mo><mi>x</mi><mo>)</mo></mrow><mo>=</mo><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>+</mo><mi>a</mi></math>。平方完成して頂点の値を最小値と置くところから、解答の計算を始める。</p>
             <ol class="steps">
-              <li>平方完成すると <span class="m"><i>f</i>(<i>x</i>)=(<i>x</i>−1)<sup>2</sup>−1+<i>a</i></span>。最小値は頂点の値 <span class="m">−1+<i>a</i></span>。</li>
-              <li><span class="m">−1+<i>a</i>=−6</span> より <span class="m"><i>a</i>=−5</span>。</li>
-              <li>このとき <span class="m"><i>f</i>(<i>x</i>)=(<i>x</i>−1)<sup>2</sup>−6</span>。<span class="m">0≦<i>x</i>≦4</span> では軸 <span class="m"><i>x</i>=1</span> から最も遠い <span class="m"><i>x</i>=4</span> で最大となり、<span class="m"><i>f</i>(4)=9−6=3</span>。</li>
+              <li>平方完成すると <math><mi>f</mi><mrow><mo>(</mo><mi>x</mi><mo>)</mo></mrow><mo>=</mo><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>+</mo><mi>a</mi></math>。最小値は頂点の値 <math><mo>−</mo><mn>1</mn><mo>+</mo><mi>a</mi></math>。</li>
+              <li><math><mo>−</mo><mn>1</mn><mo>+</mo><mi>a</mi><mo>=</mo><mo>−</mo><mn>6</mn></math> より <math><mi>a</mi><mo>=</mo><mo>−</mo><mn>5</mn></math>。</li>
+              <li>このとき <math><mi>f</mi><mrow><mo>(</mo><mi>x</mi><mo>)</mo></mrow><mo>=</mo><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>6</mn></math>。<math><mn>0</mn><mo>≦</mo><mi>x</mi><mo>≦</mo><mn>4</mn></math> では軸 <math><mi>x</mi><mo>=</mo><mn>1</mn></math> から最も遠い <math><mi>x</mi><mo>=</mo><mn>4</mn></math> で最大となり、<math><mi>f</mi><mrow><mo>(</mo><mn>4</mn><mo>)</mo></mrow><mo>=</mo><mn>9</mn><mo>−</mo><mn>6</mn><mo>=</mo><mn>3</mn></math>。</li>
             </ol>
             <div class="ans-line">
-              <span class="ans-chip"><span class="kana">ウ</span><span class="m">−5</span><span class="pts">2点</span></span>
-              <span class="ans-chip"><span class="kana">エ</span><span class="m">3</span><span class="pts">2点</span></span>
+              <span class="ans-chip"><span class="kana">ウ</span><math><mo>−</mo><mn>5</mn></math><span class="pts">2点</span></span>
+              <span class="ans-chip"><span class="kana">エ</span><math><mn>3</mn></math><span class="pts">2点</span></span>
             </div>
-            <div class="point-box"><span class="pt">ポイント</span>最小値・最大値は<strong>平方完成→頂点と軸</strong>が基本の型。範囲が決まっているときの最大値は「軸から最も遠い端の値」で決まる。</div>
+            <div class="point-box"><span class="pt">ポイント</span><p class="cite"><span class="cite-tag">使う公式</span>平方完成 <math><mi>f</mi><mrow><mo>(</mo><mi>x</mi><mo>)</mo></mrow><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>x</mi><mo>+</mo><mi>a</mi><mo>=</mo><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>+</mo><mi>a</mi></math>。最小値も最大値も、まず平方完成して頂点と軸を出すことが出発点になる。</p>最小値・最大値は<strong>平方完成→頂点と軸</strong>が基本の型。範囲が決まっているときの最大値は「軸から最も遠い端の値」で決まる。</div>
           </article>
         </div>
 
@@ -567,7 +631,7 @@
             <span class="q-num">(3)</span><span class="q-title">三角比</span>
             <span class="q-points">配点 4点</span>
           </div>
-          <p class="q-body"><span class="m">0°&lt;<i>θ</i>&lt;90°</span> とする。<span class="m">sin<i>θ</i>=<span class="frac"><span class="num">3</span><span class="den">5</span></span></span> のとき、<span class="m">cos(180°−<i>θ</i>)=</span><span class="blank" data-kana="オ" data-ans="−4/5">オ</span>である。</p>
+          <p class="q-body"><math><mn>0</mn><mo>°</mo><mo>&lt;</mo><mi>θ</mi><mo>&lt;</mo><mn>90</mn><mo>°</mo></math> とする。<math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mn>3</mn><mn>5</mn></mfrac></math> のとき、<math><mi>cos</mi><mrow><mo>(</mo><mn>180</mn><mo>°</mo><mo>−</mo><mi>θ</mi><mo>)</mo></mrow><mo>=</mo></math><span class="blank" data-kana="オ" data-ans="−4/5">オ</span>である。</p>
         </div>
 
         <div class="viz" id="viz3">
@@ -598,30 +662,34 @@
               <text x="96" y="196" font-size="14.5" font-weight="700" style="fill:var(--blue)">cos(180°−θ) ＝ マイナス（左側）</text>
             </g>
           </svg>
-          <p class="expr-note">単位円では、点の <span class="m"><i>x</i></span> 座標が cos の値。右側ならプラス、左側ならマイナスだよ。</p>
+          <p class="expr-note">単位円では、点の <math><mi>x</mi></math> 座標が cos の値。右側ならプラス、左側ならマイナスだよ。</p>
         </div>
 
-        <p class="think-note">聞かれているのは <span class="m">cos(180°−<i>θ</i>)</span>。でも、いきなりこれは考えにくい。まず分かるものを1つ求める作戦でいこう。</p>
+        <p class="think-note">聞かれているのは <math><mi>cos</mi><mrow><mo>(</mo><mn>180</mn><mo>°</mo><mo>−</mo><mi>θ</mi><mo>)</mo></mrow></math>。でも、いきなりこれは考えにくい。まず分かるものを1つ求める作戦でいこう。</p>
         </div>
 
         <div class="stages">
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">まず cos θ を求める作戦に決める</span></div>
-            <p><span class="m">cos(180°−<i>θ</i>)</span> は、あとで出てくる関係を使うと <span class="m">cos<i>θ</i></span> だけで表せる。だから先に <span class="m">cos<i>θ</i></span> を求めておくのが近道。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">まず cos θ を求める作戦に決める</span></div><p class="cite"><span class="cite-tag">使う公式</span>三角比の相互関係 <math><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn></math>。この関係にsinの値を入れると、cosの2乗が求められる。</p>
+            <p><math><mi>cos</mi><mrow><mo>(</mo><mn>180</mn><mo>°</mo><mo>−</mo><mi>θ</mi><mo>)</mo></mrow></math> は、あとで出てくる関係を使うと <math><mi>cos</mi><mi>θ</mi></math> だけで表せる。<br>だから先に <math><mi>cos</mi><mi>θ</mi></math> を求めておくのが近道。</p>
             <p>使う公式は、sin と cos の一番基本の関係：</p>
-            <div class="formula-line"><span class="m">sin<sup>2</sup><i>θ</i> + cos<sup>2</sup><i>θ</i> = 1</span></div>
-            <p class="mini">噛み砕くと「同じ角の sin と cos は、それぞれ2乗して足すと必ず1になる」という決まり。この公式1本で、sin から cos が作れる。</p>
+            <div class="formula-line"><math><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn></math></div>
+            <p class="mini">噛み砕くと「同じ角の sin と cos は、それぞれ2乗して足すと必ず1になる」という決まり。<br>この公式1本で、sin から cos が作れる。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">sin θ = 3/5 を公式に入れて、cos²θ を出す</span></div>
-            <div class="formula-line"><span class="m">cos<sup>2</sup><i>θ</i> = 1 − sin<sup>2</sup><i>θ</i> = 1 − <span class="frac"><span class="num">9</span><span class="den">25</span></span> = <span class="frac"><span class="num">16</span><span class="den">25</span></span></span></div>
-            <p><span class="m">(<span class="frac"><span class="num">3</span><span class="den">5</span></span>)<sup>2</sup>=<span class="frac"><span class="num">9</span><span class="den">25</span></span></span> と、分子・分母を別々に2乗するのがコツ。ここまでで <span class="m">cos<sup>2</sup><i>θ</i></span> は出た。次は2乗を外す番だよ。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title"><math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mn>3</mn><mn>5</mn></mfrac></math>を公式に入れて、<math><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></math>を出す</span></div><p class="cite"><span class="cite-tag">使う性質</span>移項した形 <math displaystyle="true"><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn><mo>−</mo><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi></math>。公式を移項したこの形にsinの2乗を入れて、cosの2乗を計算する。</p>
+            <div class="formula-line"><div class="chain-crow">
+<div class="crow"><math displaystyle="true"><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn><mo>−</mo><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></mphantom><mo>=</mo><mn>1</mn><mo>−</mo><mfrac><mn>9</mn><mn>25</mn></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></mphantom><mo>=</mo><mfrac><mn>16</mn><mn>25</mn></mfrac></math></div>
+</div></div>
+            <p><math><msup><mrow><mo>(</mo><mfrac><mn>3</mn><mn>5</mn></mfrac><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mfrac><mn>9</mn><mn>25</mn></mfrac></math> と、分子・分母を別々に2乗するのがコツ。<br>ここまでで <math><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></math> は出た。<br>次は2乗を外す番だよ。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">符号を決める：θ は鋭角、という条件を使う</span></div>
-            <p><span class="m">cos<sup>2</sup><i>θ</i>=<span class="frac"><span class="num">16</span><span class="den">25</span></span></span> から <span class="m">cos<i>θ</i>=±<span class="frac"><span class="num">4</span><span class="den">5</span></span></span> と2通り出てくる。どちらか決めるカギが、条件 <span class="m">0°&lt;<i>θ</i>&lt;90°</span>（こういう角を「<strong>鋭角</strong>」という）。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">符号を決める：θ は鋭角、という条件を使う</span></div><p class="cite"><span class="cite-tag">使う性質</span>鋭角のcosの符号 <math><mi>cos</mi><mi>θ</mi><mo>&gt;</mo><mn>0</mn></math>。鋭角ではcosは正になるので、2乗を外したときの符号は正の方を選ぶ。</p>
+            <p><math><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mfrac><mn>16</mn><mn>25</mn></mfrac></math> から <math><mi>cos</mi><mi>θ</mi><mo>=</mo><mo>±</mo><mfrac><mn>4</mn><mn>5</mn></mfrac></math> と2通り出てくる。<br>どちらか決めるカギが、条件 <math><mn>0</mn><mo>°</mo><mo>&lt;</mo><mi>θ</mi><mo>&lt;</mo><mn>90</mn><mo>°</mo><mo>(</mo></math>こういう角を「<strong>鋭角</strong>」という）。</p>
             <div class="figrow">
               <svg viewBox="0 0 120 100" width="150" role="img" aria-label="辺の比3対4対5の直角三角形">
                 <polygon points="12,82 100,82 100,16" style="fill:var(--blue-soft);stroke:var(--ink)" stroke-width="2" stroke-linejoin="round"></polygon>
@@ -632,37 +700,37 @@
                 <text x="20" y="74" font-size="11">θ</text>
               </svg>
               <div>
-                <p>単位円の図でも、点 P は<strong>右側</strong>にある。cos は点の <span class="m"><i>x</i></span> 座標だから、右側なら<strong>プラス</strong>。</p>
-                <p>よって <span class="m">cos<i>θ</i>=+<span class="frac"><span class="num">4</span><span class="den">5</span></span></span> と決まる。左の直角三角形（辺の比 <span class="m">3:4:5</span>）でも同じ値になるね。</p>
+                <p>単位円の図でも、点 P は<strong>右側</strong>にある。<br>cos は点の <math><mi>x</mi></math> 座標だから、右側なら<strong>プラス</strong>。</p>
+                <p>よって <math><mi>cos</mi><mi>θ</mi><mo>=</mo><mo>+</mo><mfrac><mn>4</mn><mn>5</mn></mfrac></math> と決まる。<br>左の直角三角形（辺の比 <math><mn>3</mn><mo>:</mo><mn>4</mn><mo>:</mo><mn>5</mn><mo>)</mo></math>でも同じ値になるね。</p>
               </div>
             </div>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">関係 cos(180°−θ) = −cos θ を使う</span></div>
-            <p>上の単位円に、角 <span class="m">180°−<i>θ</i></span> の点 Q が出た。P と Q は <span class="m"><i>y</i></span> 軸をはさんで<strong>左右対称</strong>の位置にある。</p>
-            <p>だから <span class="m"><i>x</i></span> 座標（＝cos の値）は、大きさが同じで<strong>符号だけ反対</strong>になる。これを式で書くと：</p>
-            <div class="formula-line"><span class="m">cos(180°−<i>θ</i>) = −cos<i>θ</i></span></div>
-            <p>あとはヒント3で求めた <span class="m">cos<i>θ</i></span> の値をここに入れるだけだよ。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">関係<math><mi>cos</mi><mrow><mo>(</mo><mn>180</mn><mo>°</mo><mo>−</mo><mi>θ</mi><mo>)</mo></mrow><mo>=</mo><mo>−</mo><mi>cos</mi><mi>θ</mi></math>を使う</span></div><p class="cite"><span class="cite-tag">使う公式</span>補角の関係 <math><mi>cos</mi><mrow><mo>(</mo><mn>180</mn><mo>°</mo><mo>−</mo><mi>θ</mi><mo>)</mo></mrow><mo>=</mo><mo>−</mo><mi>cos</mi><mi>θ</mi></math>。求める角のcosは、cosθの符号を反転したものになる。</p>
+            <p>上の単位円に、角 <math><mn>180</mn><mo>°</mo><mo>−</mo><mi>θ</mi></math> の点 Q が出た。<br>P と Q は <math><mi>y</mi></math> 軸をはさんで<strong>左右対称</strong>の位置にある。</p>
+            <p>だから <math><mi>x</mi></math> 座標<math><mo>(</mo><mo>=</mo><mi>cos</mi></math>の値）は、大きさが同じで<strong>符号だけ反対</strong>になる。これを式で書くと：</p>
+            <div class="formula-line"><math><mi>cos</mi><mrow><mo>(</mo><mn>180</mn><mo>°</mo><mo>−</mo><mi>θ</mi><mo>)</mo></mrow><mo>=</mo><mo>−</mo><mi>cos</mi><mi>θ</mi></math></div>
+            <p>あとはヒント3で求めた <math><mi>cos</mi><mi>θ</mi></math> の値をここに入れるだけだよ。</p>
           </article>
 
           <article class="stage hint" hidden>
             <div class="stage-head"><span class="stage-badge">ヒント 5</span><span class="stage-title">代入して、符号を最後に確認する</span></div>
-            <div class="formula-line"><span class="m">cos(180°−<i>θ</i>) = −cos<i>θ</i> = −<span class="frac"><span class="num">4</span><span class="den">5</span></span></span></div>
-            <p>図の Q は左側にあるから、答えが<strong>マイナス</strong>になるのは図とも合っている。最後の値を自分で書いてみよう。</p>
+            <div class="formula-line"><math><mi>cos</mi><mrow><mo>(</mo><mn>180</mn><mo>°</mo><mo>−</mo><mi>θ</mi><mo>)</mo></mrow><mo>=</mo><mo>−</mo><mi>cos</mi><mi>θ</mi><mo>=</mo><mo>−</mo><mfrac><mn>4</mn><mn>5</mn></mfrac></math></div>
+            <p>図の Q は左側にあるから、答えが<strong>マイナス</strong>になるのは図とも合っている。<br>最後の値を自分で書いてみよう。</p>
           </article>
 
           <article class="stage answer" hidden>
-            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(3) の答え</span></div>
+            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(3) の答え</span></div><p class="cite"><span class="cite-tag">使う公式</span>三角比の相互関係 <math><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn></math>。この関係からcosの2乗を出すところから、解答の計算を始める。</p>
             <ol class="steps">
-              <li><span class="m">sin<sup>2</sup><i>θ</i>+cos<sup>2</sup><i>θ</i>=1</span> より <span class="m">cos<sup>2</sup><i>θ</i>=1−<span class="frac"><span class="num">9</span><span class="den">25</span></span>=<span class="frac"><span class="num">16</span><span class="den">25</span></span></span>。</li>
-              <li><span class="m">0°&lt;<i>θ</i>&lt;90°</span> より <span class="m">cos<i>θ</i>&gt;0</span> だから、<span class="m">cos<i>θ</i>=<span class="frac"><span class="num">4</span><span class="den">5</span></span></span>。</li>
-              <li><span class="m">cos(180°−<i>θ</i>)=−cos<i>θ</i>=−<span class="frac"><span class="num">4</span><span class="den">5</span></span></span>。</li>
+              <li><math><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn></math> より <math><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn><mo>−</mo><mfrac><mn>9</mn><mn>25</mn></mfrac><mo>=</mo><mfrac><mn>16</mn><mn>25</mn></mfrac></math>。</li>
+              <li><math><mn>0</mn><mo>°</mo><mo>&lt;</mo><mi>θ</mi><mo>&lt;</mo><mn>90</mn><mo>°</mo></math> より <math><mi>cos</mi><mi>θ</mi><mo>&gt;</mo><mn>0</mn></math> だから、<math><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><mn>4</mn><mn>5</mn></mfrac></math>。</li>
+              <li><math><mi>cos</mi><mrow><mo>(</mo><mn>180</mn><mo>°</mo><mo>−</mo><mi>θ</mi><mo>)</mo></mrow><mo>=</mo><mo>−</mo><mi>cos</mi><mi>θ</mi><mo>=</mo><mo>−</mo><mfrac><mn>4</mn><mn>5</mn></mfrac></math>。</li>
             </ol>
             <div class="ans-line">
-              <span class="ans-chip"><span class="kana">オ</span><span class="m">−<span class="frac"><span class="num">4</span><span class="den">5</span></span></span><span class="pts">4点</span></span>
+              <span class="ans-chip"><span class="kana">オ</span><math><mo>−</mo><mfrac><mn>4</mn><mn>5</mn></mfrac></math><span class="pts">4点</span></span>
             </div>
-            <div class="point-box"><span class="pt">ポイント</span>流れは「公式で cos² を出す → 角の範囲で符号を決める → <span class="m">180°−<i>θ</i></span> の関係で符号を反転」の3ステップ。符号の判断を飛ばさないことが大事。</div>
+            <div class="point-box"><span class="pt">ポイント</span><p class="cite"><span class="cite-tag">使う公式</span>補角の関係 <math><mi>cos</mi><mrow><mo>(</mo><mn>180</mn><mo>°</mo><mo>−</mo><mi>θ</mi><mo>)</mo></mrow><mo>=</mo><mo>−</mo><mi>cos</mi><mi>θ</mi><mo>=</mo><mo>−</mo><mfrac><mn>4</mn><mn>5</mn></mfrac></math>。最後のステップではこの関係で符号を反転して答えを出す。</p>流れは「公式で<math><msup><mi>cos</mi><mn>2</mn></msup></math>を出す → 角の範囲で符号を決める<math><mo>→</mo><mn>180</mn><mo>°</mo><mo>−</mo><mi>θ</mi></math> の関係で符号を反転」の3ステップ。符号の判断を飛ばさないことが大事。</div>
           </article>
         </div>
 
@@ -682,17 +750,17 @@
             <span class="q-num">(4)</span><span class="q-title">確率</span>
             <span class="q-points">配点 4点（各2点）</span>
           </div>
-          <p class="q-body">A, B, C の3人が的に向かって矢を1本ずつ射るとき、その矢が的に命中する確率はそれぞれ <span class="m"><span class="frac"><span class="num">1</span><span class="den">2</span></span></span>, <span class="m"><span class="frac"><span class="num">1</span><span class="den">3</span></span></span>, <span class="m"><span class="frac"><span class="num">1</span><span class="den">4</span></span></span> である。このとき、A, B の2人の射た矢が的に命中して、C の射た矢が的に命中しない確率は<span class="blank" data-kana="カ" data-ans="1/8">カ</span>であり、3人のうち少なくとも1人の射た矢が的に命中する確率は<span class="blank" data-kana="キ" data-ans="3/4">キ</span>である。</p>
+          <p class="q-body">A, B, C の3人が的に向かって矢を1本ずつ射るとき、その矢が的に命中する確率はそれぞれ <math><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>,</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>,</mo><mfrac><mn>1</mn><mn>4</mn></mfrac></math> である。このとき、A, B の2人の射た矢が的に命中して、C の射た矢が的に命中しない確率は<span class="blank" data-kana="カ" data-ans="1/8">カ</span>であり、3人のうち少なくとも1人の射た矢が的に命中する確率は<span class="blank" data-kana="キ" data-ans="3/4">キ</span>である。</p>
         </div>
 
         <div class="viz" id="viz4">
           <p class="viz-title">図で見る ― 3人の命中確率</p>
-          <div class="prow"><span class="pl">A さん</span><span class="track"><span class="hit" style="width:50%"></span><span class="miss"></span></span><span class="pv">命中 <b>1/2</b> ・ 外れ 1/2</span></div>
-          <div class="prow"><span class="pl">B さん</span><span class="track"><span class="hit" style="width:33.3%"></span><span class="miss"></span></span><span class="pv">命中 <b>1/3</b> ・ 外れ 2/3</span></div>
-          <div class="prow"><span class="pl">C さん</span><span class="track"><span class="hit" style="width:25%"></span><span class="miss"></span></span><span class="pv">命中 <b>1/4</b> ・ 外れ 3/4</span></div>
+          <div class="prow"><span class="pl">A さん</span><span class="track"><span class="hit" style="width:50%"></span><span class="miss"></span></span><span class="pv">命中 <b><math><mfrac><mn>1</mn><mn>2</mn></mfrac></math></b><math><mo>⋅</mo></math>外れ<math><mfrac><mn>1</mn><mn>2</mn></mfrac></math></span></div>
+          <div class="prow"><span class="pl">B さん</span><span class="track"><span class="hit" style="width:33.3%"></span><span class="miss"></span></span><span class="pv">命中 <b><math><mfrac><mn>1</mn><mn>3</mn></mfrac></math></b><math><mo>⋅</mo></math>外れ<math><mfrac><mn>2</mn><mn>3</mn></mfrac></math></span></div>
+          <div class="prow"><span class="pl">C さん</span><span class="track"><span class="hit" style="width:25%"></span><span class="miss"></span></span><span class="pv">命中 <b><math><mfrac><mn>1</mn><mn>4</mn></mfrac></math></b><math><mo>⋅</mo></math>外れ<math><mfrac><mn>3</mn><mn>4</mn></mfrac></math></span></div>
           <p class="expr-note">バーの色の部分が「命中」の割合。右側の白い部分が「外れ」の割合だよ。</p>
-          <div class="expr-sub" data-min="2" hidden>カ の計算： <span class="hlb">1/2</span> × <span class="hlb">1/3</span> × <span class="hl">3/4</span>（A命中 × B命中 × C外れ）</div>
-          <div class="expr-sub" data-min="4" hidden>全員が外れる確率： <span class="hlb">1/2</span> × <span class="hlb">2/3</span> × <span class="hlb">3/4</span>（A外れ × B外れ × C外れ）</div>
+          <div class="expr-sub" data-min="2" hidden>カ の計算： <span class="hlb"><math><mfrac><mn>1</mn><mn>2</mn></mfrac></math></span> × <span class="hlb"><math><mfrac><mn>1</mn><mn>3</mn></mfrac></math></span> × <span class="hl"><math><mfrac><mn>3</mn><mn>4</mn></mfrac></math></span>（A命中 × B命中 × C外れ）</div>
+          <div class="expr-sub" data-min="4" hidden>全員が外れる確率： <span class="hlb"><math><mfrac><mn>1</mn><mn>2</mn></mfrac></math></span> × <span class="hlb"><math><mfrac><mn>2</mn><mn>3</mn></mfrac></math></span> × <span class="hlb"><math><mfrac><mn>3</mn><mn>4</mn></mfrac></math></span>（A外れ × B外れ × C外れ）</div>
         </div>
 
         <p class="think-note">聞かれているのは2つ。前半は「命中・命中・外れ」の組み合わせ、後半は「少なくとも1人」。後半には合言葉があるよ。</p>
@@ -700,55 +768,55 @@
 
         <div class="stages">
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">まず C が「命中しない」確率を出しておく</span></div>
-            <p>問題文にあるのは C の<strong>命中</strong>する確率 <span class="m"><span class="frac"><span class="num">1</span><span class="den">4</span></span></span> だけ。でも前半で必要なのは「命中<strong>しない</strong>」確率。先に作っておこう：</p>
-            <div class="formula-line"><span class="m">1 − <span class="frac"><span class="num">1</span><span class="den">4</span></span> = <span class="frac"><span class="num">3</span><span class="den">4</span></span></span></div>
-            <p class="mini">噛み砕くと「全体（1）から命中する分を引いた残り」が外れる確率。上の図の C さんのバーの白い部分がこれだね。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">まず C が「命中しない」確率を出しておく</span></div><p class="cite"><span class="cite-tag">使う性質</span>余事象の確率 <math><mn>1</mn><mo>−</mo><mfrac><mn>1</mn><mn>4</mn></mfrac><mo>=</mo><mfrac><mn>3</mn><mn>4</mn></mfrac></math>。命中する確率を全体の1から引くと、命中しない確率が求められる。</p>
+            <p>問題文にあるのは C の<strong>命中</strong>する確率 <math><mfrac><mn>1</mn><mn>4</mn></mfrac></math> だけ。<br>でも前半で必要なのは「命中<strong>しない</strong>」確率。先に作っておこう：</p>
+            <div class="formula-line"><math><mn>1</mn><mo>−</mo><mfrac><mn>1</mn><mn>4</mn></mfrac><mo>=</mo><mfrac><mn>3</mn><mn>4</mn></mfrac></math></div>
+            <p class="mini">噛み砕くと「全体（1）から命中する分を引いた残り」が外れる確率。<br>上の図の C さんのバーの白い部分がこれだね。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">3人の結果は「独立」→ 確率は掛け算</span></div>
-            <p>A の結果は B や C の結果に影響しない。このように互いに影響しないことを「<strong>独立</strong>」といって、独立な出来事が<strong>全部同時に</strong>起こる確率は、それぞれの確率の<strong>掛け算</strong>になる。</p>
-            <div class="formula-line"><span class="m"><span class="frac"><span class="num">1</span><span class="den">2</span></span> × <span class="frac"><span class="num">1</span><span class="den">3</span></span> × <span class="frac"><span class="num">3</span><span class="den">4</span></span></span>　（A命中 × B命中 × C外れ）</div>
-            <p>分子どうし・分母どうしを掛けて約分すると、カ の値が出る。自分で計算してみよう。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">3人の結果は「独立」→ 確率は掛け算</span></div><p class="cite"><span class="cite-tag">使う性質</span>独立な事象の確率の積 <math><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>×</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>×</mo><mfrac><mn>3</mn><mn>4</mn></mfrac></math>。独立な結果が同時に起こる確率は、それぞれの確率を掛けて求める。</p>
+            <p>A の結果は B や C の結果に影響しない。<br>このように互いに影響しないことを「<strong>独立</strong>」といって、独立な出来事が<strong>全部同時に</strong>起こる確率は、それぞれの確率の<strong>掛け算</strong>になる。</p>
+            <div class="formula-line"><math><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>×</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>×</mo><mfrac><mn>3</mn><mn>4</mn></mfrac></math>　（A命中 × B命中 × C外れ）</div>
+            <p>分子どうし・分母どうしを掛けて約分すると、カ の値が出る。<br>自分で計算してみよう。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">「少なくとも1人」は、反対側から考える</span></div>
+            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">「少なくとも1人」は、反対側から考える</span></div><p class="cite"><span class="cite-tag">使う定義</span>余事象 <math><mn>1</mn><mo>−</mo><mfrac><mn>1</mn><mn>4</mn></mfrac></math>。「少なくとも1人命中」の余事象は「全員が外れる」ことなので、そちらを先に計算する。</p>
             <p>後半の合言葉：<strong>「少なくとも1人」と来たら、余事象（反対の出来事）を考える</strong>。</p>
-            <p>「少なくとも1人が命中」の反対は「<strong>全員が外れる</strong>」こと。反対側は3人とも外れる1パターンだけだから、そちらの方がずっと計算しやすい。まず「全員が外れる確率」を求める作戦にしよう。</p>
+            <p>「少なくとも1人が命中」の反対は「<strong>全員が外れる</strong>」こと。<br>反対側は3人とも外れる1パターンだけだから、そちらの方がずっと計算しやすい。<br>まず「全員が外れる確率」を求める作戦にしよう。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">「全員が外れる」確率を掛け算で出す</span></div>
+            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">「全員が外れる」確率を掛け算で出す</span></div><p class="cite"><span class="cite-tag">使う性質</span>独立な事象の確率の積 <math><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>×</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mo>×</mo><mfrac><mn>3</mn><mn>4</mn></mfrac><mo>=</mo><mfrac><mn>1</mn><mn>4</mn></mfrac></math>。3人が外れる確率は独立なので、それぞれの外れる確率を掛ける。</p>
             <p>3人の「外れる」確率は、図のバーで確認したとおり：</p>
             <ul class="steps">
-              <li>A が外れる：<span class="m">1−<span class="frac"><span class="num">1</span><span class="den">2</span></span>=<span class="frac"><span class="num">1</span><span class="den">2</span></span></span></li>
-              <li>B が外れる：<span class="m">1−<span class="frac"><span class="num">1</span><span class="den">3</span></span>=<span class="frac"><span class="num">2</span><span class="den">3</span></span></span></li>
-              <li>C が外れる：<span class="m"><span class="frac"><span class="num">3</span><span class="den">4</span></span></span>（ヒント1で計算済み）</li>
+              <li>A が外れる：<math><mn>1</mn><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math></li>
+              <li>B が外れる：<math><mn>1</mn><mo>−</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>=</mo><mfrac><mn>2</mn><mn>3</mn></mfrac></math></li>
+              <li>C が外れる：<math><mfrac><mn>3</mn><mn>4</mn></mfrac><mo>(</mo></math>ヒント1で計算済み）</li>
             </ul>
-            <div class="formula-line"><span class="m"><span class="frac"><span class="num">1</span><span class="den">2</span></span> × <span class="frac"><span class="num">2</span><span class="den">3</span></span> × <span class="frac"><span class="num">3</span><span class="den">4</span></span> = <span class="frac"><span class="num">1</span><span class="den">4</span></span></span>　（途中で約分すると楽）</div>
+            <div class="formula-line"><math><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>×</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mo>×</mo><mfrac><mn>3</mn><mn>4</mn></mfrac><mo>=</mo><mfrac><mn>1</mn><mn>4</mn></mfrac></math>　（途中で約分すると楽）</div>
             <p>これで「全員が外れる」確率は出た。あと一歩だよ。</p>
           </article>
 
           <article class="stage hint" hidden>
             <div class="stage-head"><span class="stage-badge">ヒント 5</span><span class="stage-title">全体の 1 から引いて、表側に戻す</span></div>
             <p>「少なくとも1人が命中」＝「全員が外れる」ではない、ということ。だから答えは：</p>
-            <div class="formula-line"><span class="m">1 − <span class="frac"><span class="num">1</span><span class="den">4</span></span></span></div>
+            <div class="formula-line"><math><mn>1</mn><mo>−</mo><mfrac><mn>1</mn><mn>4</mn></mfrac></math></div>
             <p>この引き算の結果が キ。自分で最後の値を書いてみよう。</p>
           </article>
 
           <article class="stage answer" hidden>
-            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(4) の答え</span></div>
+            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(4) の答え</span></div><p class="cite"><span class="cite-tag">使う性質</span>余事象の確率 <math><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>×</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mo>×</mo><mfrac><mn>3</mn><mn>4</mn></mfrac><mo>=</mo><mfrac><mn>1</mn><mn>4</mn></mfrac></math>。全員が外れる確率をこの積で求め、全体の1から引いて答えを出す。</p>
             <ol class="steps">
-              <li>C が命中しない確率は <span class="m">1−<span class="frac"><span class="num">1</span><span class="den">4</span></span>=<span class="frac"><span class="num">3</span><span class="den">4</span></span></span>。3人は独立だから、求める確率は <span class="m"><span class="frac"><span class="num">1</span><span class="den">2</span></span>×<span class="frac"><span class="num">1</span><span class="den">3</span></span>×<span class="frac"><span class="num">3</span><span class="den">4</span></span>=<span class="frac"><span class="num">1</span><span class="den">8</span></span></span>。</li>
-              <li>余事象「全員が外れる」確率は <span class="m"><span class="frac"><span class="num">1</span><span class="den">2</span></span>×<span class="frac"><span class="num">2</span><span class="den">3</span></span>×<span class="frac"><span class="num">3</span><span class="den">4</span></span>=<span class="frac"><span class="num">1</span><span class="den">4</span></span></span>。よって、少なくとも1人が命中する確率は <span class="m">1−<span class="frac"><span class="num">1</span><span class="den">4</span></span>=<span class="frac"><span class="num">3</span><span class="den">4</span></span></span>。</li>
+              <li>C が命中しない確率は <math><mn>1</mn><mo>−</mo><mfrac><mn>1</mn><mn>4</mn></mfrac><mo>=</mo><mfrac><mn>3</mn><mn>4</mn></mfrac></math>。3人は独立だから、求める確率は <math><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>×</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>×</mo><mfrac><mn>3</mn><mn>4</mn></mfrac><mo>=</mo><mfrac><mn>1</mn><mn>8</mn></mfrac></math>。</li>
+              <li>余事象「全員が外れる」確率は <math><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>×</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mo>×</mo><mfrac><mn>3</mn><mn>4</mn></mfrac><mo>=</mo><mfrac><mn>1</mn><mn>4</mn></mfrac></math>。よって、少なくとも1人が命中する確率は <math><mn>1</mn><mo>−</mo><mfrac><mn>1</mn><mn>4</mn></mfrac><mo>=</mo><mfrac><mn>3</mn><mn>4</mn></mfrac></math>。</li>
             </ol>
             <div class="ans-line">
-              <span class="ans-chip"><span class="kana">カ</span><span class="m"><span class="frac"><span class="num">1</span><span class="den">8</span></span></span><span class="pts">2点</span></span>
-              <span class="ans-chip"><span class="kana">キ</span><span class="m"><span class="frac"><span class="num">3</span><span class="den">4</span></span></span><span class="pts">2点</span></span>
+              <span class="ans-chip"><span class="kana">カ</span><math><mfrac><mn>1</mn><mn>8</mn></mfrac></math><span class="pts">2点</span></span>
+              <span class="ans-chip"><span class="kana">キ</span><math><mfrac><mn>3</mn><mn>4</mn></mfrac></math><span class="pts">2点</span></span>
             </div>
-            <div class="point-box"><span class="pt">ポイント</span>「全部同時に起こる」確率は<strong>掛け算</strong>（独立）。「<strong>少なくとも1つ</strong>」は余事象「全部ダメ」を <span class="m">1</span> から引く。この2つが確率の基本の型。</div>
+            <div class="point-box"><span class="pt">ポイント</span><p class="cite"><span class="cite-tag">使う性質</span>余事象の確率 <math><mn>1</mn><mo>−</mo><mfrac><mn>1</mn><mn>4</mn></mfrac><mo>=</mo><mfrac><mn>3</mn><mn>4</mn></mfrac></math>。「少なくとも1つ」の確率は、余事象の確率を全体の1から引いて求める。</p>「全部同時に起こる」確率は<strong>掛け算</strong>（独立）。「<strong>少なくとも1つ</strong>」は余事象「全部ダメ」を <math><mn>1</mn></math> から引く。この2つが確率の基本の型。</div>
           </article>
         </div>
 
@@ -768,11 +836,11 @@
             <span class="q-num">(5)</span><span class="q-title">平均と分散</span>
             <span class="q-points">配点 4点（各2点）</span>
           </div>
-          <p class="q-body">下の表は、5人の生徒の小テストの得点を変量 <span class="m"><i>x</i></span> として、<span class="m">(<i>x</i>−<i>x</i>&#772;)<sup>2</sup></span> とともにまとめたものである。ただし <span class="m"><i>x</i>&#772;</span> は変量 <span class="m"><i>x</i></span> のデータの平均値を表している。このとき、変量 <span class="m"><i>x</i></span> の平均値 <span class="m"><i>x</i>&#772;</span> は<span class="blank" data-kana="ク" data-ans="5">ク</span>であり、変量 <span class="m"><i>x</i></span> の分散は<span class="blank" data-kana="ケ" data-ans="2">ケ</span>である。</p>
+          <p class="q-body">下の表は、5人の生徒の小テストの得点を変量 <math><mi>x</mi></math> として、<math><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mi>x</mi><mo>̄</mo><mo>)</mo></mrow><mn>2</mn></msup></math> とともにまとめたものである。ただし <math><mi>x</mi><mo>̄</mo></math> は変量 <math><mi>x</mi></math> のデータの平均値を表している。このとき、変量 <math><mi>x</mi></math> の平均値 <math><mi>x</mi><mo>̄</mo></math> は<span class="blank" data-kana="ク" data-ans="5">ク</span>であり、変量 <math><mi>x</mi></math> の分散は<span class="blank" data-kana="ケ" data-ans="2">ケ</span>である。</p>
           <table class="dtable" aria-label="5人の得点と、平均からのずれの2乗の表">
             <tr><th>生徒</th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th></tr>
-            <tr><th><span class="m"><i>x</i></span></th><td>6</td><td>7</td><td>4</td><td>5</td><td><span class="m"><i>a</i></span></td></tr>
-            <tr><th><span class="m">(<i>x</i>−<i>x</i>&#772;)<sup>2</sup></span></th><td>1</td><td>4</td><td><span class="m"><i>b</i></span></td><td><span class="m"><i>c</i></span></td><td><span class="m"><i>d</i></span></td></tr>
+            <tr><th><math><mi>x</mi></math></th><td>6</td><td>7</td><td>4</td><td>5</td><td><math><mi>a</mi></math></td></tr>
+            <tr><th><math><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mi>x</mi><mo>̄</mo><mo>)</mo></mrow><mn>2</mn></msup></math></th><td>1</td><td>4</td><td><math><mi>b</mi></math></td><td><math><mi>c</mi></math></td><td><math><mi>d</mi></math></td></tr>
           </table>
         </div>
 
@@ -780,14 +848,14 @@
           <p class="viz-title">図で見る ― 表が埋まっていく様子と、数直線</p>
           <table class="dtable" aria-label="ヒントに合わせて埋まっていく表">
             <tr><th>生徒</th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th></tr>
-            <tr><th><span class="m"><i>x</i></span></th><td>6</td><td>7</td><td>4</td><td>5</td>
-              <td><span data-max="3"><span class="m"><i>a</i></span></span><span data-min="4" hidden class="m">3</span></td></tr>
-            <tr><th><span class="m">(<i>x</i>−<i>x</i>&#772;)<sup>2</sup></span></th><td>1</td><td>4</td>
-              <td><span data-max="4"><span class="m"><i>b</i></span></span><span data-min="5" hidden class="m">1</span></td>
-              <td><span data-max="4"><span class="m"><i>c</i></span></span><span data-min="5" hidden class="m">0</span></td>
-              <td><span data-max="4"><span class="m"><i>d</i></span></span><span data-min="5" hidden class="m">4</span></td></tr>
+            <tr><th><math><mi>x</mi></math></th><td>6</td><td>7</td><td>4</td><td>5</td>
+              <td><span data-max="3"><math><mi>a</mi></math></span><span data-min="4" hidden class="m">3</span></td></tr>
+            <tr><th><math><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mi>x</mi><mo>̄</mo><mo>)</mo></mrow><mn>2</mn></msup></math></th><td>1</td><td>4</td>
+              <td><span data-max="4"><math><mi>b</mi></math></span><span data-min="5" hidden class="m">1</span></td>
+              <td><span data-max="4"><math><mi>c</mi></math></span><span data-min="5" hidden class="m">0</span></td>
+              <td><span data-max="4"><math><mi>d</mi></math></span><span data-min="5" hidden class="m">4</span></td></tr>
           </table>
-          <p class="expr-note" data-min="3" hidden style="color:var(--accent-deep);font-weight:900">平均 <span class="m"><i>x</i>&#772;=5</span> が確定（ク）</p>
+          <p class="expr-note" data-min="3" hidden style="color:var(--accent-deep);font-weight:900">平均 <math><mi>x</mi><mo>̄</mo><mo>=</mo><mn>5</mn></math> が確定（ク）</p>
           <svg viewBox="0 0 640 130" role="img" aria-label="数直線上の5人の得点と平均5の位置" style="margin-top:10px">
             <g data-min="3" hidden>
               <line x1="250" y1="30" x2="250" y2="86" style="stroke:var(--accent)" stroke-width="2" stroke-dasharray="5 5"></line>
@@ -822,69 +890,85 @@
           <p class="expr-note">数直線の目盛りは得点。E の点は、ヒントを進めると現れる。</p>
         </div>
 
-        <p class="think-note">平均 <span class="m"><i>x</i>&#772;</span> も <span class="m"><i>a</i></span> も分からない、パズルのような問題。分かっている数字から順に手がかりをつかもう。</p>
+        <p class="think-note">平均 <math><mi>x</mi><mo>̄</mo></math> も <math><mi>a</mi></math> も分からない、パズルのような問題。分かっている数字から順に手がかりをつかもう。</p>
         </div>
 
         <div class="stages">
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">生徒 A の行だけを見る</span></div>
-            <p>A については、得点 <span class="m"><i>x</i>=6</span> と <span class="m">(6−<i>x</i>&#772;)<sup>2</sup>=1</span> の両方が分かっている。2乗を外すと：</p>
-            <div class="formula-line"><span class="m">6 − <i>x</i>&#772; = ±1</span>　（2乗して1になるのは +1 と −1 の2通り）</div>
-            <p>だから <span class="m"><i>x</i>&#772;</span> の候補は <span class="m">5</span> と <span class="m">7</span> の2つに絞れる。まだ決めない。候補をメモしておこう。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">生徒 A の行だけを見る</span></div><p class="cite"><span class="cite-tag">使う性質</span>2乗を外す <math><mn>6</mn><mo>−</mo><mi>x</mi><mo>̄</mo><mo>=</mo><mo>±</mo><mn>1</mn></math>。2乗して1になる数は正と負の2通りあるので、平均の候補が2つ出る。</p>
+            <p>A については、得点 <math><mi>x</mi><mo>=</mo><mn>6</mn></math> と <math><msup><mrow><mo>(</mo><mn>6</mn><mo>−</mo><mi>x</mi><mo>̄</mo><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>1</mn></math> の両方が分かっている。2乗を外すと：</p>
+            <div class="formula-line"><math><mn>6</mn><mo>−</mo><mi>x</mi><mo>̄</mo><mo>=</mo><mo>±</mo><mn>1</mn></math>　（2乗して1になるのは +1 と −1 の2通り）</div>
+            <p>だから <math><mi>x</mi><mo>̄</mo></math> の候補は <math><mn>5</mn></math> と <math><mn>7</mn></math> の2つに絞れる。<br>まだ決めない。<br>候補をメモしておこう。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">生徒 B の行でも、同じことをする</span></div>
-            <p>B は得点 <span class="m"><i>x</i>=7</span>、<span class="m">(7−<i>x</i>&#772;)<sup>2</sup>=4</span>。同じように2乗を外すと：</p>
-            <div class="formula-line"><span class="m">7 − <i>x</i>&#772; = ±2</span>　（2乗して4になるのは +2 と −2）</div>
-            <p>だから B から出る <span class="m"><i>x</i>&#772;</span> の候補は <span class="m">5</span> と <span class="m">9</span>。ヒント1の候補（5 と 7）と見比べてみよう。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">生徒 B の行でも、同じことをする</span></div><p class="cite"><span class="cite-tag">使う性質</span>2乗を外す <math><mn>7</mn><mo>−</mo><mi>x</mi><mo>̄</mo><mo>=</mo><mo>±</mo><mn>2</mn></math>。こちらも2乗を外して2通りの候補を出し、前の候補と比べる。</p>
+            <p>B は得点 <math><mi>x</mi><mo>=</mo><mn>7</mn></math>、<math><msup><mrow><mo>(</mo><mn>7</mn><mo>−</mo><mi>x</mi><mo>̄</mo><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>4</mn></math>。同じように2乗を外すと：</p>
+            <div class="formula-line"><math><mn>7</mn><mo>−</mo><mi>x</mi><mo>̄</mo><mo>=</mo><mo>±</mo><mn>2</mn></math>　（2乗して4になるのは +2 と −2）</div>
+            <p>だから B から出る <math><mi>x</mi><mo>̄</mo></math> の候補は <math><mn>5</mn></math> と <math><mn>9</mn></math>。<br>ヒント1の候補（5 と 7）と見比べてみよう。</p>
           </article>
 
           <article class="stage hint" hidden>
             <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">両方に共通する候補が、本物</span></div>
             <p>平均は1つしかないから、A の候補 {5, 7} と B の候補 {5, 9} の<strong>両方に出てくる数</strong>が本物の平均だ。</p>
-            <div class="formula-line"><span class="m"><i>x</i>&#772; = 5</span></div>
-            <p>これで ク が確定。上の表にも平均が入ったよ。次は残りの <span class="m"><i>a</i></span> を求めにいく。</p>
+            <div class="formula-line"><math><mi>x</mi><mo>̄</mo><mo>=</mo><mn>5</mn></math></div>
+            <p>これで ク が確定。上の表にも平均が入ったよ。<br>次は残りの <math><mi>a</mi></math> を求めにいく。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">平均の定義に戻って、a を出す</span></div>
-            <p>平均が 5 ということは、5人の得点の<strong>合計</strong>は <span class="m">5×5=25</span> 点。分かっている4人分を引けば E の得点が出る：</p>
-            <div class="formula-line"><span class="m"><i>a</i> = 25 − (6+7+4+5) = 25 − 22 = 3</span></div>
-            <p>表と数直線に E の 3 点が入った。平均 5 を中心に、点が左右に散らばっている様子を見ておこう。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">平均の定義に戻って、a を出す</span></div><p class="cite"><span class="cite-tag">使う定義</span>平均と合計 <math><mn>5</mn><mo>×</mo><mn>5</mn><mo>=</mo><mn>25</mn></math>。合計は平均に個数を掛けたものなので、そこから分かっている得点を引く。</p>
+            <p>平均が 5 ということは、5人の得点の<strong>合計</strong>は <math><mn>5</mn><mo>×</mo><mn>5</mn><mo>=</mo><mn>25</mn></math> 点。<br>分かっている4人分を引けば E の得点が出る：</p>
+            <div class="formula-line"><div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>a</mi><mo>=</mo><mn>25</mn><mo>−</mo><mrow><mo>(</mo><mn>6</mn><mo>+</mo><mn>7</mn><mo>+</mo><mn>4</mn><mo>+</mo><mn>5</mn><mo>)</mo></mrow></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>a</mi></mphantom><mo>=</mo><mn>25</mn><mo>−</mo><mn>22</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>a</mi></mphantom><mo>=</mo><mn>3</mn></math></div>
+</div></div>
+            <p>表と数直線に E の 3 点が入った。<br>平均 5 を中心に、点が左右に散らばっている様子を見ておこう。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 5</span><span class="stage-title">残りの b, c, d を1つずつ計算する</span></div>
-            <p><span class="m">(<i>x</i>−<i>x</i>&#772;)<sup>2</sup></span> は「平均 5 から引いて、2乗する」だけ。3人分、並べて計算する：</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 5</span><span class="stage-title">残りの b, c, d を1つずつ計算する</span></div><p class="cite"><span class="cite-tag">使う定義</span>平均からのずれの2乗 <math displaystyle="true"><mi>b</mi><mo>=</mo><msup><mrow><mo>(</mo><mn>4</mn><mo>−</mo><mn>5</mn><mo>)</mo></mrow><mn>2</mn></msup></math>。各得点から平均を引いて2乗すると、表の残りの値が求められる。</p>
+            <p><math><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mi>x</mi><mo>̄</mo><mo>)</mo></mrow><mn>2</mn></msup></math> は「平均 5 から引いて、2乗する」だけ。<br>3人分、並べて計算する：</p>
             <div class="formula-line">
-              <span class="m"><i>b</i> = (4−5)<sup>2</sup> = (−1)<sup>2</sup> = 1</span>　（生徒 C）<br />
-              <span class="m"><i>c</i> = (5−5)<sup>2</sup> = 0<sup>2</sup> = 0</span>　（生徒 D）<br />
-              <span class="m"><i>d</i> = (3−5)<sup>2</sup> = (−2)<sup>2</sup> = 4</span>　（生徒 E）
+              <div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>b</mi><mo>=</mo><msup><mrow><mo>(</mo><mn>4</mn><mo>−</mo><mn>5</mn><mo>)</mo></mrow><mn>2</mn></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>b</mi></mphantom><mo>=</mo><msup><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>b</mi></mphantom><mo>=</mo><mn>1</mn></math></div>
+</div>　（生徒 C）<br />
+              <div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>c</mi><mo>=</mo><msup><mrow><mo>(</mo><mn>5</mn><mo>−</mo><mn>5</mn><mo>)</mo></mrow><mn>2</mn></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>c</mi></mphantom><mo>=</mo><msup><mn>0</mn><mn>2</mn></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>c</mi></mphantom><mo>=</mo><mn>0</mn></math></div>
+</div>　（生徒 D）<br />
+              <div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>d</mi><mo>=</mo><msup><mrow><mo>(</mo><mn>3</mn><mo>−</mo><mn>5</mn><mo>)</mo></mrow><mn>2</mn></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>d</mi></mphantom><mo>=</mo><msup><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>d</mi></mphantom><mo>=</mo><mn>4</mn></math></div>
+</div>　（生徒 E）
             </div>
-            <p class="mini">つまずき注意：<span class="m">(−1)<sup>2</sup></span> や <span class="m">(−2)<sup>2</sup></span> は、2乗すると符号が消えてプラスになるよ。</p>
+            <p class="mini">つまずき注意：<math><msup><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup></math> や <math><msup><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup></math> は、2乗すると符号が消えてプラスになるよ。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 6</span><span class="stage-title">分散＝「ずれの2乗」の平均。あとは割り算だけ</span></div>
-            <p><strong>分散</strong>を噛み砕くと、「平均からのずれを2乗したもの」を<strong>全員分平均した</strong>数字＝散らばり具合のものさし。表の2行目が全部埋まったので、その5つの数の平均を取る：</p>
-            <div class="formula-line"><span class="m">分散 = <span class="frac"><span class="num">1 + 4 + 1 + 0 + 4</span><span class="den">5</span></span></span></div>
-            <p>分子を足して 5 で割れば ケ の値が出る。最後の計算は自分でやってみよう。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 6</span><span class="stage-title">分散＝「ずれの2乗」の平均。あとは割り算だけ</span></div><p class="cite"><span class="cite-tag">使う定義</span>分散 <math><mo>=</mo><mfrac><mrow><mn>1</mn><mo>+</mo><mn>4</mn><mo>+</mo><mn>1</mn><mo>+</mo><mn>0</mn><mo>+</mo><mn>4</mn></mrow><mn>5</mn></mfrac></math>。分散は、平均からのずれの2乗を全員分平均したものとして計算する。</p>
+            <p><strong>分散</strong>を噛み砕くと、「平均からのずれを2乗したもの」を<strong>全員分平均した</strong>数字＝散らばり具合のものさし。<br>表の2行目が全部埋まったので、その5つの数の平均を取る：</p>
+            <div class="formula-line"><span class="m">分散<math><mo>=</mo><mfrac><mrow><mn>1</mn><mo>+</mo><mn>4</mn><mo>+</mo><mn>1</mn><mo>+</mo><mn>0</mn><mo>+</mo><mn>4</mn></mrow><mn>5</mn></mfrac></math></span></div>
+            <p>分子を足して 5 で割れば ケ の値が出る。<br>最後の計算は自分でやってみよう。</p>
           </article>
 
           <article class="stage answer" hidden>
-            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(5) の答え</span></div>
+            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(5) の答え</span></div><p class="cite"><span class="cite-tag">使う定義</span>分散 <math><mfrac><mrow><mn>1</mn><mo>+</mo><mn>4</mn><mo>+</mo><mn>1</mn><mo>+</mo><mn>0</mn><mo>+</mo><mn>4</mn></mrow><mn>5</mn></mfrac><mo>=</mo><mfrac><mn>10</mn><mn>5</mn></mfrac><mo>=</mo><mn>2</mn></math>。ずれの2乗の平均を取るという定義どおりに、解答の最後の計算を行う。</p>
             <ol class="steps">
-              <li>生徒 A より <span class="m"><i>x</i>&#772;=5</span> または <span class="m">7</span>、生徒 B より <span class="m"><i>x</i>&#772;=5</span> または <span class="m">9</span>。共通するのは <span class="m"><i>x</i>&#772;=5</span>。</li>
-              <li>合計が <span class="m">25</span> だから <span class="m"><i>a</i>=25−(6+7+4+5)=3</span>。</li>
-              <li><span class="m"><i>b</i>=(4−5)<sup>2</sup>=1</span>、<span class="m"><i>c</i>=(5−5)<sup>2</sup>=0</span>、<span class="m"><i>d</i>=(3−5)<sup>2</sup>=4</span>。</li>
-              <li>分散は <span class="m"><span class="frac"><span class="num">1+4+1+0+4</span><span class="den">5</span></span>=<span class="frac"><span class="num">10</span><span class="den">5</span></span>=2</span>。</li>
+              <li>生徒 A より <math><mi>x</mi><mo>̄</mo><mo>=</mo><mn>5</mn></math> または <math><mn>7</mn></math>、生徒 B より <math><mi>x</mi><mo>̄</mo><mo>=</mo><mn>5</mn></math> または <math><mn>9</mn></math>。共通するのは <math><mi>x</mi><mo>̄</mo><mo>=</mo><mn>5</mn></math>。</li>
+              <li>合計が <math><mn>25</mn></math> だから <math><mi>a</mi><mo>=</mo><mn>25</mn><mo>−</mo><mrow><mo>(</mo><mn>6</mn><mo>+</mo><mn>7</mn><mo>+</mo><mn>4</mn><mo>+</mo><mn>5</mn><mo>)</mo></mrow><mo>=</mo><mn>3</mn></math>。</li>
+              <li><math><mi>b</mi><mo>=</mo><msup><mrow><mo>(</mo><mn>4</mn><mo>−</mo><mn>5</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>1</mn></math>、<math><mi>c</mi><mo>=</mo><msup><mrow><mo>(</mo><mn>5</mn><mo>−</mo><mn>5</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>0</mn></math>、<math><mi>d</mi><mo>=</mo><msup><mrow><mo>(</mo><mn>3</mn><mo>−</mo><mn>5</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>4</mn></math>。</li>
+              <li>分散は <math><mfrac><mrow><mn>1</mn><mo>+</mo><mn>4</mn><mo>+</mo><mn>1</mn><mo>+</mo><mn>0</mn><mo>+</mo><mn>4</mn></mrow><mn>5</mn></mfrac><mo>=</mo><mfrac><mn>10</mn><mn>5</mn></mfrac><mo>=</mo><mn>2</mn></math>。</li>
             </ol>
             <div class="ans-line">
-              <span class="ans-chip"><span class="kana">ク</span><span class="m">5</span><span class="pts">2点</span></span>
-              <span class="ans-chip"><span class="kana">ケ</span><span class="m">2</span><span class="pts">2点</span></span>
+              <span class="ans-chip"><span class="kana">ク</span><math><mn>5</mn></math><span class="pts">2点</span></span>
+              <span class="ans-chip"><span class="kana">ケ</span><math><mn>2</mn></math><span class="pts">2点</span></span>
             </div>
-            <div class="point-box"><span class="pt">ポイント</span>平均が分からないときは、<span class="m">(<i>x</i>−<i>x</i>&#772;)<sup>2</sup></span> が分かっている行から候補を出し、<strong>共通する候補</strong>に絞る。分散は「ずれの2乗の平均」という定義どおりに計算するだけ。</div>
+            <div class="point-box"><span class="pt">ポイント</span><p class="cite"><span class="cite-tag">使う定義</span>平均からのずれの2乗 <math><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mi>x</mi><mo>̄</mo><mo>)</mo></mrow><mn>2</mn></msup></math>。平均の候補も分散も、このずれの2乗を手がかりにして計算する。</p>平均が分からないときは、<math><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mi>x</mi><mo>̄</mo><mo>)</mo></mrow><mn>2</mn></msup></math> が分かっている行から候補を出し、<strong>共通する候補</strong>に絞る。分散は「ずれの2乗の平均」という定義どおりに計算するだけ。</div>
           </article>
         </div>
 

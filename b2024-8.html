@@ -309,7 +309,57 @@
           padding: 2px 6px 2px 2px;
         }
       }
-    </style>
+    
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+
+      /* 積分記号は大きめに表示する（元のページの可読化デザインに合わせる） */
+      math .int-op{font-size:1.35em}
+      /* calc-12 世代（.card）と calc-18 世代（.unit）の、図のない問題の全幅化 */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig>.step{position:static !important}
+        .card.nofig>.steps-wrap{max-height:none !important;overflow:visible !important}
+        .unit.nofig{display:block !important}
+        .unit.nofig>.qside{position:static !important}
+        .unit.nofig>.steps-stack{max-height:none !important;overflow:visible !important}
+      }
+</style>
   </head>
   <body>
     <div class="wrap">
@@ -351,9 +401,9 @@
           </div>
           <div class="q-setup">
             <span class="qs-label">共通の設定（(1)〜(3)）</span>
-            平面上に <span class="m">OA = 2</span>、<span class="m">OB = 3</span>、<span class="m">cos∠AOB = <span class="frac"><span class="num">2</span><span class="den">3</span></span></span> の △OAB があり、辺 AB を <span class="m">2 : 1</span> に内分する点を C とする。また、<span class="m"><span class="vec">OA</span> = <span class="vec"><i>a</i></span></span>、<span class="m"><span class="vec">OB</span> = <span class="vec"><i>b</i></span></span> とする。
+            平面上に <math><mi>OA</mi><mo>=</mo><mn>2</mn></math>、<math><mi>OB</mi><mo>=</mo><mn>3</mn></math>、<math><mi>cos</mi><mo>∠</mo><mi>AOB</mi><mo>=</mo><mfrac><mn>2</mn><mn>3</mn></mfrac></math> の △OAB があり、辺 AB を <math><mn>2</mn><mo>:</mo><mn>1</mn></math> に内分する点を C とする。また、<math><mover><mi>OA</mi><mo>→</mo></mover><mo>=</mo><mover><mi>a</mi><mo>→</mo></mover></math>、<math><mover><mi>OB</mi><mo>→</mo></mover><mo>=</mo><mover><mi>b</mi><mo>→</mo></mover></math> とする。
           </div>
-          <p class="q-body">内積 <span class="m"><span class="vec"><i>a</i></span>·<span class="vec"><i>b</i></span></span> の値を求めよ。また、<span class="m"><span class="vec">OC</span></span> を <span class="m"><span class="vec"><i>a</i></span></span>、<span class="m"><span class="vec"><i>b</i></span></span> を用いて表せ。</p>
+          <p class="q-body">内積 <math><mover><mi>a</mi><mo>→</mo></mover><mo>·</mo><mover><mi>b</mi><mo>→</mo></mover></math> の値を求めよ。また、<math><mover><mi>OC</mi><mo>→</mo></mover></math> を <math><mover><mi>a</mi><mo>→</mo></mover></math>、<math><mover><mi>b</mi><mo>→</mo></mover></math> を用いて表せ。</p>
         </div>
 
         <div class="viz" id="viz1">
@@ -400,60 +450,64 @@
               <path d="M126,179.5 L132,183 L126,186.5"></path>
             </g>
           </svg>
-          <p class="viz-note" data-min="1" hidden>内積に使う材料は3つ：<b>|<span style="font-style:italic">a</span>| = OA = 2</b>、<b>|<span style="font-style:italic">b</span>| = OB = 3</b>、そして2つのベクトルの<b>なす角</b> ∠AOB の cos が <b>2/3</b>。</p>
-          <p class="viz-note" data-min="3" hidden>辺 AB を <b>3 等分</b>すると、点 C は A から <b>2 つ目</b>の目盛り。つまり <b>AC : CB = 2 : 1</b> で、C は B よりも A に近い。</p>
+          <p class="viz-note" data-min="1" hidden>内積に使う材料は3つ：<b>|<span style="font-style:italic">a</span><math><mo>|</mo><mo>=</mo><mi>OA</mi><mo>=</mo><mn>2</mn></math></b>、<b>|<span style="font-style:italic">b</span><math><mo>|</mo><mo>=</mo><mi>OB</mi><mo>=</mo><mn>3</mn></math></b>、そして2つのベクトルの<b>なす角</b><math><mo>∠</mo><mi>AOB</mi></math>の cos が <b><math><mfrac><mn>2</mn><mn>3</mn></mfrac></math></b>。</p>
+          <p class="viz-note" data-min="3" hidden>辺 AB を <b>3 等分</b>すると、点 C は A から <b>2 つ目</b>の目盛り。つまり <b><math><mi>AC</mi><mo>:</mo><mi>CB</mi><mo>=</mo><mn>2</mn><mo>:</mo><mn>1</mn></math></b> で、C は B よりも A に近い。</p>
         </div>
         </div>
 
         <div class="hside">
-        <p class="think-note">やることは2つ：まず内積 <span class="m"><span class="vec"><i>a</i></span>·<span class="vec"><i>b</i></span></span> の値、次に <span class="m"><span class="vec">OC</span></span> の表し方。どちらも「定義・公式に、問題文の数を入れる」だけだよ。</p>
+        <p class="think-note">やることは2つ：まず内積 <math><mover><mi>a</mi><mo>→</mo></mover><mo>·</mo><mover><mi>b</mi><mo>→</mo></mover></math> の値、次に <math><mover><mi>OC</mi><mo>→</mo></mover></math> の表し方。どちらも「定義・公式に、問題文の数を入れる」だけだよ。</p>
 
         <div class="stages">
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">内積は「定義」に数を入れるだけ</span></div>
-            <p>内積の定義を思い出そう。2つのベクトルのなす角（はさむ角）を <span class="m"><i>θ</i></span> とすると：</p>
-            <div class="formula-line"><span class="m"><span class="vec"><i>a</i></span>·<span class="vec"><i>b</i></span> = |<span class="vec"><i>a</i></span>| |<span class="vec"><i>b</i></span>| cos<i>θ</i></span></div>
-            <p>この問題では <span class="m"><i>θ</i> = ∠AOB</span> そのもので、材料は図に出たとおり：</p>
-            <div class="formula-line"><span class="m">|<span class="vec"><i>a</i></span>| = OA = 2</span>、<span class="m">|<span class="vec"><i>b</i></span>| = OB = 3</span>、<span class="m">cos∠AOB = <span class="frac"><span class="num">2</span><span class="den">3</span></span></span></div>
-            <p class="mini">ベクトルの長さ <span class="m">|<span class="vec"><i>a</i></span>|</span> というのは、矢印 <span class="m"><span class="vec"><i>a</i></span></span> の長さのこと。<span class="m"><span class="vec"><i>a</i></span> = <span class="vec">OA</span></span> だから、その長さは辺 OA の長さ 2 と同じだね。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">内積は「定義」に数を入れるだけ</span></div><p class="cite"><span class="cite-tag">使う定義</span>内積の定義 <math><mover><mi>a</mi><mo>→</mo></mover><mo>·</mo><mover><mi>b</mi><mo>→</mo></mover><mo>=</mo><mrow><mo>|</mo><mover><mi>a</mi><mo>→</mo></mover><mo>|</mo></mrow><mrow><mo>|</mo><mover><mi>b</mi><mo>→</mo></mover><mo>|</mo></mrow><mi>cos</mi><mi>θ</mi></math>。2つのベクトルの長さと、なす角の cos を掛けたものが内積になる。</p>
+            <p>内積の定義を思い出そう。<br>2つのベクトルのなす角（はさむ角）を <math><mi>θ</mi></math> とすると：</p>
+            <div class="formula-line"><math><mover><mi>a</mi><mo>→</mo></mover><mo>·</mo><mover><mi>b</mi><mo>→</mo></mover><mo>=</mo><mrow><mo>|</mo><mover><mi>a</mi><mo>→</mo></mover><mo>|</mo></mrow><mrow><mo>|</mo><mover><mi>b</mi><mo>→</mo></mover><mo>|</mo></mrow><mi>cos</mi><mi>θ</mi></math></div>
+            <p>この問題では <math><mi>θ</mi><mo>=</mo><mo>∠</mo><mi>AOB</mi></math> そのもので、材料は図に出たとおり：</p>
+            <div class="formula-line"><math><mrow><mo>|</mo><mover><mi>a</mi><mo>→</mo></mover><mo>|</mo></mrow><mo>=</mo><mi>OA</mi><mo>=</mo><mn>2</mn></math>、<math><mrow><mo>|</mo><mover><mi>b</mi><mo>→</mo></mover><mo>|</mo></mrow><mo>=</mo><mi>OB</mi><mo>=</mo><mn>3</mn></math>、<math><mi>cos</mi><mo>∠</mo><mi>AOB</mi><mo>=</mo><mfrac><mn>2</mn><mn>3</mn></mfrac></math></div>
+            <p class="mini">ベクトルの長さ <math><mo>|</mo><mover><mi>a</mi><mo>→</mo></mover><mo>|</mo></math> というのは、矢印 <math><mover><mi>a</mi><mo>→</mo></mover></math> の長さのこと。<math><mover><mi>a</mi><mo>→</mo></mover><mo>=</mo><mover><mi>OA</mi><mo>→</mo></mover></math> だから、その長さは辺 OA の長さ 2 と同じだね。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">3つの数を掛ける（約分に注意）</span></div>
+            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">3つの数を掛ける（約分に注意）</span></div><p class="cite"><span class="cite-tag">使う定義</span>内積の定義を入れた形 <math><mover><mi>a</mi><mo>→</mo></mover><mo>·</mo><mover><mi>b</mi><mo>→</mo></mover><mo>=</mo><mn>2</mn><mo>·</mo><mn>3</mn><mo>·</mo><mfrac><mn>2</mn><mn>3</mn></mfrac></math>。定義の3つの材料に、問題の数をそのまま代入する。</p>
             <p>定義にそのまま代入すると：</p>
-            <div class="formula-line"><span class="m"><span class="vec"><i>a</i></span>·<span class="vec"><i>b</i></span> = 2 · 3 · <span class="frac"><span class="num">2</span><span class="den">3</span></span></span></div>
-            <p>計算のコツは<strong>約分を先にやる</strong>こと。分母の <span class="m">3</span> と、掛ける数の <span class="m">3</span> が消えるので、残りは <span class="m">2 · 2</span> の形になる。最後の値を自分で書いてみよう。この値は (2) でも使う、大事な結果だよ。</p>
+            <div class="formula-line"><math><mover><mi>a</mi><mo>→</mo></mover><mo>·</mo><mover><mi>b</mi><mo>→</mo></mover><mo>=</mo><mn>2</mn><mo>·</mo><mn>3</mn><mo>·</mo><mfrac><mn>2</mn><mn>3</mn></mfrac></math></div>
+            <p>計算のコツは<strong>約分を先にやる</strong>こと。分母の <math><mn>3</mn></math> と、掛ける数の <math><mn>3</mn></math> が消えるので、残りは <math><mn>2</mn><mo>·</mo><mn>2</mn></math> の形になる。<br>最後の値を自分で書いてみよう。<br>この値は (2) でも使う、大事な結果だよ。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">点 C は「内分点の公式」で出す</span></div>
-            <p>次は <span class="m"><span class="vec">OC</span></span>。点 C は辺 AB を <span class="m">2 : 1</span> に内分する点（図で場所を確認）。線分 AB を <span class="m"><i>m</i> : <i>n</i></span> に内分する点 P の位置ベクトルの公式は：</p>
-            <div class="formula-line"><span class="m"><span class="vec">OP</span> = <span class="frac"><span class="num"><i>n</i>·<span class="vec">OA</span> + <i>m</i>·<span class="vec">OB</span></span><span class="den"><i>m</i> + <i>n</i></span></span></span></div>
-            <p>ポイントは、かける数が<strong>入れ替わる</strong>こと：<span class="m"><span class="vec">OA</span></span> の方には<strong>向かい側（B 側）の比</strong> <span class="m"><i>n</i></span>、<span class="m"><span class="vec">OB</span></span> の方には<strong>向かい側（A 側）の比</strong> <span class="m"><i>m</i></span> がつく。「反対側の長さが重みになる」と覚えよう。点 C は A に近い分、<span class="m"><span class="vec">OA</span></span> の方の重みが大きくなるはず、という見当もつくね。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">点 C は「内分点の公式」で出す</span></div><p class="cite"><span class="cite-tag">使う公式</span>内分点の位置ベクトル <math><mover><mi>OP</mi><mo>→</mo></mover><mo>=</mo><mfrac><mrow><mi>n</mi><mo>·</mo><mover><mi>OA</mi><mo>→</mo></mover><mo>+</mo><mi>m</mi><mo>·</mo><mover><mi>OB</mi><mo>→</mo></mover></mrow><mrow><mi>m</mi><mo>+</mo><mi>n</mi></mrow></mfrac></math>。線分を m:n に内分する点は、反対側の比を重みにして表せる。</p>
+            <p>次は <math><mover><mi>OC</mi><mo>→</mo></mover></math>。点 C は辺 AB を <math><mn>2</mn><mo>:</mo><mn>1</mn></math> に内分する点（図で場所を確認）。<br>線分 AB を <math><mi>m</mi><mo>:</mo><mi>n</mi></math> に内分する点 P の位置ベクトルの公式は：</p>
+            <div class="formula-line"><math><mover><mi>OP</mi><mo>→</mo></mover><mo>=</mo><mfrac><mrow><mi>n</mi><mo>·</mo><mover><mi>OA</mi><mo>→</mo></mover><mo>+</mo><mi>m</mi><mo>·</mo><mover><mi>OB</mi><mo>→</mo></mover></mrow><mrow><mi>m</mi><mo>+</mo><mi>n</mi></mrow></mfrac></math></div>
+            <p>ポイントは、かける数が<strong>入れ替わる</strong>こと：<math><mover><mi>OA</mi><mo>→</mo></mover></math> の方には<strong>向かい側（B 側）の比</strong> <math><mi>n</mi></math>、<math><mover><mi>OB</mi><mo>→</mo></mover></math> の方には<strong>向かい側（A 側）の比</strong> <math><mi>m</mi></math> がつく。「反対側の長さが重みになる」と覚えよう。<br>点 C は A に近い分、<math><mover><mi>OA</mi><mo>→</mo></mover></math> の方の重みが大きくなるはず、という見当もつくね。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">公式に <i>m</i> = 2、<i>n</i> = 1 を入れる</span></div>
-            <p>この問題では <span class="m"><i>m</i> = 2</span>（A 側の部分 AC の比）、<span class="m"><i>n</i> = 1</span>（B 側の部分 CB の比）だから：</p>
-            <div class="formula-line"><span class="m"><span class="vec">OC</span> = <span class="frac"><span class="num">1·<span class="vec">OA</span> + 2·<span class="vec">OB</span></span><span class="den">2 + 1</span></span> = <span class="frac"><span class="num"><span class="vec">OA</span> + 2<span class="vec">OB</span></span><span class="den">3</span></span></span></div>
-            <p>あとは <span class="m"><span class="vec">OA</span> = <span class="vec"><i>a</i></span></span>、<span class="m"><span class="vec">OB</span> = <span class="vec"><i>b</i></span></span> に置き換えて、分母の <span class="m">3</span> で割った係数の形に直すだけ。<span class="m"><span class="vec"><i>a</i></span></span> の係数と <span class="m"><span class="vec"><i>b</i></span></span> の係数を、自分で分数で書いてみよう。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">公式に <math><mi>m</mi><mo>=</mo><mn>2</mn></math>、<math><mi>n</mi><mo>=</mo><mn>1</mn></math>を入れる</span></div><p class="cite"><span class="cite-tag">使う公式</span>内分点の公式を入れた形 <math><mover><mi>OC</mi><mo>→</mo></mover><mo>=</mo><mfrac><mrow><mn>1</mn><mo>·</mo><mover><mi>OA</mi><mo>→</mo></mover><mo>+</mo><mn>2</mn><mo>·</mo><mover><mi>OB</mi><mo>→</mo></mover></mrow><mrow><mn>2</mn><mo>+</mo><mn>1</mn></mrow></mfrac><mo>=</mo><mfrac><mrow><mover><mi>OA</mi><mo>→</mo></mover><mo>+</mo><mn>2</mn><mover><mi>OB</mi><mo>→</mo></mover></mrow><mn>3</mn></mfrac></math>。m=2、n=1 を公式に入れて、OC を求める。</p>
+            <p>この問題では <math><mi>m</mi><mo>=</mo><mn>2</mn><mo>(</mo><mi>A</mi></math>側の部分 AC の比）、<math><mi>n</mi><mo>=</mo><mn>1</mn><mo>(</mo><mi>B</mi></math>側の部分 CB の比）だから：</p>
+            <div class="formula-line"><math><mover><mi>OC</mi><mo>→</mo></mover><mo>=</mo><mfrac><mrow><mn>1</mn><mo>·</mo><mover><mi>OA</mi><mo>→</mo></mover><mo>+</mo><mn>2</mn><mo>·</mo><mover><mi>OB</mi><mo>→</mo></mover></mrow><mrow><mn>2</mn><mo>+</mo><mn>1</mn></mrow></mfrac><mo>=</mo><mfrac><mrow><mover><mi>OA</mi><mo>→</mo></mover><mo>+</mo><mn>2</mn><mover><mi>OB</mi><mo>→</mo></mover></mrow><mn>3</mn></mfrac></math></div>
+            <p>あとは <math><mover><mi>OA</mi><mo>→</mo></mover><mo>=</mo><mover><mi>a</mi><mo>→</mo></mover></math>、<math><mover><mi>OB</mi><mo>→</mo></mover><mo>=</mo><mover><mi>b</mi><mo>→</mo></mover></math> に置き換えて、分母の <math><mn>3</mn></math> で割った係数の形に直すだけ。<math><mover><mi>a</mi><mo>→</mo></mover></math> の係数と <math><mover><mi>b</mi><mo>→</mo></mover></math> の係数を、自分で分数で書いてみよう。</p>
           </article>
 
           <article class="stage answer" hidden>
             <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(1) の答え</span></div>
             <ol class="steps">
-              <li>内積の定義より：
-                <div class="formula-line"><span class="m"><span class="vec"><i>a</i></span>·<span class="vec"><i>b</i></span> = |<span class="vec"><i>a</i></span>| |<span class="vec"><i>b</i></span>| cos∠AOB = 2 · 3 · <span class="frac"><span class="num">2</span><span class="den">3</span></span> = 4</span></div>
+              <p class="cite"><span class="cite-tag">使う定義</span>内積の定義 <math displaystyle="true"><mover><mi>a</mi><mo>→</mo></mover><mo>·</mo><mover><mi>b</mi><mo>→</mo></mover><mo>=</mo><mrow><mo>|</mo><mover><mi>a</mi><mo>→</mo></mover><mo>|</mo></mrow><mrow><mo>|</mo><mover><mi>b</mi><mo>→</mo></mover><mo>|</mo></mrow><mi>cos</mi><mo>∠</mo><mi>AOB</mi></math>。長さと、なす角の cos に問題の数を入れて、内積を求める。</p><li>内積の定義より：
+                <div class="formula-line"><div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mover><mi>a</mi><mo>→</mo></mover><mo>·</mo><mover><mi>b</mi><mo>→</mo></mover><mo>=</mo><mrow><mo>|</mo><mover><mi>a</mi><mo>→</mo></mover><mo>|</mo></mrow><mrow><mo>|</mo><mover><mi>b</mi><mo>→</mo></mover><mo>|</mo></mrow><mi>cos</mi><mo>∠</mo><mi>AOB</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mover><mi>a</mi><mo>→</mo></mover><mo>·</mo><mover><mi>b</mi><mo>→</mo></mover></mphantom><mo>=</mo><mn>2</mn><mo>·</mo><mn>3</mn><mo>·</mo><mfrac><mn>2</mn><mn>3</mn></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mover><mi>a</mi><mo>→</mo></mover><mo>·</mo><mover><mi>b</mi><mo>→</mo></mover></mphantom><mo>=</mo><mn>4</mn></math></div>
+</div></div>
               </li>
-              <li>点 C は辺 AB を <span class="m">2 : 1</span> に内分する点だから、内分点の公式より：
-                <div class="formula-line"><span class="m"><span class="vec">OC</span> = <span class="frac"><span class="num">1·<span class="vec">OA</span> + 2·<span class="vec">OB</span></span><span class="den">2 + 1</span></span> = <span class="frac"><span class="num">1</span><span class="den">3</span></span><span class="vec"><i>a</i></span> + <span class="frac"><span class="num">2</span><span class="den">3</span></span><span class="vec"><i>b</i></span></span></div>
+              <p class="cite"><span class="cite-tag">使う公式</span>内分点の位置ベクトル <math><mover><mi>OC</mi><mo>→</mo></mover><mo>=</mo><mfrac><mrow><mn>1</mn><mo>·</mo><mover><mi>OA</mi><mo>→</mo></mover><mo>+</mo><mn>2</mn><mo>·</mo><mover><mi>OB</mi><mo>→</mo></mover></mrow><mrow><mn>2</mn><mo>+</mo><mn>1</mn></mrow></mfrac><mo>=</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mover><mi>a</mi><mo>→</mo></mover><mo>+</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mover><mi>b</mi><mo>→</mo></mover></math>。線分を内分する点は、反対側の比を重みにして表せる。</p><li>点 C は辺 AB を <math><mn>2</mn><mo>:</mo><mn>1</mn></math> に内分する点だから、内分点の公式より：
+                <div class="formula-line"><math><mover><mi>OC</mi><mo>→</mo></mover><mo>=</mo><mfrac><mrow><mn>1</mn><mo>·</mo><mover><mi>OA</mi><mo>→</mo></mover><mo>+</mo><mn>2</mn><mo>·</mo><mover><mi>OB</mi><mo>→</mo></mover></mrow><mrow><mn>2</mn><mo>+</mo><mn>1</mn></mrow></mfrac><mo>=</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mover><mi>a</mi><mo>→</mo></mover><mo>+</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mover><mi>b</mi><mo>→</mo></mover></math></div>
               </li>
             </ol>
             <div class="ans-line">
-              <span class="ans-chip"><span class="kana">a⃗·b⃗</span><span class="m">4</span></span>
-              <span class="ans-chip"><span class="kana">OC→</span><span class="m"><span class="frac"><span class="num">1</span><span class="den">3</span></span><span class="vec"><i>a</i></span> + <span class="frac"><span class="num">2</span><span class="den">3</span></span><span class="vec"><i>b</i></span></span></span>
+              <span class="ans-chip"><span class="kana">a⃗·b⃗</span><math><mn>4</mn></math></span>
+              <span class="ans-chip"><span class="kana">OC→</span><math><mfrac><mn>1</mn><mn>3</mn></mfrac><mover><mi>a</mi><mo>→</mo></mover><mo>+</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mover><mi>b</mi><mo>→</mo></mover></math></span>
             </div>
-            <div class="point-box"><span class="pt">ポイント</span>内積は「<strong>長さ × 長さ × cos</strong>」の定義に数を入れるだけ。内分点の公式は「<strong>反対側の比が重み</strong>」。この2つの結果（<span class="m"><span class="vec"><i>a</i></span>·<span class="vec"><i>b</i></span> = 4</span> と <span class="m"><span class="vec">OC</span></span> の式）が、(2)・(3) のすべての計算の材料になる。</div>
+            <div class="point-box"><p class="cite"><span class="cite-tag">使う定義</span>内積の定義 <math displaystyle="true"><mover><mi>a</mi><mo>→</mo></mover><mo>·</mo><mover><mi>b</mi><mo>→</mo></mover><mo>=</mo><mrow><mo>|</mo><mover><mi>a</mi><mo>→</mo></mover><mo>|</mo></mrow><mrow><mo>|</mo><mover><mi>b</mi><mo>→</mo></mover><mo>|</mo></mrow><mi>cos</mi><mo>∠</mo><mi>AOB</mi></math>。長さと cos を掛ける形が、(1) 全体の出発点になる。</p><span class="pt">ポイント</span>内積は「<strong>長さ × 長さ × cos</strong>」の定義に数を入れるだけ。<br>内分点の公式は「<strong>反対側の比が重み</strong>」。この2つの結果<math><mo>(</mo><mover><mi>a</mi><mo>→</mo></mover><mo>·</mo><mover><mi>b</mi><mo>→</mo></mover><mo>=</mo><mn>4</mn></math> と <math><mover><mi>OC</mi><mo>→</mo></mover></math> の式）が、(2)・(3) のすべての計算の材料になる。</div>
           </article>
         </div>
         </div>
@@ -478,9 +532,9 @@
           </div>
           <div class="q-setup">
             <span class="qs-label">(1) の結果</span>
-            <span class="m"><span class="vec"><i>a</i></span>·<span class="vec"><i>b</i></span> = 4</span>、<span class="m"><span class="vec">OC</span> = <span class="frac"><span class="num">1</span><span class="den">3</span></span><span class="vec"><i>a</i></span> + <span class="frac"><span class="num">2</span><span class="den">3</span></span><span class="vec"><i>b</i></span></span>。また <span class="m">|<span class="vec"><i>a</i></span>|<sup>2</sup> = 4</span>、<span class="m">|<span class="vec"><i>b</i></span>|<sup>2</sup> = 9</span>。
+            <math><mover><mi>a</mi><mo>→</mo></mover><mo>·</mo><mover><mi>b</mi><mo>→</mo></mover><mo>=</mo><mn>4</mn></math>、<math><mover><mi>OC</mi><mo>→</mo></mover><mo>=</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mover><mi>a</mi><mo>→</mo></mover><mo>+</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mover><mi>b</mi><mo>→</mo></mover></math>。また <math><msup><mrow><mo>|</mo><mover><mi>a</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>4</mn></math>、<math><msup><mrow><mo>|</mo><mover><mi>b</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>9</mn></math>。
           </div>
-          <p class="q-body"><span class="m"><i>k</i></span> は実数とする。直線 OC 上に点 H を <span class="m"><span class="vec">OH</span> = <i>k</i><span class="vec">OC</span></span> となるようにとる。<span class="m">OC ⊥ AH</span> となるとき、<span class="m"><i>k</i></span> の値を求めよ。</p>
+          <p class="q-body"><math><mi>k</mi></math> は実数とする。直線 OC 上に点 H を <math><mover><mi>OH</mi><mo>→</mo></mover><mo>=</mo><mi>k</mi><mover><mi>OC</mi><mo>→</mo></mover></math> となるようにとる。<math><mi>OC</mi><mo>⊥</mo><mi>AH</mi></math> となるとき、<math><mi>k</mi></math> の値を求めよ。</p>
         </div>
 
         <div class="viz" id="viz2">
@@ -523,70 +577,82 @@
               <path d="M126,179.5 L132,183 L126,186.5"></path>
             </g>
           </svg>
-          <p class="viz-note" data-min="1" hidden>点 H は直線 OC の上にある（<b>OH = <span style="font-style:italic">k</span>·OC</b>）。<span style="font-style:italic">k</span> が決まれば、H の場所が決まる。線分 <b>AH</b> は、H と A を結んだもの。</p>
+          <p class="viz-note" data-min="1" hidden>点 H は直線 OC の上にある（<b><math><mi>OH</mi><mo>=</mo></math><span style="font-style:italic">k</span>·OC</b>）。<span style="font-style:italic">k</span> が決まれば、H の場所が決まる。線分 <b>AH</b> は、H と A を結んだもの。</p>
           <p class="viz-note" data-min="3" hidden>H のところの小さな四角が<strong>直角の印</strong>。求めるのは、<b>OC と AH が垂直</b>になる <span style="font-style:italic">k</span> の値。</p>
         </div>
         </div>
 
         <div class="hside">
-        <p class="think-note">流れはこう：① <span class="m"><span class="vec">AH</span></span> を <span class="m"><i>k</i></span>、<span class="m"><span class="vec"><i>a</i></span></span>、<span class="m"><span class="vec"><i>b</i></span></span> で表す → ②「垂直」を内積の式に直す → ③ 展開して <span class="m"><i>k</i></span> の方程式を解く。1つずつ進めよう。</p>
+        <p class="think-note">流れはこう：<math><mo>①</mo><mover><mi>AH</mi><mo>→</mo></mover></math> を <math><mi>k</mi></math>、<math><mover><mi>a</mi><mo>→</mo></mover></math>、<math><mover><mi>b</mi><mo>→</mo></mover></math> で表す → ②「垂直」を内積の式に直す → ③ 展開して <math><mi>k</mi></math> の方程式を解く。1つずつ進めよう。</p>
 
         <div class="stages">
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">まず <span class="m"><span class="vec">AH</span></span> を、始点 O のベクトルで表す</span></div>
-            <p>垂直かどうかを調べるには、線分 AH のベクトル <span class="m"><span class="vec">AH</span></span> が要る。始点が A のベクトルは、合言葉「<strong>（終点）−（始点）</strong>」で、O を始点とするベクトルの引き算に直せる：</p>
-            <div class="formula-line"><span class="m"><span class="vec">AH</span> = <span class="vec">OH</span> − <span class="vec">OA</span></span></div>
-            <p>ここで <span class="m"><span class="vec">OA</span> = <span class="vec"><i>a</i></span></span>、そして <span class="m"><span class="vec">OH</span></span> は問題文のとおり <span class="m"><i>k</i><span class="vec">OC</span></span>。次のヒントで、(1) の結果を使って <span class="m"><span class="vec">OH</span></span> をほぐしていくよ。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">まず <math><mover><mi>AH</mi><mo>→</mo></mover></math> を、始点 O のベクトルで表す</span></div><p class="cite"><span class="cite-tag">使う性質</span>始点をそろえる <math><mover><mi>AH</mi><mo>→</mo></mover><mo>=</mo><mover><mi>OH</mi><mo>→</mo></mover><mo>−</mo><mover><mi>OA</mi><mo>→</mo></mover></math>。始点が A のベクトルは、O を始点とするベクトルの引き算で表せる。</p>
+            <p>垂直かどうかを調べるには、線分 AH のベクトル <math><mover><mi>AH</mi><mo>→</mo></mover></math> が要る。<br>始点が A のベクトルは、合言葉「<strong>（終点）−（始点）</strong>」で、O を始点とするベクトルの引き算に直せる：</p>
+            <div class="formula-line"><math><mover><mi>AH</mi><mo>→</mo></mover><mo>=</mo><mover><mi>OH</mi><mo>→</mo></mover><mo>−</mo><mover><mi>OA</mi><mo>→</mo></mover></math></div>
+            <p>ここで <math><mover><mi>OA</mi><mo>→</mo></mover><mo>=</mo><mover><mi>a</mi><mo>→</mo></mover></math>、そして <math><mover><mi>OH</mi><mo>→</mo></mover></math> は問題文のとおり <math><mi>k</mi><mover><mi>OC</mi><mo>→</mo></mover></math>。次のヒントで、(1) の結果を使って <math><mover><mi>OH</mi><mo>→</mo></mover></math> をほぐしていくよ。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title"><span class="m"><span class="vec">OH</span> = <i>k</i><span class="vec">OC</span></span> を代入して、係数をそろえる</span></div>
-            <p>(1) の <span class="m"><span class="vec">OC</span> = <span class="frac"><span class="num">1</span><span class="den">3</span></span><span class="vec"><i>a</i></span> + <span class="frac"><span class="num">2</span><span class="den">3</span></span><span class="vec"><i>b</i></span></span> を使うと：</p>
-            <div class="formula-line"><span class="m"><span class="vec">OH</span> = <i>k</i><span class="vec">OC</span> = <i>k</i>(<span class="frac"><span class="num">1</span><span class="den">3</span></span><span class="vec"><i>a</i></span> + <span class="frac"><span class="num">2</span><span class="den">3</span></span><span class="vec"><i>b</i></span>) = <span class="frac"><span class="num"><i>k</i></span><span class="den">3</span></span><span class="vec"><i>a</i></span> + <span class="frac"><span class="num">2<i>k</i></span><span class="den">3</span></span><span class="vec"><i>b</i></span></span></div>
-            <p>これをヒント1の式 <span class="m"><span class="vec">AH</span> = <span class="vec">OH</span> − <span class="vec">OA</span></span> に入れると、<span class="m"><span class="vec"><i>a</i></span></span> の係数は <span class="m"><span class="frac"><span class="num"><i>k</i></span><span class="den">3</span></span> − 1</span>（<span class="m"><span class="vec">OA</span> = <span class="vec"><i>a</i></span></span> を引く分）、<span class="m"><span class="vec"><i>b</i></span></span> の係数は <span class="m"><span class="frac"><span class="num">2<i>k</i></span><span class="den">3</span></span></span> のまま。つまり：</p>
-            <div class="formula-line"><span class="m"><span class="vec">AH</span> = (<span class="frac"><span class="num"><i>k</i></span><span class="den">3</span></span> − 1)<span class="vec"><i>a</i></span> + <span class="frac"><span class="num">2<i>k</i></span><span class="den">3</span></span><span class="vec"><i>b</i></span></span></div>
-            <p class="mini">つまずき注意：<span class="m">−<span class="vec">OA</span></span> の分、<span class="m"><span class="vec"><i>a</i></span></span> の係数から <span class="m">1</span> を引くことを忘れやすい。ここがこの問題の第一の山場だよ。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title"><math><mover><mi>OH</mi><mo>→</mo></mover><mo>=</mo><mi>k</mi><mover><mi>OC</mi><mo>→</mo></mover></math> を代入して、係数をそろえる</span></div>
+            <p>(1) の <math><mover><mi>OC</mi><mo>→</mo></mover><mo>=</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mover><mi>a</mi><mo>→</mo></mover><mo>+</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mover><mi>b</mi><mo>→</mo></mover></math> を使うと：</p>
+            <div class="formula-line"><div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mover><mi>OH</mi><mo>→</mo></mover><mo>=</mo><mi>k</mi><mover><mi>OC</mi><mo>→</mo></mover></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mover><mi>OH</mi><mo>→</mo></mover></mphantom><mo>=</mo><mi>k</mi><mrow><mo>(</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mover><mi>a</mi><mo>→</mo></mover><mo>+</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mover><mi>b</mi><mo>→</mo></mover><mo>)</mo></mrow></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mover><mi>OH</mi><mo>→</mo></mover></mphantom><mo>=</mo><mfrac><mi>k</mi><mn>3</mn></mfrac><mover><mi>a</mi><mo>→</mo></mover><mo>+</mo><mfrac><mrow><mn>2</mn><mi>k</mi></mrow><mn>3</mn></mfrac><mover><mi>b</mi><mo>→</mo></mover></math></div>
+</div></div>
+            <p>これをヒント1の式 <math><mover><mi>AH</mi><mo>→</mo></mover><mo>=</mo><mover><mi>OH</mi><mo>→</mo></mover><mo>−</mo><mover><mi>OA</mi><mo>→</mo></mover></math> に入れると、<math><mover><mi>a</mi><mo>→</mo></mover></math> の係数は <math><mfrac><mi>k</mi><mn>3</mn></mfrac><mo>−</mo><mn>1</mn><mo>(</mo><mover><mi>OA</mi><mo>→</mo></mover><mo>=</mo><mover><mi>a</mi><mo>→</mo></mover></math> を引く分）、<math><mover><mi>b</mi><mo>→</mo></mover></math> の係数は <math><mfrac><mrow><mn>2</mn><mi>k</mi></mrow><mn>3</mn></mfrac></math> のまま。つまり：</p>
+            <div class="formula-line"><math><mover><mi>AH</mi><mo>→</mo></mover><mo>=</mo><mrow><mo>(</mo><mfrac><mi>k</mi><mn>3</mn></mfrac><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mover><mi>a</mi><mo>→</mo></mover><mo>+</mo><mfrac><mrow><mn>2</mn><mi>k</mi></mrow><mn>3</mn></mfrac><mover><mi>b</mi><mo>→</mo></mover></math></div>
+            <p class="mini">つまずき注意：<math><mo>−</mo><mover><mi>OA</mi><mo>→</mo></mover></math> の分、<math><mover><mi>a</mi><mo>→</mo></mover></math> の係数から <math><mn>1</mn></math> を引くことを忘れやすい。ここがこの問題の第一の山場だよ。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">「垂直」を内積の言葉に翻訳する</span></div>
+            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">「垂直」を内積の言葉に翻訳する</span></div><p class="cite"><span class="cite-tag">使う性質</span>垂直の条件 <math><mover><mi>OC</mi><mo>→</mo></mover><mo>·</mo><mover><mi>AH</mi><mo>→</mo></mover><mo>=</mo><mn>0</mn></math>。<math><mi>OC</mi><mo>⊥</mo><mi>AH</mi></math> を、この内積が0になる式として扱う。</p>
             <p>ベクトルの世界では、「<strong>垂直</strong>」は内積の言葉でこう言う（図に直角の印が出た）：</p>
-            <div class="formula-line"><span class="m">OC ⊥ AH</span>　⟺　<span class="m"><span class="vec">OC</span>·<span class="vec">AH</span> = 0</span></div>
-            <p>だから、次にやることは <span class="m"><span class="vec">OC</span>·<span class="vec">AH</span></span> を<strong>展開して計算</strong>し、「<span class="m">= 0</span>」と置いて <span class="m"><i>k</i></span> の方程式にすること。展開の準備は次のヒントで。</p>
+            <div class="formula-line"><math><mi>OC</mi><mo>⊥</mo><mi>AH</mi></math>　⟺　<math><mover><mi>OC</mi><mo>→</mo></mover><mo>·</mo><mover><mi>AH</mi><mo>→</mo></mover><mo>=</mo><mn>0</mn></math></div>
+            <p>だから、次にやることは <math><mover><mi>OC</mi><mo>→</mo></mover><mo>·</mo><mover><mi>AH</mi><mo>→</mo></mover></math> を<strong>展開して計算</strong>し、「<math><mo>=</mo><mn>0</mn></math>」と置いて <math><mi>k</mi></math> の方程式にすること。<br>展開の準備は次のヒントで。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">展開の準備：使う値3つと、式の「くくり直し」</span></div>
+            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">展開の準備：使う値3つと、式の「くくり直し」</span></div><p class="cite"><span class="cite-tag">使う性質</span>大きさの2乗 <math><msup><mrow><mo>|</mo><mover><mi>a</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mn>2</mn><mn>2</mn></msup><mo>=</mo><mn>4</mn></math>、<math><msup><mrow><mo>|</mo><mover><mi>b</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mn>3</mn><mn>2</mn></msup><mo>=</mo><mn>9</mn></math>。内積を展開したあとに出る、大きさの2乗の場所にこの値を入れる。</p>
             <p>内積の展開では、最後にこの3つの値を使う：</p>
-            <div class="formula-line"><span class="m">|<span class="vec"><i>a</i></span>|<sup>2</sup> = 2<sup>2</sup> = 4</span>、<span class="m">|<span class="vec"><i>b</i></span>|<sup>2</sup> = 3<sup>2</sup> = 9</span>、<span class="m"><span class="vec"><i>a</i></span>·<span class="vec"><i>b</i></span> = 4</span>（(1) の結果）</div>
-            <p>計算を楽にするため、2つのベクトルを <span class="m"><span class="frac"><span class="num">1</span><span class="den">3</span></span></span> でくくった形に書き直しておこう：</p>
-            <div class="formula-line"><span class="m"><span class="vec">OC</span> = <span class="frac"><span class="num">1</span><span class="den">3</span></span>(<span class="vec"><i>a</i></span> + 2<span class="vec"><i>b</i></span>)</span>、<span class="m"><span class="vec">AH</span> = <span class="frac"><span class="num">1</span><span class="den">3</span></span>{(<i>k</i> − 3)<span class="vec"><i>a</i></span> + 2<i>k</i><span class="vec"><i>b</i></span>}</span></div>
-            <p class="mini"><span class="m"><span class="vec">AH</span></span> の <span class="m"><span class="vec"><i>a</i></span></span> の係数 <span class="m"><span class="frac"><span class="num"><i>k</i></span><span class="den">3</span></span> − 1</span> に <span class="m">3</span> を掛けると <span class="m"><i>k</i> − 3</span> になる、というのが「くくり直し」の中身。分数が消えて、展開がずっと見やすくなる。</p>
+            <div class="formula-line"><math><msup><mrow><mo>|</mo><mover><mi>a</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mn>2</mn><mn>2</mn></msup><mo>=</mo><mn>4</mn></math>、<math><msup><mrow><mo>|</mo><mover><mi>b</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mn>3</mn><mn>2</mn></msup><mo>=</mo><mn>9</mn></math>、<math><mover><mi>a</mi><mo>→</mo></mover><mo>·</mo><mover><mi>b</mi><mo>→</mo></mover><mo>=</mo><mn>4</mn><mo>(</mo><mrow><mo>(</mo><mn>1</mn><mo>)</mo></mrow></math>の結果）</div>
+            <p>計算を楽にするため、2つのベクトルを <math><mfrac><mn>1</mn><mn>3</mn></mfrac></math> でくくった形に書き直しておこう：</p>
+            <div class="formula-line"><math><mover><mi>OC</mi><mo>→</mo></mover><mo>=</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mrow><mo>(</mo><mover><mi>a</mi><mo>→</mo></mover><mo>+</mo><mn>2</mn><mover><mi>b</mi><mo>→</mo></mover><mo>)</mo></mrow></math>、<math><mover><mi>AH</mi><mo>→</mo></mover><mo>=</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mrow><mo>{</mo><mrow><mo>(</mo><mi>k</mi><mo>−</mo><mn>3</mn><mo>)</mo></mrow><mover><mi>a</mi><mo>→</mo></mover><mo>+</mo><mn>2</mn><mi>k</mi><mover><mi>b</mi><mo>→</mo></mover><mo>}</mo></mrow></math></div>
+            <p class="mini"><math><mover><mi>AH</mi><mo>→</mo></mover></math> の <math><mover><mi>a</mi><mo>→</mo></mover></math> の係数 <math><mfrac><mi>k</mi><mn>3</mn></mfrac><mo>−</mo><mn>1</mn></math> に <math><mn>3</mn></math> を掛けると <math><mi>k</mi><mo>−</mo><mn>3</mn></math> になる、というのが「くくり直し」の中身。<br>分数が消えて、展開がずっと見やすくなる。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 5</span><span class="stage-title">内積を展開する（一段ずつ）</span></div>
-            <p>内積はふつうの文字式と同じように<strong>展開できる</strong>。<span class="m">(<span class="vec"><i>a</i></span> + 2<span class="vec"><i>b</i></span>)·{(<i>k</i> − 3)<span class="vec"><i>a</i></span> + 2<i>k</i><span class="vec"><i>b</i></span>}</span> を展開すると、項は3種類になる：</p>
-            <div class="formula-line"><span class="m"><span class="vec">OC</span>·<span class="vec">AH</span> = <span class="frac"><span class="num">1</span><span class="den">9</span></span>{(<i>k</i> − 3)|<span class="vec"><i>a</i></span>|<sup>2</sup> + (4<i>k</i> − 6)<span class="vec"><i>a</i></span>·<span class="vec"><i>b</i></span> + 4<i>k</i>|<span class="vec"><i>b</i></span>|<sup>2</sup>}</span></div>
-            <p>真ん中の <span class="m"><span class="vec"><i>a</i></span>·<span class="vec"><i>b</i></span></span> の係数は、<span class="m"><span class="vec"><i>a</i></span></span> と <span class="m">2<i>k</i><span class="vec"><i>b</i></span></span> の積、それに <span class="m">2<span class="vec"><i>b</i></span></span> と <span class="m">(<i>k</i> − 3)<span class="vec"><i>a</i></span></span> の積の和：<span class="m">2<i>k</i> + 2(<i>k</i> − 3) = 4<i>k</i> − 6</span>。</p>
-            <p>ここにヒント4の値（<span class="m">|<span class="vec"><i>a</i></span>|<sup>2</sup> = 4</span>、<span class="m"><span class="vec"><i>a</i></span>·<span class="vec"><i>b</i></span> = 4</span>、<span class="m">|<span class="vec"><i>b</i></span>|<sup>2</sup> = 9</span>）を入れると：</p>
-            <div class="formula-line"><span class="m"><span class="vec">OC</span>·<span class="vec">AH</span> = <span class="frac"><span class="num">1</span><span class="den">9</span></span>{(<i>k</i> − 3)·4 + (4<i>k</i> − 6)·4 + 4<i>k</i>·9} = <span class="frac"><span class="num">1</span><span class="den">9</span></span>(56<i>k</i> − 36)</span></div>
-            <p>これが <span class="m">0</span> になる条件は、中かっこの中身が <span class="m">0</span> になること。<span class="m">56<i>k</i> − 36 = 0</span> を約分すると <span class="m">14<i>k</i> − 9 = 0</span> という方程式になる。あとはこれを解くだけだよ。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 5</span><span class="stage-title">内積を展開する（一段ずつ）</span></div><p class="cite"><span class="cite-tag">使う性質</span>内積の展開 <math><mover><mi>OC</mi><mo>→</mo></mover><mo>·</mo><mover><mi>AH</mi><mo>→</mo></mover><mo>=</mo><mfrac><mn>1</mn><mn>9</mn></mfrac><mrow><mo>{</mo><mrow><mo>(</mo><mi>k</mi><mo>−</mo><mn>3</mn><mo>)</mo></mrow><msup><mrow><mo>|</mo><mover><mi>a</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup><mo>+</mo><mrow><mo>(</mo><mn>4</mn><mi>k</mi><mo>−</mo><mn>6</mn><mo>)</mo></mrow><mover><mi>a</mi><mo>→</mo></mover><mo>·</mo><mover><mi>b</mi><mo>→</mo></mover><mo>+</mo><mn>4</mn><mi>k</mi><msup><mrow><mo>|</mo><mover><mi>b</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup><mo>}</mo></mrow></math>。内積も文字式と同じように展開でき、出てくる項は大きさの2乗と内積の値で計算できる。</p>
+            <p>内積はふつうの文字式と同じように<strong>展開できる</strong>。<math><mrow><mo>(</mo><mover><mi>a</mi><mo>→</mo></mover><mo>+</mo><mn>2</mn><mover><mi>b</mi><mo>→</mo></mover><mo>)</mo></mrow><mo>·</mo><mrow><mo>{</mo><mrow><mo>(</mo><mi>k</mi><mo>−</mo><mn>3</mn><mo>)</mo></mrow><mover><mi>a</mi><mo>→</mo></mover><mo>+</mo><mn>2</mn><mi>k</mi><mover><mi>b</mi><mo>→</mo></mover><mo>}</mo></mrow></math> を展開すると、項は3種類になる：</p>
+            <div class="formula-line"><math><mover><mi>OC</mi><mo>→</mo></mover><mo>·</mo><mover><mi>AH</mi><mo>→</mo></mover><mo>=</mo><mfrac><mn>1</mn><mn>9</mn></mfrac><mrow><mo>{</mo><mrow><mo>(</mo><mi>k</mi><mo>−</mo><mn>3</mn><mo>)</mo></mrow><msup><mrow><mo>|</mo><mover><mi>a</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup><mo>+</mo><mrow><mo>(</mo><mn>4</mn><mi>k</mi><mo>−</mo><mn>6</mn><mo>)</mo></mrow><mover><mi>a</mi><mo>→</mo></mover><mo>·</mo><mover><mi>b</mi><mo>→</mo></mover><mo>+</mo><mn>4</mn><mi>k</mi><msup><mrow><mo>|</mo><mover><mi>b</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup><mo>}</mo></mrow></math></div>
+            <p>真ん中の <math><mover><mi>a</mi><mo>→</mo></mover><mo>·</mo><mover><mi>b</mi><mo>→</mo></mover></math> の係数は、<math><mover><mi>a</mi><mo>→</mo></mover></math> と <math><mn>2</mn><mi>k</mi><mover><mi>b</mi><mo>→</mo></mover></math> の積、それに <math><mn>2</mn><mover><mi>b</mi><mo>→</mo></mover></math> と <math><mrow><mo>(</mo><mi>k</mi><mo>−</mo><mn>3</mn><mo>)</mo></mrow><mover><mi>a</mi><mo>→</mo></mover></math> の積の和：<math><mn>2</mn><mi>k</mi><mo>+</mo><mn>2</mn><mrow><mo>(</mo><mi>k</mi><mo>−</mo><mn>3</mn><mo>)</mo></mrow><mo>=</mo><mn>4</mn><mi>k</mi><mo>−</mo><mn>6</mn></math>。</p>
+            <p>ここにヒント4の値<math><mo>(</mo><msup><mrow><mo>|</mo><mover><mi>a</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>4</mn></math>、<math><mover><mi>a</mi><mo>→</mo></mover><mo>·</mo><mover><mi>b</mi><mo>→</mo></mover><mo>=</mo><mn>4</mn></math>、<math><msup><mrow><mo>|</mo><mover><mi>b</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>9</mn><mo>)</mo></math>を入れると：</p>
+            <div class="formula-line"><math><mover><mi>OC</mi><mo>→</mo></mover><mo>·</mo><mover><mi>AH</mi><mo>→</mo></mover><mo>=</mo><mfrac><mn>1</mn><mn>9</mn></mfrac><mrow><mo>{</mo><mrow><mo>(</mo><mi>k</mi><mo>−</mo><mn>3</mn><mo>)</mo></mrow><mo>·</mo><mn>4</mn><mo>+</mo><mrow><mo>(</mo><mn>4</mn><mi>k</mi><mo>−</mo><mn>6</mn><mo>)</mo></mrow><mo>·</mo><mn>4</mn><mo>+</mo><mn>4</mn><mi>k</mi><mo>·</mo><mn>9</mn><mo>}</mo></mrow><mo>=</mo><mfrac><mn>1</mn><mn>9</mn></mfrac><mrow><mo>(</mo><mn>56</mn><mi>k</mi><mo>−</mo><mn>36</mn><mo>)</mo></mrow></math></div>
+            <p>これが <math><mn>0</mn></math> になる条件は、中かっこの中身が <math><mn>0</mn></math> になること。<math><mn>56</mn><mi>k</mi><mo>−</mo><mn>36</mn><mo>=</mo><mn>0</mn></math> を約分すると <math><mn>14</mn><mi>k</mi><mo>−</mo><mn>9</mn><mo>=</mo><mn>0</mn></math> という方程式になる。<br>あとはこれを解くだけだよ。</p>
           </article>
 
           <article class="stage answer" hidden>
             <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(2) の答え</span></div>
             <ol class="steps">
-              <li><span class="m"><span class="vec">AH</span> = <span class="vec">OH</span> − <span class="vec">OA</span> = <i>k</i><span class="vec">OC</span> − <span class="vec"><i>a</i></span> = (<span class="frac"><span class="num"><i>k</i></span><span class="den">3</span></span> − 1)<span class="vec"><i>a</i></span> + <span class="frac"><span class="num">2<i>k</i></span><span class="den">3</span></span><span class="vec"><i>b</i></span></span>。</li>
-              <li><span class="m">OC ⊥ AH</span> より <span class="m"><span class="vec">OC</span>·<span class="vec">AH</span> = 0</span>。展開して値を入れると：
-                <div class="formula-line"><span class="m"><span class="vec">OC</span>·<span class="vec">AH</span> = <span class="frac"><span class="num">1</span><span class="den">9</span></span>{(<i>k</i> − 3)·4 + (4<i>k</i> − 6)·4 + 4<i>k</i>·9} = <span class="frac"><span class="num">4</span><span class="den">9</span></span>(14<i>k</i> − 9) = 0</span></div>
+              <p class="cite"><span class="cite-tag">使う性質</span>始点をそろえる <math displaystyle="true"><mover><mi>AH</mi><mo>→</mo></mover><mo>=</mo><mover><mi>OH</mi><mo>→</mo></mover><mo>−</mo><mover><mi>OA</mi><mo>→</mo></mover></math>。始点が A のベクトルは、O を始点とするベクトルの引き算で表せる。</p><li><div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mover><mi>AH</mi><mo>→</mo></mover><mo>=</mo><mover><mi>OH</mi><mo>→</mo></mover><mo>−</mo><mover><mi>OA</mi><mo>→</mo></mover></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mover><mi>AH</mi><mo>→</mo></mover></mphantom><mo>=</mo><mi>k</mi><mover><mi>OC</mi><mo>→</mo></mover><mo>−</mo><mover><mi>a</mi><mo>→</mo></mover></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mover><mi>AH</mi><mo>→</mo></mover></mphantom><mo>=</mo><mrow><mo>(</mo><mfrac><mi>k</mi><mn>3</mn></mfrac><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mover><mi>a</mi><mo>→</mo></mover><mo>+</mo><mfrac><mrow><mn>2</mn><mi>k</mi></mrow><mn>3</mn></mfrac><mover><mi>b</mi><mo>→</mo></mover></math></div>
+</div>。</li>
+              <p class="cite"><span class="cite-tag">使う性質</span>垂直の条件 <math><mover><mi>OC</mi><mo>→</mo></mover><mo>·</mo><mover><mi>AH</mi><mo>→</mo></mover><mo>=</mo><mn>0</mn></math>。垂直を、内積が0になる式として扱い、展開して (1) の結果を入れる。</p><li><math><mi>OC</mi><mo>⊥</mo><mi>AH</mi></math> より <math><mover><mi>OC</mi><mo>→</mo></mover><mo>·</mo><mover><mi>AH</mi><mo>→</mo></mover><mo>=</mo><mn>0</mn></math>。展開して値を入れると：
+                <div class="formula-line"><div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mover><mi>OC</mi><mo>→</mo></mover><mo>·</mo><mover><mi>AH</mi><mo>→</mo></mover><mo>=</mo><mfrac><mn>1</mn><mn>9</mn></mfrac><mrow><mo>{</mo><mrow><mo>(</mo><mi>k</mi><mo>−</mo><mn>3</mn><mo>)</mo></mrow><mo>·</mo><mn>4</mn><mo>+</mo><mrow><mo>(</mo><mn>4</mn><mi>k</mi><mo>−</mo><mn>6</mn><mo>)</mo></mrow><mo>·</mo><mn>4</mn><mo>+</mo><mn>4</mn><mi>k</mi><mo>·</mo><mn>9</mn><mo>}</mo></mrow></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mover><mi>OC</mi><mo>→</mo></mover><mo>·</mo><mover><mi>AH</mi><mo>→</mo></mover></mphantom><mo>=</mo><mfrac><mn>4</mn><mn>9</mn></mfrac><mrow><mo>(</mo><mn>14</mn><mi>k</mi><mo>−</mo><mn>9</mn><mo>)</mo></mrow></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mover><mi>OC</mi><mo>→</mo></mover><mo>·</mo><mover><mi>AH</mi><mo>→</mo></mover></mphantom><mo>=</mo><mn>0</mn></math></div>
+</div></div>
               </li>
-              <li>よって <span class="m">14<i>k</i> − 9 = 0</span> を解いて、<span class="m"><i>k</i> = <span class="frac"><span class="num">9</span><span class="den">14</span></span></span>。</li>
+              <li>よって <math><mn>14</mn><mi>k</mi><mo>−</mo><mn>9</mn><mo>=</mo><mn>0</mn></math> を解いて、<math><mi>k</mi><mo>=</mo><mfrac><mn>9</mn><mn>14</mn></mfrac></math>。</li>
             </ol>
             <div class="ans-line">
-              <span class="ans-chip"><span class="kana">k</span><span class="m"><span class="frac"><span class="num">9</span><span class="den">14</span></span></span></span>
+              <span class="ans-chip"><span class="kana">k</span><math><mfrac><mn>9</mn><mn>14</mn></mfrac></math></span>
             </div>
-            <div class="point-box"><span class="pt">ポイント</span>合言葉は2つ：「<strong>始点をそろえる</strong>（<span class="m"><span class="vec">AH</span> = <span class="vec">OH</span> − <span class="vec">OA</span></span>）」と「<strong>垂直 ⇔ 内積 = 0</strong>」。あとは (1) の結果3つ（<span class="m">|<span class="vec"><i>a</i></span>|<sup>2</sup></span>、<span class="m">|<span class="vec"><i>b</i></span>|<sup>2</sup></span>、<span class="m"><span class="vec"><i>a</i></span>·<span class="vec"><i>b</i></span></span>）を展開に流し込むだけ。この点 H は、(3) で大活躍する。</div>
+            <div class="point-box"><p class="cite"><span class="cite-tag">使う性質</span>垂直の条件 <math><mover><mi>OC</mi><mo>→</mo></mover><mo>·</mo><mover><mi>AH</mi><mo>→</mo></mover><mo>=</mo><mn>0</mn></math>。始点をそろえて表したベクトルどうしの内積を0と置くのが、(2) の流れになる。</p><span class="pt">ポイント</span>合言葉は2つ：「<strong>始点をそろえる</strong><math><mo>(</mo><mover><mi>AH</mi><mo>→</mo></mover><mo>=</mo><mover><mi>OH</mi><mo>→</mo></mover><mo>−</mo><mover><mi>OA</mi><mo>→</mo></mover><mo>)</mo></math>」と「<strong>垂直<math><mo>⇔</mo></math>内積<math><mo>=</mo><mn>0</mn></math></strong>」。あとは (1) の結果3つ<math><mo>(</mo><msup><mrow><mo>|</mo><mover><mi>a</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup></math>、<math><msup><mrow><mo>|</mo><mover><mi>b</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup></math>、<math><mover><mi>a</mi><mo>→</mo></mover><mo>·</mo><mover><mi>b</mi><mo>→</mo></mover><mo>)</mo></math>を展開に流し込むだけ。<br>この点 H は、(3) で大活躍する。</div>
           </article>
         </div>
         </div>
@@ -611,9 +677,9 @@
           </div>
           <div class="q-setup">
             <span class="qs-label">(2) の結果</span>
-            <span class="m"><i>k</i> = <span class="frac"><span class="num">9</span><span class="den">14</span></span></span> のとき <span class="m">OC ⊥ AH</span>。このとき <span class="m"><span class="vec">OH</span> = <span class="frac"><span class="num">9</span><span class="den">14</span></span><span class="vec">OC</span> = <span class="frac"><span class="num">3</span><span class="den">14</span></span><span class="vec"><i>a</i></span> + <span class="frac"><span class="num">3</span><span class="den">7</span></span><span class="vec"><i>b</i></span></span>。
+            <math><mi>k</mi><mo>=</mo><mfrac><mn>9</mn><mn>14</mn></mfrac></math> のとき <math><mi>OC</mi><mo>⊥</mo><mi>AH</mi></math>。このとき <math><mover><mi>OH</mi><mo>→</mo></mover><mo>=</mo><mfrac><mn>9</mn><mn>14</mn></mfrac><mover><mi>OC</mi><mo>→</mo></mover><mo>=</mo><mfrac><mn>3</mn><mn>14</mn></mfrac><mover><mi>a</mi><mo>→</mo></mover><mo>+</mo><mfrac><mn>3</mn><mn>7</mn></mfrac><mover><mi>b</mi><mo>→</mo></mover></math>。
           </div>
-          <p class="q-body">直線 OC に関して、点 A と対称な点を D とする。<span class="m"><span class="vec">OD</span></span> を <span class="m"><span class="vec"><i>a</i></span></span>、<span class="m"><span class="vec"><i>b</i></span></span> を用いて表せ。また、直線 OD と直線 AB の交点を E とするとき、<span class="m">AB : BE</span> を最も簡単な整数比で表せ。</p>
+          <p class="q-body">直線 OC に関して、点 A と対称な点を D とする。<math><mover><mi>OD</mi><mo>→</mo></mover></math> を <math><mover><mi>a</mi><mo>→</mo></mover></math>、<math><mover><mi>b</mi><mo>→</mo></mover></math> を用いて表せ。また、直線 OD と直線 AB の交点を E とするとき、<math><mi>AB</mi><mo>:</mo><mi>BE</mi></math> を最も簡単な整数比で表せ。</p>
         </div>
 
         <div class="viz" id="viz3">
@@ -677,86 +743,86 @@
         </div>
 
         <div class="hside">
-        <p class="think-note">前半は <span class="m"><span class="vec">OD</span></span>：カギは「(2) の点 H が、実は AD の中点だった」という気づき。後半は交点 E：いつもの「直線上の点の置き方」と「係数の和 = 1」の合わせ技だよ。</p>
+        <p class="think-note">前半は <math><mover><mi>OD</mi><mo>→</mo></mover></math>：カギは「(2) の点 H が、実は AD の中点だった」という気づき。後半は交点 E：いつもの「直線上の点の置き方」と「係数の和<math><mo>=</mo><mn>1</mn></math>」の合わせ技だよ。</p>
 
         <div class="stages">
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">対称な点の性質：H は線分 AD の中点</span></div>
+            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">対称な点の性質：H は線分 AD の中点</span></div><p class="cite"><span class="cite-tag">使う性質</span>対称軸は線分の垂直二等分線 <math><mi>OC</mi><mo>⊥</mo><mi>AH</mi></math>。(2) で垂直になる点 H は、線分 AD の中点でもある。</p>
             <p>「直線 OC に関して A と対称な点 D」とは、直線 OC を<strong>折り目</strong>として紙を折ると、A がぴったり重なる点のこと（図に D が現れた）。</p>
-            <p>対称な点の性質として、<strong>直線 OC は線分 AD の垂直二等分線</strong>になる。つまり、OC は AD と<strong>垂直に</strong>交わり、しかも交点は AD の<strong>中点</strong>。そして (2) で作った点 H は、まさに「直線 OC の上にあって、OC と AH が垂直になる点」だった。だから：</p>
+            <p>対称な点の性質として、<strong>直線 OC は線分 AD の垂直二等分線</strong>になる。<br>つまり、OC は AD と<strong>垂直に</strong>交わり、しかも交点は AD の<strong>中点</strong>。<br>そして (2) で作った点 H は、まさに「直線 OC の上にあって、OC と AH が垂直になる点」だった。<br>だから：</p>
             <div class="formula-line">点 H は線分 AD の<strong>中点</strong>である</div>
-            <p class="mini">図で確かめよう：AH と HD には同じ印（短い斜線）がついていて、長さが等しいこと、H に直角の印があることを示している。これが (3) 全体の出発点だよ。</p>
+            <p class="mini">図で確かめよう：AH と HD には同じ印（短い斜線）がついていて、長さが等しいこと、H に直角の印があることを示している。<br>これが (3) 全体の出発点だよ。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">中点の公式を、<span class="m"><span class="vec">OD</span></span> について解く</span></div>
+            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">中点の公式を、<math><mover><mi>OD</mi><mo>→</mo></mover></math> について解く</span></div><p class="cite"><span class="cite-tag">使う公式</span>中点の位置ベクトル <math><mover><mi>OH</mi><mo>→</mo></mover><mo>=</mo><mfrac><mrow><mover><mi>OA</mi><mo>→</mo></mover><mo>+</mo><mover><mi>OD</mi><mo>→</mo></mover></mrow><mn>2</mn></mfrac></math>。H が AD の中点であることを式にして、OD について解く。</p>
             <p>H が AD の中点であることは、位置ベクトルでは「中点の公式」で書ける：</p>
-            <div class="formula-line"><span class="m"><span class="vec">OH</span> = <span class="frac"><span class="num"><span class="vec">OA</span> + <span class="vec">OD</span></span><span class="den">2</span></span></span></div>
-            <p>知りたいのは <span class="m"><span class="vec">OD</span></span> の方だから、この式を <span class="m"><span class="vec">OD</span></span> について解く（両辺を 2 倍して、<span class="m"><span class="vec">OA</span></span> を移項する）：</p>
-            <div class="formula-line"><span class="m"><span class="vec">OD</span> = 2<span class="vec">OH</span> − <span class="vec">OA</span></span></div>
-            <p>あとは、(2) の結果である <span class="m"><span class="vec">OH</span></span> の値をここに入れるだけ。次のヒントで計算しよう。</p>
+            <div class="formula-line"><math><mover><mi>OH</mi><mo>→</mo></mover><mo>=</mo><mfrac><mrow><mover><mi>OA</mi><mo>→</mo></mover><mo>+</mo><mover><mi>OD</mi><mo>→</mo></mover></mrow><mn>2</mn></mfrac></math></div>
+            <p>知りたいのは <math><mover><mi>OD</mi><mo>→</mo></mover></math> の方だから、この式を <math><mover><mi>OD</mi><mo>→</mo></mover></math> について解く（両辺を 2 倍して、<math><mover><mi>OA</mi><mo>→</mo></mover></math> を移項する）：</p>
+            <div class="formula-line"><math><mover><mi>OD</mi><mo>→</mo></mover><mo>=</mo><mn>2</mn><mover><mi>OH</mi><mo>→</mo></mover><mo>−</mo><mover><mi>OA</mi><mo>→</mo></mover></math></div>
+            <p>あとは、(2) の結果である <math><mover><mi>OH</mi><mo>→</mo></mover></math> の値をここに入れるだけ。<br>次のヒントで計算しよう。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title"><span class="m"><span class="vec">OH</span></span> の値を代入して、係数を計算する</span></div>
-            <p>(2) の結果 <span class="m"><span class="vec">OH</span> = <span class="frac"><span class="num">9</span><span class="den">14</span></span><span class="vec">OC</span></span> は、<span class="m"><span class="vec">OC</span> = <span class="frac"><span class="num">1</span><span class="den">3</span></span><span class="vec"><i>a</i></span> + <span class="frac"><span class="num">2</span><span class="den">3</span></span><span class="vec"><i>b</i></span></span> を使うとこうなる（まずここを確かめて）：</p>
-            <div class="formula-line"><span class="m"><span class="vec">OH</span> = <span class="frac"><span class="num">9</span><span class="den">14</span></span>(<span class="frac"><span class="num">1</span><span class="den">3</span></span><span class="vec"><i>a</i></span> + <span class="frac"><span class="num">2</span><span class="den">3</span></span><span class="vec"><i>b</i></span>) = <span class="frac"><span class="num">3</span><span class="den">14</span></span><span class="vec"><i>a</i></span> + <span class="frac"><span class="num">3</span><span class="den">7</span></span><span class="vec"><i>b</i></span></span></div>
-            <p>これをヒント2の式 <span class="m"><span class="vec">OD</span> = 2<span class="vec">OH</span> − <span class="vec">OA</span></span> に入れる。<span class="m"><span class="vec"><i>a</i></span></span> の係数は <span class="m">2·<span class="frac"><span class="num">3</span><span class="den">14</span></span> − 1</span>、<span class="m"><span class="vec"><i>b</i></span></span> の係数は <span class="m">2·<span class="frac"><span class="num">3</span><span class="den">7</span></span></span>。この2つの計算を自分でやって、<span class="m"><span class="vec">OD</span></span> を完成させてみよう。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title"><math><mover><mi>OH</mi><mo>→</mo></mover></math> の値を代入して、係数を計算する</span></div>
+            <p>(2) の結果 <math><mover><mi>OH</mi><mo>→</mo></mover><mo>=</mo><mfrac><mn>9</mn><mn>14</mn></mfrac><mover><mi>OC</mi><mo>→</mo></mover></math> は、<math><mover><mi>OC</mi><mo>→</mo></mover><mo>=</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mover><mi>a</mi><mo>→</mo></mover><mo>+</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mover><mi>b</mi><mo>→</mo></mover></math> を使うとこうなる（まずここを確かめて）：</p>
+            <div class="formula-line"><math><mover><mi>OH</mi><mo>→</mo></mover><mo>=</mo><mfrac><mn>9</mn><mn>14</mn></mfrac><mrow><mo>(</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mover><mi>a</mi><mo>→</mo></mover><mo>+</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mover><mi>b</mi><mo>→</mo></mover><mo>)</mo></mrow><mo>=</mo><mfrac><mn>3</mn><mn>14</mn></mfrac><mover><mi>a</mi><mo>→</mo></mover><mo>+</mo><mfrac><mn>3</mn><mn>7</mn></mfrac><mover><mi>b</mi><mo>→</mo></mover></math></div>
+            <p>これをヒント2の式 <math><mover><mi>OD</mi><mo>→</mo></mover><mo>=</mo><mn>2</mn><mover><mi>OH</mi><mo>→</mo></mover><mo>−</mo><mover><mi>OA</mi><mo>→</mo></mover></math> に入れる。<math><mover><mi>a</mi><mo>→</mo></mover></math> の係数は <math><mn>2</mn><mo>·</mo><mfrac><mn>3</mn><mn>14</mn></mfrac><mo>−</mo><mn>1</mn></math>、<math><mover><mi>b</mi><mo>→</mo></mover></math> の係数は <math><mn>2</mn><mo>·</mo><mfrac><mn>3</mn><mn>7</mn></mfrac></math>。この2つの計算を自分でやって、<math><mover><mi>OD</mi><mo>→</mo></mover></math> を完成させてみよう。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">交点 E は「直線 OD 上の点」として置く</span></div>
-            <p>後半は交点 E の話（図に直線 OD と点 E が現れた）。E は直線 OD の上にあるから、実数 <span class="m"><i>t</i></span> を使ってこう置ける：</p>
-            <div class="formula-line"><span class="m"><span class="vec">OE</span> = <i>t</i><span class="vec">OD</span></span></div>
-            <p>ヒント3で求めた <span class="m"><span class="vec">OD</span> = −<span class="frac"><span class="num">4</span><span class="den">7</span></span><span class="vec"><i>a</i></span> + <span class="frac"><span class="num">6</span><span class="den">7</span></span><span class="vec"><i>b</i></span></span> を代入すると：</p>
-            <div class="formula-line"><span class="m"><span class="vec">OE</span> = −<span class="frac"><span class="num">4<i>t</i></span><span class="den">7</span></span><span class="vec"><i>a</i></span> + <span class="frac"><span class="num">6<i>t</i></span><span class="den">7</span></span><span class="vec"><i>b</i></span></span></div>
-            <p>まだ <span class="m"><i>t</i></span> が分からない。もう1つの条件「E は直線 AB の上にもある」を使うのが次の一手だよ。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">交点 E は「直線 OD 上の点」として置く</span></div><p class="cite"><span class="cite-tag">使う性質</span>直線上の点は実数倍で表せる <math><mover><mi>OE</mi><mo>→</mo></mover><mo>=</mo><mi>t</mi><mover><mi>OD</mi><mo>→</mo></mover></math>。直線 OD 上の点 E を、OD の t 倍として置く。</p>
+            <p>後半は交点 E の話（図に直線 OD と点 E が現れた）。<br>E は直線 OD の上にあるから、実数 <math><mi>t</mi></math> を使ってこう置ける：</p>
+            <div class="formula-line"><math><mover><mi>OE</mi><mo>→</mo></mover><mo>=</mo><mi>t</mi><mover><mi>OD</mi><mo>→</mo></mover></math></div>
+            <p>ヒント3で求めた <math><mover><mi>OD</mi><mo>→</mo></mover><mo>=</mo><mo>−</mo><mfrac><mn>4</mn><mn>7</mn></mfrac><mover><mi>a</mi><mo>→</mo></mover><mo>+</mo><mfrac><mn>6</mn><mn>7</mn></mfrac><mover><mi>b</mi><mo>→</mo></mover></math> を代入すると：</p>
+            <div class="formula-line"><math><mover><mi>OE</mi><mo>→</mo></mover><mo>=</mo><mo>−</mo><mfrac><mrow><mn>4</mn><mi>t</mi></mrow><mn>7</mn></mfrac><mover><mi>a</mi><mo>→</mo></mover><mo>+</mo><mfrac><mrow><mn>6</mn><mi>t</mi></mrow><mn>7</mn></mfrac><mover><mi>b</mi><mo>→</mo></mover></math></div>
+            <p>まだ <math><mi>t</mi></math> が分からない。<br>もう1つの条件「E は直線 AB の上にもある」を使うのが次の一手だよ。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 5</span><span class="stage-title">「直線 AB 上の点」は、係数の和が 1</span></div>
-            <p>大事な判別法を思い出そう。点 X について <span class="m"><span class="vec">OX</span> = <i>s</i><span class="vec"><i>a</i></span> + <i>u</i><span class="vec"><i>b</i></span></span> と書いたとき：</p>
-            <div class="formula-line">点 X が直線 AB 上にある　⟺　<span class="m"><i>s</i> + <i>u</i> = 1</span></div>
-            <p class="mini">なぜ和が1か：直線 AB 上の点は、A と B の「重み付き平均」で、重みの合計がちょうど1の点の集まりだから。(1) の内分点の公式で、分子の係数の和が分母と等しくなっていたことを思い出そう。</p>
-            <p>E の場合、係数は <span class="m">−<span class="frac"><span class="num">4<i>t</i></span><span class="den">7</span></span></span> と <span class="m"><span class="frac"><span class="num">6<i>t</i></span><span class="den">7</span></span></span>。この和が 1 になる、という式を自分で立ててみよう。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 5</span><span class="stage-title">「直線 AB 上の点」は、係数の和が 1</span></div><p class="cite"><span class="cite-tag">使う性質</span>直線 AB 上にある条件 <math><mi>s</mi><mo>+</mo><mi>u</mi><mo>=</mo><mn>1</mn></math>。<math><mover><mi>OX</mi><mo>→</mo></mover><mo>=</mo><mi>s</mi><mover><mi>a</mi><mo>→</mo></mover><mo>+</mo><mi>u</mi><mover><mi>b</mi><mo>→</mo></mover></math> と表したとき、係数の和が1になることが目印になる。</p>
+            <p>大事な判別法を思い出そう。<br>点 X について <math><mover><mi>OX</mi><mo>→</mo></mover><mo>=</mo><mi>s</mi><mover><mi>a</mi><mo>→</mo></mover><mo>+</mo><mi>u</mi><mover><mi>b</mi><mo>→</mo></mover></math> と書いたとき：</p>
+            <div class="formula-line">点 X が直線 AB 上にある　⟺　<math><mi>s</mi><mo>+</mo><mi>u</mi><mo>=</mo><mn>1</mn></math></div>
+            <p class="mini">なぜ和が1か：直線 AB 上の点は、A と B の「重み付き平均」で、重みの合計がちょうど1の点の集まりだから。<br>(1) の内分点の公式で、分子の係数の和が分母と等しくなっていたことを思い出そう。</p>
+            <p>E の場合、係数は <math><mo>−</mo><mfrac><mrow><mn>4</mn><mi>t</mi></mrow><mn>7</mn></mfrac></math> と <math><mfrac><mrow><mn>6</mn><mi>t</mi></mrow><mn>7</mn></mfrac></math>。この和が 1 になる、という式を自分で立ててみよう。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 6</span><span class="stage-title"><i>t</i> の方程式を解いて、<span class="m"><span class="vec">OE</span></span> を確定する</span></div>
+            <div class="stage-head"><span class="stage-badge">ヒント 6</span><span class="stage-title"><math><mi>t</mi></math> の方程式を解いて、<math><mover><mi>OE</mi><mo>→</mo></mover></math> を確定する</span></div>
             <p>ヒント5の条件は、こういう方程式になる：</p>
-            <div class="formula-line"><span class="m">−<span class="frac"><span class="num">4<i>t</i></span><span class="den">7</span></span> + <span class="frac"><span class="num">6<i>t</i></span><span class="den">7</span></span> = 1</span>　つまり　<span class="m"><span class="frac"><span class="num">2<i>t</i></span><span class="den">7</span></span> = 1</span></div>
-            <p>これを解いて <span class="m"><i>t</i></span> の値を出し、ヒント4の <span class="m"><span class="vec">OE</span> = −<span class="frac"><span class="num">4<i>t</i></span><span class="den">7</span></span><span class="vec"><i>a</i></span> + <span class="frac"><span class="num">6<i>t</i></span><span class="den">7</span></span><span class="vec"><i>b</i></span></span> に代入してみよう。係数がきれいな整数になるはずだよ。</p>
+            <div class="formula-line"><math><mo>−</mo><mfrac><mrow><mn>4</mn><mi>t</mi></mrow><mn>7</mn></mfrac><mo>+</mo><mfrac><mrow><mn>6</mn><mi>t</mi></mrow><mn>7</mn></mfrac><mo>=</mo><mn>1</mn></math>　つまり　<math><mfrac><mrow><mn>2</mn><mi>t</mi></mrow><mn>7</mn></mfrac><mo>=</mo><mn>1</mn></math></div>
+            <p>これを解いて <math><mi>t</mi></math> の値を出し、ヒント4の <math><mover><mi>OE</mi><mo>→</mo></mover><mo>=</mo><mo>−</mo><mfrac><mrow><mn>4</mn><mi>t</mi></mrow><mn>7</mn></mfrac><mover><mi>a</mi><mo>→</mo></mover><mo>+</mo><mfrac><mrow><mn>6</mn><mi>t</mi></mrow><mn>7</mn></mfrac><mover><mi>b</mi><mo>→</mo></mover></math> に代入してみよう。<br>係数がきれいな整数になるはずだよ。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 7</span><span class="stage-title"><span class="m"><span class="vec">OE</span></span> は「外分点」の形をしている</span></div>
-            <p>ヒント6の結果は <span class="m"><span class="vec">OE</span> = −2<span class="vec"><i>a</i></span> + 3<span class="vec"><i>b</i></span></span>。これを、内分点の公式と<strong>そっくりな形</strong>に書き直すと：</p>
-            <div class="formula-line"><span class="m"><span class="vec">OE</span> = <span class="frac"><span class="num">−2<span class="vec">OA</span> + 3<span class="vec">OB</span></span><span class="den">3 − 2</span></span></span></div>
-            <p>分母が「差」になっているのが、<strong>外分点の公式</strong>のサインだ。この形は「E は辺 AB を <span class="m">3 : 2</span> に<strong>外分</strong>する点」を表す。外分とは、線分の<strong>外側</strong>にあって、A からの距離と B からの距離の比が <span class="m">3 : 2</span> になる点のこと。図の目盛りでも、<span class="m">AE</span> が 3 目盛り、<span class="m">EB</span> が 2 目盛りになっていることを確かめよう。つまり：</p>
-            <div class="formula-line"><span class="m">AE : EB = 3 : 2</span></div>
+            <div class="stage-head"><span class="stage-badge">ヒント 7</span><span class="stage-title"><math><mover><mi>OE</mi><mo>→</mo></mover></math> は「外分点」の形をしている</span></div><p class="cite"><span class="cite-tag">使う公式</span>外分点の位置ベクトル <math><mover><mi>OE</mi><mo>→</mo></mover><mo>=</mo><mfrac><mrow><mo>−</mo><mn>2</mn><mover><mi>OA</mi><mo>→</mo></mover><mo>+</mo><mn>3</mn><mover><mi>OB</mi><mo>→</mo></mover></mrow><mrow><mn>3</mn><mo>−</mo><mn>2</mn></mrow></mfrac></math>。係数にマイナスが出る形は、線分を外分する点のサインになる。</p>
+            <p>ヒント6の結果は <math><mover><mi>OE</mi><mo>→</mo></mover><mo>=</mo><mo>−</mo><mn>2</mn><mover><mi>a</mi><mo>→</mo></mover><mo>+</mo><mn>3</mn><mover><mi>b</mi><mo>→</mo></mover></math>。これを、内分点の公式と<strong>そっくりな形</strong>に書き直すと：</p>
+            <div class="formula-line"><math><mover><mi>OE</mi><mo>→</mo></mover><mo>=</mo><mfrac><mrow><mo>−</mo><mn>2</mn><mover><mi>OA</mi><mo>→</mo></mover><mo>+</mo><mn>3</mn><mover><mi>OB</mi><mo>→</mo></mover></mrow><mrow><mn>3</mn><mo>−</mo><mn>2</mn></mrow></mfrac></math></div>
+            <p>分母が「差」になっているのが、<strong>外分点の公式</strong>のサインだ。この形は「E は辺 AB を <math><mn>3</mn><mo>:</mo><mn>2</mn></math> に<strong>外分</strong>する点」を表す。<br>外分とは、線分の<strong>外側</strong>にあって、A からの距離と B からの距離の比が <math><mn>3</mn><mo>:</mo><mn>2</mn></math> になる点のこと。<br>図の目盛りでも、<math><mi>AE</mi></math> が 3 目盛り、<math><mi>EB</mi></math> が 2 目盛りになっていることを確かめよう。つまり：</p>
+            <div class="formula-line"><math><mi>AE</mi><mo>:</mo><mi>EB</mi><mo>=</mo><mn>3</mn><mo>:</mo><mn>2</mn></math></div>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 8</span><span class="stage-title">最後は、数直線の上で長さを引き算する</span></div>
-            <p>求めるのは <span class="m">AE : EB</span> ではなく <span class="m">AB : BE</span>。点の並び順は A → B → E の順（E は B の外側）だから、直線の上で長さの関係を書くと：</p>
-            <div class="formula-line"><span class="m">AB = AE − EB</span></div>
-            <p><span class="m">AE = 3</span>、<span class="m">EB = 2</span>（目盛りの数）と置いて <span class="m">AB</span> の目盛りの数を出し、<span class="m">BE</span>（<span class="m">EB</span> と同じ長さ）の目盛りの数と並べて、比を書いてみよう。それが答えだよ。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 8</span><span class="stage-title">最後は、数直線の上で長さを引き算する</span></div><p class="cite"><span class="cite-tag">使う性質</span>一直線上の長さの関係 <math><mi>AB</mi><mo>=</mo><mi>AE</mi><mo>−</mo><mi>EB</mi></math>。点が A、B、E の順に並ぶので、AB は AE から EB を引いた長さになる。</p>
+            <p>求めるのは <math><mi>AE</mi><mo>:</mo><mi>EB</mi></math> ではなく <math><mi>AB</mi><mo>:</mo><mi>BE</mi></math>。<br>点の並び順は A → B → E の順（E は B の外側）だから、直線の上で長さの関係を書くと：</p>
+            <div class="formula-line"><math><mi>AB</mi><mo>=</mo><mi>AE</mi><mo>−</mo><mi>EB</mi></math></div>
+            <p><math><mi>AE</mi><mo>=</mo><mn>3</mn></math>、<math><mi>EB</mi><mo>=</mo><mn>2</mn><mo>(</mo></math>目盛りの数）と置いて <math><mi>AB</mi></math> の目盛りの数を出し、<math><mi>BE</mi><mo>(</mo><mi>EB</mi></math> と同じ長さ）の目盛りの数と並べて、比を書いてみよう。それが答えだよ。</p>
           </article>
 
           <article class="stage answer" hidden>
             <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(3) の答え</span></div>
             <ol class="steps">
-              <li>直線 OC は線分 AD の垂直二等分線だから、(2) の点 H は AD の中点。よって <span class="m"><span class="vec">OH</span> = <span class="frac"><span class="num"><span class="vec">OA</span> + <span class="vec">OD</span></span><span class="den">2</span></span></span> より：
-                <div class="formula-line"><span class="m"><span class="vec">OD</span> = 2<span class="vec">OH</span> − <span class="vec">OA</span> = 2(<span class="frac"><span class="num">3</span><span class="den">14</span></span><span class="vec"><i>a</i></span> + <span class="frac"><span class="num">3</span><span class="den">7</span></span><span class="vec"><i>b</i></span>) − <span class="vec"><i>a</i></span></span><br /><span class="m">　　 = −<span class="frac"><span class="num">4</span><span class="den">7</span></span><span class="vec"><i>a</i></span> + <span class="frac"><span class="num">6</span><span class="den">7</span></span><span class="vec"><i>b</i></span></span></div>
+              <p class="cite"><span class="cite-tag">使う公式</span>中点の位置ベクトル <math><mover><mi>OH</mi><mo>→</mo></mover><mo>=</mo><mfrac><mrow><mover><mi>OA</mi><mo>→</mo></mover><mo>+</mo><mover><mi>OD</mi><mo>→</mo></mover></mrow><mn>2</mn></mfrac></math>。H が線分 AD の中点であることを式にして、OD について解く。</p><li>直線 OC は線分 AD の垂直二等分線だから、(2) の点 H は AD の中点。<br>よって <math><mover><mi>OH</mi><mo>→</mo></mover><mo>=</mo><mfrac><mrow><mover><mi>OA</mi><mo>→</mo></mover><mo>+</mo><mover><mi>OD</mi><mo>→</mo></mover></mrow><mn>2</mn></mfrac></math> より：
+                <div class="formula-line"><math><mover><mi>OD</mi><mo>→</mo></mover><mo>=</mo><mn>2</mn><mover><mi>OH</mi><mo>→</mo></mover><mo>−</mo><mover><mi>OA</mi><mo>→</mo></mover><mo>=</mo><mn>2</mn><mrow><mo>(</mo><mfrac><mn>3</mn><mn>14</mn></mfrac><mover><mi>a</mi><mo>→</mo></mover><mo>+</mo><mfrac><mn>3</mn><mn>7</mn></mfrac><mover><mi>b</mi><mo>→</mo></mover><mo>)</mo></mrow><mo>−</mo><mover><mi>a</mi><mo>→</mo></mover></math><br /><math><mo>=</mo><mo>−</mo><mfrac><mn>4</mn><mn>7</mn></mfrac><mover><mi>a</mi><mo>→</mo></mover><mo>+</mo><mfrac><mn>6</mn><mn>7</mn></mfrac><mover><mi>b</mi><mo>→</mo></mover></math></div>
               </li>
-              <li>点 E は直線 OD 上にあるから、実数 <span class="m"><i>t</i></span> を用いて <span class="m"><span class="vec">OE</span> = <i>t</i><span class="vec">OD</span> = −<span class="frac"><span class="num">4<i>t</i></span><span class="den">7</span></span><span class="vec"><i>a</i></span> + <span class="frac"><span class="num">6<i>t</i></span><span class="den">7</span></span><span class="vec"><i>b</i></span></span> と表せる。さらに E は直線 AB 上にあるから、係数の和について <span class="m">−<span class="frac"><span class="num">4<i>t</i></span><span class="den">7</span></span> + <span class="frac"><span class="num">6<i>t</i></span><span class="den">7</span></span> = 1</span>、すなわち <span class="m"><i>t</i> = <span class="frac"><span class="num">7</span><span class="den">2</span></span></span>。よって <span class="m"><span class="vec">OE</span> = −2<span class="vec"><i>a</i></span> + 3<span class="vec"><i>b</i></span></span>。</li>
-              <li>これは E が辺 AB を <span class="m">3 : 2</span> に外分する点であることを示すから <span class="m">AE : EB = 3 : 2</span>。よって <span class="m">AB = AE − EB</span> より <span class="m">AB : BE = (3 − 2) : 2 = 1 : 2</span>。</li>
+              <p class="cite"><span class="cite-tag">使う性質</span>直線 AB 上にある条件 <math><mo>−</mo><mfrac><mrow><mn>4</mn><mi>t</mi></mrow><mn>7</mn></mfrac><mo>+</mo><mfrac><mrow><mn>6</mn><mi>t</mi></mrow><mn>7</mn></mfrac><mo>=</mo><mn>1</mn></math>。実数倍で置いた OE の係数の和が1になることから、t を決める。</p><li>点 E は直線 OD 上にあるから、実数 <math><mi>t</mi></math> を用いて <math><mover><mi>OE</mi><mo>→</mo></mover><mo>=</mo><mi>t</mi><mover><mi>OD</mi><mo>→</mo></mover><mo>=</mo><mo>−</mo><mfrac><mrow><mn>4</mn><mi>t</mi></mrow><mn>7</mn></mfrac><mover><mi>a</mi><mo>→</mo></mover><mo>+</mo><mfrac><mrow><mn>6</mn><mi>t</mi></mrow><mn>7</mn></mfrac><mover><mi>b</mi><mo>→</mo></mover></math> と表せる。<br>さらに E は直線 AB 上にあるから、係数の和について <math><mo>−</mo><mfrac><mrow><mn>4</mn><mi>t</mi></mrow><mn>7</mn></mfrac><mo>+</mo><mfrac><mrow><mn>6</mn><mi>t</mi></mrow><mn>7</mn></mfrac><mo>=</mo><mn>1</mn></math>、すなわち <math><mi>t</mi><mo>=</mo><mfrac><mn>7</mn><mn>2</mn></mfrac></math>。よって <math><mover><mi>OE</mi><mo>→</mo></mover><mo>=</mo><mo>−</mo><mn>2</mn><mover><mi>a</mi><mo>→</mo></mover><mo>+</mo><mn>3</mn><mover><mi>b</mi><mo>→</mo></mover></math>。</li>
+              <p class="cite"><span class="cite-tag">使う性質</span>一直線上の長さの関係 <math><mi>AB</mi><mo>=</mo><mi>AE</mi><mo>−</mo><mi>EB</mi></math>。点が A、B、E の順に並ぶので、AB は AE から EB を引いた長さになる。</p><li>これは E が辺 AB を <math><mn>3</mn><mo>:</mo><mn>2</mn></math> に外分する点であることを示すから <math><mi>AE</mi><mo>:</mo><mi>EB</mi><mo>=</mo><mn>3</mn><mo>:</mo><mn>2</mn></math>。よって <math><mi>AB</mi><mo>=</mo><mi>AE</mi><mo>−</mo><mi>EB</mi></math> より <math><mi>AB</mi><mo>:</mo><mi>BE</mi><mo>=</mo><mrow><mo>(</mo><mn>3</mn><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mo>:</mo><mn>2</mn><mo>=</mo><mn>1</mn><mo>:</mo><mn>2</mn></math>。</li>
             </ol>
             <div class="ans-line">
-              <span class="ans-chip"><span class="kana">OD→</span><span class="m">−<span class="frac"><span class="num">4</span><span class="den">7</span></span><span class="vec"><i>a</i></span> + <span class="frac"><span class="num">6</span><span class="den">7</span></span><span class="vec"><i>b</i></span></span></span>
-              <span class="ans-chip"><span class="kana">AB : BE</span><span class="m">1 : 2</span></span>
+              <span class="ans-chip"><span class="kana">OD→</span><math><mo>−</mo><mfrac><mn>4</mn><mn>7</mn></mfrac><mover><mi>a</mi><mo>→</mo></mover><mo>+</mo><mfrac><mn>6</mn><mn>7</mn></mfrac><mover><mi>b</mi><mo>→</mo></mover></math></span>
+              <span class="ans-chip"><span class="kana">AB : BE</span><math><mn>1</mn><mo>:</mo><mn>2</mn></math></span>
             </div>
-            <div class="point-box"><span class="pt">ポイント</span>(3) のカギは「<strong>対称点 ⇒ 対称軸は垂直二等分線 ⇒ (2) の H が中点</strong>」というつながり。前の問題の結果が次の問題の道具になるのは、模試の大問の典型的な作りだよ。後半は「<strong>直線上の点は実数倍で置く</strong>」「<strong>直線 AB 上 ⇔ 係数の和 = 1</strong>」「係数にマイナスが出たら<strong>外分</strong>」の3点セット。</div>
+            <div class="point-box"><p class="cite"><span class="cite-tag">使う性質</span>直線 AB 上の点の目印 <math><mi>s</mi><mo>+</mo><mi>u</mi><mo>=</mo><mn>1</mn></math>。係数の和が1になることが、交点を求める後半のカギになる。</p><span class="pt">ポイント</span>(3) のカギは「<strong>対称点 ⇒ 対称軸は垂直二等分線 ⇒ (2) の H が中点</strong>」というつながり。<br>前の問題の結果が次の問題の道具になるのは、模試の大問の典型的な作りだよ。後半は「<strong>直線上の点は実数倍で置く</strong>」「<strong>直線 AB 上<math><mo>⇔</mo></math>係数の和<math><mo>=</mo><mn>1</mn></math></strong>」「係数にマイナスが出たら<strong>外分</strong>」の3点セット。</div>
           </article>
         </div>
         </div>

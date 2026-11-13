@@ -289,7 +289,57 @@
           padding: 2px 6px 8px 2px;
         }
       }
-    </style>
+    
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+
+      /* 積分記号は大きめに表示する（元のページの可読化デザインに合わせる） */
+      math .int-op{font-size:1.35em}
+      /* calc-12 世代（.card）と calc-18 世代（.unit）の、図のない問題の全幅化 */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig>.step{position:static !important}
+        .card.nofig>.steps-wrap{max-height:none !important;overflow:visible !important}
+        .unit.nofig{display:block !important}
+        .unit.nofig>.qside{position:static !important}
+        .unit.nofig>.steps-stack{max-height:none !important;overflow:visible !important}
+      }
+</style>
   </head>
   <body>
     <header class="doc-head">
@@ -339,9 +389,9 @@
         <div class="pleft">
         <div class="problem">
           <span class="ptag">［1］集合と命題（10点）</span>
-          <p><span class="m"><i>a</i></span> は正の定数とし、集合 <span class="m"><i>P</i></span> を次のように定める。</p>
-          <p style="text-align:center; font-size:18px;"><span class="m"><i>P</i> ＝ { <i>x</i> | <i>x</i><sup>2</sup> − (<i>a</i> − 1)<i>x</i> − <i>a</i> ≦ 0,　<i>x</i> は整数 }</span></p>
-          <p class="ask">(1)　<span class="m"><i>a</i> ＝ 4</span> のとき、集合 <span class="m"><i>P</i></span> の要素をすべて求めよ。（4点）</p>
+          <p><math><mi>a</mi></math> は正の定数とし、集合 <math><mi>P</mi></math> を次のように定める。</p>
+          <p style="text-align:center; font-size:18px;"><span class="m"><math><mi>P</mi><mo>=</mo><mo>{</mo><mi>x</mi><mo>|</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mrow><mo>(</mo><mi>a</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mi>x</mi><mo>−</mo><mi>a</mi><mo>≦</mo><mn>0</mn><mo>,</mo></math>　<math><mi>x</mi></math> は整数 }</span></p>
+          <p class="ask">(1)　<math><mi>a</mi><mo>=</mo><mn>4</mn></math> のとき、集合 <math><mi>P</mi></math> の要素をすべて求めよ。（4点）</p>
         </div>
 
         <figure class="fig">
@@ -355,7 +405,7 @@
             <text id="nl1L" x="200" y="46" text-anchor="middle" class="svg-txt" font-weight="700" style="display:none;">−1</text>
             <text id="nl1R" x="480" y="46" text-anchor="middle" class="svg-txt" font-weight="700" style="display:none;">4</text>
           </svg>
-          <figcaption>2次不等式の解は、数直線上の<strong>区間</strong>として表せる。ヒントを進めていくと、この問題の区間と、<span class="m"><i>P</i></span> の要素になる整数点がこの数直線に表示される。</figcaption>
+          <figcaption>2次不等式の解は、数直線上の<strong>区間</strong>として表せる。ヒントを進めていくと、この問題の区間と、<math><mi>P</mi></math> の要素になる整数点がこの数直線に表示される。</figcaption>
         </figure>
         </div>
 
@@ -370,9 +420,9 @@
         <div class="pleft">
         <div class="problem">
           <span class="ptag">［1］集合と命題（10点）</span>
-          <p><span class="m"><i>a</i></span> は正の定数とし、集合 <span class="m"><i>P</i></span> を次のように定める。</p>
-          <p style="text-align:center; font-size:18px;"><span class="m"><i>P</i> ＝ { <i>x</i> | <i>x</i><sup>2</sup> − (<i>a</i> − 1)<i>x</i> − <i>a</i> ≦ 0,　<i>x</i> は整数 }</span></p>
-          <p class="ask">(2)　集合 <span class="m"><i>P</i></span> の要素の個数が5個であるような <span class="m"><i>a</i></span> の値の範囲を求めよ。（6点）</p>
+          <p><math><mi>a</mi></math> は正の定数とし、集合 <math><mi>P</mi></math> を次のように定める。</p>
+          <p style="text-align:center; font-size:18px;"><span class="m"><math><mi>P</mi><mo>=</mo><mo>{</mo><mi>x</mi><mo>|</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mrow><mo>(</mo><mi>a</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mi>x</mi><mo>−</mo><mi>a</mi><mo>≦</mo><mn>0</mn><mo>,</mo></math>　<math><mi>x</mi></math> は整数 }</span></p>
+          <p class="ask">(2)　集合 <math><mi>P</mi></math> の要素の個数が5個であるような <math><mi>a</mi></math> の値の範囲を求めよ。（6点）</p>
         </div>
 
         <figure class="fig">
@@ -388,7 +438,7 @@
             <text id="aCount" x="320" y="140" text-anchor="middle" class="svg-txt" font-weight="700">要素の個数：4 個</text>
           </svg>
           <div class="slider-row">
-            <label for="aSlider">a ＝</label>
+            <label for="aSlider"><math><mi>a</mi><mo>=</mo></math></label>
             <input type="range" id="aSlider" min="0" max="6" step="0.1" value="2.5" />
             <span class="aval" id="aVal">2.5</span>
           </div>
@@ -396,7 +446,7 @@
             <button type="button" class="preset-btn" data-a="3">a ＝ 3 にする</button>
             <button type="button" class="preset-btn" data-a="4">a ＝ 4 にする</button>
           </div>
-          <figcaption>スライダーで <span class="m"><i>a</i></span> を動かすと、区間 [−1, <span class="m"><i>a</i></span>] の右端が動き、入る整数の個数が変わる。個数が5個になるのは <span class="m"><i>a</i></span> がどの範囲のときか、両端をよく見てみよう。下に今入っている要素も表示される：<span class="m" id="aElems">{−1, 0, 1, 2}</span></figcaption>
+          <figcaption>スライダーで <math><mi>a</mi></math> を動かすと、区間<math><mo>[</mo><mo>−</mo><mn>1</mn><mo>,</mo><mi>a</mi><mo>]</mo></math>の右端が動き、入る整数の個数が変わる。個数が5個になるのは <math><mi>a</mi></math> がどの範囲のときか、両端をよく見てみよう。下に今入っている要素も表示される：<span class="m" id="aElems">{−1, 0, 1, 2}</span></figcaption>
         </figure>
         </div>
 
@@ -413,20 +463,20 @@
           <span class="ptag">［2］図形と計量（10点）</span>
           <p>次の太郎さんと花子さんの会話を読んで答えよ。</p>
           <div class="dialogue">
-            <p><span class="who">花子：</span>「<span class="m"><i>θ</i></span> は鋭角で、<span class="m">sin<i>θ</i> ＝ <span class="frac"><span class="fn">1</span><span class="fd">2</span></span></span> となるような <span class="m"><i>θ</i></span> は何度かな。」</p>
-            <p><span class="who">太郎：</span>「鋭角という条件があるから、<span class="m"><i>θ</i> ＝ </span><span class="blank">ア</span><span class="m">°</span> だね。」</p>
-            <p><span class="who">花子：</span>「正解です。では、<span class="m"><i>θ</i></span> は鋭角で、<span class="m">sin<i>θ</i> ＝ <span class="frac"><span class="fn">3</span><span class="fd">4</span></span></span> となるような <span class="m"><i>θ</i></span> は何度かな。」</p>
-            <p><span class="who">太郎：</span>「正確な角度はわからないけど、<span class="m"><i>θ</i></span> は <span class="blank">イ</span> の範囲にあることがわかるね。」</p>
-            <p><span class="who">花子：</span>「そうだね。それでは、<span class="m">∠BAC</span> が鋭角で、<span class="m">sin∠BAC ＝ <span class="frac"><span class="fn">3</span><span class="fd">4</span></span></span>、<span class="m">BC ＝ √3</span>、<span class="m">CA ＝ 2</span> であるような <span class="m">△ABC</span> は『鋭角三角形』と『鈍角三角形』の2種類あるんだけど、<span class="m">△ABC</span> が鈍角三角形になるときの辺 <span class="m">AB</span> の長さはいくらになるかわかるかな。」</p>
+            <p><span class="who">花子：</span>「<math><mi>θ</mi></math> は鋭角で、<math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math> となるような <math><mi>θ</mi></math> は何度かな。」</p>
+            <p><span class="who">太郎：</span>「鋭角という条件があるから、<math><mi>θ</mi><mo>=</mo></math><span class="blank">ア</span><math><mo>°</mo></math> だね。」</p>
+            <p><span class="who">花子：</span>「正解です。では、<math><mi>θ</mi></math> は鋭角で、<math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mn>3</mn><mn>4</mn></mfrac></math> となるような <math><mi>θ</mi></math> は何度かな。」</p>
+            <p><span class="who">太郎：</span>「正確な角度はわからないけど、<math><mi>θ</mi></math> は <span class="blank">イ</span> の範囲にあることがわかるね。」</p>
+            <p><span class="who">花子：</span>「そうだね。それでは、<math><mo>∠</mo><mi>BAC</mi></math> が鋭角で、<math><mi>sin</mi><mo>∠</mo><mi>BAC</mi><mo>=</mo><mfrac><mn>3</mn><mn>4</mn></mfrac></math>、<math><mi>BC</mi><mo>=</mo><msqrt><mn>3</mn></msqrt></math>、<math><mi>CA</mi><mo>=</mo><mn>2</mn></math> であるような <math><mo>△</mo><mi>ABC</mi></math> は『鋭角三角形』と『鈍角三角形』の2種類あるんだけど、<math><mo>△</mo><mi>ABC</mi></math> が鈍角三角形になるときの辺 <math><mi>AB</mi></math> の長さはいくらになるかわかるかな。」</p>
           </div>
           <p class="ask">(1)　<span class="blank">ア</span> に当てはまる数を答えよ。また、<span class="blank">イ</span> に当てはまる最も適当なものを、次の1〜6のうちから一つ選べ。（各2点）</p>
           <ul class="choices m">
-            <li>1　0° ＜ <i>θ</i> ＜ 15°</li>
-            <li>2　15° ＜ <i>θ</i> ＜ 30°</li>
-            <li>3　30° ＜ <i>θ</i> ＜ 45°</li>
-            <li>4　45° ＜ <i>θ</i> ＜ 60°</li>
-            <li>5　60° ＜ <i>θ</i> ＜ 75°</li>
-            <li>6　75° ＜ <i>θ</i> ＜ 90°</li>
+            <li>1　<math><mn>0</mn><mo>°</mo><mo>&lt;</mo><mi>θ</mi><mo>&lt;</mo><mn>15</mn><mo>°</mo></math></li>
+            <li>2　<math><mn>15</mn><mo>°</mo><mo>&lt;</mo><mi>θ</mi><mo>&lt;</mo><mn>30</mn><mo>°</mo></math></li>
+            <li>3　<math><mn>30</mn><mo>°</mo><mo>&lt;</mo><mi>θ</mi><mo>&lt;</mo><mn>45</mn><mo>°</mo></math></li>
+            <li>4　<math><mn>45</mn><mo>°</mo><mo>&lt;</mo><mi>θ</mi><mo>&lt;</mo><mn>60</mn><mo>°</mo></math></li>
+            <li>5　<math><mn>60</mn><mo>°</mo><mo>&lt;</mo><mi>θ</mi><mo>&lt;</mo><mn>75</mn><mo>°</mo></math></li>
+            <li>6　<math><mn>75</mn><mo>°</mo><mo>&lt;</mo><mi>θ</mi><mo>&lt;</mo><mn>90</mn><mo>°</mo></math></li>
           </ul>
         </div>
 
@@ -464,7 +514,7 @@
             <text x="90" y="352" text-anchor="middle" class="svg-txt">O</text>
             <text x="398" y="322" class="svg-txt-sm">単位円（半径1）</text>
           </svg>
-          <figcaption>単位円では、動径の先の点の<strong>高さ</strong>が <span class="m">sin</span> の値。<span style="color:var(--cth); font-weight:700;">3/4 の高さ</span>は、<span style="color:var(--c45); font-weight:700;">45° の高さ √2/2</span> と <span style="color:var(--c60); font-weight:700;">60° の高さ √3/2</span> のあいだにある。</figcaption>
+          <figcaption>単位円では、動径の先の点の<strong>高さ</strong>が <math><mi>sin</mi></math> の値。<span style="color:var(--cth); font-weight:700;"><math><mfrac><mn>3</mn><mn>4</mn></mfrac></math>の高さ</span>は、<span style="color:var(--c45); font-weight:700;"><math><mn>45</mn><mo>°</mo></math>の高さ<math><mfrac><msqrt><mn>2</mn></msqrt><mn>2</mn></mfrac></math></span> と <span style="color:var(--c60); font-weight:700;"><math><mn>60</mn><mo>°</mo></math>の高さ<math><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac></math></span> のあいだにある。</figcaption>
         </figure>
         </div>
 
@@ -481,13 +531,13 @@
           <span class="ptag">［2］図形と計量（10点）</span>
           <p>次の太郎さんと花子さんの会話を読んで答えよ。</p>
           <div class="dialogue">
-            <p><span class="who">花子：</span>「<span class="m"><i>θ</i></span> は鋭角で、<span class="m">sin<i>θ</i> ＝ <span class="frac"><span class="fn">1</span><span class="fd">2</span></span></span> となるような <span class="m"><i>θ</i></span> は何度かな。」</p>
-            <p><span class="who">太郎：</span>「鋭角という条件があるから、<span class="m"><i>θ</i> ＝ </span><span class="blank">ア</span><span class="m">°</span> だね。」</p>
-            <p><span class="who">花子：</span>「正解です。では、<span class="m"><i>θ</i></span> は鋭角で、<span class="m">sin<i>θ</i> ＝ <span class="frac"><span class="fn">3</span><span class="fd">4</span></span></span> となるような <span class="m"><i>θ</i></span> は何度かな。」</p>
-            <p><span class="who">太郎：</span>「正確な角度はわからないけど、<span class="m"><i>θ</i></span> は <span class="blank">イ</span> の範囲にあることがわかるね。」</p>
-            <p><span class="who">花子：</span>「そうだね。それでは、<span class="m">∠BAC</span> が鋭角で、<span class="m">sin∠BAC ＝ <span class="frac"><span class="fn">3</span><span class="fd">4</span></span></span>、<span class="m">BC ＝ √3</span>、<span class="m">CA ＝ 2</span> であるような <span class="m">△ABC</span> は『鋭角三角形』と『鈍角三角形』の2種類あるんだけど、<span class="m">△ABC</span> が鈍角三角形になるときの辺 <span class="m">AB</span> の長さはいくらになるかわかるかな。」</p>
+            <p><span class="who">花子：</span>「<math><mi>θ</mi></math> は鋭角で、<math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math> となるような <math><mi>θ</mi></math> は何度かな。」</p>
+            <p><span class="who">太郎：</span>「鋭角という条件があるから、<math><mi>θ</mi><mo>=</mo></math><span class="blank">ア</span><math><mo>°</mo></math> だね。」</p>
+            <p><span class="who">花子：</span>「正解です。では、<math><mi>θ</mi></math> は鋭角で、<math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mn>3</mn><mn>4</mn></mfrac></math> となるような <math><mi>θ</mi></math> は何度かな。」</p>
+            <p><span class="who">太郎：</span>「正確な角度はわからないけど、<math><mi>θ</mi></math> は <span class="blank">イ</span> の範囲にあることがわかるね。」</p>
+            <p><span class="who">花子：</span>「そうだね。それでは、<math><mo>∠</mo><mi>BAC</mi></math> が鋭角で、<math><mi>sin</mi><mo>∠</mo><mi>BAC</mi><mo>=</mo><mfrac><mn>3</mn><mn>4</mn></mfrac></math>、<math><mi>BC</mi><mo>=</mo><msqrt><mn>3</mn></msqrt></math>、<math><mi>CA</mi><mo>=</mo><mn>2</mn></math> であるような <math><mo>△</mo><mi>ABC</mi></math> は『鋭角三角形』と『鈍角三角形』の2種類あるんだけど、<math><mo>△</mo><mi>ABC</mi></math> が鈍角三角形になるときの辺 <math><mi>AB</mi></math> の長さはいくらになるかわかるかな。」</p>
           </div>
-          <p class="ask">(2)　<span class="m">△ABC</span> が鈍角三角形であり、<span class="m">∠BAC</span> が鋭角で、<span class="m">sin∠BAC ＝ <span class="frac"><span class="fn">3</span><span class="fd">4</span></span></span>、<span class="m">BC ＝ √3</span>、<span class="m">CA ＝ 2</span> のとき、<span class="m">sin∠ABC</span> の値を求めよ。また、辺 <span class="m">AB</span> の長さを求めよ。（6点）</p>
+          <p class="ask">(2)　<math><mo>△</mo><mi>ABC</mi></math> が鈍角三角形であり、<math><mo>∠</mo><mi>BAC</mi></math> が鋭角で、<math><mi>sin</mi><mo>∠</mo><mi>BAC</mi><mo>=</mo><mfrac><mn>3</mn><mn>4</mn></mfrac></math>、<math><mi>BC</mi><mo>=</mo><msqrt><mn>3</mn></msqrt></math>、<math><mi>CA</mi><mo>=</mo><mn>2</mn></math> のとき、<math><mi>sin</mi><mo>∠</mo><mi>ABC</mi></math> の値を求めよ。また、辺 <math><mi>AB</mi></math> の長さを求めよ。（6点）</p>
         </div>
 
         <figure class="fig">
@@ -510,7 +560,7 @@
             <text x="123" y="150" text-anchor="middle" class="svg-txt-sm">sin∠BAC ＝ 3/4</text>
             <text x="254" y="286" text-anchor="middle" class="svg-txt-sm">鈍角三角形になるときの △ABC（AB ＝ x とおく）</text>
           </svg>
-          <figcaption>鈍角は <span class="m">∠ABC</span>。<span class="m">AB ＝ <i>x</i></span> とおいて、長さの分かっている辺 <span class="m">CA</span> に注目するのが方針。</figcaption>
+          <figcaption>鈍角は <math><mo>∠</mo><mi>ABC</mi></math>。<math><mi>AB</mi><mo>=</mo><mi>x</mi></math> とおいて、長さの分かっている辺 <math><mi>CA</mi></math> に注目するのが方針。</figcaption>
         </figure>
         </div>
 
