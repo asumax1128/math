@@ -302,7 +302,64 @@
       table.comp{border-collapse:collapse;margin:0 0 14px;width:100%}
       table.comp th,table.comp td{border:1px solid var(--line);padding:8px 10px;text-align:center;font-size:15px}
       table.comp th{background:var(--surface2)}
-        </style>
+        
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+
+      /* 積分記号は大きめに表示する（元のページの可読化デザインに合わせる） */
+      math .int-op{font-size:1.35em}
+      /* calc-12 世代（.card）と calc-18 世代（.unit）の、図のない問題の全幅化 */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig>.step{position:static !important}
+        .card.nofig>.steps-wrap{max-height:none !important;overflow:visible !important}
+        .unit.nofig{display:block !important}
+        .unit.nofig>.qside{position:static !important}
+        .unit.nofig>.steps-stack{max-height:none !important;overflow:visible !important}
+      }
+
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける・第3弾c） */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig .qside{position:static !important}
+        .card.nofig .steps-wrap,.card.nofig .tabpanel .steps-wrap{max-height:none !important;overflow:visible !important}
+      }
+</style>
   </head>
   <body>
     <div class="wrap">
@@ -325,9 +382,9 @@
         <span class="pno">教科書 p.98</span>
       </div>
       <section class="card">
-        <p>平面上で、点 C に対して点 P が条件 CP = 2 を満たしながら動くとき、P の描く図形は、点 C を中心とする半径2の円である。</p>
-<figure><div class="figbox"><svg viewBox="0 0 300 190" role="img" aria-label="点Cから距離2の点Pが描く円"><circle cx="105" cy="100" r="64" fill="none" stroke="var(--ink)" stroke-width="2.2"/><line x1="105" y1="100" x2="146.138" y2="50.9732" stroke="var(--ink)" stroke-width="1.8"/><circle cx="105" cy="100" r="3.6" fill="var(--ink)"/><circle cx="146.138" cy="50.9732" r="3.6" fill="var(--accent)"/><text x="101" y="124" text-anchor="middle" class="svg-txt" font-size="14.5" font-style="italic">C</text><text x="152.138" y="40.9732" text-anchor="middle" class="svg-txt" font-size="14.5" font-style="italic">P</text><text x="114.569" y="77.4866" text-anchor="middle" class="svg-txt" font-size="14">2</text></svg></div><figcaption>条件 CP = 2 を満たしながら動く点 P は、点 C を中心とする半径2の円を描く。</figcaption></figure>
-        <p>一般に、与えられた条件を満たしながら動く点が描く図形を、その条件を満たす点の <span class="key">軌跡</span> という。ここでは、軌跡について学ぼう。なお、軌跡を予想したり確認したりする活動には、図形描画ソフトの利用も有効である。</p>
+        <p>平面上で、点 <math><mi>C</mi></math> に対して点 <math><mi>P</mi></math> が条件<math><mi>CP</mi><mo>=</mo><mn>2</mn></math>を満たしながら動くとき、<math><mi>P</mi></math> の描く図形は、点 <math><mi>C</mi></math> を中心とする半径2の円である。</p>
+<figure><div class="figbox"><svg viewBox="0 0 300 190" role="img" aria-label="点Cから距離2の点Pが描く円"><circle cx="105" cy="100" r="64" fill="none" stroke="var(--ink)" stroke-width="2.2"/><line x1="105" y1="100" x2="146.138" y2="50.9732" stroke="var(--ink)" stroke-width="1.8"/><circle cx="105" cy="100" r="3.6" fill="var(--ink)"/><circle cx="146.138" cy="50.9732" r="3.6" fill="var(--accent)"/><text x="101" y="124" text-anchor="middle" class="svg-txt" font-size="14.5" font-style="italic">C</text><text x="152.138" y="40.9732" text-anchor="middle" class="svg-txt" font-size="14.5" font-style="italic">P</text><text x="114.569" y="77.4866" text-anchor="middle" class="svg-txt" font-size="14">2</text></svg></div><figcaption>条件<math><mi>CP</mi><mo>=</mo><mn>2</mn></math>を満たしながら動く点 <math><mi>P</mi></math> は、点 <math><mi>C</mi></math> を中心とする半径2の円を描く。</figcaption></figure>
+        <p>一般に、与えられた条件を満たしながら動く点が描く図形を、その条件を満たす点の <span class="key">軌跡</span> という。<br>ここでは、軌跡について学ぼう。なお、軌跡を予想したり確認したりする活動には、図形描画ソフトの利用も有効である。</p>
       </section>
       <div class="sec-head">
         <span class="sec-tag">解説 A</span>
@@ -335,162 +392,162 @@
         <span class="pno">教科書 p.98〜99</span>
       </div>
       <section class="card">
-        <p>軌跡は、動く点 P の座標を (<i>x</i>, <i>y</i>) として、条件を <i>x</i>, <i>y</i> の方程式に直すことで求めることができる。まず例14で流れをつかもう。</p>
+        <p>軌跡は、動く点 <math><mi>P</mi></math> の座標を<math><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>)</mo></math>として、条件を <math><mi>x</mi><mo>,</mo><mi>y</mi></math> の方程式に直すことで求めることができる。<br>まず例14で流れをつかもう。</p>
       </section>
       <div class="sec-head">
         <span class="sec-tag">例</span>
-        <h2>例14 ― AP = BP を満たす点の軌跡</h2>
+        <h2>例<math><mn>14</mn><mo>―</mo><mi>AP</mi><mo>=</mo><mi>BP</mi></math>を満たす点の軌跡</h2>
         <span class="pno">教科書 p.98</span>
       </div>
-      <section class="card prob" id="prob-rei14" data-flow="rei14" data-label="例14">
+      <section class="nofig card prob" id="prob-rei14" data-flow="rei14" data-label="例14">
         <div class="prob-head">
           <span class="prob-tag ">例 14</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
         <div class="qside">
-        <p class="prob-q">2点 A(0, 2), B(4, 0) に対して、AP = BP を満たす点 P の軌跡を求めよ。</p>
+        <p class="prob-q">2点 <math><mi>A</mi><mrow><mo>(</mo><mn>0</mn><mo>,</mo><mn>2</mn><mo>)</mo></mrow></math>, <math><mi>B</mi><mrow><mo>(</mo><mn>4</mn><mo>,</mo><mn>0</mn><mo>)</mo></mrow></math> に対して、<math><mi>AP</mi><mo>=</mo><mi>BP</mi></math>を満たす点 <math><mi>P</mi></math> の軌跡を求めよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― P の座標をおく</h3>
-          <p>点 P の座標を (<i>x</i>, <i>y</i>) としよう。AP, BP を座標で表してみよう。</p>
+          <h3>ヒント 1 ― <math><mi>P</mi></math> の座標をおく</h3><p class="cite"><span class="cite-tag">使う定義</span><math><mi>P</mi><mrow><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>)</mo></mrow></math>軌跡は、動く点 <math><mi>P</mi></math> の座標を <math><mrow><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>)</mo></mrow></math> とおき、条件を <math><mi>x</mi></math>、<math><mi>y</mi></math> の方程式に直して求める。</p>
+          <p>点 <math><mi>P</mi></math> の座標を<math><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>)</mo></math>としよう。<math><mi>AP</mi></math>, <math><mi>BP</mi></math> を座標で表してみよう。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― 条件を2乗して式にする</h3>
-          <p>条件 AP = BP は、2乗しても同値だから AP<sup>2</sup> = BP<sup>2</sup> として計算しよう。x<sup>2</sup> + (y − 2)<sup>2</sup> = (x − 4)<sup>2</sup> + y<sup>2</sup> を展開して整理してみよう。</p>
+          <h3>ヒント 2 ― 条件を2乗して式にする</h3><p class="cite"><span class="cite-tag">使う性質</span><math><msup><mrow><mi>AP</mi></mrow><mn>2</mn></msup><mo>=</mo><msup><mrow><mi>BP</mi></mrow><mn>2</mn></msup></math>長さの条件 <math><mi>AP</mi><mo>=</mo><mi>BP</mi></math> は、両辺を2乗したこの式と同値。根号を外して計算できる形にする。</p>
+          <p>条件<math><mi>AP</mi><mo>=</mo><mi>BP</mi></math>は、2乗しても同値だから<math><msup><mi>AP</mi><mn>2</mn></msup><mo>=</mo><msup><mi>BP</mi><mn>2</mn></msup></math> として計算しよう。<br><math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mi>y</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>4</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup></math> を展開して整理してみよう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 3 ― 逆を確認する</h3>
-          <p>整理すると1次式が残るはずだね。最後に、得られた図形上のすべての点が条件 AP = BP を満たすこと（逆）も確認しておこう。</p>
+          <p>整理すると1次式が残るはずだね。<br>最後に、得られた図形上のすべての点が条件<math><mi>AP</mi><mo>=</mo><mi>BP</mi></math>を満たすこと（逆）も確認しておこう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">直線 2x − y − 3 = 0</p>
-          <p>点 P の座標を (<i>x</i>, <i>y</i>) とする。P に関する条件は AP = BP すなわち AP<sup>2</sup> = BP<sup>2</sup>。よって x<sup>2</sup> + (y − 2)<sup>2</sup> = (x − 4)<sup>2</sup> + y<sup>2</sup>。整理すると 2x − y − 3 = 0。したがって、点 P は直線 2x − y − 3 = 0 上にある。逆に、この直線上のすべての点 P(<i>x</i>, <i>y</i>) について、AP<sup>2</sup> = BP<sup>2</sup> すなわち AP = BP が成り立つ。よって、点 P の軌跡は、直線 2x − y − 3 = 0 である。</p><figure><div class="figbox"><svg viewBox="0 0 285.6 260" role="img" aria-label="例14の軌跡（線分ABの垂直二等分線）と点A, B, P"><defs><marker id="ah-g5" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--ink-soft)"></path></marker><pattern id="hatch-g5" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="var(--ink-soft)" stroke-width="1.5"/></pattern></defs><line x1="28" y1="172.8" x2="265.6" y2="172.8" stroke="var(--ink-soft)" stroke-width="1.6" marker-end="url(#ah-g5)"/><line x1="74.8" y1="234" x2="74.8" y2="18" stroke="var(--ink-soft)" stroke-width="1.6" marker-end="url(#ah-g5)"/><text x="263.6" y="192.8" class="svg-txt" font-size="14" font-style="italic">x</text><text x="82.8" y="22" class="svg-txt" font-size="14" font-style="italic">y</text><text x="64.8" y="189.8" text-anchor="middle" class="svg-txt-soft" font-size="13">O</text><line x1="98.2" y1="234" x2="206.2" y2="18" stroke="var(--blue)" stroke-width="2.2"/><line x1="74.8" y1="100.8" x2="182.8" y2="64.8" stroke="var(--ink)" stroke-width="1.6"/><line x1="218.8" y1="172.8" x2="182.8" y2="64.8" stroke="var(--ink)" stroke-width="1.6"/><circle cx="74.8" cy="100.8" r="3.4" fill="var(--ink)"/><circle cx="218.8" cy="172.8" r="3.4" fill="var(--ink)"/><circle cx="182.8" cy="64.8" r="3.4" fill="var(--accent)"/><text x="61.8" y="96.8" text-anchor="middle" class="svg-txt" font-size="14.5">A</text><text x="231.8" y="166.8" text-anchor="middle" class="svg-txt" font-size="14.5">B</text><text x="196.8" y="56.8" text-anchor="start" class="svg-txt" font-size="13.5">P(x, y)</text></svg></div><figcaption>点 P の軌跡は、直線 2x − y − 3 = 0（線分 AB の垂直二等分線）。</figcaption></figure>          <p>補足 ▶　例14で求めた点 P の軌跡は、線分 AB の垂直二等分線である。</p>
+          <p class="big">直線<math><mn>2</mn><mi>x</mi><mo>−</mo><mi>y</mi><mo>−</mo><mn>3</mn><mo>=</mo><mn>0</mn></math></p><p class="cite"><span class="cite-tag">使う性質</span><math><msup><mrow><mi>AP</mi></mrow><mn>2</mn></msup><mo>=</mo><msup><mrow><mi>BP</mi></mrow><mn>2</mn></msup></math>距離の公式で <math><msup><mrow><mi>AP</mi></mrow><mn>2</mn></msup><mo>=</mo><msup><mrow><mi>x</mi></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mrow><mo>(</mo><mi>y</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow></mrow><mn>2</mn></msup></math>、<math><msup><mrow><mi>BP</mi></mrow><mn>2</mn></msup><mo>=</mo><msup><mrow><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>4</mn><mo>)</mo></mrow></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mi>y</mi></mrow><mn>2</mn></msup></math> と表し、展開して整理した。最後に逆の確認もする。</p>
+          <p>点 <math><mi>P</mi></math> の座標を<math><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>)</mo></math>とする。<br><math><mi>P</mi></math> に関する条件は<math><mi>AP</mi><mo>=</mo><mi>BP</mi></math>すなわち<math><msup><mi>AP</mi><mn>2</mn></msup><mo>=</mo><msup><mi>BP</mi><mn>2</mn></msup></math>。<br>よって<math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mi>y</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>4</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup></math>。整理すると<math><mn>2</mn><mi>x</mi><mo>−</mo><mi>y</mi><mo>−</mo><mn>3</mn><mo>=</mo><mn>0</mn></math>。したがって、点 <math><mi>P</mi></math> は直線<math><mn>2</mn><mi>x</mi><mo>−</mo><mi>y</mi><mo>−</mo><mn>3</mn><mo>=</mo><mn>0</mn></math>上にある。逆に、この直線上のすべての点<math><mi>P</mi><mrow><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>)</mo></mrow></math>について、<math><msup><mi>AP</mi><mn>2</mn></msup><mo>=</mo><msup><mi>BP</mi><mn>2</mn></msup></math> すなわち<math><mi>AP</mi><mo>=</mo><mi>BP</mi></math>が成り立つ。よって、点 <math><mi>P</mi></math> の軌跡は、直線<math><mn>2</mn><mi>x</mi><mo>−</mo><mi>y</mi><mo>−</mo><mn>3</mn><mo>=</mo><mn>0</mn></math>である。</p><figure><div class="figbox"><svg viewBox="0 0 285.6 260" role="img" aria-label="例14の軌跡（線分ABの垂直二等分線）と点A, B, P"><defs><marker id="ah-g5" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--ink-soft)"></path></marker><pattern id="hatch-g5" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="var(--ink-soft)" stroke-width="1.5"/></pattern></defs><line x1="28" y1="172.8" x2="265.6" y2="172.8" stroke="var(--ink-soft)" stroke-width="1.6" marker-end="url(#ah-g5)"/><line x1="74.8" y1="234" x2="74.8" y2="18" stroke="var(--ink-soft)" stroke-width="1.6" marker-end="url(#ah-g5)"/><text x="263.6" y="192.8" class="svg-txt" font-size="14" font-style="italic">x</text><text x="82.8" y="22" class="svg-txt" font-size="14" font-style="italic">y</text><text x="64.8" y="189.8" text-anchor="middle" class="svg-txt-soft" font-size="13">O</text><line x1="98.2" y1="234" x2="206.2" y2="18" stroke="var(--blue)" stroke-width="2.2"/><line x1="74.8" y1="100.8" x2="182.8" y2="64.8" stroke="var(--ink)" stroke-width="1.6"/><line x1="218.8" y1="172.8" x2="182.8" y2="64.8" stroke="var(--ink)" stroke-width="1.6"/><circle cx="74.8" cy="100.8" r="3.4" fill="var(--ink)"/><circle cx="218.8" cy="172.8" r="3.4" fill="var(--ink)"/><circle cx="182.8" cy="64.8" r="3.4" fill="var(--accent)"/><text x="61.8" y="96.8" text-anchor="middle" class="svg-txt" font-size="14.5">A</text><text x="231.8" y="166.8" text-anchor="middle" class="svg-txt" font-size="14.5">B</text><text x="196.8" y="56.8" text-anchor="start" class="svg-txt" font-size="13.5">P(x, y)</text></svg></div><figcaption>点 <math><mi>P</mi></math> の軌跡は、直線<math><mn>2</mn><mi>x</mi><mo>−</mo><mi>y</mi><mo>−</mo><mn>3</mn><mo>=</mo><mn>0</mn><mo>(</mo></math>線分 <math><mi>AB</mi></math> の垂直二等分線）。</figcaption></figure>          <p>補足 ▶　例14で求めた点 <math><mi>P</mi></math> の軌跡は、線分 <math><mi>AB</mi></math> の垂直二等分線である。</p>
         </div>
         <p class="prob-done">例14 クリア！　次は練習30で同じ流れを試そう。</p>
       </section>
-      <section class="card prob" id="prob-ren30" data-flow="ren30" data-label="練習30">
+      <section class="nofig card prob" id="prob-ren30" data-flow="ren30" data-label="練習30">
         <div class="prob-head">
           <span class="prob-tag ren">練習 30</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
         <div class="qside">
-        <p class="prob-q">2点 A(−6, 0), B(0, 4) に対して、AP = BP を満たす点 P の軌跡を求めよ。</p>
+        <p class="prob-q">2点 <math><mi>A</mi><mrow><mo>(</mo><mo>−</mo><mn>6</mn><mo>,</mo><mn>0</mn><mo>)</mo></mrow></math>, <math><mi>B</mi><mrow><mo>(</mo><mn>0</mn><mo>,</mo><mn>4</mn><mo>)</mo></mrow></math> に対して、<math><mi>AP</mi><mo>=</mo><mi>BP</mi></math>を満たす点 <math><mi>P</mi></math> の軌跡を求めよ。</p>
           <div class="quiz" id="q30" data-correct="3">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>3x + 2y − 5 = 0</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>2x + 3y + 5 = 0</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>3x + 2y + 5 = 0</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>3x − 2y + 5 = 0</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mn>3</mn><mi>x</mi><mo>+</mo><mn>2</mn><mi>y</mi><mo>−</mo><mn>5</mn><mo>=</mo><mn>0</mn></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mn>2</mn><mi>x</mi><mo>+</mo><mn>3</mn><mi>y</mi><mo>+</mo><mn>5</mn><mo>=</mo><mn>0</mn></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mn>3</mn><mi>x</mi><mo>+</mo><mn>2</mn><mi>y</mi><mo>+</mo><mn>5</mn><mo>=</mo><mn>0</mn></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mn>3</mn><mi>x</mi><mo>−</mo><mn>2</mn><mi>y</mi><mo>+</mo><mn>5</mn><mo>=</mo><mn>0</mn></math></span><span class="mark"></span></button>
           </div>
-          <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
+          <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。<br>ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
           <p class="verdict"></p>
           </div>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― AP² = BP² の式を立てる</h3>
-          <p>例14と同じ流れだよ。点 P の座標を (<i>x</i>, <i>y</i>) として、AP<sup>2</sup> = BP<sup>2</sup> の式を立てよう。</p>
+          <h3>ヒント<math><mn>1</mn><mo>―</mo><msup><mi>AP</mi><mn>2</mn></msup><mo>=</mo><msup><mi>BP</mi><mn>2</mn></msup></math>の式を立てる</h3><p class="cite"><span class="cite-tag">使う性質</span><math><msup><mrow><mi>AP</mi></mrow><mn>2</mn></msup><mo>=</mo><msup><mrow><mi>BP</mi></mrow><mn>2</mn></msup></math>例14と同じ流れで、点 <math><mi>P</mi><mrow><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>)</mo></mrow></math> としてこの式を立てる。</p>
+          <p>例14と同じ流れだよ。点 <math><mi>P</mi></math> の座標を<math><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>)</mo></math>として、<math><msup><mi>AP</mi><mn>2</mn></msup><mo>=</mo><msup><mi>BP</mi><mn>2</mn></msup></math> の式を立てよう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 展開して整理する</h3>
-          <p>(x + 6)<sup>2</sup> + y<sup>2</sup> = x<sup>2</sup> + (y − 4)<sup>2</sup> を展開して、x<sup>2</sup>, y<sup>2</sup> が消えることを確かめながら整理しよう。</p>
+          <p><math><msup><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>6</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mi>y</mi><mo>−</mo><mn>4</mn><mo>)</mo></mrow><mn>2</mn></msup></math> を展開して、<math><msup><mi>x</mi><mn>2</mn></msup><mo>,</mo><msup><mi>y</mi><mn>2</mn></msup></math> が消えることを確かめながら整理しよう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 3 ― 簡単な形にする</h3>
-          <p>12x + 8y + 20 = 0 まで整理できたら、全体を4で割って簡単にしよう。逆の確認も忘れずに。</p>
+          <p><math><mn>12</mn><mi>x</mi><mo>+</mo><mn>8</mn><mi>y</mi><mo>+</mo><mn>20</mn><mo>=</mo><mn>0</mn></math>まで整理できたら、全体を4で割って簡単にしよう。逆の確認も忘れずに。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">直線 3x + 2y + 5 = 0</p>
-          <p>AP<sup>2</sup> = BP<sup>2</sup> より (x + 6)<sup>2</sup> + y<sup>2</sup> = x<sup>2</sup> + (y − 4)<sup>2</sup>。整理すると 12x + 8y + 20 = 0、すなわち 3x + 2y + 5 = 0。逆に、この直線上のすべての点は AP = BP を満たす。よって、求める軌跡は直線 3x + 2y + 5 = 0 である。</p>
+          <p class="big">直線<math><mn>3</mn><mi>x</mi><mo>+</mo><mn>2</mn><mi>y</mi><mo>+</mo><mn>5</mn><mo>=</mo><mn>0</mn></math></p><p class="cite"><span class="cite-tag">使う性質</span><math><msup><mrow><mi>AP</mi></mrow><mn>2</mn></msup><mo>=</mo><msup><mrow><mi>BP</mi></mrow><mn>2</mn></msup></math>この式を展開して整理すると <math><mn>3</mn><mi>x</mi><mo>+</mo><mn>2</mn><mi>y</mi><mo>+</mo><mn>5</mn><mo>=</mo><mn>0</mn></math> になり、逆にこの直線上の点は条件を満たす。</p>
+          <p><math><msup><mi>AP</mi><mn>2</mn></msup><mo>=</mo><msup><mi>BP</mi><mn>2</mn></msup></math> より<math><msup><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>6</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mi>y</mi><mo>−</mo><mn>4</mn><mo>)</mo></mrow><mn>2</mn></msup></math>。<br>整理すると<math><mn>12</mn><mi>x</mi><mo>+</mo><mn>8</mn><mi>y</mi><mo>+</mo><mn>20</mn><mo>=</mo><mn>0</mn></math>、すなわち<math><mn>3</mn><mi>x</mi><mo>+</mo><mn>2</mn><mi>y</mi><mo>+</mo><mn>5</mn><mo>=</mo><mn>0</mn></math>。<br>逆に、この直線上のすべての点は<math><mi>AP</mi><mo>=</mo><mi>BP</mi></math>を満たす。よって、求める軌跡は直線<math><mn>3</mn><mi>x</mi><mo>+</mo><mn>2</mn><mi>y</mi><mo>+</mo><mn>5</mn><mo>=</mo><mn>0</mn></math>である。</p>
         </div>
         <p class="prob-done">練習30 クリア！</p>
       </section>
       <section class="card">
-        <p>座標を用いて点 P の軌跡を求める手順は、次のようになる。</p>
-        <div class="def"><p><b>1</b>　条件を満たす点 P の座標を (<i>x</i>, <i>y</i>) として、P に関する条件を <i>x</i>, <i>y</i> の式で表し、この方程式の表す図形が何かを調べる。</p><p><b>2</b>　逆に、1で求めた図形上のすべての点 P が、与えられた条件を満たすことを確かめる。</p></div>
+        <p>座標を用いて点 <math><mi>P</mi></math> の軌跡を求める手順は、次のようになる。</p>
+        <div class="def"><p><b>1</b>　条件を満たす点 <math><mi>P</mi></math> の座標を<math><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>)</mo></math>として、<math><mi>P</mi></math> に関する条件を <math><mi>x</mi><mo>,</mo><mi>y</mi></math> の式で表し、この方程式の表す図形が何かを調べる。</p><p><b>2</b>　逆に、1で求めた図形上のすべての点 <math><mi>P</mi></math> が、与えられた条件を満たすことを確かめる。</p></div>
       </section>
       <div class="sec-head">
         <span class="sec-tag">例題</span>
         <h2>例題8 ― 距離の比が一定である点の軌跡</h2>
         <span class="pno">教科書 p.99</span>
       </div>
-      <section class="card prob" id="prob-reidai8" data-flow="reidai8" data-label="例題8">
+      <section class="nofig card prob" id="prob-reidai8" data-flow="reidai8" data-label="例題8">
         <div class="prob-head">
           <span class="prob-tag ">例題 8</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
         <div class="qside">
-        <p class="prob-q">原点 O からの距離と、点 A(3, 0) からの距離の比が 2 : 1 である点 P の軌跡を求めよ。</p>
+        <p class="prob-q">原点 <math><mi>O</mi></math> からの距離と、点 <math><mi>A</mi><mrow><mo>(</mo><mn>3</mn><mo>,</mo><mn>0</mn><mo>)</mo></mrow></math> からの距離の比が<math><mn>2</mn><mo>:</mo><mn>1</mn></math>である点 <math><mi>P</mi></math> の軌跡を求めよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 比を長さの関係に直す</h3>
-          <p>点 P の座標を (<i>x</i>, <i>y</i>) とする。条件は OP : AP = 2 : 1。これを長さの関係に直すと 2AP = OP だね。</p>
+          <h3>ヒント 1 ― 比を長さの関係に直す</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mi>OP</mi><mo>:</mo><mi>AP</mi><mo>=</mo><mn>2</mn><mo>:</mo><mn>1</mn></math>距離の比の条件は、長さの関係 <math><mn>2</mn><mi>AP</mi><mo>=</mo><mi>OP</mi></math> に直してから使う。</p>
+          <p>点 <math><mi>P</mi></math> の座標を<math><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>)</mo></math>とする。条件は<math><mi>OP</mi><mo>:</mo><mi>AP</mi><mo>=</mo><mn>2</mn><mo>:</mo><mn>1</mn></math>。これを長さの関係に直すと<math><mn>2</mn><mi>AP</mi><mo>=</mo><mi>OP</mi></math>だね。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― 2乗して代入する</h3>
-          <p>両辺を2乗して 4AP<sup>2</sup> = OP<sup>2</sup>。AP<sup>2</sup> = (x − 3)<sup>2</sup> + y<sup>2</sup>、OP<sup>2</sup> = x<sup>2</sup> + y<sup>2</sup> を代入して整理しよう。</p>
+          <h3>ヒント 2 ― 2乗して代入する</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mn>4</mn><msup><mrow><mi>AP</mi></mrow><mn>2</mn></msup><mo>=</mo><msup><mrow><mi>OP</mi></mrow><mn>2</mn></msup></math>両辺を2乗した式に、距離の公式 <math><msup><mrow><mi>AP</mi></mrow><mn>2</mn></msup><mo>=</mo><msup><mrow><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>3</mn><mo>)</mo></mrow></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mi>y</mi></mrow><mn>2</mn></msup></math>、<math><msup><mrow><mi>OP</mi></mrow><mn>2</mn></msup><mo>=</mo><msup><mrow><mi>x</mi></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mi>y</mi></mrow><mn>2</mn></msup></math> を代入して整理する。</p>
+          <p>両辺を2乗して<math><mn>4</mn><msup><mi>AP</mi><mn>2</mn></msup><mo>=</mo><msup><mi>OP</mi><mn>2</mn></msup></math>。<math><msup><mi>AP</mi><mn>2</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>3</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup></math>、<math><msup><mi>OP</mi><mn>2</mn></msup><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup></math> を代入して整理しよう。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 3 ― 平方完成する</h3>
-          <p>x<sup>2</sup> − 8x + y<sup>2</sup> + 12 = 0 が得られるはずだね。平方完成して、円の中心と半径を読み取ろう。逆の確認も忘れずに。</p>
+          <h3>ヒント 3 ― 平方完成する</h3><p class="cite"><span class="cite-tag">使う性質</span><math><msup><mrow><mi>x</mi></mrow><mn>2</mn></msup><mo>−</mo><mn>8</mn><mi>x</mi><mo>+</mo><msup><mrow><mi>y</mi></mrow><mn>2</mn></msup><mo>+</mo><mn>12</mn><mo>=</mo><mn>0</mn></math>整理して得たこの式を平方完成すると、円の中心と半径が読み取れる。</p>
+          <p><math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>8</mn><mi>x</mi><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>+</mo><mn>12</mn><mo>=</mo><mn>0</mn></math>が得られるはずだね。<br>平方完成して、円の中心と半径を読み取ろう。逆の確認も忘れずに。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">点 (4, 0) を中心とする半径2の円</p>
-          <p>点 P の座標を (<i>x</i>, <i>y</i>) とする。P に関する条件は OP : AP = 2 : 1。これより 2AP = OP、すなわち 4AP<sup>2</sup> = OP<sup>2</sup>。AP<sup>2</sup> = (x − 3)<sup>2</sup> + y<sup>2</sup>、OP<sup>2</sup> = x<sup>2</sup> + y<sup>2</sup> を代入すると 4{(x − 3)<sup>2</sup> + y<sup>2</sup>} = x<sup>2</sup> + y<sup>2</sup>。整理すると x<sup>2</sup> − 8x + y<sup>2</sup> + 12 = 0 すなわち (x − 4)<sup>2</sup> + y<sup>2</sup> = 2<sup>2</sup>。したがって、点 P は円 (x − 4)<sup>2</sup> + y<sup>2</sup> = 2<sup>2</sup> 上にある。逆に、この円上のすべての点 P(<i>x</i>, <i>y</i>) は、条件を満たす。よって、求める軌跡は、点 (4, 0) を中心とする半径2の円である。</p><figure><div class="figbox"><svg viewBox="0 0 354 245.6" role="img" aria-label="例題8の軌跡（アポロニウスの円）と点O, A, P"><defs><marker id="ah-g6" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--ink-soft)"></path></marker><pattern id="hatch-g6" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="var(--ink-soft)" stroke-width="1.5"/></pattern></defs><line x1="28" y1="122.4" x2="334" y2="122.4" stroke="var(--ink-soft)" stroke-width="1.6" marker-end="url(#ah-g6)"/><line x1="82" y1="219.6" x2="82" y2="18" stroke="var(--ink-soft)" stroke-width="1.6" marker-end="url(#ah-g6)"/><text x="332" y="142.4" class="svg-txt" font-size="14" font-style="italic">x</text><text x="90" y="22" class="svg-txt" font-size="14" font-style="italic">y</text><text x="72" y="139.4" text-anchor="middle" class="svg-txt-soft" font-size="13">O</text><line x1="190" y1="118.4" x2="190" y2="126.4" stroke="var(--ink-soft)" stroke-width="1.4"/><text x="190" y="141.4" text-anchor="middle" class="svg-txt-soft" font-size="12.5">3</text><circle cx="226" cy="122.4" r="72" fill="none" stroke="var(--ink)" stroke-width="2.2"/><line x1="82" y1="122.4" x2="226" y2="50.4" stroke="var(--ink)" stroke-width="1.6"/><line x1="190" y1="122.4" x2="226" y2="50.4" stroke="var(--ink)" stroke-width="1.6"/><circle cx="82" cy="122.4" r="3.4" fill="var(--ink)"/><circle cx="190" cy="122.4" r="3.4" fill="var(--ink)"/><circle cx="226" cy="50.4" r="3.4" fill="var(--accent)"/><text x="192" y="141.4" text-anchor="middle" class="svg-txt" font-size="14.5">A</text><text x="238" y="44.4" text-anchor="start" class="svg-txt" font-size="13.5">P(x, y)</text><text x="143.2" y="73.8" text-anchor="middle" class="svg-txt" font-size="14" font-style="italic">2</text><text x="236.2" y="88.2" text-anchor="middle" class="svg-txt" font-size="14" font-style="italic">1</text></svg></div><figcaption>点 P の軌跡は、点 (4, 0) を中心とする半径2の円。OP : AP = 2 : 1 になっている。</figcaption></figure>
+          <p class="big">点<math><mo>(</mo><mn>4</mn><mo>,</mo><mn>0</mn><mo>)</mo></math>を中心とする半径2の円</p><p class="cite"><span class="cite-tag">使う性質</span><math><mn>4</mn><msup><mrow><mi>AP</mi></mrow><mn>2</mn></msup><mo>=</mo><msup><mrow><mi>OP</mi></mrow><mn>2</mn></msup></math>この式を整理して平方完成すると <math><msup><mrow><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>4</mn><mo>)</mo></mrow></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mi>y</mi></mrow><mn>2</mn></msup><mo>=</mo><mn>4</mn></math> になり、逆にこの円上の点は条件を満たす。</p>
+          <p>点 <math><mi>P</mi></math> の座標を<math><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>)</mo></math>とする。<br><math><mi>P</mi></math> に関する条件は<math><mi>OP</mi><mo>:</mo><mi>AP</mi><mo>=</mo><mn>2</mn><mo>:</mo><mn>1</mn></math>。<br>これより<math><mn>2</mn><mi>AP</mi><mo>=</mo><mi>OP</mi></math>、すなわち<math><mn>4</mn><msup><mi>AP</mi><mn>2</mn></msup><mo>=</mo><msup><mi>OP</mi><mn>2</mn></msup></math>。<math><msup><mi>AP</mi><mn>2</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>3</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup></math>、<math><msup><mi>OP</mi><mn>2</mn></msup><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup></math> を代入すると<math><mn>4</mn><mrow><mo>{</mo><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>3</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>}</mo></mrow><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup></math>。整理すると<math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>8</mn><mi>x</mi><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>+</mo><mn>12</mn><mo>=</mo><mn>0</mn></math>すなわち<math><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>4</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><msup><mn>2</mn><mn>2</mn></msup></math>。したがって、点 <math><mi>P</mi></math> は円<math><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>4</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><msup><mn>2</mn><mn>2</mn></msup></math> 上にある。逆に、この円上のすべての点<math><mi>P</mi><mrow><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>)</mo></mrow></math>は、条件を満たす。よって、求める軌跡は、点<math><mo>(</mo><mn>4</mn><mo>,</mo><mn>0</mn><mo>)</mo></math>を中心とする半径2の円である。</p><figure><div class="figbox"><svg viewBox="0 0 354 245.6" role="img" aria-label="例題8の軌跡（アポロニウスの円）と点O, A, P"><defs><marker id="ah-g6" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--ink-soft)"></path></marker><pattern id="hatch-g6" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="var(--ink-soft)" stroke-width="1.5"/></pattern></defs><line x1="28" y1="122.4" x2="334" y2="122.4" stroke="var(--ink-soft)" stroke-width="1.6" marker-end="url(#ah-g6)"/><line x1="82" y1="219.6" x2="82" y2="18" stroke="var(--ink-soft)" stroke-width="1.6" marker-end="url(#ah-g6)"/><text x="332" y="142.4" class="svg-txt" font-size="14" font-style="italic">x</text><text x="90" y="22" class="svg-txt" font-size="14" font-style="italic">y</text><text x="72" y="139.4" text-anchor="middle" class="svg-txt-soft" font-size="13">O</text><line x1="190" y1="118.4" x2="190" y2="126.4" stroke="var(--ink-soft)" stroke-width="1.4"/><text x="190" y="141.4" text-anchor="middle" class="svg-txt-soft" font-size="12.5">3</text><circle cx="226" cy="122.4" r="72" fill="none" stroke="var(--ink)" stroke-width="2.2"/><line x1="82" y1="122.4" x2="226" y2="50.4" stroke="var(--ink)" stroke-width="1.6"/><line x1="190" y1="122.4" x2="226" y2="50.4" stroke="var(--ink)" stroke-width="1.6"/><circle cx="82" cy="122.4" r="3.4" fill="var(--ink)"/><circle cx="190" cy="122.4" r="3.4" fill="var(--ink)"/><circle cx="226" cy="50.4" r="3.4" fill="var(--accent)"/><text x="192" y="141.4" text-anchor="middle" class="svg-txt" font-size="14.5">A</text><text x="238" y="44.4" text-anchor="start" class="svg-txt" font-size="13.5">P(x, y)</text><text x="143.2" y="73.8" text-anchor="middle" class="svg-txt" font-size="14" font-style="italic">2</text><text x="236.2" y="88.2" text-anchor="middle" class="svg-txt" font-size="14" font-style="italic">1</text></svg></div><figcaption>点 <math><mi>P</mi></math> の軌跡は、点<math><mo>(</mo><mn>4</mn><mo>,</mo><mn>0</mn><mo>)</mo></math>を中心とする半径2の円。<math><mi>OP</mi><mo>:</mo><mi>AP</mi><mo>=</mo><mn>2</mn><mo>:</mo><mn>1</mn></math>になっている。</figcaption></figure>
         </div>
         <p class="prob-done">例題8 クリア！　次は練習31だよ。</p>
       </section>
-      <section class="card prob" id="prob-ren31" data-flow="ren31" data-label="練習31">
+      <section class="nofig card prob" id="prob-ren31" data-flow="ren31" data-label="練習31">
         <div class="prob-head">
           <span class="prob-tag ren">練習 31</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
         <div class="qside">
-        <p class="prob-q">点 A(−3, 0) からの距離と、点 B(2, 0) からの距離の比が 3 : 2 である点 P の軌跡を求めよ。</p>
+        <p class="prob-q">点 <math><mi>A</mi><mrow><mo>(</mo><mo>−</mo><mn>3</mn><mo>,</mo><mn>0</mn><mo>)</mo></mrow></math> からの距離と、点 <math><mi>B</mi><mrow><mo>(</mo><mn>2</mn><mo>,</mo><mn>0</mn><mo>)</mo></mrow></math> からの距離の比が<math><mn>3</mn><mo>:</mo><mn>2</mn></math>である点 <math><mi>P</mi></math> の軌跡を求めよ。</p>
           <div class="quiz" id="q31" data-correct="3">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>(x − 6)<sup>2</sup> + y<sup>2</sup> = 6</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>(x + 6)<sup>2</sup> + y<sup>2</sup> = 36</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>(x − 6)<sup>2</sup> + y<sup>2</sup> = 36</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>(x − 4)<sup>2</sup> + y<sup>2</sup> = 16</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>6</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><mn>6</mn></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><msup><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>6</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><mn>36</mn></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>6</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><mn>36</mn></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>4</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><mn>16</mn></math></span><span class="mark"></span></button>
           </div>
-          <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
+          <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。<br>ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
           <p class="verdict"></p>
           </div>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 比を長さの関係に直す</h3>
-          <p>例題8と同じ流れだよ。条件 PA : PB = 3 : 2 を長さの関係に直すと 2PA = 3PB。両辺を2乗して 4PA<sup>2</sup> = 9PB<sup>2</sup> としよう。</p>
+          <h3>ヒント 1 ― 比を長さの関係に直す</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mn>2</mn><mi>PA</mi><mo>=</mo><mn>3</mn><mi>PB</mi></math>条件 <math><mi>PA</mi><mo>:</mo><mi>PB</mi><mo>=</mo><mn>3</mn><mo>:</mo><mn>2</mn></math> を長さの関係に直し、両辺を2乗して <math><mn>4</mn><msup><mrow><mi>PA</mi></mrow><mn>2</mn></msup><mo>=</mo><mn>9</mn><msup><mrow><mi>PB</mi></mrow><mn>2</mn></msup></math> とする。</p>
+          <p>例題8と同じ流れだよ。<br>条件<math><mi>PA</mi><mo>:</mo><mi>PB</mi><mo>=</mo><mn>3</mn><mo>:</mo><mn>2</mn></math>を長さの関係に直すと<math><mn>2</mn><mi>PA</mi><mo>=</mo><mn>3</mn><mi>PB</mi></math>。両辺を2乗して<math><mn>4</mn><msup><mi>PA</mi><mn>2</mn></msup><mo>=</mo><mn>9</mn><msup><mi>PB</mi><mn>2</mn></msup></math> としよう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 代入して整理する</h3>
-          <p>PA<sup>2</sup> = (x + 3)<sup>2</sup> + y<sup>2</sup>、PB<sup>2</sup> = (x − 2)<sup>2</sup> + y<sup>2</sup> を代入して整理しよう。</p>
+          <p><math><msup><mi>PA</mi><mn>2</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>3</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup></math>、<math><msup><mi>PB</mi><mn>2</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup></math> を代入して整理しよう。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 3 ― 平方完成する</h3>
-          <p>−5x<sup>2</sup> + 60x − 5y<sup>2</sup> = 0 の形になったら、全体を −5 で割って平方完成してみよう。</p>
+          <h3>ヒント 3 ― 平方完成する</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mtext>平方完成</mtext></math>整理して得た式を −5 で割り、平方完成すると円の中心と半径が読み取れる。</p>
+          <p><math><mo>−</mo><mn>5</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>60</mn><mi>x</mi><mo>−</mo><mn>5</mn><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><mn>0</mn></math>の形になったら、全体を −5 で割って平方完成してみよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">点 (6, 0) を中心とする半径6の円</p>
-          <p>4PA<sup>2</sup> = 9PB<sup>2</sup> より 4{(x + 3)<sup>2</sup> + y<sup>2</sup>} = 9{(x − 2)<sup>2</sup> + y<sup>2</sup>}。整理すると x<sup>2</sup> − 12x + y<sup>2</sup> = 0、すなわち (x − 6)<sup>2</sup> + y<sup>2</sup> = 36。逆に、この円上のすべての点は条件を満たす。よって、求める軌跡は点 (6, 0) を中心とする半径6の円である。</p><figure><div class="figbox"><svg viewBox="0 0 417.6 338.8" role="img" aria-label="練習31の軌跡（点 (6, 0) を中心とする半径6の円）"><defs><marker id="ah-g7" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--ink-soft)"></path></marker><pattern id="hatch-g7" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="var(--ink-soft)" stroke-width="1.5"/></pattern></defs><line x1="28" y1="165.4" x2="397.6" y2="165.4" stroke="var(--ink-soft)" stroke-width="1.6" marker-end="url(#ah-g7)"/><line x1="113.8" y1="312.8" x2="113.8" y2="18" stroke="var(--ink-soft)" stroke-width="1.6" marker-end="url(#ah-g7)"/><text x="395.6" y="185.4" class="svg-txt" font-size="14" font-style="italic">x</text><text x="121.8" y="22" class="svg-txt" font-size="14" font-style="italic">y</text><text x="103.8" y="182.4" text-anchor="middle" class="svg-txt-soft" font-size="13">O</text><circle cx="245.8" cy="165.4" r="132" fill="none" stroke="var(--ink)" stroke-width="2.2"/><line x1="113.8" y1="165.4" x2="377.8" y2="165.4" stroke="var(--ink-soft)" stroke-width="1.4" stroke-dasharray="5 4"/><circle cx="47.8" cy="165.4" r="3.4" fill="var(--ink)"/><circle cx="157.8" cy="165.4" r="3.4" fill="var(--ink)"/><circle cx="113.8" cy="165.4" r="3.4" fill="var(--accent)"/><circle cx="377.8" cy="165.4" r="3.4" fill="var(--accent)"/><text x="47.8" y="155.4" text-anchor="middle" class="svg-txt" font-size="14.5">A</text><text x="157.8" y="186.4" text-anchor="middle" class="svg-txt" font-size="14.5">B</text><text x="377.8" y="155.4" text-anchor="middle" class="svg-txt" font-size="12.5">(12, 0)</text></svg></div><figcaption>点 P の軌跡は、点 (6, 0) を中心とする半径6の円。線分 AB を 3 : 2 に内分する点 (0, 0) と外分する点 (12, 0) が、直径の両端になっている。</figcaption></figure>
+          <p class="big">点<math><mo>(</mo><mn>6</mn><mo>,</mo><mn>0</mn><mo>)</mo></math>を中心とする半径6の円</p><p class="cite"><span class="cite-tag">使う性質</span><math><mn>4</mn><msup><mrow><mi>PA</mi></mrow><mn>2</mn></msup><mo>=</mo><mn>9</mn><msup><mrow><mi>PB</mi></mrow><mn>2</mn></msup></math>この式を整理して平方完成すると <math><msup><mrow><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>6</mn><mo>)</mo></mrow></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mi>y</mi></mrow><mn>2</mn></msup><mo>=</mo><mn>36</mn></math> になり、逆にこの円上の点は条件を満たす。</p>
+          <p><math><mn>4</mn><msup><mi>PA</mi><mn>2</mn></msup><mo>=</mo><mn>9</mn><msup><mi>PB</mi><mn>2</mn></msup></math> より<math><mn>4</mn><mrow><mo>{</mo><msup><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>3</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>}</mo></mrow><mo>=</mo><mn>9</mn><mrow><mo>{</mo><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>}</mo></mrow></math>。<br>整理すると<math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>12</mn><mi>x</mi><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><mn>0</mn></math>、すなわち<math><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>6</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><mn>36</mn></math>。<br>逆に、この円上のすべての点は条件を満たす。よって、求める軌跡は点<math><mo>(</mo><mn>6</mn><mo>,</mo><mn>0</mn><mo>)</mo></math>を中心とする半径6の円である。</p><figure><div class="figbox"><svg viewBox="0 0 417.6 338.8" role="img" aria-label="練習31の軌跡（点 (6, 0) を中心とする半径6の円）"><defs><marker id="ah-g7" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--ink-soft)"></path></marker><pattern id="hatch-g7" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="var(--ink-soft)" stroke-width="1.5"/></pattern></defs><line x1="28" y1="165.4" x2="397.6" y2="165.4" stroke="var(--ink-soft)" stroke-width="1.6" marker-end="url(#ah-g7)"/><line x1="113.8" y1="312.8" x2="113.8" y2="18" stroke="var(--ink-soft)" stroke-width="1.6" marker-end="url(#ah-g7)"/><text x="395.6" y="185.4" class="svg-txt" font-size="14" font-style="italic">x</text><text x="121.8" y="22" class="svg-txt" font-size="14" font-style="italic">y</text><text x="103.8" y="182.4" text-anchor="middle" class="svg-txt-soft" font-size="13">O</text><circle cx="245.8" cy="165.4" r="132" fill="none" stroke="var(--ink)" stroke-width="2.2"/><line x1="113.8" y1="165.4" x2="377.8" y2="165.4" stroke="var(--ink-soft)" stroke-width="1.4" stroke-dasharray="5 4"/><circle cx="47.8" cy="165.4" r="3.4" fill="var(--ink)"/><circle cx="157.8" cy="165.4" r="3.4" fill="var(--ink)"/><circle cx="113.8" cy="165.4" r="3.4" fill="var(--accent)"/><circle cx="377.8" cy="165.4" r="3.4" fill="var(--accent)"/><text x="47.8" y="155.4" text-anchor="middle" class="svg-txt" font-size="14.5">A</text><text x="157.8" y="186.4" text-anchor="middle" class="svg-txt" font-size="14.5">B</text><text x="377.8" y="155.4" text-anchor="middle" class="svg-txt" font-size="12.5">(12, 0)</text></svg></div><figcaption>点 <math><mi>P</mi></math> の軌跡は、点<math><mo>(</mo><mn>6</mn><mo>,</mo><mn>0</mn><mo>)</mo></math>を中心とする半径6の円。線分 <math><mi>AB</mi></math> を<math><mn>3</mn><mo>:</mo><mn>2</mn></math>に内分する点<math><mo>(</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>)</mo></math>と外分する点<math><mo>(</mo><mn>12</mn><mo>,</mo><mn>0</mn><mo>)</mo></math>が、直径の両端になっている。</figcaption></figure>
         </div>
         <p class="prob-done">練習31 クリア！</p>
       </section>
       <section class="card">
-        <p>補足 ▶　一般に、点 A からの距離と、点 B からの距離の比が <i>m</i> : <i>n</i> である点 P の軌跡は、<i>m</i> ≠ <i>n</i> のとき円になる。この円を <span class="key">アポロニウスの円</span> という。この円は、線分 AB を <i>m</i> : <i>n</i> に内分する点と外分する点を直径の両端とする円である。</p>
+        <p>補足 ▶　一般に、点 <math><mi>A</mi></math> からの距離と、点 <math><mi>B</mi></math> からの距離の比が <math><mi>m</mi><mo>:</mo><mi>n</mi></math> である点 <math><mi>P</mi></math> の軌跡は、<math><mi>m</mi><mo>≠</mo><mi>n</mi></math> のとき円になる。<br>この円を <span class="key">アポロニウスの円</span> という。<br>この円は、線分 <math><mi>AB</mi></math> を <math><mi>m</mi><mo>:</mo><mi>n</mi></math> に内分する点と外分する点を直径の両端とする円である。</p>
       </section>
       <div class="sec-head">
         <span class="sec-tag">解説 B</span>
@@ -498,79 +555,79 @@
         <span class="pno">教科書 p.100</span>
       </div>
       <section class="card">
-        <p>ここでは、点 Q が与えられた条件を満たしながら動くとき、Q に対応して定まる点 P の軌跡について調べてみよう。</p>
+        <p>ここでは、点 <math><mi>Q</mi></math> が与えられた条件を満たしながら動くとき、<math><mi>Q</mi></math> に対応して定まる点 <math><mi>P</mi></math> の軌跡について調べてみよう。</p>
       </section>
       <div class="sec-head">
         <span class="sec-tag">応用例題</span>
         <h2>応用例題3 ― 線分の中点の軌跡</h2>
         <span class="pno">教科書 p.100</span>
       </div>
-      <section class="card prob" id="prob-ouyou3" data-flow="ouyou3" data-label="応用例題3">
+      <section class="nofig card prob" id="prob-ouyou3" data-flow="ouyou3" data-label="応用例題3">
         <div class="prob-head">
           <span class="prob-tag ouyou">応用例題 3</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
         <div class="qside">
-        <p class="prob-q">点 Q が円 x<sup>2</sup> + y<sup>2</sup> = 4 上を動くとき、点 A(4, 0) と点 Q を結ぶ線分 AQ の中点 P の軌跡を求めよ。</p>
+        <p class="prob-q">点 <math><mi>Q</mi></math> が円<math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><mn>4</mn></math>上を動くとき、点 <math><mi>A</mi><mrow><mo>(</mo><mn>4</mn><mo>,</mo><mn>0</mn><mo>)</mo></mrow></math> と点 <math><mi>Q</mi></math> を結ぶ線分 <math><mi>AQ</mi></math> の中点 <math><mi>P</mi></math> の軌跡を求めよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 考え方</h3>
-          <p>点 P, Q の座標をそれぞれ (<i>x</i>, <i>y</i>), (<i>s</i>, <i>t</i>) とする。Q の満たす条件を表す <i>s</i>, <i>t</i> の式と、P と Q の座標の関係式から、<i>x</i>, <i>y</i> の方程式を導くのが方針だよ。</p>
+          <h3>ヒント 1 ― 考え方</h3><p class="cite"><span class="cite-tag">使う定義</span><math><mi>Q</mi><mrow><mo>(</mo><mi>s</mi><mo>,</mo><mi>t</mi><mo>)</mo></mrow></math>動く点 <math><mi>Q</mi></math> の座標を <math><mrow><mo>(</mo><mi>s</mi><mo>,</mo><mi>t</mi><mo>)</mo></mrow></math> とおき、<math><mi>Q</mi></math> の条件の式と、<math><mi>P</mi></math> と <math><mi>Q</mi></math> の座標の関係式から、<math><mi>x</mi></math>、<math><mi>y</mi></math> の方程式を導く。</p>
+          <p>点 <math><mi>P</mi></math>, <math><mi>Q</mi></math> の座標をそれぞれ<math><mrow><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>)</mo></mrow><mo>,</mo><mrow><mo>(</mo><mi>s</mi><mo>,</mo><mi>t</mi><mo>)</mo></mrow></math>とする。<br><math><mi>Q</mi></math> の満たす条件を表す <math><mi>s</mi><mo>,</mo><mi>t</mi></math> の式と、<math><mi>P</mi></math> と <math><mi>Q</mi></math> の座標の関係式から、<math><mi>x</mi><mo>,</mo><mi>y</mi></math> の方程式を導くのが方針だよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― Q の条件と中点の関係を書く</h3>
-          <p>Q は円 x<sup>2</sup> + y<sup>2</sup> = 4 上にあるから <i>s</i><sup>2</sup> + <i>t</i><sup>2</sup> = 4 …… ①。P は線分 AQ の中点であるから、<i>x</i> と <i>s</i>、<i>y</i> と <i>t</i> の関係式を書いてみよう。</p>
+          <h3>ヒント 2 ― <math><mi>Q</mi></math> の条件と中点の関係を書く</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mi>x</mi><mo>=</mo><mfrac><mrow><mi>s</mi><mo>+</mo><mn>4</mn></mrow><mrow><mn>2</mn></mrow></mfrac><mo>,</mo><mi>y</mi><mo>=</mo><mfrac><mrow><mi>t</mi></mrow><mrow><mn>2</mn></mrow></mfrac></math>中点の公式による関係式。あわせて <math><mi>Q</mi></math> の条件 <math><msup><mrow><mi>s</mi></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mi>t</mi></mrow><mn>2</mn></msup><mo>=</mo><mn>4</mn></math> を使う。</p>
+          <p><math><mi>Q</mi></math> は円<math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><mn>4</mn></math>上にあるから <math><msup><mi>s</mi><mn>2</mn></msup><mo>+</mo><msup><mi>t</mi><mn>2</mn></msup><mo>=</mo><mn>4</mn><mo>…</mo><mo>…</mo><mo>①</mo></math>。<br><math><mi>P</mi></math> は線分 <math><mi>AQ</mi></math> の中点であるから、<math><mi>x</mi></math> と <math><mi>s</mi></math>、<math><mi>y</mi></math> と <math><mi>t</mi></math> の関係式を書いてみよう。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 3 ― s, t を x, y で表して代入する</h3>
-          <p><i>x</i> = (s + 4)/2, <i>y</i> = t/2 だから、<i>s</i> = 2x − 4, <i>t</i> = 2y と表せるね。これらを①に代入して整理しよう。</p>
+          <h3>ヒント 3 ― <math><mi>s</mi></math>, <math><mi>t</mi></math> を <math><mi>x</mi></math>, <math><mi>y</mi></math> で表して代入する</h3>
+          <p><math><mi>x</mi><mo>=</mo><mfrac><mrow><mo>(</mo><mi>s</mi><mo>+</mo><mn>4</mn><mo>)</mo></mrow><mn>2</mn></mfrac><mo>,</mo><mi>y</mi><mo>=</mo><mfrac><mi>t</mi><mn>2</mn></mfrac></math>だから、<math><mi>s</mi><mo>=</mo><mn>2</mn><mi>x</mi><mo>−</mo><mn>4</mn><mo>,</mo><mi>t</mi><mo>=</mo><mn>2</mn><mi>y</mi></math>と表せるね。これらを①に代入して整理しよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">点 (2, 0) を中心とする半径1の円</p>
-          <p>点 P, Q の座標をそれぞれ (<i>x</i>, <i>y</i>), (<i>s</i>, <i>t</i>) とする。Q は円 x<sup>2</sup> + y<sup>2</sup> = 4 上にあるから <i>s</i><sup>2</sup> + <i>t</i><sup>2</sup> = 4 …… ①。また、P は線分 AQ の中点であるから <i>x</i> = (s + 4)/2, <i>y</i> = t/2。すなわち <i>s</i> = 2x − 4, <i>t</i> = 2y。これらを①に代入すると (2x − 4)<sup>2</sup> + (2y)<sup>2</sup> = 4。整理すると (x − 2)<sup>2</sup> + y<sup>2</sup> = 1<sup>2</sup>。したがって、点 P は円 (x − 2)<sup>2</sup> + y<sup>2</sup> = 1<sup>2</sup> 上にある。逆に、この円上のすべての点 P(<i>x</i>, <i>y</i>) は、条件を満たす。よって、求める軌跡は、点 (2, 0) を中心とする半径1の円である。</p><figure><div class="figbox"><svg viewBox="0 0 321.6 245.6" role="img" aria-label="応用例題3の図（円 x²+y²=4 と中点Pの軌跡の円）"><defs><marker id="ah-g8" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--ink-soft)"></path></marker><pattern id="hatch-g8" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="var(--ink-soft)" stroke-width="1.5"/></pattern></defs><line x1="28" y1="122.4" x2="301.6" y2="122.4" stroke="var(--ink-soft)" stroke-width="1.6" marker-end="url(#ah-g8)"/><line x1="125.2" y1="219.6" x2="125.2" y2="18" stroke="var(--ink-soft)" stroke-width="1.6" marker-end="url(#ah-g8)"/><text x="299.6" y="142.4" class="svg-txt" font-size="14" font-style="italic">x</text><text x="133.2" y="22" class="svg-txt" font-size="14" font-style="italic">y</text><text x="115.2" y="139.4" text-anchor="middle" class="svg-txt-soft" font-size="13">O</text><line x1="197.2" y1="118.4" x2="197.2" y2="126.4" stroke="var(--ink-soft)" stroke-width="1.4"/><text x="197.2" y="141.4" text-anchor="middle" class="svg-txt-soft" font-size="12.5">2</text><line x1="269.2" y1="118.4" x2="269.2" y2="126.4" stroke="var(--ink-soft)" stroke-width="1.4"/><text x="269.2" y="141.4" text-anchor="middle" class="svg-txt-soft" font-size="12.5">4</text><line x1="121.2" y1="50.4" x2="129.2" y2="50.4" stroke="var(--ink-soft)" stroke-width="1.4"/><text x="118.2" y="54.4" text-anchor="end" class="svg-txt-soft" font-size="12.5">2</text><circle cx="125.2" cy="122.4" r="72" fill="none" stroke="var(--ink)" stroke-width="2.2"/><circle cx="197.2" cy="122.4" r="36" fill="none" stroke="var(--blue)" stroke-width="2.2"/><line x1="269.2" y1="122.4" x2="125.2" y2="50.4" stroke="var(--ink)" stroke-width="1.6"/><circle cx="269.2" cy="122.4" r="3.4" fill="var(--ink)"/><circle cx="125.2" cy="50.4" r="3.4" fill="var(--ink)"/><circle cx="197.2" cy="86.4" r="3.4" fill="var(--accent)"/><text x="273.2" y="141.4" text-anchor="middle" class="svg-txt" font-size="14.5">A</text><text x="117.2" y="42.4" text-anchor="end" class="svg-txt" font-size="13.5">Q(s, t)</text><text x="209.2" y="78.4" text-anchor="start" class="svg-txt" font-size="13.5">P(x, y)</text></svg></div><figcaption>点 P の軌跡は、点 (2, 0) を中心とする半径1の円（青い円）。</figcaption></figure>
+          <p class="big">点<math><mo>(</mo><mn>2</mn><mo>,</mo><mn>0</mn><mo>)</mo></math>を中心とする半径1の円</p><p class="cite"><span class="cite-tag">使う性質</span><math><mi>s</mi><mo>=</mo><mn>2</mn><mi>x</mi><mo>−</mo><mn>4</mn><mo>,</mo><mi>t</mi><mo>=</mo><mn>2</mn><mi>y</mi></math>中点の関係式からこの形に表し、<math><mi>Q</mi></math> の条件 <math><msup><mrow><mi>s</mi></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mi>t</mi></mrow><mn>2</mn></msup><mo>=</mo><mn>4</mn></math> に代入して整理した。逆の確認もする。</p>
+          <p>点 <math><mi>P</mi></math>, <math><mi>Q</mi></math> の座標をそれぞれ<math><mrow><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>)</mo></mrow><mo>,</mo><mrow><mo>(</mo><mi>s</mi><mo>,</mo><mi>t</mi><mo>)</mo></mrow></math>とする。<br><math><mi>Q</mi></math> は円<math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><mn>4</mn></math>上にあるから <math><msup><mi>s</mi><mn>2</mn></msup><mo>+</mo><msup><mi>t</mi><mn>2</mn></msup><mo>=</mo><mn>4</mn><mo>…</mo><mo>…</mo><mo>①</mo></math>。<br>また、<math><mi>P</mi></math> は線分 <math><mi>AQ</mi></math> の中点であるから <math><mi>x</mi><mo>=</mo><mfrac><mrow><mo>(</mo><mi>s</mi><mo>+</mo><mn>4</mn><mo>)</mo></mrow><mn>2</mn></mfrac><mo>,</mo><mi>y</mi><mo>=</mo><mfrac><mi>t</mi><mn>2</mn></mfrac></math>。すなわち <math><mi>s</mi><mo>=</mo><mn>2</mn><mi>x</mi><mo>−</mo><mn>4</mn><mo>,</mo><mi>t</mi><mo>=</mo><mn>2</mn><mi>y</mi></math>。これらを①に代入すると<math><msup><mrow><mo>(</mo><mn>2</mn><mi>x</mi><mo>−</mo><mn>4</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mn>2</mn><mi>y</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>4</mn></math>。整理すると<math><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><msup><mn>1</mn><mn>2</mn></msup></math>。したがって、点 <math><mi>P</mi></math> は円<math><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><msup><mn>1</mn><mn>2</mn></msup></math> 上にある。逆に、この円上のすべての点<math><mi>P</mi><mrow><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>)</mo></mrow></math>は、条件を満たす。よって、求める軌跡は、点<math><mo>(</mo><mn>2</mn><mo>,</mo><mn>0</mn><mo>)</mo></math>を中心とする半径1の円である。</p><figure><div class="figbox"><svg viewBox="0 0 321.6 245.6" role="img" aria-label="応用例題3の図（円 x²+y²=4 と中点Pの軌跡の円）"><defs><marker id="ah-g8" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--ink-soft)"></path></marker><pattern id="hatch-g8" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="var(--ink-soft)" stroke-width="1.5"/></pattern></defs><line x1="28" y1="122.4" x2="301.6" y2="122.4" stroke="var(--ink-soft)" stroke-width="1.6" marker-end="url(#ah-g8)"/><line x1="125.2" y1="219.6" x2="125.2" y2="18" stroke="var(--ink-soft)" stroke-width="1.6" marker-end="url(#ah-g8)"/><text x="299.6" y="142.4" class="svg-txt" font-size="14" font-style="italic">x</text><text x="133.2" y="22" class="svg-txt" font-size="14" font-style="italic">y</text><text x="115.2" y="139.4" text-anchor="middle" class="svg-txt-soft" font-size="13">O</text><line x1="197.2" y1="118.4" x2="197.2" y2="126.4" stroke="var(--ink-soft)" stroke-width="1.4"/><text x="197.2" y="141.4" text-anchor="middle" class="svg-txt-soft" font-size="12.5">2</text><line x1="269.2" y1="118.4" x2="269.2" y2="126.4" stroke="var(--ink-soft)" stroke-width="1.4"/><text x="269.2" y="141.4" text-anchor="middle" class="svg-txt-soft" font-size="12.5">4</text><line x1="121.2" y1="50.4" x2="129.2" y2="50.4" stroke="var(--ink-soft)" stroke-width="1.4"/><text x="118.2" y="54.4" text-anchor="end" class="svg-txt-soft" font-size="12.5">2</text><circle cx="125.2" cy="122.4" r="72" fill="none" stroke="var(--ink)" stroke-width="2.2"/><circle cx="197.2" cy="122.4" r="36" fill="none" stroke="var(--blue)" stroke-width="2.2"/><line x1="269.2" y1="122.4" x2="125.2" y2="50.4" stroke="var(--ink)" stroke-width="1.6"/><circle cx="269.2" cy="122.4" r="3.4" fill="var(--ink)"/><circle cx="125.2" cy="50.4" r="3.4" fill="var(--ink)"/><circle cx="197.2" cy="86.4" r="3.4" fill="var(--accent)"/><text x="273.2" y="141.4" text-anchor="middle" class="svg-txt" font-size="14.5">A</text><text x="117.2" y="42.4" text-anchor="end" class="svg-txt" font-size="13.5">Q(s, t)</text><text x="209.2" y="78.4" text-anchor="start" class="svg-txt" font-size="13.5">P(x, y)</text></svg></div><figcaption>点 <math><mi>P</mi></math> の軌跡は、点<math><mo>(</mo><mn>2</mn><mo>,</mo><mn>0</mn><mo>)</mo></math>を中心とする半径1の円（青い円）。</figcaption></figure>
         </div>
         <p class="prob-done">応用例題3 クリア！　次は練習32だよ。</p>
       </section>
-      <section class="card prob" id="prob-ren32" data-flow="ren32" data-label="練習32">
+      <section class="nofig card prob" id="prob-ren32" data-flow="ren32" data-label="練習32">
         <div class="prob-head">
           <span class="prob-tag ren">練習 32</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
         <div class="qside">
-        <p class="prob-q">点 Q が円 x<sup>2</sup> + y<sup>2</sup> = 16 上を動くとき、点 A(0, 8) と点 Q を結ぶ線分 AQ の中点 P の軌跡を求めよ。</p>
+        <p class="prob-q">点 <math><mi>Q</mi></math> が円<math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><mn>16</mn></math>上を動くとき、点 <math><mi>A</mi><mrow><mo>(</mo><mn>0</mn><mo>,</mo><mn>8</mn><mo>)</mo></mrow></math> と点 <math><mi>Q</mi></math> を結ぶ線分 <math><mi>AQ</mi></math> の中点 <math><mi>P</mi></math> の軌跡を求めよ。</p>
           <div class="quiz" id="q32" data-correct="1">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>x<sup>2</sup> + (y − 4)<sup>2</sup> = 4</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>x<sup>2</sup> + (y + 4)<sup>2</sup> = 4</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>(x − 4)<sup>2</sup> + y<sup>2</sup> = 4</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>x<sup>2</sup> + (y − 4)<sup>2</sup> = 16</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mi>y</mi><mo>−</mo><mn>4</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>4</mn></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mi>y</mi><mo>+</mo><mn>4</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>4</mn></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>4</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><mn>4</mn></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mi>y</mi><mo>−</mo><mn>4</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>16</mn></math></span><span class="mark"></span></button>
           </div>
-          <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
+          <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。<br>ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
           <p class="verdict"></p>
           </div>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― Q の条件を書く</h3>
-          <p>応用例題3と同じ流れだよ。点 P, Q の座標を (<i>x</i>, <i>y</i>), (<i>s</i>, <i>t</i>) として、Q の条件 <i>s</i><sup>2</sup> + <i>t</i><sup>2</sup> = 16 …… ① をまず書こう。</p>
+          <h3>ヒント 1 ― <math><mi>Q</mi></math> の条件を書く</h3><p class="cite"><span class="cite-tag">使う性質</span><math><msup><mrow><mi>s</mi></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mi>t</mi></mrow><mn>2</mn></msup><mo>=</mo><mn>16</mn></math>動く点 <math><mi>Q</mi><mrow><mo>(</mo><mi>s</mi><mo>,</mo><mi>t</mi><mo>)</mo></mrow></math> が円 <math><msup><mrow><mi>x</mi></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mi>y</mi></mrow><mn>2</mn></msup><mo>=</mo><mn>16</mn></math> 上にあるという条件は、この式で表される。</p>
+          <p>応用例題3と同じ流れだよ。<br>点 <math><mi>P</mi></math>, <math><mi>Q</mi></math> の座標を<math><mrow><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>)</mo></mrow><mo>,</mo><mrow><mo>(</mo><mi>s</mi><mo>,</mo><mi>t</mi><mo>)</mo></mrow></math>として、<math><mi>Q</mi></math> の条件 <math><msup><mi>s</mi><mn>2</mn></msup><mo>+</mo><msup><mi>t</mi><mn>2</mn></msup><mo>=</mo><mn>16</mn><mo>…</mo><mo>…</mo><mo>①</mo></math>をまず書こう。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― 中点の関係を s, t について解く</h3>
-          <p>P は A(0, 8) と Q(<i>s</i>, <i>t</i>) の中点だから、<i>x</i> = s/2, <i>y</i> = (t + 8)/2。これを <i>s</i>, <i>t</i> について解いてみよう。</p>
+          <h3>ヒント 2 ― 中点の関係を <math><mi>s</mi></math>, <math><mi>t</mi></math> について解く</h3><p class="cite"><span class="cite-tag">使う公式</span><math><mi>x</mi><mo>=</mo><mfrac><mrow><mi>s</mi></mrow><mrow><mn>2</mn></mrow></mfrac><mo>,</mo><mi>y</mi><mo>=</mo><mfrac><mrow><mi>t</mi><mo>+</mo><mn>8</mn></mrow><mrow><mn>2</mn></mrow></mfrac></math>中点の公式による関係式。これを <math><mi>s</mi></math>、<math><mi>t</mi></math> について解いて、<math><mi>Q</mi></math> の条件に代入する。</p>
+          <p><math><mi>P</mi></math> は <math><mi>A</mi><mrow><mo>(</mo><mn>0</mn><mo>,</mo><mn>8</mn><mo>)</mo></mrow></math> と<math><mi>Q</mi><mrow><mo>(</mo><mi>s</mi><mo>,</mo><mi>t</mi><mo>)</mo></mrow></math>の中点だから、<math><mi>x</mi><mo>=</mo><mfrac><mi>s</mi><mn>2</mn></mfrac><mo>,</mo><mi>y</mi><mo>=</mo><mfrac><mrow><mo>(</mo><mi>t</mi><mo>+</mo><mn>8</mn><mo>)</mo></mrow><mn>2</mn></mfrac></math>。<br>これを <math><mi>s</mi><mo>,</mo><mi>t</mi></math> について解いてみよう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 3 ― 代入して整理する</h3>
-          <p><i>s</i> = 2x, <i>t</i> = 2y − 8 を①に代入して整理しよう。</p>
+          <p><math><mi>s</mi><mo>=</mo><mn>2</mn><mi>x</mi><mo>,</mo><mi>t</mi><mo>=</mo><mn>2</mn><mi>y</mi><mo>−</mo><mn>8</mn></math>を①に代入して整理しよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">点 (0, 4) を中心とする半径2の円</p>
-          <p><i>s</i><sup>2</sup> + <i>t</i><sup>2</sup> = 16 …… ①。中点の関係から <i>s</i> = 2x, <i>t</i> = 2y − 8。これらを①に代入すると (2x)<sup>2</sup> + (2y − 8)<sup>2</sup> = 16。整理すると x<sup>2</sup> + (y − 4)<sup>2</sup> = 4。逆に、この円上のすべての点は条件を満たす。よって、求める軌跡は点 (0, 4) を中心とする半径2の円である。</p>
+          <p class="big">点<math><mo>(</mo><mn>0</mn><mo>,</mo><mn>4</mn><mo>)</mo></math>を中心とする半径2の円</p><p class="cite"><span class="cite-tag">使う性質</span><math><mi>s</mi><mo>=</mo><mn>2</mn><mi>x</mi><mo>,</mo><mi>t</mi><mo>=</mo><mn>2</mn><mi>y</mi><mo>−</mo><mn>8</mn></math>中点の関係からこの形に表し、条件 <math><msup><mrow><mi>s</mi></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mi>t</mi></mrow><mn>2</mn></msup><mo>=</mo><mn>16</mn></math> に代入して整理した。逆の確認もする。</p>
+          <p><math><msup><mi>s</mi><mn>2</mn></msup><mo>+</mo><msup><mi>t</mi><mn>2</mn></msup><mo>=</mo><mn>16</mn><mo>…</mo><mo>…</mo><mo>①</mo></math>。<br>中点の関係から <math><mi>s</mi><mo>=</mo><mn>2</mn><mi>x</mi><mo>,</mo><mi>t</mi><mo>=</mo><mn>2</mn><mi>y</mi><mo>−</mo><mn>8</mn></math>。<br>これらを①に代入すると<math><msup><mrow><mo>(</mo><mn>2</mn><mi>x</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mn>2</mn><mi>y</mi><mo>−</mo><mn>8</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>16</mn></math>。整理すると<math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mi>y</mi><mo>−</mo><mn>4</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>4</mn></math>。逆に、この円上のすべての点は条件を満たす。よって、求める軌跡は点<math><mo>(</mo><mn>0</mn><mo>,</mo><mn>4</mn><mo>)</mo></math>を中心とする半径2の円である。</p>
         </div>
         <p class="prob-done">練習32 クリア！　この項はこれで完了だよ。</p>
       </section>
@@ -580,9 +637,9 @@
       <section class="card summary" id="summaryCard" style="display:none">
         <h2>この項のポイント</h2>
         <ul>
-          <li>軌跡は、点 P の座標を (<i>x</i>, <i>y</i>) として条件を方程式に直し、最後に「逆」の確認をして決まる</li>
-          <li>AP = BP の軌跡は線分 AB の垂直二等分線、距離の比が一定（1でない）の軌跡はアポロニウスの円になる</li>
-          <li>中点の軌跡は、動く点の座標を (<i>s</i>, <i>t</i>) として条件を表し、中点の関係式から <i>s</i>, <i>t</i> を <i>x</i>, <i>y</i> で表して代入する</li>
+          <li><p class="cite"><span class="cite-tag">使う定義</span><math><mi>P</mi><mrow><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>)</mo></mrow></math>軌跡は、点 <math><mi>P</mi></math> の座標を <math><mrow><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>)</mo></mrow></math> として条件を方程式に直し、最後に「逆」の確認をして決まる。</p>軌跡は、点 <math><mi>P</mi></math> の座標を<math><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>)</mo></math>として条件を方程式に直し、最後に「逆」の確認をして決まる</li>
+          <li><p class="cite"><span class="cite-tag">使う性質</span><math><msup><mrow><mi>AP</mi></mrow><mn>2</mn></msup><mo>=</mo><msup><mrow><mi>BP</mi></mrow><mn>2</mn></msup></math> を満たす点の軌跡、すなわち <math><mi>AP</mi><mo>=</mo><mi>BP</mi></math> の軌跡は線分 <math><mi>AB</mi></math> の垂直二等分線になる。距離の比が一定（1でない）の軌跡は円（アポロニウスの円）になる。</p><math><mi>AP</mi><mo>=</mo><mi>BP</mi></math>の軌跡は線分 <math><mi>AB</mi></math> の垂直二等分線、距離の比が一定（1でない）の軌跡はアポロニウスの円になる</li>
+          <li><p class="cite"><span class="cite-tag">使う性質</span><math><mi>x</mi><mo>=</mo><mfrac><mrow><mi>s</mi><mo>+</mo><mi>a</mi></mrow><mrow><mn>2</mn></mrow></mfrac></math>中点の軌跡は、動く点の座標を <math><mrow><mo>(</mo><mi>s</mi><mo>,</mo><mi>t</mi><mo>)</mo></mrow></math> として条件を表し、中点の関係式から <math><mi>s</mi></math>、<math><mi>t</mi></math> を <math><mi>x</mi></math>、<math><mi>y</mi></math> で表して代入して求める。</p>中点の軌跡は、動く点の座標を<math><mo>(</mo><mi>s</mi><mo>,</mo><mi>t</mi><mo>)</mo></math>として条件を表し、中点の関係式から <math><mi>s</mi><mo>,</mo><mi>t</mi></math> を <math><mi>x</mi><mo>,</mo><mi>y</mi></math> で表して代入する</li>
         </ul>
       </section>
       <footer>

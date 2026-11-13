@@ -302,7 +302,64 @@
       table.comp{border-collapse:collapse;margin:0 0 14px;width:100%}
       table.comp th,table.comp td{border:1px solid var(--line);padding:8px 10px;text-align:center;font-size:15px}
       table.comp th{background:var(--surface2)}
-        </style>
+        
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+
+      /* 積分記号は大きめに表示する（元のページの可読化デザインに合わせる） */
+      math .int-op{font-size:1.35em}
+      /* calc-12 世代（.card）と calc-18 世代（.unit）の、図のない問題の全幅化 */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig>.step{position:static !important}
+        .card.nofig>.steps-wrap{max-height:none !important;overflow:visible !important}
+        .unit.nofig{display:block !important}
+        .unit.nofig>.qside{position:static !important}
+        .unit.nofig>.steps-stack{max-height:none !important;overflow:visible !important}
+      }
+
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける・第3弾c） */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig .qside{position:static !important}
+        .card.nofig .steps-wrap,.card.nofig .tabpanel .steps-wrap{max-height:none !important;overflow:visible !important}
+      }
+</style>
   </head>
   <body>
     <div class="wrap">
@@ -325,54 +382,54 @@
         <span class="pno">教科書 p.94</span>
       </div>
       <section class="card">
-        <p>これまで、2直線の関係や、円と直線の位置関係について調べてきた。ここでは、2つの円の位置関係について調べてみよう。</p>
-        <p>半径がそれぞれ <i>r</i>, <i>r</i>′ である2つの円の中心 C, C′ 間の距離を <i>d</i> とする。このとき、<i>r</i> &gt; <i>r</i>′ とすると、2つの円の位置関係は [1]〜[5] の場合があり、<i>r</i>, <i>r</i>′, <i>d</i> の関係式は次のようになる。</p>
-        <p class="formula left">[1]　<i>d</i> &gt; <i>r</i> + <i>r</i>′<br>[2]　<i>d</i> = <i>r</i> + <i>r</i>′<br>[3]　<i>r</i> − <i>r</i>′ &lt; <i>d</i> &lt; <i>r</i> + <i>r</i>′<br>[4]　<i>d</i> = <i>r</i> − <i>r</i>′<br>[5]　<i>d</i> &lt; <i>r</i> − <i>r</i>′</p>
+        <p>これまで、2直線の関係や、円と直線の位置関係について調べてきた。<br>ここでは、2つの円の位置関係について調べてみよう。</p>
+        <p>半径がそれぞれ <math><mi>r</mi><mo>,</mo><mi>r</mi><mo>′</mo></math>である2つの円の中心 <math><mi>C</mi></math>, <math><mi>C</mi><mo>′</mo></math> 間の距離を <math><mi>d</mi></math> とする。<br>このとき、<math><mi>r</mi><mo>&gt;</mo><mi>r</mi><mo>′</mo></math>とすると、2つの円の位置関係は [1]〜[5] の場合があり、<math><mi>r</mi><mo>,</mo><mi>r</mi><mo>′</mo><mo>,</mo><mi>d</mi></math> の関係式は次のようになる。</p>
+        <p class="formula left">[1]　<math><mi>d</mi><mo>&gt;</mo><mi>r</mi><mo>+</mo><mi>r</mi><mo>′</mo></math><br>[2]　<math><mi>d</mi><mo>=</mo><mi>r</mi><mo>+</mo><mi>r</mi><mo>′</mo></math><br>[3]　<math><mi>r</mi><mo>−</mo><mi>r</mi><mo>′</mo><mo>&lt;</mo><mi>d</mi><mo>&lt;</mo><mi>r</mi><mo>+</mo><mi>r</mi><mo>′</mo></math><br>[4]　<math><mi>d</mi><mo>=</mo><mi>r</mi><mo>−</mo><mi>r</mi><mo>′</mo></math><br>[5]　<math><mi>d</mi><mo>&lt;</mo><mi>r</mi><mo>−</mo><mi>r</mi><mo>′</mo></math></p>
 <figure><div class="figbox"><svg viewBox="0 0 560 462" role="img" aria-label="2つの円の位置関係 [1]から[5] の見取り図"><text x="96" y="54" class="svg-txt" font-size="14.5">[1] 互いに外部にある</text><line x1="130" y1="100" x2="208" y2="100" stroke="var(--ink-soft)" stroke-width="1.3" stroke-dasharray="4 3"/><circle cx="130" cy="100" r="30" fill="none" stroke="var(--ink)" stroke-width="2"/><circle cx="208" cy="100" r="18" fill="none" stroke="var(--ink)" stroke-width="2"/><line x1="130" y1="100" x2="112.793" y2="75.4254" stroke="var(--ink-soft)" stroke-width="1.3"/><text x="113.396" y="87.7127" text-anchor="middle" class="svg-txt" font-size="13" font-style="italic">r</text><line x1="208" y1="100" x2="197.676" y2="85.2553" stroke="var(--ink-soft)" stroke-width="1.3"/><text x="211.838" y="90.6276" text-anchor="middle" class="svg-txt" font-size="13" font-style="italic">r′</text><circle cx="130" cy="100" r="3" fill="var(--ink)"/><circle cx="208" cy="100" r="3" fill="var(--ink)"/><text x="121" y="117" text-anchor="middle" class="svg-txt" font-size="13.5" font-style="italic">C</text><text x="218" y="117" text-anchor="middle" class="svg-txt" font-size="13.5" font-style="italic">C′</text><text x="169" y="115" text-anchor="middle" class="svg-txt" font-size="13" font-style="italic">d</text><text x="376" y="54" class="svg-txt" font-size="14.5">[2] 外接する</text><line x1="410" y1="100" x2="458" y2="100" stroke="var(--ink-soft)" stroke-width="1.3" stroke-dasharray="4 3"/><circle cx="410" cy="100" r="30" fill="none" stroke="var(--ink)" stroke-width="2"/><circle cx="458" cy="100" r="18" fill="none" stroke="var(--ink)" stroke-width="2"/><line x1="410" y1="100" x2="392.793" y2="75.4254" stroke="var(--ink-soft)" stroke-width="1.3"/><text x="393.396" y="87.7127" text-anchor="middle" class="svg-txt" font-size="13" font-style="italic">r</text><line x1="458" y1="100" x2="447.676" y2="85.2553" stroke="var(--ink-soft)" stroke-width="1.3"/><text x="461.838" y="90.6276" text-anchor="middle" class="svg-txt" font-size="13" font-style="italic">r′</text><circle cx="410" cy="100" r="3" fill="var(--ink)"/><circle cx="458" cy="100" r="3" fill="var(--ink)"/><text x="401" y="117" text-anchor="middle" class="svg-txt" font-size="13.5" font-style="italic">C</text><text x="468" y="117" text-anchor="middle" class="svg-txt" font-size="13.5" font-style="italic">C′</text><text x="434" y="115" text-anchor="middle" class="svg-txt" font-size="13" font-style="italic">d</text><text x="96" y="206" class="svg-txt" font-size="14.5">[3] 2点で交わる</text><line x1="130" y1="252" x2="164.5" y2="252" stroke="var(--ink-soft)" stroke-width="1.3" stroke-dasharray="4 3"/><circle cx="130" cy="252" r="30" fill="none" stroke="var(--ink)" stroke-width="2"/><circle cx="164.5" cy="252" r="18" fill="none" stroke="var(--ink)" stroke-width="2"/><line x1="130" y1="252" x2="112.793" y2="227.425" stroke="var(--ink-soft)" stroke-width="1.3"/><text x="113.396" y="239.713" text-anchor="middle" class="svg-txt" font-size="13" font-style="italic">r</text><line x1="164.5" y1="252" x2="154.176" y2="237.255" stroke="var(--ink-soft)" stroke-width="1.3"/><text x="168.338" y="242.628" text-anchor="middle" class="svg-txt" font-size="13" font-style="italic">r′</text><circle cx="130" cy="252" r="3" fill="var(--ink)"/><circle cx="164.5" cy="252" r="3" fill="var(--ink)"/><text x="121" y="269" text-anchor="middle" class="svg-txt" font-size="13.5" font-style="italic">C</text><text x="174.5" y="269" text-anchor="middle" class="svg-txt" font-size="13.5" font-style="italic">C′</text><text x="147.25" y="267" text-anchor="middle" class="svg-txt" font-size="13" font-style="italic">d</text><text x="376" y="206" class="svg-txt" font-size="14.5">[4] 内接する</text><line x1="410" y1="252" x2="422" y2="252" stroke="var(--ink-soft)" stroke-width="1.3" stroke-dasharray="4 3"/><circle cx="410" cy="252" r="30" fill="none" stroke="var(--ink)" stroke-width="2"/><circle cx="422" cy="252" r="18" fill="none" stroke="var(--ink)" stroke-width="2"/><line x1="410" y1="252" x2="392.793" y2="227.425" stroke="var(--ink-soft)" stroke-width="1.3"/><text x="393.396" y="239.713" text-anchor="middle" class="svg-txt" font-size="13" font-style="italic">r</text><line x1="422" y1="252" x2="411.676" y2="237.255" stroke="var(--ink-soft)" stroke-width="1.3"/><text x="425.838" y="242.628" text-anchor="middle" class="svg-txt" font-size="13" font-style="italic">r′</text><circle cx="410" cy="252" r="3" fill="var(--ink)"/><circle cx="422" cy="252" r="3" fill="var(--ink)"/><text x="401" y="269" text-anchor="middle" class="svg-txt" font-size="13.5" font-style="italic">C</text><text x="432" y="269" text-anchor="middle" class="svg-txt" font-size="13.5" font-style="italic">C′</text><text x="416" y="267" text-anchor="middle" class="svg-txt" font-size="13" font-style="italic">d</text><text x="96" y="358" class="svg-txt" font-size="14.5">[5] 一方が他方の内部にある</text><line x1="130" y1="404" x2="135.25" y2="404" stroke="var(--ink-soft)" stroke-width="1.3" stroke-dasharray="4 3"/><circle cx="130" cy="404" r="30" fill="none" stroke="var(--ink)" stroke-width="2"/><circle cx="135.25" cy="404" r="17.25" fill="none" stroke="var(--ink)" stroke-width="2"/><line x1="130" y1="404" x2="112.793" y2="379.425" stroke="var(--ink-soft)" stroke-width="1.3"/><text x="113.396" y="391.713" text-anchor="middle" class="svg-txt" font-size="13" font-style="italic">r</text><line x1="135.25" y1="404" x2="125.356" y2="389.87" stroke="var(--ink-soft)" stroke-width="1.3"/><text x="139.303" y="394.935" text-anchor="middle" class="svg-txt" font-size="13" font-style="italic">r′</text><circle cx="130" cy="404" r="3" fill="var(--ink)"/><circle cx="135.25" cy="404" r="3" fill="var(--ink)"/><text x="121" y="421" text-anchor="middle" class="svg-txt" font-size="13.5" font-style="italic">C</text><text x="145.25" y="421" text-anchor="middle" class="svg-txt" font-size="13.5" font-style="italic">C′</text><text x="132.625" y="419" text-anchor="middle" class="svg-txt" font-size="13" font-style="italic">d</text></svg></div><figcaption>[1] 互いに外部にある　[2] 外接する　[3] 2点で交わる　[4] 内接する　[5] 一方が他方の内部にある</figcaption></figure>
-        <p>[2], [4] のように、2つの円がただ1つの共有点をもつとき、2つの円は <span class="key">接する</span> といい、この共有点を <span class="key">接点</span> という。[2] のように接する場合、2つの円は <span class="key">外接する</span> という。[4] のように接する場合、2つの円は <span class="key">内接する</span> という。</p>
-        <p>注意 ▶　<i>r</i> = <i>r</i>′ の場合も、[1]〜[3] の位置関係と関係式は成り立つ。</p>
+        <p>[2], [4] のように、2つの円がただ1つの共有点をもつとき、2つの円は <span class="key">接する</span> といい、この共有点を <span class="key">接点</span> という。<br>[2] のように接する場合、2つの円は <span class="key">外接する</span> という。<br>[4] のように接する場合、2つの円は <span class="key">内接する</span> という。</p>
+        <p>注意 ▶　<math><mi>r</mi><mo>=</mo><mi>r</mi><mo>′</mo></math>の場合も、[1]〜[3] の位置関係と関係式は成り立つ。</p>
       </section>
       <div class="sec-head">
         <span class="sec-tag">例</span>
         <h2>例 ― 2つの円の位置関係を調べる</h2>
         <span class="pno">教科書 p.95</span>
       </div>
-      <section class="card prob" id="prob-rei" data-flow="rei" data-label="例">
+      <section class="nofig card prob" id="prob-rei" data-flow="rei" data-label="例">
         <div class="prob-head">
           <span class="prob-tag ">例</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
         <div class="qside">
-        <p class="prob-q">次の2つの円 ①, ② の位置関係について考えよう。<span class="formula" style="display:block;text-align:center;margin:8px 0">x<sup>2</sup> + y<sup>2</sup> = 1　…… ①</span><span class="formula" style="display:block;text-align:center;margin:8px 0">(x − 2)<sup>2</sup> + (y − 1)<sup>2</sup> = 4　…… ②</span></p>
+        <p class="prob-q">次の2つの円 ①, ② の位置関係について考えよう。<p class="formula"><math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><mn>1</mn></math>　…… ①</p><p class="formula"><math><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mi>y</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>4</mn></math>　…… ②</p></p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 中心と半径を読み取る</h3>
-          <p>円①は中心が原点、半径が1の円だね。円②は中心が点 (2, 1)、半径が2の円だよ。</p>
+          <h3>ヒント 1 ― 中心と半径を読み取る</h3><p class="cite"><span class="cite-tag">使う性質</span><math><msup><mrow><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mi>a</mi><mo>)</mo></mrow></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mrow><mo>(</mo><mi>y</mi><mo>−</mo><mi>b</mi><mo>)</mo></mrow></mrow><mn>2</mn></msup><mo>=</mo><msup><mi>r</mi><mn>2</mn></msup></math>円の方程式からは中心と半径が読み取れる。円①は中心が原点、半径 <math><mn>1</mn></math>、円②は中心 <math><mrow><mo>(</mo><mn>2</mn><mo>,</mo><mn>1</mn><mo>)</mo></mrow></math>、半径 <math><mn>2</mn></math> である。</p>
+          <p>円①は中心が原点、半径が1の円だね。円②は中心が点<math><mo>(</mo><mn>2</mn><mo>,</mo><mn>1</mn><mo>)</mo></math>、半径が2の円だよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― 中心間の距離 d を求める</h3>
-          <p>原点と点 (2, 1) の距離だから、<i>d</i> = √(<i>2</i><sup>2</sup> + <i>1</i><sup>2</sup>) を計算してみよう。</p>
+          <h3>ヒント 2 ― 中心間の距離 <math><mi>d</mi></math> を求める</h3><p class="cite"><span class="cite-tag">使う公式</span><math><mi>AB</mi><mo>=</mo><msqrt><mrow><msup><mrow><mrow><msub><mi>x</mi><mn>2</mn></msub><mo>−</mo><msub><mi>x</mi><mn>1</mn></msub></mrow></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mrow><msub><mi>y</mi><mn>2</mn></msub><mo>−</mo><msub><mi>y</mi><mn>1</mn></msub></mrow></mrow><mn>2</mn></msup></mrow></msqrt></math>中心間の距離 <math><mi>d</mi></math> は、原点と点 <math><mrow><mo>(</mo><mn>2</mn><mo>,</mo><mn>1</mn><mo>)</mo></mrow></math> の距離として求める。</p>
+          <p>原点と点<math><mo>(</mo><mn>2</mn><mo>,</mo><mn>1</mn><mo>)</mo></math>の距離だから、<math><mi>d</mi><mo>=</mo><msqrt><mrow><msup><mi>2</mi><mn>2</mn></msup><mo>+</mo><msup><mi>1</mi><mn>2</mn></msup></mrow></msqrt></math>を計算してみよう。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 3 ― 半径の和・差と比べる</h3>
-          <p>半径の差は 2 − 1 = 1、半径の和は 1 + 2 = 3。<i>d</i> = √5（= 2.23…）と大小を比べて、[1]〜[5] のどれに当てはまるか考えよう。</p>
+          <h3>ヒント 3 ― 半径の和・差と比べる</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mi>r</mi><mo>−</mo><mi>r′</mi><mo>&lt;</mo><mi>d</mi><mo>&lt;</mo><mi>r</mi><mo>+</mo><mi>r′</mi></math>2つの円が2点で交わるのは、中心間の距離が半径の差より大きく、半径の和より小さいとき。ここでは <math><mi>d</mi><mo>=</mo><msqrt><mrow><mn>5</mn></mrow></msqrt></math> と差 <math><mn>1</mn></math>、和 <math><mn>3</mn></math> を比べる。</p>
+          <p>半径の差は<math><mn>2</mn><mo>−</mo><mn>1</mn><mo>=</mo><mn>1</mn></math>、半径の和は<math><mn>1</mn><mo>+</mo><mn>2</mn><mo>=</mo><mn>3</mn></math>。<br><math><mi>d</mi><mo>=</mo><msqrt><mn>5</mn></msqrt><mrow><mo>(</mo><mo>=</mo><mn>2.23</mn><mo>…</mo><mo>)</mo></mrow></math>と大小を比べて、[1]〜[5] のどれに当てはまるか考えよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">2点で交わる</p>
-          <p>円①は中心が原点、半径が1の円である。また、円②は中心が点 (2, 1)、半径が2の円である。2つの円の中心間の距離 <i>d</i> は <i>d</i> = √(2<sup>2</sup> + 1<sup>2</sup>) = √5。また、2つの円の半径の差は 2 − 1 = 1、半径の和は 1 + 2 = 3。よって、半径の差 &lt; <i>d</i> &lt; 半径の和（1 &lt; √5 &lt; 3）であるから、2つの円①、②は2点で交わる。</p><figure><div class="figbox"><svg viewBox="0 0 283.6 249.2" role="img" aria-label="円① x²+y²=1 と円② (x−2)²+(y−1)²=4 が2点で交わる図"><defs><marker id="ah-g1" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--ink-soft)"></path></marker><pattern id="hatch-g1" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="var(--ink-soft)" stroke-width="1.5"/></pattern></defs><line x1="28" y1="151" x2="263.6" y2="151" stroke="var(--ink-soft)" stroke-width="1.6" marker-end="url(#ah-g1)"/><line x1="96.4" y1="223.2" x2="96.4" y2="18" stroke="var(--ink-soft)" stroke-width="1.6" marker-end="url(#ah-g1)"/><text x="261.6" y="171" class="svg-txt" font-size="14" font-style="italic">x</text><text x="104.4" y="22" class="svg-txt" font-size="14" font-style="italic">y</text><text x="86.4" y="168" text-anchor="middle" class="svg-txt-soft" font-size="13">O</text><circle cx="96.4" cy="151" r="38" fill="none" stroke="var(--ink)" stroke-width="2.2"/><circle cx="172.4" cy="113" r="76" fill="none" stroke="var(--ink)" stroke-width="2.2"/><line x1="96.4" y1="151" x2="172.4" y2="113" stroke="var(--ink)" stroke-width="1.8"/><circle cx="96.4" cy="151" r="3.4" fill="var(--ink)"/><circle cx="172.4" cy="113" r="3.4" fill="var(--ink)"/><text x="126.8" y="122.5" text-anchor="middle" class="svg-txt" font-size="15" font-style="italic">d</text><text x="182.4" y="103" text-anchor="start" class="svg-txt" font-size="13.5">(2, 1)</text><text x="54.6" y="196.6" text-anchor="middle" class="svg-txt" font-size="15">①</text><text x="229.4" y="42.7" text-anchor="middle" class="svg-txt" font-size="15">②</text></svg></div></figure>
+          <p class="big">2点で交わる</p><p class="cite"><span class="cite-tag">使う性質</span><math><mi>r</mi><mo>−</mo><mi>r′</mi><mo>&lt;</mo><mi>d</mi><mo>&lt;</mo><mi>r</mi><mo>+</mo><mi>r′</mi></math>ここでは <math><mn>1</mn><mo>&lt;</mo><msqrt><mrow><mn>5</mn></mrow></msqrt><mo>&lt;</mo><mn>3</mn></math> となるから、2つの円は2点で交わる。</p>
+          <p>円①は中心が原点、半径が1の円である。<br>また、円②は中心が点<math><mo>(</mo><mn>2</mn><mo>,</mo><mn>1</mn><mo>)</mo></math>、半径が2の円である。<br>2つの円の中心間の距離 <math><mi>d</mi></math> は <math><mi>d</mi><mo>=</mo><msqrt><mrow><msup><mn>2</mn><mn>2</mn></msup><mo>+</mo><msup><mn>1</mn><mn>2</mn></msup></mrow></msqrt><mo>=</mo><msqrt><mn>5</mn></msqrt></math>。また、2つの円の半径の差は<math><mn>2</mn><mo>−</mo><mn>1</mn><mo>=</mo><mn>1</mn></math>、半径の和は<math><mn>1</mn><mo>+</mo><mn>2</mn><mo>=</mo><mn>3</mn></math>。よって、半径の差<math><mo>&lt;</mo><mi>d</mi><mo>&lt;</mo></math>半径の和<math><mo>(</mo><mn>1</mn><mo>&lt;</mo><msqrt><mn>5</mn></msqrt><mo>&lt;</mo><mn>3</mn><mo>)</mo></math>であるから、2つの円①、②は2点で交わる。</p><figure><div class="figbox"><svg viewBox="0 0 283.6 249.2" role="img" aria-label="円① x²+y²=1 と円② (x−2)²+(y−1)²=4 が2点で交わる図"><defs><marker id="ah-g1" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--ink-soft)"></path></marker><pattern id="hatch-g1" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="var(--ink-soft)" stroke-width="1.5"/></pattern></defs><line x1="28" y1="151" x2="263.6" y2="151" stroke="var(--ink-soft)" stroke-width="1.6" marker-end="url(#ah-g1)"/><line x1="96.4" y1="223.2" x2="96.4" y2="18" stroke="var(--ink-soft)" stroke-width="1.6" marker-end="url(#ah-g1)"/><text x="261.6" y="171" class="svg-txt" font-size="14" font-style="italic">x</text><text x="104.4" y="22" class="svg-txt" font-size="14" font-style="italic">y</text><text x="86.4" y="168" text-anchor="middle" class="svg-txt-soft" font-size="13">O</text><circle cx="96.4" cy="151" r="38" fill="none" stroke="var(--ink)" stroke-width="2.2"/><circle cx="172.4" cy="113" r="76" fill="none" stroke="var(--ink)" stroke-width="2.2"/><line x1="96.4" y1="151" x2="172.4" y2="113" stroke="var(--ink)" stroke-width="1.8"/><circle cx="96.4" cy="151" r="3.4" fill="var(--ink)"/><circle cx="172.4" cy="113" r="3.4" fill="var(--ink)"/><text x="126.8" y="122.5" text-anchor="middle" class="svg-txt" font-size="15" font-style="italic">d</text><text x="182.4" y="103" text-anchor="start" class="svg-txt" font-size="13.5">(2, 1)</text><text x="54.6" y="196.6" text-anchor="middle" class="svg-txt" font-size="15">①</text><text x="229.4" y="42.7" text-anchor="middle" class="svg-txt" font-size="15">②</text></svg></div></figure>
         </div>
-        <p class="prob-done">例 クリア！　中心間の距離 d と、半径の和・差を比べるのがポイントだね。</p>
+        <p class="prob-done">例 クリア！　中心間の距離 <math><mi>d</mi></math> と、半径の和・差を比べるのがポイントだね。</p>
       </section>
-      <section class="card prob" id="prob-ren28" data-label="練習28">
+      <section class="nofig card prob" id="prob-ren28" data-label="練習28">
         <div class="prob-head">
           <span class="prob-tag ren">練習 28</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
         <div class="qside">
-        <p class="prob-q">円 x<sup>2</sup> + y<sup>2</sup> = 4 と次の円について、その位置関係を調べよ。</p>
+        <p class="prob-q">円<math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><mn>4</mn></math>と次の円について、その位置関係を調べよ。</p>
         </div>
         <div class="tabs" role="tablist" aria-label="練習28の小問">
           <button class="tab" role="tab" data-tab="ren28-1" aria-selected="true">(1)</button>
@@ -380,7 +437,7 @@
         </div>
         <div class="tabpanel show" id="panel-ren28-1" data-flow="ren28-1" data-label="練習28 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(x + 3)<sup>2</sup> + (y − 4)<sup>2</sup> = 9</span>
+            <span class="sub prob-q" style="margin:0"><math><msup><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>3</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mi>y</mi><mo>−</mo><mn>4</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>9</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
@@ -391,33 +448,39 @@
             <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>2点で交わる</span><span class="mark"></span></button>
             <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>一方が他方の内部にある</span><span class="mark"></span></button>
           </div>
-          <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
+          <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。<br>ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
           <p class="verdict"></p>
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― 中心と半径を読み取る</h3>
-          <p>もう一方の円の中心は点 (−3, 4)、半径は3だね。円 x<sup>2</sup> + y<sup>2</sup> = 4 は中心が原点、半径が2だよ。</p>
+          <p>もう一方の円の中心は点<math><mo>(</mo><mo>−</mo><mn>3</mn><mo>,</mo><mn>4</mn><mo>)</mo></math>、半径は3だね。円<math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><mn>4</mn></math>は中心が原点、半径が2だよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― 中心間の距離 d を求める</h3>
-          <p><i>d</i> = √((−3)<sup>2</sup> + 4<sup>2</sup>) を計算してみよう。</p>
+          <h3>ヒント 2 ― 中心間の距離 <math><mi>d</mi></math> を求める</h3><p class="cite"><span class="cite-tag">使う公式</span><math><mi>AB</mi><mo>=</mo><msqrt><mrow><msup><mrow><mrow><msub><mi>x</mi><mn>2</mn></msub><mo>−</mo><msub><mi>x</mi><mn>1</mn></msub></mrow></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mrow><msub><mi>y</mi><mn>2</mn></msub><mo>−</mo><msub><mi>y</mi><mn>1</mn></msub></mrow></mrow><mn>2</mn></msup></mrow></msqrt></math>ここでは原点と点 <math><mrow><mo>(</mo><mo>−</mo><mn>3</mn><mo>,</mo><mn>4</mn><mo>)</mo></mrow></math> の距離 <math><mi>d</mi><mo>=</mo><msqrt><mrow><msup><mrow><mrow><mo>(</mo><mo>−</mo><mn>3</mn><mo>)</mo></mrow></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mn>4</mn></mrow><mn>2</mn></msup></mrow></msqrt><mo>=</mo><mn>5</mn></math> を求める。</p>
+          <p><math><mi>d</mi><mo>=</mo><msqrt><mrow><msup><mrow><mo>(</mo><mo>−</mo><mn>3</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mn>4</mn><mn>2</mn></msup></mrow></msqrt></math>を計算してみよう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 3 ― 半径の和・差と比べる</h3>
-          <p>半径の和は 2 + 3、半径の差は 3 − 2。<i>d</i> と比べてみよう。</p>
+          <p>半径の和は 2 + 3、半径の差は 3 − 2。<math><mi>d</mi></math> と比べてみよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">外接する</p>
-          <p>中心間の距離は <i>d</i> = √((−3)<sup>2</sup> + 4<sup>2</sup>) = √25 = 5。半径の和は 2 + 3 = 5 であるから <i>d</i> = 半径の和 となり、2つの円は外接する。</p>
+          <p class="big">外接する</p><p class="cite"><span class="cite-tag">使う性質</span><math><mi>d</mi><mo>=</mo><mi>r</mi><mo>+</mo><mi>r′</mi></math>2つの円が外接するのは、中心間の距離が半径の和と等しいとき。ここでは <math><mi>d</mi><mo>=</mo><mn>5</mn><mo>=</mo><mn>2</mn><mo>+</mo><mn>3</mn></math> となる。</p>
+          <p>中心間の距離は</p>
+<div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>d</mi><mo>=</mo><msqrt><mrow><msup><mrow><mo>(</mo><mo>−</mo><mn>3</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mn>4</mn><mn>2</mn></msup></mrow></msqrt></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>d</mi></mphantom><mo>=</mo><msqrt><mn>25</mn></msqrt></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>d</mi></mphantom><mo>=</mo><mn>5</mn></math></div>
+</div>
+<p>。半径の和は<math><mn>2</mn><mo>+</mo><mn>3</mn><mo>=</mo><mn>5</mn></math>であるから <math><mi>d</mi><mo>=</mo></math>半径の和 となり、2つの円は外接する。</p>
         </div>
           <p class="prob-done">練習28 (1) クリア！</p>
         </div>
         <div class="tabpanel" id="panel-ren28-2" data-flow="ren28-2" data-label="練習28 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(x − 3)<sup>2</sup> + (y − 3)<sup>2</sup> = 8</span>
+            <span class="sub prob-q" style="margin:0"><math><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>3</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mi>y</mi><mo>−</mo><mn>3</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>8</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
@@ -428,27 +491,32 @@
             <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>内接する</span><span class="mark"></span></button>
             <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>互いに外部にある</span><span class="mark"></span></button>
           </div>
-          <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
+          <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。<br>ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
           <p class="verdict"></p>
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― 中心と半径を読み取る</h3>
-          <p>もう一方の円の中心は点 (3, 3)、半径は √8 = 2√2 だね。相手の円は中心が原点、半径が2だよ。</p>
+          <p>もう一方の円の中心は点<math><mo>(</mo><mn>3</mn><mo>,</mo><mn>3</mn><mo>)</mo></math>、半径は<math><msqrt><mn>8</mn></msqrt><mo>=</mo><mn>2</mn><msqrt><mn>2</mn></msqrt></math>だね。相手の円は中心が原点、半径が2だよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― 中心間の距離 d を求める</h3>
-          <p><i>d</i> = √(3<sup>2</sup> + 3<sup>2</sup>) = √18 = 3√2 を求めよう。</p>
+          <h3>ヒント 2 ― 中心間の距離 <math><mi>d</mi></math> を求める</h3><p class="cite"><span class="cite-tag">使う公式</span><math><mi>AB</mi><mo>=</mo><msqrt><mrow><msup><mrow><mrow><msub><mi>x</mi><mn>2</mn></msub><mo>−</mo><msub><mi>x</mi><mn>1</mn></msub></mrow></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mrow><msub><mi>y</mi><mn>2</mn></msub><mo>−</mo><msub><mi>y</mi><mn>1</mn></msub></mrow></mrow><mn>2</mn></msup></mrow></msqrt></math>ここでは原点と点 <math><mrow><mo>(</mo><mn>3</mn><mo>,</mo><mn>3</mn><mo>)</mo></mrow></math> の距離 <math><mi>d</mi><mo>=</mo><msqrt><mrow><msup><mrow><mn>3</mn></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mn>3</mn></mrow><mn>2</mn></msup></mrow></msqrt><mo>=</mo><mn>3</mn><msqrt><mrow><mn>2</mn></mrow></msqrt></math> を求める。</p>
+          <div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>d</mi><mo>=</mo><msqrt><mrow><msup><mn>3</mn><mn>2</mn></msup><mo>+</mo><msup><mn>3</mn><mn>2</mn></msup></mrow></msqrt></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>d</mi></mphantom><mo>=</mo><msqrt><mn>18</mn></msqrt></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>d</mi></mphantom><mo>=</mo><mn>3</mn><msqrt><mn>2</mn></msqrt></math></div>
+</div>
+<p>を求めよう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 3 ― 半径の和・差と比べる</h3>
-          <p>半径の和は 2 + 2√2、半径の差は 2√2 − 2。√2 = 1.41… を使って、<i>d</i> = 3√2 と大小を比べてみよう。</p>
+          <p>半径の和は<math><mn>2</mn><mo>+</mo><mn>2</mn><msqrt><mn>2</mn></msqrt></math>、半径の差は<math><mn>2</mn><msqrt><mn>2</mn></msqrt><mo>−</mo><mn>2</mn></math>。<math><msqrt><mn>2</mn></msqrt><mo>=</mo><mn>1.41</mn><mo>…</mo></math>を使って、<math><mi>d</mi><mo>=</mo><mn>3</mn><msqrt><mn>2</mn></msqrt></math>と大小を比べてみよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">2点で交わる</p>
-          <p>中心間の距離は <i>d</i> = 3√2。半径の差は 2√2 − 2、半径の和は 2√2 + 2 で、2√2 − 2 &lt; 3√2 &lt; 2√2 + 2 であるから、2つの円は2点で交わる。</p>
+          <p class="big">2点で交わる</p><p class="cite"><span class="cite-tag">使う性質</span><math><mi>r</mi><mo>−</mo><mi>r′</mi><mo>&lt;</mo><mi>d</mi><mo>&lt;</mo><mi>r</mi><mo>+</mo><mi>r′</mi></math>ここでは半径の差 <math><mn>2</mn><msqrt><mrow><mn>2</mn></mrow></msqrt><mo>−</mo><mn>2</mn></math>、和 <math><mn>2</mn><msqrt><mrow><mn>2</mn></mrow></msqrt><mo>+</mo><mn>2</mn></math> と <math><mi>d</mi><mo>=</mo><mn>3</mn><msqrt><mrow><mn>2</mn></mrow></msqrt></math> を比べて、この関係が成り立つから2点で交わる。</p>
+          <p>中心間の距離は <math><mi>d</mi><mo>=</mo><mn>3</mn><msqrt><mn>2</mn></msqrt></math>。<br>半径の差は<math><mn>2</mn><msqrt><mn>2</mn></msqrt><mo>−</mo><mn>2</mn></math>、半径の和は<math><mn>2</mn><msqrt><mn>2</mn></msqrt><mo>+</mo><mn>2</mn></math>で、<math><mn>2</mn><msqrt><mn>2</mn></msqrt><mo>−</mo><mn>2</mn><mo>&lt;</mo><mn>3</mn><msqrt><mn>2</mn></msqrt><mo>&lt;</mo><mn>2</mn><msqrt><mn>2</mn></msqrt><mo>+</mo><mn>2</mn></math>であるから、2つの円は2点で交わる。</p>
         </div>
           <p class="prob-done">練習28 (2) クリア！</p>
         </div>
@@ -458,72 +526,72 @@
         <h2>例題7 ― 外接する円の方程式</h2>
         <span class="pno">教科書 p.95</span>
       </div>
-      <section class="card prob" id="prob-reidai7" data-flow="reidai7" data-label="例題7">
+      <section class="nofig card prob" id="prob-reidai7" data-flow="reidai7" data-label="例題7">
         <div class="prob-head">
           <span class="prob-tag ">例題 7</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
         <div class="qside">
-        <p class="prob-q">中心が点 (4, 3) である円 C と、円 x<sup>2</sup> + y<sup>2</sup> = 1 が外接するとき、円 C の方程式を求めよ。</p>
+        <p class="prob-q">中心が点<math><mo>(</mo><mn>4</mn><mo>,</mo><mn>3</mn><mo>)</mo></math>である円 <math><mi>C</mi></math> と、円<math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><mn>1</mn></math>が外接するとき、円 <math><mi>C</mi></math> の方程式を求めよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 中心間の距離 d を求める</h3>
-          <p>円 x<sup>2</sup> + y<sup>2</sup> = 1 は中心が原点、半径が1の円だね。まず、原点と点 (4, 3) の距離 <i>d</i> を求めよう。</p>
+          <h3>ヒント 1 ― 中心間の距離 <math><mi>d</mi></math> を求める</h3><p class="cite"><span class="cite-tag">使う公式</span><math><mi>AB</mi><mo>=</mo><msqrt><mrow><msup><mrow><mrow><msub><mi>x</mi><mn>2</mn></msub><mo>−</mo><msub><mi>x</mi><mn>1</mn></msub></mrow></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mrow><msub><mi>y</mi><mn>2</mn></msub><mo>−</mo><msub><mi>y</mi><mn>1</mn></msub></mrow></mrow><mn>2</mn></msup></mrow></msqrt></math>まず原点と点 <math><mrow><mo>(</mo><mn>4</mn><mo>,</mo><mn>3</mn><mo>)</mo></mrow></math> の距離 <math><mi>d</mi></math> を求める。</p>
+          <p>円<math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><mn>1</mn></math>は中心が原点、半径が1の円だね。まず、原点と点<math><mo>(</mo><mn>4</mn><mo>,</mo><mn>3</mn><mo>)</mo></math>の距離 <math><mi>d</mi></math> を求めよう。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― 外接の条件を式にする</h3>
-          <p>外接するとき、[2] の場合だから <i>d</i> = <i>r</i> + 1（<i>r</i> は円 C の半径）。これを <i>r</i> について解いてみよう。</p>
+          <h3>ヒント 2 ― 外接の条件を式にする</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mi>d</mi><mo>=</mo><mi>r</mi><mo>+</mo><mn>1</mn></math>外接するときの関係式。相手の円の半径が <math><mn>1</mn></math> だから、円 <math><mi>C</mi></math> の半径を <math><mi>r</mi></math> としてこの式を解く。</p>
+          <p>外接するとき、[2] の場合だから <math><mi>d</mi><mo>=</mo><mi>r</mi><mo>+</mo><mn>1</mn><mo>(</mo><mi>r</mi></math> は円 <math><mi>C</mi></math> の半径）。<br>これを <math><mi>r</mi></math> について解いてみよう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 3 ― 円の方程式を書く</h3>
-          <p><i>r</i> が分かったら、中心 (4, 3)、半径 <i>r</i> の円の方程式を書こう。</p>
+          <p><math><mi>r</mi></math> が分かったら、中心<math><mo>(</mo><mn>4</mn><mo>,</mo><mn>3</mn><mo>)</mo></math>、半径 <math><mi>r</mi></math> の円の方程式を書こう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">(x − 4)<sup>2</sup> + (y − 3)<sup>2</sup> = 16</p>
-          <p>円 x<sup>2</sup> + y<sup>2</sup> = 1 は中心が原点、半径が1の円である。2つの円の中心間の距離 <i>d</i> は <i>d</i> = √(4<sup>2</sup> + 3<sup>2</sup>) = 5。2つの円が外接するとき、円 C の半径を <i>r</i> とすると 5 = <i>r</i> + 1。これを解くと <i>r</i> = 5 − 1 = 4。よって、円 C の方程式は (x − 4)<sup>2</sup> + (y − 3)<sup>2</sup> = 4<sup>2</sup> すなわち (x − 4)<sup>2</sup> + (y − 3)<sup>2</sup> = 16 である。</p><figure><div class="figbox"><svg viewBox="0 0 354 320" role="img" aria-label="円 x²+y²=1 と円 (x−4)²+(y−3)²=16 が外接する図"><defs><marker id="ah-g2" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--ink-soft)"></path></marker><pattern id="hatch-g2" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="var(--ink-soft)" stroke-width="1.5"/></pattern></defs><line x1="28" y1="243" x2="334" y2="243" stroke="var(--ink-soft)" stroke-width="1.6" marker-end="url(#ah-g2)"/><line x1="79" y1="294" x2="79" y2="18" stroke="var(--ink-soft)" stroke-width="1.6" marker-end="url(#ah-g2)"/><text x="332" y="263" class="svg-txt" font-size="14" font-style="italic">x</text><text x="87" y="22" class="svg-txt" font-size="14" font-style="italic">y</text><text x="69" y="260" text-anchor="middle" class="svg-txt-soft" font-size="13">O</text><line x1="199" y1="239" x2="199" y2="247" stroke="var(--ink-soft)" stroke-width="1.4"/><text x="199" y="262" text-anchor="middle" class="svg-txt-soft" font-size="12.5">4</text><line x1="75" y1="153" x2="83" y2="153" stroke="var(--ink-soft)" stroke-width="1.4"/><text x="72" y="157" text-anchor="end" class="svg-txt-soft" font-size="12.5">3</text><circle cx="79" cy="243" r="30" fill="none" stroke="var(--ink)" stroke-width="2.2"/><circle cx="199" cy="153" r="120" fill="none" stroke="var(--ink)" stroke-width="2.2"/><line x1="79" y1="243" x2="199" y2="153" stroke="var(--ink)" stroke-width="1.8"/><circle cx="79" cy="243" r="3.4" fill="var(--ink)"/><circle cx="199" cy="153" r="3.4" fill="var(--ink)"/><circle cx="103" cy="225" r="3.4" fill="var(--accent)"/><text x="209" y="145" text-anchor="start" class="svg-txt" font-size="13.5">(4, 3)</text><text x="95" y="245" text-anchor="end" class="svg-txt" font-size="13">接点</text></svg></div></figure>
+          <p class="big"><math display="block"><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>4</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mi>y</mi><mo>−</mo><mn>3</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>16</mn></math></p><p class="cite"><span class="cite-tag">使う性質</span><math><mi>d</mi><mo>=</mo><mi>r</mi><mo>+</mo><mi>r′</mi></math>外接の条件から <math><mn>5</mn><mo>=</mo><mi>r</mi><mo>+</mo><mn>1</mn></math>、よって <math><mi>r</mi><mo>=</mo><mn>4</mn></math>。中心 <math><mrow><mo>(</mo><mn>4</mn><mo>,</mo><mn>3</mn><mo>)</mo></mrow></math>、半径 <math><mn>4</mn></math> の円を <math><msup><mrow><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mi>a</mi><mo>)</mo></mrow></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mrow><mo>(</mo><mi>y</mi><mo>−</mo><mi>b</mi><mo>)</mo></mrow></mrow><mn>2</mn></msup><mo>=</mo><msup><mi>r</mi><mn>2</mn></msup></math> の形で書いた。</p>
+          <p>円<math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><mn>1</mn></math>は中心が原点、半径が1の円である。<br>2つの円の中心間の距離 <math><mi>d</mi></math> は <math><mi>d</mi><mo>=</mo><msqrt><mrow><msup><mn>4</mn><mn>2</mn></msup><mo>+</mo><msup><mn>3</mn><mn>2</mn></msup></mrow></msqrt><mo>=</mo><mn>5</mn></math>。<br>2つの円が外接するとき、円 <math><mi>C</mi></math> の半径を <math><mi>r</mi></math> とすると<math><mn>5</mn><mo>=</mo><mi>r</mi><mo>+</mo><mn>1</mn></math>。これを解くと <math><mi>r</mi><mo>=</mo><mn>5</mn><mo>−</mo><mn>1</mn><mo>=</mo><mn>4</mn></math>。よって、円 <math><mi>C</mi></math> の方程式は<math><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>4</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mi>y</mi><mo>−</mo><mn>3</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mn>4</mn><mn>2</mn></msup></math> すなわち<math><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>4</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mi>y</mi><mo>−</mo><mn>3</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>16</mn></math>である。</p><figure><div class="figbox"><svg viewBox="0 0 354 320" role="img" aria-label="円 x²+y²=1 と円 (x−4)²+(y−3)²=16 が外接する図"><defs><marker id="ah-g2" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--ink-soft)"></path></marker><pattern id="hatch-g2" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="var(--ink-soft)" stroke-width="1.5"/></pattern></defs><line x1="28" y1="243" x2="334" y2="243" stroke="var(--ink-soft)" stroke-width="1.6" marker-end="url(#ah-g2)"/><line x1="79" y1="294" x2="79" y2="18" stroke="var(--ink-soft)" stroke-width="1.6" marker-end="url(#ah-g2)"/><text x="332" y="263" class="svg-txt" font-size="14" font-style="italic">x</text><text x="87" y="22" class="svg-txt" font-size="14" font-style="italic">y</text><text x="69" y="260" text-anchor="middle" class="svg-txt-soft" font-size="13">O</text><line x1="199" y1="239" x2="199" y2="247" stroke="var(--ink-soft)" stroke-width="1.4"/><text x="199" y="262" text-anchor="middle" class="svg-txt-soft" font-size="12.5">4</text><line x1="75" y1="153" x2="83" y2="153" stroke="var(--ink-soft)" stroke-width="1.4"/><text x="72" y="157" text-anchor="end" class="svg-txt-soft" font-size="12.5">3</text><circle cx="79" cy="243" r="30" fill="none" stroke="var(--ink)" stroke-width="2.2"/><circle cx="199" cy="153" r="120" fill="none" stroke="var(--ink)" stroke-width="2.2"/><line x1="79" y1="243" x2="199" y2="153" stroke="var(--ink)" stroke-width="1.8"/><circle cx="79" cy="243" r="3.4" fill="var(--ink)"/><circle cx="199" cy="153" r="3.4" fill="var(--ink)"/><circle cx="103" cy="225" r="3.4" fill="var(--accent)"/><text x="209" y="145" text-anchor="start" class="svg-txt" font-size="13.5">(4, 3)</text><text x="95" y="245" text-anchor="end" class="svg-txt" font-size="13">接点</text></svg></div></figure>
         </div>
         <p class="prob-done">例題7 クリア！　次は内接する練習29だよ。</p>
       </section>
-      <section class="card prob" id="prob-ren29" data-flow="ren29" data-label="練習29">
+      <section class="nofig card prob" id="prob-ren29" data-flow="ren29" data-label="練習29">
         <div class="prob-head">
           <span class="prob-tag ren">練習 29</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
         <div class="qside">
-        <p class="prob-q">中心が点 (−3, 4) である円 C と、円 x<sup>2</sup> + y<sup>2</sup> = 1 が内接するとき、円 C の方程式を求めよ。</p>
+        <p class="prob-q">中心が点<math><mo>(</mo><mo>−</mo><mn>3</mn><mo>,</mo><mn>4</mn><mo>)</mo></math>である円 <math><mi>C</mi></math> と、円<math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><mn>1</mn></math>が内接するとき、円 <math><mi>C</mi></math> の方程式を求めよ。</p>
           <div class="quiz" id="q29" data-correct="2">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>(x + 3)<sup>2</sup> + (y − 4)<sup>2</sup> = 16</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>(x + 3)<sup>2</sup> + (y − 4)<sup>2</sup> = 36</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>(x − 3)<sup>2</sup> + (y + 4)<sup>2</sup> = 36</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>(x + 3)<sup>2</sup> + (y − 4)<sup>2</sup> = 25</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><msup><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>3</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mi>y</mi><mo>−</mo><mn>4</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>16</mn></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><msup><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>3</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mi>y</mi><mo>−</mo><mn>4</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>36</mn></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>3</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mi>y</mi><mo>+</mo><mn>4</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>36</mn></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><msup><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>3</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mi>y</mi><mo>−</mo><mn>4</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>25</mn></math></span><span class="mark"></span></button>
           </div>
-          <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
+          <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。<br>ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
           <p class="verdict"></p>
           </div>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 中心間の距離 d を求める</h3>
-          <p>例題7と同じように、まず原点と点 (−3, 4) の距離 <i>d</i> を求めよう。</p>
+          <h3>ヒント 1 ― 中心間の距離 <math><mi>d</mi></math> を求める</h3><p class="cite"><span class="cite-tag">使う公式</span><math><mi>AB</mi><mo>=</mo><msqrt><mrow><msup><mrow><mrow><msub><mi>x</mi><mn>2</mn></msub><mo>−</mo><msub><mi>x</mi><mn>1</mn></msub></mrow></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mrow><msub><mi>y</mi><mn>2</mn></msub><mo>−</mo><msub><mi>y</mi><mn>1</mn></msub></mrow></mrow><mn>2</mn></msup></mrow></msqrt></math>まず原点と点 <math><mrow><mo>(</mo><mo>−</mo><mn>3</mn><mo>,</mo><mn>4</mn><mo>)</mo></mrow></math> の距離 <math><mi>d</mi><mo>=</mo><mn>5</mn></math> を求める。</p>
+          <p>例題7と同じように、まず原点と点<math><mo>(</mo><mo>−</mo><mn>3</mn><mo>,</mo><mn>4</mn><mo>)</mo></math>の距離 <math><mi>d</mi></math> を求めよう。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― 内接の条件を式にする</h3>
-          <p>内接するのは、半径1の円が円 C の内側に入って1点で接する場合だね。[4] の場合だから、円 C の半径を <i>r</i> とすると <i>d</i> = <i>r</i> − 1 という関係ができるよ。</p>
+          <h3>ヒント 2 ― 内接の条件を式にする</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mi>d</mi><mo>=</mo><mi>r</mi><mo>−</mo><mi>r′</mi></math>内接するのはこの関係のとき。半径 <math><mn>1</mn></math> の円が円 <math><mi>C</mi></math> の内側で接するので、<math><mi>d</mi><mo>=</mo><mi>r</mi><mo>−</mo><mn>1</mn></math> となる。</p>
+          <p>内接するのは、半径1の円が円 <math><mi>C</mi></math> の内側に入って1点で接する場合だね。<br>[4] の場合だから、円 <math><mi>C</mi></math> の半径を <math><mi>r</mi></math> とすると <math><mi>d</mi><mo>=</mo><mi>r</mi><mo>−</mo><mn>1</mn></math>という関係ができるよ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 3 ― 円の方程式を書く</h3>
-          <p><i>r</i> を求めて、中心 (−3, 4) の円の方程式を書こう。</p>
+          <p><math><mi>r</mi></math> を求めて、中心<math><mo>(</mo><mo>−</mo><mn>3</mn><mo>,</mo><mn>4</mn><mo>)</mo></math>の円の方程式を書こう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">(x + 3)<sup>2</sup> + (y − 4)<sup>2</sup> = 36</p>
-          <p>2つの円の中心間の距離は <i>d</i> = √((−3)<sup>2</sup> + 4<sup>2</sup>) = 5。内接するとき、円 C の半径を <i>r</i> とすると <i>r</i> − 1 = 5。これを解くと <i>r</i> = 6。よって、円 C の方程式は (x + 3)<sup>2</sup> + (y − 4)<sup>2</sup> = 36 である。</p><figure><div class="figbox"><svg viewBox="0 0 378 379" role="img" aria-label="円 x²+y²=1 と円 (x+3)²+(y−4)²=36 が内接する図"><defs><marker id="ah-g3" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--ink-soft)"></path></marker><pattern id="hatch-g3" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="var(--ink-soft)" stroke-width="1.5"/></pattern></defs><line x1="28" y1="285.5" x2="358" y2="285.5" stroke="var(--ink-soft)" stroke-width="1.6" marker-end="url(#ah-g3)"/><line x1="270.5" y1="353" x2="270.5" y2="18" stroke="var(--ink-soft)" stroke-width="1.6" marker-end="url(#ah-g3)"/><text x="356" y="305.5" class="svg-txt" font-size="14" font-style="italic">x</text><text x="278.5" y="22" class="svg-txt" font-size="14" font-style="italic">y</text><text x="260.5" y="302.5" text-anchor="middle" class="svg-txt-soft" font-size="13">O</text><circle cx="270.5" cy="285.5" r="25" fill="none" stroke="var(--ink)" stroke-width="2.2"/><circle cx="195.5" cy="185.5" r="150" fill="none" stroke="var(--ink)" stroke-width="2.2"/><line x1="195.5" y1="185.5" x2="285.5" y2="305.5" stroke="var(--ink)" stroke-width="1.8"/><circle cx="195.5" cy="185.5" r="3.4" fill="var(--ink)"/><circle cx="270.5" cy="285.5" r="3.4" fill="var(--ink)"/><circle cx="285.5" cy="305.5" r="3.4" fill="var(--accent)"/><text x="205.5" y="179.5" text-anchor="start" class="svg-txt" font-size="13.5">(−3, 4)</text><text x="294.5" y="322.5" text-anchor="start" class="svg-txt" font-size="13">接点</text></svg></div></figure>
+          <p class="big"><math display="block"><msup><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>3</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mi>y</mi><mo>−</mo><mn>4</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>36</mn></math></p><p class="cite"><span class="cite-tag">使う性質</span><math><mi>d</mi><mo>=</mo><mi>r</mi><mo>−</mo><mi>r′</mi></math>内接の条件から <math><mi>r</mi><mo>−</mo><mn>1</mn><mo>=</mo><mn>5</mn></math>、よって <math><mi>r</mi><mo>=</mo><mn>6</mn></math>。中心 <math><mrow><mo>(</mo><mo>−</mo><mn>3</mn><mo>,</mo><mn>4</mn><mo>)</mo></mrow></math>、半径 <math><mn>6</mn></math> の円を <math><msup><mrow><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mi>a</mi><mo>)</mo></mrow></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mrow><mo>(</mo><mi>y</mi><mo>−</mo><mi>b</mi><mo>)</mo></mrow></mrow><mn>2</mn></msup><mo>=</mo><msup><mi>r</mi><mn>2</mn></msup></math> の形で書いた。</p>
+          <p>2つの円の中心間の距離は <math><mi>d</mi><mo>=</mo><msqrt><mrow><msup><mrow><mo>(</mo><mo>−</mo><mn>3</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mn>4</mn><mn>2</mn></msup></mrow></msqrt><mo>=</mo><mn>5</mn></math>。<br>内接するとき、円 <math><mi>C</mi></math> の半径を <math><mi>r</mi></math> とすると <math><mi>r</mi><mo>−</mo><mn>1</mn><mo>=</mo><mn>5</mn></math>。これを解くと <math><mi>r</mi><mo>=</mo><mn>6</mn></math>。よって、円 <math><mi>C</mi></math> の方程式は<math><msup><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>3</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mi>y</mi><mo>−</mo><mn>4</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>36</mn></math>である。</p><figure><div class="figbox"><svg viewBox="0 0 378 379" role="img" aria-label="円 x²+y²=1 と円 (x+3)²+(y−4)²=36 が内接する図"><defs><marker id="ah-g3" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--ink-soft)"></path></marker><pattern id="hatch-g3" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="var(--ink-soft)" stroke-width="1.5"/></pattern></defs><line x1="28" y1="285.5" x2="358" y2="285.5" stroke="var(--ink-soft)" stroke-width="1.6" marker-end="url(#ah-g3)"/><line x1="270.5" y1="353" x2="270.5" y2="18" stroke="var(--ink-soft)" stroke-width="1.6" marker-end="url(#ah-g3)"/><text x="356" y="305.5" class="svg-txt" font-size="14" font-style="italic">x</text><text x="278.5" y="22" class="svg-txt" font-size="14" font-style="italic">y</text><text x="260.5" y="302.5" text-anchor="middle" class="svg-txt-soft" font-size="13">O</text><circle cx="270.5" cy="285.5" r="25" fill="none" stroke="var(--ink)" stroke-width="2.2"/><circle cx="195.5" cy="185.5" r="150" fill="none" stroke="var(--ink)" stroke-width="2.2"/><line x1="195.5" y1="185.5" x2="285.5" y2="305.5" stroke="var(--ink)" stroke-width="1.8"/><circle cx="195.5" cy="185.5" r="3.4" fill="var(--ink)"/><circle cx="270.5" cy="285.5" r="3.4" fill="var(--ink)"/><circle cx="285.5" cy="305.5" r="3.4" fill="var(--accent)"/><text x="205.5" y="179.5" text-anchor="start" class="svg-txt" font-size="13.5">(−3, 4)</text><text x="294.5" y="322.5" text-anchor="start" class="svg-txt" font-size="13">接点</text></svg></div></figure>
         </div>
         <p class="prob-done">練習29 クリア！　この項はこれで完了だよ。</p>
       </section>
@@ -533,9 +601,9 @@
       <section class="card summary" id="summaryCard" style="display:none">
         <h2>この項のポイント</h2>
         <ul>
-          <li>2つの円の位置関係は、中心間の距離 <i>d</i> と、半径の和 <i>r</i> + <i>r</i>′、半径の差 <i>r</i> − <i>r</i>′ の大小で決まる</li>
-          <li><i>d</i> = <i>r</i> + <i>r</i>′ のとき外接、<i>d</i> = <i>r</i> − <i>r</i>′ のとき内接する。接点は、中心を結ぶ直線上にある</li>
-          <li>円の方程式を求める問題では、中心間の距離と半径の関係式を立てる</li>
+          <li><p class="cite"><span class="cite-tag">使う性質</span><math><mi>r</mi><mo>−</mo><mi>r′</mi><mo>&lt;</mo><mi>d</mi><mo>&lt;</mo><mi>r</mi><mo>+</mo><mi>r′</mi></math>2つの円の位置関係は、中心間の距離 <math><mi>d</mi></math> と、半径の和 <math><mi>r</mi><mo>+</mo><mi>r′</mi></math>、半径の差 <math><mi>r</mi><mo>−</mo><mi>r′</mi></math> の大小で決まる。</p>2つの円の位置関係は、中心間の距離 <math><mi>d</mi></math> と、半径の和 <math><mi>r</mi><mo>+</mo><mi>r</mi><mo>′</mo></math>、半径の差 <math><mi>r</mi><mo>−</mo><mi>r</mi><mo>′</mo></math>の大小で決まる</li>
+          <li><p class="cite"><span class="cite-tag">使う性質</span><math><mi>d</mi><mo>=</mo><mi>r</mi><mo>+</mo><mi>r′</mi></math> のとき外接し、<math><mi>d</mi><mo>=</mo><mi>r</mi><mo>−</mo><mi>r′</mi></math> のとき内接する。接点は、2つの中心を結ぶ直線上にある。</p><math><mi>d</mi><mo>=</mo><mi>r</mi><mo>+</mo><mi>r</mi><mo>′</mo></math>のとき外接、<math><mi>d</mi><mo>=</mo><mi>r</mi><mo>−</mo><mi>r</mi><mo>′</mo></math>のとき内接する。接点は、中心を結ぶ直線上にある</li>
+          <li><p class="cite"><span class="cite-tag">使う公式</span><math><mi>AB</mi><mo>=</mo><msqrt><mrow><msup><mrow><mrow><msub><mi>x</mi><mn>2</mn></msub><mo>−</mo><msub><mi>x</mi><mn>1</mn></msub></mrow></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mrow><msub><mi>y</mi><mn>2</mn></msub><mo>−</mo><msub><mi>y</mi><mn>1</mn></msub></mrow></mrow><mn>2</mn></msup></mrow></msqrt></math>円の方程式を求める問題では、この公式で中心間の距離を求め、半径との関係式を立てる。</p>円の方程式を求める問題では、中心間の距離と半径の関係式を立てる</li>
         </ul>
       </section>
       <footer>
