@@ -309,7 +309,64 @@ padding:16px 34px;box-shadow:var(--shadow);
 }
 @media (prefers-color-scheme: dark){.finish-btn{color:#0c1712}}
 .finish-btn:active{transform:scale(.98)}
- </style>
+ 
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+
+      /* 積分記号は大きめに表示する（元のページの可読化デザインに合わせる） */
+      math .int-op{font-size:1.35em}
+      /* calc-12 世代（.card）と calc-18 世代（.unit）の、図のない問題の全幅化 */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig>.step{position:static !important}
+        .card.nofig>.steps-wrap{max-height:none !important;overflow:visible !important}
+        .unit.nofig{display:block !important}
+        .unit.nofig>.qside{position:static !important}
+        .unit.nofig>.steps-stack{max-height:none !important;overflow:visible !important}
+      }
+
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける・第3弾c） */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig .qside{position:static !important}
+        .card.nofig .steps-wrap,.card.nofig .tabpanel .steps-wrap{max-height:none !important;overflow:visible !important}
+      }
+</style>
 </head>
 <body>
 <div class="wrap">
@@ -334,10 +391,10 @@ padding:16px 34px;box-shadow:var(--shadow);
       <section class="card">
 <p>データ全体の特徴を適当な1つの数値で表せると便利である。そのような値をデータの<span class="key">代表値</span>という。ここでは、データの代表値として、平均値、最頻値、中央値について調べよう。</p>
 <p>日常において、平均点、平均気温、平均賃金、平均睡眠時間などの言葉を使うことがある。これらは平均値と呼ばれる身近な代表値である。</p>
-<p>データにおける測定値や観測値の個数を、そのデータの<span class="key">大きさ</span>という。たとえば、例1のデータの大きさは 5 である。変量 <i>x</i> についてのあるデータの大きさが <i>n</i> であるとき、このデータの個々の値を <i>x</i><sub>1</sub>, <i>x</i><sub>2</sub>, ……， <i>x</i><sub><i>n</i></sub> で表すことがある（データの値を並べたとき、<i>k</i> 番目の値を <i>x<sub>k</sub></i> と表している）。</p>
-<div class="def"><p><b>平均値</b></p><p>一般に、変量 <i>x</i> について、大きさ <i>n</i> のデータの値の総和を <i>n</i> で割った値を、このデータの <b>平均値</b> といい、<span style="text-decoration:overline">x</span> で表す。</p><p class="formula">（平均値）= <span class="frac"><span class="num">（データの値の総和）</span><span class="den">（データの大きさ）</span></span></p><p class="formula"><span style="text-decoration:overline">x</span> = <span class="frac"><span class="num">1</span><span class="den"><i>n</i></span></span>(<i>x</i><sub>1</sub> + <i>x</i><sub>2</sub> + …… + <i>x<sub>n</sub></i>)</p></div>
+<p>データにおける測定値や観測値の個数を、そのデータの<span class="key">大きさ</span>という。たとえば、<br>例1のデータの大きさは 5 である。変量 <math><mi>x</mi></math> についてのあるデータの大きさが <math><mi>n</mi></math> であるとき、このデータの個々の値を <math><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>x</mi><mn>2</mn></msub><mo>,</mo><mo>…</mo><mo>…</mo><mo>,</mo><msub><mi>x</mi><mi>n</mi></msub></math> で表すことがある（データの値を並べたとき、<math><mi>k</mi></math> 番目の値を <math><msub><mi>x</mi><mi>k</mi></msub></math> と表している）。</p>
+<div class="def"><p><b>平均値</b></p><p>一般に、変量 <math><mi>x</mi></math> について、大きさ <math><mi>n</mi></math> のデータの値の総和を <math><mi>n</mi></math> で割った値を、このデータの <b>平均値</b> といい、<math><mover><mi>x</mi><mo>‾</mo></mover></math> で表す。</p><p class="formula">（平均値<math><mo>)</mo><mo>=</mo><mfrac><mrow><mo>(</mo><mtext>データの値の総和</mtext><mo>)</mo></mrow><mrow><mo>(</mo><mtext>データの大きさ</mtext><mo>)</mo></mrow></mfrac></math></p><p class="formula"><math display="block"><mover><mi>x</mi><mo>‾</mo></mover><mo>=</mo><mfrac><mn>1</mn><mi>n</mi></mfrac><mrow><mo>(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>+</mo><msub><mi>x</mi><mn>2</mn></msub><mo>+</mo><mo>…</mo><mo>…</mo><mo>+</mo><msub><mi>x</mi><mi>n</mi></msub><mo>)</mo></mrow></math></p></div>
       </section>
-      <section class="card prob" id="prob-ex1" data-flow="ex1" data-label="例1">
+      <section class="nofig card prob" id="prob-ex1" data-flow="ex1" data-label="例1">
         <div class="prob-head">
           <span class="prob-tag ">例 1</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
@@ -347,18 +404,23 @@ padding:16px 34px;box-shadow:var(--shadow);
         <p class="prob-q">次のデータは、ある生徒の 5 種類のテストの得点である。このデータの平均値を求める。<br>72,　65,　88,　45,　76　（点）</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― まず総和を出す</h3>
+          <h3>ヒント 1 ― まず総和を出す</h3><p class="cite"><span class="cite-tag">使う定義</span><math><mover><mi>x</mi><mo>‾</mo></mover><mo>=</mo><mfrac><mtext>データの値の総和</mtext><mtext>データの大きさ</mtext></mfrac></math>平均値は、値の総和をデータの大きさで割ったもの。まず5つの得点の総和を出す。</p>
 <p>5つの得点をすべて加えよう。72 + 65 + 88 + 45 + 76 を計算すると総和が出るね。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">69.2 点</p>
-<p class="formula left"><span class="frac"><span class="num">1</span><span class="den">5</span></span>(72 + 65 + 88 + 45 + 76) = <span class="frac"><span class="num">1</span><span class="den">5</span></span> × 346 = 69.2（点）</p>
+          <p class="big">69.2 点</p><p class="cite"><span class="cite-tag">使う定義</span><math><mover><mi>x</mi><mo>‾</mo></mover><mo>=</mo><mfrac><mtext>データの値の総和</mtext><mtext>データの大きさ</mtext></mfrac></math>総和 346 を大きさ 5 で割ると、平均値 69.2 になる。</p>
+<p class="mq-wide formula left"><math><mfrac><mn>1</mn><mn>5</mn></mfrac><mrow><mo>(</mo><mn>72</mn><mo>+</mo><mn>65</mn><mo>+</mo><mn>88</mn><mo>+</mo><mn>45</mn><mo>+</mo><mn>76</mn><mo>)</mo></mrow><mo>=</mo><mfrac><mn>1</mn><mn>5</mn></mfrac><mo>×</mo><mn>346</mn><mo>=</mo><mn>69.2</mn><mo>(</mo></math>点）</p>
+<div class="mq-narrow">
+<p class="formula"><math display="block"><mfrac><mn>1</mn><mn>5</mn></mfrac><mrow><mo>(</mo><mn>72</mn><mo>+</mo><mn>65</mn><mo>+</mo><mn>88</mn><mo>+</mo><mn>45</mn><mo>+</mo><mn>76</mn><mo>)</mo></mrow><mo>=</mo><mfrac><mn>1</mn><mn>5</mn></mfrac><mo>×</mo><mn>346</mn></math></p>
+<p class="formula cont"><math display="block"><mo>=</mo><mn>69.2</mn><mo>(</mo></math></p>
+<p>点）</p>
+</div>
         </div>
         <p class="prob-done">例1 クリア！　次は練習3に挑戦しよう。</p>
       </section>
-      <section class="card prob" id="prob-ren3" data-flow="ren3" data-label="練習3">
+      <section class="nofig card prob" id="prob-ren3" data-flow="ren3" data-label="練習3">
         <div class="prob-head">
           <span class="prob-tag ren">練習 3</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
@@ -385,8 +447,12 @@ padding:16px 34px;box-shadow:var(--shadow);
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">420 分</p>
-<p class="formula left"><span style="text-decoration:overline">x</span> = <span class="frac"><span class="num">1</span><span class="den">7</span></span>(400 + 410 + 420 + 390 + 430 + 450 + 440) = <span class="frac"><span class="num">1</span><span class="den">7</span></span> × 2940 = 420（分）</p>
+          <p class="big">420 分</p><p class="cite"><span class="cite-tag">使う定義</span><math><mover><mi>x</mi><mo>‾</mo></mover><mo>=</mo><mfrac><mtext>データの値の総和</mtext><mtext>データの大きさ</mtext></mfrac></math>ここでは総和 2940 を大きさ 7 で割る。</p>
+<p class="formula left"><div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mover><mi>x</mi><mo>‾</mo></mover><mo>=</mo><mfrac><mn>1</mn><mn>7</mn></mfrac><mrow><mo>(</mo><mn>400</mn><mo>+</mo><mn>410</mn><mo>+</mo><mn>420</mn><mo>+</mo><mn>390</mn><mo>+</mo><mn>430</mn><mo>+</mo><mn>450</mn><mo>+</mo><mn>440</mn><mo>)</mo></mrow></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mover><mi>x</mi><mo>‾</mo></mover></mphantom><mo>=</mo><mfrac><mn>1</mn><mn>7</mn></mfrac><mo>×</mo><mn>2940</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mover><mi>x</mi><mo>‾</mo></mover></mphantom><mo>=</mo><mn>420</mn><mo>(</mo></math></div>
+</div>分）</p>
         </div>
         <p class="prob-done">練習3 クリア！　次は解説Bに進もう。</p>
       </section>
@@ -397,9 +463,9 @@ padding:16px 34px;box-shadow:var(--shadow);
       </div>
       <section class="card">
 <div class="def"><p><b>最頻値（モード）</b></p><p>データにおいて、最も個数の多い値を、そのデータの <b>最頻値</b> または <b>モード</b> という。度数分布表に整理したときは、度数が最も大きい階級の階級値を最頻値とする。</p></div>
-<p>例2のデータからは、最も売れると思われる靴のサイズは 26.0 cm である。商品の仕入れの計画を立てる場合などには、代表値として最頻値が適しているといえる。</p>
+<p>例2のデータからは、最も売れると思われる靴のサイズは 26.0 cm である。商品の仕入れの計画を立てる場合などには、代表値として最頻値が適しているといえる。<br></p>
       </section>
-      <section class="card prob" id="prob-ex2" data-flow="ex2" data-label="例2">
+      <section class="nofig card prob" id="prob-ex2" data-flow="ex2" data-label="例2">
         <div class="prob-head">
           <span class="prob-tag ">例 2</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
@@ -409,7 +475,7 @@ padding:16px 34px;box-shadow:var(--shadow);
         <p class="prob-q">下の表は、成人男子 100 人について、靴のサイズを調べた結果である。このデータの最頻値を求める。<table class="comp"><tr><th>サイズ（cm）</th><th>24.0</th><th>24.5</th><th>25.0</th><th>25.5</th><th>26.0</th><th>26.5</th><th>27.0</th><th>計</th></tr><tr><td>人数</td><td>3</td><td>11</td><td>18</td><td>23</td><td>32</td><td>10</td><td>3</td><td>100</td></tr></table></p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 人数が最も多いサイズを探す</h3>
+          <h3>ヒント 1 ― 人数が最も多いサイズを探す</h3><p class="cite"><span class="cite-tag">使う定義</span><math><mtext>最頻値：最も個数の多い値</mtext></math>人数が最大の 32 人に対応するサイズが最頻値。</p>
 <p>人数の行で一番大きい数を探そう。32 人が最大で、そのサイズが最頻値だね。</p>
         </div>
         <div class="step answer">
@@ -420,7 +486,7 @@ padding:16px 34px;box-shadow:var(--shadow);
         </div>
         <p class="prob-done">例2 クリア！　次は練習4に挑戦しよう。</p>
       </section>
-      <section class="card prob" id="prob-ren4" data-flow="ren4" data-label="練習4">
+      <section class="nofig card prob" id="prob-ren4" data-flow="ren4" data-label="練習4">
         <div class="prob-head">
           <span class="prob-tag ren">練習 4</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
@@ -441,7 +507,7 @@ padding:16px 34px;box-shadow:var(--shadow);
           </div>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 度数が最も大きい階級を探す</h3>
+          <h3>ヒント 1 ― 度数が最も大きい階級を探す</h3><p class="cite"><span class="cite-tag">使う定義</span><math><mtext>最頻値（度数分布表）：度数が最も大きい階級の階級値</mtext></math>度数分布表では、度数が最大の階級の階級値を最頻値とする。</p>
 <p>度数分布表では、度数が最も大きい階級の「階級値」が最頻値だったね。度数が最大なのは 10 の階級だよ。</p>
         </div>
         <div class="step hint">
@@ -451,8 +517,8 @@ padding:16px 34px;box-shadow:var(--shadow);
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">22.5 ℃</p>
-<p>度数が最も大きい階級は 21 ℃ 以上 24 ℃ 未満で、その階級値は (21 + 24) ÷ 2 = 22.5（℃）。</p>
+          <p class="big">22.5 ℃</p><p class="cite"><span class="cite-tag">使う定義</span><math><mfrac><mrow><mn>21</mn><mo>+</mo><mn>24</mn></mrow><mn>2</mn></mfrac><mo>=</mo><mn>22.5</mn></math>度数 10 の階級 21℃以上24℃未満の階級値が最頻値になる。</p>
+<p>度数が最も大きい階級は 21 ℃ 以上 24 ℃ 未満で、その階級値は<math><mrow><mo>(</mo><mn>21</mn><mo>+</mo><mn>24</mn><mo>)</mo></mrow><mo>÷</mo><mn>2</mn><mo>=</mo><mn>22.5</mn><mrow><mo>(</mo><mo>℃</mo><mo>)</mo></mrow></math>。</p>
         </div>
         <p class="prob-done">練習4 クリア！　次は解説Cに進もう。</p>
       </section>
@@ -464,35 +530,35 @@ padding:16px 34px;box-shadow:var(--shadow);
       <section class="card">
 <div class="def"><p><b>中央値（メジアン）</b></p><p>データを値の大きさの順に並べたとき、中央の位置にくる値を <b>中央値</b> または <b>メジアン</b> という。データの大きさが偶数のときは、中央に2つの値が並ぶが、その場合は2つの値の平均をとって中央値とする。</p></div>
       </section>
-      <section class="card prob" id="prob-ex3" data-flow="ex3" data-label="例3">
+      <section class="nofig card prob" id="prob-ex3" data-flow="ex3" data-label="例3">
         <div class="prob-head">
           <span class="prob-tag ">例 3</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">ある商品の価格について、A 市と B 市で調査した。<br>(1) A 市では 5 店舗で調査して、次のデータが得られた。　260,　280,　280,　300,　270　（円）<br>(2) B 市では 6 店舗で調査して、次のデータが得られた。　280,　280,　260,　100,　280,　270　（円）<br>それぞれのデータの中央値を求める。</p>
+        <p class="prob-q">ある商品の価格について、<math><mi>A</mi></math> 市と <math><mi>B</mi></math> 市で調査した。<br>(1) <math><mi>A</mi></math> 市では 5 店舗で調査して、次のデータが得られた。　260,　280,　280,　300,　270　（円）<br>(2) <math><mi>B</mi></math> 市では 6 店舗で調査して、次のデータが得られた。　280,　280,　260,　100,　280,　270　（円）<br>それぞれのデータの中央値を求める。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― (1) は小さい順に並べる</h3>
+          <h3>ヒント 1 ― (1) は小さい順に並べる</h3><p class="cite"><span class="cite-tag">使う定義</span><math><mtext>中央値：大きさの順に並べたとき中央の位置にくる値</mtext></math>大きさが奇数 5 のときは、並べた真ん中（3番目）の値が中央値。</p>
 <p>(1) データの大きさは 5（奇数）。小さい順に並べると 260, 270, 280, 280, 300 となり、中央（3番目）の値が中央値だね。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― (2) は中央の2つの値の平均</h3>
+          <h3>ヒント 2 ― (2) は中央の2つの値の平均</h3><p class="cite"><span class="cite-tag">使う定義</span><math><mfrac><mrow><mn>270</mn><mo>+</mo><mn>280</mn></mrow><mn>2</mn></mfrac></math>大きさが偶数のときは、中央の2つの値の平均を中央値とする。ここでは 270 と 280 の平均。</p>
 <p>(2) データの大きさは 6（偶数）。小さい順に並べると 100, 260, 270, 280, 280, 280 となり、中央の2つは 3番目の 270 と 4番目の 280。この2つの平均をとろう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">(1) 280 円　(2) 275 円</p>
-<p class="formula left">(1)　中央値は 280（円）</p><p class="formula left">(2)　中央値は <span class="frac"><span class="num">270 + 280</span><span class="den">2</span></span> = 275（円）</p>
+          <p class="big">(1) 280 円　(2) 275 円</p><p class="cite"><span class="cite-tag">使う定義</span><math><mtext>中央値：中央の位置にくる値（偶数個では中央の2つの平均）</mtext></math>(1) は真ん中の値、(2) は中央の2つの平均で求める。</p>
+<p class="formula left">(1)　中央値は 280（円）</p><p class="formula left">(2)　中央値は <math><mfrac><mrow><mn>270</mn><mo>+</mo><mn>280</mn></mrow><mn>2</mn></mfrac><mo>=</mo><mn>275</mn><mo>(</mo></math>円）</p>
         </div>
         <p class="prob-done">例3 クリア！　次は練習5に挑戦しよう。</p>
       </section>
       <section class="card">
 <p>例3 (2) のデータの平均値は 245 円で、100 円を除くすべての価格より安く、データの代表値として適切とはいえない。データの中に極端に離れた値がある場合、その影響を受けにくい中央値が代表値として適していることがある。</p>
       </section>
-      <section class="card prob" id="prob-ren5" data-flow="ren5" data-label="練習5">
+      <section class="nofig card prob" id="prob-ren5" data-flow="ren5" data-label="練習5">
         <div class="prob-head">
           <span class="prob-tag ren">練習 5</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
@@ -502,10 +568,10 @@ padding:16px 34px;box-shadow:var(--shadow);
         <p class="prob-q">次のデータは、8 人の生徒の右手の握力を測った結果である。その中央値を求めよ。<br>38,　56,　43,　41,　35,　49,　51,　31　（kg）</p>
           <div class="quiz" id="q-ren5" data-correct="2">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>41 kg</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>42 kg</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>43 kg</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>44.5 kg</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mn>41</mn><mi>k</mi><mi>g</mi></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mn>42</mn><mi>k</mi><mi>g</mi></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mn>43</mn><mi>k</mi><mi>g</mi></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mn>44.5</mn><mi>k</mi><mi>g</mi></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
@@ -523,8 +589,8 @@ padding:16px 34px;box-shadow:var(--shadow);
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">42 kg</p>
-<p>小さい順に並べると　31, 35, 38, 41, 43, 49, 51, 56　となり、中央の2つの値は 41 と 43。よって、中央値は <span class="frac"><span class="num">41 + 43</span><span class="den">2</span></span> = 42（kg）。</p>
+          <p class="big">42 kg</p><p class="cite"><span class="cite-tag">使う定義</span><math><mfrac><mrow><mn>41</mn><mo>+</mo><mn>43</mn></mrow><mn>2</mn></mfrac><mo>=</mo><mn>42</mn></math>8個の値の中央の2つは 41 と 43 で、その平均が中央値。</p>
+<p>小さい順に並べると　31, 35, 38, 41, 43, 49, 51, 56　となり、中央の2つの値は 41 と 43。よって、中央値は <math><mfrac><mrow><mn>41</mn><mo>+</mo><mn>43</mn></mrow><mn>2</mn></mfrac><mo>=</mo><mn>42</mn><mrow><mo>(</mo><mi>k</mi><mi>g</mi><mo>)</mo></mrow></math>。</p>
         </div>
         <p class="prob-done">練習5 クリア！　項2 はここまで。おつかれさま！</p>
       </section>
@@ -535,9 +601,9 @@ padding:16px 34px;box-shadow:var(--shadow);
         <h2>この項のポイント</h2>
         <ul>
           <li>代表値は、データ全体の特徴を1つの数値で表したもの。平均値・最頻値・中央値の3つを学んだ。</li>
-          <li>平均値 <span style="text-decoration:overline">x</span> ＝（データの値の総和）÷（データの大きさ）。</li>
-          <li>最頻値（モード）は最も個数の多い値。度数分布表では、度数が最も大きい階級の階級値とする。仕入れ計画などに適している。</li>
-          <li>中央値（メジアン）は、大きさの順に並べたとき中央の位置にくる値。大きさが偶数のときは中央の2つの値の平均。</li>
+          <p class="cite"><span class="cite-tag">使う定義</span><math><mover><mi>x</mi><mo>‾</mo></mover><mo>=</mo><mfrac><mtext>データの値の総和</mtext><mtext>データの大きさ</mtext></mfrac></math>代表値の1つ。総和を大きさで割って求める。</p><li>平均値 <math><mover><mi>x</mi><mo>‾</mo></mover><mo>=</mo><mo>(</mo></math>データの値の総和）÷（データの大きさ）。</li>
+          <p class="cite"><span class="cite-tag">使う定義</span><math><mtext>最頻値：最も個数の多い値</mtext></math>度数分布表では、度数が最も大きい階級の階級値とする。</p><li>最頻値（モード）は最も個数の多い値。度数分布表では、度数が最も大きい階級の階級値とする。仕入れ計画などに適している。</li>
+          <p class="cite"><span class="cite-tag">使う定義</span><math><mtext>中央値：中央の位置にくる値</mtext></math>偶数個のときは中央の2つの値の平均をとる。</p><li>中央値（メジアン）は、大きさの順に並べたとき中央の位置にくる値。大きさが偶数のときは中央の2つの値の平均。</li>
           <li>極端に離れた値がある場合、その影響を受けにくい中央値が代表値として適していることがある。</li>
         </ul>
       </section>

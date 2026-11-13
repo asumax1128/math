@@ -309,7 +309,64 @@ padding:16px 34px;box-shadow:var(--shadow);
 }
 @media (prefers-color-scheme: dark){.finish-btn{color:#0c1712}}
 .finish-btn:active{transform:scale(.98)}
- </style>
+ 
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+
+      /* 積分記号は大きめに表示する（元のページの可読化デザインに合わせる） */
+      math .int-op{font-size:1.35em}
+      /* calc-12 世代（.card）と calc-18 世代（.unit）の、図のない問題の全幅化 */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig>.step{position:static !important}
+        .card.nofig>.steps-wrap{max-height:none !important;overflow:visible !important}
+        .unit.nofig{display:block !important}
+        .unit.nofig>.qside{position:static !important}
+        .unit.nofig>.steps-stack{max-height:none !important;overflow:visible !important}
+      }
+
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける・第3弾c） */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig .qside{position:static !important}
+        .card.nofig .steps-wrap,.card.nofig .tabpanel .steps-wrap{max-height:none !important;overflow:visible !important}
+      }
+</style>
 </head>
 <body>
 <div class="wrap">
@@ -333,64 +390,75 @@ padding:16px 34px;box-shadow:var(--shadow);
       </div>
       <section class="card">
 <p>データの平均値の周りに、データの各値がどのように分布しているかを示す値として、まず各値と平均値との差を考えてみる。</p>
-<p>変量 <i>x</i> のデータの値を <i>x</i><sub>1</sub>, <i>x</i><sub>2</sub>, ……， <i>x<sub>n</sub></i>、その平均値を <span style="text-decoration:overline">x</span> とするとき、各値から平均値を引いた差 <i>x</i><sub>1</sub>−<span style="text-decoration:overline">x</span>, <i>x</i><sub>2</sub>−<span style="text-decoration:overline">x</span>, ……， <i>x<sub>n</sub></i>−<span style="text-decoration:overline">x</span> を、それぞれ平均値からの<span class="key">偏差</span>といい、<i>x</i>−<span style="text-decoration:overline">x</span> で表す。</p>
-<p>偏差の総和は (<i>x</i><sub>1</sub>−<span style="text-decoration:overline">x</span>)＋(<i>x</i><sub>2</sub>−<span style="text-decoration:overline">x</span>)＋……＋(<i>x<sub>n</sub></i>−<span style="text-decoration:overline">x</span>) ＝ (<i>x</i><sub>1</sub>＋<i>x</i><sub>2</sub>＋……＋<i>x<sub>n</sub></i>) − <i>n</i><span style="text-decoration:overline">x</span> ＝ 0 になるから、偏差の平均値も 0 である。よって、偏差の平均値では、散らばりの度合いを表すことはできない。そこで、偏差をそのまま用いずに、<span class="key">偏差の2乗の平均値</span>を考えよう。</p>
-<p>データにおいて、偏差の2乗の平均値を<span class="key">分散</span>という。さらに、分散の正の平方根を<span class="key">標準偏差</span>といい、<i>s</i> で表す。</p>
-<div class="def"><p><b>分散と標準偏差</b>　変量 <i>x</i> のデータの値が <i>x</i><sub>1</sub>, <i>x</i><sub>2</sub>, ……， <i>x<sub>n</sub></i> で、その平均値が <span style="text-decoration:overline">x</span> のとき</p><p class="formula">分散　<i>s</i><sup>2</sup> ＝ <span class="frac"><span class="num">1</span><span class="den"><i>n</i></span></span>｛(<i>x</i><sub>1</sub>−<span style="text-decoration:overline">x</span>)<sup>2</sup>＋(<i>x</i><sub>2</sub>−<span style="text-decoration:overline">x</span>)<sup>2</sup>＋……＋(<i>x<sub>n</sub></i>−<span style="text-decoration:overline">x</span>)<sup>2</sup>｝</p><p class="formula">標準偏差　<i>s</i> ＝ √<span class="rad">分散</span></p><p>（分散）＝（偏差の2乗の平均値）＝（偏差の2乗の総和）÷（データの大きさ）</p></div>
-<p>注意 ― 標準偏差の単位は、変量 <i>x</i> の単位と同じである。</p>
-<p>データの値が平均値の周りに集中しているほど、それぞれの偏差の絶対値は小さくなり、分散、標準偏差も小さくなる傾向にある。たとえば、177ページでヒストグラムに表した2つのデータ A, B では、データの値から標準偏差を計算すると、それぞれ 20, 10 である。このことから、データ A の方がデータ B より散らばりの度合いが大きいと考えられる。</p>
+<p>変量 <math><mi>x</mi></math> のデータの値を <math><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>x</mi><mn>2</mn></msub><mo>,</mo><mo>…</mo><mo>…</mo><mo>,</mo><msub><mi>x</mi><mi>n</mi></msub></math>、その平均値を <math><mover><mi>x</mi><mo>‾</mo></mover></math> とするとき、各値から平均値を引いた差 <math><msub><mi>x</mi><mn>1</mn></msub><mo>−</mo><mover><mi>x</mi><mo>‾</mo></mover><mo>,</mo><msub><mi>x</mi><mn>2</mn></msub><mo>−</mo><mover><mi>x</mi><mo>‾</mo></mover><mo>,</mo><mo>…</mo><mo>…</mo><mo>,</mo><msub><mi>x</mi><mi>n</mi></msub><mo>−</mo><mover><mi>x</mi><mo>‾</mo></mover></math> を、それぞれ平均値からの<span class="key">偏差</span>といい、<math><mi>x</mi><mo>−</mo><mover><mi>x</mi><mo>‾</mo></mover></math> で表す。</p>
+<p class="mq-wide">偏差の総和は<math><mrow><mo>(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>−</mo><mover><mi>x</mi><mo>‾</mo></mover><mo>)</mo></mrow><mo>+</mo><mrow><mo>(</mo><msub><mi>x</mi><mn>2</mn></msub><mo>−</mo><mover><mi>x</mi><mo>‾</mo></mover><mo>)</mo></mrow><mo>+</mo><mo>…</mo><mo>…</mo><mo>+</mo><mrow><mo>(</mo><msub><mi>x</mi><mi>n</mi></msub><mo>−</mo><mover><mi>x</mi><mo>‾</mo></mover><mo>)</mo></mrow><mo>=</mo><mrow><mo>(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>+</mo><msub><mi>x</mi><mn>2</mn></msub><mo>+</mo><mo>…</mo><mo>…</mo><mo>+</mo><msub><mi>x</mi><mi>n</mi></msub><mo>)</mo></mrow><mo>−</mo><mi>n</mi><mover><mi>x</mi><mo>‾</mo></mover><mo>=</mo><mn>0</mn></math>になるから、偏差の平均値も 0 である。よって、偏差の平均値では、散らばりの度合いを表すことはできない。そこで、偏差をそのまま用いずに、<span class="key">偏差の2乗の平均値</span>を考えよう。</p>
+<div class="mq-narrow">
+<p>偏差の総和は</p>
+<p class="formula"><math display="block"><mrow><mo>(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>−</mo><mover><mi>x</mi><mo>‾</mo></mover><mo>)</mo></mrow><mo>+</mo><mrow><mo>(</mo><msub><mi>x</mi><mn>2</mn></msub><mo>−</mo><mover><mi>x</mi><mo>‾</mo></mover><mo>)</mo></mrow><mo>+</mo><mo>…</mo><mo>…</mo><mo>+</mo><mrow><mo>(</mo><msub><mi>x</mi><mi>n</mi></msub><mo>−</mo><mover><mi>x</mi><mo>‾</mo></mover><mo>)</mo></mrow></math></p>
+<p class="formula cont"><math display="block"><mo>=</mo><mrow><mo>(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>+</mo><msub><mi>x</mi><mn>2</mn></msub><mo>+</mo><mo>…</mo><mo>…</mo><mo>+</mo><msub><mi>x</mi><mi>n</mi></msub><mo>)</mo></mrow><mo>−</mo><mi>n</mi><mover><mi>x</mi><mo>‾</mo></mover><mo>=</mo><mn>0</mn></math></p>
+<p>になるから、偏差の平均値も 0 である。よって、偏差の平均値では、散らばりの度合いを表すことはできない。そこで、偏差をそのまま用いずに、<span class="key">偏差の2乗の平均値</span>を考えよう。</p>
+</div>
+<p>データにおいて、偏差の2乗の平均値を<span class="key">分散</span>という。さらに、分散の正の平方根を<span class="key">標準偏差</span>といい、<math><mi>s</mi></math> で表す。</p>
+<div class="def"><p><b>分散と標準偏差</b>　変量 <math><mi>x</mi></math> のデータの値が <math><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>x</mi><mn>2</mn></msub><mo>,</mo><mo>…</mo><mo>…</mo><mo>,</mo><msub><mi>x</mi><mi>n</mi></msub></math> で、その平均値が <math><mover><mi>x</mi><mo>‾</mo></mover></math> のとき</p><p class="mq-wide formula">分散　<math><msup><mi>s</mi><mn>2</mn></msup><mo>=</mo><mfrac><mn>1</mn><mi>n</mi></mfrac><mo>｛</mo><msup><mrow><mo>(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>−</mo><mover><mi>x</mi><mo>‾</mo></mover><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><msub><mi>x</mi><mn>2</mn></msub><mo>−</mo><mover><mi>x</mi><mo>‾</mo></mover><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><mo>…</mo><mo>…</mo><mo>+</mo><msup><mrow><mo>(</mo><msub><mi>x</mi><mi>n</mi></msub><mo>−</mo><mover><mi>x</mi><mo>‾</mo></mover><mo>)</mo></mrow><mn>2</mn></msup><mo>｝</mo></math></p>
+<div class="mq-narrow">
+<p>分散</p>
+<p class="formula"><math display="block"><msup><mi>s</mi><mn>2</mn></msup><mo>=</mo><mfrac><mn>1</mn><mi>n</mi></mfrac><mo>｛</mo><msup><mrow><mo>(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>−</mo><mover><mi>x</mi><mo>‾</mo></mover><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><msub><mi>x</mi><mn>2</mn></msub><mo>−</mo><mover><mi>x</mi><mo>‾</mo></mover><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><mo>…</mo><mo>…</mo></math></p>
+<p class="formula cont"><math display="block"><mo>+</mo><msup><mrow><mo>(</mo><msub><mi>x</mi><mi>n</mi></msub><mo>−</mo><mover><mi>x</mi><mo>‾</mo></mover><mo>)</mo></mrow><mn>2</mn></msup><mo>｝</mo></math></p>
+</div><p class="formula">標準偏差　<math><mi>s</mi><mo>=</mo><msqrt><mtext>分散</mtext></msqrt></math></p><p>（分散）＝（偏差の2乗の平均値）＝（偏差の2乗の総和）÷（データの大きさ）</p></div>
+<p>注意 ― 標準偏差の単位は、変量 <math><mi>x</mi></math> の単位と同じである。</p>
+<p>データの値が平均値の周りに集中しているほど、それぞれの偏差の絶対値は小さくなり、分散、標準偏差も小さくなる傾向にある。たとえば、177ページでヒストグラムに表した2つのデータ <math><mi>A</mi></math>, <math><mi>B</mi></math> では、データの値から標準偏差を計算すると、それぞれ 20, 10 である。このことから、データ <math><mi>A</mi></math> の方がデータ <math><mi>B</mi></math> より散らばりの度合いが大きいと考えられる。</p>
       </section>
-      <section class="card prob" id="prob-ex8" data-flow="ex8" data-label="例8">
+      <section class="nofig card prob" id="prob-ex8" data-flow="ex8" data-label="例8">
         <div class="prob-head">
           <span class="prob-tag ">例 8</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">偏差の2乗の平均値 ― 変量 <i>x</i> のデータの値が下の表で与えられている。ただし、平均値 <span style="text-decoration:overline">x</span> は、<span style="text-decoration:overline">x</span> ＝ <span class="formula" style="display:inline-block;vertical-align:middle;margin:0 4px"><span class="frac"><span class="num">1</span><span class="den">7</span></span></span>×315 ＝ 45 である。偏差の2乗の平均値を求める。<table class="comp"><tr><th><i>x</i></th><td>57</td><td>46</td><td>37</td><td>38</td><td>54</td><td>48</td><td>35</td><td>計 315</td></tr><tr><th><i>x</i>−<span style="text-decoration:overline">x</span></th><td>12</td><td>1</td><td>-8</td><td>-7</td><td>9</td><td>3</td><td>-10</td><td>計 0</td></tr><tr><th>(<i>x</i>−<span style="text-decoration:overline">x</span>)<sup>2</sup></th><td>144</td><td>1</td><td>64</td><td>49</td><td>81</td><td>9</td><td>100</td><td>計 448</td></tr></table></p>
+        <p class="prob-q">偏差の2乗の平均値 ― 変量 <math><mi>x</mi></math> のデータの値が下の表で与えられている。ただし、平均値 <math><mover><mi>x</mi><mo>‾</mo></mover></math> は、<math><mover><mi>x</mi><mo>‾</mo></mover><mo>=</mo><mfrac><mn>1</mn><mn>7</mn></mfrac><mo>×</mo><mn>315</mn><mo>=</mo><mn>45</mn></math>である。偏差の2乗の平均値を求める。<table class="comp"><tr><th><math><mi>x</mi></math></th><td>57</td><td>46</td><td>37</td><td>38</td><td>54</td><td>48</td><td>35</td><td>計 315</td></tr><tr><th><math><mi>x</mi><mo>−</mo><mover><mi>x</mi><mo>‾</mo></mover></math></th><td>12</td><td>1</td><td>-8</td><td>-7</td><td>9</td><td>3</td><td>-10</td><td>計 0</td></tr><tr><th><math><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mover><mi>x</mi><mo>‾</mo></mover><mo>)</mo></mrow><mn>2</mn></msup></math></th><td>144</td><td>1</td><td>64</td><td>49</td><td>81</td><td>9</td><td>100</td><td>計 448</td></tr></table></p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 表の3段目に注目する</h3>
-<p>偏差の2乗 (<i>x</i>−<span style="text-decoration:overline">x</span>)<sup>2</sup> の合計は 448 だね。これが「偏差の2乗の総和」になるよ。</p>
+          <h3>ヒント 1 ― 表の3段目に注目する</h3><p class="cite"><span class="cite-tag">使う定義</span><math><mtext>偏差</mtext><mo>=</mo><mi>x</mi><mo>−</mo><mover><mi>x</mi><mo>‾</mo></mover></math>偏差は各値から平均値を引いた差。その2乗の合計 448 が、分散の計算のもとになる。</p>
+<p>偏差の2乗<math><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mover><mi>x</mi><mo>‾</mo></mover><mo>)</mo></mrow><mn>2</mn></msup></math> の合計は 448 だね。これが「偏差の2乗の総和」になるよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― データの大きさで割る</h3>
+          <h3>ヒント 2 ― データの大きさで割る</h3><p class="cite"><span class="cite-tag">使う定義</span><math><msup><mi>s</mi><mn>2</mn></msup><mo>=</mo><mfrac><mtext>偏差の2乗の総和</mtext><mtext>データの大きさ</mtext></mfrac></math>分散は偏差の2乗の平均値。合計 448 を大きさ 7 で割る。</p>
 <p>平均値は「合計 ÷ 個数」。データの大きさは 7 だから、448 を 7 で割ろう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">64</p>
-<p class="formula left">偏差の2乗の平均値 ＝ <span class="frac"><span class="num">1</span><span class="den">7</span></span> × 448 ＝ 64</p><p>これが、このデータの分散にあたる値だね。</p>
+          <p class="big">64</p><p class="cite"><span class="cite-tag">使う定義</span><math><msup><mi>s</mi><mn>2</mn></msup><mo>=</mo><mfrac><mtext>偏差の2乗の総和</mtext><mtext>データの大きさ</mtext></mfrac></math>偏差の2乗の平均値が、このデータの分散。</p>
+<p class="formula left">偏差の2乗の平均値<math><mo>=</mo><mfrac><mn>1</mn><mn>7</mn></mfrac><mo>×</mo><mn>448</mn><mo>=</mo><mn>64</mn></math></p><p>これが、このデータの分散にあたる値だね。</p>
         </div>
         <p class="prob-done">例8 クリア！　次は例9に進もう。</p>
       </section>
-      <section class="card prob" id="prob-ex9" data-flow="ex9" data-label="例9">
+      <section class="nofig card prob" id="prob-ex9" data-flow="ex9" data-label="例9">
         <div class="prob-head">
           <span class="prob-tag ">例 9</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">データの分散，標準偏差 ― 10人の漢字テストの得点 <i>x</i> が下の表で与えられている。ただし、平均値 <span style="text-decoration:overline">x</span> は、<span style="text-decoration:overline">x</span> ＝ <span class="formula" style="display:inline-block;vertical-align:middle;margin:0 4px"><span class="frac"><span class="num">1</span><span class="den">10</span></span></span>×70 ＝ 7 である。<i>x</i> の単位は点である。分散と標準偏差を求める。<table class="comp"><tr><th><i>x</i></th><td>9</td><td>3</td><td>4</td><td>10</td><td>10</td><td>5</td><td>7</td><td>9</td><td>10</td><td>3</td><td>計 70</td></tr><tr><th>(<i>x</i>−<span style="text-decoration:overline">x</span>)<sup>2</sup></th><td>4</td><td>16</td><td>9</td><td>9</td><td>9</td><td>4</td><td>0</td><td>4</td><td>9</td><td>16</td><td>計 80</td></tr></table></p>
+        <p class="prob-q">データの分散，標準偏差 ― 10人の漢字テストの得点 <math><mi>x</mi></math> が下の表で与えられている。ただし、平均値 <math><mover><mi>x</mi><mo>‾</mo></mover></math> は、<math><mover><mi>x</mi><mo>‾</mo></mover><mo>=</mo><mfrac><mn>1</mn><mn>10</mn></mfrac><mo>×</mo><mn>70</mn><mo>=</mo><mn>7</mn></math>である。<math><mi>x</mi></math> の単位は点である。分散と標準偏差を求める。<table class="comp"><tr><th><math><mi>x</mi></math></th><td>9</td><td>3</td><td>4</td><td>10</td><td>10</td><td>5</td><td>7</td><td>9</td><td>10</td><td>3</td><td>計 70</td></tr><tr><th><math><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mover><mi>x</mi><mo>‾</mo></mover><mo>)</mo></mrow><mn>2</mn></msup></math></th><td>4</td><td>16</td><td>9</td><td>9</td><td>9</td><td>4</td><td>0</td><td>4</td><td>9</td><td>16</td><td>計 80</td></tr></table></p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 分散は偏差の2乗の合計 ÷ 10</h3>
-<p>表から偏差の2乗の合計は 80。データの大きさ 10 で割ると分散 <i>s</i><sup>2</sup> が出るよ。</p>
+          <h3>ヒント 1 ― 分散は偏差の2乗の合計 ÷ 10</h3><p class="cite"><span class="cite-tag">使う定義</span><math><msup><mi>s</mi><mn>2</mn></msup><mo>=</mo><mfrac><mtext>偏差の2乗の総和</mtext><mtext>データの大きさ</mtext></mfrac></math>表の偏差の2乗の合計 80 を、大きさ 10 で割る。</p>
+<p>表から偏差の2乗の合計は 80。データの大きさ 10 で割ると分散 <math><msup><mi>s</mi><mn>2</mn></msup></math> が出るよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― 標準偏差は分散の正の平方根</h3>
-<p><i>s</i> ＝ √<span class="rad">分散</span> を計算し、教科書では小数第1位まで（小数第2位を四捨五入）で表そう。単位は「点」だよ。</p>
+          <h3>ヒント 2 ― 標準偏差は分散の正の平方根</h3><p class="cite"><span class="cite-tag">使う定義</span><math><mi>s</mi><mo>=</mo><msqrt><msup><mi>s</mi><mn>2</mn></msup></msqrt></math>標準偏差は分散の正の平方根。単位は元の変量と同じ「点」で表す。</p>
+<p><math><mi>s</mi><mo>=</mo><msqrt><mtext>分散</mtext></msqrt></math> を計算し、教科書では小数第1位まで（小数第2位を四捨五入）で表そう。単位は「点」だよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">分散 8、標準偏差 ≒ 2.8 点</p>
-<p class="formula left">分散 <i>s</i><sup>2</sup> は　<i>s</i><sup>2</sup> ＝ <span class="frac"><span class="num">1</span><span class="den">10</span></span> × 80 ＝ 8</p><p class="formula left">標準偏差 <i>s</i> は　<i>s</i> ＝ √<span class="rad">8</span> ≒ 2.8（点）</p>
+          <p class="big">分散 8、標準偏差<math><mo>≒</mo><mn>2.8</mn></math>点</p><p class="cite"><span class="cite-tag">使う定義</span><math><mi>s</mi><mo>=</mo><msqrt><msup><mi>s</mi><mn>2</mn></msup></msqrt></math>分散 8 の正の平方根が標準偏差で、小数第1位まで表す。</p>
+<p class="formula left">分散 <math><msup><mi>s</mi><mn>2</mn></msup></math> は　<math><msup><mi>s</mi><mn>2</mn></msup><mo>=</mo><mfrac><mn>1</mn><mn>10</mn></mfrac><mo>×</mo><mn>80</mn><mo>=</mo><mn>8</mn></math></p><p class="formula left">標準偏差 <math><mi>s</mi></math> は　<math><mi>s</mi><mo>=</mo><msqrt><mn>8</mn></msqrt><mo>≒</mo><mn>2.8</mn><mo>(</mo></math>点）</p>
         </div>
         <p class="prob-done">例9 クリア！　次は練習10に挑戦しよう。</p>
       </section>
-      <section class="card prob" id="prob-ren10" data-flow="ren10" data-label="練習10">
+      <section class="nofig card prob" id="prob-ren10" data-flow="ren10" data-label="練習10">
         <div class="prob-head">
           <span class="prob-tag ren">練習 10</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
@@ -411,8 +479,8 @@ padding:16px 34px;box-shadow:var(--shadow);
           </div>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― まず平均値を出す</h3>
-<p>合計を数えよう。6＋10＋7＋7＋5＋4＋9＋10＋5＋7 ＝ 70 だから、平均値は 70 ÷ 10 ＝ 7（点）だね。</p>
+          <h3>ヒント 1 ― まず平均値を出す</h3><p class="cite"><span class="cite-tag">使う定義</span><math><mover><mi>x</mi><mo>‾</mo></mover><mo>=</mo><mfrac><mtext>データの値の総和</mtext><mtext>データの大きさ</mtext></mfrac></math>合計 70 を個数 10 で割って、平均値 7 を先に出す。</p>
+<p>合計を数えよう。<math><mn>6</mn><mo>+</mo><mn>10</mn><mo>+</mo><mn>7</mn><mo>+</mo><mn>7</mn><mo>+</mo><mn>5</mn><mo>+</mo><mn>4</mn><mo>+</mo><mn>9</mn><mo>+</mo><mn>10</mn><mo>+</mo><mn>5</mn><mo>+</mo><mn>7</mn><mo>=</mo><mn>70</mn></math>だから、平均値は<math><mn>70</mn><mo>÷</mo><mn>10</mn><mo>=</mo><mn>7</mn><mo>(</mo></math>点）だね。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 偏差の2乗を1つずつ計算して合計する</h3>
@@ -425,8 +493,8 @@ padding:16px 34px;box-shadow:var(--shadow);
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">分散 4、標準偏差 2 点</p>
-<p class="formula left">平均値 ＝ 7、偏差の2乗の合計 ＝ 1＋9＋0＋0＋4＋9＋4＋9＋4＋0 ＝ 40</p><p class="formula left">分散 <i>s</i><sup>2</sup> ＝ <span class="frac"><span class="num">1</span><span class="den">10</span></span> × 40 ＝ 4</p><p class="formula left">標準偏差 <i>s</i> ＝ √<span class="rad">4</span> ＝ 2（点）</p>
+          <p class="big">分散 4、標準偏差 2 点</p><p class="cite"><span class="cite-tag">使う定義</span><math><msup><mi>s</mi><mn>2</mn></msup><mo>=</mo><mfrac><mtext>偏差の2乗の総和</mtext><mtext>データの大きさ</mtext></mfrac></math>偏差の2乗の合計 40 を 10 で割って分散を求め、平方根をとって仕上げる。</p>
+<p class="formula left">平均値<math><mo>=</mo><mn>7</mn></math>、偏差の2乗の合計<math><mo>=</mo><mn>1</mn><mo>+</mo><mn>9</mn><mo>+</mo><mn>0</mn><mo>+</mo><mn>0</mn><mo>+</mo><mn>4</mn><mo>+</mo><mn>9</mn><mo>+</mo><mn>4</mn><mo>+</mo><mn>9</mn><mo>+</mo><mn>4</mn><mo>+</mo><mn>0</mn><mo>=</mo><mn>40</mn></math></p><p class="formula left">分散 <math><msup><mi>s</mi><mn>2</mn></msup><mo>=</mo><mfrac><mn>1</mn><mn>10</mn></mfrac><mo>×</mo><mn>40</mn><mo>=</mo><mn>4</mn></math></p><p class="formula left">標準偏差 <math><mi>s</mi><mo>=</mo><msqrt><mn>4</mn></msqrt><mo>=</mo><mn>2</mn><mo>(</mo></math>点）</p>
         </div>
         <p class="prob-done">練習10 クリア！　次は解説Bに進もう。</p>
       </section>
@@ -437,38 +505,46 @@ padding:16px 34px;box-shadow:var(--shadow);
       </div>
       <section class="card">
 <p>分散を表す式を変形してみよう。</p>
-<p class="formula"><i>s</i><sup>2</sup> ＝ <span class="frac"><span class="num">1</span><span class="den"><i>n</i></span></span>｛(<i>x</i><sub>1</sub>−<span style="text-decoration:overline">x</span>)<sup>2</sup>＋(<i>x</i><sub>2</sub>−<span style="text-decoration:overline">x</span>)<sup>2</sup>＋……＋(<i>x<sub>n</sub></i>−<span style="text-decoration:overline">x</span>)<sup>2</sup>｝</p>
-<p class="formula">＝ <span class="frac"><span class="num">1</span><span class="den"><i>n</i></span></span> (<i>x</i><sub>1</sub><sup>2</sup>＋<i>x</i><sub>2</sub><sup>2</sup>＋……＋<i>x<sub>n</sub></i><sup>2</sup>) − (<span style="text-decoration:overline">x</span>)<sup>2</sup></p>
-<p>変量 <i>x</i> の <i>n</i> 個のデータが <i>x</i><sub>1</sub>, <i>x</i><sub>2</sub>, ……， <i>x<sub>n</sub></i> のとき、<i>x</i><sub>1</sub><sup>2</sup>, <i>x</i><sub>2</sub><sup>2</sup>, ……， <i>x<sub>n</sub></i><sup>2</sup> を変量 <i>x</i><sup>2</sup> の <i>n</i> 個のデータと考えることにすると、次のことがいえる。</p>
-<div class="def"><p><b>分散と平均値の関係式 ①</b></p><p class="formula">（<i>x</i> のデータの分散）＝（<i>x</i><sup>2</sup> のデータの平均値）−（<i>x</i> のデータの平均値）<sup>2</sup></p><p>注意 ― 変量 <i>x</i><sup>2</sup> のデータの平均値を <span style="text-decoration:overline">x<sup>2</sup></span> と書くと、上の式は <i>s</i><sup>2</sup> ＝ <span style="text-decoration:overline">x<sup>2</sup></span> − (<span style="text-decoration:overline">x</span>)<sup>2</sup> と書ける。</p></div>
-<p>関係式 ① を使うと、各値の偏差を出さなくても、<span class="key">「2乗の平均」から「平均の2乗」を引く</span>だけで分散が求められる。</p>
+<p class="mq-wide formula"><math display="block"><msup><mi>s</mi><mn>2</mn></msup><mo>=</mo><mfrac><mn>1</mn><mi>n</mi></mfrac><mo>｛</mo><msup><mrow><mo>(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>−</mo><mover><mi>x</mi><mo>‾</mo></mover><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><msub><mi>x</mi><mn>2</mn></msub><mo>−</mo><mover><mi>x</mi><mo>‾</mo></mover><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><mo>…</mo><mo>…</mo><mo>+</mo><msup><mrow><mo>(</mo><msub><mi>x</mi><mi>n</mi></msub><mo>−</mo><mover><mi>x</mi><mo>‾</mo></mover><mo>)</mo></mrow><mn>2</mn></msup><mo>｝</mo></math></p>
+<div class="mq-narrow">
+<p class="formula"><math display="block"><msup><mi>s</mi><mn>2</mn></msup><mo>=</mo><mfrac><mn>1</mn><mi>n</mi></mfrac><mo>｛</mo><msup><mrow><mo>(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>−</mo><mover><mi>x</mi><mo>‾</mo></mover><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><msub><mi>x</mi><mn>2</mn></msub><mo>−</mo><mover><mi>x</mi><mo>‾</mo></mover><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><mo>…</mo><mo>…</mo></math></p>
+<p class="formula cont"><math display="block"><mo>+</mo><msup><mrow><mo>(</mo><msub><mi>x</mi><mi>n</mi></msub><mo>−</mo><mover><mi>x</mi><mo>‾</mo></mover><mo>)</mo></mrow><mn>2</mn></msup><mo>｝</mo></math></p>
+</div>
+<p class="formula"><math display="block"><mo>=</mo><mfrac><mn>1</mn><mi>n</mi></mfrac><mrow><mo>(</mo><msup><msub><mi>x</mi><mn>1</mn></msub><mn>2</mn></msup><mo>+</mo><msup><msub><mi>x</mi><mn>2</mn></msub><mn>2</mn></msup><mo>+</mo><mo>…</mo><mo>…</mo><mo>+</mo><msup><msub><mi>x</mi><mi>n</mi></msub><mn>2</mn></msup><mo>)</mo></mrow><mo>−</mo><msup><mrow><mo>(</mo><mover><mi>x</mi><mo>‾</mo></mover><mo>)</mo></mrow><mn>2</mn></msup></math></p>
+<p>変量 <math><mi>x</mi></math> の <math><mi>n</mi></math> 個のデータが <math><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>x</mi><mn>2</mn></msub><mo>,</mo><mo>…</mo><mo>…</mo><mo>,</mo><msub><mi>x</mi><mi>n</mi></msub></math> のとき、<math><msup><msub><mi>x</mi><mn>1</mn></msub><mn>2</mn></msup><mo>,</mo><msup><msub><mi>x</mi><mn>2</mn></msub><mn>2</mn></msup><mo>,</mo><mo>…</mo><mo>…</mo><mo>,</mo><msup><msub><mi>x</mi><mi>n</mi></msub><mn>2</mn></msup></math> を変量 <math><msup><mi>x</mi><mn>2</mn></msup></math> の <math><mi>n</mi></math> 個のデータと考えることにすると、次のことがいえる。</p>
+<div class="def"><p><b>分散と平均値の関係式 ①</b></p><p class="formula"><math><mo>(</mo><mi>x</mi></math> のデータの分散<math><mo>)</mo><mo>=</mo><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup></math> のデータの平均値<math><mo>)</mo><mo>−</mo><mo>(</mo><mi>x</mi></math> のデータの平均値<math><msup><mo>)</mo><mn>2</mn></msup></math></p><p>注意 ― 変量 <math><msup><mi>x</mi><mn>2</mn></msup></math> のデータの平均値を <math><mover><msup><mi>x</mi><mn>2</mn></msup><mo>‾</mo></mover></math> と書くと、上の式は <math><msup><mi>s</mi><mn>2</mn></msup><mo>=</mo><mover><msup><mi>x</mi><mn>2</mn></msup><mo>‾</mo></mover><mo>−</mo><msup><mrow><mo>(</mo><mover><mi>x</mi><mo>‾</mo></mover><mo>)</mo></mrow><mn>2</mn></msup></math> と書ける。</p></div>
+<p>関係式 ① を使うと、各値の偏差を出さなくても、<span class="key">「2乗の平均」から「平均の2乗」を引く</span>だけで分散が求められる。<br></p>
       </section>
-      <section class="card prob" id="prob-ex10" data-flow="ex10" data-label="例10">
+      <section class="nofig card prob" id="prob-ex10" data-flow="ex10" data-label="例10">
         <div class="prob-head">
           <span class="prob-tag ">例 10</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">関係式 ① を用いて、例9 のデータの分散を求める。<table class="comp"><tr><th><i>x</i></th><td>9</td><td>3</td><td>4</td><td>10</td><td>10</td><td>5</td><td>7</td><td>9</td><td>10</td><td>3</td><td>計 70</td></tr><tr><th><i>x</i><sup>2</sup></th><td>81</td><td>9</td><td>16</td><td>100</td><td>100</td><td>25</td><td>49</td><td>81</td><td>100</td><td>9</td><td>計 570</td></tr></table></p>
+        <p class="prob-q">関係式 ① を用いて、例9 のデータの分散を求める。<table class="comp"><tr><th><math><mi>x</mi></math></th><td>9</td><td>3</td><td>4</td><td>10</td><td>10</td><td>5</td><td>7</td><td>9</td><td>10</td><td>3</td><td>計 70</td></tr><tr><th><math><msup><mi>x</mi><mn>2</mn></msup></math></th><td>81</td><td>9</td><td>16</td><td>100</td><td>100</td><td>25</td><td>49</td><td>81</td><td>100</td><td>9</td><td>計 570</td></tr></table></p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 2つの平均値を出す</h3>
-<p><span style="text-decoration:overline">x</span> ＝ <span class="formula" style="display:inline-block;vertical-align:middle;margin:0 4px"><span class="frac"><span class="num">1</span><span class="den">10</span></span></span>×70 ＝ 7、<span style="text-decoration:overline">x<sup>2</sup></span> ＝ <span class="formula" style="display:inline-block;vertical-align:middle;margin:0 4px"><span class="frac"><span class="num">1</span><span class="den">10</span></span></span>×570 ＝ 57 を先に計算しよう。</p>
+          <h3>ヒント 1 ― 2つの平均値を出す</h3><p class="cite"><span class="cite-tag">使う公式</span><math><msup><mi>s</mi><mn>2</mn></msup><mo>=</mo><mover><msup><mi>x</mi><mn>2</mn></msup><mo>‾</mo></mover><mo>−</mo><msup><mrow><mo>(</mo><mover><mi>x</mi><mo>‾</mo></mover><mo>)</mo></mrow><mn>2</mn></msup></math>分散と平均値の関係式①。先に平均値と、2乗の平均値を出しておく。</p>
+<p><math><mover><mi>x</mi><mo>‾</mo></mover><mo>=</mo><mfrac><mn>1</mn><mn>10</mn></mfrac><mo>×</mo><mn>70</mn><mo>=</mo><mn>7</mn></math>、<math><mover><msup><mi>x</mi><mn>2</mn></msup><mo>‾</mo></mover><mo>=</mo><mfrac><mn>1</mn><mn>10</mn></mfrac><mo>×</mo><mn>570</mn><mo>=</mo><mn>57</mn></math>を先に計算しよう。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― 関係式 ① に当てはめる</h3>
-<p><i>s</i><sup>2</sup> ＝ <span style="text-decoration:overline">x<sup>2</sup></span> − (<span style="text-decoration:overline">x</span>)<sup>2</sup> に、57 と 7 を代入しよう。例9 で定義から求めた値と一致するか確かめてね。</p>
+          <h3>ヒント 2 ― 関係式 ① に当てはめる</h3><p class="cite"><span class="cite-tag">使う公式</span><math><msup><mi>s</mi><mn>2</mn></msup><mo>=</mo><mover><msup><mi>x</mi><mn>2</mn></msup><mo>‾</mo></mover><mo>−</mo><msup><mrow><mo>(</mo><mover><mi>x</mi><mo>‾</mo></mover><mo>)</mo></mrow><mn>2</mn></msup></math>2乗の平均 57 と平均 7 を、関係式①に代入する。</p>
+<p><math><msup><mi>s</mi><mn>2</mn></msup><mo>=</mo><mover><msup><mi>x</mi><mn>2</mn></msup><mo>‾</mo></mover><mo>−</mo><msup><mrow><mo>(</mo><mover><mi>x</mi><mo>‾</mo></mover><mo>)</mo></mrow><mn>2</mn></msup></math> に、57 と 7 を代入しよう。例9 で定義から求めた値と一致するか確かめてね。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">分散 8</p>
-<p class="formula left"><i>s</i><sup>2</sup> ＝ <span style="text-decoration:overline">x<sup>2</sup></span> − (<span style="text-decoration:overline">x</span>)<sup>2</sup> ＝ 57 − 7<sup>2</sup> ＝ 8</p><p>例9 の結果（分散 8）と一致したね。</p>
+          <p class="big">分散 8</p><p class="cite"><span class="cite-tag">使う公式</span><math><msup><mi>s</mi><mn>2</mn></msup><mo>=</mo><mover><msup><mi>x</mi><mn>2</mn></msup><mo>‾</mo></mover><mo>−</mo><msup><mrow><mo>(</mo><mover><mi>x</mi><mo>‾</mo></mover><mo>)</mo></mrow><mn>2</mn></msup></math>関係式①で求めても、定義から求めた分散 8 と一致する。</p>
+<div class="chain-crow formula left">
+<div class="crow"><math displaystyle="true"><msup><mi>s</mi><mn>2</mn></msup><mo>=</mo><mover><msup><mi>x</mi><mn>2</mn></msup><mo>‾</mo></mover><mo>−</mo><msup><mrow><mo>(</mo><mover><mi>x</mi><mo>‾</mo></mover><mo>)</mo></mrow><mn>2</mn></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msup><mi>s</mi><mn>2</mn></msup></mphantom><mo>=</mo><mn>57</mn><mo>−</mo><msup><mn>7</mn><mn>2</mn></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msup><mi>s</mi><mn>2</mn></msup></mphantom><mo>=</mo><mn>8</mn></math></div>
+</div><p>例9 の結果（分散 8）と一致したね。</p>
         </div>
         <p class="prob-done">例10 クリア！　次は練習11に挑戦しよう。</p>
       </section>
-      <section class="card prob" id="prob-ren11" data-flow="ren11" data-label="練習11">
+      <section class="nofig card prob" id="prob-ren11" data-flow="ren11" data-label="練習11">
         <div class="prob-head">
           <span class="prob-tag ren">練習 11</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
@@ -489,18 +565,22 @@ padding:16px 34px;box-shadow:var(--shadow);
           </div>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 平均値と「2乗の平均」を出す</h3>
-<p>合計は 55 だから平均値は 5.5。各値を2乗した値（25, 9, 36, 64, 25, 64, 25, 16, 36, 25）の合計 325 から、<span style="text-decoration:overline">x<sup>2</sup></span> ＝ 32.5 も出しておこう。</p>
+          <h3>ヒント 1 ― 平均値と「2乗の平均」を出す</h3><p class="cite"><span class="cite-tag">使う公式</span><math><msup><mi>s</mi><mn>2</mn></msup><mo>=</mo><mover><msup><mi>x</mi><mn>2</mn></msup><mo>‾</mo></mover><mo>−</mo><msup><mrow><mo>(</mo><mover><mi>x</mi><mo>‾</mo></mover><mo>)</mo></mrow><mn>2</mn></msup></math>合計 55 から平均値 5.5、2乗の合計 325 から2乗の平均 32.5 を出しておく。</p>
+<p>合計は 55 だから平均値は 5.5。各値を2乗した値<math><mo>(</mo><mn>25</mn><mo>,</mo><mn>9</mn><mo>,</mo><mn>36</mn><mo>,</mo><mn>64</mn><mo>,</mo><mn>25</mn><mo>,</mo><mn>64</mn><mo>,</mo><mn>25</mn><mo>,</mo><mn>16</mn><mo>,</mo><mn>36</mn><mo>,</mo><mn>25</mn><mo>)</mo></math>の合計 325 から、<math><mover><msup><mi>x</mi><mn>2</mn></msup><mo>‾</mo></mover><mo>=</mo><mn>32.5</mn></math>も出しておこう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 関係式 ① を使う</h3>
-<p><i>s</i><sup>2</sup> ＝ <span style="text-decoration:overline">x<sup>2</sup></span> − (<span style="text-decoration:overline">x</span>)<sup>2</sup> ＝ 32.5 − 5.5<sup>2</sup> を計算しよう。標準偏差はその正の平方根だよ。</p>
+<p><math><msup><mi>s</mi><mn>2</mn></msup><mo>=</mo><mover><msup><mi>x</mi><mn>2</mn></msup><mo>‾</mo></mover><mo>−</mo><msup><mrow><mo>(</mo><mover><mi>x</mi><mo>‾</mo></mover><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>32.5</mn><mo>−</mo><msup><mn>5.5</mn><mn>2</mn></msup></math> を計算しよう。標準偏差はその正の平方根だよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">分散 2.25、標準偏差 1.5</p>
-<p class="formula left"><span style="text-decoration:overline">x</span> ＝ 5.5、<span style="text-decoration:overline">x<sup>2</sup></span> ＝ <span class="frac"><span class="num">325</span><span class="den">10</span></span> ＝ 32.5</p><p class="formula left">分散 <i>s</i><sup>2</sup> ＝ 32.5 − 5.5<sup>2</sup> ＝ 32.5 − 30.25 ＝ 2.25</p><p class="formula left">標準偏差 <i>s</i> ＝ √<span class="rad">2.25</span> ＝ 1.5</p>
+          <p class="big">分散 2.25、標準偏差 1.5</p><p class="cite"><span class="cite-tag">使う公式</span><math><msup><mi>s</mi><mn>2</mn></msup><mo>=</mo><mover><msup><mi>x</mi><mn>2</mn></msup><mo>‾</mo></mover><mo>−</mo><msup><mrow><mo>(</mo><mover><mi>x</mi><mo>‾</mo></mover><mo>)</mo></mrow><mn>2</mn></msup></math>32.5−5.5²=2.25 が分散、その正の平方根 1.5 が標準偏差。</p>
+<p class="formula left"><math><mover><mi>x</mi><mo>‾</mo></mover><mo>=</mo><mn>5.5</mn></math>、<math><mover><msup><mi>x</mi><mn>2</mn></msup><mo>‾</mo></mover><mo>=</mo><mfrac><mn>325</mn><mn>10</mn></mfrac><mo>=</mo><mn>32.5</mn></math></p><p class="formula left">分散 <div class="chain-crow">
+<div class="crow"><math displaystyle="true"><msup><mi>s</mi><mn>2</mn></msup><mo>=</mo><mn>32.5</mn><mo>−</mo><msup><mn>5.5</mn><mn>2</mn></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msup><mi>s</mi><mn>2</mn></msup></mphantom><mo>=</mo><mn>32.5</mn><mo>−</mo><mn>30.25</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msup><mi>s</mi><mn>2</mn></msup></mphantom><mo>=</mo><mn>2.25</mn></math></div>
+</div></p><p class="formula left">標準偏差 <math><mi>s</mi><mo>=</mo><msqrt><mn>2.25</mn></msqrt><mo>=</mo><mn>1.5</mn></math></p>
         </div>
         <p class="prob-done">練習11 クリア！　次は研究「変量の変換」に進もう。</p>
       </section>
@@ -511,27 +591,27 @@ padding:16px 34px;box-shadow:var(--shadow);
       </div>
       <section class="card">
 <p>データのすべての値に同じ数を足したり、同じ数を掛けたりするとき、平均値，分散がどのように変化するかを考えてみよう。</p>
-<p>ある変量 <i>x</i> について、次の5つの値からなるデータが得られた。</p>
+<p>ある変量 <math><mi>x</mi></math> について、次の5つの値からなるデータが得られた。</p>
 <p class="formula">7,　3,　9,　6,　5</p>
-<p>このとき、下の表から <i>x</i> のデータの平均値は 6，分散は 4 となる。</p>
-<table class="comp"><tr><th><i>x</i></th><td>7</td><td>3</td><td>9</td><td>6</td><td>5</td><td>計 30</td></tr><tr><th><i>x</i>−<span style="text-decoration:overline">x</span></th><td>1</td><td>−3</td><td>3</td><td>0</td><td>−1</td><td>計 0</td></tr><tr><th>(<i>x</i>−<span style="text-decoration:overline">x</span>)<sup>2</sup></th><td>1</td><td>9</td><td>9</td><td>0</td><td>1</td><td>計 20</td></tr></table><p>ここで、この変量 <i>x</i> から、<i>y</i> ＝ 3<i>x</i> ＋ 2 によって得られる変量 <i>y</i> について考える。たとえば、<i>x</i> のデータの値 7 から得られる <i>y</i> のデータの値は 3・7 ＋ 2 ＝ 23 である。この <i>y</i> のデータの平均値，分散を求めてみよう。</p>
-<table class="comp"><tr><th><i>y</i></th><td>23</td><td>11</td><td>29</td><td>20</td><td>17</td><td>計 100</td></tr><tr><th><i>y</i>−<span style="text-decoration:overline">y</span></th><td>3</td><td>−9</td><td>9</td><td>0</td><td>−3</td><td>計 0</td></tr><tr><th>(<i>y</i>−<span style="text-decoration:overline">y</span>)<sup>2</sup></th><td>9</td><td>81</td><td>81</td><td>0</td><td>9</td><td>計 180</td></tr></table><p>これより、平均値は 20，分散は 36 となる（総和は 3・30 ＋ 5・2、偏差はそれぞれ 3 倍になり、平均値は 3・6 ＋ 2、分散は 3<sup>2</sup> 倍になっている）。一般に、次が成り立つことが知られている。</p>
-<div class="def"><p><b>変量の変換</b>　<i>a</i>, <i>b</i> は定数とする。変量 <i>x</i> のデータから <i>y</i> ＝ <i>ax</i> ＋ <i>b</i> によって新しい変量 <i>y</i> のデータが得られるとき、<i>x</i>, <i>y</i> のデータの平均値を <span style="text-decoration:overline">x</span>, <span style="text-decoration:overline">y</span>、分散を <i>s<sub>x</sub></i><sup>2</sup>, <i>s<sub>y</sub></i><sup>2</sup>、標準偏差を <i>s<sub>x</sub></i>, <i>s<sub>y</sub></i> とすると、次のことが成り立つ。</p><p class="formula"><span style="text-decoration:overline">y</span> ＝ <i>a</i><span style="text-decoration:overline">x</span> ＋ <i>b</i>、　<i>s<sub>y</sub></i><sup>2</sup> ＝ <i>a</i><sup>2</sup><i>s<sub>x</sub></i><sup>2</sup>、　<i>s<sub>y</sub></i> ＝ |<i>a</i>|<i>s<sub>x</sub></i></p><p>補足 ― 標準偏差は分散の正の平方根であるから、<i>s<sub>y</sub></i> ＝ √<span class="rad"><i>a</i><sup>2</sup><i>s<sub>x</sub></i><sup>2</sup></span> ＝ |<i>a</i>|<i>s<sub>x</sub></i> となる。</p></div>
-<p>ポイントは、<span class="key">足す数 <i>b</i> は平均値だけに影響し、分散・標準偏差には影響しない</span>こと、<span class="key">掛ける数 <i>a</i> は分散を <i>a</i><sup>2</sup> 倍、標準偏差を |<i>a</i>| 倍にする</span>ことだよ。</p>
+<p>このとき、下の表から <math><mi>x</mi></math> のデータの平均値は 6，分散は 4 となる。</p>
+<table class="comp"><tr><th><math><mi>x</mi></math></th><td>7</td><td>3</td><td>9</td><td>6</td><td>5</td><td>計 30</td></tr><tr><th><math><mi>x</mi><mo>−</mo><mover><mi>x</mi><mo>‾</mo></mover></math></th><td>1</td><td>−3</td><td>3</td><td>0</td><td>−1</td><td>計 0</td></tr><tr><th><math><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mover><mi>x</mi><mo>‾</mo></mover><mo>)</mo></mrow><mn>2</mn></msup></math></th><td>1</td><td>9</td><td>9</td><td>0</td><td>1</td><td>計 20</td></tr></table><p>ここで、この変量 <math><mi>x</mi></math> から、<math><mi>y</mi><mo>=</mo><mn>3</mn><mi>x</mi><mo>+</mo><mn>2</mn></math>によって得られる変量 <math><mi>y</mi></math> について考える。たとえば、<math><mi>x</mi></math> のデータの値 7 から得られる <math><mi>y</mi></math> のデータの値は<math><mn>3</mn><mo>⋅</mo><mn>7</mn><mo>+</mo><mn>2</mn><mo>=</mo><mn>23</mn></math>である。この <math><mi>y</mi></math> のデータの平均値，分散を求めてみよう。</p>
+<table class="comp"><tr><th><math><mi>y</mi></math></th><td>23</td><td>11</td><td>29</td><td>20</td><td>17</td><td>計 100</td></tr><tr><th><math><mi>y</mi><mo>−</mo><mover><mi>y</mi><mo>‾</mo></mover></math></th><td>3</td><td>−9</td><td>9</td><td>0</td><td>−3</td><td>計 0</td></tr><tr><th><math><msup><mrow><mo>(</mo><mi>y</mi><mo>−</mo><mover><mi>y</mi><mo>‾</mo></mover><mo>)</mo></mrow><mn>2</mn></msup></math></th><td>9</td><td>81</td><td>81</td><td>0</td><td>9</td><td>計 180</td></tr></table><p>これより、平均値は 20，分散は 36 となる（総和は 3・30 ＋ 5・2、偏差はそれぞれ 3 倍になり、平均値は 3・6 ＋ 2、分散は<math><msup><mn>3</mn><mn>2</mn></msup></math> 倍になっている）。一般に、<br>次が成り立つことが知られている。</p>
+<div class="def"><p><b>変量の変換</b>　<math><mi>a</mi><mo>,</mo><mi>b</mi></math> は定数とする。変量 <math><mi>x</mi></math> のデータから <math><mi>y</mi><mo>=</mo><mi>ax</mi><mo>+</mo><mi>b</mi></math> によって新しい変量 <math><mi>y</mi></math> のデータが得られるとき、<math><mi>x</mi><mo>,</mo><mi>y</mi></math> のデータの平均値を <math><mover><mi>x</mi><mo>‾</mo></mover><mo>,</mo><mover><mi>y</mi><mo>‾</mo></mover></math>、分散を <math><msup><msub><mi>s</mi><mi>x</mi></msub><mn>2</mn></msup><mo>,</mo><msup><msub><mi>s</mi><mi>y</mi></msub><mn>2</mn></msup></math>、標準偏差を <math><msub><mi>s</mi><mi>x</mi></msub><mo>,</mo><msub><mi>s</mi><mi>y</mi></msub></math> とすると、次のことが成り立つ。</p><p class="formula"><math><mover><mi>y</mi><mo>‾</mo></mover><mo>=</mo><mi>a</mi><mover><mi>x</mi><mo>‾</mo></mover><mo>+</mo><mi>b</mi></math>、　<math><msup><msub><mi>s</mi><mi>y</mi></msub><mn>2</mn></msup><mo>=</mo><msup><mi>a</mi><mn>2</mn></msup><msup><msub><mi>s</mi><mi>x</mi></msub><mn>2</mn></msup></math>、　<math><msub><mi>s</mi><mi>y</mi></msub><mo>=</mo><mrow><mo>|</mo><mi>a</mi><mo>|</mo></mrow><msub><mi>s</mi><mi>x</mi></msub></math></p><p>補足 ― 標準偏差は分散の正の平方根であるから、<math><msub><mi>s</mi><mi>y</mi></msub><mo>=</mo><msqrt><mrow><msup><mi>a</mi><mn>2</mn></msup><msup><msub><mi>s</mi><mi>x</mi></msub><mn>2</mn></msup></mrow></msqrt><mo>=</mo><mrow><mo>|</mo><mi>a</mi><mo>|</mo></mrow><msub><mi>s</mi><mi>x</mi></msub></math> となる。</p></div>
+<p>ポイントは、<span class="key">足す数 <math><mi>b</mi></math> は平均値だけに影響し、分散・標準偏差には影響しない</span>こと、<span class="key">掛ける数 <math><mi>a</mi></math> は分散を <math><msup><mi>a</mi><mn>2</mn></msup></math> 倍、標準偏差を<math><mo>|</mo><mi>a</mi><mo>|</mo></math>倍にする</span>ことだよ。</p>
       </section>
-      <section class="card prob" id="prob-kenren1" data-flow="kenren1" data-label="研究 練習1">
+      <section class="nofig card prob" id="prob-kenren1" data-flow="kenren1" data-label="研究 練習1">
         <div class="prob-head">
           <span class="prob-tag ren">研究 練習 1</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">変量 <i>x</i> のデータの平均値が 5，分散が 9 のとき、<i>y</i> ＝ <span class="formula" style="display:inline-block;vertical-align:middle;margin:0 4px"><span class="frac"><span class="num"><i>x</i> − 5</span><span class="den">3</span></span></span> によって得られる新しい変量 <i>y</i> のデータについて、平均値と分散を求めよ。</p>
+        <p class="prob-q">変量 <math><mi>x</mi></math> のデータの平均値が 5，分散が 9 のとき、<math><mi>y</mi><mo>=</mo><mfrac><mrow><mi>x</mi><mo>−</mo><mn>5</mn></mrow><mn>3</mn></mfrac></math> によって得られる新しい変量 <math><mi>y</mi></math> のデータについて、平均値と分散を求めよ。</p>
           <div class="quiz" id="q-kenren1" data-correct="1">
           <div class="choices">
             <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>平均値 0、分散 1</span><span class="mark"></span></button>
             <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>平均値 0、分散 3</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>平均値 <span class="frac"><span class="num">5</span><span class="den">3</span></span>、分散 1</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>平均値 <math><mfrac><mn>5</mn><mn>3</mn></mfrac></math>、分散 1</span><span class="mark"></span></button>
             <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>平均値 0、分散 9</span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
@@ -540,18 +620,26 @@ padding:16px 34px;box-shadow:var(--shadow);
           </div>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― <i>y</i> ＝ <i>ax</i> ＋ <i>b</i> の形に直す</h3>
-<p><i>y</i> ＝ <span class="formula" style="display:inline-block;vertical-align:middle;margin:0 4px"><span class="frac"><span class="num"><i>x</i> − 5</span><span class="den">3</span></span></span> ＝ <span class="formula" style="display:inline-block;vertical-align:middle;margin:0 4px"><span class="frac"><span class="num">1</span><span class="den">3</span></span></span><i>x</i> − <span class="formula" style="display:inline-block;vertical-align:middle;margin:0 4px"><span class="frac"><span class="num">5</span><span class="den">3</span></span></span> と変形すると、<i>a</i> ＝ <span class="formula" style="display:inline-block;vertical-align:middle;margin:0 4px"><span class="frac"><span class="num">1</span><span class="den">3</span></span></span>、<i>b</i> ＝ −<span class="formula" style="display:inline-block;vertical-align:middle;margin:0 4px"><span class="frac"><span class="num">5</span><span class="den">3</span></span></span> だね。</p>
+          <h3>ヒント<math><mn>1</mn><mo>―</mo><mi>y</mi><mo>=</mo><mi>ax</mi><mo>+</mo><mi>b</mi></math> の形に直す</h3><p class="cite"><span class="cite-tag">使う公式</span><math><mi>y</mi><mo>=</mo><mi>a</mi><mi>x</mi><mo>+</mo><mi>b</mi></math>変量の変換は y=ax+b の形で表す。ここでは y=(x−5)/3 を変形して、a=1/3, b=−5/3 と読む。</p>
+<p><math><mi>y</mi><mo>=</mo><mfrac><mrow><mi>x</mi><mo>−</mo><mn>5</mn></mrow><mn>3</mn></mfrac><mo>=</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mi>x</mi><mo>−</mo><mfrac><mn>5</mn><mn>3</mn></mfrac></math> と変形すると、<math><mi>a</mi><mo>=</mo><mfrac><mn>1</mn><mn>3</mn></mfrac></math>、<math><mi>b</mi><mo>=</mo><mo>−</mo><mfrac><mn>5</mn><mn>3</mn></mfrac></math> だね。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― 変換の公式に当てはめる</h3>
-<p>平均値は <span style="text-decoration:overline">y</span> ＝ <i>a</i><span style="text-decoration:overline">x</span> ＋ <i>b</i>、分散は <i>s<sub>y</sub></i><sup>2</sup> ＝ <i>a</i><sup>2</sup><i>s<sub>x</sub></i><sup>2</sup> に、<span style="text-decoration:overline">x</span> ＝ 5、<i>s<sub>x</sub></i><sup>2</sup> ＝ 9 を代入しよう。</p>
+          <h3>ヒント 2 ― 変換の公式に当てはめる</h3><p class="cite"><span class="cite-tag">使う公式</span><math><mover><mi>y</mi><mo>‾</mo></mover><mo>=</mo><mi>a</mi><mover><mi>x</mi><mo>‾</mo></mover><mo>+</mo><mi>b</mi><mo>,</mo><msubsup><mi>s</mi><mi>y</mi><mn>2</mn></msubsup><mo>=</mo><msup><mi>a</mi><mn>2</mn></msup><msubsup><mi>s</mi><mi>x</mi><mn>2</mn></msubsup></math>平均値には a と b の両方が、分散には a の2乗だけが影響する。平均値 5、分散 9 を代入する。</p>
+<p>平均値は <math><mover><mi>y</mi><mo>‾</mo></mover><mo>=</mo><mi>a</mi><mover><mi>x</mi><mo>‾</mo></mover><mo>+</mo><mi>b</mi></math>、分散は <math><msup><msub><mi>s</mi><mi>y</mi></msub><mn>2</mn></msup><mo>=</mo><msup><mi>a</mi><mn>2</mn></msup><msup><msub><mi>s</mi><mi>x</mi></msub><mn>2</mn></msup></math> に、<math><mover><mi>x</mi><mo>‾</mo></mover><mo>=</mo><mn>5</mn></math>、<math><msup><msub><mi>s</mi><mi>x</mi></msub><mn>2</mn></msup><mo>=</mo><mn>9</mn></math>を代入しよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">平均値 0、分散 1</p>
-<p class="formula left"><span style="text-decoration:overline">y</span> ＝ <span class="frac"><span class="num">1</span><span class="den">3</span></span> × 5 − <span class="frac"><span class="num">5</span><span class="den">3</span></span> ＝ <span class="frac"><span class="num">5 − 5</span><span class="den">3</span></span> ＝ 0</p><p class="formula left"><i>s<sub>y</sub></i><sup>2</sup> ＝ (<span class="frac"><span class="num">1</span><span class="den">3</span></span>)<sup>2</sup> × 9 ＝ <span class="frac"><span class="num">1</span><span class="den">9</span></span> × 9 ＝ 1</p>
+          <p class="big">平均値 0、分散 1</p><p class="cite"><span class="cite-tag">使う公式</span><math><mover><mi>y</mi><mo>‾</mo></mover><mo>=</mo><mi>a</mi><mover><mi>x</mi><mo>‾</mo></mover><mo>+</mo><mi>b</mi></math>平均値は (1/3)×5−5/3=0、分散は (1/3)²×9=1 になる。</p>
+<div class="chain-crow formula left">
+<div class="crow"><math displaystyle="true"><mover><mi>y</mi><mo>‾</mo></mover><mo>=</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>×</mo><mn>5</mn><mo>−</mo><mfrac><mn>5</mn><mn>3</mn></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mover><mi>y</mi><mo>‾</mo></mover></mphantom><mo>=</mo><mfrac><mrow><mn>5</mn><mo>−</mo><mn>5</mn></mrow><mn>3</mn></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mover><mi>y</mi><mo>‾</mo></mover></mphantom><mo>=</mo><mn>0</mn></math></div>
+</div><div class="chain-crow formula left">
+<div class="crow"><math displaystyle="true"><msup><msub><mi>s</mi><mi>y</mi></msub><mn>2</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>)</mo></mrow><mn>2</mn></msup><mo>×</mo><mn>9</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msup><msub><mi>s</mi><mi>y</mi></msub><mn>2</mn></msup></mphantom><mo>=</mo><mfrac><mn>1</mn><mn>9</mn></mfrac><mo>×</mo><mn>9</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msup><msub><mi>s</mi><mi>y</mi></msub><mn>2</mn></msup></mphantom><mo>=</mo><mn>1</mn></math></div>
+</div>
         </div>
         <p class="prob-done">研究 練習1 クリア！　項4 はここまで。おつかれさま！</p>
       </section>
@@ -561,10 +649,10 @@ padding:16px 34px;box-shadow:var(--shadow);
       <section class="card summary" id="summaryCard" style="display:none">
         <h2>この項のポイント</h2>
         <ul>
-          <li>偏差は「各値 − 平均値」。偏差の総和は必ず 0 になるので、散らばりは偏差の2乗の平均＝分散で表す。</li>
-          <li>分散 <i>s</i><sup>2</sup> ＝ 偏差の2乗の総和 ÷ データの大きさ。標準偏差 <i>s</i> ＝ √<span class="rad">分散</span> で、単位は元の変量と同じ。</li>
-          <li>分散と平均値の関係式：<i>s</i><sup>2</sup> ＝ <span style="text-decoration:overline">x<sup>2</sup></span> − (<span style="text-decoration:overline">x</span>)<sup>2</sup>（2乗の平均 − 平均の2乗）。</li>
-          <li>変量の変換 <i>y</i> ＝ <i>ax</i> ＋ <i>b</i> では、<span style="text-decoration:overline">y</span> ＝ <i>a</i><span style="text-decoration:overline">x</span> ＋ <i>b</i>、<i>s<sub>y</sub></i><sup>2</sup> ＝ <i>a</i><sup>2</sup><i>s<sub>x</sub></i><sup>2</sup>、<i>s<sub>y</sub></i> ＝ |<i>a</i>|<i>s<sub>x</sub></i>。足す数 <i>b</i> は散らばりに影響しない。</li>
+          <p class="cite"><span class="cite-tag">使う定義</span><math><mtext>偏差</mtext><mo>=</mo><mi>x</mi><mo>−</mo><mover><mi>x</mi><mo>‾</mo></mover></math>偏差の総和は必ず 0 になるので、散らばりは偏差の2乗の平均で表す。</p><li>偏差は「各値 − 平均値」。偏差の総和は必ず 0 になるので、散らばりは偏差の2乗の平均＝分散で表す。</li>
+          <p class="cite"><span class="cite-tag">使う定義</span><math><msup><mi>s</mi><mn>2</mn></msup><mo>=</mo><mfrac><mtext>偏差の2乗の総和</mtext><mtext>データの大きさ</mtext></mfrac></math>標準偏差は分散の正の平方根で、単位は元の変量と同じ。</p><li>分散 <math><msup><mi>s</mi><mn>2</mn></msup><mo>=</mo></math>偏差の2乗の総和 ÷ データの大きさ。標準偏差 <math><mi>s</mi><mo>=</mo><msqrt><mtext>分散</mtext></msqrt></math> で、単位は元の変量と同じ。</li>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><msup><mi>s</mi><mn>2</mn></msup><mo>=</mo><mover><msup><mi>x</mi><mn>2</mn></msup><mo>‾</mo></mover><mo>−</mo><msup><mrow><mo>(</mo><mover><mi>x</mi><mo>‾</mo></mover><mo>)</mo></mrow><mn>2</mn></msup></math>2乗の平均から平均の2乗を引くだけで、分散が求められる。</p><li>分散と平均値の関係式：<math><msup><mi>s</mi><mn>2</mn></msup><mo>=</mo><mover><msup><mi>x</mi><mn>2</mn></msup><mo>‾</mo></mover><mo>−</mo><msup><mrow><mo>(</mo><mover><mi>x</mi><mo>‾</mo></mover><mo>)</mo></mrow><mn>2</mn></msup><mo>(</mo><mn>2</mn></math>乗の平均 − 平均の2乗）。</li>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><mover><mi>y</mi><mo>‾</mo></mover><mo>=</mo><mi>a</mi><mover><mi>x</mi><mo>‾</mo></mover><mo>+</mo><mi>b</mi></math>足す数 b は散らばりに影響せず、掛ける数 a は分散を a² 倍にする。</p><li>変量の変換 <math><mi>y</mi><mo>=</mo><mi>ax</mi><mo>+</mo><mi>b</mi></math> では、<math><mover><mi>y</mi><mo>‾</mo></mover><mo>=</mo><mi>a</mi><mover><mi>x</mi><mo>‾</mo></mover><mo>+</mo><mi>b</mi></math>、<math><msup><msub><mi>s</mi><mi>y</mi></msub><mn>2</mn></msup><mo>=</mo><msup><mi>a</mi><mn>2</mn></msup><msup><msub><mi>s</mi><mi>x</mi></msub><mn>2</mn></msup></math>、<math><msub><mi>s</mi><mi>y</mi></msub><mo>=</mo><mrow><mo>|</mo><mi>a</mi><mo>|</mo></mrow><msub><mi>s</mi><mi>x</mi></msub></math>。足す数 <math><mi>b</mi></math> は散らばりに影響しない。</li>
         </ul>
       </section>
  <footer>

@@ -309,7 +309,64 @@ padding:16px 34px;box-shadow:var(--shadow);
 }
 @media (prefers-color-scheme: dark){.finish-btn{color:#0c1712}}
 .finish-btn:active{transform:scale(.98)}
- </style>
+ 
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+
+      /* 積分記号は大きめに表示する（元のページの可読化デザインに合わせる） */
+      math .int-op{font-size:1.35em}
+      /* calc-12 世代（.card）と calc-18 世代（.unit）の、図のない問題の全幅化 */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig>.step{position:static !important}
+        .card.nofig>.steps-wrap{max-height:none !important;overflow:visible !important}
+        .unit.nofig{display:block !important}
+        .unit.nofig>.qside{position:static !important}
+        .unit.nofig>.steps-stack{max-height:none !important;overflow:visible !important}
+      }
+
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける・第3弾c） */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig .qside{position:static !important}
+        .card.nofig .steps-wrap,.card.nofig .tabpanel .steps-wrap{max-height:none !important;overflow:visible !important}
+      }
+</style>
 </head>
 <body>
 <div class="wrap">
@@ -333,16 +390,16 @@ padding:16px 34px;box-shadow:var(--shadow);
       </div>
       <section class="card">
         <p>実際の調査では、調べたい集団から一部を抜き出して、そのデータから集団全体の状況を推測することがある。ここでは、その推測が正しいかどうかを判断する1つの考え方を学ぼう。</p>
-        <p>ボールペンを製造している会社が、すでに販売しているボールペン A を改良して新製品 B を開発した。B が A よりも書きやすいと消費者に評価されるかを調べたいが、すべての消費者を調査するのは不可能である。そこで、無作為に選んだ 30 人に A、B を使ってもらい、どちらが書きやすいと感じるかを回答してもらった。その結果、70％ にあたる 21 人が B と回答した。このデータから、</p>
-        <div class="def"><p style="margin:0">［1］　B の方が書きやすいと評価される</p></div>
+        <p>ボールペンを製造している会社が、すでに販売しているボールペン <math><mi>A</mi></math> を改良して新製品 <math><mi>B</mi></math> を開発した。<math><mi>B</mi></math> が <math><mi>A</mi></math> よりも書きやすいと消費者に評価されるかを調べたいが、すべての消費者を調査するのは不可能である。そこで、無作為に選んだ 30 人に <math><mi>A</mi></math>、<math><mi>B</mi></math> を使ってもらい、どちらが書きやすいと感じるかを回答してもらった。その結果、70％ にあたる 21 人が <math><mi>B</mi></math> と回答した。このデータから、</p>
+        <div class="def"><p style="margin:0">［1］　<math><mi>B</mi></math> の方が書きやすいと評価される</p></div>
         <p>と判断できるだろうか。</p>
         <p>この問題を解決するために、［1］の主張に反する次の仮定を立てよう。</p>
-        <div class="def"><p style="margin:0">［2］　A、B のどちらの回答も全くの偶然で起こる</p></div>
-        <p>すなわち、A、B のどちらの回答の起こる確率も <span class="formula" style="display:inline-block;vertical-align:middle;margin:0 4px"><span class="frac"><span class="num">1</span><span class="den">2</span></span></span> = 0.5 である、という仮定を立てる。その仮定のもとで、30 人中 21 人以上が B と回答する確率がどれくらいかを考察しよう。</p>
-        <p>［2］の仮定は、公正な1枚のコインを投げる実験にあてはめることができる。ここでは、コインの表が出る場合を、B と回答する場合とする。そして、コイン投げを 30 回行うことを 1 セットとし、1 セットで表の出た回数を記録していく。この実験を 200 セット繰り返したところ、次の表のような結果となった。</p>
+        <div class="def"><p style="margin:0">［2］　<math><mi>A</mi></math>、<math><mi>B</mi></math> のどちらの回答も全くの偶然で起こる</p></div>
+        <p>すなわち、<math><mi>A</mi></math>、<math><mi>B</mi></math> のどちらの回答の起こる確率も <math><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>=</mo><mn>0.5</mn></math>である、という仮定を立てる。その仮定のもとで、30 人中 21 人以上が <math><mi>B</mi></math> と回答する確率がどれくらいかを考察しよう。<br></p>
+        <p>［2］の仮定は、公正な1枚のコインを投げる実験にあてはめることができる。ここでは、コインの表が出る場合を、<math><mi>B</mi></math> と回答する場合とする。そして、コイン投げを 30 回行うことを 1 セットとし、1 セットで表の出た回数を記録していく。この実験を 200 セット繰り返したところ、次の表のような結果となった。</p>
 <div style="overflow-x:auto"><table class="comp" style="font-size:13px"><tr><th>表の回数</th><th>8</th><th>9</th><th>10</th><th>11</th><th>12</th><th>13</th><th>14</th><th>15</th><th>16</th><th>17</th><th>18</th><th>19</th><th>20</th><th>21</th><th>22</th><th>23</th><th>計</th></tr><tr><th>度数</th><td>2</td><td>3</td><td>3</td><td>12</td><td>16</td><td>22</td><td>22</td><td>31</td><td>31</td><td>22</td><td>14</td><td>14</td><td>4</td><td>2</td><td>1</td><td>1</td><td>200</td></tr></table></div>
-        <p>この表から、21 回以上表が出たのは 200 セットのうち 2 + 1 + 1 = 4 セットであり、相対度数は <span class="formula" style="display:inline-block;vertical-align:middle;margin:0 4px"><span class="frac"><span class="num">4</span><span class="den">200</span></span></span> = 0.02 である。つまり、［2］の仮定のもとでは、21 人以上が B と回答する確率は 0.02 程度であると考えられる。</p>
-        <p>見方を変えると、0.02 程度という確率の小さいことが起こったのだから、そもそも［2］の仮定が正しくなかったと考えられる。そう考えると、［1］の主張は正しい、つまり B の方が書きやすいと評価されると判断してよさそうである。</p>
+        <p>この表から、21 回以上表が出たのは 200 セットのうち<math><mn>2</mn><mo>+</mo><mn>1</mn><mo>+</mo><mn>1</mn><mo>=</mo><mn>4</mn></math>セットであり、相対度数は <math><mfrac><mn>4</mn><mn>200</mn></mfrac><mo>=</mo><mn>0.02</mn></math>である。つまり、［2］の仮定のもとでは、21 人以上が <math><mi>B</mi></math> と回答する確率は 0.02 程度であると考えられる。</p>
+        <p>見方を変えると、0.02 程度という確率の小さいことが起こったのだから、そもそも［2］の仮定が正しくなかったと考えられる。<br>そう考えると、［1］の主張は正しい、つまり <math><mi>B</mi></math> の方が書きやすいと評価されると判断してよさそうである。</p>
         <p>得られたデータをもとに、ある主張が正しいかどうかを判断する、このような手法を<b>仮説検定</b>という。仮説検定では、基準となる確率をあらかじめ決めておき、それより小さければ確率が小さいと判断する。</p>
         <p class="note">補足：コイン投げの実験は、代わりに、コンピュータを使ったシミュレーションを行ってもよい。</p>
       </section>
@@ -351,28 +408,32 @@ padding:16px 34px;box-shadow:var(--shadow);
         <h2>例で確認</h2>
         <span class="pno">教科書 p.195</span>
       </div>
-      <section class="card prob" id="prob-ex12" data-flow="ex12" data-label="例 12">
+      <section class="nofig card prob" id="prob-ex12" data-flow="ex12" data-label="例 12">
         <div class="prob-head">
           <span class="prob-tag ">例 12</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">前ページの調査で、30 人中 19 人が B と回答したとする。主張［1］が正しいと判断できるか、基準となる確率を 0.05 として考察してみよう。</p>
+        <p class="prob-q">前ページの調査で、30 人中 19 人が <math><mi>B</mi></math> と回答したとする。主張［1］が正しいと判断できるか、基準となる確率を 0.05 として考察してみよう。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 19回以上の度数を表から足す</h3>
+          <h3>ヒント 1 ― 19回以上の度数を表から足す</h3><p class="cite"><span class="cite-tag">使う定義</span><math><mtext>相対度数</mtext><mo>=</mo><mfrac><mtext>その階級の度数</mtext><mtext>全体の度数</mtext></mfrac></math>まず、表の回数が19回以上の度数をすべて足す。</p>
           <p>コイン投げの実験結果の表で、表の回数が 19 回以上の度数を足そう。19 回が 14、20 回が 4、21 回が 2、22 回が 1、23 回が 1 だよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― 相対度数を 0.05 と比べる</h3>
+          <h3>ヒント 2 ― 相対度数を 0.05 と比べる</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mtext>基準の確率</mtext><mo>=</mo><mn>0.05</mn></math>仮説検定では、あらかじめ決めた基準より確率が小さいかどうかで判断する。</p>
           <p>足した度数を 200 で割って相対度数を出し、基準となる確率 0.05 より小さいかどうかを比べよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">判断できない（相対度数 0.11 ＞ 0.05）</p>
-          <p class="formula">相対度数 = <span class="formula" style="display:inline-block;vertical-align:middle;margin:0 4px"><span class="frac"><span class="num">14 + 4 + 2 + 1 + 1</span><span class="den">200</span></span></span> = <span class="formula" style="display:inline-block;vertical-align:middle;margin:0 4px"><span class="frac"><span class="num">22</span><span class="den">200</span></span></span> = 0.11</p><p>これは 0.05 より大きいから、主張［2］は否定できない。よって、B の方が書きやすいと評価されるとは判断できない。</p><p class="note">注意：この結果は「主張［2］が正しい」という判断ができるわけではない。</p>
+          <p class="big">判断できない（相対度数 0.11 ＞ 0.05）</p><p class="cite"><span class="cite-tag">使う性質</span><math><mtext>相対度数</mtext><mo>=</mo><mfrac><mn>22</mn><mn>200</mn></mfrac><mo>=</mo><mn>0.11</mn></math>0.11 は基準 0.05 より大きいので、仮定［2］は否定できず、判断できない。</p>
+          <p class="formula">相対度数<div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mo>=</mo><mfrac><mrow><mn>14</mn><mo>+</mo><mn>4</mn><mo>+</mo><mn>2</mn><mo>+</mo><mn>1</mn><mo>+</mo><mn>1</mn></mrow><mn>200</mn></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo><mfrac><mn>22</mn><mn>200</mn></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo><mn>0.11</mn></math></div>
+</div></p><p>これは 0.05 より大きいから、主張［2］は否定できない。よって、<math><mi>B</mi></math> の方が書きやすいと評価されるとは判断できない。</p><p class="note">注意：この結果は「主張［2］が正しい」という判断ができるわけではない。</p>
         </div>
         <p class="prob-done">例12 クリア！　次は練習16だよ。</p>
       </section>
@@ -381,14 +442,14 @@ padding:16px 34px;box-shadow:var(--shadow);
         <h2>練習問題に挑戦</h2>
         <span class="pno">教科書 p.195</span>
       </div>
-      <section class="card prob" id="prob-ren16" data-flow="ren16" data-label="練習 16">
+      <section class="nofig card prob" id="prob-ren16" data-flow="ren16" data-label="練習 16">
         <div class="prob-head">
           <span class="prob-tag ren">練習 16</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">前ページの調査で、30 人中 20 人が B と回答したとする。主張［1］が正しいと判断できるか、基準となる確率を 0.05 として考察せよ。</p>
+        <p class="prob-q">前ページの調査で、30 人中 20 人が <math><mi>B</mi></math> と回答したとする。主張［1］が正しいと判断できるか、基準となる確率を 0.05 として考察せよ。</p>
           <div class="quiz" id="qz-ren16" data-correct="1">
           <div class="choices">
             <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>判断できる</span><span class="mark"></span></button>
@@ -400,18 +461,22 @@ padding:16px 34px;box-shadow:var(--shadow);
           </div>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 20回以上の度数を表から足す</h3>
+          <h3>ヒント 1 ― 20回以上の度数を表から足す</h3><p class="cite"><span class="cite-tag">使う定義</span><math><mtext>相対度数</mtext><mo>=</mo><mfrac><mtext>その階級の度数</mtext><mtext>全体の度数</mtext></mfrac></math>まず、表の回数が20回以上の度数をすべて足す。</p>
           <p>コイン投げの実験結果の表で、表の回数が 20 回以上の度数を足そう。20 回が 4、21 回が 2、22 回が 1、23 回が 1 だよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― 相対度数を 0.05 と比べる</h3>
+          <h3>ヒント 2 ― 相対度数を 0.05 と比べる</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mtext>基準の確率</mtext><mo>=</mo><mn>0.05</mn></math>相対度数が基準より小さければ、仮定［2］を否定して、主張［1］が正しいと判断できる。</p>
           <p>足した度数を 200 で割って相対度数を出し、基準となる確率 0.05 より小さいかどうかを比べよう。小さければ［2］を否定でき、［1］が正しいと判断できるよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">判断できる（相対度数 0.04 ＜ 0.05）</p>
-          <p class="formula">相対度数 = <span class="formula" style="display:inline-block;vertical-align:middle;margin:0 4px"><span class="frac"><span class="num">4 + 2 + 1 + 1</span><span class="den">200</span></span></span> = <span class="formula" style="display:inline-block;vertical-align:middle;margin:0 4px"><span class="frac"><span class="num">8</span><span class="den">200</span></span></span> = 0.04</p><p>これは 0.05 より小さいから、主張［2］は否定できる。よって、主張［1］は正しいと判断できる。</p>
+          <p class="big">判断できる（相対度数 0.04 ＜ 0.05）</p><p class="cite"><span class="cite-tag">使う性質</span><math><mtext>相対度数</mtext><mo>=</mo><mfrac><mn>8</mn><mn>200</mn></mfrac><mo>=</mo><mn>0.04</mn></math>0.04 は基準 0.05 より小さいので、仮定［2］は否定でき、主張［1］が正しいと判断できる。</p>
+          <p class="formula">相対度数<div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mo>=</mo><mfrac><mrow><mn>4</mn><mo>+</mo><mn>2</mn><mo>+</mo><mn>1</mn><mo>+</mo><mn>1</mn></mrow><mn>200</mn></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo><mfrac><mn>8</mn><mn>200</mn></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo><mn>0.04</mn></math></div>
+</div></p><p>これは 0.05 より小さいから、主張［2］は否定できる。よって、主張［1］は正しいと判断できる。</p>
         </div>
         <p class="prob-done">練習16 クリア！　項6は全部おわり。補充問題に進もう。</p>
       </section>
@@ -421,10 +486,10 @@ padding:16px 34px;box-shadow:var(--shadow);
       <section class="card summary" id="summaryCard" style="display:none">
         <h2>この項のポイント</h2>
         <ul>
-          <li>仮説検定では、確かめたい主張［1］に<b>反する仮定［2］</b>を立て、その仮定のもとでデータのようなことが起こる確率を考える。</li>
-          <li>その確率が、<b>あらかじめ決めた基準（0.05 など）より小さければ</b>、仮定［2］を否定し、主張［1］が正しいと判断する。</li>
+          <p class="cite"><span class="cite-tag">使う定義</span><math><mtext>仮説検定：反する仮定を立て、その確率の小ささで判断する方法</mtext></math>確かめたい主張に反する仮定のもとで、データのようなことが起こる確率を考える。</p><li>仮説検定では、確かめたい主張［1］に<b>反する仮定［2］</b>を立て、その仮定のもとでデータのようなことが起こる確率を考える。</li>
+          <p class="cite"><span class="cite-tag">使う性質</span><math><mtext>基準の確率</mtext><mo>=</mo><mn>0.05</mn></math>確率が基準より小さければ仮定を否定し、主張が正しいと判断する。</p><li>その確率が、<b>あらかじめ決めた基準（0.05 など）より小さければ</b>、仮定［2］を否定し、主張［1］が正しいと判断する。</li>
           <li>確率が基準以上なら「判断できない」という結論になるだけで、<b>仮定［2］が正しいと判断できるわけではない</b>。</li>
-          <li>確率は、コイン投げの実験やシミュレーションの<b>相対度数</b>で見積もることができる。</li>
+          <p class="cite"><span class="cite-tag">使う定義</span><math><mtext>相対度数</mtext><mo>=</mo><mfrac><mtext>その階級の度数</mtext><mtext>全体の度数</mtext></mfrac></math>確率は、実験やシミュレーションの相対度数で見積もることができる。</p><li>確率は、コイン投げの実験やシミュレーションの<b>相対度数</b>で見積もることができる。</li>
         </ul>
       </section>
  <footer>
