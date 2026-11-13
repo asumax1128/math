@@ -302,7 +302,64 @@
       table.comp{border-collapse:collapse;margin:0 0 14px;width:100%}
       table.comp th,table.comp td{border:1px solid var(--line);padding:8px 10px;text-align:center;font-size:15px}
       table.comp th{background:var(--surface2)}
-        </style>
+        
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+
+      /* 積分記号は大きめに表示する（元のページの可読化デザインに合わせる） */
+      math .int-op{font-size:1.35em}
+      /* calc-12 世代（.card）と calc-18 世代（.unit）の、図のない問題の全幅化 */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig>.step{position:static !important}
+        .card.nofig>.steps-wrap{max-height:none !important;overflow:visible !important}
+        .unit.nofig{display:block !important}
+        .unit.nofig>.qside{position:static !important}
+        .unit.nofig>.steps-stack{max-height:none !important;overflow:visible !important}
+      }
+
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける・第3弾c） */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig .qside{position:static !important}
+        .card.nofig .steps-wrap,.card.nofig .tabpanel .steps-wrap{max-height:none !important;overflow:visible !important}
+      }
+</style>
   </head>
   <body>
     <div class="wrap">
@@ -326,40 +383,59 @@
       </div>
       <section class="card">
         <p>2次方程式の解は、解の公式によって求めることができるが、解の和や積は解を求めることなく知ることができる。ここでは、2次方程式の解と係数の関係について学ぼう。</p>
-        <p>2次方程式 ax<sup>2</sup> + bx + c = 0 の2つの解を α, β とするとき、これらの和 α + β と積 αβ を計算してみよう。D = b<sup>2</sup> − 4ac とすると</p>
-        <p class="formula left">和　α + β = <span class="frac"><span class="num">−b + √D</span><span class="den">2a</span></span> + <span class="frac"><span class="num">−b − √D</span><span class="den">2a</span></span> = <span class="frac"><span class="num">−2b</span><span class="den">2a</span></span> = −<span class="frac"><span class="num">b</span><span class="den">a</span></span></p>
-        <p class="formula left">積　αβ = <span class="frac"><span class="num">−b + √D</span><span class="den">2a</span></span> × <span class="frac"><span class="num">−b − √D</span><span class="den">2a</span></span> = <span class="frac"><span class="num">(−b)<sup>2</sup> − D</span><span class="den">4a<sup>2</sup></span></span> = <span class="frac"><span class="num">4ac</span><span class="den">4a<sup>2</sup></span></span> = <span class="frac"><span class="num">c</span><span class="den">a</span></span></p>
+        <p>2次方程式<math><mi>a</mi><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>b</mi><mi>x</mi><mo>+</mo><mi>c</mi><mo>=</mo><mn>0</mn></math>の2つの解を <math><mi>α</mi></math>, <math><mi>β</mi></math> とするとき、これらの和 <math><mi>α</mi></math> + <math><mi>β</mi></math> と積 <math><mi>α</mi></math><math><mi>β</mi></math> を計算してみよう。<math><mi>D</mi><mo>=</mo><msup><mi>b</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>a</mi><mi>c</mi></math>とすると</p>
+        <p class="mq-wide formula left">和　<div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>α</mi><mo>+</mo><mi>β</mi><mo>=</mo><mfrac><mrow><mo>−</mo><mi>b</mi><mo>+</mo><msqrt><mi>D</mi></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac><mo>+</mo><mfrac><mrow><mo>−</mo><mi>b</mi><mo>−</mo><msqrt><mi>D</mi></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>α</mi><mo>+</mo><mi>β</mi></mphantom><mo>=</mo><mfrac><mrow><mo>−</mo><mn>2</mn><mi>b</mi></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>α</mi><mo>+</mo><mi>β</mi></mphantom><mo>=</mo><mo>−</mo><mfrac><mi>b</mi><mi>a</mi></mfrac></math></div>
+</div></p>
+<div class="mq-narrow">
+<p>和</p>
+<p class="formula"><math display="block"><mi>α</mi><mo>+</mo><mi>β</mi><mo>=</mo><mfrac><mrow><mo>−</mo><mi>b</mi><mo>+</mo><msqrt><mi>D</mi></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac><mo>+</mo><mfrac><mrow><mo>−</mo><mi>b</mi><mo>−</mo><msqrt><mi>D</mi></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac><mo>=</mo><mfrac><mrow><mo>−</mo><mn>2</mn><mi>b</mi></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac><mo>=</mo></math></p>
+<p class="formula cont"><math display="block"><mo>−</mo><mfrac><mi>b</mi><mi>a</mi></mfrac></math></p>
+</div>
+        <p class="mq-wide formula left">積　<div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>α</mi><mi>β</mi><mo>=</mo><mfrac><mrow><mo>−</mo><mi>b</mi><mo>+</mo><msqrt><mi>D</mi></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac><mo>×</mo><mfrac><mrow><mo>−</mo><mi>b</mi><mo>−</mo><msqrt><mi>D</mi></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>α</mi><mi>β</mi></mphantom><mo>=</mo><mfrac><mrow><msup><mrow><mo>(</mo><mo>−</mo><mi>b</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mi>D</mi></mrow><mrow><mn>4</mn><msup><mi>a</mi><mn>2</mn></msup></mrow></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>α</mi><mi>β</mi></mphantom><mo>=</mo><mfrac><mrow><mn>4</mn><mi>a</mi><mi>c</mi></mrow><mrow><mn>4</mn><msup><mi>a</mi><mn>2</mn></msup></mrow></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>α</mi><mi>β</mi></mphantom><mo>=</mo><mfrac><mi>c</mi><mi>a</mi></mfrac></math></div>
+</div></p>
+<div class="mq-narrow">
+<p>積</p>
+<p class="formula"><math display="block"><mi>α</mi><mi>β</mi><mo>=</mo><mfrac><mrow><mo>−</mo><mi>b</mi><mo>+</mo><msqrt><mi>D</mi></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac><mo>×</mo><mfrac><mrow><mo>−</mo><mi>b</mi><mo>−</mo><msqrt><mi>D</mi></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac><mo>=</mo><mfrac><mrow><msup><mrow><mo>(</mo><mo>−</mo><mi>b</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mi>D</mi></mrow><mrow><mn>4</mn><msup><mi>a</mi><mn>2</mn></msup></mrow></mfrac></math></p>
+<p class="formula cont"><math display="block"><mo>=</mo><mfrac><mrow><mn>4</mn><mi>a</mi><mi>c</mi></mrow><mrow><mn>4</mn><msup><mi>a</mi><mn>2</mn></msup></mrow></mfrac><mo>=</mo><mfrac><mi>c</mi><mi>a</mi></mfrac></math></p>
+</div>
         <p>このように、2次方程式の2つの解の和と積は、方程式の係数を用いて表すことができる。これを、2次方程式の<span class="key">解と係数の関係</span>という。</p>
         <div class="def">
           <p><b>解と係数の関係</b></p>
-          <p>2次方程式 ax<sup>2</sup> + bx + c = 0 の2つの解を α, β とすると</p>
-          <p class="formula">α + β = −<span class="frac"><span class="num">b</span><span class="den">a</span></span>，　　αβ = <span class="frac"><span class="num">c</span><span class="den">a</span></span></p>
+          <p>2次方程式<math><mi>a</mi><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>b</mi><mi>x</mi><mo>+</mo><mi>c</mi><mo>=</mo><mn>0</mn></math>の2つの解を <math><mi>α</mi></math>, <math><mi>β</mi></math> とすると</p>
+          <p class="formula"><math display="block"><mi>α</mi><mo>+</mo><mi>β</mi><mo>=</mo><mo>−</mo><mfrac><mi>b</mi><mi>a</mi></mfrac><mo>,</mo><mspace width="2em"/><mi>α</mi><mi>β</mi><mo>=</mo><mfrac><mi>c</mi><mi>a</mi></mfrac></math></p>
         </div>
-        <p>補足 ― 上の関係は、α = β のとき、すなわち解が重解のときにも成り立つ。</p>
+        <p>補足 ― 上の関係は、<math><mi>α</mi></math> = <math><mi>β</mi></math> のとき、すなわち解が重解のときにも成り立つ。</p>
       </section>
       <div class="sec-head">
         <span class="sec-tag">例題</span>
         <h2>例10で解き方を確認</h2>
         <span class="pno">教科書 p.49</span>
       </div>
-      <section class="card prob" id="prob-ex10" data-flow="ex10" data-label="例10">
+      <section class="nofig card prob" id="prob-ex10" data-flow="ex10" data-label="例10">
         <div class="prob-head">
           <span class="prob-tag ">例 10</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 1</span>
         </div>
         <div class="qside">
-        <p class="prob-q">2次方程式 2x<sup>2</sup> + 3x − 6 = 0 の2つの解を α, β とするとき、α + β と αβ を求めよう。</p>
+        <p class="prob-q">2次方程式<math><mn>2</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>3</mn><mi>x</mi><mo>−</mo><mn>6</mn><mo>=</mo><mn>0</mn></math>の2つの解を <math><mi>α</mi></math>, <math><mi>β</mi></math> とするとき、<math><mi>α</mi></math> + <math><mi>β</mi></math> と <math><mi>α</mi></math><math><mi>β</mi></math> を求めよう。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 公式に当てはめる</h3>
-          <p>a = 2、b = 3、c = −6。α + β = −<span class="frac"><span class="num">b</span><span class="den">a</span></span>、αβ = <span class="frac"><span class="num">c</span><span class="den">a</span></span> に代入しよう。和の方にはマイナスがつくことに注意だよ。</p>
+          <h3>ヒント 1 ― 公式に当てはめる</h3><p class="cite"><span class="cite-tag">使う公式</span><math><mi>α</mi><mo>+</mo><mi>β</mi><mo>=</mo><mo>−</mo><mfrac><mi>b</mi><mi>a</mi></mfrac></math>、<math><mi>α</mi><mi>β</mi><mo>=</mo><mfrac><mi>c</mi><mi>a</mi></mfrac></math>ここでは <math><mi>a</mi><mo>=</mo><mn>2</mn></math>、<math><mi>b</mi><mo>=</mo><mn>3</mn></math>、<math><mi>c</mi><mo>=</mo><mo>−</mo><mn>6</mn></math> を代入する。和の方にはマイナスがつくことに注意する。</p>
+          <p><math><mi>a</mi><mo>=</mo><mn>2</mn></math>、<math><mi>b</mi><mo>=</mo><mn>3</mn></math>、<math><mi>c</mi><mo>=</mo><mo>−</mo><mn>6</mn></math>。<math><mi>α</mi><mo>+</mo><mi>β</mi><mo>=</mo><mo>−</mo><mfrac><mi>b</mi><mi>a</mi></mfrac></math>、<math><mi>α</mi><mi>β</mi><mo>=</mo><mfrac><mi>c</mi><mi>a</mi></mfrac></math> に代入しよう。和の方にはマイナスがつくことに注意だよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">α + β = −<span class="frac"><span class="num">3</span><span class="den">2</span></span>，　αβ = −3</p>
-          <p>α + β = −<span class="frac"><span class="num">3</span><span class="den">2</span></span>、αβ = <span class="frac"><span class="num">−6</span><span class="den">2</span></span> = −3</p>
+          <p class="big"><math display="block"><mi>α</mi><mo>+</mo><mi>β</mi><mo>=</mo><mo>−</mo><mfrac><mn>3</mn><mn>2</mn></mfrac><mo>,</mo><mspace width="2em"/><mi>α</mi><mi>β</mi><mo>=</mo><mo>−</mo><mn>3</mn></math></p><p class="cite"><span class="cite-tag">使う公式</span><math><mi>α</mi><mo>+</mo><mi>β</mi><mo>=</mo><mo>−</mo><mfrac><mi>b</mi><mi>a</mi></mfrac></math>、<math><mi>α</mi><mi>β</mi><mo>=</mo><mfrac><mi>c</mi><mi>a</mi></mfrac></math><math><mi>a</mi><mo>=</mo><mn>2</mn></math>、<math><mi>b</mi><mo>=</mo><mn>3</mn></math>、<math><mi>c</mi><mo>=</mo><mo>−</mo><mn>6</mn></math> を代入して、和と積を求める。</p>
+          <p><math><mi>α</mi><mo>+</mo><mi>β</mi><mo>=</mo><mo>−</mo><mfrac><mn>3</mn><mn>2</mn></mfrac></math>、<math><mi>α</mi><mi>β</mi><mo>=</mo><mfrac><mrow><mo>−</mo><mn>6</mn></mrow><mn>2</mn></mfrac><mo>=</mo><mo>−</mo><mn>3</mn></math></p>
         </div>
         <p class="prob-done">例10 クリア！　次は練習14に挑戦しよう。</p>
       </section>
@@ -368,7 +444,7 @@
         <h2>練習問題に挑戦</h2>
         <span class="pno">教科書 p.49</span>
       </div>
-      <section class="card prob" id="prob-ren14" data-label="練習14">
+      <section class="nofig card prob" id="prob-ren14" data-label="練習14">
         <div class="prob-head">
           <span class="prob-tag ren">練習 14</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
@@ -382,47 +458,47 @@
         </div>
         <div class="tabpanel show" id="panel-ren14-1" data-flow="ren14-1" data-label="練習14 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　3x<sup>2</sup> + 4x + 2 = 0</span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>4</mn><mi>x</mi><mo>+</mo><mn>2</mn><mo>=</mo><mn>0</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― a, b, c を読み取る</h3>
-          <p>a = 3、b = 4、c = 2。和は −<span class="frac"><span class="num">b</span><span class="den">a</span></span>、積は <span class="frac"><span class="num">c</span><span class="den">a</span></span> だよ。</p>
+          <h3>ヒント 1 ― <math><mi>a</mi></math>, <math><mi>b</mi></math>, <math><mi>c</mi></math> を読み取る</h3><p class="cite"><span class="cite-tag">使う公式</span><math><mi>α</mi><mo>+</mo><mi>β</mi><mo>=</mo><mo>−</mo><mfrac><mi>b</mi><mi>a</mi></mfrac></math>、<math><mi>α</mi><mi>β</mi><mo>=</mo><mfrac><mi>c</mi><mi>a</mi></mfrac></math>ここでは <math><mi>a</mi><mo>=</mo><mn>3</mn></math>、<math><mi>b</mi><mo>=</mo><mn>4</mn></math>、<math><mi>c</mi><mo>=</mo><mn>2</mn></math> を読み取って代入する。</p>
+          <p><math><mi>a</mi><mo>=</mo><mn>3</mn></math>、<math><mi>b</mi><mo>=</mo><mn>4</mn></math>、<math><mi>c</mi><mo>=</mo><mn>2</mn></math>。和は<math><mo>−</mo><mfrac><mi>b</mi><mi>a</mi></mfrac></math>、積は <math><mfrac><mi>c</mi><mi>a</mi></mfrac></math> だよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">α + β = −<span class="frac"><span class="num">4</span><span class="den">3</span></span>，　αβ = <span class="frac"><span class="num">2</span><span class="den">3</span></span></p>
+          <p class="big"><math display="block"><mi>α</mi><mo>+</mo><mi>β</mi><mo>=</mo><mo>−</mo><mfrac><mn>4</mn><mn>3</mn></mfrac><mo>,</mo><mspace width="2em"/><mi>α</mi><mi>β</mi><mo>=</mo><mfrac><mn>2</mn><mn>3</mn></mfrac></math></p>
 
         </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren14-2" data-flow="ren14-2" data-label="練習14 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　x<sup>2</sup> − 6x − 4 = 0</span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>6</mn><mi>x</mi><mo>−</mo><mn>4</mn><mo>=</mo><mn>0</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
           <div class="quiz" id="qz-ren14-2" data-correct="3">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>α + β = −6，αβ = 4</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>α + β = 6，αβ = 4</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>α + β = 6，αβ = −4</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>α + β = −6，αβ = −4</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mi>α</mi></math> + <math><mi>β</mi></math> = −6，<math><mi>α</mi></math><math><mi>β</mi></math> = 4</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mi>α</mi></math> + <math><mi>β</mi></math> = 6，<math><mi>α</mi></math><math><mi>β</mi></math> = 4</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mi>α</mi></math> + <math><mi>β</mi></math> = 6，<math><mi>α</mi></math><math><mi>β</mi></math> = −4</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mi>α</mi></math> + <math><mi>β</mi></math> = −6，<math><mi>α</mi></math><math><mi>β</mi></math> = −4</span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
           <p class="verdict"></p>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― a = 1 の場合</h3>
-          <p>a = 1、b = −6、c = −4。和の公式の「−」と、b 自身の「−」が重なることに注意しよう。</p>
+          <h3>ヒント<math><mn>1</mn><mo>―</mo><mi>a</mi><mo>=</mo><mn>1</mn></math>の場合</h3><p class="cite"><span class="cite-tag">使う公式</span><math><mi>α</mi><mo>+</mo><mi>β</mi><mo>=</mo><mo>−</mo><mfrac><mi>b</mi><mi>a</mi></mfrac></math>、<math><mi>α</mi><mi>β</mi><mo>=</mo><mfrac><mi>c</mi><mi>a</mi></mfrac></math>ここでは <math><mi>a</mi><mo>=</mo><mn>1</mn></math>、<math><mi>b</mi><mo>=</mo><mo>−</mo><mn>6</mn></math>、<math><mi>c</mi><mo>=</mo><mo>−</mo><mn>4</mn></math>。和の公式の「−」と <math><mi>b</mi></math> 自身の「−」が重なることに注意する。</p>
+          <p><math><mi>a</mi><mo>=</mo><mn>1</mn></math>、<math><mi>b</mi><mo>=</mo><mo>−</mo><mn>6</mn></math>、<math><mi>c</mi><mo>=</mo><mo>−</mo><mn>4</mn></math>。和の公式の「−」と、<math><mi>b</mi></math> 自身の「−」が重なることに注意しよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">α + β = 6，　αβ = −4</p>
+          <p class="big"><math display="block"><mi>α</mi><mo>+</mo><mi>β</mi><mo>=</mo><mn>6</mn><mo>,</mo><mspace width="2em"/><mi>α</mi><mi>β</mi><mo>=</mo><mo>−</mo><mn>4</mn></math></p>
 
         </div>
           <p class="prob-done">(2) クリア！　練習14は全部おわり。次は対称式の計算だよ。</p>
@@ -433,35 +509,43 @@
         <h2>例題4 ― 対称式の値を求める</h2>
         <span class="pno">教科書 p.50</span>
       </div>
-      <section class="card prob" id="prob-reidai4" data-flow="reidai4" data-label="例題4">
+      <section class="nofig card prob" id="prob-reidai4" data-flow="reidai4" data-label="例題4">
         <div class="prob-head">
           <span class="prob-tag ">例題 4</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
         <div class="qside">
-        <p class="prob-q">2次方程式 x<sup>2</sup> − 4x + 5 = 0 の2つの解を α, β とするとき、次の式の値を求めよ。<br>(1)　α<sup>2</sup> + β<sup>2</sup>　　(2)　α<sup>3</sup> + β<sup>3</sup></p>
+        <p class="prob-q">2次方程式<math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>x</mi><mo>+</mo><mn>5</mn><mo>=</mo><mn>0</mn></math>の2つの解を <math><mi>α</mi></math>, <math><mi>β</mi></math> とするとき、次の式の値を求めよ。<br>(1)　<math><msup><mi>α</mi><mn>2</mn></msup><mo>+</mo><msup><mi>β</mi><mn>2</mn></msup></math>　　(2)　<math><msup><mi>α</mi><mn>3</mn></msup><mo>+</mo><msup><mi>β</mi><mn>3</mn></msup></math></p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― まず α + β と αβ を出す</h3>
-          <p>解と係数の関係から、α + β = 4、αβ = 5。α, β 自体を求める必要はないよ。</p>
+          <h3>ヒント 1 ― まず <math><mi>α</mi></math> + <math><mi>β</mi></math> と <math><mi>α</mi></math><math><mi>β</mi></math> を出す</h3><p class="cite"><span class="cite-tag">使う公式</span><math><mi>α</mi><mo>+</mo><mi>β</mi><mo>=</mo><mo>−</mo><mfrac><mi>b</mi><mi>a</mi></mfrac></math>、<math><mi>α</mi><mi>β</mi><mo>=</mo><mfrac><mi>c</mi><mi>a</mi></mfrac></math>この方程式では <math><mi>α</mi><mo>+</mo><mi>β</mi><mo>=</mo><mn>4</mn></math>、<math><mi>α</mi><mi>β</mi><mo>=</mo><mn>5</mn></math> になる。<math><mi>α</mi></math>、<math><mi>β</mi></math> 自体は求めずに、この2つの値を使う。</p>
+          <p>解と係数の関係から、<math><mi>α</mi><mo>+</mo><mi>β</mi><mo>=</mo><mn>4</mn></math>、<math><mi>α</mi><mi>β</mi><mo>=</mo><mn>5</mn></math>。<math><mi>α</mi></math>, <math><mi>β</mi></math> 自体を求める必要はないよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― (1) は α + β の2乗を利用する</h3>
-          <p>α<sup>2</sup> + β<sup>2</sup> = (α + β)<sup>2</sup> − 2αβ と変形できる。展開したときに出る 2αβ を引き忘れないように。</p>
+          <h3>ヒント 2 ― (1) は <math><mi>α</mi></math> + <math><mi>β</mi></math> の2乗を利用する</h3><p class="cite"><span class="cite-tag">使う公式</span><math><msup><mi>α</mi><mn>2</mn></msup><mo>+</mo><msup><mi>β</mi><mn>2</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>α</mi><mi>β</mi></math>(1) はこの変形に <math><mi>α</mi><mo>+</mo><mi>β</mi><mo>=</mo><mn>4</mn></math>、<math><mi>α</mi><mi>β</mi><mo>=</mo><mn>5</mn></math> を代入する。</p>
+          <p><math><msup><mi>α</mi><mn>2</mn></msup><mo>+</mo><msup><mi>β</mi><mn>2</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>α</mi><mi>β</mi></math>と変形できる。展開したときに出る 2<math><mi>α</mi></math><math><mi>β</mi></math> を引き忘れないように。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 3 ― (2) は (1) の結果も使える</h3>
-          <p>α<sup>3</sup> + β<sup>3</sup> = (α + β)<sup>3</sup> − 3αβ(α + β) と変形できるよ。</p>
+          <h3>ヒント 3 ― (2) は (1) の結果も使える</h3><p class="cite"><span class="cite-tag">使う公式</span><math><msup><mi>α</mi><mn>3</mn></msup><mo>+</mo><msup><mi>β</mi><mn>3</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mn>3</mn></msup><mo>−</mo><mn>3</mn><mi>α</mi><mi>β</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow></math>(2) はこの変形に <math><mi>α</mi><mo>+</mo><mi>β</mi><mo>=</mo><mn>4</mn></math>、<math><mi>α</mi><mi>β</mi><mo>=</mo><mn>5</mn></math> を代入する。</p>
+          <p><math><msup><mi>α</mi><mn>3</mn></msup><mo>+</mo><msup><mi>β</mi><mn>3</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mn>3</mn></msup><mo>−</mo><mn>3</mn><mi>α</mi><mi>β</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow></math>と変形できるよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">(1)　6　　(2)　4</p>
-          <p>解と係数の関係から α + β = 4、αβ = 5</p>
-          <p>(1) α<sup>2</sup> + β<sup>2</sup> = (α + β)<sup>2</sup> − 2αβ = 4<sup>2</sup> − 2・5 = 6</p>
-          <p>(2) α<sup>3</sup> + β<sup>3</sup> = (α + β)<sup>3</sup> − 3αβ(α + β) = 4<sup>3</sup> − 3・5・4 = 4</p>
-          <p class="note"><b>補足：</b>(2) では、等式 α<sup>3</sup> + β<sup>3</sup> = (α + β)(α<sup>2</sup> − αβ + β<sup>2</sup>) を利用してもよい。</p>
+          <p class="big">(1)　6　　(2)　4</p><p class="cite"><span class="cite-tag">使う公式</span><math><mi>α</mi><mo>+</mo><mi>β</mi><mo>=</mo><mo>−</mo><mfrac><mi>b</mi><mi>a</mi></mfrac></math>、<math><mi>α</mi><mi>β</mi><mo>=</mo><mfrac><mi>c</mi><mi>a</mi></mfrac></math>まずこの関係で <math><mi>α</mi><mo>+</mo><mi>β</mi><mo>=</mo><mn>4</mn></math>、<math><mi>α</mi><mi>β</mi><mo>=</mo><mn>5</mn></math> を出し、対称式の変形に代入する。</p>
+          <p>解と係数の関係から<math><mi>α</mi><mo>+</mo><mi>β</mi><mo>=</mo><mn>4</mn></math>、<math><mi>α</mi><mi>β</mi><mo>=</mo><mn>5</mn></math></p>
+          <div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mrow><mo>(</mo><mn>1</mn><mo>)</mo></mrow><msup><mi>α</mi><mn>2</mn></msup><mo>+</mo><msup><mi>β</mi><mn>2</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>α</mi><mi>β</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mrow><mo>(</mo><mn>1</mn><mo>)</mo></mrow><msup><mi>α</mi><mn>2</mn></msup><mo>+</mo><msup><mi>β</mi><mn>2</mn></msup></mphantom><mo>=</mo><msup><mn>4</mn><mn>2</mn></msup><mo>−</mo><mn>2</mn><mo>⋅</mo><mn>5</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mrow><mo>(</mo><mn>1</mn><mo>)</mo></mrow><msup><mi>α</mi><mn>2</mn></msup><mo>+</mo><msup><mi>β</mi><mn>2</mn></msup></mphantom><mo>=</mo><mn>6</mn></math></div>
+</div>
+          <div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow><msup><mi>α</mi><mn>3</mn></msup><mo>+</mo><msup><mi>β</mi><mn>3</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mn>3</mn></msup><mo>−</mo><mn>3</mn><mi>α</mi><mi>β</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow><msup><mi>α</mi><mn>3</mn></msup><mo>+</mo><msup><mi>β</mi><mn>3</mn></msup></mphantom><mo>=</mo><msup><mn>4</mn><mn>3</mn></msup><mo>−</mo><mn>3</mn><mo>⋅</mo><mn>5</mn><mo>⋅</mo><mn>4</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow><msup><mi>α</mi><mn>3</mn></msup><mo>+</mo><msup><mi>β</mi><mn>3</mn></msup></mphantom><mo>=</mo><mn>4</mn></math></div>
+</div>
+          <p class="note"><b>補足：</b>(2) では、等式<math><msup><mi>α</mi><mn>3</mn></msup><mo>+</mo><msup><mi>β</mi><mn>3</mn></msup><mo>=</mo><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mrow><mo>(</mo><msup><mi>α</mi><mn>2</mn></msup><mo>−</mo><mi>α</mi><mi>β</mi><mo>+</mo><msup><mi>β</mi><mn>2</mn></msup><mo>)</mo></mrow></math>を利用してもよい。</p>
         </div>
         <p class="prob-done">例題4 クリア！　次は練習15に挑戦しよう。</p>
       </section>
@@ -470,13 +554,13 @@
         <h2>練習問題に挑戦</h2>
         <span class="pno">教科書 p.50</span>
       </div>
-      <section class="card prob" id="prob-ren15" data-label="練習15">
+      <section class="nofig card prob" id="prob-ren15" data-label="練習15">
         <div class="prob-head">
           <span class="prob-tag ren">練習 15</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
         <div class="qside">
-        <p class="prob-q">2次方程式 x<sup>2</sup> + 3x − 1 = 0 の2つの解を α, β とするとき、次の式の値を求めよ。</p>
+        <p class="prob-q">2次方程式<math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>3</mn><mi>x</mi><mo>−</mo><mn>1</mn><mo>=</mo><mn>0</mn></math>の2つの解を <math><mi>α</mi></math>, <math><mi>β</mi></math> とするとき、次の式の値を求めよ。</p>
         </div>
         <div class="tabs" role="tablist" aria-label="練習15の小問">
           <button class="tab" role="tab" data-tab="ren15-1" aria-selected="true">(1)</button>
@@ -485,70 +569,70 @@
         </div>
         <div class="tabpanel show" id="panel-ren15-1" data-flow="ren15-1" data-label="練習15 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　α<sup>2</sup> + β<sup>2</sup></span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><msup><mi>α</mi><mn>2</mn></msup><mo>+</mo><msup><mi>β</mi><mn>2</mn></msup></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="quiz" id="qz-ren15-1" data-correct="1">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>11</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>7</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>9</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>13</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mn>11</mn></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mn>7</mn></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mn>9</mn></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mn>13</mn></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
           <p class="verdict"></p>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― α + β と αβ を出す</h3>
-          <p>解と係数の関係から α + β = −3、αβ = −1。αβ が負の数であることに注意しよう。</p>
+          <h3>ヒント 1 ― <math><mi>α</mi></math> + <math><mi>β</mi></math> と <math><mi>α</mi></math><math><mi>β</mi></math> を出す</h3><p class="cite"><span class="cite-tag">使う公式</span><math><mi>α</mi><mo>+</mo><mi>β</mi><mo>=</mo><mo>−</mo><mfrac><mi>b</mi><mi>a</mi></mfrac></math>、<math><mi>α</mi><mi>β</mi><mo>=</mo><mfrac><mi>c</mi><mi>a</mi></mfrac></math>この方程式では <math><mi>α</mi><mo>+</mo><mi>β</mi><mo>=</mo><mo>−</mo><mn>3</mn></math>、<math><mi>α</mi><mi>β</mi><mo>=</mo><mo>−</mo><mn>1</mn></math> になる。<math><mi>α</mi><mi>β</mi></math> が負の数であることに注意する。</p>
+          <p>解と係数の関係から<math><mi>α</mi><mo>+</mo><mi>β</mi><mo>=</mo><mo>−</mo><mn>3</mn></math>、<math><mi>α</mi><mi>β</mi><mo>=</mo><mo>−</mo><mn>1</mn></math>。<math><mi>α</mi></math><math><mi>β</mi></math> が負の数であることに注意しよう。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― (α + β)<sup>2</sup> − 2αβ に代入する</h3>
-          <p>(−3)<sup>2</sup> − 2・(−1) を計算しよう。「−2 × 負の数」はプラスになるよ。</p>
+          <h3>ヒント<math><mn>2</mn><mo>―</mo><msup><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>α</mi><mi>β</mi></math>に代入する</h3><p class="cite"><span class="cite-tag">使う公式</span><math><msup><mi>α</mi><mn>2</mn></msup><mo>+</mo><msup><mi>β</mi><mn>2</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>α</mi><mi>β</mi></math><math><msup><mrow><mo>(</mo><mo>−</mo><mn>3</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>2</mn><mo>⋅</mo><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow></math> を計算する。「−2 × 負の数」はプラスになる。</p>
+          <p><math><msup><mrow><mo>(</mo><mo>−</mo><mn>3</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>2</mn><mo>⋅</mo><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow></math>を計算しよう。「−2 × 負の数」はプラスになるよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">11</p>
-          <p>α<sup>2</sup> + β<sup>2</sup> = (α + β)<sup>2</sup> − 2αβ = 9 + 2</p>
+          <p class="big">11</p><p class="cite"><span class="cite-tag">使う公式</span><math><msup><mi>α</mi><mn>2</mn></msup><mo>+</mo><msup><mi>β</mi><mn>2</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>α</mi><mi>β</mi></math><math><mi>α</mi><mo>+</mo><mi>β</mi><mo>=</mo><mo>−</mo><mn>3</mn></math>、<math><mi>α</mi><mi>β</mi><mo>=</mo><mo>−</mo><mn>1</mn></math> を代入して計算する。</p>
+          <p><math><msup><mi>α</mi><mn>2</mn></msup><mo>+</mo><msup><mi>β</mi><mn>2</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>α</mi><mi>β</mi><mo>=</mo><mn>9</mn><mo>+</mo><mn>2</mn></math></p>
         </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren15-2" data-flow="ren15-2" data-label="練習15 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　α<sup>3</sup> + β<sup>3</sup></span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><msup><mi>α</mi><mn>3</mn></msup><mo>+</mo><msup><mi>β</mi><mn>3</mn></msup></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 例題4 (2) の変形を使う</h3>
-          <p>α<sup>3</sup> + β<sup>3</sup> = (α + β)<sup>3</sup> − 3αβ(α + β)。α + β = −3、αβ = −1 を代入しよう。符号の掛け算に注意だよ。</p>
+          <h3>ヒント 1 ― 例題4 (2) の変形を使う</h3><p class="cite"><span class="cite-tag">使う公式</span><math><msup><mi>α</mi><mn>3</mn></msup><mo>+</mo><msup><mi>β</mi><mn>3</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mn>3</mn></msup><mo>−</mo><mn>3</mn><mi>α</mi><mi>β</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow></math><math><mi>α</mi><mo>+</mo><mi>β</mi><mo>=</mo><mo>−</mo><mn>3</mn></math>、<math><mi>α</mi><mi>β</mi><mo>=</mo><mo>−</mo><mn>1</mn></math> を代入する。符号の掛け算に注意する。</p>
+          <p><math><msup><mi>α</mi><mn>3</mn></msup><mo>+</mo><msup><mi>β</mi><mn>3</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mn>3</mn></msup><mo>−</mo><mn>3</mn><mi>α</mi><mi>β</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow></math>。<math><mi>α</mi><mo>+</mo><mi>β</mi><mo>=</mo><mo>−</mo><mn>3</mn></math>、<math><mi>α</mi><mi>β</mi><mo>=</mo><mo>−</mo><mn>1</mn></math>を代入しよう。符号の掛け算に注意だよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">−36</p>
-          <p>(−3)<sup>3</sup> − 3・(−1)・(−3) = −27 − 9</p>
+          <p class="big">−36</p><p class="cite"><span class="cite-tag">使う公式</span><math><msup><mi>α</mi><mn>3</mn></msup><mo>+</mo><msup><mi>β</mi><mn>3</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mn>3</mn></msup><mo>−</mo><mn>3</mn><mi>α</mi><mi>β</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow></math>例題4 (2) と同じ変形で計算する。</p>
+          <p><math><msup><mrow><mo>(</mo><mo>−</mo><mn>3</mn><mo>)</mo></mrow><mn>3</mn></msup><mo>−</mo><mn>3</mn><mo>⋅</mo><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mo>⋅</mo><mrow><mo>(</mo><mo>−</mo><mn>3</mn><mo>)</mo></mrow><mo>=</mo><mo>−</mo><mn>27</mn><mo>−</mo><mn>9</mn></math></p>
         </div>
           <p class="prob-done">(2) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren15-3" data-flow="ren15-3" data-label="練習15 (3)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(3)　(α − β)<sup>2</sup></span>
+            <span class="sub prob-q" style="margin:0">(3)　<math><msup><mrow><mo>(</mo><mi>α</mi><mo>−</mo><mi>β</mi><mo>)</mo></mrow><mn>2</mn></msup></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― (α + β)<sup>2</sup> との関係を使う</h3>
-          <p>(α − β)<sup>2</sup> = (α + β)<sup>2</sup> − 4αβ と変形できるよ。−4αβ の符号に注意しよう。</p>
+          <h3>ヒント<math><mn>1</mn><mo>―</mo><msup><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mn>2</mn></msup></math> との関係を使う</h3><p class="cite"><span class="cite-tag">使う公式</span><math><msup><mrow><mo>(</mo><mi>α</mi><mo>−</mo><mi>β</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>α</mi><mi>β</mi></math><math><mi>α</mi><mo>+</mo><mi>β</mi><mo>=</mo><mo>−</mo><mn>3</mn></math>、<math><mi>α</mi><mi>β</mi><mo>=</mo><mo>−</mo><mn>1</mn></math> を代入する。<math><mo>−</mo><mn>4</mn><mi>α</mi><mi>β</mi></math> の符号に注意する。</p>
+          <p><math><msup><mrow><mo>(</mo><mi>α</mi><mo>−</mo><mi>β</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>α</mi><mi>β</mi></math>と変形できるよ。−4<math><mi>α</mi></math><math><mi>β</mi></math> の符号に注意しよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">13</p>
-          <p>(α − β)<sup>2</sup> = (−3)<sup>2</sup> − 4・(−1) = 9 + 4</p>
+          <p class="big">13</p><p class="cite"><span class="cite-tag">使う公式</span><math><msup><mrow><mo>(</mo><mi>α</mi><mo>−</mo><mi>β</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>α</mi><mi>β</mi></math>代入すると <math><msup><mrow><mo>(</mo><mo>−</mo><mn>3</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>4</mn><mo>⋅</mo><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow></math> を計算することになる。</p>
+          <p><math><msup><mrow><mo>(</mo><mi>α</mi><mo>−</mo><mi>β</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><mo>−</mo><mn>3</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>4</mn><mo>⋅</mo><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mo>=</mo><mn>9</mn><mo>+</mo><mn>4</mn></math></p>
         </div>
           <p class="prob-done">(3) クリア！　練習15は全部おわり。次は例題5だよ。</p>
         </div>
@@ -558,28 +642,34 @@
         <h2>例題5 ― 2つの解の条件から定数を決める</h2>
         <span class="pno">教科書 p.50</span>
       </div>
-      <section class="card prob" id="prob-reidai5" data-flow="reidai5" data-label="例題5">
+      <section class="nofig card prob" id="prob-reidai5" data-flow="reidai5" data-label="例題5">
         <div class="prob-head">
           <span class="prob-tag ouyou">例題 5</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">2次方程式 x<sup>2</sup> + 3x + m = 0 において、1つの解が他の解の2倍であるとき、定数 m の値と2つの解を求めよ。</p>
+        <p class="prob-q">2次方程式<math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>3</mn><mi>x</mi><mo>+</mo><mi>m</mi><mo>=</mo><mn>0</mn></math>において、1つの解が他の解の2倍であるとき、定数 <math><mi>m</mi></math> の値と2つの解を求めよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 2つの解を α, 2α と表す</h3>
-          <p>2つの解は、α、2α と表すことができる。この和と積を、解と係数の関係と結びつけよう。</p>
+          <h3>ヒント 1 ― 2つの解を <math><mi>α</mi></math>, 2<math><mi>α</mi></math> と表す</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mi>α</mi><mo>+</mo><mi>β</mi><mo>=</mo><mo>−</mo><mfrac><mi>b</mi><mi>a</mi></mfrac></math>、<math><mi>α</mi><mi>β</mi><mo>=</mo><mfrac><mi>c</mi><mi>a</mi></mfrac></math>2つの解を <math><mi>α</mi></math>、<math><mn>2</mn><mi>α</mi></math> と表すと、和は <math><mi>α</mi><mo>+</mo><mn>2</mn><mi>α</mi></math>、積は <math><mi>α</mi><mo>⋅</mo><mn>2</mn><mi>α</mi></math> と書ける。この2つを解と係数の関係に結びつける。</p>
+          <p>2つの解は、<math><mi>α</mi></math>、2<math><mi>α</mi></math> と表すことができる。この和と積を、解と係数の関係と結びつけよう。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― 和の式から α を決める</h3>
-          <p>解と係数の関係から、和は α + 2α = −3、積は α・2α = m。和の方程式 3α = −3 から α が決まるよ。</p>
+          <h3>ヒント 2 ― 和の式から <math><mi>α</mi></math> を決める</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mi>α</mi><mo>+</mo><mn>2</mn><mi>α</mi><mo>=</mo><mo>−</mo><mn>3</mn></math>、<math><mi>α</mi><mo>⋅</mo><mn>2</mn><mi>α</mi><mo>=</mo><mi>m</mi></math>和の方程式 <math><mn>3</mn><mi>α</mi><mo>=</mo><mo>−</mo><mn>3</mn></math> から <math><mi>α</mi></math> が先に決まる。</p>
+          <p>解と係数の関係から、和は<math><mi>α</mi><mo>+</mo><mn>2</mn><mi>α</mi><mo>=</mo><mo>−</mo><mn>3</mn></math>、積は<math><mi>α</mi><mo>⋅</mo><mn>2</mn><mi>α</mi><mo>=</mo><mi>m</mi></math>。和の方程式<math><mn>3</mn><mi>α</mi><mo>=</mo><mo>−</mo><mn>3</mn></math>から <math><mi>α</mi></math> が決まるよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">m = 2，　2つの解は −1，−2</p>
-          <p>2つの解は、α、2α と表すことができる。解と係数の関係から α + 2α = −3、α・2α = m。すなわち 3α = −3、2α<sup>2</sup> = m。よって α = −1。このとき m = 2α<sup>2</sup> = 2・(−1)<sup>2</sup> = 2。また、2つの解は α = −1、2α = 2・(−1) = −2。</p>
+          <p class="big"><math><mi>m</mi><mo>=</mo><mn>2</mn><mo>,</mo></math>　2つの解は −1，−2</p><p class="cite"><span class="cite-tag">使う性質</span><math><mi>α</mi><mo>+</mo><mi>β</mi><mo>=</mo><mo>−</mo><mfrac><mi>b</mi><mi>a</mi></mfrac></math>、<math><mi>α</mi><mi>β</mi><mo>=</mo><mfrac><mi>c</mi><mi>a</mi></mfrac></math>解を <math><mi>α</mi></math>、<math><mn>2</mn><mi>α</mi></math> と表し、和の式から <math><mi>α</mi></math> を決めて、積の式で <math><mi>m</mi></math> を求める。</p>
+          <p>2つの解は、<math><mi>α</mi></math>、2<math><mi>α</mi></math> と表すことができる。解と係数の関係から<math><mi>α</mi><mo>+</mo><mn>2</mn><mi>α</mi><mo>=</mo><mo>−</mo><mn>3</mn></math>、<math><mi>α</mi><mo>⋅</mo><mn>2</mn><mi>α</mi><mo>=</mo><mi>m</mi></math>。すなわち<math><mn>3</mn><mi>α</mi><mo>=</mo><mo>−</mo><mn>3</mn></math>、<math><mn>2</mn><msup><mi>α</mi><mn>2</mn></msup><mo>=</mo><mi>m</mi></math>。よって<math><mi>α</mi><mo>=</mo><mo>−</mo><mn>1</mn></math>。このとき</p>
+<div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>m</mi><mo>=</mo><mn>2</mn><msup><mi>α</mi><mn>2</mn></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>m</mi></mphantom><mo>=</mo><mn>2</mn><mo>⋅</mo><msup><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>m</mi></mphantom><mo>=</mo><mn>2</mn></math></div>
+</div>
+<p>。また、2つの解は<math><mi>α</mi><mo>=</mo><mo>−</mo><mn>1</mn></math>、<math><mn>2</mn><mi>α</mi><mo>=</mo><mn>2</mn><mo>⋅</mo><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mo>=</mo><mo>−</mo><mn>2</mn></math>。</p>
         </div>
         <p class="prob-done">例題5 クリア！　次は練習16に挑戦しよう。</p>
       </section>
@@ -588,13 +678,13 @@
         <h2>練習問題に挑戦</h2>
         <span class="pno">教科書 p.50</span>
       </div>
-      <section class="card prob" id="prob-ren16" data-label="練習16">
+      <section class="nofig card prob" id="prob-ren16" data-label="練習16">
         <div class="prob-head">
           <span class="prob-tag ren">練習 16</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
         <div class="qside">
-        <p class="prob-q">2次方程式 x<sup>2</sup> + 5x + m = 0 の2つの解が次の条件を満たすとき、定数 m の値と2つの解を、それぞれ求めよ。</p>
+        <p class="prob-q">2次方程式<math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>5</mn><mi>x</mi><mo>+</mo><mi>m</mi><mo>=</mo><mn>0</mn></math>の2つの解が次の条件を満たすとき、定数 <math><mi>m</mi></math> の値と2つの解を、それぞれ求めよ。</p>
         </div>
         <div class="tabs" role="tablist" aria-label="練習16の小問">
           <button class="tab" role="tab" data-tab="ren16-1" aria-selected="true">(1)</button>
@@ -607,18 +697,18 @@
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 2つの解を α, 4α と表す</h3>
-          <p>例題5と同じやり方。和は α + 4α = −5、積は α・4α = m だよ。</p>
+          <h3>ヒント 1 ― 2つの解を <math><mi>α</mi></math>, 4<math><mi>α</mi></math> と表す</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mi>α</mi><mo>+</mo><mi>β</mi><mo>=</mo><mo>−</mo><mfrac><mi>b</mi><mi>a</mi></mfrac></math>、<math><mi>α</mi><mi>β</mi><mo>=</mo><mfrac><mi>c</mi><mi>a</mi></mfrac></math>例題5と同じやり方で、2つの解を <math><mi>α</mi></math>、<math><mn>4</mn><mi>α</mi></math> と表す。和は <math><mi>α</mi><mo>+</mo><mn>4</mn><mi>α</mi><mo>=</mo><mo>−</mo><mn>5</mn></math>、積は <math><mi>α</mi><mo>⋅</mo><mn>4</mn><mi>α</mi><mo>=</mo><mi>m</mi></math> になる。</p>
+          <p>例題5と同じやり方。和は<math><mi>α</mi><mo>+</mo><mn>4</mn><mi>α</mi><mo>=</mo><mo>−</mo><mn>5</mn></math>、積は<math><mi>α</mi><mo>⋅</mo><mn>4</mn><mi>α</mi><mo>=</mo><mi>m</mi></math>だよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― 和の式から α を決める</h3>
-          <p>5α = −5 から α を求め、それを積の式に代入して m を出そう。</p>
+          <h3>ヒント 2 ― 和の式から <math><mi>α</mi></math> を決める</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mn>5</mn><mi>α</mi><mo>=</mo><mo>−</mo><mn>5</mn></math> から <math><mi>α</mi></math> を求め、それを積の式 <math><mn>4</mn><msup><mi>α</mi><mn>2</mn></msup><mo>=</mo><mi>m</mi></math> に代入して <math><mi>m</mi></math> を出す。</p>
+          <p><math><mn>5</mn><mi>α</mi><mo>=</mo><mo>−</mo><mn>5</mn></math>から <math><mi>α</mi></math> を求め、それを積の式に代入して <math><mi>m</mi></math> を出そう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">m = 4，　2つの解は −1，−4</p>
-          <p>5α = −5 より α = −1。このとき m = 4α<sup>2</sup> = 4。2つの解は −1 と 4α = −4。</p>
+          <p class="big"><math><mi>m</mi><mo>=</mo><mn>4</mn><mo>,</mo></math>　2つの解は −1，−4</p><p class="cite"><span class="cite-tag">使う性質</span><math><mi>α</mi><mo>+</mo><mi>β</mi><mo>=</mo><mo>−</mo><mfrac><mi>b</mi><mi>a</mi></mfrac></math>、<math><mi>α</mi><mi>β</mi><mo>=</mo><mfrac><mi>c</mi><mi>a</mi></mfrac></math>和の式から <math><mi>α</mi></math> を決めて、積の式で <math><mi>m</mi></math> を求める。</p>
+          <p><math><mn>5</mn><mi>α</mi><mo>=</mo><mo>−</mo><mn>5</mn></math>より<math><mi>α</mi><mo>=</mo><mo>−</mo><mn>1</mn></math>。このとき<math><mi>m</mi><mo>=</mo><mn>4</mn><msup><mi>α</mi><mn>2</mn></msup><mo>=</mo><mn>4</mn></math>。2つの解は −1 と<math><mn>4</mn><mi>α</mi><mo>=</mo><mo>−</mo><mn>4</mn></math>。</p>
         </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
@@ -629,18 +719,18 @@
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 差は2乗して考える</h3>
-          <p>「差が1」は (α − β)<sup>2</sup> = 1 と同じこと。(α − β)<sup>2</sup> = (α + β)<sup>2</sup> − 4αβ に、α + β = −5、αβ = m を代入しよう。</p>
+          <h3>ヒント 1 ― 差は2乗して考える</h3><p class="cite"><span class="cite-tag">使う公式</span><math><msup><mrow><mo>(</mo><mi>α</mi><mo>−</mo><mi>β</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>α</mi><mi>β</mi></math>「差が1」は <math><msup><mrow><mo>(</mo><mi>α</mi><mo>−</mo><mi>β</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>1</mn></math> と同じこと。この式に <math><mi>α</mi><mo>+</mo><mi>β</mi><mo>=</mo><mo>−</mo><mn>5</mn></math>、<math><mi>α</mi><mi>β</mi><mo>=</mo><mi>m</mi></math> を代入する。</p>
+          <p>「差が1」は<math><msup><mrow><mo>(</mo><mi>α</mi><mo>−</mo><mi>β</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>1</mn></math>と同じこと。<math><msup><mrow><mo>(</mo><mi>α</mi><mo>−</mo><mi>β</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>α</mi><mi>β</mi></math>に、<math><mi>α</mi><mo>+</mo><mi>β</mi><mo>=</mo><mo>−</mo><mn>5</mn></math>、<math><mi>α</mi><mi>β</mi><mo>=</mo><mi>m</mi></math>を代入しよう。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― m が決まったら方程式を解く</h3>
-          <p>25 − 4m = 1 から m が決まる。あとは x<sup>2</sup> + 5x + m = 0 を実際に解いて、2つの解を確認しよう（因数分解できるよ）。</p>
+          <h3>ヒント 2 ― <math><mi>m</mi></math> が決まったら方程式を解く</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mn>25</mn><mo>−</mo><mn>4</mn><mi>m</mi><mo>=</mo><mn>1</mn></math> から <math><mi>m</mi></math> が決まる。あとは方程式を実際に解いて、2つの解を確認する。</p>
+          <p><math><mn>25</mn><mo>−</mo><mn>4</mn><mi>m</mi><mo>=</mo><mn>1</mn></math>から <math><mi>m</mi></math> が決まる。あとは<math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>5</mn><mi>x</mi><mo>+</mo><mi>m</mi><mo>=</mo><mn>0</mn></math>を実際に解いて、2つの解を確認しよう（因数分解できるよ）。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">m = 6，　2つの解は −2，−3</p>
-          <p>(α + β)<sup>2</sup> − 4αβ = 25 − 4m = 1 より m = 6。方程式は x<sup>2</sup> + 5x + 6 = 0 で、(x + 2)(x + 3) = 0 と因数分解できる。たしかに2つの解の差は 1 だね。</p>
+          <p class="big"><math><mi>m</mi><mo>=</mo><mn>6</mn><mo>,</mo></math>　2つの解は −2，−3</p><p class="cite"><span class="cite-tag">使う公式</span><math><msup><mrow><mo>(</mo><mi>α</mi><mo>−</mo><mi>β</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>α</mi><mi>β</mi></math><math><mi>α</mi><mo>+</mo><mi>β</mi><mo>=</mo><mo>−</mo><mn>5</mn></math>、<math><mi>α</mi><mi>β</mi><mo>=</mo><mi>m</mi></math> を代入して <math><mi>m</mi></math> を決め、方程式を解いて確かめる。</p>
+          <p><math><msup><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>α</mi><mi>β</mi><mo>=</mo><mn>25</mn><mo>−</mo><mn>4</mn><mi>m</mi><mo>=</mo><mn>1</mn></math>より<math><mi>m</mi><mo>=</mo><mn>6</mn></math>。方程式は<math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>5</mn><mi>x</mi><mo>+</mo><mn>6</mn><mo>=</mo><mn>0</mn></math>で、<math><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo></mrow><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>3</mn><mo>)</mo></mrow><mo>=</mo><mn>0</mn></math>と因数分解できる。たしかに2つの解の差は 1 だね。</p>
         </div>
           <p class="prob-done">(2) クリア！　練習16は全部おわり。次のページでは因数分解と方程式の決定を学ぼう。</p>
         </div>
@@ -651,9 +741,9 @@
       <section class="card summary" id="summaryCard" style="display:none">
         <h2>この項のポイント</h2>
         <ul>
-          <li><b>解と係数の関係：</b>ax<sup>2</sup> + bx + c = 0 の2つの解 α, β について、α + β = −<span class="frac"><span class="num">b</span><span class="den">a</span></span>、αβ = <span class="frac"><span class="num">c</span><span class="den">a</span></span>。解を求めなくても和と積が分かる。</li>
-          <li><b>対称式の変形：</b>α<sup>2</sup> + β<sup>2</sup> = (α + β)<sup>2</sup> − 2αβ、α<sup>3</sup> + β<sup>3</sup> = (α + β)<sup>3</sup> − 3αβ(α + β)、(α − β)<sup>2</sup> = (α + β)<sup>2</sup> − 4αβ。</li>
-          <li><b>解の条件から定数を決める：</b>2つの解を α, 2α のように表し、和と積の式に結びつける。</li>
+          <li><p class="cite"><span class="cite-tag">使う公式</span><math><mi>α</mi><mo>+</mo><mi>β</mi><mo>=</mo><mo>−</mo><mfrac><mi>b</mi><mi>a</mi></mfrac></math>、<math><mi>α</mi><mi>β</mi><mo>=</mo><mfrac><mi>c</mi><mi>a</mi></mfrac></math>解を求めなくても、和と積が係数から分かる。</p><b>解と係数の関係：</b><math><mi>a</mi><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>b</mi><mi>x</mi><mo>+</mo><mi>c</mi><mo>=</mo><mn>0</mn></math>の2つの解 <math><mi>α</mi></math>, <math><mi>β</mi></math> について、<math><mi>α</mi><mo>+</mo><mi>β</mi><mo>=</mo><mo>−</mo><mfrac><mi>b</mi><mi>a</mi></mfrac></math>、<math><mi>α</mi><mi>β</mi><mo>=</mo><mfrac><mi>c</mi><mi>a</mi></mfrac></math>。解を求めなくても和と積が分かる。</li>
+          <li><p class="cite"><span class="cite-tag">使う公式</span><math><msup><mi>α</mi><mn>2</mn></msup><mo>+</mo><msup><mi>β</mi><mn>2</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>α</mi><mi>β</mi></math>、<math><msup><mi>α</mi><mn>3</mn></msup><mo>+</mo><msup><mi>β</mi><mn>3</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mn>3</mn></msup><mo>−</mo><mn>3</mn><mi>α</mi><mi>β</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow></math>、<math><msup><mrow><mo>(</mo><mi>α</mi><mo>−</mo><mi>β</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>α</mi><mi>β</mi></math> という変形で、対称式を <math><mi>α</mi><mo>+</mo><mi>β</mi></math> と <math><mi>α</mi><mi>β</mi></math> で表す。</p><b>対称式の変形：</b><math><msup><mi>α</mi><mn>2</mn></msup><mo>+</mo><msup><mi>β</mi><mn>2</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>α</mi><mi>β</mi></math>、<math><msup><mi>α</mi><mn>3</mn></msup><mo>+</mo><msup><mi>β</mi><mn>3</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mn>3</mn></msup><mo>−</mo><mn>3</mn><mi>α</mi><mi>β</mi><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow></math>、<math><msup><mrow><mo>(</mo><mi>α</mi><mo>−</mo><mi>β</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>α</mi><mi>β</mi></math>。</li>
+          <li><p class="cite"><span class="cite-tag">使う性質</span><math><mi>α</mi><mo>+</mo><mi>β</mi><mo>=</mo><mo>−</mo><mfrac><mi>b</mi><mi>a</mi></mfrac></math>、<math><mi>α</mi><mi>β</mi><mo>=</mo><mfrac><mi>c</mi><mi>a</mi></mfrac></math>2つの解を <math><mi>α</mi></math>、<math><mn>2</mn><mi>α</mi></math> のように表し、条件を和と積の式に結びつけて定数を決める。</p><b>解の条件から定数を決める：</b>2つの解を <math><mi>α</mi></math>, 2<math><mi>α</mi></math> のように表し、和と積の式に結びつける。</li>
         </ul>
       </section>
       <footer>

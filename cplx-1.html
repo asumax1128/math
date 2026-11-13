@@ -302,7 +302,64 @@
       table.comp{border-collapse:collapse;margin:0 0 14px;width:100%}
       table.comp th,table.comp td{border:1px solid var(--line);padding:8px 10px;text-align:center;font-size:15px}
       table.comp th{background:var(--surface2)}
-        </style>
+        
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+
+      /* 積分記号は大きめに表示する（元のページの可読化デザインに合わせる） */
+      math .int-op{font-size:1.35em}
+      /* calc-12 世代（.card）と calc-18 世代（.unit）の、図のない問題の全幅化 */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig>.step{position:static !important}
+        .card.nofig>.steps-wrap{max-height:none !important;overflow:visible !important}
+        .unit.nofig{display:block !important}
+        .unit.nofig>.qside{position:static !important}
+        .unit.nofig>.steps-stack{max-height:none !important;overflow:visible !important}
+      }
+
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける・第3弾c） */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig .qside{position:static !important}
+        .card.nofig .steps-wrap,.card.nofig .tabpanel .steps-wrap{max-height:none !important;overflow:visible !important}
+      }
+</style>
   </head>
   <body>
     <div class="wrap">
@@ -325,10 +382,10 @@
         <span class="pno">教科書 p.40</span>
       </div>
       <section class="card">
-        <p>2次方程式 x<sup>2</sup> = 3 は、実数の範囲で x = ±√3 を解にもつ。しかし、2次方程式 x<sup>2</sup> = −3 は、実数の範囲では解をもたない。そこで、方程式 x<sup>2</sup> = k が実数 k の符号に関係なく常に解をもつように、実数を含む新しい「数」を考えることにしよう。</p>
-        <p>2乗すると −1 になる新しい数を1つ考え、これを文字 <b>i</b> で表す。すなわち</p>
-        <p class="formula">i<sup>2</sup> = −1</p>
-        <p>とする。この i を<span class="key">虚数単位</span>という。そして、i と2つの実数 a, b を用いて a + bi の形に表される数を<span class="key">複素数</span>という。複素数 a + bi では、a を<span class="key">実部</span>、b を<span class="key">虚部</span>という。たとえば、2 + 3i の実部は 2、虚部は 3 である。</p>
+        <p>2次方程式<math><msup><mi>x</mi><mn>2</mn></msup><mo>=</mo><mn>3</mn></math>は、実数の範囲で<math><mi>x</mi><mo>=</mo><mo>±</mo><msqrt><mn>3</mn></msqrt></math>を解にもつ。しかし、2次方程式<math><msup><mi>x</mi><mn>2</mn></msup><mo>=</mo><mo>−</mo><mn>3</mn></math>は、実数の範囲では解をもたない。そこで、方程式<math><msup><mi>x</mi><mn>2</mn></msup><mo>=</mo><mi>k</mi></math>が実数 <math><mi>k</mi></math> の符号に関係なく常に解をもつように、実数を含む新しい「数」を考えることにしよう。</p>
+        <p>2乗すると −1 になる新しい数を1つ考え、これを文字 <b><math><mi>i</mi></math></b> で表す。すなわち</p>
+        <p class="formula"><math display="block"><msup><mi>i</mi><mn>2</mn></msup><mo>=</mo><mo>−</mo><mn>1</mn></math></p>
+        <p>とする。この <math><mi>i</mi></math> を<span class="key">虚数単位</span>という。そして、<math><mi>i</mi></math> と2つの実数 <math><mi>a</mi></math>, <math><mi>b</mi></math> を用いて <math><mi>a</mi></math> + bi の形に表される数を<span class="key">複素数</span>という。複素数 <math><mi>a</mi></math> + bi では、<math><mi>a</mi></math> を<span class="key">実部</span>、<math><mi>b</mi></math> を<span class="key">虚部</span>という。たとえば、2 + 3i の実部は 2、虚部は 3 である。</p>
         <figure>
           <div class="figbox">
             <svg viewBox="0 0 520 200" role="img" aria-label="複素数の分類。複素数 a+bi のうち、b=0 のものが実数 a、b≠0 のものが虚数 a+bi、そのうち a=0 のものが純虚数 bi">
@@ -343,46 +400,50 @@
               <text x="345" y="133" text-anchor="middle" class="svg-txt" font-size="14">純虚数 bi（a = 0）</text>
             </svg>
           </div>
-          <figcaption>実数全体が複素数全体に含まれる。b = 0 のとき複素数 a + 0i は実数 a を表す。</figcaption>
+          <figcaption>実数全体が複素数全体に含まれる。<math><mi>b</mi><mo>=</mo><mn>0</mn></math>のとき複素数 <math><mi>a</mi></math> + 0i は実数 <math><mi>a</mi></math> を表す。</figcaption>
         </figure>
-        <p>複素数における i は文字のように扱い、たとえば、次のように書く。</p>
-        <p class="formula left">2 + 1i = 2 + i，　3 + (−5)i = 3 − 5i，　1 + (−1)i = 1 − i</p>
-        <p class="formula left"><span class="frac"><span class="num">3</span><span class="den">2</span></span> + <span class="frac"><span class="num">√5</span><span class="den">2</span></span>i = <span class="frac"><span class="num">3 + √5 i</span><span class="den">2</span></span></p>
+        <p>複素数における <math><mi>i</mi></math> は文字のように扱い、たとえば、次のように書く。</p>
+        <div class="chain-crow formula left">
+<div class="crow"><math displaystyle="true"><mn>2</mn><mo>+</mo><mn>1</mn><mi>i</mi><mo>=</mo><mn>2</mn><mo>+</mo><mi>i</mi><mo>,</mo><mspace width="2em"/><mn>3</mn><mo>+</mo><mrow><mo>(</mo><mo>−</mo><mn>5</mn><mo>)</mo></mrow><mi>i</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mn>2</mn><mo>+</mo><mn>1</mn><mi>i</mi></mphantom><mo>=</mo><mn>3</mn><mo>−</mo><mn>5</mn><mi>i</mi><mo>,</mo><mspace width="2em"/><mn>1</mn><mo>+</mo><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mi>i</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mn>2</mn><mo>+</mo><mn>1</mn><mi>i</mi></mphantom><mo>=</mo><mn>1</mn><mo>−</mo><mi>i</mi></math></div>
+</div>
+        <p class="formula left"><math display="block"><mfrac><mn>3</mn><mn>2</mn></mfrac><mo>+</mo><mfrac><msqrt><mn>5</mn></msqrt><mn>2</mn></mfrac><mi>i</mi><mo>=</mo><mfrac><mrow><mn>3</mn><mo>+</mo><msqrt><mn>5</mn></msqrt><mi>i</mi></mrow><mn>2</mn></mfrac></math></p>
       </section>
       <div class="sec-head">
         <span class="sec-tag">例題</span>
         <h2>例1 ― 実部と虚部</h2>
         <span class="pno">教科書 p.41</span>
       </div>
-      <section class="card prob" id="prob-ex1" data-flow="ex1" data-label="例1">
+      <section class="nofig card prob" id="prob-ex1" data-flow="ex1" data-label="例1">
         <div class="prob-head">
           <span class="prob-tag ">例 1</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
         <div class="qside">
-        <p class="prob-q">次の複素数の実部と虚部をいえ。<br>(1)　3 − 2i　　(2)　<span class="frac"><span class="num">1 + √3 i</span><span class="den">2</span></span>　　(3)　2　　(4)　i</p>
+        <p class="prob-q">次の複素数の実部と虚部をいえ。<br>(1)　3 − 2i　　(2)　<math><mfrac><mrow><mn>1</mn><mo>+</mo><msqrt><mn>3</mn></msqrt><mi>i</mi></mrow><mn>2</mn></mfrac></math>　　(3)　2　　(4)　<math><mi>i</mi></math></p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― a + bi の形にあてはめる</h3>
-          <p>(1) は、3 − 2i = 3 + (−2)i と見れば、a + bi の形だね。a にあたる数が実部、b にあたる数が虚部だよ。</p>
+          <h3>ヒント 1 ― <math><mi>a</mi></math> + bi の形にあてはめる</h3><p class="cite"><span class="cite-tag">使う定義</span><math><mi>a</mi><mo>+</mo><mi>b</mi><mi>i</mi></math>の <math><mi>a</mi></math> が実部、<math><mi>b</mi></math> が虚部。ここでは <math><mn>3</mn><mo>−</mo><mn>2</mn><mi>i</mi><mo>=</mo><mn>3</mn><mo>+</mo><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mi>i</mi></math> と見て、<math><mi>a</mi><mo>=</mo><mn>3</mn></math>、<math><mi>b</mi><mo>=</mo><mo>−</mo><mn>2</mn></math> を読み取る。</p>
+          <p>(1) は、<math><mn>3</mn><mo>−</mo><mn>2</mn><mi>i</mi><mo>=</mo><mn>3</mn><mo>+</mo><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mi>i</mi></math>と見れば、<math><mi>a</mi></math> + bi の形だね。<math><mi>a</mi></math> にあたる数が実部、<math><mi>b</mi></math> にあたる数が虚部だよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― (2) は係数を分ける</h3>
-          <p>(2) は <span class="frac"><span class="num">1 + √3 i</span><span class="den">2</span></span> = <span class="frac"><span class="num">1</span><span class="den">2</span></span> + <span class="frac"><span class="num">√3</span><span class="den">2</span></span>i と直せる。i の係数（虚部）は、√3 ではなく <span class="frac"><span class="num">√3</span><span class="den">2</span></span> の方だよ。</p>
+          <h3>ヒント 2 ― (2) は係数を分ける</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mfrac><mrow><mn>1</mn><mo>+</mo><msqrt><mn>3</mn></msqrt><mi>i</mi></mrow><mn>2</mn></mfrac><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>+</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac><mi>i</mi></math>分子を項ごとに 2 で割り、実部と虚部に分けて読み取る。</p>
+          <p>(2) は <math><mfrac><mrow><mn>1</mn><mo>+</mo><msqrt><mn>3</mn></msqrt><mi>i</mi></mrow><mn>2</mn></mfrac><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>+</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac><mi>i</mi></math>と直せる。<math><mi>i</mi></math> の係数（虚部）は、<math><msqrt><mn>3</mn></msqrt></math>ではなく <math><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac></math> の方だよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 3 ― (3)(4) は「見えない部分」を 0 と見る</h3>
-          <p>(3) の 2 は 2 + 0i、(4) の i は 0 + 1i と書ける。書かれていない部分は 0 だと考えよう。</p>
+          <h3>ヒント 3 ― (3)(4) は「見えない部分」を 0 と見る</h3><p class="cite"><span class="cite-tag">使う定義</span><math><mn>2</mn><mo>=</mo><mn>2</mn><mo>+</mo><mn>0</mn><mi>i</mi></math>、<math><mi>i</mi><mo>=</mo><mn>0</mn><mo>+</mo><mn>1</mn><mi>i</mi></math>書かれていない部分は 0 と見て、<math><mi>a</mi><mo>+</mo><mi>b</mi><mi>i</mi></math> の形に直す。</p>
+          <p>(3) の 2 は 2 + 0i、(4) の <math><mi>i</mi></math> は 0 + 1i と書ける。書かれていない部分は 0 だと考えよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p>実部と虚部は次のとおり。</p>
+          <p>実部と虚部は次のとおり。</p><p class="cite"><span class="cite-tag">使う定義</span><math><mi>a</mi><mo>+</mo><mi>b</mi><mi>i</mi></math>の <math><mi>a</mi></math> が実部、<math><mi>b</mi></math> が虚部。各数をこの形に直してから、<math><mi>a</mi></math> と <math><mi>b</mi></math> を読み取る。</p>
           <p>・(1) 3 − 2i：実部 3、虚部 −2</p>
-          <p>・(2) <span class="frac"><span class="num">1 + √3 i</span><span class="den">2</span></span>：実部 <span class="frac"><span class="num">1</span><span class="den">2</span></span>、虚部 <span class="frac"><span class="num">√3</span><span class="den">2</span></span></p>
+          <p><math><mo>⋅</mo><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow><mfrac><mrow><mn>1</mn><mo>+</mo><msqrt><mn>3</mn></msqrt><mi>i</mi></mrow><mn>2</mn></mfrac></math>：実部 <math><mfrac><mn>1</mn><mn>2</mn></mfrac></math>、虚部 <math><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac></math></p>
           <p>・(3) 2：実部 2、虚部 0</p>
-          <p>・(4) i：実部 0、虚部 1</p>
+          <p>・(4) <math><mi>i</mi></math>：実部 0、虚部 1</p>
         </div>
         <p class="prob-done">例1 クリア！　次は練習1に挑戦しよう。</p>
       </section>
@@ -391,7 +452,7 @@
         <h2>練習問題に挑戦</h2>
         <span class="pno">教科書 p.41</span>
       </div>
-      <section class="card prob" id="prob-ren1" data-label="練習1">
+      <section class="nofig card prob" id="prob-ren1" data-label="練習1">
         <div class="prob-head">
           <span class="prob-tag ren">練習 1</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
@@ -412,8 +473,8 @@
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― a + bi と比べる</h3>
-          <p>−3 + 5i は、そのまま a + bi の形。a = −3、b = 5 だね。</p>
+          <h3>ヒント 1 ― <math><mi>a</mi></math> + bi と比べる</h3><p class="cite"><span class="cite-tag">使う定義</span><math><mi>a</mi><mo>+</mo><mi>b</mi><mi>i</mi></math>の <math><mi>a</mi></math> が実部、<math><mi>b</mi></math> が虚部。ここでは <math><mi>a</mi><mo>=</mo><mo>−</mo><mn>3</mn></math>、<math><mi>b</mi><mo>=</mo><mn>5</mn></math> である。</p>
+          <p>−3 + 5i は、そのまま <math><mi>a</mi></math> + bi の形。<math><mi>a</mi><mo>=</mo><mo>−</mo><mn>3</mn></math>、<math><mi>b</mi><mo>=</mo><mn>5</mn></math>だね。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
@@ -424,18 +485,18 @@
         </div>
         <div class="tabpanel" id="panel-ren1-2" data-flow="ren1-2" data-label="練習1 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　<span class="frac"><span class="num">−1 − √3 i</span><span class="den">2</span></span></span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><mfrac><mrow><mo>−</mo><mn>1</mn><mo>−</mo><msqrt><mn>3</mn></msqrt><mi>i</mi></mrow><mn>2</mn></mfrac></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 分子を分ける</h3>
-          <p><span class="frac"><span class="num">−1 − √3 i</span><span class="den">2</span></span> = −<span class="frac"><span class="num">1</span><span class="den">2</span></span> − <span class="frac"><span class="num">√3</span><span class="den">2</span></span>i と直せる。i の係数の符号に注意しよう。</p>
+          <h3>ヒント 1 ― 分子を分ける</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mfrac><mrow><mo>−</mo><mn>1</mn><mo>−</mo><msqrt><mn>3</mn></msqrt><mi>i</mi></mrow><mn>2</mn></mfrac><mo>=</mo><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>−</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac><mi>i</mi></math>分子を項ごとに 2 で割り、<math><mi>i</mi></math> の係数の符号まで読み取る。</p>
+          <p><math><mfrac><mrow><mo>−</mo><mn>1</mn><mo>−</mo><msqrt><mn>3</mn></msqrt><mi>i</mi></mrow><mn>2</mn></mfrac><mo>=</mo><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>−</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac><mi>i</mi></math>と直せる。<math><mi>i</mi></math> の係数の符号に注意しよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">実部 −<span class="frac"><span class="num">1</span><span class="den">2</span></span>、虚部 −<span class="frac"><span class="num">√3</span><span class="den">2</span></span></p>
+          <p class="big">実部<math><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math>、虚部<math><mo>−</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac></math></p>
         </div>
           <p class="prob-done">(2) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
@@ -446,7 +507,7 @@
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 1 = 1 + 0i と見る</h3>
+          <h3>ヒント<math><mn>1</mn><mo>―</mo><mn>1</mn><mo>=</mo><mn>1</mn><mo>+</mo><mn>0</mn><mi>i</mi></math>と見る</h3><p class="cite"><span class="cite-tag">使う定義</span><math><mn>1</mn><mo>=</mo><mn>1</mn><mo>+</mo><mn>0</mn><mi>i</mi></math>実数は、虚部が 0 の複素数と見る。</p>
           <p>実数は、虚部が 0 の複素数だったね。</p>
         </div>
         <div class="step answer">
@@ -458,13 +519,13 @@
         </div>
         <div class="tabpanel" id="panel-ren1-4" data-flow="ren1-4" data-label="練習1 (4)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(4)　−i</span>
+            <span class="sub prob-q" style="margin:0">(4)　−<math><mi>i</mi></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― −i = 0 + (−1)i と見る</h3>
-          <p>実部は書かれていないから 0。i の係数は −1 だよ。</p>
+          <h3>ヒント<math><mn>1</mn><mo>―</mo><mo>−</mo><mi>i</mi><mo>=</mo><mn>0</mn><mo>+</mo><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mi>i</mi></math>と見る</h3><p class="cite"><span class="cite-tag">使う定義</span><math><mo>−</mo><mi>i</mi><mo>=</mo><mn>0</mn><mo>+</mo><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mi>i</mi></math>実部は書かれていないので 0、虚部は <math><mi>i</mi></math> の係数 −1 である。</p>
+          <p>実部は書かれていないから 0。<math><mi>i</mi></math> の係数は −1 だよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
@@ -482,40 +543,40 @@
       <section class="card">
         <p>2つの複素数が<b>等しい</b>のは、実部、虚部が、それぞれ一致する場合とする。すなわち、次のように定める。</p>
         <div class="def">
-          <p><b>複素数の相等</b>（a, b, c, d は実数とする）</p>
-          <p class="formula">a + bi = c + di　⟺　a = c かつ b = d</p>
-          <p class="formula">とくに　a + bi = 0　⟺　a = 0 かつ b = 0</p>
+          <p><b>複素数の相等</b>（<math><mi>a</mi></math>, <math><mi>b</mi></math>, <math><mi>c</mi></math>, <math><mi>d</mi></math> は実数とする）</p>
+          <p class="formula"><math><mi>a</mi><mo>+</mo><mi>b</mi><mi>i</mi><mo>=</mo><mi>c</mi><mo>+</mo><mi>d</mi><mi>i</mi></math>　⟺　<math><mi>a</mi><mo>=</mo><mi>c</mi></math>かつ<math><mi>b</mi><mo>=</mo><mi>d</mi></math></p>
+          <p class="formula">とくに　<math><mi>a</mi><mo>+</mo><mi>b</mi><mi>i</mi><mo>=</mo><mn>0</mn></math>　⟺　<math><mi>a</mi><mo>=</mo><mn>0</mn></math>かつ<math><mi>b</mi><mo>=</mo><mn>0</mn></math></p>
         </div>
-        <p>以下、複素数 a + bi や c + di などでは、文字 a, b, c, d は実数を表すものとする。</p>
+        <p>以下、複素数 <math><mi>a</mi></math> + bi や <math><mi>c</mi></math> + di などでは、文字 <math><mi>a</mi></math>, <math><mi>b</mi></math>, <math><mi>c</mi></math>, <math><mi>d</mi></math> は実数を表すものとする。</p>
       </section>
       <div class="sec-head">
         <span class="sec-tag">例題</span>
         <h2>例題1で解き方を確認</h2>
         <span class="pno">教科書 p.41</span>
       </div>
-      <section class="card prob" id="prob-reidai1" data-flow="reidai1" data-label="例題1">
+      <section class="nofig card prob" id="prob-reidai1" data-flow="reidai1" data-label="例題1">
         <div class="prob-head">
           <span class="prob-tag ">例題 1</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">次の等式を満たす実数 x, y の値を求めよ。<p class="formula left">(x + y) + (x + 2)i = 4 + 5i</p></p>
+        <p class="prob-q">次の等式を満たす実数 <math><mi>x</mi></math>, <math><mi>y</mi></math> の値を求めよ。<p class="formula left"><math display="block"><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mi>y</mi><mo>)</mo></mrow><mo>+</mo><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo></mrow><mi>i</mi><mo>=</mo><mn>4</mn><mo>+</mo><mn>5</mn><mi>i</mi></math></p></p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 実部と虚部を比べる</h3>
-          <p>x, y が実数であるから、x + y、x + 2 は実数である。だから、左辺の実部は x + y、虚部は x + 2 だね。複素数の相等から、実部どうし、虚部どうしが等しくなる。</p>
+          <h3>ヒント 1 ― 実部と虚部を比べる</h3><p class="cite"><span class="cite-tag">使う定義</span><math><mi>a</mi><mo>+</mo><mi>b</mi><mi>i</mi><mo>=</mo><mi>c</mi><mo>+</mo><mi>d</mi><mi>i</mi><mo>⟺</mo><mi>a</mi><mo>=</mo><mi>c</mi></math> かつ <math><mi>b</mi><mo>=</mo><mi>d</mi></math>ここでは左辺の実部 <math><mi>x</mi><mo>+</mo><mi>y</mi></math> と虚部 <math><mi>x</mi><mo>+</mo><mn>2</mn></math> を、右辺の実部 4、虚部 5 と比べる。</p>
+          <p><math><mi>x</mi></math>, <math><mi>y</mi></math> が実数であるから、<math><mi>x</mi></math> + <math><mi>y</mi></math>、<math><mi>x</mi></math> + 2 は実数である。<br>だから、左辺の実部は <math><mi>x</mi></math> + <math><mi>y</mi></math>、虚部は <math><mi>x</mi></math> + 2 だね。複素数の相等から、実部どうし、虚部どうしが等しくなる。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― 連立方程式を解く</h3>
-          <p class="formula left">x + y = 4，　x + 2 = 5</p>
-          <p>2つ目の式から x が先に決まるよ。それを1つ目に代入しよう。</p>
+          <h3>ヒント 2 ― 連立方程式を解く</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mi>x</mi><mo>+</mo><mn>2</mn><mo>=</mo><mn>5</mn></math> から <math><mi>x</mi></math> が先に決まる性質を使う。その値を <math><mi>x</mi><mo>+</mo><mi>y</mi><mo>=</mo><mn>4</mn></math> に代入して <math><mi>y</mi></math> を求める。</p>
+          <p class="formula left"><math display="block"><mi>x</mi><mo>+</mo><mi>y</mi><mo>=</mo><mn>4</mn><mo>,</mo><mspace width="2em"/><mi>x</mi><mo>+</mo><mn>2</mn><mo>=</mo><mn>5</mn></math></p>
+          <p>2つ目の式から <math><mi>x</mi></math> が先に決まるよ。それを1つ目に代入しよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">x = 3，　y = 1</p>
-          <p>複素数の相等から x + y = 4、x + 2 = 5。これを解いて</p>
+          <p class="big"><math display="block"><mi>x</mi><mo>=</mo><mn>3</mn><mo>,</mo><mspace width="2em"/><mi>y</mi><mo>=</mo><mn>1</mn></math></p><p class="cite"><span class="cite-tag">使う定義</span><math><mi>a</mi><mo>+</mo><mi>b</mi><mi>i</mi><mo>=</mo><mi>c</mi><mo>+</mo><mi>d</mi><mi>i</mi><mo>⟺</mo><mi>a</mi><mo>=</mo><mi>c</mi></math> かつ <math><mi>b</mi><mo>=</mo><mi>d</mi></math>実部どうし、虚部どうしを比べてできた連立方程式を解く。</p>
+          <p>複素数の相等から<math><mi>x</mi><mo>+</mo><mi>y</mi><mo>=</mo><mn>4</mn></math>、<math><mi>x</mi><mo>+</mo><mn>2</mn><mo>=</mo><mn>5</mn></math>。これを解いて</p>
         </div>
         <p class="prob-done">例題1 クリア！　次は練習2に挑戦しよう。</p>
       </section>
@@ -524,13 +585,13 @@
         <h2>練習問題に挑戦</h2>
         <span class="pno">教科書 p.41</span>
       </div>
-      <section class="card prob" id="prob-ren2" data-label="練習2">
+      <section class="nofig card prob" id="prob-ren2" data-label="練習2">
         <div class="prob-head">
           <span class="prob-tag ren">練習 2</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
         <div class="qside">
-        <p class="prob-q">次の等式を満たす実数 x, y の値を求めよ。</p>
+        <p class="prob-q">次の等式を満たす実数 <math><mi>x</mi></math>, <math><mi>y</mi></math> の値を求めよ。</p>
         </div>
         <div class="tabs" role="tablist" aria-label="練習2の小問">
           <button class="tab" role="tab" data-tab="ren2-1" aria-selected="true">(1)</button>
@@ -538,47 +599,47 @@
         </div>
         <div class="tabpanel show" id="panel-ren2-1" data-flow="ren2-1" data-label="練習2 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　(x − 2y) + (x + 3)i = 2 − i</span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mi>y</mi><mo>)</mo></mrow><mo>+</mo><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>3</mn><mo>)</mo></mrow><mi>i</mi><mo>=</mo><mn>2</mn><mo>−</mo><mi>i</mi></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 実部・虚部を比べる</h3>
-          <p>右辺 2 − i は 2 + (−1)i のこと。実部どうし、虚部どうしを比べて、x, y の式を2本立てよう。</p>
-          <p class="formula left">x − 2y = 2，　x + 3 = −1</p>
+          <h3>ヒント 1 ― 実部・虚部を比べる</h3><p class="cite"><span class="cite-tag">使う定義</span><math><mi>a</mi><mo>+</mo><mi>b</mi><mi>i</mi><mo>=</mo><mi>c</mi><mo>+</mo><mi>d</mi><mi>i</mi><mo>⟺</mo><mi>a</mi><mo>=</mo><mi>c</mi></math> かつ <math><mi>b</mi><mo>=</mo><mi>d</mi></math>右辺 <math><mn>2</mn><mo>−</mo><mi>i</mi><mo>=</mo><mn>2</mn><mo>+</mo><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mi>i</mi></math> と見て、実部どうし、虚部どうしを比べる。</p>
+          <p>右辺 2 − <math><mi>i</mi></math> は 2 + (−1)<math><mi>i</mi></math> のこと。実部どうし、虚部どうしを比べて、<math><mi>x</mi></math>, <math><mi>y</mi></math> の式を2本立てよう。</p>
+          <p class="formula left"><math display="block"><mi>x</mi><mo>−</mo><mn>2</mn><mi>y</mi><mo>=</mo><mn>2</mn><mo>,</mo><mspace width="2em"/><mi>x</mi><mo>+</mo><mn>3</mn><mo>=</mo><mo>−</mo><mn>1</mn></math></p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― x から先に求める</h3>
-          <p>2本目の式 x + 3 = −1 から x が決まる。それを1本目に代入して y を求めよう。</p>
+          <h3>ヒント 2 ― <math><mi>x</mi></math> から先に求める</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mi>x</mi><mo>+</mo><mn>3</mn><mo>=</mo><mo>−</mo><mn>1</mn></math> から <math><mi>x</mi></math> が先に決まる。その値をもう1つの式に代入して <math><mi>y</mi></math> を求める。</p>
+          <p>2本目の式<math><mi>x</mi><mo>+</mo><mn>3</mn><mo>=</mo><mo>−</mo><mn>1</mn></math>から <math><mi>x</mi></math> が決まる。それを1本目に代入して <math><mi>y</mi></math> を求めよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">x = −4，　y = −3</p>
-          <p>x + 3 = −1 より x = −4。これを x − 2y = 2 に代入すると −4 − 2y = 2 となる。</p>
+          <p class="big"><math display="block"><mi>x</mi><mo>=</mo><mo>−</mo><mn>4</mn><mo>,</mo><mspace width="2em"/><mi>y</mi><mo>=</mo><mo>−</mo><mn>3</mn></math></p><p class="cite"><span class="cite-tag">使う定義</span><math><mi>a</mi><mo>+</mo><mi>b</mi><mi>i</mi><mo>=</mo><mi>c</mi><mo>+</mo><mi>d</mi><mi>i</mi><mo>⟺</mo><mi>a</mi><mo>=</mo><mi>c</mi></math> かつ <math><mi>b</mi><mo>=</mo><mi>d</mi></math>実部どうし、虚部どうしを比べてできた連立方程式を解く。</p>
+          <p><math><mi>x</mi><mo>+</mo><mn>3</mn><mo>=</mo><mo>−</mo><mn>1</mn></math>より<math><mi>x</mi><mo>=</mo><mo>−</mo><mn>4</mn></math>。これを<math><mi>x</mi><mo>−</mo><mn>2</mn><mi>y</mi><mo>=</mo><mn>2</mn></math>に代入すると<math><mo>−</mo><mn>4</mn><mo>−</mo><mn>2</mn><mi>y</mi><mo>=</mo><mn>2</mn></math>となる。</p>
         </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren2-2" data-flow="ren2-2" data-label="練習2 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　(2x + y) + (x − y + 3)i = 0</span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><mrow><mo>(</mo><mn>2</mn><mi>x</mi><mo>+</mo><mi>y</mi><mo>)</mo></mrow><mo>+</mo><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mi>y</mi><mo>+</mo><mn>3</mn><mo>)</mo></mrow><mi>i</mi><mo>=</mo><mn>0</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 「= 0」の決まりを使う</h3>
-          <p>a + bi = 0 なのは、a = 0 かつ b = 0 のときだったね。実部と虚部が、どちらも 0 になるという式を立てよう。</p>
-          <p class="formula left">2x + y = 0，　x − y + 3 = 0</p>
+          <h3>ヒント 1 ― 「<math><mo>=</mo><mn>0</mn></math>」の決まりを使う</h3><p class="cite"><span class="cite-tag">使う定義</span><math><mi>a</mi><mo>+</mo><mi>b</mi><mi>i</mi><mo>=</mo><mn>0</mn><mo>⟺</mo><mi>a</mi><mo>=</mo><mn>0</mn></math> かつ <math><mi>b</mi><mo>=</mo><mn>0</mn></math>実部 <math><mn>2</mn><mi>x</mi><mo>+</mo><mi>y</mi></math> と虚部 <math><mi>x</mi><mo>−</mo><mi>y</mi><mo>+</mo><mn>3</mn></math> が、どちらも 0 になるという式を立てる。</p>
+          <p><math><mi>a</mi><mo>+</mo><mi>b</mi><mi>i</mi><mo>=</mo><mn>0</mn></math>なのは、<math><mi>a</mi><mo>=</mo><mn>0</mn></math>かつ<math><mi>b</mi><mo>=</mo><mn>0</mn></math>のときだったね。実部と虚部が、どちらも 0 になるという式を立てよう。</p>
+          <p class="formula left"><math display="block"><mn>2</mn><mi>x</mi><mo>+</mo><mi>y</mi><mo>=</mo><mn>0</mn><mo>,</mo><mspace width="2em"/><mi>x</mi><mo>−</mo><mi>y</mi><mo>+</mo><mn>3</mn><mo>=</mo><mn>0</mn></math></p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― 2式を足してみる</h3>
-          <p>2つの式を辺々足すと、y が消えて x だけの式になるよ。</p>
+          <h3>ヒント 2 ― 2式を足してみる</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mo>(</mo><mn>2</mn><mi>x</mi><mo>+</mo><mi>y</mi><mo>)</mo></mrow><mo>+</mo><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mi>y</mi><mo>+</mo><mn>3</mn><mo>)</mo></mrow><mo>=</mo><mn>3</mn><mi>x</mi><mo>+</mo><mn>3</mn></math>2式を辺々足すと <math><mi>y</mi></math> が消えて、<math><mi>x</mi></math> だけの式になる。</p>
+          <p>2つの式を辺々足すと、<math><mi>y</mi></math> が消えて <math><mi>x</mi></math> だけの式になるよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">x = −1，　y = 2</p>
-          <p>2式を足すと 3x + 3 = 0 となり x = −1。2x + y = 0 に代入して y = 2。</p>
+          <p class="big"><math display="block"><mi>x</mi><mo>=</mo><mo>−</mo><mn>1</mn><mo>,</mo><mspace width="2em"/><mi>y</mi><mo>=</mo><mn>2</mn></math></p><p class="cite"><span class="cite-tag">使う定義</span><math><mi>a</mi><mo>+</mo><mi>b</mi><mi>i</mi><mo>=</mo><mn>0</mn><mo>⟺</mo><mi>a</mi><mo>=</mo><mn>0</mn></math> かつ <math><mi>b</mi><mo>=</mo><mn>0</mn></math>実部と虚部がどちらも 0 になる式を立て、連立方程式として解く。</p>
+          <p>2式を足すと<math><mn>3</mn><mi>x</mi><mo>+</mo><mn>3</mn><mo>=</mo><mn>0</mn></math>となり<math><mi>x</mi><mo>=</mo><mo>−</mo><mn>1</mn></math>。<math><mn>2</mn><mi>x</mi><mo>+</mo><mi>y</mi><mo>=</mo><mn>0</mn></math>に代入して<math><mi>y</mi><mo>=</mo><mn>2</mn></math>。</p>
         </div>
           <p class="prob-done">(2) クリア！　練習2は全部おわり。次は複素数の計算に入ろう。</p>
         </div>
@@ -590,14 +651,14 @@
       </div>
       <section class="card">
         <p>複素数の加法、減法は、実部と虚部のそれぞれの和、差を計算する。</p>
-        <p>複素数の加法、減法は、文字 i の式の場合と同じような計算である。乗法についても文字 i の式の計算と同じように行うが、i<sup>2</sup> が出てくれば、それを −1 におき換える。</p>
+        <p>複素数の加法、減法は、文字 <math><mi>i</mi></math> の式の場合と同じような計算である。乗法についても文字 <math><mi>i</mi></math> の式の計算と同じように行うが、<math><msup><mi>i</mi><mn>2</mn></msup></math> が出てくれば、それを −1 におき換える。</p>
       </section>
       <div class="sec-head">
         <span class="sec-tag">例題</span>
         <h2>例2・例3で解き方を確認</h2>
         <span class="pno">教科書 p.42</span>
       </div>
-      <section class="card prob" id="prob-ex2" data-flow="ex2" data-label="例2">
+      <section class="nofig card prob" id="prob-ex2" data-flow="ex2" data-label="例2">
         <div class="prob-head">
           <span class="prob-tag ">例 2</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
@@ -607,41 +668,49 @@
         <p class="prob-q">次の計算をしよう。<br>(1)　(4 − 3i) + (2 + 5i)　　(2)　(4 − 3i) − (2 + 5i)</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 実部どうし、虚部どうしを計算する</h3>
-          <p>(1) は (4 − 3i) + (2 + 5i) = (4 + 2) + (−3 + 5)i とまとめられる。(2) の引き算では、引く方の符号がすべて変わることに注意しよう。</p>
+          <h3>ヒント 1 ― 実部どうし、虚部どうしを計算する</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mi>i</mi><mo>)</mo></mrow><mo>±</mo><mrow><mo>(</mo><mi>c</mi><mo>+</mo><mi>d</mi><mi>i</mi><mo>)</mo></mrow><mo>=</mo><mrow><mo>(</mo><mi>a</mi><mo>±</mo><mi>c</mi><mo>)</mo></mrow><mo>+</mo><mrow><mo>(</mo><mi>b</mi><mo>±</mo><mi>d</mi><mo>)</mo></mrow><mi>i</mi></math>実部どうし、虚部どうしを計算する。(1) では実部 <math><mn>4</mn><mo>+</mo><mn>2</mn></math> と虚部 <math><mo>−</mo><mn>3</mn><mo>+</mo><mn>5</mn></math> をそれぞれ計算する。</p>
+          <p>(1) は<math><mrow><mo>(</mo><mn>4</mn><mo>−</mo><mn>3</mn><mi>i</mi><mo>)</mo></mrow><mo>+</mo><mrow><mo>(</mo><mn>2</mn><mo>+</mo><mn>5</mn><mi>i</mi><mo>)</mo></mrow><mo>=</mo><mrow><mo>(</mo><mn>4</mn><mo>+</mo><mn>2</mn><mo>)</mo></mrow><mo>+</mo><mrow><mo>(</mo><mo>−</mo><mn>3</mn><mo>+</mo><mn>5</mn><mo>)</mo></mrow><mi>i</mi></math>とまとめられる。(2) の引き算では、引く方の符号がすべて変わることに注意しよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">(1)　6 + 2i　　(2)　2 − 8i</p>
-          <p>(1) (4 − 3i) + (2 + 5i) = (4 + 2) + (−3 + 5)i</p>
-          <p>(2) (4 − 3i) − (2 + 5i) = (4 − 2) + (−3 − 5)i</p>
+          <p class="big">(1)　6 + 2i　　(2)　2 − 8i</p><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mi>i</mi><mo>)</mo></mrow><mo>±</mo><mrow><mo>(</mo><mi>c</mi><mo>+</mo><mi>d</mi><mi>i</mi><mo>)</mo></mrow><mo>=</mo><mrow><mo>(</mo><mi>a</mi><mo>±</mo><mi>c</mi><mo>)</mo></mrow><mo>+</mo><mrow><mo>(</mo><mi>b</mi><mo>±</mo><mi>d</mi><mo>)</mo></mrow><mi>i</mi></math>(1) は実部どうし、虚部どうしを足し、(2) は引く方の符号を変えて引く。</p>
+          <p><math><mrow><mo>(</mo><mn>1</mn><mo>)</mo></mrow><mrow><mo>(</mo><mn>4</mn><mo>−</mo><mn>3</mn><mi>i</mi><mo>)</mo></mrow><mo>+</mo><mrow><mo>(</mo><mn>2</mn><mo>+</mo><mn>5</mn><mi>i</mi><mo>)</mo></mrow><mo>=</mo><mrow><mo>(</mo><mn>4</mn><mo>+</mo><mn>2</mn><mo>)</mo></mrow><mo>+</mo><mrow><mo>(</mo><mo>−</mo><mn>3</mn><mo>+</mo><mn>5</mn><mo>)</mo></mrow><mi>i</mi></math></p>
+          <p><math><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow><mrow><mo>(</mo><mn>4</mn><mo>−</mo><mn>3</mn><mi>i</mi><mo>)</mo></mrow><mo>−</mo><mrow><mo>(</mo><mn>2</mn><mo>+</mo><mn>5</mn><mi>i</mi><mo>)</mo></mrow><mo>=</mo><mrow><mo>(</mo><mn>4</mn><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mo>+</mo><mrow><mo>(</mo><mo>−</mo><mn>3</mn><mo>−</mo><mn>5</mn><mo>)</mo></mrow><mi>i</mi></math></p>
         </div>
         <p class="prob-done">例2 クリア！　次は練習3に挑戦しよう。</p>
       </section>
-      <section class="card prob" id="prob-ex3" data-flow="ex3" data-label="例3">
+      <section class="nofig card prob" id="prob-ex3" data-flow="ex3" data-label="例3">
         <div class="prob-head">
           <span class="prob-tag ">例 3</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">次の計算をしよう。<br>(1)　(1 + 2i)(4 + i)　　(2)　(1 + 2i)(1 − 2i)</p>
+        <p class="prob-q">次の計算をしよう。<br>(1)　(1 + 2i)(4 + <math><mi>i</mi></math>)　　(2)　(1 + 2i)(1 − 2i)</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 文字式と同じように展開する</h3>
-          <p>(1) は (1 + 2i)(4 + i) = 4 + i + 8i + 2i<sup>2</sup> と展開できる。i<sup>2</sup> が出てきたら −1 におき換えよう。</p>
+          <h3>ヒント 1 ― 文字式と同じように展開する</h3><p class="cite"><span class="cite-tag">使う公式</span><math><msup><mi>i</mi><mn>2</mn></msup><mo>=</mo><mo>−</mo><mn>1</mn></math>文字式と同じように展開し、<math><msup><mi>i</mi><mn>2</mn></msup></math> が出たら −1 におき換える。ここでは <math><mn>2</mn><msup><mi>i</mi><mn>2</mn></msup></math> が出る。</p>
+          <p>(1) は<math><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mn>2</mn><mi>i</mi><mo>)</mo></mrow><mrow><mo>(</mo><mn>4</mn><mo>+</mo><mi>i</mi><mo>)</mo></mrow><mo>=</mo><mn>4</mn><mo>+</mo><mi>i</mi><mo>+</mo><mn>8</mn><mi>i</mi><mo>+</mo><mn>2</mn><msup><mi>i</mi><mn>2</mn></msup></math> と展開できる。<math><msup><mi>i</mi><mn>2</mn></msup></math> が出てきたら −1 におき換えよう。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― (2) は「和と差の積」</h3>
-          <p>(2) は (a + b)(a − b) = a<sup>2</sup> − b<sup>2</sup> の形。1<sup>2</sup> − (2i)<sup>2</sup> と計算できるよ。</p>
+          <h3>ヒント 2 ― (2) は「和と差の積」</h3><p class="cite"><span class="cite-tag">使う公式</span><math><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mrow><mo>(</mo><mi>a</mi><mo>−</mo><mi>b</mi><mo>)</mo></mrow><mo>=</mo><msup><mi>a</mi><mn>2</mn></msup><mo>−</mo><msup><mi>b</mi><mn>2</mn></msup></math>(2) は <math><mi>a</mi><mo>=</mo><mn>1</mn></math>、<math><mi>b</mi><mo>=</mo><mn>2</mn><mi>i</mi></math> として使い、<math><msup><mrow><mo>(</mo><mn>2</mn><mi>i</mi><mo>)</mo></mrow><mn>2</mn></msup></math> を <math><msup><mi>i</mi><mn>2</mn></msup><mo>=</mo><mo>−</mo><mn>1</mn></math> で処理する。</p>
+          <p>(2) は<math><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mrow><mo>(</mo><mi>a</mi><mo>−</mo><mi>b</mi><mo>)</mo></mrow><mo>=</mo><msup><mi>a</mi><mn>2</mn></msup><mo>−</mo><msup><mi>b</mi><mn>2</mn></msup></math> の形。<math><msup><mn>1</mn><mn>2</mn></msup><mo>−</mo><msup><mrow><mo>(</mo><mn>2</mn><mi>i</mi><mo>)</mo></mrow><mn>2</mn></msup></math> と計算できるよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
           <p class="big">(1)　2 + 9i　　(2)　5</p>
-          <p>(1) (1 + 2i)(4 + i) = 4 + i + 8i + 2i<sup>2</sup> = 4 + i + 8i + 2(−1) = (4 − 2) + (1 + 8)i</p>
-          <p>(2) (1 + 2i)(1 − 2i) = 1<sup>2</sup> − (2i)<sup>2</sup> = 1 − 4i<sup>2</sup> = 1 − 4(−1)</p>
+          <div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mrow><mo>(</mo><mn>1</mn><mo>)</mo></mrow><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mn>2</mn><mi>i</mi><mo>)</mo></mrow><mrow><mo>(</mo><mn>4</mn><mo>+</mo><mi>i</mi><mo>)</mo></mrow><mo>=</mo><mn>4</mn><mo>+</mo><mi>i</mi><mo>+</mo><mn>8</mn><mi>i</mi><mo>+</mo><mn>2</mn><msup><mi>i</mi><mn>2</mn></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mrow><mo>(</mo><mn>1</mn><mo>)</mo></mrow><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mn>2</mn><mi>i</mi><mo>)</mo></mrow><mrow><mo>(</mo><mn>4</mn><mo>+</mo><mi>i</mi><mo>)</mo></mrow></mphantom><mo>=</mo><mn>4</mn><mo>+</mo><mi>i</mi><mo>+</mo><mn>8</mn><mi>i</mi><mo>+</mo><mn>2</mn><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mrow><mo>(</mo><mn>1</mn><mo>)</mo></mrow><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mn>2</mn><mi>i</mi><mo>)</mo></mrow><mrow><mo>(</mo><mn>4</mn><mo>+</mo><mi>i</mi><mo>)</mo></mrow></mphantom><mo>=</mo><mrow><mo>(</mo><mn>4</mn><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mo>+</mo><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mn>8</mn><mo>)</mo></mrow><mi>i</mi></math></div>
+</div>
+          <div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mn>2</mn><mi>i</mi><mo>)</mo></mrow><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mn>2</mn><mi>i</mi><mo>)</mo></mrow><mo>=</mo><msup><mn>1</mn><mn>2</mn></msup><mo>−</mo><msup><mrow><mo>(</mo><mn>2</mn><mi>i</mi><mo>)</mo></mrow><mn>2</mn></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mn>2</mn><mi>i</mi><mo>)</mo></mrow><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mn>2</mn><mi>i</mi><mo>)</mo></mrow></mphantom><mo>=</mo><mn>1</mn><mo>−</mo><mn>4</mn><msup><mi>i</mi><mn>2</mn></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mn>2</mn><mi>i</mi><mo>)</mo></mrow><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mn>2</mn><mi>i</mi><mo>)</mo></mrow></mphantom><mo>=</mo><mn>1</mn><mo>−</mo><mn>4</mn><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow></math></div>
+</div>
         </div>
         <p class="prob-done">例3 クリア！　次は練習4に挑戦しよう。</p>
       </section>
@@ -650,7 +719,7 @@
         <h2>練習問題に挑戦</h2>
         <span class="pno">教科書 p.42</span>
       </div>
-      <section class="card prob" id="prob-ren3" data-label="練習3">
+      <section class="nofig card prob" id="prob-ren3" data-label="練習3">
         <div class="prob-head">
           <span class="prob-tag ren">練習 3</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
@@ -666,13 +735,13 @@
         </div>
         <div class="tabpanel show" id="panel-ren3-1" data-flow="ren3-1" data-label="練習3 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　(2 + 3i) + (4 + i)</span>
+            <span class="sub prob-q" style="margin:0">(1)　(2 + 3i) + (4 + <math><mi>i</mi></math>)</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 実部どうし、虚部どうし</h3>
-          <p>(2 + 4) と (3 + 1) をそれぞれ計算して、a + bi の形にまとめよう。</p>
+          <h3>ヒント 1 ― 実部どうし、虚部どうし</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mi>i</mi><mo>)</mo></mrow><mo>±</mo><mrow><mo>(</mo><mi>c</mi><mo>+</mo><mi>d</mi><mi>i</mi><mo>)</mo></mrow><mo>=</mo><mrow><mo>(</mo><mi>a</mi><mo>±</mo><mi>c</mi><mo>)</mo></mrow><mo>+</mo><mrow><mo>(</mo><mi>b</mi><mo>±</mo><mi>d</mi><mo>)</mo></mrow><mi>i</mi></math>実部 <math><mn>2</mn><mo>+</mo><mn>4</mn></math> と虚部 <math><mn>3</mn><mo>+</mo><mn>1</mn></math> をそれぞれ計算してまとめる。</p>
+          <p>(2 + 4) と (3 + 1) をそれぞれ計算して、<math><mi>a</mi></math> + bi の形にまとめよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
@@ -689,7 +758,7 @@
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 符号に注意してまとめる</h3>
+          <h3>ヒント 1 ― 符号に注意してまとめる</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mi>i</mi><mo>)</mo></mrow><mo>±</mo><mrow><mo>(</mo><mi>c</mi><mo>+</mo><mi>d</mi><mi>i</mi><mo>)</mo></mrow><mo>=</mo><mrow><mo>(</mo><mi>a</mi><mo>±</mo><mi>c</mi><mo>)</mo></mrow><mo>+</mo><mrow><mo>(</mo><mi>b</mi><mo>±</mo><mi>d</mi><mo>)</mo></mrow><mi>i</mi></math>実部は <math><mo>−</mo><mn>1</mn><mo>+</mo><mn>3</mn></math>、虚部は <math><mn>2</mn><mo>+</mo><mrow><mo>(</mo><mo>−</mo><mn>4</mn><mo>)</mo></mrow></math> と、符号に注意して計算する。</p>
           <p>実部は −1 + 3、虚部は 2 + (−4) だよ。</p>
         </div>
         <div class="step answer">
@@ -707,8 +776,8 @@
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 引く方の符号を変える</h3>
-          <p>(6 − 3) + (4 − 2)i と計算しよう。</p>
+          <h3>ヒント 1 ― 引く方の符号を変える</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mi>i</mi><mo>)</mo></mrow><mo>±</mo><mrow><mo>(</mo><mi>c</mi><mo>+</mo><mi>d</mi><mi>i</mi><mo>)</mo></mrow><mo>=</mo><mrow><mo>(</mo><mi>a</mi><mo>±</mo><mi>c</mi><mo>)</mo></mrow><mo>+</mo><mrow><mo>(</mo><mi>b</mi><mo>±</mo><mi>d</mi><mo>)</mo></mrow><mi>i</mi></math>減法は引く方の符号を変えて計算する。ここでは実部 <math><mn>6</mn><mo>−</mo><mn>3</mn></math>、虚部 <math><mn>4</mn><mo>−</mo><mn>2</mn></math> とする。</p>
+          <p>(6 − 3) + (4 − 2)<math><mi>i</mi></math> と計算しよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
@@ -725,19 +794,19 @@
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 虚部の引き算に注意</h3>
+          <h3>ヒント 1 ― 虚部の引き算に注意</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mi>i</mi><mo>)</mo></mrow><mo>±</mo><mrow><mo>(</mo><mi>c</mi><mo>+</mo><mi>d</mi><mi>i</mi><mo>)</mo></mrow><mo>=</mo><mrow><mo>(</mo><mi>a</mi><mo>±</mo><mi>c</mi><mo>)</mo></mrow><mo>+</mo><mrow><mo>(</mo><mi>b</mi><mo>±</mo><mi>d</mi><mo>)</mo></mrow><mi>i</mi></math>虚部は <math><mo>−</mo><mn>3</mn><mo>−</mo><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow></math> で、マイナスを引くとプラスになることに注意する。</p>
           <p>虚部は −3 − (−2) だよ。「マイナスを引く」とどうなるかな。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">−2 − i</p>
+          <p class="big">−2 − <math><mi>i</mi></math></p>
 
         </div>
           <p class="prob-done">(4) クリア！　練習3は全部おわり。次は練習4（乗法）だよ。</p>
         </div>
       </section>
-      <section class="card prob" id="prob-ren4" data-label="練習4">
+      <section class="nofig card prob" id="prob-ren4" data-label="練習4">
         <div class="prob-head">
           <span class="prob-tag ren">練習 4</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
@@ -758,8 +827,8 @@
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 展開して i<sup>2</sup> を置き換える</h3>
-          <p>展開すると 4 + 3i + 8i + 6i<sup>2</sup>。i<sup>2</sup> = −1 だから、6i<sup>2</sup> は −6 になるよ。</p>
+          <h3>ヒント 1 ― 展開して<math><msup><mi>i</mi><mn>2</mn></msup></math> を置き換える</h3><p class="cite"><span class="cite-tag">使う公式</span><math><msup><mi>i</mi><mn>2</mn></msup><mo>=</mo><mo>−</mo><mn>1</mn></math>展開して出てくる <math><mn>6</mn><msup><mi>i</mi><mn>2</mn></msup></math> は −6 におき換える。</p>
+          <p>展開すると<math><mn>4</mn><mo>+</mo><mn>3</mn><mi>i</mi><mo>+</mo><mn>8</mn><mi>i</mi><mo>+</mo><mn>6</mn><msup><mi>i</mi><mn>2</mn></msup></math>。<math><msup><mi>i</mi><mn>2</mn></msup><mo>=</mo><mo>−</mo><mn>1</mn></math>だから、<math><mn>6</mn><msup><mi>i</mi><mn>2</mn></msup></math> は −6 になるよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
@@ -771,13 +840,13 @@
         </div>
         <div class="tabpanel" id="panel-ren4-2" data-flow="ren4-2" data-label="練習4 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　(2 − i)(3 + 4i)</span>
+            <span class="sub prob-q" style="margin:0">(2)　(2 − <math><mi>i</mi></math>)(3 + 4i)</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 展開する</h3>
-          <p>展開すると 6 + 8i − 3i − 4i<sup>2</sup>。−4i<sup>2</sup> は +4 になるよ。</p>
+          <h3>ヒント 1 ― 展開する</h3><p class="cite"><span class="cite-tag">使う公式</span><math><msup><mi>i</mi><mn>2</mn></msup><mo>=</mo><mo>−</mo><mn>1</mn></math>展開して出てくる <math><mo>−</mo><mn>4</mn><msup><mi>i</mi><mn>2</mn></msup></math> は +4 におき換える。</p>
+          <p>展開すると<math><mn>6</mn><mo>+</mo><mn>8</mn><mi>i</mi><mo>−</mo><mn>3</mn><mi>i</mi><mo>−</mo><mn>4</mn><msup><mi>i</mi><mn>2</mn></msup></math>。<math><mo>−</mo><mn>4</mn><msup><mi>i</mi><mn>2</mn></msup></math> は +4 になるよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
@@ -794,8 +863,8 @@
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 和と差の積</h3>
-          <p>3<sup>2</sup> − (4i)<sup>2</sup> と計算できる。(4i)<sup>2</sup> = 16i<sup>2</sup> = −16 だよ。</p>
+          <h3>ヒント 1 ― 和と差の積</h3><p class="cite"><span class="cite-tag">使う公式</span><math><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mrow><mo>(</mo><mi>a</mi><mo>−</mo><mi>b</mi><mo>)</mo></mrow><mo>=</mo><msup><mi>a</mi><mn>2</mn></msup><mo>−</mo><msup><mi>b</mi><mn>2</mn></msup></math>ここでは <math><msup><mn>3</mn><mn>2</mn></msup><mo>−</mo><msup><mrow><mo>(</mo><mn>4</mn><mi>i</mi><mo>)</mo></mrow><mn>2</mn></msup></math> と計算し、<math><msup><mrow><mo>(</mo><mn>4</mn><mi>i</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>16</mn><msup><mi>i</mi><mn>2</mn></msup><mo>=</mo><mo>−</mo><mn>16</mn></math> を使う。</p>
+          <p><math><msup><mn>3</mn><mn>2</mn></msup><mo>−</mo><msup><mrow><mo>(</mo><mn>4</mn><mi>i</mi><mo>)</mo></mrow><mn>2</mn></msup></math> と計算できる。<math><msup><mrow><mo>(</mo><mn>4</mn><mi>i</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>16</mn><msup><mi>i</mi><mn>2</mn></msup><mo>=</mo><mo>−</mo><mn>16</mn></math>だよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
@@ -807,13 +876,13 @@
         </div>
         <div class="tabpanel" id="panel-ren4-4" data-flow="ren4-4" data-label="練習4 (4)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(4)　(2 + 3i)<sup>2</sup></span>
+            <span class="sub prob-q" style="margin:0">(4)　<math><msup><mrow><mo>(</mo><mn>2</mn><mo>+</mo><mn>3</mn><mi>i</mi><mo>)</mo></mrow><mn>2</mn></msup></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 乗法公式で展開する</h3>
-          <p>(a + b)<sup>2</sup> = a<sup>2</sup> + 2ab + b<sup>2</sup> を使うと 4 + 12i + 9i<sup>2</sup>。9i<sup>2</sup> は −9 だよ。</p>
+          <h3>ヒント 1 ― 乗法公式で展開する</h3><p class="cite"><span class="cite-tag">使う公式</span><math><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>a</mi><mi>b</mi><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup></math>ここでは <math><mi>a</mi><mo>=</mo><mn>2</mn></math>、<math><mi>b</mi><mo>=</mo><mn>3</mn><mi>i</mi></math> として展開し、<math><mn>9</mn><msup><mi>i</mi><mn>2</mn></msup></math> を −9 におき換える。</p>
+          <p><math><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>a</mi><mi>b</mi><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup></math> を使うと<math><mn>4</mn><mo>+</mo><mn>12</mn><mi>i</mi><mo>+</mo><mn>9</mn><msup><mi>i</mi><mn>2</mn></msup></math>。<math><mn>9</mn><msup><mi>i</mi><mn>2</mn></msup></math> は −9 だよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
@@ -830,10 +899,10 @@
       <section class="card summary" id="summaryCard" style="display:none">
         <h2>この項のポイント</h2>
         <ul>
-          <li><b>虚数単位 i：</b>i<sup>2</sup> = −1。複素数 a + bi の a が実部、b が虚部。</li>
-          <li><b>複素数の相等：</b>a + bi = c + di ⟺ a = c かつ b = d。とくに a + bi = 0 ⟺ a = 0 かつ b = 0。未知数が実数なら、実部と虚部を比べて連立方程式にする。</li>
-          <li><b>加法・減法：</b>実部どうし、虚部どうしを計算する。引き算は引く方の符号を変える。</li>
-          <li><b>乗法：</b>文字式と同じように展開し、i<sup>2</sup> が出たら −1 におき換える。</li>
+          <li><p class="cite"><span class="cite-tag">使う定義</span><math><msup><mi>i</mi><mn>2</mn></msup><mo>=</mo><mo>−</mo><mn>1</mn></math><math><mi>a</mi><mo>+</mo><mi>b</mi><mi>i</mi></math> の <math><mi>a</mi></math> が実部、<math><mi>b</mi></math> が虚部である。</p><b>虚数単位 <math><mi>i</mi></math>：</b><math><msup><mi>i</mi><mn>2</mn></msup><mo>=</mo><mo>−</mo><mn>1</mn></math>。複素数 <math><mi>a</mi></math> + bi の <math><mi>a</mi></math> が実部、<math><mi>b</mi></math> が虚部。</li>
+          <li><p class="cite"><span class="cite-tag">使う定義</span><math><mi>a</mi><mo>+</mo><mi>b</mi><mi>i</mi><mo>=</mo><mi>c</mi><mo>+</mo><mi>d</mi><mi>i</mi><mo>⟺</mo><mi>a</mi><mo>=</mo><mi>c</mi></math> かつ <math><mi>b</mi><mo>=</mo><mi>d</mi></math>とくに <math><mi>a</mi><mo>+</mo><mi>b</mi><mi>i</mi><mo>=</mo><mn>0</mn><mo>⟺</mo><mi>a</mi><mo>=</mo><mn>0</mn></math> かつ <math><mi>b</mi><mo>=</mo><mn>0</mn></math> も使う。</p><b>複素数の相等：</b><math><mi>a</mi><mo>+</mo><mi>b</mi><mi>i</mi><mo>=</mo><mi>c</mi><mo>+</mo><mi>d</mi><mi>i</mi><mo>⟺</mo><mi>a</mi><mo>=</mo><mi>c</mi></math>かつ<math><mi>b</mi><mo>=</mo><mi>d</mi></math>。とくに<math><mi>a</mi><mo>+</mo><mi>b</mi><mi>i</mi><mo>=</mo><mn>0</mn><mo>⟺</mo><mi>a</mi><mo>=</mo><mn>0</mn></math>かつ<math><mi>b</mi><mo>=</mo><mn>0</mn></math>。未知数が実数なら、実部と虚部を比べて連立方程式にする。</li>
+          <li><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mi>i</mi><mo>)</mo></mrow><mo>±</mo><mrow><mo>(</mo><mi>c</mi><mo>+</mo><mi>d</mi><mi>i</mi><mo>)</mo></mrow><mo>=</mo><mrow><mo>(</mo><mi>a</mi><mo>±</mo><mi>c</mi><mo>)</mo></mrow><mo>+</mo><mrow><mo>(</mo><mi>b</mi><mo>±</mo><mi>d</mi><mo>)</mo></mrow><mi>i</mi></math>引き算は引く方の符号を変える。</p><b>加法・減法：</b>実部どうし、虚部どうしを計算する。引き算は引く方の符号を変える。</li>
+          <li><p class="cite"><span class="cite-tag">使う公式</span><math><msup><mi>i</mi><mn>2</mn></msup><mo>=</mo><mo>−</mo><mn>1</mn></math>乗法は文字式と同じように展開し、<math><msup><mi>i</mi><mn>2</mn></msup></math> が出たら −1 におき換える。</p><b>乗法：</b>文字式と同じように展開し、<math><msup><mi>i</mi><mn>2</mn></msup></math> が出たら −1 におき換える。</li>
         </ul>
       </section>
       <footer>

@@ -302,7 +302,64 @@
       table.comp{border-collapse:collapse;margin:0 0 14px;width:100%}
       table.comp th,table.comp td{border:1px solid var(--line);padding:8px 10px;text-align:center;font-size:15px}
       table.comp th{background:var(--surface2)}
-        </style>
+        
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+
+      /* 積分記号は大きめに表示する（元のページの可読化デザインに合わせる） */
+      math .int-op{font-size:1.35em}
+      /* calc-12 世代（.card）と calc-18 世代（.unit）の、図のない問題の全幅化 */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig>.step{position:static !important}
+        .card.nofig>.steps-wrap{max-height:none !important;overflow:visible !important}
+        .unit.nofig{display:block !important}
+        .unit.nofig>.qside{position:static !important}
+        .unit.nofig>.steps-stack{max-height:none !important;overflow:visible !important}
+      }
+
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける・第3弾c） */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig .qside{position:static !important}
+        .card.nofig .steps-wrap,.card.nofig .tabpanel .steps-wrap{max-height:none !important;overflow:visible !important}
+      }
+</style>
   </head>
   <body>
     <div class="wrap">
@@ -326,11 +383,11 @@
       </div>
       <section class="card">
         <p>剰余の定理により、次が成り立つ。</p>
-        <p class="formula left">多項式 P(x) が1次式 x − k で割り切れる　⟺　P(k) = 0</p>
-        <p>よって、P(k) = 0 のとき、P(x) は P(x) = (x − k)Q(x) の形である。以上から、次の<span class="key">因数定理</span>が成り立つ。</p>
+        <p class="formula left">多項式 <math><mi>P</mi><mrow><mo>(</mo><mi>x</mi><mo>)</mo></mrow></math> が1次式 <math><mi>x</mi></math> − <math><mi>k</mi></math> で割り切れる　⟺　<math><mi>P</mi><mrow><mo>(</mo><mi>k</mi><mo>)</mo></mrow><mo>=</mo><mn>0</mn></math></p>
+        <p>よって、<math><mi>P</mi><mrow><mo>(</mo><mi>k</mi><mo>)</mo></mrow><mo>=</mo><mn>0</mn></math>のとき、<math><mi>P</mi><mrow><mo>(</mo><mi>x</mi><mo>)</mo></mrow></math> は<math><mi>P</mi><mrow><mo>(</mo><mi>x</mi><mo>)</mo></mrow><mo>=</mo><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mi>k</mi><mo>)</mo></mrow><mi>Q</mi><mrow><mo>(</mo><mi>x</mi><mo>)</mo></mrow></math>の形である。以上から、次の<span class="key">因数定理</span>が成り立つ。</p>
         <div class="def">
           <p><b>因数定理</b></p>
-          <p>多項式 P(x) が1次式 x − k を因数にもつ　⟺　P(k) = 0</p>
+          <p>多項式 <math><mi>P</mi><mrow><mo>(</mo><mi>x</mi><mo>)</mo></mrow></math> が1次式 <math><mi>x</mi></math> − <math><mi>k</mi></math> を因数にもつ　⟺　<math><mi>P</mi><mrow><mo>(</mo><mi>k</mi><mo>)</mo></mrow><mo>=</mo><mn>0</mn></math></p>
         </div>
       </section>
       <div class="sec-head">
@@ -338,40 +395,40 @@
         <h2>例13・例14で解き方を確認</h2>
         <span class="pno">教科書 p.57</span>
       </div>
-      <section class="card prob" id="prob-ex13" data-flow="ex13" data-label="例13">
+      <section class="nofig card prob" id="prob-ex13" data-flow="ex13" data-label="例13">
         <div class="prob-head">
           <span class="prob-tag ">例 13</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 1</span>
         </div>
         <div class="qside">
-        <p class="prob-q">P(x) = 2x<sup>3</sup> − 5x<sup>2</sup> + x + 2 において、P(x) が x − 2 を因数にもつことを確かめよう。</p>
+        <p class="prob-q"><math><mi>P</mi><mrow><mo>(</mo><mi>x</mi><mo>)</mo></mrow><mo>=</mo><mn>2</mn><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>5</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi><mo>+</mo><mn>2</mn></math>において、<math><mi>P</mi><mrow><mo>(</mo><mi>x</mi><mo>)</mo></mrow></math> が <math><mi>x</mi></math> − 2 を因数にもつことを確かめよう。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― P(2) を計算する</h3>
-          <p>因数定理では、x − 2 を因数にもつかどうかは P(2) = 0 かどうかで決まる。P(2) = 2・2<sup>3</sup> − 5・2<sup>2</sup> + 2 + 2 を計算しよう。</p>
+          <h3>ヒント 1 ― <math><mi>P</mi><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow></math> を計算する</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mi>P</mi><mrow><mo>(</mo><mi>x</mi><mo>)</mo></mrow></math> が <math><mi>x</mi><mo>−</mo><mi>k</mi></math> を因数にもつ <math><mo>⟺</mo></math><math><mi>P</mi><mrow><mo>(</mo><mi>k</mi><mo>)</mo></mrow></math><math><mo>=</mo><mn>0</mn></math>。ここでは <math><mi>P</mi><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow></math> を計算して 0 になるかを確かめる。</p>
+          <p>因数定理では、<math><mi>x</mi></math> − 2 を因数にもつかどうかは<math><mi>P</mi><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow><mo>=</mo><mn>0</mn></math>かどうかで決まる。<math><mi>P</mi><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow><mo>=</mo><mn>2</mn><mo>⋅</mo><msup><mn>2</mn><mn>3</mn></msup><mo>−</mo><mn>5</mn><mo>⋅</mo><msup><mn>2</mn><mn>2</mn></msup><mo>+</mo><mn>2</mn><mo>+</mo><mn>2</mn></math>を計算しよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p>P(2) = 2・2<sup>3</sup> − 5・2<sup>2</sup> + 2 + 2 = 0。よって、P(x) は x − 2 を因数にもつ。</p>
+          <p><math><mi>P</mi><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow><mo>=</mo><mn>2</mn><mo>⋅</mo><msup><mn>2</mn><mn>3</mn></msup><mo>−</mo><mn>5</mn><mo>⋅</mo><msup><mn>2</mn><mn>2</mn></msup><mo>+</mo><mn>2</mn><mo>+</mo><mn>2</mn><mo>=</mo><mn>0</mn></math>。よって、<math><mi>P</mi><mrow><mo>(</mo><mi>x</mi><mo>)</mo></mrow></math> は <math><mi>x</mi></math> − 2 を因数にもつ。</p><p class="cite"><span class="cite-tag">使う性質</span><math><mi>P</mi><mrow><mo>(</mo><mi>x</mi><mo>)</mo></mrow></math> が <math><mi>x</mi><mo>−</mo><mi>k</mi></math> を因数にもつ <math><mo>⟺</mo></math><math><mi>P</mi><mrow><mo>(</mo><mi>k</mi><mo>)</mo></mrow></math><math><mo>=</mo><mn>0</mn></math>。<math><mi>P</mi><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow></math><math><mo>=</mo><mn>0</mn></math> だから、<math><mi>x</mi><mo>−</mo><mn>2</mn></math> を因数にもつ。</p>
         </div>
         <p class="prob-done">例13 クリア！　次は練習22に挑戦しよう。</p>
       </section>
-      <section class="card prob" id="prob-ren22" data-flow="ren22" data-label="練習22">
+      <section class="nofig card prob" id="prob-ren22" data-flow="ren22" data-label="練習22">
         <div class="prob-head">
           <span class="prob-tag ren">練習 22</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">次の1次式のうち、多項式 x<sup>3</sup> + 2x<sup>2</sup> − 5x − 6 の因数であるものはどれか。<br>①　x − 1　　②　x + 1　　③　x − 2　　④　x + 2</p>
+        <p class="prob-q">次の1次式のうち、多項式<math><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mn>2</mn><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>5</mn><mi>x</mi><mo>−</mo><mn>6</mn></math>の因数であるものはどれか。<br>①　<math><mi>x</mi></math> − 1　　②　<math><mi>x</mi></math> + 1　　③　<math><mi>x</mi></math> − 2　　④　<math><mi>x</mi></math> + 2</p>
           <div class="quiz" id="qz-ren22" data-correct="2,3" data-multi="1">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>x − 1</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>x + 1</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>x − 2</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>x + 2</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mi>x</mi><mo>−</mo><mn>1</mn></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mi>x</mi><mo>+</mo><mn>1</mn></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mi>x</mi><mo>−</mo><mn>2</mn></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mi>x</mi><mo>+</mo><mn>2</mn></math></span><span class="mark"></span></button>
           </div>
           <p>当てはまるものをすべて選んで、「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
@@ -379,47 +436,47 @@
           </div>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― P(x) = x<sup>3</sup> + 2x<sup>2</sup> − 5x − 6 とおく</h3>
-          <p>x − k が因数になるのは P(k) = 0 のとき。4つの候補について、P(1)、P(−1)、P(2)、P(−2) を計算しよう。</p>
+          <h3>ヒント<math><mn>1</mn><mo>―</mo><mi>P</mi><mrow><mo>(</mo><mi>x</mi><mo>)</mo></mrow><mo>=</mo><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mn>2</mn><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>5</mn><mi>x</mi><mo>−</mo><mn>6</mn></math>とおく</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mi>P</mi><mrow><mo>(</mo><mi>x</mi><mo>)</mo></mrow></math> が <math><mi>x</mi><mo>−</mo><mi>k</mi></math> を因数にもつ <math><mo>⟺</mo></math><math><mi>P</mi><mrow><mo>(</mo><mi>k</mi><mo>)</mo></mrow></math><math><mo>=</mo><mn>0</mn></math>。4つの候補について <math><mi>P</mi><mrow><mo>(</mo><mn>1</mn><mo>)</mo></mrow></math>、<math><mi>P</mi><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow></math>、<math><mi>P</mi><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow></math>、<math><mi>P</mi><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow></math> を計算する。</p>
+          <p><math><mi>x</mi></math> − <math><mi>k</mi></math> が因数になるのは<math><mi>P</mi><mrow><mo>(</mo><mi>k</mi><mo>)</mo></mrow><mo>=</mo><mn>0</mn></math>のとき。4つの候補について、<math><mi>P</mi><mrow><mo>(</mo><mn>1</mn><mo>)</mo></mrow></math>、<math><mi>P</mi><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow></math>、<math><mi>P</mi><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow></math>、<math><mi>P</mi><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow></math> を計算しよう。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― 計算してみる</h3>
-          <p>P(1) = 1 + 2 − 5 − 6 = −8、P(−1) = −1 + 2 + 5 − 6 = 0、P(2) = 8 + 8 − 10 − 6 = 0、P(−2) = −8 + 8 + 10 − 6 = 4。0 になるのはどれかな。</p>
+          <h3>ヒント 2 ― 計算してみる</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mi>P</mi><mrow><mo>(</mo><mi>x</mi><mo>)</mo></mrow></math> が <math><mi>x</mi><mo>−</mo><mi>k</mi></math> を因数にもつ <math><mo>⟺</mo></math><math><mi>P</mi><mrow><mo>(</mo><mi>k</mi><mo>)</mo></mrow></math><math><mo>=</mo><mn>0</mn></math>。計算して 0 になるものが、因数である1次式に対応する。</p>
+          <p><math><mi>P</mi><mrow><mo>(</mo><mn>1</mn><mo>)</mo></mrow><mo>=</mo><mn>1</mn><mo>+</mo><mn>2</mn><mo>−</mo><mn>5</mn><mo>−</mo><mn>6</mn><mo>=</mo><mo>−</mo><mn>8</mn></math>、<math><mi>P</mi><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mo>=</mo><mo>−</mo><mn>1</mn><mo>+</mo><mn>2</mn><mo>+</mo><mn>5</mn><mo>−</mo><mn>6</mn><mo>=</mo><mn>0</mn></math>、<math><mi>P</mi><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow><mo>=</mo><mn>8</mn><mo>+</mo><mn>8</mn><mo>−</mo><mn>10</mn><mo>−</mo><mn>6</mn><mo>=</mo><mn>0</mn></math>、<math><mi>P</mi><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mo>=</mo><mo>−</mo><mn>8</mn><mo>+</mo><mn>8</mn><mo>+</mo><mn>10</mn><mo>−</mo><mn>6</mn><mo>=</mo><mn>4</mn></math>。0 になるのはどれかな。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">②　x + 1　と　③　x − 2</p>
-          <p>P(−1) = 0、P(2) = 0 だから、因数であるものは</p>
+          <p class="big">②　<math><mi>x</mi></math> + 1　と　③　<math><mi>x</mi></math> − 2</p><p class="cite"><span class="cite-tag">使う性質</span><math><mi>P</mi><mrow><mo>(</mo><mi>x</mi><mo>)</mo></mrow></math> が <math><mi>x</mi><mo>−</mo><mi>k</mi></math> を因数にもつ <math><mo>⟺</mo></math><math><mi>P</mi><mrow><mo>(</mo><mi>k</mi><mo>)</mo></mrow></math><math><mo>=</mo><mn>0</mn></math>。<math><mi>P</mi><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow></math><math><mo>=</mo><mn>0</mn></math>、<math><mi>P</mi><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow></math><math><mo>=</mo><mn>0</mn></math> だから、因数はこの2つである。</p>
+          <p><math><mi>P</mi><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mo>=</mo><mn>0</mn></math>、<math><mi>P</mi><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow><mo>=</mo><mn>0</mn></math>だから、因数であるものは</p>
         </div>
         <p class="prob-done">練習22 クリア！　次は例14（因数分解）だよ。</p>
       </section>
-      <section class="card prob" id="prob-ex14" data-flow="ex14" data-label="例14">
+      <section class="nofig card prob" id="prob-ex14" data-flow="ex14" data-label="例14">
         <div class="prob-head">
           <span class="prob-tag ">例 14</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
         <div class="qside">
-        <p class="prob-q">x<sup>3</sup> − 4x<sup>2</sup> + x + 6 を因数分解しよう。</p>
+        <p class="prob-q"><math><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>4</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi><mo>+</mo><mn>6</mn></math>を因数分解しよう。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― P(−1) を計算してみる</h3>
-          <p>P(x) = x<sup>3</sup> − 4x<sup>2</sup> + x + 6 とする。定数項 6 の約数 ±1、±2、±3、±6 を x に代入して、P(k) = 0 になるものを探そう。まず P(−1) = (−1)<sup>3</sup> − 4・(−1)<sup>2</sup> + (−1) + 6 から試してみよう。</p>
+          <h3>ヒント 1 ― <math><mi>P</mi><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow></math> を計算してみる</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mi>P</mi><mrow><mo>(</mo><mi>x</mi><mo>)</mo></mrow></math> が <math><mi>x</mi><mo>−</mo><mi>k</mi></math> を因数にもつ <math><mo>⟺</mo></math><math><mi>P</mi><mrow><mo>(</mo><mi>k</mi><mo>)</mo></mrow></math><math><mo>=</mo><mn>0</mn></math>。定数項 6 の約数 ±1、±2、±3、±6 を試し、まず <math><mi>P</mi><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow></math> を計算してみる。</p>
+          <p><math><mi>P</mi><mrow><mo>(</mo><mi>x</mi><mo>)</mo></mrow><mo>=</mo><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>4</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi><mo>+</mo><mn>6</mn></math>とする。定数項 6 の約数 ±1、±2、±3、±6 を <math><mi>x</mi></math> に代入して、<math><mi>P</mi><mrow><mo>(</mo><mi>k</mi><mo>)</mo></mrow><mo>=</mo><mn>0</mn></math>になるものを探そう。まず<math><mi>P</mi><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mo>=</mo><msup><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mn>3</mn></msup><mo>−</mo><mn>4</mn><mo>⋅</mo><msup><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mo>+</mo><mn>6</mn></math>から試してみよう。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― x + 1 で割る</h3>
-          <p>P(−1) = 0 だから、P(x) は x + 1 を因数にもつ。x<sup>3</sup> − 4x<sup>2</sup> + x + 6 を x + 1 で割る（筆算）と、商は x<sup>2</sup> − 5x + 6 になるよ。</p>
+          <h3>ヒント 2 ― <math><mi>x</mi></math> + 1 で割る</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mi>P</mi><mrow><mo>(</mo><mi>x</mi><mo>)</mo></mrow></math> が <math><mi>x</mi><mo>−</mo><mi>k</mi></math> を因数にもつ <math><mo>⟺</mo></math><math><mi>P</mi><mrow><mo>(</mo><mi>k</mi><mo>)</mo></mrow></math><math><mo>=</mo><mn>0</mn></math>。<math><mi>P</mi><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow></math><math><mo>=</mo><mn>0</mn></math> だから <math><mi>x</mi><mo>+</mo><mn>1</mn></math> が因数。割り算をして商 <math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>5</mn><mi>x</mi><mo>+</mo><mn>6</mn></math> を出す。</p>
+          <p><math><mi>P</mi><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mo>=</mo><mn>0</mn></math>だから、<math><mi>P</mi><mrow><mo>(</mo><mi>x</mi><mo>)</mo></mrow></math> は <math><mi>x</mi></math> + 1 を因数にもつ。<math><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>4</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi><mo>+</mo><mn>6</mn></math>を <math><mi>x</mi></math> + 1 で割る（筆算）と、商は<math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>5</mn><mi>x</mi><mo>+</mo><mn>6</mn></math>になるよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 3 ― 商をさらに因数分解する</h3>
-          <p>x<sup>2</sup> − 5x + 6 は、積が 6、和が −5 になる2数 −2、−3 を使って因数分解できるね。</p>
+          <h3>ヒント 3 ― 商をさらに因数分解する</h3><p class="cite"><span class="cite-tag">使う公式</span><math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>5</mn><mi>x</mi><mo>+</mo><mn>6</mn><mo>=</mo><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>3</mn><mo>)</mo></mrow></math>積が 6、和が −5 になる2数 −2、−3 を使って、商をさらに因数分解する。</p>
+          <p><math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>5</mn><mi>x</mi><mo>+</mo><mn>6</mn></math>は、積が 6、和が −5 になる2数 −2、−3 を使って因数分解できるね。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">x<sup>3</sup> − 4x<sup>2</sup> + x + 6 = (x + 1)(x − 2)(x − 3)</p>
-          <p>P(−1) = (−1)<sup>3</sup> − 4・(−1)<sup>2</sup> + (−1) + 6 = 0。よって、P(x) は x + 1 を因数にもつ。割り算から x<sup>3</sup> − 4x<sup>2</sup> + x + 6 = (x + 1)(x<sup>2</sup> − 5x + 6)。さらに、商を因数分解して</p>
+          <p class="big"><math display="block"><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>4</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi><mo>+</mo><mn>6</mn><mo>=</mo><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>3</mn><mo>)</mo></mrow></math></p><p class="cite"><span class="cite-tag">使う性質</span><math><mi>P</mi><mrow><mo>(</mo><mi>x</mi><mo>)</mo></mrow></math> が <math><mi>x</mi><mo>−</mo><mi>k</mi></math> を因数にもつ <math><mo>⟺</mo></math><math><mi>P</mi><mrow><mo>(</mo><mi>k</mi><mo>)</mo></mrow></math><math><mo>=</mo><mn>0</mn></math>。<math><mi>P</mi><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow></math><math><mo>=</mo><mn>0</mn></math> を確かめて因数を1つ見つけ、割って商を出し、商を因数分解する。</p>
+          <p><math><mi>P</mi><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mo>=</mo><msup><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mn>3</mn></msup><mo>−</mo><mn>4</mn><mo>⋅</mo><msup><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mo>+</mo><mn>6</mn><mo>=</mo><mn>0</mn></math>。よって、<math><mi>P</mi><mrow><mo>(</mo><mi>x</mi><mo>)</mo></mrow></math> は <math><mi>x</mi></math> + 1 を因数にもつ。割り算から<math><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>4</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi><mo>+</mo><mn>6</mn><mo>=</mo><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow><mrow><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>5</mn><mi>x</mi><mo>+</mo><mn>6</mn><mo>)</mo></mrow></math>。さらに、商を因数分解して</p>
         </div>
         <p class="prob-done">例14 クリア！　次は練習23に挑戦しよう。</p>
       </section>
@@ -428,7 +485,7 @@
         <h2>練習問題に挑戦</h2>
         <span class="pno">教科書 p.57</span>
       </div>
-      <section class="card prob" id="prob-ren23" data-label="練習23">
+      <section class="nofig card prob" id="prob-ren23" data-label="練習23">
         <div class="prob-head">
           <span class="prob-tag ren">練習 23</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
@@ -443,66 +500,66 @@
         </div>
         <div class="tabpanel show" id="panel-ren23-1" data-flow="ren23-1" data-label="練習23 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　x<sup>3</sup> − 3x<sup>2</sup> − 6x + 8</span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>6</mn><mi>x</mi><mo>+</mo><mn>8</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― P(1) を試す</h3>
-          <p>定数項 8 の約数を試そう。P(1) = 1 − 3 − 6 + 8 を計算してみよう。</p>
+          <h3>ヒント 1 ― <math><mi>P</mi><mrow><mo>(</mo><mn>1</mn><mo>)</mo></mrow></math> を試す</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mi>P</mi><mrow><mo>(</mo><mi>x</mi><mo>)</mo></mrow></math> が <math><mi>x</mi><mo>−</mo><mi>k</mi></math> を因数にもつ <math><mo>⟺</mo></math><math><mi>P</mi><mrow><mo>(</mo><mi>k</mi><mo>)</mo></mrow></math><math><mo>=</mo><mn>0</mn></math>。定数項 8 の約数を試し、まず <math><mi>P</mi><mrow><mo>(</mo><mn>1</mn><mo>)</mo></mrow></math> を計算してみる。</p>
+          <p>定数項 8 の約数を試そう。<math><mi>P</mi><mrow><mo>(</mo><mn>1</mn><mo>)</mo></mrow><mo>=</mo><mn>1</mn><mo>−</mo><mn>3</mn><mo>−</mo><mn>6</mn><mo>+</mo><mn>8</mn></math>を計算してみよう。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― x − 1 で割る</h3>
-          <p>P(1) = 0 だから x − 1 が因数。割ると商は x<sup>2</sup> − 2x − 8。これを因数分解しよう（積が −8、和が −2 の2数）。</p>
+          <h3>ヒント 2 ― <math><mi>x</mi></math> − 1 で割る</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mi>P</mi><mrow><mo>(</mo><mi>x</mi><mo>)</mo></mrow></math> が <math><mi>x</mi><mo>−</mo><mi>k</mi></math> を因数にもつ <math><mo>⟺</mo></math><math><mi>P</mi><mrow><mo>(</mo><mi>k</mi><mo>)</mo></mrow></math><math><mo>=</mo><mn>0</mn></math>。<math><mi>P</mi><mrow><mo>(</mo><mn>1</mn><mo>)</mo></mrow></math><math><mo>=</mo><mn>0</mn></math> だから <math><mi>x</mi><mo>−</mo><mn>1</mn></math> が因数。割って商 <math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>x</mi><mo>−</mo><mn>8</mn></math> を出し、因数分解する。</p>
+          <p><math><mi>P</mi><mrow><mo>(</mo><mn>1</mn><mo>)</mo></mrow><mo>=</mo><mn>0</mn></math>だから <math><mi>x</mi></math> − 1 が因数。割ると商は<math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>x</mi><mo>−</mo><mn>8</mn></math>。これを因数分解しよう（積が −8、和が −2 の2数）。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">(x − 1)(x − 4)(x + 2)</p>
+          <p class="big">(<math><mi>x</mi></math> − 1)(<math><mi>x</mi></math> − 4)(<math><mi>x</mi></math> + 2)</p>
 
         </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren23-2" data-flow="ren23-2" data-label="練習23 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　x<sup>3</sup> − 5x<sup>2</sup> + 3x + 9</span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>5</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>3</mn><mi>x</mi><mo>+</mo><mn>9</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― P(3) を試す</h3>
-          <p>P(3) = 27 − 45 + 9 + 9 を計算してみよう。</p>
+          <h3>ヒント 1 ― <math><mi>P</mi><mrow><mo>(</mo><mn>3</mn><mo>)</mo></mrow></math> を試す</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mi>P</mi><mrow><mo>(</mo><mi>x</mi><mo>)</mo></mrow></math> が <math><mi>x</mi><mo>−</mo><mi>k</mi></math> を因数にもつ <math><mo>⟺</mo></math><math><mi>P</mi><mrow><mo>(</mo><mi>k</mi><mo>)</mo></mrow></math><math><mo>=</mo><mn>0</mn></math>。まず <math><mi>P</mi><mrow><mo>(</mo><mn>3</mn><mo>)</mo></mrow></math> を計算してみる。</p>
+          <p><math><mi>P</mi><mrow><mo>(</mo><mn>3</mn><mo>)</mo></mrow><mo>=</mo><mn>27</mn><mo>−</mo><mn>45</mn><mo>+</mo><mn>9</mn><mo>+</mo><mn>9</mn></math>を計算してみよう。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― x − 3 で割る</h3>
-          <p>P(3) = 0 だから x − 3 が因数。割ると商は x<sup>2</sup> − 2x − 3。これを因数分解すると、同じ因数が2回出てくるよ。</p>
+          <h3>ヒント 2 ― <math><mi>x</mi></math> − 3 で割る</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mi>P</mi><mrow><mo>(</mo><mi>x</mi><mo>)</mo></mrow></math> が <math><mi>x</mi><mo>−</mo><mi>k</mi></math> を因数にもつ <math><mo>⟺</mo></math><math><mi>P</mi><mrow><mo>(</mo><mi>k</mi><mo>)</mo></mrow></math><math><mo>=</mo><mn>0</mn></math>。<math><mi>P</mi><mrow><mo>(</mo><mn>3</mn><mo>)</mo></mrow></math><math><mo>=</mo><mn>0</mn></math> だから <math><mi>x</mi><mo>−</mo><mn>3</mn></math> が因数。割って商 <math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>x</mi><mo>−</mo><mn>3</mn></math> を出し、因数分解する。</p>
+          <p><math><mi>P</mi><mrow><mo>(</mo><mn>3</mn><mo>)</mo></mrow><mo>=</mo><mn>0</mn></math>だから <math><mi>x</mi></math> − 3 が因数。割ると商は<math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>x</mi><mo>−</mo><mn>3</mn></math>。これを因数分解すると、同じ因数が2回出てくるよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">(x − 3)<sup>2</sup>(x + 1)</p>
+          <p class="big"><math display="block"><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>3</mn><mo>)</mo></mrow><mn>2</mn></msup><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow></math></p>
 
         </div>
           <p class="prob-done">(2) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren23-3" data-flow="ren23-3" data-label="練習23 (3)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(3)　2x<sup>3</sup> + 3x<sup>2</sup> − 11x − 6</span>
+            <span class="sub prob-q" style="margin:0">(3)　<math><mn>2</mn><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>11</mn><mi>x</mi><mo>−</mo><mn>6</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― P(2) を試す</h3>
-          <p>P(2) = 16 + 12 − 22 − 6 を計算してみよう。</p>
+          <h3>ヒント 1 ― <math><mi>P</mi><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow></math> を試す</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mi>P</mi><mrow><mo>(</mo><mi>x</mi><mo>)</mo></mrow></math> が <math><mi>x</mi><mo>−</mo><mi>k</mi></math> を因数にもつ <math><mo>⟺</mo></math><math><mi>P</mi><mrow><mo>(</mo><mi>k</mi><mo>)</mo></mrow></math><math><mo>=</mo><mn>0</mn></math>。まず <math><mi>P</mi><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow></math> を計算してみる。</p>
+          <p><math><mi>P</mi><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow><mo>=</mo><mn>16</mn><mo>+</mo><mn>12</mn><mo>−</mo><mn>22</mn><mo>−</mo><mn>6</mn></math>を計算してみよう。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― x − 2 で割る</h3>
-          <p>P(2) = 0 だから x − 2 が因数。割ると商は 2x<sup>2</sup> + 7x + 3。たすき掛けで因数分解しよう。</p>
+          <h3>ヒント 2 ― <math><mi>x</mi></math> − 2 で割る</h3><p class="cite"><span class="cite-tag">使う公式</span><math><mn>2</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>7</mn><mi>x</mi><mo>+</mo><mn>3</mn><mo>=</mo><mrow><mo>(</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>3</mn><mo>)</mo></mrow></math><math><mi>P</mi><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow></math><math><mo>=</mo><mn>0</mn></math> だから <math><mi>x</mi><mo>−</mo><mn>2</mn></math> が因数で、割って出た商はたすき掛けで因数分解する。</p>
+          <p><math><mi>P</mi><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow><mo>=</mo><mn>0</mn></math>だから <math><mi>x</mi></math> − 2 が因数。割ると商は<math><mn>2</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>7</mn><mi>x</mi><mo>+</mo><mn>3</mn></math>。たすき掛けで因数分解しよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">(x − 2)(2x + 1)(x + 3)</p>
+          <p class="big">(<math><mi>x</mi></math> − 2)(2x + 1)(<math><mi>x</mi></math> + 3)</p>
 
         </div>
           <p class="prob-done">(3) クリア！　練習23は全部おわり。次は研究「組立除法」だよ。</p>
@@ -514,38 +571,38 @@
         <span class="pno">教科書 p.58</span>
       </div>
       <section class="card">
-        <p>3次式 ax<sup>3</sup> + bx<sup>2</sup> + cx + d を1次式 x − k で割った商を lx<sup>2</sup> + mx + n とし、余りを R とする。この商の係数 l, m, n と余り R は、次のような方法でも求められる。この方法を<span class="key">組立除法</span>という。</p>
-        <p>やり方は、係数だけを取り出して計算することだ。①係数を並べる、② k を掛けて右下へ、③縦に足す、を繰り返す。一番下の段の数が、左から商の係数 l、m、n と余り R になる（l = a、m = b + lk、n = c + mk、R = d + nk という関係がある）。</p>
-        <p>たとえば、x<sup>3</sup> − 4x<sup>2</sup> + x + 6 を x + 1 で割る組立除法は、k = −1 として次のようになり、商は x<sup>2</sup> − 5x + 6、余りは 0 である（57ページ 例14で行った割り算と比べてみよう）。</p>
+        <p>3次式<math><mi>a</mi><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mi>b</mi><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>c</mi><mi>x</mi><mo>+</mo><mi>d</mi></math>を1次式 <math><mi>x</mi></math> − <math><mi>k</mi></math> で割った商を<math><mi>l</mi><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>m</mi><mi>x</mi><mo>+</mo><mi>n</mi></math>とし、余りを <math><mi>R</mi></math> とする。この商の係数 <math><mi>l</mi></math>, <math><mi>m</mi></math>, <math><mi>n</mi></math> と余り <math><mi>R</mi></math> は、次のような方法でも求められる。この方法を<span class="key">組立除法</span>という。</p>
+        <p>やり方は、係数だけを取り出して計算することだ。①係数を並べる、② <math><mi>k</mi></math> を掛けて右下へ、③縦に足す、を繰り返す。一番下の段の数が、左から商の係数 <math><mi>l</mi></math>、<math><mi>m</mi></math>、<math><mi>n</mi></math> と余り <math><mi>R</mi></math> になる<math><mo>(</mo><mi>l</mi><mo>=</mo><mi>a</mi></math>、<math><mi>m</mi><mo>=</mo><mi>b</mi><mo>+</mo><mi>l</mi><mi>k</mi></math>、<math><mi>n</mi><mo>=</mo><mi>c</mi><mo>+</mo><mi>m</mi><mi>k</mi></math>、<math><mi>R</mi><mo>=</mo><mi>d</mi><mo>+</mo><mi>n</mi><mi>k</mi></math>という関係がある）。</p>
+        <p>たとえば、<math><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>4</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi><mo>+</mo><mn>6</mn></math>を <math><mi>x</mi></math> + 1 で割る組立除法は、<math><mi>k</mi><mo>=</mo><mo>−</mo><mn>1</mn></math>として次のようになり、商は<math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>5</mn><mi>x</mi><mo>+</mo><mn>6</mn></math>、余りは 0 である（57ページ 例14で行った割り算と比べてみよう）。</p>
         <table class="comp"><tr><td>1</td><td>−4</td><td>1</td><td>6</td><td style="border-left:3px solid var(--ink-soft)">−1</td></tr><tr><td></td><td>−1</td><td>5</td><td>−6</td><td></td></tr><tr><td><b>1</b></td><td><b>−5</b></td><td><b>6</b></td><td style="border-left:3px solid var(--ink-soft)"><b>0</b></td></tr></table>
-        <p class="mini">表の読み方：1段目は係数 1、−4、1、6 と k = −1。2段目は「掛けた数」（1×(−1) = −1、−5×(−1) = 5、6×(−1) = −6）。3段目が縦の和で、商の係数 1、−5、6 と余り 0。</p>
+        <p class="mini">表の読み方：1段目は係数 1、−4、1、6 と<math><mi>k</mi><mo>=</mo><mo>−</mo><mn>1</mn></math>。2段目は「掛けた数」<math><mo>(</mo><mn>1</mn><mo>×</mo><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mo>=</mo><mo>−</mo><mn>1</mn></math>、<math><mo>−</mo><mn>5</mn><mo>×</mo><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mo>=</mo><mn>5</mn></math>、<math><mn>6</mn><mo>×</mo><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mo>=</mo><mo>−</mo><mn>6</mn><mo>)</mo></math>。3段目が縦の和で、商の係数 1、−5、6 と余り 0。</p>
       </section>
       <div class="sec-head">
         <span class="sec-tag">練習</span>
         <h2>練習問題に挑戦</h2>
         <span class="pno">教科書 p.58</span>
       </div>
-      <section class="card prob" id="prob-kenkyurenS" data-flow="kenkyurenS" data-label="研究 練習1">
+      <section class="nofig card prob" id="prob-kenkyurenS" data-flow="kenkyurenS" data-label="研究 練習1">
         <div class="prob-head">
           <span class="prob-tag ren">練習 1</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">x<sup>3</sup> − 2x<sup>2</sup> + 3x − 9 を x − 3 で割った商と余りを求めよ。</p>
+        <p class="prob-q"><math><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>2</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>3</mn><mi>x</mi><mo>−</mo><mn>9</mn></math>を <math><mi>x</mi></math> − 3 で割った商と余りを求めよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 組立除法の表を作る</h3>
-          <p>係数 1、−2、3、−9 を並べ、k = 3 とする。1を下ろし、3を掛けて次の列へ、縦に足す、を繰り返そう。</p>
+          <h3>ヒント 1 ― 組立除法の表を作る</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mi>m</mi><mo>=</mo><mi>b</mi><mo>+</mo><mi>l</mi><mi>k</mi></math>、<math><mi>n</mi><mo>=</mo><mi>c</mi><mo>+</mo><mi>m</mi><mi>k</mi></math>、<math><mi>R</mi><mo>=</mo><mi>d</mi><mo>+</mo><mi>n</mi><mi>k</mi></math>組立除法は係数だけを取り出して「<math><mi>k</mi></math> を掛けて縦に足す」を繰り返す方法。ここでは係数 1、−2、3、−9 を並べ、<math><mi>k</mi><mo>=</mo><mn>3</mn></math> とする。</p>
+          <p>係数 1、−2、3、−9 を並べ、<math><mi>k</mi><mo>=</mo><mn>3</mn></math>とする。1を下ろし、3を掛けて次の列へ、縦に足す、を繰り返そう。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― 表を完成させる</h3>
-          <p>1 → 3を掛けて 3、−2 + 3 = 1 → 3を掛けて 3、3 + 3 = 6 → 3を掛けて 18、−9 + 18 = 9。一番下の段は 1、1、6、9 になるよ。</p>
+          <h3>ヒント 2 ― 表を完成させる</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mi>m</mi><mo>=</mo><mi>b</mi><mo>+</mo><mi>l</mi><mi>k</mi></math> などの関係で表を進めると、一番下の段の数が、左から商の係数と余りになる。</p>
+          <p>1 → 3を掛けて 3、<math><mo>−</mo><mn>2</mn><mo>+</mo><mn>3</mn><mo>=</mo><mn>1</mn><mo>→</mo><mn>3</mn></math>を掛けて 3、<math><mn>3</mn><mo>+</mo><mn>3</mn><mo>=</mo><mn>6</mn><mo>→</mo><mn>3</mn></math>を掛けて 18、<math><mo>−</mo><mn>9</mn><mo>+</mo><mn>18</mn><mo>=</mo><mn>9</mn></math>。一番下の段は 1、1、6、9 になるよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">商　x<sup>2</sup> + x + 6，　余り　9</p>
+          <p class="big">商　<math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi><mo>+</mo><mn>6</mn><mo>,</mo></math>　余り　9</p><p class="cite"><span class="cite-tag">使う性質</span><math><mi>m</mi><mo>=</mo><mi>b</mi><mo>+</mo><mi>l</mi><mi>k</mi></math> などの関係で係数だけを計算し、一番下の段から商と余りを読む。</p>
           <p>組立除法は次のようになる。</p>
           <table class="comp"><tr><td>1</td><td>−2</td><td>3</td><td>−9</td><td style="border-left:3px solid var(--ink-soft)">3</td></tr><tr><td></td><td>3</td><td>3</td><td>18</td><td></td></tr><tr><td><b>1</b></td><td><b>1</b></td><td><b>6</b></td><td style="border-left:3px solid var(--ink-soft)"><b>9</b></td></tr></table>
           <p>したがって</p>
@@ -558,9 +615,9 @@
       <section class="card summary" id="summaryCard" style="display:none">
         <h2>この項のポイント</h2>
         <ul>
-          <li><b>因数定理：</b>P(x) が x − k を因数にもつ ⟺ P(k) = 0。因数を探すときは、定数項の約数を代入して P(k) = 0 になるものを探す。</li>
-          <li><b>3次式の因数分解：</b>因数を1つ見つける → 割って商（2次式）を出す → 商を因数分解する。</li>
-          <li><b>組立除法：</b>係数だけの計算で、商と余りが求められる。</li>
+          <li><p class="cite"><span class="cite-tag">使う性質</span><math><mi>P</mi><mrow><mo>(</mo><mi>x</mi><mo>)</mo></mrow></math> が <math><mi>x</mi><mo>−</mo><mi>k</mi></math> を因数にもつ <math><mo>⟺</mo></math><math><mi>P</mi><mrow><mo>(</mo><mi>k</mi><mo>)</mo></mrow></math><math><mo>=</mo><mn>0</mn></math>。因数を探すときは、定数項の約数を代入して <math><mi>P</mi><mrow><mo>(</mo><mi>k</mi><mo>)</mo></mrow></math><math><mo>=</mo><mn>0</mn></math> になるものを探す。</p><b>因数定理：</b><math><mi>P</mi><mrow><mo>(</mo><mi>x</mi><mo>)</mo></mrow></math> が <math><mi>x</mi></math> − <math><mi>k</mi></math> を因数にもつ<math><mo>⟺</mo><mi>P</mi><mrow><mo>(</mo><mi>k</mi><mo>)</mo></mrow><mo>=</mo><mn>0</mn></math>。因数を探すときは、定数項の約数を代入して<math><mi>P</mi><mrow><mo>(</mo><mi>k</mi><mo>)</mo></mrow><mo>=</mo><mn>0</mn></math>になるものを探す。</li>
+          <li><p class="cite"><span class="cite-tag">使う性質</span><math><mi>P</mi><mrow><mo>(</mo><mi>x</mi><mo>)</mo></mrow></math> が <math><mi>x</mi><mo>−</mo><mi>k</mi></math> を因数にもつ <math><mo>⟺</mo></math><math><mi>P</mi><mrow><mo>(</mo><mi>k</mi><mo>)</mo></mrow></math><math><mo>=</mo><mn>0</mn></math>。因数を1つ見つける → 割って商（2次式）を出す → 商を因数分解する、の順に進める。</p><b>3次式の因数分解：</b>因数を1つ見つける → 割って商（2次式）を出す → 商を因数分解する。</li>
+          <li><p class="cite"><span class="cite-tag">使う性質</span><math><mi>m</mi><mo>=</mo><mi>b</mi><mo>+</mo><mi>l</mi><mi>k</mi></math>、<math><mi>R</mi><mo>=</mo><mi>d</mi><mo>+</mo><mi>n</mi><mi>k</mi></math>組立除法では、係数だけの計算で商と余りが求められる。</p><b>組立除法：</b>係数だけの計算で、商と余りが求められる。</li>
         </ul>
       </section>
       <footer>

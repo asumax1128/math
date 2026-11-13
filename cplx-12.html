@@ -302,7 +302,64 @@
       table.comp{border-collapse:collapse;margin:0 0 14px;width:100%}
       table.comp th,table.comp td{border:1px solid var(--line);padding:8px 10px;text-align:center;font-size:15px}
       table.comp th{background:var(--surface2)}
-        </style>
+        
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+
+      /* 積分記号は大きめに表示する（元のページの可読化デザインに合わせる） */
+      math .int-op{font-size:1.35em}
+      /* calc-12 世代（.card）と calc-18 世代（.unit）の、図のない問題の全幅化 */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig>.step{position:static !important}
+        .card.nofig>.steps-wrap{max-height:none !important;overflow:visible !important}
+        .unit.nofig{display:block !important}
+        .unit.nofig>.qside{position:static !important}
+        .unit.nofig>.steps-stack{max-height:none !important;overflow:visible !important}
+      }
+
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける・第3弾c） */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig .qside{position:static !important}
+        .card.nofig .steps-wrap,.card.nofig .tabpanel .steps-wrap{max-height:none !important;overflow:visible !important}
+      }
+</style>
   </head>
   <body>
     <div class="wrap">
@@ -325,44 +382,49 @@
         <span class="pno">教科書 p.61</span>
       </div>
       <section class="card">
-        <p>たとえば、方程式 (x − 1)<sup>2</sup>(x + 2) = 0 の解は x = 1, −2 であるが、このうち、解 x = 1 を<span class="key">2重解</span>という。また、方程式 (x − 1)<sup>3</sup>(x + 2) = 0 の解 x = 1, −2 のうち、解 x = 1 を<span class="key">3重解</span>という。</p>
-        <p>高次方程式の解の個数を、2重解は2個、3重解は3個などと数えることにすると、n 次方程式は複素数の範囲で、n 個の解をもつことが知られている。</p>
+        <p>たとえば、方程式<math><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo></mrow><mo>=</mo><mn>0</mn></math>の解は<math><mi>x</mi><mo>=</mo><mn>1</mn><mo>,</mo><mo>−</mo><mn>2</mn></math>であるが、このうち、解<math><mi>x</mi><mo>=</mo><mn>1</mn></math>を<span class="key">2重解</span>という。また、方程式<math><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mn>3</mn></msup><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo></mrow><mo>=</mo><mn>0</mn></math>の解<math><mi>x</mi><mo>=</mo><mn>1</mn><mo>,</mo><mo>−</mo><mn>2</mn></math>のうち、解<math><mi>x</mi><mo>=</mo><mn>1</mn></math>を<span class="key">3重解</span>という。</p>
+        <p>高次方程式の解の個数を、2重解は2個、3重解は3個などと数えることにすると、<math><mi>n</mi></math> 次方程式は複素数の範囲で、<math><mi>n</mi></math> 個の解をもつことが知られている。</p>
       </section>
       <div class="sec-head">
         <span class="sec-tag">応用</span>
         <h2>応用例題3 ― 虚数解から係数と他の解を求める</h2>
         <span class="pno">教科書 p.61</span>
       </div>
-      <section class="card prob" id="prob-ouyou3" data-flow="ouyou3" data-label="応用例題3">
+      <section class="nofig card prob" id="prob-ouyou3" data-flow="ouyou3" data-label="応用例題3">
         <div class="prob-head">
           <span class="prob-tag ouyou">応用例題 3</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 4</span>
         </div>
         <div class="qside">
-        <p class="prob-q">a, b は実数とする。3次方程式 x<sup>3</sup> + ax + b = 0 が 1 + 2i を解にもつとき、定数 a, b の値を求めよ。また、他の解を求めよ。</p>
+        <p class="prob-q"><math><mi>a</mi></math>, <math><mi>b</mi></math> は実数とする。3次方程式<math><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mi>a</mi><mi>x</mi><mo>+</mo><mi>b</mi><mo>=</mo><mn>0</mn></math>が 1 + 2i を解にもつとき、定数 <math><mi>a</mi></math>, <math><mi>b</mi></math> の値を求めよ。また、他の解を求めよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 考え方：解を代入して複素数の相等を使う</h3>
-          <p>方程式 P(x) = 0 が α を解にもつのは、P(α) = 0 のときだね。x = 1 + 2i を代入して、実部 = 0、虚部 = 0 の2式を作ろう。まず (1 + 2i)<sup>3</sup> を計算するところから。</p>
+          <h3>ヒント 1 ― 考え方：解を代入して複素数の相等を使う</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mi>a</mi><mo>+</mo><mi>b</mi><mi>i</mi><mo>=</mo><mn>0</mn><mo>⟺</mo><mi>a</mi><mo>=</mo><mn>0</mn></math> かつ <math><mi>b</mi><mo>=</mo><mn>0</mn></math>方程式 <math><mi>P</mi><mrow><mo>(</mo><mi>x</mi><mo>)</mo></mrow><mo>=</mo><mn>0</mn></math> が <math><mi>α</mi></math> を解にもつのは <math><mi>P</mi><mrow><mo>(</mo><mi>α</mi><mo>)</mo></mrow><mo>=</mo><mn>0</mn></math> のとき。<math><mi>x</mi><mo>=</mo><mn>1</mn><mo>+</mo><mn>2</mn><mi>i</mi></math> を代入し、実部 <math><mo>=</mo><mn>0</mn></math>、虚部 <math><mo>=</mo><mn>0</mn></math> の2式を作る。</p>
+          <p>方程式<math><mi>P</mi><mrow><mo>(</mo><mi>x</mi><mo>)</mo></mrow><mo>=</mo><mn>0</mn></math>が <math><mi>α</mi></math> を解にもつのは、<math><mi>P</mi><mrow><mo>(</mo><mi>α</mi><mo>)</mo></mrow><mo>=</mo><mn>0</mn></math>のときだね。<math><mi>x</mi><mo>=</mo><mn>1</mn><mo>+</mo><mn>2</mn><mi>i</mi></math>を代入して、実部<math><mo>=</mo><mn>0</mn></math>、虚部<math><mo>=</mo><mn>0</mn></math>の2式を作ろう。まず<math><msup><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mn>2</mn><mi>i</mi><mo>)</mo></mrow><mn>3</mn></msup></math> を計算するところから。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― (1 + 2i)<sup>3</sup> を計算する</h3>
-          <p>(1 + 2i)<sup>2</sup> = −3 + 4i。これに (1 + 2i) を掛けると (1 + 2i)<sup>3</sup> = −11 − 2i になるよ。</p>
+          <h3>ヒント<math><mn>2</mn><mo>―</mo><msup><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mn>2</mn><mi>i</mi><mo>)</mo></mrow><mn>3</mn></msup></math> を計算する</h3><p class="cite"><span class="cite-tag">使う公式</span><math><msup><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mn>2</mn><mi>i</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mo>−</mo><mn>3</mn><mo>+</mo><mn>4</mn><mi>i</mi></math><math><msup><mi>i</mi><mn>2</mn></msup><mo>=</mo><mo>−</mo><mn>1</mn></math> を使って2乗を先に計算し、それに <math><mn>1</mn><mo>+</mo><mn>2</mn><mi>i</mi></math> を掛けて3乗にする。</p>
+          <p><math><msup><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mn>2</mn><mi>i</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mo>−</mo><mn>3</mn><mo>+</mo><mn>4</mn><mi>i</mi></math>。これに (1 + 2i) を掛けると<math><msup><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mn>2</mn><mi>i</mi><mo>)</mo></mrow><mn>3</mn></msup><mo>=</mo><mo>−</mo><mn>11</mn><mo>−</mo><mn>2</mn><mi>i</mi></math>になるよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 3 ― 実部・虚部の式を立てる</h3>
-          <p>(1 + 2i)<sup>3</sup> + a(1 + 2i) + b = (a + b − 11) + (2a − 2)i = 0。a, b は実数だから、a + b − 11 と 2a − 2 は実数で、複素数の相等から両方とも 0 だね。</p>
+          <h3>ヒント 3 ― 実部・虚部の式を立てる</h3><p class="cite"><span class="cite-tag">使う定義</span><math><mi>a</mi><mo>+</mo><mi>b</mi><mi>i</mi><mo>=</mo><mn>0</mn><mo>⟺</mo><mi>a</mi><mo>=</mo><mn>0</mn></math> かつ <math><mi>b</mi><mo>=</mo><mn>0</mn></math><math><mi>a</mi></math>、<math><mi>b</mi></math> は実数だから、実部 <math><mi>a</mi><mo>+</mo><mi>b</mi><mo>−</mo><mn>11</mn></math> と虚部 <math><mn>2</mn><mi>a</mi><mo>−</mo><mn>2</mn></math> は実数で、複素数の相等から両方とも 0 になる。</p>
+          <p class="mq-wide"><math><msup><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mn>2</mn><mi>i</mi><mo>)</mo></mrow><mn>3</mn></msup><mo>+</mo><mi>a</mi><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mn>2</mn><mi>i</mi><mo>)</mo></mrow><mo>+</mo><mi>b</mi><mo>=</mo><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>−</mo><mn>11</mn><mo>)</mo></mrow><mo>+</mo><mrow><mo>(</mo><mn>2</mn><mi>a</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mi>i</mi><mo>=</mo><mn>0</mn></math>。<math><mi>a</mi></math>, <math><mi>b</mi></math> は実数だから、<math><mi>a</mi></math> + <math><mi>b</mi></math> − 11 と 2a − 2 は実数で、複素数の相等から両方とも 0 だね。</p>
+<div class="mq-narrow">
+<p class="formula"><math display="block"><msup><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mn>2</mn><mi>i</mi><mo>)</mo></mrow><mn>3</mn></msup><mo>+</mo><mi>a</mi><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mn>2</mn><mi>i</mi><mo>)</mo></mrow><mo>+</mo><mi>b</mi><mo>=</mo><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>−</mo><mn>11</mn><mo>)</mo></mrow></math></p>
+<p class="formula cont"><math display="block"><mo>+</mo><mrow><mo>(</mo><mn>2</mn><mi>a</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mi>i</mi><mo>=</mo><mn>0</mn></math></p>
+<p>。<math><mi>a</mi></math>, <math><mi>b</mi></math> は実数だから、<math><mi>a</mi></math> + <math><mi>b</mi></math> − 11 と 2a − 2 は実数で、複素数の相等から両方とも 0 だね。</p>
+</div>
         </div>
         <div class="step hint">
-          <h3>ヒント 4 ― 他の解は因数分解で</h3>
-          <p>a, b が決まれば方程式は x<sup>3</sup> + x + 10 = 0。共役な 1 − 2i も解だから、(x − (1 + 2i))(x − (1 − 2i)) = x<sup>2</sup> − 2x + 5 が因数になる。x<sup>3</sup> + x + 10 をこれで割ってみよう。</p>
+          <h3>ヒント 4 ― 他の解は因数分解で</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mover><mrow><mi>a</mi><mo>+</mo><mi>b</mi><mi>i</mi></mrow><mo>¯</mo></mover><mo>=</mo><mi>a</mi><mo>−</mo><mi>b</mi><mi>i</mi></math>係数が実数の方程式が虚数解 <math><mn>1</mn><mo>+</mo><mn>2</mn><mi>i</mi></math> をもてば、共役な <math><mn>1</mn><mo>−</mo><mn>2</mn><mi>i</mi></math> も解になる。だから <math><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mn>2</mn><mi>i</mi><mo>)</mo></mrow><mo>)</mo></mrow><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mn>2</mn><mi>i</mi><mo>)</mo></mrow><mo>)</mo></mrow><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>5</mn></math> が因数になる。</p>
+          <p><math><mi>a</mi></math>, <math><mi>b</mi></math> が決まれば方程式は<math><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mi>x</mi><mo>+</mo><mn>10</mn><mo>=</mo><mn>0</mn></math>。共役な 1 − 2i も解だから、<math><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mn>2</mn><mi>i</mi><mo>)</mo></mrow><mo>)</mo></mrow><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mn>2</mn><mi>i</mi><mo>)</mo></mrow><mo>)</mo></mrow><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>5</mn></math>が因数になる。<math><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mi>x</mi><mo>+</mo><mn>10</mn></math>をこれで割ってみよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">a = 1，　b = 10，　他の解は −2，　1 − 2i</p>
-          <p>1 + 2i が解であるから (1 + 2i)<sup>3</sup> + a(1 + 2i) + b = 0。整理すると (a + b − 11) + (2a − 2)i = 0。a, b は実数であるから、a + b − 11、2a − 2 は実数である。よって a + b − 11 = 0、2a − 2 = 0。これを解くと a = 1、b = 10。このとき、方程式は x<sup>3</sup> + x + 10 = 0 で、左辺を因数分解すると (x + 2)(x<sup>2</sup> − 2x + 5) = 0。したがって</p>
+          <p class="big"><math><mi>a</mi><mo>=</mo><mn>1</mn><mo>,</mo><mspace width="2em"/><mi>b</mi><mo>=</mo><mn>10</mn><mo>,</mo></math>　他の解は −2，　1 − 2i</p><p class="cite"><span class="cite-tag">使う定義</span><math><mi>a</mi><mo>+</mo><mi>b</mi><mi>i</mi><mo>=</mo><mn>0</mn><mo>⟺</mo><mi>a</mi><mo>=</mo><mn>0</mn></math> かつ <math><mi>b</mi><mo>=</mo><mn>0</mn></math>解を代入して整理し、実部 <math><mo>=</mo><mn>0</mn></math>、虚部 <math><mo>=</mo><mn>0</mn></math> の連立方程式で係数を決め、他の解は因数分解から求める。</p>
+          <p>1 + 2i が解であるから<math><msup><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mn>2</mn><mi>i</mi><mo>)</mo></mrow><mn>3</mn></msup><mo>+</mo><mi>a</mi><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mn>2</mn><mi>i</mi><mo>)</mo></mrow><mo>+</mo><mi>b</mi><mo>=</mo><mn>0</mn></math>。<br>整理すると<math><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>−</mo><mn>11</mn><mo>)</mo></mrow><mo>+</mo><mrow><mo>(</mo><mn>2</mn><mi>a</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mi>i</mi><mo>=</mo><mn>0</mn></math>。<math><mi>a</mi></math>, <math><mi>b</mi></math> は実数であるから、<math><mi>a</mi></math> + <math><mi>b</mi></math> − 11、2a − 2 は実数である。よって<math><mi>a</mi><mo>+</mo><mi>b</mi><mo>−</mo><mn>11</mn><mo>=</mo><mn>0</mn></math>、<math><mn>2</mn><mi>a</mi><mo>−</mo><mn>2</mn><mo>=</mo><mn>0</mn></math>。これを解くと<math><mi>a</mi><mo>=</mo><mn>1</mn></math>、<math><mi>b</mi><mo>=</mo><mn>10</mn></math>。このとき、方程式は<math><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mi>x</mi><mo>+</mo><mn>10</mn><mo>=</mo><mn>0</mn></math>で、左辺を因数分解すると<math><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo></mrow><mrow><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>5</mn><mo>)</mo></mrow><mo>=</mo><mn>0</mn></math>。したがって</p>
         </div>
         <p class="prob-done">応用例題3 クリア！　次は練習28に挑戦しよう。</p>
       </section>
@@ -371,37 +433,37 @@
         <h2>練習問題に挑戦</h2>
         <span class="pno">教科書 p.61</span>
       </div>
-      <section class="card prob" id="prob-ren28" data-flow="ren28" data-label="練習28">
+      <section class="nofig card prob" id="prob-ren28" data-flow="ren28" data-label="練習28">
         <div class="prob-head">
           <span class="prob-tag ren">練習 28</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
         <div class="qside">
-        <p class="prob-q">a, b は実数とする。3次方程式 x<sup>3</sup> + x<sup>2</sup> + ax + b = 0 が 1 + i を解にもつとき、定数 a, b の値を求めよ。また、他の解を求めよ。</p>
+        <p class="prob-q"><math><mi>a</mi></math>, <math><mi>b</mi></math> は実数とする。3次方程式<math><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>a</mi><mi>x</mi><mo>+</mo><mi>b</mi><mo>=</mo><mn>0</mn></math>が 1 + <math><mi>i</mi></math> を解にもつとき、定数 <math><mi>a</mi></math>, <math><mi>b</mi></math> の値を求めよ。また、他の解を求めよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― x = 1 + i を代入する</h3>
-          <p>(1 + i)<sup>2</sup> = 2i、(1 + i)<sup>3</sup> = (1 + i)・2i = −2 + 2i と計算してから代入しよう。</p>
+          <h3>ヒント<math><mn>1</mn><mo>―</mo><mi>x</mi><mo>=</mo><mn>1</mn><mo>+</mo><mi>i</mi></math>を代入する</h3><p class="cite"><span class="cite-tag">使う公式</span><math><msup><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mi>i</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>2</mn><mi>i</mi></math>、<math><msup><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mi>i</mi><mo>)</mo></mrow><mn>3</mn></msup><mo>=</mo><mo>−</mo><mn>2</mn><mo>+</mo><mn>2</mn><mi>i</mi></math><math><msup><mi>i</mi><mn>2</mn></msup><mo>=</mo><mo>−</mo><mn>1</mn></math> を使って累乗を先に計算し、それから <math><mi>x</mi><mo>=</mo><mn>1</mn><mo>+</mo><mi>i</mi></math> を方程式に代入する。</p>
+          <p><math><msup><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mi>i</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>2</mn><mi>i</mi></math>、<math><msup><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mi>i</mi><mo>)</mo></mrow><mn>3</mn></msup><mo>=</mo><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mi>i</mi><mo>)</mo></mrow><mo>⋅</mo><mn>2</mn><mi>i</mi><mo>=</mo><mo>−</mo><mn>2</mn><mo>+</mo><mn>2</mn><mi>i</mi></math>と計算してから代入しよう。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― 実部・虚部の式を立てる</h3>
-          <p>(1 + i)<sup>3</sup> + (1 + i)<sup>2</sup> + a(1 + i) + b を整理すると、実部が a + b − 2、虚部が a + 4 になるよ。両方 = 0 が条件だね。</p>
+          <h3>ヒント 2 ― 実部・虚部の式を立てる</h3><p class="cite"><span class="cite-tag">使う定義</span><math><mi>a</mi><mo>+</mo><mi>b</mi><mi>i</mi><mo>=</mo><mn>0</mn><mo>⟺</mo><mi>a</mi><mo>=</mo><mn>0</mn></math> かつ <math><mi>b</mi><mo>=</mo><mn>0</mn></math>整理すると実部が <math><mi>a</mi><mo>+</mo><mi>b</mi><mo>−</mo><mn>2</mn></math>、虚部が <math><mi>a</mi><mo>+</mo><mn>4</mn></math> になり、両方 <math><mo>=</mo><mn>0</mn></math> が条件になる。</p>
+          <p><math><msup><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mi>i</mi><mo>)</mo></mrow><mn>3</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mi>i</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><mi>a</mi><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mi>i</mi><mo>)</mo></mrow><mo>+</mo><mi>b</mi></math>を整理すると、実部が <math><mi>a</mi></math> + <math><mi>b</mi></math> − 2、虚部が <math><mi>a</mi></math> + 4 になるよ。両方<math><mo>=</mo><mn>0</mn></math>が条件だね。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 3 ― 他の解は和に注目</h3>
-          <p>a, b が決まったら、共役な 1 − i も解。3次方程式 x<sup>3</sup> + x<sup>2</sup> + ax + b = 0 の3つの解の和は −1（x<sup>2</sup> の係数の符号を変えたもの）だから、残りの解は −1 − {(1 + i) + (1 − i)} と求められるよ。因数分解で確かめてもよい。</p>
+          <h3>ヒント 3 ― 他の解は和に注目</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mi>α</mi><mo>+</mo><mi>β</mi><mo>+</mo><mi>γ</mi><mo>=</mo><mo>−</mo><mn>1</mn></math>3次方程式 <math><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>a</mi><mi>x</mi><mo>+</mo><mi>b</mi><mo>=</mo><mn>0</mn></math> の3つの解の和は −1（<math><msup><mi>x</mi><mn>2</mn></msup></math> の係数の符号を変えたもの）だから、残りの解は和から求められる。共役な <math><mn>1</mn><mo>−</mo><mi>i</mi></math> も解である。</p>
+          <p><math><mi>a</mi></math>, <math><mi>b</mi></math> が決まったら、共役な 1 − <math><mi>i</mi></math> も解。<br>3次方程式<math><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>a</mi><mi>x</mi><mo>+</mo><mi>b</mi><mo>=</mo><mn>0</mn></math>の3つの解の和は<math><mo>−</mo><mn>1</mn><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup></math> の係数の符号を変えたもの）だから、残りの解は −1 − {(1 + <math><mi>i</mi></math>) + (1 − <math><mi>i</mi></math>)} と求められるよ。因数分解で確かめてもよい。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">a = −4，　b = 6，　他の解は −3，　1 − i</p>
-          <p>1 + i が解であるから、代入して整理すると (a + b − 2) + (a + 4)i = 0。a, b は実数だから a + b − 2 = 0、a + 4 = 0。よって a = −4、b = 6。このとき方程式は x<sup>3</sup> + x<sup>2</sup> − 4x + 6 = 0 で、(x − (1 + i))(x − (1 − i)) = x<sup>2</sup> − 2x + 2 を因数にもち、割ると x + 3 が残る。</p>
+          <p class="big"><math><mi>a</mi><mo>=</mo><mo>−</mo><mn>4</mn><mo>,</mo><mspace width="2em"/><mi>b</mi><mo>=</mo><mn>6</mn><mo>,</mo></math>　他の解は −3，　1 − <math><mi>i</mi></math></p><p class="cite"><span class="cite-tag">使う定義</span><math><mi>a</mi><mo>+</mo><mi>b</mi><mi>i</mi><mo>=</mo><mn>0</mn><mo>⟺</mo><mi>a</mi><mo>=</mo><mn>0</mn></math> かつ <math><mi>b</mi><mo>=</mo><mn>0</mn></math>解を代入して整理し、実部 <math><mo>=</mo><mn>0</mn></math>、虚部 <math><mo>=</mo><mn>0</mn></math> の連立方程式で係数を決め、他の解は因数分解（または解の和）から求める。</p>
+          <p>1 + <math><mi>i</mi></math> が解であるから、代入して整理すると<math><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mo>+</mo><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mn>4</mn><mo>)</mo></mrow><mi>i</mi><mo>=</mo><mn>0</mn></math>。<br><math><mi>a</mi></math>, <math><mi>b</mi></math> は実数だから<math><mi>a</mi><mo>+</mo><mi>b</mi><mo>−</mo><mn>2</mn><mo>=</mo><mn>0</mn></math>、<math><mi>a</mi><mo>+</mo><mn>4</mn><mo>=</mo><mn>0</mn></math>。よって<math><mi>a</mi><mo>=</mo><mo>−</mo><mn>4</mn></math>、<math><mi>b</mi><mo>=</mo><mn>6</mn></math>。このとき方程式は<math><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>x</mi><mo>+</mo><mn>6</mn><mo>=</mo><mn>0</mn></math>で、<math><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mi>i</mi><mo>)</mo></mrow><mo>)</mo></mrow><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mi>i</mi><mo>)</mo></mrow><mo>)</mo></mrow><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>2</mn></math>を因数にもち、割ると <math><mi>x</mi></math> + 3 が残る。</p>
         </div>
         <p class="prob-done">練習28 クリア！　次は発展「3次方程式の解と係数の関係」だよ。</p>
       </section>
       <section class="card">
-        <p class="note" style="border-top:1px dashed var(--line);padding-top:8px">応用例題3において、2つの解 1 + 2i、1 − 2i は互いに共役な複素数である。一般に、係数が実数である n 次方程式の解の1つが虚数 a + bi ならば、それと共役な複素数 a − bi も解であることが知られている。</p>
+        <p class="note" style="border-top:1px dashed var(--line);padding-top:8px">応用例題3において、2つの解 1 + 2i、1 − 2i は互いに共役な複素数である。一般に、係数が実数である <math><mi>n</mi></math> 次方程式の解の1つが虚数 <math><mi>a</mi></math> + bi ならば、それと共役な複素数 <math><mi>a</mi></math> − bi も解であることが知られている。</p>
       </section>
       <div class="sec-head">
         <span class="sec-tag">発展</span>
@@ -409,13 +471,17 @@
         <span class="pno">教科書 p.62</span>
       </div>
       <section class="card">
-        <p>3次方程式 ax<sup>3</sup> + bx<sup>2</sup> + cx + d = 0 の3つの解を α, β, γ とすると、次の等式が成り立つ。</p>
-        <p class="formula left">ax<sup>3</sup> + bx<sup>2</sup> + cx + d = a(x − α)(x − β)(x − γ)</p>
+        <p>3次方程式<math><mi>a</mi><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mi>b</mi><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>c</mi><mi>x</mi><mo>+</mo><mi>d</mi><mo>=</mo><mn>0</mn></math>の3つの解を <math><mi>α</mi></math>, <math><mi>β</mi></math>, <math><mi>γ</mi></math> とすると、次の等式が成り立つ。</p>
+        <p class="formula left"><math display="block"><mi>a</mi><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mi>b</mi><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>c</mi><mi>x</mi><mo>+</mo><mi>d</mi><mo>=</mo><mi>a</mi><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mi>α</mi><mo>)</mo></mrow><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mi>β</mi><mo>)</mo></mrow><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mi>γ</mi><mo>)</mo></mrow></math></p>
         <p>右辺を展開して両辺の同じ次数の項の係数を比較すると、次のことが成り立つ。</p>
         <div class="def">
           <p><b>3次方程式の解と係数の関係</b></p>
-          <p>3次方程式 ax<sup>3</sup> + bx<sup>2</sup> + cx + d = 0 の3つの解を α, β, γ とすると</p>
-          <p class="formula">α + β + γ = −<span class="frac"><span class="num">b</span><span class="den">a</span></span>，　αβ + βγ + γα = <span class="frac"><span class="num">c</span><span class="den">a</span></span>，　αβγ = −<span class="frac"><span class="num">d</span><span class="den">a</span></span></p>
+          <p>3次方程式<math><mi>a</mi><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mi>b</mi><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>c</mi><mi>x</mi><mo>+</mo><mi>d</mi><mo>=</mo><mn>0</mn></math>の3つの解を <math><mi>α</mi></math>, <math><mi>β</mi></math>, <math><mi>γ</mi></math> とすると</p>
+          <div class="chain-crow formula">
+<div class="crow"><math displaystyle="true"><mi>α</mi><mo>+</mo><mi>β</mi><mo>+</mo><mi>γ</mi><mo>=</mo><mo>−</mo><mfrac><mi>b</mi><mi>a</mi></mfrac><mo>,</mo><mspace width="2em"/><mi>α</mi><mi>β</mi><mo>+</mo><mi>β</mi><mi>γ</mi><mo>+</mo><mi>γ</mi><mi>α</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>α</mi><mo>+</mo><mi>β</mi><mo>+</mo><mi>γ</mi></mphantom><mo>=</mo><mfrac><mi>c</mi><mi>a</mi></mfrac><mo>,</mo><mspace width="2em"/><mi>α</mi><mi>β</mi><mi>γ</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>α</mi><mo>+</mo><mi>β</mi><mo>+</mo><mi>γ</mi></mphantom><mo>=</mo><mo>−</mo><mfrac><mi>d</mi><mi>a</mi></mfrac></math></div>
+</div>
         </div>
       </section>
       <div class="sec-head">
@@ -423,28 +489,33 @@
         <h2>発展 例1で解き方を確認</h2>
         <span class="pno">教科書 p.62</span>
       </div>
-      <section class="card prob" id="prob-hatten1" data-flow="hatten1" data-label="発展 例1">
+      <section class="nofig card prob" id="prob-hatten1" data-flow="hatten1" data-label="発展 例1">
         <div class="prob-head">
           <span class="prob-tag ">例 1</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">3次方程式 x<sup>3</sup> + 2x<sup>2</sup> + 3x + 4 = 0 の3つの解を α, β, γ とするとき、α<sup>2</sup> + β<sup>2</sup> + γ<sup>2</sup> の値を求めよ。</p>
+        <p class="prob-q">3次方程式<math><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mn>2</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>3</mn><mi>x</mi><mo>+</mo><mn>4</mn><mo>=</mo><mn>0</mn></math>の3つの解を <math><mi>α</mi></math>, <math><mi>β</mi></math>, <math><mi>γ</mi></math> とするとき、<math><msup><mi>α</mi><mn>2</mn></msup><mo>+</mo><msup><mi>β</mi><mn>2</mn></msup><mo>+</mo><msup><mi>γ</mi><mn>2</mn></msup></math> の値を求めよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 係数から和と積の和を出す</h3>
-          <p>解と係数の関係から、α + β + γ = −2、αβ + βγ + γα = 3 だよ（a = 1 の場合）。</p>
+          <h3>ヒント 1 ― 係数から和と積の和を出す</h3><p class="cite"><span class="cite-tag">使う公式</span><math><mi>α</mi><mo>+</mo><mi>β</mi><mo>+</mo><mi>γ</mi><mo>=</mo><mo>−</mo><mfrac><mi>b</mi><mi>a</mi></mfrac></math>、<math><mi>α</mi><mi>β</mi><mo>+</mo><mi>β</mi><mi>γ</mi><mo>+</mo><mi>γ</mi><mi>α</mi><mo>=</mo><mfrac><mi>c</mi><mi>a</mi></mfrac></math>、<math><mi>α</mi><mi>β</mi><mi>γ</mi><mo>=</mo><mo>−</mo><mfrac><mi>d</mi><mi>a</mi></mfrac></math>この方程式（<math><mi>a</mi><mo>=</mo><mn>1</mn></math> の場合）では <math><mi>α</mi><mo>+</mo><mi>β</mi><mo>+</mo><mi>γ</mi><mo>=</mo><mo>−</mo><mn>2</mn></math>、<math><mi>α</mi><mi>β</mi><mo>+</mo><mi>β</mi><mi>γ</mi><mo>+</mo><mi>γ</mi><mi>α</mi><mo>=</mo><mn>3</mn></math> になる。</p>
+          <p>解と係数の関係から、<math><mi>α</mi><mo>+</mo><mi>β</mi><mo>+</mo><mi>γ</mi><mo>=</mo><mo>−</mo><mn>2</mn></math>、<math><mi>α</mi><mi>β</mi><mo>+</mo><mi>β</mi><mi>γ</mi><mo>+</mo><mi>γ</mi><mi>α</mi><mo>=</mo><mn>3</mn></math>だよ<math><mo>(</mo><mi>a</mi><mo>=</mo><mn>1</mn></math>の場合）。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― (α + β + γ)<sup>2</sup> を展開する</h3>
-          <p>(α + β + γ)<sup>2</sup> = α<sup>2</sup> + β<sup>2</sup> + γ<sup>2</sup> + 2(αβ + βγ + γα)。だから、求める値は (α + β + γ)<sup>2</sup> − 2(αβ + βγ + γα) だね。</p>
+          <h3>ヒント<math><mn>2</mn><mo>―</mo><msup><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>+</mo><mi>γ</mi><mo>)</mo></mrow><mn>2</mn></msup></math> を展開する</h3><p class="cite"><span class="cite-tag">使う公式</span><math><msup><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>+</mo><mi>γ</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mi>α</mi><mn>2</mn></msup><mo>+</mo><msup><mi>β</mi><mn>2</mn></msup><mo>+</mo><msup><mi>γ</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mrow><mo>(</mo><mi>α</mi><mi>β</mi><mo>+</mo><mi>β</mi><mi>γ</mi><mo>+</mo><mi>γ</mi><mi>α</mi><mo>)</mo></mrow></math>この展開の形から、求める値は <math><msup><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>+</mo><mi>γ</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>2</mn><mrow><mo>(</mo><mi>α</mi><mi>β</mi><mo>+</mo><mi>β</mi><mi>γ</mi><mo>+</mo><mi>γ</mi><mi>α</mi><mo>)</mo></mrow></math> と表せる。</p>
+          <p><math><msup><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>+</mo><mi>γ</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mi>α</mi><mn>2</mn></msup><mo>+</mo><msup><mi>β</mi><mn>2</mn></msup><mo>+</mo><msup><mi>γ</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mrow><mo>(</mo><mi>α</mi><mi>β</mi><mo>+</mo><mi>β</mi><mi>γ</mi><mo>+</mo><mi>γ</mi><mi>α</mi><mo>)</mo></mrow></math>。だから、求める値は<math><msup><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>+</mo><mi>γ</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>2</mn><mrow><mo>(</mo><mi>α</mi><mi>β</mi><mo>+</mo><mi>β</mi><mi>γ</mi><mo>+</mo><mi>γ</mi><mi>α</mi><mo>)</mo></mrow></math>だね。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">−2</p>
-          <p>解と係数の関係から α + β + γ = −2、αβ + βγ + γα = 3。よって α<sup>2</sup> + β<sup>2</sup> + γ<sup>2</sup> = (α + β + γ)<sup>2</sup> − 2(αβ + βγ + γα) = (−2)<sup>2</sup> − 2・3</p>
+          <p class="big">−2</p><p class="cite"><span class="cite-tag">使う公式</span><math><mi>α</mi><mo>+</mo><mi>β</mi><mo>+</mo><mi>γ</mi><mo>=</mo><mo>−</mo><mfrac><mi>b</mi><mi>a</mi></mfrac></math>、<math><mi>α</mi><mi>β</mi><mo>+</mo><mi>β</mi><mi>γ</mi><mo>+</mo><mi>γ</mi><mi>α</mi><mo>=</mo><mfrac><mi>c</mi><mi>a</mi></mfrac></math>、<math><mi>α</mi><mi>β</mi><mi>γ</mi><mo>=</mo><mo>−</mo><mfrac><mi>d</mi><mi>a</mi></mfrac></math>係数から和と積の和を出し、展開の式に代入する。</p>
+          <p class="mq-wide">解と係数の関係から<math><mi>α</mi><mo>+</mo><mi>β</mi><mo>+</mo><mi>γ</mi><mo>=</mo><mo>−</mo><mn>2</mn></math>、<math><mi>α</mi><mi>β</mi><mo>+</mo><mi>β</mi><mi>γ</mi><mo>+</mo><mi>γ</mi><mi>α</mi><mo>=</mo><mn>3</mn></math>。よって<math><msup><mi>α</mi><mn>2</mn></msup><mo>+</mo><msup><mi>β</mi><mn>2</mn></msup><mo>+</mo><msup><mi>γ</mi><mn>2</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>+</mo><mi>γ</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>2</mn><mrow><mo>(</mo><mi>α</mi><mi>β</mi><mo>+</mo><mi>β</mi><mi>γ</mi><mo>+</mo><mi>γ</mi><mi>α</mi><mo>)</mo></mrow><mo>=</mo><msup><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>2</mn><mo>⋅</mo><mn>3</mn></math></p>
+<div class="mq-narrow">
+<p>解と係数の関係から<math><mi>α</mi><mo>+</mo><mi>β</mi><mo>+</mo><mi>γ</mi><mo>=</mo><mo>−</mo><mn>2</mn></math>、<math><mi>α</mi><mi>β</mi><mo>+</mo><mi>β</mi><mi>γ</mi><mo>+</mo><mi>γ</mi><mi>α</mi><mo>=</mo><mn>3</mn></math>。よって</p>
+<p class="formula"><math display="block"><msup><mi>α</mi><mn>2</mn></msup><mo>+</mo><msup><mi>β</mi><mn>2</mn></msup><mo>+</mo><msup><mi>γ</mi><mn>2</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>+</mo><mi>γ</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>2</mn><mrow><mo>(</mo><mi>α</mi><mi>β</mi><mo>+</mo><mi>β</mi><mi>γ</mi><mo>+</mo><mi>γ</mi><mi>α</mi><mo>)</mo></mrow></math></p>
+<p class="formula cont"><math display="block"><mo>=</mo><msup><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>2</mn><mo>⋅</mo><mn>3</mn></math></p>
+</div>
         </div>
         <p class="prob-done">発展 例1 クリア！　次は練習1に挑戦しよう。</p>
       </section>
@@ -453,13 +524,13 @@
         <h2>練習問題に挑戦</h2>
         <span class="pno">教科書 p.62</span>
       </div>
-      <section class="card prob" id="prob-hattenren1" data-label="発展 練習1">
+      <section class="nofig card prob" id="prob-hattenren1" data-label="発展 練習1">
         <div class="prob-head">
           <span class="prob-tag ren">練習 1</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
         <div class="qside">
-        <p class="prob-q">3次方程式 x<sup>3</sup> − 3x<sup>2</sup> + x + 2 = 0 の3つの解を α, β, γ とするとき、次の式の値を求めよ。</p>
+        <p class="prob-q">3次方程式<math><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>=</mo><mn>0</mn></math>の3つの解を <math><mi>α</mi></math>, <math><mi>β</mi></math>, <math><mi>γ</mi></math> とするとき、次の式の値を求めよ。</p>
         </div>
         <div class="tabs" role="tablist" aria-label="発展 練習1の小問">
           <button class="tab" role="tab" data-tab="hattenren1-1" aria-selected="true">(1)</button>
@@ -467,37 +538,37 @@
         </div>
         <div class="tabpanel show" id="panel-hattenren1-1" data-flow="hattenren1-1" data-label="発展 練習1 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　α<sup>2</sup> + β<sup>2</sup> + γ<sup>2</sup></span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><msup><mi>α</mi><mn>2</mn></msup><mo>+</mo><msup><mi>β</mi><mn>2</mn></msup><mo>+</mo><msup><mi>γ</mi><mn>2</mn></msup></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 係数から2つの値を出す</h3>
-          <p>α + β + γ = 3、αβ + βγ + γα = 1。(α + β + γ)<sup>2</sup> − 2(αβ + βγ + γα) に代入しよう。</p>
+          <h3>ヒント 1 ― 係数から2つの値を出す</h3><p class="cite"><span class="cite-tag">使う公式</span><math><mi>α</mi><mo>+</mo><mi>β</mi><mo>+</mo><mi>γ</mi><mo>=</mo><mo>−</mo><mfrac><mi>b</mi><mi>a</mi></mfrac></math>、<math><mi>α</mi><mi>β</mi><mo>+</mo><mi>β</mi><mi>γ</mi><mo>+</mo><mi>γ</mi><mi>α</mi><mo>=</mo><mfrac><mi>c</mi><mi>a</mi></mfrac></math>、<math><mi>α</mi><mi>β</mi><mi>γ</mi><mo>=</mo><mo>−</mo><mfrac><mi>d</mi><mi>a</mi></mfrac></math>この方程式では <math><mi>α</mi><mo>+</mo><mi>β</mi><mo>+</mo><mi>γ</mi><mo>=</mo><mn>3</mn></math>、<math><mi>α</mi><mi>β</mi><mo>+</mo><mi>β</mi><mi>γ</mi><mo>+</mo><mi>γ</mi><mi>α</mi><mo>=</mo><mn>1</mn></math> になる。この2つの値を代入する。</p>
+          <p><math><mi>α</mi><mo>+</mo><mi>β</mi><mo>+</mo><mi>γ</mi><mo>=</mo><mn>3</mn></math>、<math><mi>α</mi><mi>β</mi><mo>+</mo><mi>β</mi><mi>γ</mi><mo>+</mo><mi>γ</mi><mi>α</mi><mo>=</mo><mn>1</mn></math>。<math><msup><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>+</mo><mi>γ</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>2</mn><mrow><mo>(</mo><mi>α</mi><mi>β</mi><mo>+</mo><mi>β</mi><mi>γ</mi><mo>+</mo><mi>γ</mi><mi>α</mi><mo>)</mo></mrow></math>に代入しよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">7</p>
-          <p>3<sup>2</sup> − 2・1</p>
+          <p class="big">7</p><p class="cite"><span class="cite-tag">使う公式</span><math><msup><mi>α</mi><mn>2</mn></msup><mo>+</mo><msup><mi>β</mi><mn>2</mn></msup><mo>+</mo><msup><mi>γ</mi><mn>2</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>+</mo><mi>γ</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>2</mn><mrow><mo>(</mo><mi>α</mi><mi>β</mi><mo>+</mo><mi>β</mi><mi>γ</mi><mo>+</mo><mi>γ</mi><mi>α</mi><mo>)</mo></mrow></math>解と係数の関係で出した2つの値を、この変形に代入する。</p>
+          <p><math><msup><mn>3</mn><mn>2</mn></msup><mo>−</mo><mn>2</mn><mo>⋅</mo><mn>1</mn></math></p>
         </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-hattenren1-2" data-flow="hattenren1-2" data-label="発展 練習1 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　(α + 1)(β + 1)(γ + 1)</span>
+            <span class="sub prob-q" style="margin:0">(2)　(<math><mi>α</mi></math> + 1)(<math><mi>β</mi></math> + 1)(<math><mi>γ</mi></math> + 1)</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 展開して整理する</h3>
-          <p>展開すると αβγ + (αβ + βγ + γα) + (α + β + γ) + 1 になる。αβγ も必要だね。解と係数の関係で αβγ = −<span class="frac"><span class="num">d</span><span class="den">a</span></span> = −2 だよ。</p>
+          <h3>ヒント 1 ― 展開して整理する</h3><p class="cite"><span class="cite-tag">使う公式</span><math><mi>α</mi><mo>+</mo><mi>β</mi><mo>+</mo><mi>γ</mi><mo>=</mo><mo>−</mo><mfrac><mi>b</mi><mi>a</mi></mfrac></math>、<math><mi>α</mi><mi>β</mi><mo>+</mo><mi>β</mi><mi>γ</mi><mo>+</mo><mi>γ</mi><mi>α</mi><mo>=</mo><mfrac><mi>c</mi><mi>a</mi></mfrac></math>、<math><mi>α</mi><mi>β</mi><mi>γ</mi><mo>=</mo><mo>−</mo><mfrac><mi>d</mi><mi>a</mi></mfrac></math>展開すると <math><mi>α</mi><mi>β</mi><mi>γ</mi></math> も必要になる。解と係数の関係で <math><mi>α</mi><mi>β</mi><mi>γ</mi><mo>=</mo><mo>−</mo><mfrac><mi>d</mi><mi>a</mi></mfrac><mo>=</mo><mo>−</mo><mn>2</mn></math> と分かる。</p>
+          <p>展開すると <math><mi>α</mi></math><math><mi>β</mi></math><math><mi>γ</mi></math> + (<math><mi>α</mi></math><math><mi>β</mi></math> + <math><mi>β</mi></math><math><mi>γ</mi></math> + <math><mi>γ</mi></math><math><mi>α</mi></math>) + (<math><mi>α</mi></math> + <math><mi>β</mi></math> + <math><mi>γ</mi></math>) + 1 になる。<math><mi>α</mi></math><math><mi>β</mi></math><math><mi>γ</mi></math> も必要だね。解と係数の関係で<math><mi>α</mi><mi>β</mi><mi>γ</mi><mo>=</mo><mo>−</mo><mfrac><mi>d</mi><mi>a</mi></mfrac><mo>=</mo><mo>−</mo><mn>2</mn></math>だよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">3</p>
-          <p>αβγ + (αβ + βγ + γα) + (α + β + γ) + 1 = −2 + 1 + 3 + 1</p>
+          <p class="big">3</p><p class="cite"><span class="cite-tag">使う公式</span><math><mi>α</mi><mo>+</mo><mi>β</mi><mo>+</mo><mi>γ</mi><mo>=</mo><mo>−</mo><mfrac><mi>b</mi><mi>a</mi></mfrac></math>、<math><mi>α</mi><mi>β</mi><mo>+</mo><mi>β</mi><mi>γ</mi><mo>+</mo><mi>γ</mi><mi>α</mi><mo>=</mo><mfrac><mi>c</mi><mi>a</mi></mfrac></math>、<math><mi>α</mi><mi>β</mi><mi>γ</mi><mo>=</mo><mo>−</mo><mfrac><mi>d</mi><mi>a</mi></mfrac></math>和、積の和、積の3つの値を、展開した式に代入する。</p>
+          <p><math><mi>α</mi><mi>β</mi><mi>γ</mi><mo>+</mo><mrow><mo>(</mo><mi>α</mi><mi>β</mi><mo>+</mo><mi>β</mi><mi>γ</mi><mo>+</mo><mi>γ</mi><mi>α</mi><mo>)</mo></mrow><mo>+</mo><mrow><mo>(</mo><mi>α</mi><mo>+</mo><mi>β</mi><mo>+</mo><mi>γ</mi><mo>)</mo></mrow><mo>+</mo><mn>1</mn><mo>=</mo><mo>−</mo><mn>2</mn><mo>+</mo><mn>1</mn><mo>+</mo><mn>3</mn><mo>+</mo><mn>1</mn></math></p>
         </div>
           <p class="prob-done">(2) クリア！　発展 練習1は全部おわり。第2節の補充問題・章末問題で総仕上げをしよう。</p>
         </div>
@@ -508,10 +579,10 @@
       <section class="card summary" id="summaryCard" style="display:none">
         <h2>この項のポイント</h2>
         <ul>
-          <li><b>虚数解と共役な解：</b>係数が実数の方程式が虚数解 a + bi をもてば、a − bi も解。</li>
-          <li><b>虚数解の利用：</b>解を代入 → 実部 = 0、虚部 = 0 の連立方程式で係数を決める。他の解は因数分解（または解の和）から。</li>
-          <li><b>重解：</b>2重解は2個分と数え、n 次方程式は複素数の範囲で n 個の解をもつ。</li>
-          <li><b>3次方程式の解と係数の関係：</b>α + β + γ = −<span class="frac"><span class="num">b</span><span class="den">a</span></span>、αβ + βγ + γα = <span class="frac"><span class="num">c</span><span class="den">a</span></span>、αβγ = −<span class="frac"><span class="num">d</span><span class="den">a</span></span>。</li>
+          <li><p class="cite"><span class="cite-tag">使う性質</span><math><mover><mrow><mi>a</mi><mo>+</mo><mi>b</mi><mi>i</mi></mrow><mo>¯</mo></mover><mo>=</mo><mi>a</mi><mo>−</mo><mi>b</mi><mi>i</mi></math>係数が実数の方程式が虚数解 <math><mi>a</mi><mo>+</mo><mi>b</mi><mi>i</mi></math> をもてば、それと共役な複素数も解である。</p><b>虚数解と共役な解：</b>係数が実数の方程式が虚数解 <math><mi>a</mi></math> + bi をもてば、<math><mi>a</mi></math> − bi も解。</li>
+          <li><p class="cite"><span class="cite-tag">使う定義</span><math><mi>a</mi><mo>+</mo><mi>b</mi><mi>i</mi><mo>=</mo><mn>0</mn><mo>⟺</mo><mi>a</mi><mo>=</mo><mn>0</mn></math> かつ <math><mi>b</mi><mo>=</mo><mn>0</mn></math>解を代入 → 実部 <math><mo>=</mo><mn>0</mn></math>、虚部 <math><mo>=</mo><mn>0</mn></math> の連立方程式で係数を決める。他の解は因数分解（または解の和）から求める。</p><b>虚数解の利用：</b>解を代入 → 実部<math><mo>=</mo><mn>0</mn></math>、虚部<math><mo>=</mo><mn>0</mn></math>の連立方程式で係数を決める。他の解は因数分解（または解の和）から。</li>
+          <li><p class="cite"><span class="cite-tag">使う定義</span><math><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup></math> の解 <math><mi>x</mi><mo>=</mo><mn>1</mn></math> は2重解で2個分と数える。<math><mi>n</mi></math> 次方程式は複素数の範囲で <math><mi>n</mi></math> 個の解をもつ。</p><b>重解：</b>2重解は2個分と数え、<math><mi>n</mi></math> 次方程式は複素数の範囲で <math><mi>n</mi></math> 個の解をもつ。</li>
+          <li><p class="cite"><span class="cite-tag">使う公式</span><math><mi>α</mi><mo>+</mo><mi>β</mi><mo>+</mo><mi>γ</mi><mo>=</mo><mo>−</mo><mfrac><mi>b</mi><mi>a</mi></mfrac></math>、<math><mi>α</mi><mi>β</mi><mo>+</mo><mi>β</mi><mi>γ</mi><mo>+</mo><mi>γ</mi><mi>α</mi><mo>=</mo><mfrac><mi>c</mi><mi>a</mi></mfrac></math>、<math><mi>α</mi><mi>β</mi><mi>γ</mi><mo>=</mo><mo>−</mo><mfrac><mi>d</mi><mi>a</mi></mfrac></math>3次方程式の3つの解については、この3つの関係が成り立つ。</p><b>3次方程式の解と係数の関係：</b><math><mi>α</mi><mo>+</mo><mi>β</mi><mo>+</mo><mi>γ</mi><mo>=</mo><mo>−</mo><mfrac><mi>b</mi><mi>a</mi></mfrac></math>、<math><mi>α</mi><mi>β</mi><mo>+</mo><mi>β</mi><mi>γ</mi><mo>+</mo><mi>γ</mi><mi>α</mi><mo>=</mo><mfrac><mi>c</mi><mi>a</mi></mfrac></math>、<math><mi>α</mi><mi>β</mi><mi>γ</mi><mo>=</mo><mo>−</mo><mfrac><mi>d</mi><mi>a</mi></mfrac></math>。</li>
         </ul>
       </section>
       <footer>

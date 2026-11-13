@@ -302,7 +302,64 @@
       table.comp{border-collapse:collapse;margin:0 0 14px;width:100%}
       table.comp th,table.comp td{border:1px solid var(--line);padding:8px 10px;text-align:center;font-size:15px}
       table.comp th{background:var(--surface2)}
-        </style>
+        
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+
+      /* 積分記号は大きめに表示する（元のページの可読化デザインに合わせる） */
+      math .int-op{font-size:1.35em}
+      /* calc-12 世代（.card）と calc-18 世代（.unit）の、図のない問題の全幅化 */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig>.step{position:static !important}
+        .card.nofig>.steps-wrap{max-height:none !important;overflow:visible !important}
+        .unit.nofig{display:block !important}
+        .unit.nofig>.qside{position:static !important}
+        .unit.nofig>.steps-stack{max-height:none !important;overflow:visible !important}
+      }
+
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける・第3弾c） */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig .qside{position:static !important}
+        .card.nofig .steps-wrap,.card.nofig .tabpanel .steps-wrap{max-height:none !important;overflow:visible !important}
+      }
+</style>
   </head>
   <body>
     <div class="wrap">
@@ -326,53 +383,53 @@
       </div>
       <section class="card">
         <p>方程式の解のうち、実数であるものを<span class="key">実数解</span>といい、虚数であるものを<span class="key">虚数解</span>という。なお、2次方程式の重解は常に実数解である。</p>
-        <p>2次方程式 ax<sup>2</sup> + bx + c = 0 の解 x = <span class="frac"><span class="num">−b ± √<span class="rad">b<sup>2</sup> − 4ac</span></span><span class="den">2a</span></span> がどのような種類の解であるかを判別するためには、解における根号の中の b<sup>2</sup> − 4ac すなわち<span class="key">判別式</span>の符号を調べればよい。判別式はふつう D で表す。</p>
+        <p>2次方程式<math><mi>a</mi><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>b</mi><mi>x</mi><mo>+</mo><mi>c</mi><mo>=</mo><mn>0</mn></math>の解<math><mi>x</mi><mo>=</mo><mfrac><mrow><mo>−</mo><mi>b</mi><mo>±</mo><msqrt><mrow><msup><mi>b</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>a</mi><mi>c</mi></mrow></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></math> がどのような種類の解であるかを判別するためには、解における根号の中の<math><msup><mi>b</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>a</mi><mi>c</mi></math>すなわち<span class="key">判別式</span>の符号を調べればよい。判別式はふつう <math><mi>D</mi></math> で表す。</p>
         <table class="comp">
-          <tr><th>2次方程式</th><th>2x<sup>2</sup> + 5x + 1 = 0</th><th>9x<sup>2</sup> + 12x + 4 = 0</th><th>3x<sup>2</sup> − 7x + 5 = 0</th></tr>
-          <tr><th>判別式 D</th><td>D = 5<sup>2</sup> − 4・2・1 = 17 &gt; 0</td><td>D = 12<sup>2</sup> − 4・9・4 = 0</td><td>D = (−7)<sup>2</sup> − 4・3・5 = −11 &lt; 0</td></tr>
-          <tr><th>解</th><td>x = <span class="frac"><span class="num">−5 ± √17</span><span class="den">4</span></span></td><td>x = −<span class="frac"><span class="num">2</span><span class="den">3</span></span></td><td>x = <span class="frac"><span class="num">7 ± √11 i</span><span class="den">6</span></span></td></tr>
+          <tr><th>2次方程式</th><th><math><mn>2</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>5</mn><mi>x</mi><mo>+</mo><mn>1</mn><mo>=</mo><mn>0</mn></math></th><th><math><mn>9</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>12</mn><mi>x</mi><mo>+</mo><mn>4</mn><mo>=</mo><mn>0</mn></math></th><th><math><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>7</mn><mi>x</mi><mo>+</mo><mn>5</mn><mo>=</mo><mn>0</mn></math></th></tr>
+          <tr><th>判別式 <math><mi>D</mi></math></th><td><math><mi>D</mi><mo>=</mo><msup><mn>5</mn><mn>2</mn></msup><mo>−</mo><mn>4</mn><mo>⋅</mo><mn>2</mn><mo>⋅</mo><mn>1</mn><mo>=</mo><mn>17</mn><mo>&gt;</mo><mn>0</mn></math></td><td><math><mi>D</mi><mo>=</mo><msup><mn>12</mn><mn>2</mn></msup><mo>−</mo><mn>4</mn><mo>⋅</mo><mn>9</mn><mo>⋅</mo><mn>4</mn><mo>=</mo><mn>0</mn></math></td><td><math><mi>D</mi><mo>=</mo><msup><mrow><mo>(</mo><mo>−</mo><mn>7</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>4</mn><mo>⋅</mo><mn>3</mn><mo>⋅</mo><mn>5</mn><mo>=</mo><mo>−</mo><mn>11</mn><mo>&lt;</mo><mn>0</mn></math></td></tr>
+          <tr><th>解</th><td><math><mi>x</mi><mo>=</mo><mfrac><mrow><mo>−</mo><mn>5</mn><mo>±</mo><msqrt><mn>17</mn></msqrt></mrow><mn>4</mn></mfrac></math></td><td><math><mi>x</mi><mo>=</mo><mo>−</mo><mfrac><mn>2</mn><mn>3</mn></mfrac></math></td><td><math><mi>x</mi><mo>=</mo><mfrac><mrow><mn>7</mn><mo>±</mo><msqrt><mn>11</mn></msqrt><mi>i</mi></mrow><mn>6</mn></mfrac></math></td></tr>
           <tr><th>解の種類</th><td>異なる2つの実数解</td><td>重解（実数解）</td><td>異なる2つの虚数解</td></tr>
         </table>
         <div class="def">
           <p><b>2次方程式の解の種類の判別</b></p>
-          <p>2次方程式 ax<sup>2</sup> + bx + c = 0 の解と、その判別式 D = b<sup>2</sup> − 4ac について、次のことが成り立つ。</p>
-          <p class="formula left">D &gt; 0　⟺　異なる2つの実数解をもつ</p>
-          <p class="formula left">D = 0　⟺　重解をもつ</p>
-          <p class="formula left">D &lt; 0　⟺　異なる2つの虚数解をもつ</p>
+          <p>2次方程式<math><mi>a</mi><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>b</mi><mi>x</mi><mo>+</mo><mi>c</mi><mo>=</mo><mn>0</mn></math>の解と、その判別式<math><mi>D</mi><mo>=</mo><msup><mi>b</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>a</mi><mi>c</mi></math>について、次のことが成り立つ。</p>
+          <p class="formula left"><math><mi>D</mi><mo>&gt;</mo><mn>0</mn></math>　⟺　異なる2つの実数解をもつ</p>
+          <p class="formula left"><math><mi>D</mi><mo>=</mo><mn>0</mn></math>　⟺　重解をもつ</p>
+          <p class="formula left"><math><mi>D</mi><mo>&lt;</mo><mn>0</mn></math>　⟺　異なる2つの虚数解をもつ</p>
         </div>
         <p>注意 ― 2次方程式の異なる2つの虚数解は、互いに共役な複素数である。</p>
-        <p>また、重解は実数解であるから、「D ≧ 0　⟺　実数解をもつ」が成り立つ。2次方程式 ax<sup>2</sup> + 2b′x + c = 0 では、D = (2b′)<sup>2</sup> − 4ac = 4(b′<sup>2</sup> − ac) であるから、D の代わりに <span class="frac"><span class="num">D</span><span class="den">4</span></span> = b′<sup>2</sup> − ac を用いても、解の種類を判別できる。</p>
+        <p>また、重解は実数解であるから、「<math><mi>D</mi><mo>≧</mo><mn>0</mn></math>　⟺　実数解をもつ」が成り立つ。2次方程式<math><mi>a</mi><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>b</mi><mi>′</mi><mi>x</mi><mo>+</mo><mi>c</mi><mo>=</mo><mn>0</mn></math>では、<math><mi>D</mi><mo>=</mo><msup><mrow><mo>(</mo><mn>2</mn><mi>b</mi><mi>′</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>a</mi><mi>c</mi><mo>=</mo><mn>4</mn><mrow><mo>(</mo><mi>b</mi><msup><mi>′</mi><mn>2</mn></msup><mo>−</mo><mi>a</mi><mi>c</mi><mo>)</mo></mrow></math>であるから、<math><mi>D</mi></math> の代わりに <math><mfrac><mi>D</mi><mn>4</mn></mfrac><mo>=</mo><mi>b</mi><msup><mi>′</mi><mn>2</mn></msup><mo>−</mo><mi>a</mi><mi>c</mi></math>を用いても、解の種類を判別できる。</p>
       </section>
       <div class="sec-head">
         <span class="sec-tag">例題</span>
         <h2>例題2で解き方を確認</h2>
         <span class="pno">教科書 p.47</span>
       </div>
-      <section class="card prob" id="prob-reidai2" data-flow="reidai2" data-label="例題2">
+      <section class="nofig card prob" id="prob-reidai2" data-flow="reidai2" data-label="例題2">
         <div class="prob-head">
           <span class="prob-tag ">例題 2</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">次の2次方程式の解の種類を判別せよ。<br>(1)　3x<sup>2</sup> + 5x + 1 = 0　　(2)　9x<sup>2</sup> + 6x + 1 = 0　　(3)　2x<sup>2</sup> − x + 3 = 0</p>
+        <p class="prob-q">次の2次方程式の解の種類を判別せよ。<br>(1)　<math><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>5</mn><mi>x</mi><mo>+</mo><mn>1</mn><mo>=</mo><mn>0</mn></math>　　(2)　<math><mn>9</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>6</mn><mi>x</mi><mo>+</mo><mn>1</mn><mo>=</mo><mn>0</mn></math>　　(3)　<math><mn>2</mn><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>x</mi><mo>+</mo><mn>3</mn><mo>=</mo><mn>0</mn></math></p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 判別式 D を計算する</h3>
-          <p>解の種類は、判別式 D = b<sup>2</sup> − 4ac の符号だけで決まる。(1) は D = 5<sup>2</sup> − 4・3・1、(3) は D = (−1)<sup>2</sup> − 4・2・3 と計算しよう。</p>
+          <h3>ヒント 1 ― 判別式 <math><mi>D</mi></math> を計算する</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mi>D</mi><mo>=</mo><msup><mi>b</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>a</mi><mi>c</mi></math>解の種類は <math><mi>D</mi></math> の符号だけで決まる。(1) は <math><mi>D</mi><mo>=</mo><msup><mn>5</mn><mn>2</mn></msup><mo>−</mo><mn>4</mn><mo>⋅</mo><mn>3</mn><mo>⋅</mo><mn>1</mn></math>、(3) は <math><mi>D</mi><mo>=</mo><msup><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>4</mn><mo>⋅</mo><mn>2</mn><mo>⋅</mo><mn>3</mn></math> と計算する。</p>
+          <p>解の種類は、判別式<math><mi>D</mi><mo>=</mo><msup><mi>b</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>a</mi><mi>c</mi></math>の符号だけで決まる。(1) は<math><mi>D</mi><mo>=</mo><msup><mn>5</mn><mn>2</mn></msup><mo>−</mo><mn>4</mn><mo>⋅</mo><mn>3</mn><mo>⋅</mo><mn>1</mn></math>、(3) は<math><mi>D</mi><mo>=</mo><msup><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>4</mn><mo>⋅</mo><mn>2</mn><mo>⋅</mo><mn>3</mn></math>と計算しよう。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― (2) は <span class="frac"><span class="num">D</span><span class="den">4</span></span> を使う</h3>
-          <p>(2) は b = 6 が偶数だから、<span class="frac"><span class="num">D</span><span class="den">4</span></span> = 3<sup>2</sup> − 9・1 で計算すると楽だよ（この方程式は 9x<sup>2</sup> + 2・3x + 1 = 0 と見ている）。</p>
+          <h3>ヒント 2 ― (2) は <math><mfrac><mi>D</mi><mn>4</mn></mfrac></math> を使う</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mfrac><mi>D</mi><mn>4</mn></mfrac><mo>=</mo><msup><mrow><mi>b</mi><mo>′</mo></mrow><mn>2</mn></msup><mo>−</mo><mi>a</mi><mi>c</mi></math><math><mi>b</mi><mo>=</mo><mn>6</mn></math> が偶数の (2) では、<math><mfrac><mi>D</mi><mn>4</mn></mfrac><mo>=</mo><msup><mn>3</mn><mn>2</mn></msup><mo>−</mo><mn>9</mn><mo>⋅</mo><mn>1</mn></math> で計算すると楽になる。</p>
+          <p>(2) は<math><mi>b</mi><mo>=</mo><mn>6</mn></math>が偶数だから、<math><mfrac><mi>D</mi><mn>4</mn></mfrac><mo>=</mo><msup><mn>3</mn><mn>2</mn></msup><mo>−</mo><mn>9</mn><mo>⋅</mo><mn>1</mn></math>で計算すると楽だよ（この方程式は<math><mn>9</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mo>⋅</mo><mn>3</mn><mi>x</mi><mo>+</mo><mn>1</mn><mo>=</mo><mn>0</mn></math>と見ている）。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">(1)　異なる2つの実数解　(2)　重解　(3)　異なる2つの虚数解</p>
-          <p>2次方程式の判別式を D とする。</p>
-          <p>(1) D = 5<sup>2</sup> − 4・3・1 = 13 &gt; 0。よって、異なる2つの実数解をもつ。</p>
-          <p>(2) <span class="frac"><span class="num">D</span><span class="den">4</span></span> = 3<sup>2</sup> − 9・1 = 0。よって、重解をもつ。</p>
-          <p>(3) D = (−1)<sup>2</sup> − 4・2・3 = −23 &lt; 0。よって、異なる2つの虚数解をもつ。</p>
+          <p class="big">(1)　異なる2つの実数解　(2)　重解　(3)　異なる2つの虚数解</p><p class="cite"><span class="cite-tag">使う性質</span><math><mi>D</mi><mo>&gt;</mo><mn>0</mn></math> なら異なる2つの実数解、<math><mi>D</mi><mo>=</mo><mn>0</mn></math> なら重解、<math><mi>D</mi><mo>&lt;</mo><mn>0</mn></math> なら異なる2つの虚数解。計算した <math><mi>D</mi></math> の符号を、この対応に当てはめて判別する。</p>
+          <p>2次方程式の判別式を <math><mi>D</mi></math> とする。</p>
+          <p><math><mrow><mo>(</mo><mn>1</mn><mo>)</mo></mrow><mi>D</mi><mo>=</mo><msup><mn>5</mn><mn>2</mn></msup><mo>−</mo><mn>4</mn><mo>⋅</mo><mn>3</mn><mo>⋅</mo><mn>1</mn><mo>=</mo><mn>13</mn><mo>&gt;</mo><mn>0</mn></math>。よって、異なる2つの実数解をもつ。</p>
+          <p><math><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow><mfrac><mi>D</mi><mn>4</mn></mfrac><mo>=</mo><msup><mn>3</mn><mn>2</mn></msup><mo>−</mo><mn>9</mn><mo>⋅</mo><mn>1</mn><mo>=</mo><mn>0</mn></math>。よって、重解をもつ。</p>
+          <p><math><mrow><mo>(</mo><mn>3</mn><mo>)</mo></mrow><mi>D</mi><mo>=</mo><msup><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>4</mn><mo>⋅</mo><mn>2</mn><mo>⋅</mo><mn>3</mn><mo>=</mo><mo>−</mo><mn>23</mn><mo>&lt;</mo><mn>0</mn></math>。よって、異なる2つの虚数解をもつ。</p>
         </div>
         <p class="prob-done">例題2 クリア！　次は練習11に挑戦しよう。</p>
       </section>
@@ -381,7 +438,7 @@
         <h2>練習問題に挑戦</h2>
         <span class="pno">教科書 p.47</span>
       </div>
-      <section class="card prob" id="prob-ren11" data-label="練習11">
+      <section class="nofig card prob" id="prob-ren11" data-label="練習11">
         <div class="prob-head">
           <span class="prob-tag ren">練習 11</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
@@ -397,61 +454,61 @@
         </div>
         <div class="tabpanel show" id="panel-ren11-1" data-flow="ren11-1" data-label="練習11 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　x<sup>2</sup> + 5x + 5 = 0</span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>5</mn><mi>x</mi><mo>+</mo><mn>5</mn><mo>=</mo><mn>0</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― D を計算する</h3>
-          <p>D = 5<sup>2</sup> − 4・1・5 を計算して、符号を調べよう。</p>
+          <h3>ヒント 1 ― <math><mi>D</mi></math> を計算する</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mi>D</mi><mo>=</mo><msup><mi>b</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>a</mi><mi>c</mi></math>ここでは <math><mi>D</mi><mo>=</mo><msup><mn>5</mn><mn>2</mn></msup><mo>−</mo><mn>4</mn><mo>⋅</mo><mn>1</mn><mo>⋅</mo><mn>5</mn></math> を計算して符号を調べる。</p>
+          <p><math><mi>D</mi><mo>=</mo><msup><mn>5</mn><mn>2</mn></msup><mo>−</mo><mn>4</mn><mo>⋅</mo><mn>1</mn><mo>⋅</mo><mn>5</mn></math>を計算して、符号を調べよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">異なる2つの実数解</p>
-          <p>D = 25 − 20 = 5 &gt; 0</p>
+          <p class="big">異なる2つの実数解</p><p class="cite"><span class="cite-tag">使う性質</span><math><mi>D</mi><mo>&gt;</mo><mn>0</mn></math> なら異なる2つの実数解、<math><mi>D</mi><mo>=</mo><mn>0</mn></math> なら重解、<math><mi>D</mi><mo>&lt;</mo><mn>0</mn></math> なら異なる2つの虚数解。ここでは <math><mi>D</mi><mo>=</mo><mn>5</mn><mo>&gt;</mo><mn>0</mn></math> である。</p>
+          <p><math><mi>D</mi><mo>=</mo><mn>25</mn><mo>−</mo><mn>20</mn><mo>=</mo><mn>5</mn><mo>&gt;</mo><mn>0</mn></math></p>
         </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren11-2" data-flow="ren11-2" data-label="練習11 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　2x<sup>2</sup> + 4x + 3 = 0</span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><mn>2</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>4</mn><mi>x</mi><mo>+</mo><mn>3</mn><mo>=</mo><mn>0</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― D を計算する</h3>
-          <p>D = 4<sup>2</sup> − 4・2・3 を計算しよう。負になったら虚数解だよ。</p>
+          <h3>ヒント 1 ― <math><mi>D</mi></math> を計算する</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mi>D</mi><mo>=</mo><msup><mi>b</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>a</mi><mi>c</mi></math>ここでは <math><mi>D</mi><mo>=</mo><msup><mn>4</mn><mn>2</mn></msup><mo>−</mo><mn>4</mn><mo>⋅</mo><mn>2</mn><mo>⋅</mo><mn>3</mn></math> を計算する。負になれば虚数解である。</p>
+          <p><math><mi>D</mi><mo>=</mo><msup><mn>4</mn><mn>2</mn></msup><mo>−</mo><mn>4</mn><mo>⋅</mo><mn>2</mn><mo>⋅</mo><mn>3</mn></math>を計算しよう。負になったら虚数解だよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">異なる2つの虚数解</p>
-          <p>D = 16 − 24 = −8 &lt; 0</p>
+          <p class="big">異なる2つの虚数解</p><p class="cite"><span class="cite-tag">使う性質</span><math><mi>D</mi><mo>&gt;</mo><mn>0</mn></math> なら異なる2つの実数解、<math><mi>D</mi><mo>=</mo><mn>0</mn></math> なら重解、<math><mi>D</mi><mo>&lt;</mo><mn>0</mn></math> なら異なる2つの虚数解。ここでは <math><mi>D</mi><mo>=</mo><mo>−</mo><mn>8</mn><mo>&lt;</mo><mn>0</mn></math> である。</p>
+          <p><math><mi>D</mi><mo>=</mo><mn>16</mn><mo>−</mo><mn>24</mn><mo>=</mo><mo>−</mo><mn>8</mn><mo>&lt;</mo><mn>0</mn></math></p>
         </div>
           <p class="prob-done">(2) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren11-3" data-flow="ren11-3" data-label="練習11 (3)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(3)　−4x<sup>2</sup> + x − 1 = 0</span>
+            <span class="sub prob-q" style="margin:0">(3)　<math><mo>−</mo><mn>4</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>=</mo><mn>0</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 係数の符号に注意して D を計算する</h3>
-          <p>a = −4、b = 1、c = −1。D = 1<sup>2</sup> − 4・(−4)・(−1) だよ。4ac の符号に気をつけよう。</p>
+          <h3>ヒント 1 ― 係数の符号に注意して <math><mi>D</mi></math> を計算する</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mi>D</mi><mo>=</mo><msup><mi>b</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>a</mi><mi>c</mi></math>ここでは <math><mi>a</mi><mo>=</mo><mo>−</mo><mn>4</mn></math>、<math><mi>b</mi><mo>=</mo><mn>1</mn></math>、<math><mi>c</mi><mo>=</mo><mo>−</mo><mn>1</mn></math> で、<math><mn>4</mn><mi>a</mi><mi>c</mi></math> の符号に気をつけて計算する。</p>
+          <p><math><mi>a</mi><mo>=</mo><mo>−</mo><mn>4</mn></math>、<math><mi>b</mi><mo>=</mo><mn>1</mn></math>、<math><mi>c</mi><mo>=</mo><mo>−</mo><mn>1</mn></math>。<math><mi>D</mi><mo>=</mo><msup><mn>1</mn><mn>2</mn></msup><mo>−</mo><mn>4</mn><mo>⋅</mo><mrow><mo>(</mo><mo>−</mo><mn>4</mn><mo>)</mo></mrow><mo>⋅</mo><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow></math>だよ。4ac の符号に気をつけよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">異なる2つの虚数解</p>
-          <p>D = 1 − 16 = −15 &lt; 0</p>
+          <p class="big">異なる2つの虚数解</p><p class="cite"><span class="cite-tag">使う性質</span><math><mi>D</mi><mo>&gt;</mo><mn>0</mn></math> なら異なる2つの実数解、<math><mi>D</mi><mo>=</mo><mn>0</mn></math> なら重解、<math><mi>D</mi><mo>&lt;</mo><mn>0</mn></math> なら異なる2つの虚数解。ここでは <math><mi>D</mi><mo>=</mo><mo>−</mo><mn>15</mn><mo>&lt;</mo><mn>0</mn></math> である。</p>
+          <p><math><mi>D</mi><mo>=</mo><mn>1</mn><mo>−</mo><mn>16</mn><mo>=</mo><mo>−</mo><mn>15</mn><mo>&lt;</mo><mn>0</mn></math></p>
         </div>
           <p class="prob-done">(3) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren11-4" data-flow="ren11-4" data-label="練習11 (4)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(4)　x<sup>2</sup> − 2√3 x + 3 = 0</span>
+            <span class="sub prob-q" style="margin:0">(4)　<math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><msqrt><mn>3</mn></msqrt><mi>x</mi><mo>+</mo><mn>3</mn><mo>=</mo><mn>0</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
@@ -466,14 +523,14 @@
           <p class="verdict"></p>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― <span class="frac"><span class="num">D</span><span class="den">4</span></span> を使う</h3>
-          <p>b′ = −√3 として、<span class="frac"><span class="num">D</span><span class="den">4</span></span> = (−√3)<sup>2</sup> − 1・3 を計算しよう。</p>
+          <h3>ヒント<math><mn>1</mn><mo>―</mo><mfrac><mi>D</mi><mn>4</mn></mfrac></math> を使う</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mfrac><mi>D</mi><mn>4</mn></mfrac><mo>=</mo><msup><mrow><mi>b</mi><mo>′</mo></mrow><mn>2</mn></msup><mo>−</mo><mi>a</mi><mi>c</mi></math>ここでは <math><mi>b</mi><mo>′</mo><mo>=</mo><mo>−</mo><mn>3</mn></math> として <math><mfrac><mi>D</mi><mn>4</mn></mfrac><mo>=</mo><msup><mrow><mo>(</mo><mo>−</mo><mn>3</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>⋅</mo><mn>3</mn></math> を計算する。</p>
+          <p><math><mi>b</mi><mi>′</mi><mo>=</mo><mo>−</mo><msqrt><mn>3</mn></msqrt></math>として、<math><mfrac><mi>D</mi><mn>4</mn></mfrac><mo>=</mo><msup><mrow><mo>(</mo><mo>−</mo><msqrt><mn>3</mn></msqrt><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>⋅</mo><mn>3</mn></math>を計算しよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">重解</p>
-          <p><span class="frac"><span class="num">D</span><span class="den">4</span></span> = 3 − 3 = 0</p>
+          <p class="big">重解</p><p class="cite"><span class="cite-tag">使う性質</span><math><mfrac><mi>D</mi><mn>4</mn></mfrac><mo>=</mo><msup><mrow><mi>b</mi><mo>′</mo></mrow><mn>2</mn></msup><mo>−</mo><mi>a</mi><mi>c</mi></math> の値が 0 になれば重解。ここでは <math><mfrac><mi>D</mi><mn>4</mn></mfrac><mo>=</mo><mn>0</mn></math> になる。</p>
+          <p><math><mfrac><mi>D</mi><mn>4</mn></mfrac><mo>=</mo><mn>3</mn><mo>−</mo><mn>3</mn><mo>=</mo><mn>0</mn></math></p>
         </div>
           <p class="prob-done">(4) クリア！　練習11は全部おわり。次は文字を含む方程式だよ。</p>
         </div>
@@ -483,29 +540,29 @@
         <h2>例題3 ― 実数解をもつ条件</h2>
         <span class="pno">教科書 p.48</span>
       </div>
-      <section class="card prob" id="prob-reidai3" data-flow="reidai3" data-label="例題3">
+      <section class="nofig card prob" id="prob-reidai3" data-flow="reidai3" data-label="例題3">
         <div class="prob-head">
           <span class="prob-tag ouyou">例題 3</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">2次方程式 x<sup>2</sup> + mx + m + 3 = 0 が実数解をもつとき、定数 m の値の範囲を求めよ。</p>
+        <p class="prob-q">2次方程式<math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>m</mi><mi>x</mi><mo>+</mo><mi>m</mi><mo>+</mo><mn>3</mn><mo>=</mo><mn>0</mn></math>が実数解をもつとき、定数 <math><mi>m</mi></math> の値の範囲を求めよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 「実数解をもつ」は D ≧ 0</h3>
-          <p>実数解をもつのは、異なる2つの実数解の場合と重解の場合を合わせた D ≧ 0 のときだったね。まず D を m で表そう。</p>
-          <p class="formula left">D = m<sup>2</sup> − 4・1・(m + 3)</p>
+          <h3>ヒント 1 ― 「実数解をもつ」は<math><mi>D</mi><mo>≧</mo><mn>0</mn></math></h3><p class="cite"><span class="cite-tag">使う性質</span><math><mi>D</mi><mo>≧</mo><mn>0</mn></math> のとき実数解をもつ（重解も実数解）。まず <math><mi>D</mi></math> を <math><mi>m</mi></math> で表す。</p>
+          <p>実数解をもつのは、異なる2つの実数解の場合と重解の場合を合わせた<math><mi>D</mi><mo>≧</mo><mn>0</mn></math>のときだったね。まず <math><mi>D</mi></math> を <math><mi>m</mi></math> で表そう。</p>
+          <p class="formula left"><math display="block"><mi>D</mi><mo>=</mo><msup><mi>m</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mo>⋅</mo><mn>1</mn><mo>⋅</mo><mrow><mo>(</mo><mi>m</mi><mo>+</mo><mn>3</mn><mo>)</mo></mrow></math></p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― m の2次不等式を解く</h3>
-          <p>D = m<sup>2</sup> − 4m − 12 ≧ 0。左辺は (m + 2)(m − 6) と因数分解できるよ。</p>
+          <h3>ヒント 2 ― <math><mi>m</mi></math> の2次不等式を解く</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mo>(</mo><mi>m</mi><mo>+</mo><mn>2</mn><mo>)</mo></mrow><mrow><mo>(</mo><mi>m</mi><mo>−</mo><mn>6</mn><mo>)</mo></mrow><mo>≧</mo><mn>0</mn></math>積が 0 以上になるのは、2つの解 −2、6 の外側にあるとき。左辺を因数分解して、この2次不等式を解く。</p>
+          <p><math><mi>D</mi><mo>=</mo><msup><mi>m</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>m</mi><mo>−</mo><mn>12</mn><mo>≧</mo><mn>0</mn></math>。左辺は (<math><mi>m</mi></math> + 2)(<math><mi>m</mi></math> − 6) と因数分解できるよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">m ≦ −2，　6 ≦ m</p>
-          <p>この2次方程式の判別式を D とすると D = m<sup>2</sup> − 4・1・(m + 3) = m<sup>2</sup> − 4m − 12。2次方程式が実数解をもつのは D ≧ 0 のときである。よって m<sup>2</sup> − 4m − 12 ≧ 0、(m + 2)(m − 6) ≧ 0。これを解いて</p>
+          <p class="big"><math display="block"><mi>m</mi><mo>≦</mo><mo>−</mo><mn>2</mn><mo>,</mo><mspace width="2em"/><mn>6</mn><mo>≦</mo><mi>m</mi></math></p><p class="cite"><span class="cite-tag">使う性質</span><math><mi>D</mi><mo>≧</mo><mn>0</mn></math> のとき実数解をもつ。<math><mi>D</mi></math> を <math><mi>m</mi></math> で表して不等式を解く。</p>
+          <p>この2次方程式の判別式を <math><mi>D</mi></math> とすると<math><mi>D</mi><mo>=</mo><msup><mi>m</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mo>⋅</mo><mn>1</mn><mo>⋅</mo><mrow><mo>(</mo><mi>m</mi><mo>+</mo><mn>3</mn><mo>)</mo></mrow><mo>=</mo><msup><mi>m</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>m</mi><mo>−</mo><mn>12</mn></math>。2次方程式が実数解をもつのは<math><mi>D</mi><mo>≧</mo><mn>0</mn></math>のときである。よって<math><msup><mi>m</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>m</mi><mo>−</mo><mn>12</mn><mo>≧</mo><mn>0</mn></math>、<math><mrow><mo>(</mo><mi>m</mi><mo>+</mo><mn>2</mn><mo>)</mo></mrow><mrow><mo>(</mo><mi>m</mi><mo>−</mo><mn>6</mn><mo>)</mo></mrow><mo>≧</mo><mn>0</mn></math>。これを解いて</p>
         </div>
         <p class="prob-done">例題3 クリア！　次は練習12に挑戦しよう。</p>
       </section>
@@ -514,13 +571,13 @@
         <h2>練習問題に挑戦</h2>
         <span class="pno">教科書 p.48</span>
       </div>
-      <section class="card prob" id="prob-ren12" data-label="練習12">
+      <section class="nofig card prob" id="prob-ren12" data-label="練習12">
         <div class="prob-head">
           <span class="prob-tag ren">練習 12</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
         <div class="qside">
-        <p class="prob-q">2次方程式 x<sup>2</sup> + 2mx + m = 0 について、次の問いに答えよ。</p>
+        <p class="prob-q">2次方程式<math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>m</mi><mi>x</mi><mo>+</mo><mi>m</mi><mo>=</mo><mn>0</mn></math>について、次の問いに答えよ。</p>
         </div>
         <div class="tabs" role="tablist" aria-label="練習12の小問">
           <button class="tab" role="tab" data-tab="ren12-1" aria-selected="true">(1)</button>
@@ -528,40 +585,40 @@
         </div>
         <div class="tabpanel show" id="panel-ren12-1" data-flow="ren12-1" data-label="練習12 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　実数解をもつとき、定数 m の値の範囲を求めよ。</span>
+            <span class="sub prob-q" style="margin:0">(1)　実数解をもつとき、定数 <math><mi>m</mi></math> の値の範囲を求めよ。</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― <span class="frac"><span class="num">D</span><span class="den">4</span></span> ≧ 0 とする</h3>
-          <p>b = 2m は偶数だから、<span class="frac"><span class="num">D</span><span class="den">4</span></span> = m<sup>2</sup> − 1・m を使うと楽だよ。実数解をもつ条件は <span class="frac"><span class="num">D</span><span class="den">4</span></span> ≧ 0 だね。</p>
+          <h3>ヒント<math><mn>1</mn><mo>―</mo><mfrac><mi>D</mi><mn>4</mn></mfrac><mo>≧</mo><mn>0</mn></math>とする</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mfrac><mi>D</mi><mn>4</mn></mfrac><mo>=</mo><msup><mrow><mi>b</mi><mo>′</mo></mrow><mn>2</mn></msup><mo>−</mo><mi>a</mi><mi>c</mi></math><math><mi>b</mi><mo>=</mo><mn>2</mn><mi>m</mi></math> が偶数だから <math><mfrac><mi>D</mi><mn>4</mn></mfrac></math> を使い、実数解をもつ条件は <math><mfrac><mi>D</mi><mn>4</mn></mfrac><mo>≧</mo><mn>0</mn></math> とする。</p>
+          <p><math><mi>b</mi><mo>=</mo><mn>2</mn><mi>m</mi></math>は偶数だから、<math><mfrac><mi>D</mi><mn>4</mn></mfrac><mo>=</mo><msup><mi>m</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>⋅</mo><mi>m</mi></math>を使うと楽だよ。実数解をもつ条件は <math><mfrac><mi>D</mi><mn>4</mn></mfrac><mo>≧</mo><mn>0</mn></math>だね。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― m(m − 1) ≧ 0 を解く</h3>
-          <p>m<sup>2</sup> − m = m(m − 1)。積が 0 以上になるのは、m が 2つの解 0、1 の外側にあるときだよ。</p>
+          <h3>ヒント<math><mn>2</mn><mo>―</mo><mi>m</mi><mrow><mo>(</mo><mi>m</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mo>≧</mo><mn>0</mn></math>を解く</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mi>m</mi><mrow><mo>(</mo><mi>m</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mo>≧</mo><mn>0</mn></math>積が 0 以上になるのは、2つの解 0、1 の外側にあるとき。</p>
+          <p><math><msup><mi>m</mi><mn>2</mn></msup><mo>−</mo><mi>m</mi><mo>=</mo><mi>m</mi><mrow><mo>(</mo><mi>m</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow></math>。積が 0 以上になるのは、<math><mi>m</mi></math> が 2つの解 0、1 の外側にあるときだよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">m ≦ 0，　1 ≦ m</p>
-          <p><span class="frac"><span class="num">D</span><span class="den">4</span></span> = m<sup>2</sup> − m ≧ 0 より m(m − 1) ≧ 0</p>
+          <p class="big"><math display="block"><mi>m</mi><mo>≦</mo><mn>0</mn><mo>,</mo><mspace width="2em"/><mn>1</mn><mo>≦</mo><mi>m</mi></math></p><p class="cite"><span class="cite-tag">使う性質</span><math><mfrac><mi>D</mi><mn>4</mn></mfrac><mo>=</mo><msup><mrow><mi>b</mi><mo>′</mo></mrow><mn>2</mn></msup><mo>−</mo><mi>a</mi><mi>c</mi></math> を使い、<math><mfrac><mi>D</mi><mn>4</mn></mfrac><mo>≧</mo><mn>0</mn></math> を解く。</p>
+          <p><math><mfrac><mi>D</mi><mn>4</mn></mfrac><mo>=</mo><msup><mi>m</mi><mn>2</mn></msup><mo>−</mo><mi>m</mi><mo>≧</mo><mn>0</mn></math>より<math><mi>m</mi><mrow><mo>(</mo><mi>m</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mo>≧</mo><mn>0</mn></math></p>
         </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren12-2" data-flow="ren12-2" data-label="練習12 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　異なる2つの虚数解をもつとき、定数 m の値の範囲を求めよ。</span>
+            <span class="sub prob-q" style="margin:0">(2)　異なる2つの虚数解をもつとき、定数 <math><mi>m</mi></math> の値の範囲を求めよ。</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 虚数解の条件は <span class="frac"><span class="num">D</span><span class="den">4</span></span> &lt; 0</h3>
-          <p>(1) と反対の符号の条件だね。m(m − 1) &lt; 0 を解こう。</p>
+          <h3>ヒント 1 ― 虚数解の条件は <math><mfrac><mi>D</mi><mn>4</mn></mfrac><mo>&lt;</mo><mn>0</mn></math></h3><p class="cite"><span class="cite-tag">使う性質</span><math><mfrac><mi>D</mi><mn>4</mn></mfrac><mo>&lt;</mo><mn>0</mn></math> のとき異なる2つの虚数解をもつ。(1) と反対の符号の条件 <math><mi>m</mi><mrow><mo>(</mo><mi>m</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mo>&lt;</mo><mn>0</mn></math> を解く。</p>
+          <p>(1) と反対の符号の条件だね。<math><mi>m</mi><mrow><mo>(</mo><mi>m</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow></math> &lt; 0 を解こう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">0 &lt; m &lt; 1</p>
+          <p class="big"><math><mn>0</mn><mo>&lt;</mo><mi>m</mi></math> &lt; 1</p>
 
         </div>
           <p class="prob-done">(2) クリア！　練習12は全部おわり。次は応用例題1だよ。</p>
@@ -569,33 +626,33 @@
       </section>
       <div class="sec-head">
         <span class="sec-tag">応用</span>
-        <h2>応用例題1 ― m の値で場合分け</h2>
+        <h2>応用例題1 ― <math><mi>m</mi></math> の値で場合分け</h2>
         <span class="pno">教科書 p.48</span>
       </div>
-      <section class="card prob" id="prob-ouyou1" data-flow="ouyou1" data-label="応用例題1">
+      <section class="nofig card prob" id="prob-ouyou1" data-flow="ouyou1" data-label="応用例題1">
         <div class="prob-head">
           <span class="prob-tag ouyou">応用例題 1</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">m は定数とする。2次方程式 x<sup>2</sup> + 2x + m = 0 の解の種類を判別せよ。</p>
+        <p class="prob-q"><math><mi>m</mi></math> は定数とする。2次方程式<math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>+</mo><mi>m</mi><mo>=</mo><mn>0</mn></math>の解の種類を判別せよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 考え方：D の符号が m で変わる</h3>
-          <p>m の値によって判別式 D の符号が変わる。D の符号によって場合分けしよう。まずは <span class="frac"><span class="num">D</span><span class="den">4</span></span> を m で表すところから。</p>
+          <h3>ヒント 1 ― 考え方：<math><mi>D</mi></math> の符号が <math><mi>m</mi></math> で変わる</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mi>D</mi><mo>&gt;</mo><mn>0</mn></math> なら異なる2つの実数解、<math><mi>D</mi><mo>=</mo><mn>0</mn></math> なら重解、<math><mi>D</mi><mo>&lt;</mo><mn>0</mn></math> なら異なる2つの虚数解。ここでは <math><mi>m</mi></math> の値によって <math><mi>D</mi></math> の符号が変わるので、符号で場合分けする。</p>
+          <p><math><mi>m</mi></math> の値によって判別式 <math><mi>D</mi></math> の符号が変わる。<math><mi>D</mi></math> の符号によって場合分けしよう。まずは <math><mfrac><mi>D</mi><mn>4</mn></mfrac></math> を <math><mi>m</mi></math> で表すところから。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― <span class="frac"><span class="num">D</span><span class="den">4</span></span> = 1 − m の符号を調べる</h3>
-          <p><span class="frac"><span class="num">D</span><span class="den">4</span></span> = 1<sup>2</sup> − 1・m = 1 − m。これが正・0・負になるのは、m が 1 より小さいとき・等しいとき・大きいときで、それぞれどうなるかな。</p>
+          <h3>ヒント<math><mn>2</mn><mo>―</mo><mfrac><mi>D</mi><mn>4</mn></mfrac><mo>=</mo><mn>1</mn><mo>−</mo><mi>m</mi></math>の符号を調べる</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mfrac><mi>D</mi><mn>4</mn></mfrac><mo>=</mo><msup><mrow><mi>b</mi><mo>′</mo></mrow><mn>2</mn></msup><mo>−</mo><mi>a</mi><mi>c</mi></math>ここでは <math><mfrac><mi>D</mi><mn>4</mn></mfrac><mo>=</mo><msup><mn>1</mn><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>⋅</mo><mi>m</mi><mo>=</mo><mn>1</mn><mo>−</mo><mi>m</mi></math> となり、正・0・負の境目は <math><mi>m</mi><mo>=</mo><mn>1</mn></math> である。</p>
+          <p><math><mfrac><mi>D</mi><mn>4</mn></mfrac><mo>=</mo><msup><mn>1</mn><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>⋅</mo><mi>m</mi><mo>=</mo><mn>1</mn><mo>−</mo><mi>m</mi></math>。これが正・0・負になるのは、<math><mi>m</mi></math> が 1 より小さいとき・等しいとき・大きいときで、それぞれどうなるかな。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p>この2次方程式の判別式を D とすると <span class="frac"><span class="num">D</span><span class="den">4</span></span> = 1<sup>2</sup> − 1・m = 1 − m。よって、2次方程式の解は次のようになる。</p>
-          <p>・D &gt; 0 すなわち m &lt; 1 のとき　異なる2つの実数解</p>
-          <p>・D = 0 すなわち m = 1 のとき　重解</p>
-          <p>・D &lt; 0 すなわち m &gt; 1 のとき　異なる2つの虚数解</p>
+          <p>この2次方程式の判別式を <math><mi>D</mi></math> とすると <math><mfrac><mi>D</mi><mn>4</mn></mfrac><mo>=</mo><msup><mn>1</mn><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>⋅</mo><mi>m</mi><mo>=</mo><mn>1</mn><mo>−</mo><mi>m</mi></math>。よって、2次方程式の解は次のようになる。</p><p class="cite"><span class="cite-tag">使う性質</span><math><mi>D</mi><mo>&gt;</mo><mn>0</mn></math> なら異なる2つの実数解、<math><mi>D</mi><mo>=</mo><mn>0</mn></math> なら重解、<math><mi>D</mi><mo>&lt;</mo><mn>0</mn></math> なら異なる2つの虚数解。<math><mfrac><mi>D</mi><mn>4</mn></mfrac><mo>=</mo><mn>1</mn><mo>−</mo><mi>m</mi></math> の符号に合わせて、3つの場合に分けて答える。</p>
+          <p>・<math><mi>D</mi><mo>&gt;</mo><mn>0</mn></math> すなわち <math><mi>m</mi><mo>&lt;</mo><mn>1</mn></math> のとき　異なる2つの実数解</p>
+          <p><math><mo>⋅</mo><mi>D</mi><mo>=</mo><mn>0</mn></math>すなわち<math><mi>m</mi><mo>=</mo><mn>1</mn></math>のとき　重解</p>
+          <p>・<math><mi>D</mi><mo>&lt;</mo><mn>0</mn></math> すなわち <math><mi>m</mi><mo>&gt;</mo><mn>1</mn></math> のとき　異なる2つの虚数解</p>
         </div>
         <p class="prob-done">応用例題1 クリア！　次は練習13に挑戦しよう。</p>
       </section>
@@ -604,13 +661,13 @@
         <h2>練習問題に挑戦</h2>
         <span class="pno">教科書 p.48</span>
       </div>
-      <section class="card prob" id="prob-ren13" data-label="練習13">
+      <section class="nofig card prob" id="prob-ren13" data-label="練習13">
         <div class="prob-head">
           <span class="prob-tag ren">練習 13</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
         <div class="qside">
-        <p class="prob-q">m は定数とする。次の2次方程式の解の種類を判別せよ。</p>
+        <p class="prob-q"><math><mi>m</mi></math> は定数とする。次の2次方程式の解の種類を判別せよ。</p>
         </div>
         <div class="tabs" role="tablist" aria-label="練習13の小問">
           <button class="tab" role="tab" data-tab="ren13-1" aria-selected="true">(1)</button>
@@ -618,39 +675,39 @@
         </div>
         <div class="tabpanel show" id="panel-ren13-1" data-flow="ren13-1" data-label="練習13 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　x<sup>2</sup> + 4x + m = 0</span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>4</mn><mi>x</mi><mo>+</mo><mi>m</mi><mo>=</mo><mn>0</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― <span class="frac"><span class="num">D</span><span class="den">4</span></span> を m で表す</h3>
-          <p><span class="frac"><span class="num">D</span><span class="den">4</span></span> = 2<sup>2</sup> − 1・m = 4 − m。符号が変わる境目は m = 4 だね。</p>
+          <h3>ヒント<math><mn>1</mn><mo>―</mo><mfrac><mi>D</mi><mn>4</mn></mfrac></math> を <math><mi>m</mi></math> で表す</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mfrac><mi>D</mi><mn>4</mn></mfrac><mo>=</mo><msup><mrow><mi>b</mi><mo>′</mo></mrow><mn>2</mn></msup><mo>−</mo><mi>a</mi><mi>c</mi></math>ここでは <math><mfrac><mi>D</mi><mn>4</mn></mfrac><mo>=</mo><msup><mn>2</mn><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>⋅</mo><mi>m</mi><mo>=</mo><mn>4</mn><mo>−</mo><mi>m</mi></math> で、符号が変わる境目は <math><mi>m</mi><mo>=</mo><mn>4</mn></math> である。</p>
+          <p><math><mfrac><mi>D</mi><mn>4</mn></mfrac><mo>=</mo><msup><mn>2</mn><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>⋅</mo><mi>m</mi><mo>=</mo><mn>4</mn><mo>−</mo><mi>m</mi></math>。符号が変わる境目は<math><mi>m</mi><mo>=</mo><mn>4</mn></math>だね。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p>・m &lt; 4 のとき　異なる2つの実数解</p>
-          <p>・m = 4 のとき　重解</p>
-          <p>・m &gt; 4 のとき　異なる2つの虚数解</p>
+          <p>・<math><mi>m</mi><mo>&lt;</mo><mn>4</mn></math> のとき　異なる2つの実数解</p><p class="cite"><span class="cite-tag">使う性質</span><math><mi>D</mi><mo>&gt;</mo><mn>0</mn></math> なら異なる2つの実数解、<math><mi>D</mi><mo>=</mo><mn>0</mn></math> なら重解、<math><mi>D</mi><mo>&lt;</mo><mn>0</mn></math> なら異なる2つの虚数解。<math><mfrac><mi>D</mi><mn>4</mn></mfrac><mo>=</mo><mn>4</mn><mo>−</mo><mi>m</mi></math> の符号で場合分けする。</p>
+          <p><math><mo>⋅</mo><mi>m</mi><mo>=</mo><mn>4</mn></math>のとき　重解</p>
+          <p>・<math><mi>m</mi><mo>&gt;</mo><mn>4</mn></math> のとき　異なる2つの虚数解</p>
         </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren13-2" data-flow="ren13-2" data-label="練習13 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　x<sup>2</sup> − mx + 4 = 0</span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>m</mi><mi>x</mi><mo>+</mo><mn>4</mn><mo>=</mo><mn>0</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― D を m で表す</h3>
-          <p>D = (−m)<sup>2</sup> − 4・1・4 = m<sup>2</sup> − 16。(m + 4)(m − 4) と因数分解して、符号を調べよう。</p>
+          <h3>ヒント 1 ― <math><mi>D</mi></math> を <math><mi>m</mi></math> で表す</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mi>D</mi><mo>=</mo><msup><mi>b</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>a</mi><mi>c</mi></math>ここでは <math><mi>D</mi><mo>=</mo><msup><mrow><mo>(</mo><mo>−</mo><mi>m</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>4</mn><mo>⋅</mo><mn>1</mn><mo>⋅</mo><mn>4</mn><mo>=</mo><msup><mi>m</mi><mn>2</mn></msup><mo>−</mo><mn>16</mn></math> と表し、因数分解して符号を調べる。</p>
+          <p><math><mi>D</mi><mo>=</mo><msup><mrow><mo>(</mo><mo>−</mo><mi>m</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>4</mn><mo>⋅</mo><mn>1</mn><mo>⋅</mo><mn>4</mn><mo>=</mo><msup><mi>m</mi><mn>2</mn></msup><mo>−</mo><mn>16</mn></math>。(<math><mi>m</mi></math> + 4)(<math><mi>m</mi></math> − 4) と因数分解して、符号を調べよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p>・m &lt; −4、4 &lt; m のとき　異なる2つの実数解</p>
-          <p>・m = ±4 のとき　重解</p>
-          <p>・−4 &lt; m &lt; 4 のとき　異なる2つの虚数解</p>
+          <p>・<math><mi>m</mi></math> &lt; −4、<math><mn>4</mn><mo>&lt;</mo><mi>m</mi></math> のとき　異なる2つの実数解</p><p class="cite"><span class="cite-tag">使う性質</span><math><mi>D</mi><mo>&gt;</mo><mn>0</mn></math> なら異なる2つの実数解、<math><mi>D</mi><mo>=</mo><mn>0</mn></math> なら重解、<math><mi>D</mi><mo>&lt;</mo><mn>0</mn></math> なら異なる2つの虚数解。<math><mi>D</mi><mo>=</mo><msup><mi>m</mi><mn>2</mn></msup><mo>−</mo><mn>16</mn></math> の符号で場合分けする。</p>
+          <p><math><mo>⋅</mo><mi>m</mi><mo>=</mo><mo>±</mo><mn>4</mn></math>のとき　重解</p>
+          <p>・−<math><mn>4</mn><mo>&lt;</mo><mi>m</mi></math> &lt; 4 のとき　異なる2つの虚数解</p>
         </div>
           <p class="prob-done">(2) クリア！　練習13は全部おわり。次のページは解と係数の関係だよ。</p>
         </div>
@@ -661,10 +718,10 @@
       <section class="card summary" id="summaryCard" style="display:none">
         <h2>この項のポイント</h2>
         <ul>
-          <li><b>判別式：</b>D = b<sup>2</sup> − 4ac。D &gt; 0 ⟺ 異なる2つの実数解、D = 0 ⟺ 重解、D &lt; 0 ⟺ 異なる2つの虚数解。</li>
-          <li><b>実数解をもつ条件：</b>D ≧ 0（重解も実数解）。</li>
-          <li><b>b が偶数のとき：</b><span class="frac"><span class="num">D</span><span class="den">4</span></span> = b′<sup>2</sup> − ac で判別できる。</li>
-          <li><b>文字を含む方程式：</b>D を文字で表し、その符号で場合分けする。</li>
+          <li><p class="cite"><span class="cite-tag">使う性質</span><math><mi>D</mi><mo>=</mo><msup><mi>b</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>a</mi><mi>c</mi></math><math><mi>D</mi><mo>&gt;</mo><mn>0</mn></math> なら異なる2つの実数解、<math><mi>D</mi><mo>=</mo><mn>0</mn></math> なら重解、<math><mi>D</mi><mo>&lt;</mo><mn>0</mn></math> なら異なる2つの虚数解 という対応で判別する。</p><b>判別式：</b><math><mi>D</mi><mo>=</mo><msup><mi>b</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>a</mi><mi>c</mi></math>。<math><mi>D</mi><mo>&gt;</mo><mn>0</mn></math> ⟺ 異なる2つの実数解、<math><mi>D</mi><mo>=</mo><mn>0</mn><mo>⟺</mo></math>重解、<math><mi>D</mi><mo>&lt;</mo><mn>0</mn></math> ⟺ 異なる2つの虚数解。</li>
+          <li><p class="cite"><span class="cite-tag">使う性質</span><math><mi>D</mi><mo>≧</mo><mn>0</mn></math> のとき実数解をもつ（重解も実数解である）。</p><b>実数解をもつ条件：</b><math><mi>D</mi><mo>≧</mo><mn>0</mn><mo>(</mo></math>重解も実数解）。</li>
+          <li><p class="cite"><span class="cite-tag">使う性質</span><math><mfrac><mi>D</mi><mn>4</mn></mfrac><mo>=</mo><msup><mrow><mi>b</mi><mo>′</mo></mrow><mn>2</mn></msup><mo>−</mo><mi>a</mi><mi>c</mi></math><math><mi>b</mi></math> が偶数のときは、<math><mfrac><mi>D</mi><mn>4</mn></mfrac></math> の符号でも判別できる。</p><b><math><mi>b</mi></math> が偶数のとき：</b><math><mfrac><mi>D</mi><mn>4</mn></mfrac><mo>=</mo><mi>b</mi><msup><mi>′</mi><mn>2</mn></msup><mo>−</mo><mi>a</mi><mi>c</mi></math>で判別できる。</li>
+          <li><p class="cite"><span class="cite-tag">使う性質</span><math><mi>D</mi><mo>&gt;</mo><mn>0</mn></math> なら異なる2つの実数解、<math><mi>D</mi><mo>=</mo><mn>0</mn></math> なら重解、<math><mi>D</mi><mo>&lt;</mo><mn>0</mn></math> なら異なる2つの虚数解。文字を含む方程式では <math><mi>D</mi></math> を文字で表し、その符号で場合分けする。</p><b>文字を含む方程式：</b><math><mi>D</mi></math> を文字で表し、その符号で場合分けする。</li>
         </ul>
       </section>
       <footer>

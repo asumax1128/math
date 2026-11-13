@@ -302,7 +302,64 @@
       table.comp{border-collapse:collapse;margin:0 0 14px;width:100%}
       table.comp th,table.comp td{border:1px solid var(--line);padding:8px 10px;text-align:center;font-size:15px}
       table.comp th{background:var(--surface2)}
-        </style>
+        
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+
+      /* 積分記号は大きめに表示する（元のページの可読化デザインに合わせる） */
+      math .int-op{font-size:1.35em}
+      /* calc-12 世代（.card）と calc-18 世代（.unit）の、図のない問題の全幅化 */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig>.step{position:static !important}
+        .card.nofig>.steps-wrap{max-height:none !important;overflow:visible !important}
+        .unit.nofig{display:block !important}
+        .unit.nofig>.qside{position:static !important}
+        .unit.nofig>.steps-stack{max-height:none !important;overflow:visible !important}
+      }
+
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける・第3弾c） */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig .qside{position:static !important}
+        .card.nofig .steps-wrap,.card.nofig .tabpanel .steps-wrap{max-height:none !important;overflow:visible !important}
+      }
+</style>
   </head>
   <body>
     <div class="wrap">
@@ -325,9 +382,13 @@
         <span class="pno">教科書 p.42〜43</span>
       </div>
       <section class="card">
-        <p>2つの複素数 a + bi、a − bi を、互いに<span class="key">共役な複素数</span>という。実数 a と共役な複素数は、a 自身である。</p>
-        <p>互いに共役な複素数 a + bi、a − bi の和と積は</p>
-        <p class="formula left">(a + bi) + (a − bi) = 2a，　(a + bi)(a − bi) = a<sup>2</sup> + b<sup>2</sup></p>
+        <p>2つの複素数 <math><mi>a</mi></math> + bi、<math><mi>a</mi></math> − bi を、互いに<span class="key">共役な複素数</span>という。実数 <math><mi>a</mi></math> と共役な複素数は、<math><mi>a</mi></math> 自身である。</p>
+        <p>互いに共役な複素数 <math><mi>a</mi></math> + bi、<math><mi>a</mi></math> − bi の和と積は</p>
+        <p class="mq-wide formula left"><math display="block"><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mi>i</mi><mo>)</mo></mrow><mo>+</mo><mrow><mo>(</mo><mi>a</mi><mo>−</mo><mi>b</mi><mi>i</mi><mo>)</mo></mrow><mo>=</mo><mn>2</mn><mi>a</mi><mo>,</mo><mspace width="2em"/><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mi>i</mi><mo>)</mo></mrow><mrow><mo>(</mo><mi>a</mi><mo>−</mo><mi>b</mi><mi>i</mi><mo>)</mo></mrow><mo>=</mo><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup></math></p>
+<div class="mq-narrow mq-stack">
+<p class="formula"><math display="block"><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mi>i</mi><mo>)</mo></mrow><mo>+</mo><mrow><mo>(</mo><mi>a</mi><mo>−</mo><mi>b</mi><mi>i</mi><mo>)</mo></mrow><mo>=</mo><mn>2</mn><mi>a</mi><mo>,</mo></math></p>
+<p class="formula"><math display="block"><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mi>i</mi><mo>)</mo></mrow><mrow><mo>(</mo><mi>a</mi><mo>−</mo><mi>b</mi><mi>i</mi><mo>)</mo></mrow><mo>=</mo><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup></math></p>
+</div>
         <p>となり、ともに実数である。複素数の<b>除法</b>は、このことを利用する。分母と共役な複素数を、分母と分子に掛けて、分母を実数にするのがコツだ。</p>
       </section>
       <div class="sec-head">
@@ -335,7 +396,7 @@
         <h2>例4・例5で解き方を確認</h2>
         <span class="pno">教科書 p.42〜43</span>
       </div>
-      <section class="card prob" id="prob-ex4" data-flow="ex4" data-label="例4">
+      <section class="nofig card prob" id="prob-ex4" data-flow="ex4" data-label="例4">
         <div class="prob-head">
           <span class="prob-tag ">例 4</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
@@ -346,38 +407,42 @@
         </div>
         <div class="step hint">
           <h3>ヒント 1 ― 虚部の符号だけを変える</h3>
-          <p>共役な複素数は、実部はそのままで、虚部の符号だけを変えたものだよ。(2) の −3i は 0 − 3i と見よう。</p>
+          <p class="cite"><span class="cite-tag">使う定義</span><math><mover><mrow><mi>a</mi><mo>+</mo><mi>b</mi><mi>i</mi></mrow><mo>¯</mo></mover><mo>=</mo><mi>a</mi><mo>−</mo><mi>b</mi><mi>i</mi></math>ここでは (1) <math><mn>1</mn><mo>+</mo><mn>2</mn><mi>i</mi></math> の虚部 2 と、(2) <math><mo>−</mo><mn>3</mn><mi>i</mi><mo>=</mo><mn>0</mn><mo>−</mo><mn>3</mn><mi>i</mi></math> の虚部 −3 の符号を変える。</p><p>共役な複素数は、実部はそのままで、虚部の符号だけを変えたものだよ。<br>(2) の −3i は 0 − 3i と見よう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p>(1) 1 + 2i と共役な複素数は 1 − 2i である。</p>
+          <p class="cite"><span class="cite-tag">使う定義</span><math><mover><mrow><mi>a</mi><mo>+</mo><mi>b</mi><mi>i</mi></mrow><mo>¯</mo></mover><mo>=</mo><mi>a</mi><mo>−</mo><mi>b</mi><mi>i</mi></math>(1) は虚部 2 の符号を変え、(2) は <math><mn>0</mn><mo>−</mo><mn>3</mn><mi>i</mi></math> と見て虚部 −3 の符号を変える。</p><p>(1) 1 + 2i と共役な複素数は 1 − 2i である。</p>
           <p>(2) −3i と共役な複素数は 3i である。</p>
         </div>
         <p class="prob-done">例4 クリア！　次は練習5に挑戦しよう。</p>
       </section>
-      <section class="card prob" id="prob-ex5" data-flow="ex5" data-label="例5">
+      <section class="nofig card prob" id="prob-ex5" data-flow="ex5" data-label="例5">
         <div class="prob-head">
           <span class="prob-tag ">例 5</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">次の計算をしよう。<p class="formula left"><span class="frac"><span class="num">2 + 9i</span><span class="den">1 + 2i</span></span></p></p>
+        <p class="prob-q">次の計算をしよう。<p class="formula left"><math display="block"><mfrac><mrow><mn>2</mn><mo>+</mo><mn>9</mn><mi>i</mi></mrow><mrow><mn>1</mn><mo>+</mo><mn>2</mn><mi>i</mi></mrow></mfrac></math></p></p>
         </div>
         <div class="step hint">
           <h3>ヒント 1 ― 分母と共役な複素数を掛ける</h3>
-          <p>分母 1 + 2i と共役な複素数は 1 − 2i。これを分母と分子の両方に掛けると、分母が (1 + 2i)(1 − 2i) = 1<sup>2</sup> + 2<sup>2</sup> = 5 になって、実数になるよ。</p>
+          <p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mi>i</mi><mo>)</mo></mrow><mrow><mo>(</mo><mi>a</mi><mo>−</mo><mi>b</mi><mi>i</mi><mo>)</mo></mrow><mo>=</mo><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup></math>分母 <math><mn>1</mn><mo>+</mo><mn>2</mn><mi>i</mi></math> と共役な <math><mn>1</mn><mo>−</mo><mn>2</mn><mi>i</mi></math> を分母・分子に掛けると、分母は <math><msup><mn>1</mn><mn>2</mn></msup><mo>+</mo><msup><mn>2</mn><mn>2</mn></msup><mo>=</mo><mn>5</mn></math> になる。</p><p>分母 1 + 2i と共役な複素数は 1 − 2i。<br>これを分母と分子の両方に掛けると、分母が<math><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mn>2</mn><mi>i</mi><mo>)</mo></mrow><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mn>2</mn><mi>i</mi><mo>)</mo></mrow><mo>=</mo><msup><mn>1</mn><mn>2</mn></msup><mo>+</mo><msup><mn>2</mn><mn>2</mn></msup><mo>=</mo><mn>5</mn></math>になって、実数になるよ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 分子を展開する</h3>
-          <p>分子は (2 + 9i)(1 − 2i) = 2 − 4i + 9i − 18i<sup>2</sup>。i<sup>2</sup> = −1 だから、−18i<sup>2</sup> は +18 になるね。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><msup><mi>i</mi><mn>2</mn></msup><mo>=</mo><mo>−</mo><mn>1</mn></math>分子を展開して出てくる <math><mo>−</mo><mn>18</mn><msup><mi>i</mi><mn>2</mn></msup></math> は +18 におき換える。</p><p>分子は<math><mrow><mo>(</mo><mn>2</mn><mo>+</mo><mn>9</mn><mi>i</mi><mo>)</mo></mrow><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mn>2</mn><mi>i</mi><mo>)</mo></mrow><mo>=</mo><mn>2</mn><mo>−</mo><mn>4</mn><mi>i</mi><mo>+</mo><mn>9</mn><mi>i</mi><mo>−</mo><mn>18</mn><msup><mi>i</mi><mn>2</mn></msup></math>。<br><math><msup><mi>i</mi><mn>2</mn></msup><mo>=</mo><mo>−</mo><mn>1</mn></math>だから、<math><mo>−</mo><mn>18</mn><msup><mi>i</mi><mn>2</mn></msup></math> は +18 になるね。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">4 + i</p>
-          <p><span class="frac"><span class="num">2 + 9i</span><span class="den">1 + 2i</span></span> = <span class="frac"><span class="num">(2 + 9i)(1 − 2i)</span><span class="den">(1 + 2i)(1 − 2i)</span></span> = <span class="frac"><span class="num">2 − 4i + 9i − 18i<sup>2</sup></span><span class="den">1<sup>2</sup> + 2<sup>2</sup></span></span> = <span class="frac"><span class="num">20 + 5i</span><span class="den">5</span></span></p>
+          <p class="big">4 + <math><mi>i</mi></math></p><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mi>i</mi><mo>)</mo></mrow><mrow><mo>(</mo><mi>a</mi><mo>−</mo><mi>b</mi><mi>i</mi><mo>)</mo></mrow><mo>=</mo><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup></math>分母と共役な <math><mn>1</mn><mo>−</mo><mn>2</mn><mi>i</mi></math> を掛けて分母を 5 という実数にしてから、分子を展開して計算する。</p>
+          <div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mfrac><mrow><mn>2</mn><mo>+</mo><mn>9</mn><mi>i</mi></mrow><mrow><mn>1</mn><mo>+</mo><mn>2</mn><mi>i</mi></mrow></mfrac><mo>=</mo><mfrac><mrow><mrow><mo>(</mo><mn>2</mn><mo>+</mo><mn>9</mn><mi>i</mi><mo>)</mo></mrow><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mn>2</mn><mi>i</mi><mo>)</mo></mrow></mrow><mrow><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mn>2</mn><mi>i</mi><mo>)</mo></mrow><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mn>2</mn><mi>i</mi><mo>)</mo></mrow></mrow></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mfrac><mrow><mn>2</mn><mo>+</mo><mn>9</mn><mi>i</mi></mrow><mrow><mn>1</mn><mo>+</mo><mn>2</mn><mi>i</mi></mrow></mfrac></mphantom><mo>=</mo><mfrac><mrow><mn>2</mn><mo>−</mo><mn>4</mn><mi>i</mi><mo>+</mo><mn>9</mn><mi>i</mi><mo>−</mo><mn>18</mn><msup><mi>i</mi><mn>2</mn></msup></mrow><mrow><msup><mn>1</mn><mn>2</mn></msup><mo>+</mo><msup><mn>2</mn><mn>2</mn></msup></mrow></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mfrac><mrow><mn>2</mn><mo>+</mo><mn>9</mn><mi>i</mi></mrow><mrow><mn>1</mn><mo>+</mo><mn>2</mn><mi>i</mi></mrow></mfrac></mphantom><mo>=</mo><mfrac><mrow><mn>20</mn><mo>+</mo><mn>5</mn><mi>i</mi></mrow><mn>5</mn></mfrac></math></div>
+</div>
         </div>
         <p class="prob-done">例5 クリア！　次は練習6に挑戦しよう。</p>
       </section>
@@ -386,7 +451,7 @@
         <h2>練習問題に挑戦</h2>
         <span class="pno">教科書 p.42〜43</span>
       </div>
-      <section class="card prob" id="prob-ren5" data-label="練習5">
+      <section class="nofig card prob" id="prob-ren5" data-label="練習5">
         <div class="prob-head">
           <span class="prob-tag ren">練習 5</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
@@ -409,7 +474,7 @@
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― 虚部の符号を変える</h3>
-          <p>実部はそのまま、虚部 3 の符号だけを変えよう。</p>
+          <p class="cite"><span class="cite-tag">使う定義</span><math><mover><mrow><mi>a</mi><mo>+</mo><mi>b</mi><mi>i</mi></mrow><mo>¯</mo></mover><mo>=</mo><mi>a</mi><mo>−</mo><mi>b</mi><mi>i</mi></math>実部 2 はそのまま、虚部 3 の符号だけを変える。</p><p>実部はそのまま、虚部 3 の符号だけを変えよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
@@ -421,54 +486,54 @@
         </div>
         <div class="tabpanel" id="panel-ren5-2" data-flow="ren5-2" data-label="練習5 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　1 − i</span>
+            <span class="sub prob-q" style="margin:0">(2)　1 − <math><mi>i</mi></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― 虚部の符号を変える</h3>
-          <p>虚部 −1 の符号を変えるとどうなるかな。</p>
+          <p class="cite"><span class="cite-tag">使う定義</span><math><mover><mrow><mi>a</mi><mo>+</mo><mi>b</mi><mi>i</mi></mrow><mo>¯</mo></mover><mo>=</mo><mi>a</mi><mo>−</mo><mi>b</mi><mi>i</mi></math>虚部 −1 の符号を変えると +1 になる。</p><p>虚部 −1 の符号を変えるとどうなるかな。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">1 + i</p>
+          <p class="big">1 + <math><mi>i</mi></math></p>
 
         </div>
           <p class="prob-done">(2) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren5-3" data-flow="ren5-3" data-label="練習5 (3)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(3)　√3 i</span>
+            <span class="sub prob-q" style="margin:0">(3)　<math><msqrt><mn>3</mn></msqrt><mi>i</mi></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― √3 i = 0 + √3 i と見る</h3>
-          <p>実部は 0。虚部の符号だけを変えよう。</p>
+          <h3>ヒント<math><mn>1</mn><mo>―</mo><msqrt><mn>3</mn></msqrt><mi>i</mi><mo>=</mo><mn>0</mn><mo>+</mo><msqrt><mn>3</mn></msqrt><mi>i</mi></math>と見る</h3>
+          <p class="cite"><span class="cite-tag">使う定義</span><math><mover><mrow><mi>a</mi><mo>+</mo><mi>b</mi><mi>i</mi></mrow><mo>¯</mo></mover><mo>=</mo><mi>a</mi><mo>−</mo><mi>b</mi><mi>i</mi></math><math><msqrt><mn>3</mn></msqrt><mi>i</mi><mo>=</mo><mn>0</mn><mo>+</mo><msqrt><mn>3</mn></msqrt><mi>i</mi></math> と見て、虚部 <math><msqrt><mn>3</mn></msqrt></math> の符号だけを変える。</p><p>実部は 0。虚部の符号だけを変えよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">−√3 i</p>
+          <p class="big"><math display="block"><mo>−</mo><msqrt><mn>3</mn></msqrt><mi>i</mi></math></p>
 
         </div>
           <p class="prob-done">(3) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren5-4" data-flow="ren5-4" data-label="練習5 (4)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(4)　<span class="frac"><span class="num">−1 + √3 i</span><span class="den">2</span></span></span>
+            <span class="sub prob-q" style="margin:0">(4)　<math><mfrac><mrow><mo>−</mo><mn>1</mn><mo>+</mo><msqrt><mn>3</mn></msqrt><mi>i</mi></mrow><mn>2</mn></mfrac></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― 虚部の符号を変える</h3>
-          <p><span class="frac"><span class="num">−1 + √3 i</span><span class="den">2</span></span> の虚部は <span class="frac"><span class="num">√3</span><span class="den">2</span></span>。その符号だけを変えよう。</p>
+          <p class="cite"><span class="cite-tag">使う定義</span><math><mover><mrow><mi>a</mi><mo>+</mo><mi>b</mi><mi>i</mi></mrow><mo>¯</mo></mover><mo>=</mo><mi>a</mi><mo>−</mo><mi>b</mi><mi>i</mi></math>この数の虚部は <math><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac></math> で、その符号だけを変える。</p><p><math><mfrac><mrow><mo>−</mo><mn>1</mn><mo>+</mo><msqrt><mn>3</mn></msqrt><mi>i</mi></mrow><mn>2</mn></mfrac></math> の虚部は <math><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac></math>。その符号だけを変えよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big"><span class="frac"><span class="num">−1 − √3 i</span><span class="den">2</span></span></p>
+          <p class="big"><math display="block"><mfrac><mrow><mo>−</mo><mn>1</mn><mo>−</mo><msqrt><mn>3</mn></msqrt><mi>i</mi></mrow><mn>2</mn></mfrac></math></p>
 
         </div>
           <p class="prob-done">(4) クリア！　次の小問のタブを開いてみよう。</p>
@@ -481,7 +546,7 @@
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― 実数と共役な複素数は？</h3>
-          <p>実数 a と共役な複素数は、a 自身だったね。</p>
+          <p class="cite"><span class="cite-tag">使う性質</span><math><mover><mi>a</mi><mo>¯</mo></mover><mo>=</mo><mi>a</mi></math>実数と共役な複素数は、その数自身。ここでは −4 がそのまま答えになる。</p><p>実数 <math><mi>a</mi></math> と共役な複素数は、<math><mi>a</mi></math> 自身だったね。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
@@ -492,7 +557,7 @@
           <p class="prob-done">(5) クリア！　練習5は全部おわり。次は練習6（除法）だよ。</p>
         </div>
       </section>
-      <section class="card prob" id="prob-ren6" data-label="練習6">
+      <section class="nofig card prob" id="prob-ren6" data-label="練習6">
         <div class="prob-head">
           <span class="prob-tag ren">練習 6</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
@@ -508,60 +573,60 @@
         </div>
         <div class="tabpanel show" id="panel-ren6-1" data-flow="ren6-1" data-label="練習6 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　<span class="frac"><span class="num">1 + 2i</span><span class="den">2 + 3i</span></span></span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><mfrac><mrow><mn>1</mn><mo>+</mo><mn>2</mn><mi>i</mi></mrow><mrow><mn>2</mn><mo>+</mo><mn>3</mn><mi>i</mi></mrow></mfrac></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― 分母と共役な複素数を掛ける</h3>
-          <p>分母 2 + 3i と共役な 2 − 3i を、分母と分子に掛けよう。分母は 2<sup>2</sup> + 3<sup>2</sup> = 13 になるよ。</p>
+          <p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mi>i</mi><mo>)</mo></mrow><mrow><mo>(</mo><mi>a</mi><mo>−</mo><mi>b</mi><mi>i</mi><mo>)</mo></mrow><mo>=</mo><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup></math>分母 <math><mn>2</mn><mo>+</mo><mn>3</mn><mi>i</mi></math> と共役な <math><mn>2</mn><mo>−</mo><mn>3</mn><mi>i</mi></math> を掛けると、分母は <math><msup><mn>2</mn><mn>2</mn></msup><mo>+</mo><msup><mn>3</mn><mn>2</mn></msup><mo>=</mo><mn>13</mn></math> になる。</p><p>分母 2 + 3i と共役な 2 − 3i を、分母と分子に掛けよう。分母は<math><msup><mn>2</mn><mn>2</mn></msup><mo>+</mo><msup><mn>3</mn><mn>2</mn></msup><mo>=</mo><mn>13</mn></math>になるよ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 分子を展開する</h3>
-          <p>分子は (1 + 2i)(2 − 3i) = 2 − 3i + 4i − 6i<sup>2</sup>。−6i<sup>2</sup> は +6 だよ。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><msup><mi>i</mi><mn>2</mn></msup><mo>=</mo><mo>−</mo><mn>1</mn></math>分子を展開して出てくる <math><mo>−</mo><mn>6</mn><msup><mi>i</mi><mn>2</mn></msup></math> は +6 におき換える。</p><p>分子は<math><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mn>2</mn><mi>i</mi><mo>)</mo></mrow><mrow><mo>(</mo><mn>2</mn><mo>−</mo><mn>3</mn><mi>i</mi><mo>)</mo></mrow><mo>=</mo><mn>2</mn><mo>−</mo><mn>3</mn><mi>i</mi><mo>+</mo><mn>4</mn><mi>i</mi><mo>−</mo><mn>6</mn><msup><mi>i</mi><mn>2</mn></msup></math>。<math><mo>−</mo><mn>6</mn><msup><mi>i</mi><mn>2</mn></msup></math> は +6 だよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big"><span class="frac"><span class="num">8</span><span class="den">13</span></span> + <span class="frac"><span class="num">1</span><span class="den">13</span></span>i</p>
-          <p><span class="frac"><span class="num">1 + 2i</span><span class="den">2 + 3i</span></span> = <span class="frac"><span class="num">8 + i</span><span class="den">13</span></span> と計算できる。</p>
+          <p class="big"><math display="block"><mfrac><mn>8</mn><mn>13</mn></mfrac><mo>+</mo><mfrac><mn>1</mn><mn>13</mn></mfrac><mi>i</mi></math></p><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mi>i</mi><mo>)</mo></mrow><mrow><mo>(</mo><mi>a</mi><mo>−</mo><mi>b</mi><mi>i</mi><mo>)</mo></mrow><mo>=</mo><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup></math>分母を 13 という実数にしてから、分子を展開して計算する。</p>
+          <p><math><mfrac><mrow><mn>1</mn><mo>+</mo><mn>2</mn><mi>i</mi></mrow><mrow><mn>2</mn><mo>+</mo><mn>3</mn><mi>i</mi></mrow></mfrac><mo>=</mo><mfrac><mrow><mn>8</mn><mo>+</mo><mi>i</mi></mrow><mn>13</mn></mfrac></math> と計算できる。</p>
         </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren6-2" data-flow="ren6-2" data-label="練習6 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　<span class="frac"><span class="num">1 − i</span><span class="den">1 + i</span></span></span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><mfrac><mrow><mn>1</mn><mo>−</mo><mi>i</mi></mrow><mrow><mn>1</mn><mo>+</mo><mi>i</mi></mrow></mfrac></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― 分母と共役な複素数を掛ける</h3>
-          <p>1 − i を分母と分子に掛けよう。分母は 1<sup>2</sup> + 1<sup>2</sup> = 2、分子は (1 − i)<sup>2</sup> になるよ。</p>
+          <p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mi>i</mi><mo>)</mo></mrow><mrow><mo>(</mo><mi>a</mi><mo>−</mo><mi>b</mi><mi>i</mi><mo>)</mo></mrow><mo>=</mo><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup></math>分母 <math><mn>1</mn><mo>+</mo><mi>i</mi></math> と共役な <math><mn>1</mn><mo>−</mo><mi>i</mi></math> を掛けると、分母は <math><msup><mn>1</mn><mn>2</mn></msup><mo>+</mo><msup><mn>1</mn><mn>2</mn></msup><mo>=</mo><mn>2</mn></math> になる。</p><p>1 − <math><mi>i</mi></math> を分母と分子に掛けよう。分母は<math><msup><mn>1</mn><mn>2</mn></msup><mo>+</mo><msup><mn>1</mn><mn>2</mn></msup><mo>=</mo><mn>2</mn></math>、分子は<math><msup><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mi>i</mi><mo>)</mo></mrow><mn>2</mn></msup></math> になるよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― (1 − i)<sup>2</sup> を展開する</h3>
-          <p>(1 − i)<sup>2</sup> = 1 − 2i + i<sup>2</sup> = −2i だね。これを 2 で割ろう。</p>
+          <h3>ヒント<math><mn>2</mn><mo>―</mo><msup><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mi>i</mi><mo>)</mo></mrow><mn>2</mn></msup></math> を展開する</h3>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><msup><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mi>i</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>1</mn><mo>−</mo><mn>2</mn><mi>i</mi><mo>+</mo><msup><mi>i</mi><mn>2</mn></msup></math><math><msup><mi>i</mi><mn>2</mn></msup><mo>=</mo><mo>−</mo><mn>1</mn></math> を使って整理すると、分子は <math><mo>−</mo><mn>2</mn><mi>i</mi></math> になる。</p><p><math><msup><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mi>i</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>1</mn><mo>−</mo><mn>2</mn><mi>i</mi><mo>+</mo><msup><mi>i</mi><mn>2</mn></msup><mo>=</mo><mo>−</mo><mn>2</mn><mi>i</mi></math>だね。これを 2 で割ろう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">−i</p>
+          <p class="big">−<math><mi>i</mi></math></p>
 
         </div>
           <p class="prob-done">(2) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren6-3" data-flow="ren6-3" data-label="練習6 (3)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(3)　<span class="frac"><span class="num">5i</span><span class="den">2 − i</span></span></span>
+            <span class="sub prob-q" style="margin:0">(3)　<math><mfrac><mrow><mn>5</mn><mi>i</mi></mrow><mrow><mn>2</mn><mo>−</mo><mi>i</mi></mrow></mfrac></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="quiz" id="qz-ren6-3" data-correct="1">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>−1 + 2i</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>1 + 2i</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>−1 − 2i</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>2 − i</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mo>−</mo><mn>1</mn><mo>+</mo><mn>2</mn><mi>i</mi></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mn>1</mn><mo>+</mo><mn>2</mn><mi>i</mi></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mo>−</mo><mn>1</mn><mo>−</mo><mn>2</mn><mi>i</mi></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mn>2</mn><mo>−</mo><mi>i</mi></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
@@ -569,11 +634,11 @@
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― 分母と共役な複素数を掛ける</h3>
-          <p>2 + i を分母と分子に掛けよう。分母は 2<sup>2</sup> + 1<sup>2</sup> = 5、分子は 5i(2 + i) になるよ。</p>
+          <p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mi>i</mi><mo>)</mo></mrow><mrow><mo>(</mo><mi>a</mi><mo>−</mo><mi>b</mi><mi>i</mi><mo>)</mo></mrow><mo>=</mo><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup></math>分母 <math><mn>2</mn><mo>−</mo><mi>i</mi></math> と共役な <math><mn>2</mn><mo>+</mo><mi>i</mi></math> を掛けると、分母は <math><msup><mn>2</mn><mn>2</mn></msup><mo>+</mo><msup><mn>1</mn><mn>2</mn></msup><mo>=</mo><mn>5</mn></math> になる。</p><p>2 + <math><mi>i</mi></math> を分母と分子に掛けよう。分母は<math><msup><mn>2</mn><mn>2</mn></msup><mo>+</mo><msup><mn>1</mn><mn>2</mn></msup><mo>=</mo><mn>5</mn></math>、分子は 5<math><mi>i</mi><mrow><mo>(</mo><mn>2</mn><mo>+</mo><mi>i</mi><mo>)</mo></mrow></math> になるよ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 分子を展開して 5 で割る</h3>
-          <p>5i(2 + i) = 10i + 5i<sup>2</sup> = −5 + 10i。これを 5 で割ろう。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><msup><mi>i</mi><mn>2</mn></msup><mo>=</mo><mo>−</mo><mn>1</mn></math>分子 <math><mn>5</mn><mi>i</mi><mrow><mo>(</mo><mn>2</mn><mo>+</mo><mi>i</mi><mo>)</mo></mrow></math> を展開すると <math><mn>5</mn><msup><mi>i</mi><mn>2</mn></msup></math> が出て、−5 におき換える。</p><p><math><mn>5</mn><mi>i</mi><mrow><mo>(</mo><mn>2</mn><mo>+</mo><mi>i</mi><mo>)</mo></mrow><mo>=</mo><mn>10</mn><mi>i</mi><mo>+</mo><mn>5</mn><msup><mi>i</mi><mn>2</mn></msup><mo>=</mo><mo>−</mo><mn>5</mn><mo>+</mo><mn>10</mn><mi>i</mi></math>。これを 5 で割ろう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
@@ -585,19 +650,19 @@
         </div>
         <div class="tabpanel" id="panel-ren6-4" data-flow="ren6-4" data-label="練習6 (4)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(4)　<span class="frac"><span class="num">1</span><span class="den">i</span></span></span>
+            <span class="sub prob-q" style="margin:0">(4)　<math><mfrac><mn>1</mn><mi>i</mi></mfrac></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― 分母を実数にする</h3>
-          <p>分母 i に −i を掛けると i × (−i) = −i<sup>2</sup> = 1 になる。分母と分子の両方に −i を掛けてみよう。</p>
+          <p class="cite"><span class="cite-tag">使う性質</span><math><mi>i</mi><mo>×</mo><mrow><mo>(</mo><mo>−</mo><mi>i</mi><mo>)</mo></mrow><mo>=</mo><mo>−</mo><msup><mi>i</mi><mn>2</mn></msup><mo>=</mo><mn>1</mn></math>分母・分子の両方に <math><mo>−</mo><mi>i</mi></math> を掛けて、分母を 1 にする。</p><p>分母 <math><mi>i</mi></math> に −<math><mi>i</mi></math> を掛けると<math><mi>i</mi><mo>×</mo><mrow><mo>(</mo><mo>−</mo><mi>i</mi><mo>)</mo></mrow><mo>=</mo><mo>−</mo><msup><mi>i</mi><mn>2</mn></msup><mo>=</mo><mn>1</mn></math>になる。<br>分母と分子の両方に −<math><mi>i</mi></math> を掛けてみよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">−i</p>
-          <p><span class="frac"><span class="num">1</span><span class="den">i</span></span> = <span class="frac"><span class="num">−i</span><span class="den">−i<sup>2</sup></span></span> と計算できる。</p>
+          <p class="big">−<math><mi>i</mi></math></p><p class="cite"><span class="cite-tag">使う性質</span><math><mfrac><mn>1</mn><mi>i</mi></mfrac><mo>=</mo><mfrac><mrow><mo>−</mo><mi>i</mi></mrow><mrow><mo>−</mo><msup><mi>i</mi><mn>2</mn></msup></mrow></mfrac></math>分母・分子に <math><mo>−</mo><mi>i</mi></math> を掛けると、分母が 1 になる。</p>
+          <p><math><mfrac><mn>1</mn><mi>i</mi></mfrac><mo>=</mo><mfrac><mrow><mo>−</mo><mi>i</mi></mrow><mrow><mo>−</mo><msup><mi>i</mi><mn>2</mn></msup></mrow></mfrac></math> と計算できる。</p>
         </div>
           <p class="prob-done">(4) クリア！　練習6は全部おわり。次は負の数の平方根を学ぼう。</p>
         </div>
@@ -608,11 +673,11 @@
         <span class="pno">教科書 p.44</span>
       </div>
       <section class="card">
-        <p>たとえば、√3 i と −√3 i を2乗すると、それぞれ (√3 i)<sup>2</sup> = (√3)<sup>2</sup>i<sup>2</sup> = −3、(−√3 i)<sup>2</sup> = (−√3)<sup>2</sup>i<sup>2</sup> = −3 となる。したがって、√3 i と −√3 i はともに −3 の平方根である。</p>
-        <p>逆に、−3 の平方根は √3 i と −√3 i である。そこで、√3 i を √−3 で表すことにすると、−3 の平方根は √−3 と −√−3 である。一般に、根号の中が負である記号 √−a の意味を次のように定める。</p>
+        <p>たとえば、<math><msqrt><mn>3</mn></msqrt><mi>i</mi></math>と<math><mo>−</mo><msqrt><mn>3</mn></msqrt><mi>i</mi></math>を2乗すると、それぞれ<math><msup><mrow><mo>(</mo><msqrt><mn>3</mn></msqrt><mi>i</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><msqrt><mn>3</mn></msqrt><mo>)</mo></mrow><mn>2</mn></msup><msup><mi>i</mi><mn>2</mn></msup><mo>=</mo><mo>−</mo><mn>3</mn></math>、<math><msup><mrow><mo>(</mo><mo>−</mo><msqrt><mn>3</mn></msqrt><mi>i</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><mo>−</mo><msqrt><mn>3</mn></msqrt><mo>)</mo></mrow><mn>2</mn></msup><msup><mi>i</mi><mn>2</mn></msup><mo>=</mo><mo>−</mo><mn>3</mn></math>となる。したがって、<math><msqrt><mn>3</mn></msqrt><mi>i</mi></math>と<math><mo>−</mo><msqrt><mn>3</mn></msqrt><mi>i</mi></math>はともに −3 の平方根である。</p>
+        <p>逆に、−3 の平方根は<math><msqrt><mn>3</mn></msqrt><mi>i</mi></math>と<math><mo>−</mo><msqrt><mn>3</mn></msqrt><mi>i</mi></math>である。そこで、<math><msqrt><mn>3</mn></msqrt><mi>i</mi></math>を<math><msqrt><mrow><mo>−</mo><mn>3</mn></mrow></msqrt></math>で表すことにすると、−3 の平方根は<math><msqrt><mrow><mo>−</mo><mn>3</mn></mrow></msqrt></math>と<math><mo>−</mo><msqrt><mrow><mo>−</mo><mn>3</mn></mrow></msqrt></math>である。一般に、根号の中が負である記号<math><msqrt><mrow><mo>−</mo><mi>a</mi></mrow></msqrt></math>の意味を次のように定める。</p>
         <div class="def">
-          <p class="formula left">a &gt; 0 のとき　√−a = √a i　　とくに　√−1 = i</p>
-          <p><b>負の数の平方根：</b>a &gt; 0 のとき、−a の平方根は ±√−a すなわち ±√a i</p>
+          <p class="formula left"><math><mi>a</mi><mo>&gt;</mo><mn>0</mn></math> のとき　<math><msqrt><mrow><mo>−</mo><mi>a</mi></mrow></msqrt><mo>=</mo><msqrt><mi>a</mi></msqrt><mi>i</mi></math>　　とくに　<math><msqrt><mrow><mo>−</mo><mn>1</mn></mrow></msqrt><mo>=</mo><mi>i</mi></math></p>
+          <p><b>負の数の平方根：</b><math><mi>a</mi><mo>&gt;</mo><mn>0</mn></math> のとき、−<math><mi>a</mi></math> の平方根は<math><mo>±</mo><msqrt><mrow><mo>−</mo><mi>a</mi></mrow></msqrt></math>すなわち<math><mo>±</mo><msqrt><mi>a</mi></msqrt><mi>i</mi></math></p>
         </div>
         <p>このように定めることにより、複素数の範囲では、負の数にも平方根が存在する。</p>
       </section>
@@ -621,52 +686,60 @@
         <h2>例6・例7で解き方を確認</h2>
         <span class="pno">教科書 p.44</span>
       </div>
-      <section class="card prob" id="prob-ex6" data-flow="ex6" data-label="例6">
+      <section class="nofig card prob" id="prob-ex6" data-flow="ex6" data-label="例6">
         <div class="prob-head">
           <span class="prob-tag ">例 6</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 1</span>
         </div>
         <div class="qside">
-        <p class="prob-q">(1)　√−8 を i を用いて表そう。　(2)　−6 の平方根を求めよう。</p>
+        <p class="prob-q">(1)　<math><msqrt><mrow><mo>−</mo><mn>8</mn></mrow></msqrt></math>を <math><mi>i</mi></math> を用いて表そう。　(2)　−6 の平方根を求めよう。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― √−a = √a i を使う</h3>
-          <p>(1) は √−8 = √8 i。√8 は 2√2 と簡単にできるよ。(2) は「±」をつけるのを忘れずに。</p>
+          <h3>ヒント<math><mn>1</mn><mo>―</mo><msqrt><mrow><mo>−</mo><mi>a</mi></mrow></msqrt><mo>=</mo><msqrt><mi>a</mi></msqrt><mi>i</mi></math>を使う</h3>
+          <p class="cite"><span class="cite-tag">使う定義</span><math><msqrt><mrow><mo>−</mo><mi>a</mi></mrow></msqrt><mo>=</mo><msqrt><mi>a</mi></msqrt><mi>i</mi></math>（<math><mi>a</mi><mo>&gt;</mo><mn>0</mn></math>）を使う。(1) は <math><msqrt><mrow><mo>−</mo><mn>8</mn></mrow></msqrt><mo>=</mo><msqrt><mn>8</mn></msqrt><mi>i</mi></math>、(2) は −6 の平方根だから ± をつける。</p><p>(1) は<math><msqrt><mrow><mo>−</mo><mn>8</mn></mrow></msqrt><mo>=</mo><msqrt><mn>8</mn></msqrt><mi>i</mi></math>。<math><msqrt><mn>8</mn></msqrt></math>は<math><mn>2</mn><msqrt><mn>2</mn></msqrt></math>と簡単にできるよ。(2) は「±」をつけるのを忘れずに。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">(1)　2√2 i　　(2)　±√6 i</p>
-          <p>(1) √−8 = √8 i = 2√2 i</p>
-          <p>(2) −6 の平方根は ±√−6 = ±√6 i</p>
+          <p class="big">(1)　<math><mn>2</mn><msqrt><mn>2</mn></msqrt><mi>i</mi></math>　　(2)　<math><mo>±</mo><msqrt><mn>6</mn></msqrt><mi>i</mi></math></p><p class="cite"><span class="cite-tag">使う定義</span><math><msqrt><mrow><mo>−</mo><mi>a</mi></mrow></msqrt><mo>=</mo><msqrt><mi>a</mi></msqrt><mi>i</mi></math>（<math><mi>a</mi><mo>&gt;</mo><mn>0</mn></math>）を使い、(1) は <math><msqrt><mn>8</mn></msqrt><mo>=</mo><mn>2</mn><msqrt><mn>2</mn></msqrt></math> と簡単にし、(2) は平方根だから ± をつける。</p>
+          <p><math><mrow><mo>(</mo><mn>1</mn><mo>)</mo></mrow><msqrt><mrow><mo>−</mo><mn>8</mn></mrow></msqrt><mo>=</mo><msqrt><mn>8</mn></msqrt><mi>i</mi><mo>=</mo><mn>2</mn><msqrt><mn>2</mn></msqrt><mi>i</mi></math></p>
+          <p>(2) −6 の平方根は<math><mo>±</mo><msqrt><mrow><mo>−</mo><mn>6</mn></mrow></msqrt><mo>=</mo><mo>±</mo><msqrt><mn>6</mn></msqrt><mi>i</mi></math></p>
         </div>
         <p class="prob-done">例6 クリア！　次は練習7に挑戦しよう。</p>
       </section>
-      <section class="card prob" id="prob-ex7" data-flow="ex7" data-label="例7">
+      <section class="nofig card prob" id="prob-ex7" data-flow="ex7" data-label="例7">
         <div class="prob-head">
           <span class="prob-tag ">例 7</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">次の式を計算しよう。<br>(1)　√−2 √−3　　(2)　<span class="frac"><span class="num">√3</span><span class="den">√−4</span></span></p>
+        <p class="prob-q">次の式を計算しよう。<br>(1)　<math><msqrt><mrow><mo>−</mo><mn>2</mn></mrow></msqrt><msqrt><mrow><mo>−</mo><mn>3</mn></mrow></msqrt></math>　　(2)　<math><mfrac><msqrt><mn>3</mn></msqrt><msqrt><mrow><mo>−</mo><mn>4</mn></mrow></msqrt></mfrac></math></p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 先に i を用いた形に直す</h3>
-          <p>√−2 = √2 i、√−3 = √3 i と直してから掛けよう。√a √b = √ab の計算は、負の数ではそのまま使えないことに注意だよ（下の補足を見よう）。</p>
+          <h3>ヒント 1 ― 先に <math><mi>i</mi></math> を用いた形に直す</h3>
+          <p class="cite"><span class="cite-tag">使う性質</span><math><msqrt><mrow><mo>−</mo><mn>2</mn></mrow></msqrt><mo>=</mo><msqrt><mn>2</mn></msqrt><mi>i</mi></math>、<math><msqrt><mrow><mo>−</mo><mn>3</mn></mrow></msqrt><mo>=</mo><msqrt><mn>3</mn></msqrt><mi>i</mi></math> と直してから掛ける。負の数どうしでは根号をそのまままとめる計算は使えない。</p><p><math><msqrt><mrow><mo>−</mo><mn>2</mn></mrow></msqrt><mo>=</mo><msqrt><mn>2</mn></msqrt><mi>i</mi></math>、<math><msqrt><mrow><mo>−</mo><mn>3</mn></mrow></msqrt><mo>=</mo><msqrt><mn>3</mn></msqrt><mi>i</mi></math>と直してから掛けよう。<br><math><msqrt><mi>a</mi></msqrt><msqrt><mi>b</mi></msqrt><mo>=</mo><msqrt><mi>a</mi></msqrt><mi>b</mi></math>の計算は、負の数ではそのまま使えないことに注意だよ（下の補足を見よう）。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― (2) は分母を i の形に直す</h3>
-          <p>√−4 = 2i だから、<span class="frac"><span class="num">√3</span><span class="den">√−4</span></span> = <span class="frac"><span class="num">√3</span><span class="den">2i</span></span>。分母の i を消すには、分子と分母に i を掛けよう。</p>
+          <h3>ヒント 2 ― (2) は分母を <math><mi>i</mi></math> の形に直す</h3>
+          <p class="cite"><span class="cite-tag">使う性質</span><math><msqrt><mrow><mo>−</mo><mn>4</mn></mrow></msqrt><mo>=</mo><mn>2</mn><mi>i</mi></math> と直すと商は <math><mfrac><mn>3</mn><mrow><mn>2</mn><mi>i</mi></mrow></mfrac></math> になる。分母の <math><mi>i</mi></math> を消すには、分子と分母に <math><mi>i</mi></math> を掛ける。</p><p><math><msqrt><mrow><mo>−</mo><mn>4</mn></mrow></msqrt><mo>=</mo><mn>2</mn><mi>i</mi></math>だから、<math><mfrac><msqrt><mn>3</mn></msqrt><msqrt><mrow><mo>−</mo><mn>4</mn></mrow></msqrt></mfrac><mo>=</mo><mfrac><msqrt><mn>3</mn></msqrt><mrow><mn>2</mn><mi>i</mi></mrow></mfrac></math>。分母の <math><mi>i</mi></math> を消すには、分子と分母に <math><mi>i</mi></math> を掛けよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">(1)　−√6　　(2)　−<span class="frac"><span class="num">√3</span><span class="den">2</span></span>i</p>
-          <p>(1) √−2 √−3 = √2 i × √3 i = √6 i<sup>2</sup> = −√6</p>
-          <p>(2) <span class="frac"><span class="num">√3</span><span class="den">√−4</span></span> = <span class="frac"><span class="num">√3</span><span class="den">2i</span></span> = <span class="frac"><span class="num">√3 i</span><span class="den">2i · i</span></span> = −<span class="frac"><span class="num">√3</span><span class="den">2</span></span>i</p>
-          <p class="note"><b>補足：</b>√−2 √−3 ≠ √(−2)(−3) である。一般に、a &lt; 0、b &lt; 0 のとき √a √b = √ab は成り立たない。</p>
+          <p class="big">(1)　<math><mo>−</mo><msqrt><mn>6</mn></msqrt></math>　　(2)　<math><mo>−</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac><mi>i</mi></math></p><p class="cite"><span class="cite-tag">使う性質</span><math><msqrt><mrow><mo>−</mo><mi>a</mi></mrow></msqrt><mo>=</mo><msqrt><mi>a</mi></msqrt><mi>i</mi></math> を使って先に <math><mi>i</mi></math> を用いた形に直してから、積と商を計算する。</p>
+          <div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mrow><mo>(</mo><mn>1</mn><mo>)</mo></mrow><msqrt><mrow><mo>−</mo><mn>2</mn></mrow></msqrt><msqrt><mrow><mo>−</mo><mn>3</mn></mrow></msqrt><mo>=</mo><msqrt><mn>2</mn></msqrt><mi>i</mi><mo>×</mo><msqrt><mn>3</mn></msqrt><mi>i</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mrow><mo>(</mo><mn>1</mn><mo>)</mo></mrow><msqrt><mrow><mo>−</mo><mn>2</mn></mrow></msqrt><msqrt><mrow><mo>−</mo><mn>3</mn></mrow></msqrt></mphantom><mo>=</mo><msqrt><mn>6</mn></msqrt><msup><mi>i</mi><mn>2</mn></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mrow><mo>(</mo><mn>1</mn><mo>)</mo></mrow><msqrt><mrow><mo>−</mo><mn>2</mn></mrow></msqrt><msqrt><mrow><mo>−</mo><mn>3</mn></mrow></msqrt></mphantom><mo>=</mo><mo>−</mo><msqrt><mn>6</mn></msqrt></math></div>
+</div>
+          <div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow><mfrac><msqrt><mn>3</mn></msqrt><msqrt><mrow><mo>−</mo><mn>4</mn></mrow></msqrt></mfrac><mo>=</mo><mfrac><msqrt><mn>3</mn></msqrt><mrow><mn>2</mn><mi>i</mi></mrow></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow><mfrac><msqrt><mn>3</mn></msqrt><msqrt><mrow><mo>−</mo><mn>4</mn></mrow></msqrt></mfrac></mphantom><mo>=</mo><mfrac><mrow><msqrt><mn>3</mn></msqrt><mi>i</mi></mrow><mrow><mn>2</mn><mi>i</mi><mo>·</mo><mi>i</mi></mrow></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow><mfrac><msqrt><mn>3</mn></msqrt><msqrt><mrow><mo>−</mo><mn>4</mn></mrow></msqrt></mfrac></mphantom><mo>=</mo><mo>−</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac><mi>i</mi></math></div>
+</div>
+          <p class="note"><b>補足：</b><math><msqrt><mrow><mo>−</mo><mn>2</mn></mrow></msqrt><msqrt><mrow><mo>−</mo><mn>3</mn></mrow></msqrt><mo>≠</mo><msqrt><mrow><mo>−</mo><mn>2</mn></mrow></msqrt><mrow><mo>(</mo><mo>−</mo><mn>3</mn><mo>)</mo></mrow></math>である。<br>一般に、<math><mi>a</mi><mo>&lt;</mo><mn>0</mn></math>、<math><mi>b</mi><mo>&lt;</mo><mn>0</mn></math> のとき<math><msqrt><mi>a</mi></msqrt><msqrt><mi>b</mi></msqrt><mo>=</mo><msqrt><mi>a</mi></msqrt><mi>b</mi></math>は成り立たない。</p>
         </div>
         <p class="prob-done">例7 クリア！　次は練習8に挑戦しよう。</p>
       </section>
@@ -675,13 +748,13 @@
         <h2>練習問題に挑戦</h2>
         <span class="pno">教科書 p.44</span>
       </div>
-      <section class="card prob" id="prob-ren7" data-label="練習7">
+      <section class="nofig card prob" id="prob-ren7" data-label="練習7">
         <div class="prob-head">
           <span class="prob-tag ren">練習 7</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
         <div class="qside">
-        <p class="prob-q">次の数を i を用いて表せ。</p>
+        <p class="prob-q">次の数を <math><mi>i</mi></math> を用いて表せ。</p>
         </div>
         <div class="tabs" role="tablist" aria-label="練習7の小問">
           <button class="tab" role="tab" data-tab="ren7-1" aria-selected="true">(1)</button>
@@ -690,31 +763,31 @@
         </div>
         <div class="tabpanel show" id="panel-ren7-1" data-flow="ren7-1" data-label="練習7 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　√−5</span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><msqrt><mrow><mo>−</mo><mn>5</mn></mrow></msqrt></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― √−a = √a i</h3>
-          <p>√−5 の 5 をそのまま √ の中に残して、後ろに i をつけよう。</p>
+          <h3>ヒント<math><mn>1</mn><mo>―</mo><msqrt><mrow><mo>−</mo><mi>a</mi></mrow></msqrt><mo>=</mo><msqrt><mi>a</mi></msqrt><mi>i</mi></math></h3>
+          <p class="cite"><span class="cite-tag">使う定義</span><math><msqrt><mrow><mo>−</mo><mn>5</mn></mrow></msqrt></math><math><mo>=</mo><msqrt><mn>5</mn></msqrt><mi>i</mi></math>根号の中の 5 はそのまま残し、後ろに <math><mi>i</mi></math> をつける。</p><p><math><msqrt><mrow><mo>−</mo><mn>5</mn></mrow></msqrt></math>の 5 をそのまま<math><mo>√</mo></math>の中に残して、後ろに <math><mi>i</mi></math> をつけよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">√5 i</p>
+          <p class="big"><math display="block"><msqrt><mn>5</mn></msqrt><mi>i</mi></math></p>
 
         </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren7-2" data-flow="ren7-2" data-label="練習7 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　√−9</span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><msqrt><mrow><mo>−</mo><mn>9</mn></mrow></msqrt></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― √9 を先に簡単にする</h3>
-          <p>√−9 = √9 i。√9 は整数になるよ。</p>
+          <h3>ヒント<math><mn>1</mn><mo>―</mo><msqrt><mn>9</mn></msqrt></math>を先に簡単にする</h3>
+          <p class="cite"><span class="cite-tag">使う定義</span><math><msqrt><mrow><mo>−</mo><mn>9</mn></mrow></msqrt><mo>=</mo><msqrt><mn>9</mn></msqrt><mi>i</mi></math><math><msqrt><mn>9</mn></msqrt><mo>=</mo><mn>3</mn></math> だから、整数 3 を使って表せる。</p><p><math><msqrt><mrow><mo>−</mo><mn>9</mn></mrow></msqrt><mo>=</mo><msqrt><mn>9</mn></msqrt><mi>i</mi></math>。<math><msqrt><mn>9</mn></msqrt></math>は整数になるよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
@@ -732,18 +805,18 @@
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― 「平方根」は ± をつける</h3>
-          <p>−27 の平方根は ±√−27 = ±√27 i。√27 は 3√3 と簡単にできるよ。</p>
+          <p class="cite"><span class="cite-tag">使う定義</span><math><mo>−</mo><mi>a</mi></math> の平方根は <math><mo>±</mo><msqrt><mi>a</mi></msqrt><mi>i</mi></math>（<math><mi>a</mi><mo>&gt;</mo><mn>0</mn></math>）。−27 の平方根は <math><mo>±</mo><msqrt><mrow><mo>−</mo><mn>27</mn></mrow></msqrt></math> で、<math><msqrt><mn>27</mn></msqrt><mo>=</mo><mn>3</mn><msqrt><mn>3</mn></msqrt></math> と簡単にできる。</p><p>−27 の平方根は<math><mo>±</mo><msqrt><mrow><mo>−</mo><mn>27</mn></mrow></msqrt><mo>=</mo><mo>±</mo><msqrt><mn>27</mn></msqrt><mi>i</mi></math>。<math><msqrt><mn>27</mn></msqrt></math>は<math><mn>3</mn><msqrt><mn>3</mn></msqrt></math>と簡単にできるよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">±3√3 i</p>
+          <p class="big"><math display="block"><mo>±</mo><mn>3</mn><msqrt><mn>3</mn></msqrt><mi>i</mi></math></p>
 
         </div>
           <p class="prob-done">(3) クリア！　練習7は全部おわり。次は練習8だよ。</p>
         </div>
       </section>
-      <section class="card prob" id="prob-ren8" data-label="練習8">
+      <section class="nofig card prob" id="prob-ren8" data-label="練習8">
         <div class="prob-head">
           <span class="prob-tag ren">練習 8</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
@@ -759,84 +832,88 @@
         </div>
         <div class="tabpanel show" id="panel-ren8-1" data-flow="ren8-1" data-label="練習8 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　√−2 √−6</span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><msqrt><mrow><mo>−</mo><mn>2</mn></mrow></msqrt><msqrt><mrow><mo>−</mo><mn>6</mn></mrow></msqrt></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
           <div class="quiz" id="qz-ren8-1" data-correct="1">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>−2√3</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>2√3</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>−√12</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>2√3 i</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mo>−</mo><mn>2</mn><msqrt><mn>3</mn></msqrt></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mn>2</mn><msqrt><mn>3</mn></msqrt></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mo>−</mo><msqrt><mn>12</mn></msqrt></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mn>2</mn><msqrt><mn>3</mn></msqrt><mi>i</mi></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
           <p class="verdict"></p>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― i を用いた形に直してから掛ける</h3>
-          <p>√−2 = √2 i、√−6 = √6 i と直そう。積は √2 × √6 × i<sup>2</sup> になるよ。</p>
+          <h3>ヒント 1 ― <math><mi>i</mi></math> を用いた形に直してから掛ける</h3>
+          <p class="cite"><span class="cite-tag">使う性質</span><math><msqrt><mrow><mo>−</mo><mn>2</mn></mrow></msqrt><mo>=</mo><msqrt><mn>2</mn></msqrt><mi>i</mi></math>、<math><msqrt><mrow><mo>−</mo><mn>6</mn></mrow></msqrt><mo>=</mo><msqrt><mn>6</mn></msqrt><mi>i</mi></math> と直してから掛け、<math><msup><mi>i</mi><mn>2</mn></msup><mo>=</mo><mo>−</mo><mn>1</mn></math> を使う。</p><p><math><msqrt><mrow><mo>−</mo><mn>2</mn></mrow></msqrt><mo>=</mo><msqrt><mn>2</mn></msqrt><mi>i</mi></math>、<math><msqrt><mrow><mo>−</mo><mn>6</mn></mrow></msqrt><mo>=</mo><msqrt><mn>6</mn></msqrt><mi>i</mi></math>と直そう。積は<math><msqrt><mn>2</mn></msqrt><mo>×</mo><msqrt><mn>6</mn></msqrt><mo>×</mo><msup><mi>i</mi><mn>2</mn></msup></math> になるよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">−2√3</p>
-          <p>√−2 √−6 = √2 i × √6 i = √12 i<sup>2</sup> = −√12</p>
+          <p class="big"><math display="block"><mo>−</mo><mn>2</mn><msqrt><mn>3</mn></msqrt></math></p><p class="cite"><span class="cite-tag">使う性質</span><math><msqrt><mrow><mo>−</mo><mn>2</mn></mrow></msqrt><mo>=</mo><msqrt><mn>2</mn></msqrt><mi>i</mi></math>、<math><msqrt><mrow><mo>−</mo><mn>6</mn></mrow></msqrt><mo>=</mo><msqrt><mn>6</mn></msqrt><mi>i</mi></math> と直してから掛ける。</p>
+          <div class="chain-crow">
+<div class="crow"><math displaystyle="true"><msqrt><mrow><mo>−</mo><mn>2</mn></mrow></msqrt><msqrt><mrow><mo>−</mo><mn>6</mn></mrow></msqrt><mo>=</mo><msqrt><mn>2</mn></msqrt><mi>i</mi><mo>×</mo><msqrt><mn>6</mn></msqrt><mi>i</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msqrt><mrow><mo>−</mo><mn>2</mn></mrow></msqrt><msqrt><mrow><mo>−</mo><mn>6</mn></mrow></msqrt></mphantom><mo>=</mo><msqrt><mn>12</mn></msqrt><msup><mi>i</mi><mn>2</mn></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msqrt><mrow><mo>−</mo><mn>2</mn></mrow></msqrt><msqrt><mrow><mo>−</mo><mn>6</mn></mrow></msqrt></mphantom><mo>=</mo><mo>−</mo><msqrt><mn>12</mn></msqrt></math></div>
+</div>
         </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren8-2" data-flow="ren8-2" data-label="練習8 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　<span class="frac"><span class="num">√−8</span><span class="den">√2</span></span></span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><mfrac><msqrt><mrow><mo>−</mo><mn>8</mn></mrow></msqrt><msqrt><mn>2</mn></msqrt></mfrac></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 分子を i の形に直す</h3>
-          <p>√−8 = 2√2 i と直すと、分母の √2 と約分できるよ。</p>
+          <h3>ヒント 1 ― 分子を <math><mi>i</mi></math> の形に直す</h3>
+          <p class="cite"><span class="cite-tag">使う性質</span><math><msqrt><mrow><mo>−</mo><mn>8</mn></mrow></msqrt><mo>=</mo><mn>2</mn><msqrt><mn>2</mn></msqrt><mi>i</mi></math> と直すと、分母の <math><msqrt><mn>2</mn></msqrt></math> と約分できる。</p><p><math><msqrt><mrow><mo>−</mo><mn>8</mn></mrow></msqrt><mo>=</mo><mn>2</mn><msqrt><mn>2</mn></msqrt><mi>i</mi></math>と直すと、分母の<math><msqrt><mn>2</mn></msqrt></math>と約分できるよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">2i</p>
-          <p><span class="frac"><span class="num">√−8</span><span class="den">√2</span></span> = <span class="frac"><span class="num">2√2 i</span><span class="den">√2</span></span></p>
+          <p class="big">2i</p><p class="cite"><span class="cite-tag">使う性質</span><math><msqrt><mrow><mo>−</mo><mn>8</mn></mrow></msqrt><mo>=</mo><mn>2</mn><msqrt><mn>2</mn></msqrt><mi>i</mi></math> と直して、分母と約分する。</p>
+          <p><math><mfrac><msqrt><mrow><mo>−</mo><mn>8</mn></mrow></msqrt><msqrt><mn>2</mn></msqrt></mfrac><mo>=</mo><mfrac><mrow><mn>2</mn><msqrt><mn>2</mn></msqrt><mi>i</mi></mrow><msqrt><mn>2</mn></msqrt></mfrac></math></p>
         </div>
           <p class="prob-done">(2) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren8-3" data-flow="ren8-3" data-label="練習8 (3)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(3)　<span class="frac"><span class="num">√−3</span><span class="den">√−2</span></span></span>
+            <span class="sub prob-q" style="margin:0">(3)　<math><mfrac><msqrt><mrow><mo>−</mo><mn>3</mn></mrow></msqrt><msqrt><mrow><mo>−</mo><mn>2</mn></mrow></msqrt></mfrac></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 両方を i の形に直す</h3>
-          <p><span class="frac"><span class="num">√−3</span><span class="den">√−2</span></span> = <span class="frac"><span class="num">√3 i</span><span class="den">√2 i</span></span>。i が約分で消えるよ。あとは分母を有理化しよう。</p>
+          <h3>ヒント 1 ― 両方を <math><mi>i</mi></math> の形に直す</h3>
+          <p class="cite"><span class="cite-tag">使う性質</span><math><mfrac><msqrt><mrow><mo>−</mo><mn>3</mn></mrow></msqrt><msqrt><mrow><mo>−</mo><mn>2</mn></mrow></msqrt></mfrac><mo>=</mo><mfrac><mrow><msqrt><mn>3</mn></msqrt><mi>i</mi></mrow><mrow><msqrt><mn>2</mn></msqrt><mi>i</mi></mrow></mfrac></math>両方を <math><mi>i</mi></math> を用いた形に直すと、<math><mi>i</mi></math> が約分で消える。</p><p><math><mfrac><msqrt><mrow><mo>−</mo><mn>3</mn></mrow></msqrt><msqrt><mrow><mo>−</mo><mn>2</mn></mrow></msqrt></mfrac><mo>=</mo><mfrac><mrow><msqrt><mn>3</mn></msqrt><mi>i</mi></mrow><mrow><msqrt><mn>2</mn></msqrt><mi>i</mi></mrow></mfrac></math>。<math><mi>i</mi></math> が約分で消えるよ。あとは分母を有理化しよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big"><span class="frac"><span class="num">√6</span><span class="den">2</span></span></p>
-          <p><span class="frac"><span class="num">√−3</span><span class="den">√−2</span></span> = <span class="frac"><span class="num">√3</span><span class="den">√2</span></span> = <span class="frac"><span class="num">√6</span><span class="den">2</span></span></p>
+          <p class="big"><math display="block"><mfrac><msqrt><mn>6</mn></msqrt><mn>2</mn></mfrac></math></p><p class="cite"><span class="cite-tag">使う性質</span><math><msqrt><mrow><mo>−</mo><mi>a</mi></mrow></msqrt><mo>=</mo><msqrt><mi>a</mi></msqrt><mi>i</mi></math> で両方を <math><mi>i</mi></math> を用いた形に直すと <math><mi>i</mi></math> が消え、あとは分母を有理化する。</p>
+          <p><math><mfrac><msqrt><mrow><mo>−</mo><mn>3</mn></mrow></msqrt><msqrt><mrow><mo>−</mo><mn>2</mn></mrow></msqrt></mfrac><mo>=</mo><mfrac><msqrt><mn>3</mn></msqrt><msqrt><mn>2</mn></msqrt></mfrac><mo>=</mo><mfrac><msqrt><mn>6</mn></msqrt><mn>2</mn></mfrac></math></p>
         </div>
           <p class="prob-done">(3) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren8-4" data-flow="ren8-4" data-label="練習8 (4)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(4)　<span class="frac"><span class="num">√50</span><span class="den">√−5</span></span></span>
+            <span class="sub prob-q" style="margin:0">(4)　<math><mfrac><msqrt><mn>50</mn></msqrt><msqrt><mrow><mo>−</mo><mn>5</mn></mrow></msqrt></mfrac></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 分母を i の形に直す</h3>
-          <p>√−5 = √5 i。√50 = 5√2 と直すと、<span class="frac"><span class="num">5√2</span><span class="den">√5 i</span></span> = <span class="frac"><span class="num">√10</span><span class="den">i</span></span> になる。最後に、分母の i を消すため、分子と分母に i を掛けよう。</p>
+          <h3>ヒント 1 ― 分母を <math><mi>i</mi></math> の形に直す</h3>
+          <p class="cite"><span class="cite-tag">使う性質</span><math><msqrt><mrow><mo>−</mo><mn>5</mn></mrow></msqrt><mo>=</mo><msqrt><mn>5</mn></msqrt><mi>i</mi></math> と直し、<math><msqrt><mn>50</mn></msqrt><mo>=</mo><mn>5</mn><msqrt><mn>2</mn></msqrt></math> を使うと商は <math><mn>10</mn><mi>i</mi></math> になる。最後に分母の <math><mi>i</mi></math> を消す。</p><p><math><msqrt><mrow><mo>−</mo><mn>5</mn></mrow></msqrt><mo>=</mo><msqrt><mn>5</mn></msqrt><mi>i</mi></math>。<math><msqrt><mn>50</mn></msqrt><mo>=</mo><mn>5</mn><msqrt><mn>2</mn></msqrt></math>と直すと、<math><mfrac><mrow><mn>5</mn><msqrt><mn>2</mn></msqrt></mrow><mrow><msqrt><mn>5</mn></msqrt><mi>i</mi></mrow></mfrac><mo>=</mo><mfrac><msqrt><mn>10</mn></msqrt><mi>i</mi></mfrac></math> になる。<br>最後に、分母の <math><mi>i</mi></math> を消すため、分子と分母に <math><mi>i</mi></math> を掛けよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">−√10 i</p>
-          <p><span class="frac"><span class="num">√50</span><span class="den">√−5</span></span> = <span class="frac"><span class="num">√10</span><span class="den">i</span></span> = <span class="frac"><span class="num">√10 i</span><span class="den">i<sup>2</sup></span></span></p>
+          <p class="big"><math display="block"><mo>−</mo><msqrt><mn>10</mn></msqrt><mi>i</mi></math></p><p class="cite"><span class="cite-tag">使う性質</span><math><msqrt><mrow><mo>−</mo><mi>a</mi></mrow></msqrt><mo>=</mo><msqrt><mi>a</mi></msqrt><mi>i</mi></math> で分母を <math><msqrt><mn>5</mn></msqrt><mi>i</mi></math> と直して割り、最後に分母の <math><mi>i</mi></math> を消すため分子と分母に <math><mi>i</mi></math> を掛ける。</p>
+          <p><math><mfrac><msqrt><mn>50</mn></msqrt><msqrt><mrow><mo>−</mo><mn>5</mn></mrow></msqrt></mfrac><mo>=</mo><mfrac><msqrt><mn>10</mn></msqrt><mi>i</mi></mfrac><mo>=</mo><mfrac><mrow><msqrt><mn>10</mn></msqrt><mi>i</mi></mrow><msup><mi>i</mi><mn>2</mn></msup></mfrac></math></p>
         </div>
           <p class="prob-done">(4) クリア！　練習8は全部おわり。次のページは2次方程式の解だよ。</p>
         </div>
@@ -847,11 +924,11 @@
       <section class="card summary" id="summaryCard" style="display:none">
         <h2>この項のポイント</h2>
         <ul>
-          <li><b>共役な複素数：</b>a + bi と a − bi。実数と共役なのはその数自身。和は 2a、積は a<sup>2</sup> + b<sup>2</sup> で、ともに実数。</li>
-          <li><b>除法：</b>分母と共役な複素数を、分母と分子の両方に掛けて、分母を実数にする。</li>
-          <li><b>負の数の平方根：</b>a &gt; 0 のとき √−a = √a i で、−a の平方根は ±√a i。</li>
-          <li><b>根号の計算の注意：</b>負の数では √a √b = √ab が成り立たない。先に i を用いた形に直してから計算する。</li>
-          <li><b>四則計算の結果：</b>複素数の和、差、積、商は常に複素数である。</li>
+          <li><p class="cite"><span class="cite-tag">使う定義</span><math><mover><mrow><mi>a</mi><mo>+</mo><mi>b</mi><mi>i</mi></mrow><mo>¯</mo></mover><mo>=</mo><mi>a</mi><mo>−</mo><mi>b</mi><mi>i</mi></math>和は <math><mn>2</mn><mi>a</mi></math>、積は <math><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup></math> で、ともに実数。実数と共役なのはその数自身である。</p><b>共役な複素数：</b><math><mi>a</mi></math> + bi と <math><mi>a</mi></math> − bi。実数と共役なのはその数自身。和は 2a、積は<math><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup></math> で、ともに実数。</li>
+          <li><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mi>i</mi><mo>)</mo></mrow><mrow><mo>(</mo><mi>a</mi><mo>−</mo><mi>b</mi><mi>i</mi><mo>)</mo></mrow><mo>=</mo><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup></math>分母と共役な複素数を、分母と分子の両方に掛けて分母を実数にする。</p><b>除法：</b>分母と共役な複素数を、分母と分子の両方に掛けて、分母を実数にする。</li>
+          <li><p class="cite"><span class="cite-tag">使う定義</span><math><msqrt><mrow><mo>−</mo><mi>a</mi></mrow></msqrt><mo>=</mo><msqrt><mi>a</mi></msqrt><mi>i</mi></math>（<math><mi>a</mi><mo>&gt;</mo><mn>0</mn></math>）で、<math><mo>−</mo><mi>a</mi></math> の平方根は <math><mo>±</mo><msqrt><mi>a</mi></msqrt><mi>i</mi></math> である。</p><b>負の数の平方根：</b><math><mi>a</mi><mo>&gt;</mo><mn>0</mn></math> のとき<math><msqrt><mrow><mo>−</mo><mi>a</mi></mrow></msqrt><mo>=</mo><msqrt><mi>a</mi></msqrt><mi>i</mi></math>で、−<math><mi>a</mi></math> の平方根は<math><mo>±</mo><msqrt><mi>a</mi></msqrt><mi>i</mi></math>。</li>
+          <li><p class="cite"><span class="cite-tag">使う性質</span><math><msqrt><mi>a</mi></msqrt><msqrt><mi>b</mi></msqrt><mo>=</mo><msqrt><mi>a</mi><mi>b</mi></msqrt></math> は正の数のときの性質で、負の数では成り立たない。先に <math><mi>i</mi></math> を用いた形に直してから計算する。</p><b>根号の計算の注意：</b>負の数では<math><msqrt><mi>a</mi></msqrt><msqrt><mi>b</mi></msqrt><mo>=</mo><msqrt><mi>a</mi></msqrt><mi>b</mi></math>が成り立たない。先に <math><mi>i</mi></math> を用いた形に直してから計算する。</li>
+          <li><p class="cite"><span class="cite-tag">使う性質</span><math><mi>a</mi><mo>+</mo><mi>b</mi><mi>i</mi></math>複素数の和、差、積、商は、計算すると常にこの形の複素数になる。</p><b>四則計算の結果：</b>複素数の和、差、積、商は常に複素数である。</li>
         </ul>
       </section>
       <footer>
