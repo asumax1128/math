@@ -212,6 +212,12 @@
       .choice.ok .mark { color: var(--ans-tag); }
       .choice.ng .mark { color: var(--ng); }
       .verdict { font-weight: 700; margin-top: 8px; }
+      .check-btn {
+        font: inherit; font-weight: 700; cursor: pointer; margin-top: 10px;
+        background: var(--surface); color: var(--accent);
+        border: 2px solid var(--accent); border-radius: 999px; padding: 8px 22px;
+      }
+      .check-btn:hover { background: var(--accent-soft); }
 
       /* ---------- figures ---------- */
       figure { margin: 12px 0 6px; text-align: center; }
@@ -488,7 +494,9 @@
             <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span class="m">x<sup>3</sup> + 2x</span><span class="mark"></span></button>
             <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span class="m">x<sup>3</sup> − 4</span><span class="mark"></span></button>
           </div>
-          <p>選んだら、「次へ」でヒントを開いて確かめていきましょう。</p>
+          <p>選んだら、下の「答え合わせ」でその場で判定できます。「次へ」でヒントを開いて確かめることもできます。</p>
+          <button class="check-btn" id="r23-check-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
+          <p class="verdict" id="r23-check-verdict" aria-live="polite"></p>
         </div>
 
         <div class="step hint">
@@ -853,6 +861,56 @@
         update();
       })();
     </script>
+<script>
+  /* ---- 練習23「答え合わせ」ボタン（ヒントを見ずにその場で判定） ---- */
+  (function () {
+    var CORRECT = { 2: true, 4: true };
+    var M3X2 = '<math><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup></math>';
+    var btn = document.getElementById('r23-check-btn');
+    var verdict = document.getElementById('r23-check-verdict');
+    if (!btn || !verdict) return;
+    var choices = Array.prototype.slice.call(document.querySelectorAll('#r23-choices .choice'));
+    btn.addEventListener('click', function () {
+      var selected = {};
+      choices.forEach(function (c) {
+        if (c.classList.contains('sel')) selected[c.getAttribute('data-choice')] = true;
+      });
+      var picked = Object.keys(selected);
+      if (picked.length === 0) {
+        verdict.textContent = 'まず選択肢を選んでから、「答え合わせ」を押してね。';
+        return;
+      }
+      choices.forEach(function (c) {
+        var n = c.getAttribute('data-choice');
+        var mark = c.querySelector('.mark');
+        c.classList.remove('ok', 'ng');
+        mark.textContent = '';
+        if (CORRECT[n]) {
+          c.classList.add('ok');
+          mark.textContent = '○';
+        } else if (selected[n]) {
+          c.classList.add('ng');
+          mark.textContent = '×';
+        }
+      });
+      var isCorrect = picked.length === 2 && selected[2] && selected[4];
+      if (isCorrect) {
+        verdict.innerHTML = '正解です！ 原始関数は ② と ④ です。どちらも微分すると ' + M3X2 + ' に戻ります（④の −4 のような定数は、微分すると消えます）。';
+        return;
+      }
+      var msgs = [];
+      if (selected[1]) msgs.push('① <math><mn>6</mn><mi>x</mi></math> は微分すると <math><mn>6</mn></math> になり、' + M3X2 + ' にはなりません');
+      if (selected[3]) msgs.push('③ <math><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi></math> は微分すると <math><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn></math> になり、' + M3X2 + ' にはなりません');
+      if (!selected[2]) msgs.push('② <math><msup><mi>x</mi><mn>3</mn></msup></math> は微分すると ' + M3X2 + ' に戻るので、原始関数です');
+      if (!selected[4]) msgs.push('④ <math><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>4</mn></math> は微分すると ' + M3X2 + ' に戻るので、原始関数です（定数 −4 は微分すると消えます）');
+      verdict.innerHTML = 'まだ正解ではありません。' + msgs.join('。') + '。○×のマークを見直して、もう一度選んでみましょう。';
+    });
+    var btnReset = document.getElementById('btn-reset');
+    if (btnReset) {
+      btnReset.addEventListener('click', function () { verdict.textContent = ''; });
+    }
+  })();
+</script>
 <script>
 (function(){try{
   if(/[?&]nocount=1/.test(location.search)){try{localStorage.setItem('np_nocount','1');}catch(e){}}
