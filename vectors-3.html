@@ -1562,17 +1562,198 @@
             cpLineY.setAttribute('y2', ay);
             cpLineY.style.display = a2 === 0 ? 'none' : '';
             cpDot.setAttribute('cx', ax); cpDot.setAttribute('cy', ay);
-            cpLabelA.setAttribute('x', a1 >= 0 ? ax + 10 : ax - 76);
-            cpLabelA.setAttribute('y', a2 >= 0 ? ay - 10 : ay + 26);
             cpLabelA.textContent = 'A(' + a1 + ', ' + a2 + ')';
-            cpLabelV.setAttribute('x', OX + (ax - OX) * 0.45 - 8);
-            cpLabelV.setAttribute('y', OY + (ay - OY) * 0.45 - 10);
-            cpLabelX.setAttribute('x', (OX + ax) / 2);
-            cpLabelX.setAttribute('y', a2 >= 0 ? OY + 46 : OY - 30);
             cpLabelX.textContent = 'a₁e₁（' + dirX(a1) + '）';
-            cpLabelY.setAttribute('x', a1 >= 0 ? ax + 10 : ax - 118);
-            cpLabelY.setAttribute('y', (OY + ay) / 2 + 5);
             cpLabelY.textContent = 'a₂e₂（' + dirY(a2) + '）';
+            /* ラベル配置：他のラベル・単位ベクトル・成分矢印・合成矢印（鏃は三角形）
+               との重なりを避けられる候補を順に試し、最初に見つかった組合せを使う */
+            var wA = cpLabelA.getComputedTextLength();
+            var wV = cpLabelV.getComputedTextLength();
+            var wX = cpLabelX.getComputedTextLength();
+            var wY = cpLabelY.getComputedTextLength();
+            var pwX = 26, pwY = 26;
+            try { pwX = cpLabelX.getSubStringLength(4); } catch (e) { }
+            try { pwY = cpLabelY.getSubStringLength(4); } catch (e) { }
+            var PADL = 1.0;
+            var statBoxes = [
+              [490, 163, 503, 181], [268, 21, 281, 39], [240, 199, 254, 217],
+              [302, 196, 319, 214], [204, 154, 220, 172], [253, 183, 267, 197]
+            ];
+            var sxn = a1 < 0 ? -1 : 1;
+            var segsL = [
+              [260, 204, 290, 204, 2.4], [246, 190, 246, 160, 2.4]
+            ];
+            function triArrowL(tx, ty, ux, uy, sw) {
+              var s = 6.5 * sw / 10;
+              var bx = tx - 8.5 * s * ux, by = ty - 8.5 * s * uy;
+              var px = -uy, py = ux;
+              return [tx + 1.5 * s * ux, ty + 1.5 * s * uy,
+                      bx + 5 * s * px, by + 5 * s * py,
+                      bx - 5 * s * px, by - 5 * s * py];
+            }
+            var trisL = [triArrowL(290, 204, 1, 0, 3.5), triArrowL(246, 160, 0, -1, 3.5)];
+            if (a1 !== 0) {
+              segsL.push([OX, OY, ax, OY, 2.5]);
+              trisL.push(triArrowL(ax, OY, sxn, 0, 4));
+            }
+            if (a2 !== 0) {
+              segsL.push([ax, OY, ax, ay, 2.5]);
+              trisL.push(triArrowL(ax, ay, 0, a2 > 0 ? -1 : 1, 4));
+            }
+            var lnA = Math.sqrt((ax - OX) * (ax - OX) + (ay - OY) * (ay - OY));
+            var uxA = lnA > 0 ? (ax - OX) / lnA : 1, uyA = lnA > 0 ? (ay - OY) / lnA : 0;
+            if (a1 !== 0 || a2 !== 0) {
+              segsL.push([OX, OY, ax, ay, 2.75]);
+              trisL.push(triArrowL(ax, ay, uxA, uyA, 4.5));
+            }
+            function hitBoxL(a, b) {
+              return a[0] - PADL < b[2] && b[0] - PADL < a[2] && a[1] - PADL < b[3] && b[1] - PADL < a[3];
+            }
+            function ptSegDL(px, py, x1, y1, x2, y2) {
+              var dx = x2 - x1, dy = y2 - y1;
+              var t = 0;
+              if (dx * dx + dy * dy > 0) t = ((px - x1) * dx + (py - y1) * dy) / (dx * dx + dy * dy);
+              t = t < 0 ? 0 : (t > 1 ? 1 : t);
+              var ex = px - (x1 + t * dx), ey = py - (y1 + t * dy);
+              return Math.sqrt(ex * ex + ey * ey);
+            }
+            function ptBoxDL(px, py, b) {
+              var dx = Math.max(b[0] - px, 0, px - b[2]);
+              var dy = Math.max(b[1] - py, 0, py - b[3]);
+              return Math.sqrt(dx * dx + dy * dy);
+            }
+            function segBoxDL(s, b) {
+              var x1 = s[0], y1 = s[1], dx = s[2] - s[0], dy = s[3] - s[1];
+              var t0 = 0, t1 = 1, okc = true;
+              var pp = [-dx, dx, -dy, dy];
+              var qq = [x1 - b[0], b[2] - x1, y1 - b[1], b[3] - y1];
+              for (var ci = 0; ci < 4; ci++) {
+                if (pp[ci] === 0) { if (qq[ci] < 0) { okc = false; break; } }
+                else {
+                  var rr = qq[ci] / pp[ci];
+                  if (pp[ci] < 0) { if (rr > t1) { okc = false; break; } if (rr > t0) t0 = rr; }
+                  else { if (rr < t0) { okc = false; break; } if (rr < t1) t1 = rr; }
+                }
+              }
+              if (okc) return 0;
+              return Math.min(
+                ptBoxDL(x1, y1, b), ptBoxDL(s[2], s[3], b),
+                ptSegDL(b[0], b[1], x1, y1, s[2], s[3]), ptSegDL(b[2], b[1], x1, y1, s[2], s[3]),
+                ptSegDL(b[0], b[3], x1, y1, s[2], s[3]), ptSegDL(b[2], b[3], x1, y1, s[2], s[3]));
+            }
+            function ptInTriL(px, py, t) {
+              var d1 = (px - t[2]) * (t[1] - t[3]) - (t[0] - t[2]) * (py - t[3]);
+              var d2 = (px - t[4]) * (t[3] - t[5]) - (t[2] - t[4]) * (py - t[5]);
+              var d3 = (px - t[0]) * (t[5] - t[1]) - (t[4] - t[0]) * (py - t[1]);
+              var neg = (d1 < 0) || (d2 < 0) || (d3 < 0);
+              var pos = (d1 > 0) || (d2 > 0) || (d3 > 0);
+              return !(neg && pos);
+            }
+            function triBoxDL(t, b) {
+              var i, e;
+              for (i = 0; i < 3; i++) {
+                var vx = t[2 * i], vy = t[2 * i + 1];
+                if (vx >= b[0] && vx <= b[2] && vy >= b[1] && vy <= b[3]) return 0;
+              }
+              var cs = [[b[0], b[1]], [b[2], b[1]], [b[0], b[3]], [b[2], b[3]]];
+              for (i = 0; i < 4; i++) if (ptInTriL(cs[i][0], cs[i][1], t)) return 0;
+              var d = Infinity;
+              for (i = 0; i < 3; i++) {
+                var j = (i + 1) % 3;
+                if (segBoxDL([t[2 * i], t[2 * i + 1], t[2 * j], t[2 * j + 1]], b) === 0) return 0;
+                d = Math.min(d, ptBoxDL(t[2 * i], t[2 * i + 1], b));
+                for (e = 0; e < 4; e++) d = Math.min(d, ptSegDL(cs[e][0], cs[e][1], t[2 * i], t[2 * i + 1], t[2 * j], t[2 * j + 1]));
+              }
+              return d;
+            }
+            function boxesL(kind, x, y) {
+              if (kind === 'A') return [[x, y - 14, x + wA, y + 5]];
+              if (kind === 'V') return [[x, y - 13, x + wV, y + 5], [x - 1, y - 15, x + wV + 2, y - 9]];
+              if (kind === 'X') { var l = x - wX / 2; return [[l, y - 12, l + wX, y + 4], [l - 1, y - 15, l + pwX + 1, y - 9]]; }
+              return [[x, y - 12, x + wY, y + 4], [x - 1, y - 15, x + pwY + 1, y - 9]];
+            }
+            var placedL = [];
+            function fitsL(bs) {
+              for (var i = 0; i < bs.length; i++) {
+                var b = bs[i];
+                if (b[0] < 2 || b[1] < 2 || b[2] > 518 || b[3] > 378) return false;
+                for (var j = 0; j < statBoxes.length; j++) if (hitBoxL(b, statBoxes[j])) return false;
+                for (var k = 0; k < placedL.length; k++) if (hitBoxL(b, placedL[k])) return false;
+                for (var m = 0; m < segsL.length; m++) if (segBoxDL(segsL[m], b) < segsL[m][4]) return false;
+                for (var n = 0; n < trisL.length; n++) if (triBoxDL(trisL[n], b) < 0.5) return false;
+              }
+              return true;
+            }
+            var mxL = (OX + ax) / 2, myL = (OY + ay) / 2;
+            var candXL = [
+              [mxL, OY + 46], [mxL, OY - 30],
+              [mxL + 64 * sxn, OY + 46], [mxL - 64 * sxn, OY + 46],
+              [mxL + 64 * sxn, OY - 30], [mxL - 64 * sxn, OY - 30],
+              [mxL, OY + 82], [mxL, OY - 66],
+              [mxL + 64 * sxn, OY + 82], [mxL - 64 * sxn, OY + 82],
+              [mxL + 64 * sxn, OY - 66], [mxL - 64 * sxn, OY - 66],
+              [mxL + 118 * sxn, OY + 46], [mxL - 118 * sxn, OY + 46],
+              [mxL, OY + 118], [mxL, OY - 102]
+            ];
+            var yS1 = a1 >= 0 ? ax + 10 : ax - wY - 16;
+            var yS2 = a1 >= 0 ? ax - wY - 16 : ax + 10;
+            var candYL = [
+              [yS1, myL + 5], [yS2, myL + 5],
+              [yS1, myL - 25], [yS2, myL - 25],
+              [yS1, ay + (a2 >= 0 ? -12 : 28)], [yS2, ay + (a2 >= 0 ? -12 : 28)],
+              [yS1, OY + (a2 >= 0 ? -34 : 48)], [yS2, OY + (a2 >= 0 ? -34 : 48)],
+              [yS1, ay + (a2 >= 0 ? 44 : -40)], [yS2, ay + (a2 >= 0 ? 44 : -40)],
+              [yS1, OY + 82], [yS2, OY + 82], [yS1, OY + 118], [yS2, OY + 118],
+              [yS1, OY - 66], [yS2, OY - 66]
+            ];
+            var aMn = a1 >= 0 ? ax + 10 : ax - wA - 10;
+            var aSb = a1 >= 0 ? ax - wA - 10 : ax + 10;
+            var candAL = [
+              [aMn, ay + (a2 >= 0 ? -10 : 26)], [aMn, ay + (a2 >= 0 ? 26 : -12)],
+              [aSb, ay + (a2 >= 0 ? -10 : 26)], [aSb, ay + (a2 >= 0 ? 26 : -12)],
+              [ax - wA / 2, ay + (a2 >= 0 ? -38 : 48)], [ax - wA / 2, ay + (a2 >= 0 ? 48 : -38)],
+              [aMn, ay + (a2 >= 0 ? 48 : -34)], [ax - wA / 2, ay + (a2 >= 0 ? 30 : -22)]
+            ];
+            function ptL(t, dx, dy) { return [OX + (ax - OX) * t + dx, OY + (ay - OY) * t + dy]; }
+            function vpL(t, sgn, dist) {
+              var cx = OX + (ax - OX) * t - uyA * dist * sgn;
+              var cy = OY + (ay - OY) * t + uxA * dist * sgn;
+              return [cx - wV / 2, cy + 4];
+            }
+            var candVL = [
+              ptL(0.45, -8, -10), ptL(0.45, 10, 16), ptL(0.45, -24, 14), ptL(0.45, 10, -24),
+              ptL(0.45, -16, 2), ptL(0.45, 2, -18),
+              vpL(0.5, 1, 23), vpL(0.5, -1, 23), vpL(0.35, 1, 23), vpL(0.65, -1, 23), vpL(0.35, -1, 23), vpL(0.65, 1, 23),
+              ptL(0.62, -8, -10), ptL(0.28, -8, -10), ptL(0.62, 10, 16), ptL(0.28, -24, 14),
+              ptL(0.55, -8, -10), ptL(0.35, -8, -10),
+              vpL(0.5, 1, 40), vpL(0.5, -1, 40), vpL(0.5, 1, 56), vpL(0.5, -1, 56), ptL(0.5, -8, -10)
+            ];
+            var kindsL = ['X', 'V', 'A', 'Y'];
+            var candsL = { X: candXL, Y: candYL, A: candAL, V: candVL };
+            var chosenL = { X: candXL[0], Y: candYL[0], A: candAL[0], V: candVL[0] };
+            function dfsL(i) {
+              if (i === kindsL.length) return true;
+              var k = kindsL[i], list = candsL[k];
+              for (var j = 0; j < list.length; j++) {
+                var bs = boxesL(k, list[j][0], list[j][1]);
+                if (!fitsL(bs)) continue;
+                chosenL[k] = list[j];
+                var mark = placedL.length;
+                for (var t = 0; t < bs.length; t++) placedL.push(bs[t]);
+                if (dfsL(i + 1)) return true;
+                placedL.length = mark;
+              }
+              return false;
+            }
+            if (!dfsL(0)) { chosenL = { X: candXL[0], Y: candYL[0], A: candAL[0], V: candVL[0] }; }
+            cpLabelA.setAttribute('x', chosenL.A[0]);
+            cpLabelA.setAttribute('y', chosenL.A[1]);
+            cpLabelV.setAttribute('x', chosenL.V[0]);
+            cpLabelV.setAttribute('y', chosenL.V[1]);
+            cpLabelX.setAttribute('x', chosenL.X[0]);
+            cpLabelX.setAttribute('y', chosenL.X[1]);
+            cpLabelY.setAttribute('x', chosenL.Y[0]);
+            cpLabelY.setAttribute('y', chosenL.Y[1]);
             /* ラベルの真上に小さな矢印を描く（ベクトル表記） */
             var vx = parseFloat(cpLabelV.getAttribute('x')), vy = parseFloat(cpLabelV.getAttribute('y'));
             setMiniArrow(cpArrowV, vx - 1, vx + cpLabelV.getComputedTextLength() + 1.5, vy - 12);
