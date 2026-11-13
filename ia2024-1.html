@@ -321,7 +321,69 @@
         }
         .problem .controls { grid-column: 2; grid-row: 2; margin-top: 12px; }
       }
-    </style>
+    
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+
+      /* 積分記号は大きめに表示する（元のページの可読化デザインに合わせる） */
+      math .int-op{font-size:1.35em}
+      /* calc-12 世代（.card）と calc-18 世代（.unit）の、図のない問題の全幅化 */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig>.step{position:static !important}
+        .card.nofig>.steps-wrap{max-height:none !important;overflow:visible !important}
+        .unit.nofig{display:block !important}
+        .unit.nofig>.qside{position:static !important}
+        .unit.nofig>.steps-stack{max-height:none !important;overflow:visible !important}
+      }
+
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける・第3弾b） */
+      @media (min-width:1024px){
+        .problem.nofig,.panel.nofig,.prob-sec.nofig{display:block !important}
+        .nofig .cols,.nofig .flow-cols,.nofig .flow-grid,.nofig .flow{display:block !important}
+        .nofig .qside,.nofig .stages,.nofig .hside,.nofig .flow-left,.nofig .flow-right,
+        .nofig .col-left,.nofig .col-right,.nofig .pleft,.nofig .pright,
+        .nofig .steps-wrap,.nofig .steps-stack,.nofig .prob-col,.nofig .hint-col{
+          position:static !important;max-height:none !important;overflow:visible !important;
+          grid-column:auto !important;grid-row:auto !important;
+        }
+      }
+</style>
   </head>
   <body>
     <div class="wrap">
@@ -355,28 +417,28 @@
           <span class="q-num">〔1〕</span><span class="q-title">集合と命題</span>
           <span class="q-points">配点 10点</span>
         </div>
-        <p class="q-body"><span class="m"><i>m</i></span>, <span class="m"><i>n</i></span> は自然数とする。次の条件 <span class="m"><i>p</i></span>, <span class="m"><i>q</i></span>, <span class="m"><i>r</i></span> について考える。</p>
+        <p class="q-body"><math><mi>m</mi><mo>,</mo><mi>n</mi></math> は自然数とする。次の条件 <math><mi>p</mi><mo>,</mo><mi>q</mi><mo>,</mo><mi>r</mi></math> について考える。</p>
         <p class="choices">
-          <span class="copt"><span class="m"><i>p</i></span>： <span class="m"><i>m</i></span> と <span class="m"><i>n</i></span> の少なくとも一方は偶数</span>
-          <span class="copt"><span class="m"><i>q</i></span>： <span class="m"><i>m</i> + <i>n</i></span> は偶数</span>
-          <span class="copt"><span class="m"><i>r</i></span>： <span class="m">3<i>mn</i></span> は奇数</span>
+          <span class="copt"><math><mi>p</mi></math>： <math><mi>m</mi></math> と <math><mi>n</mi></math> の少なくとも一方は偶数</span>
+          <span class="copt"><math><mi>q</mi></math>： <math><mi>m</mi><mo>+</mo><mi>n</mi></math> は偶数</span>
+          <span class="copt"><math><mi>r</mi></math>： <math><mn>3</mn><mi>mn</mi></math> は奇数</span>
         </p>
       </div>
 
       <!-- ========== 〔1〕(1) 反例 ========== -->
-      <section class="problem active" id="p1-1" data-group="g1">
+      <section class="nofig problem active" id="p1-1" data-group="g1">
         <div class="qside">
         <div class="qcard">
           <div class="q-head">
             <span class="q-num">(1)</span><span class="q-title">命題の反例</span>
             <span class="q-points">配点 3点</span>
           </div>
-          <p class="q-body">命題 <span class="m"><i>p</i> ⇒ <i>q</i></span> は偽であり、<span class="blank" data-kana="ア" data-ans="3">ア</span>はその反例である。<span class="blank" data-kana="ア" data-ans="3">ア</span>に当てはまるものを、次の 0〜3 のうちから一つ選べ。</p>
+          <p class="q-body">命題 <math><mi>p</mi><mo>⇒</mo><mi>q</mi></math> は偽であり、<span class="blank" data-kana="ア" data-ans="3">ア</span>はその反例である。<span class="blank" data-kana="ア" data-ans="3">ア</span>に当てはまるものを、次の 0〜3 のうちから一つ選べ。</p>
           <p class="choices">
-            <span class="copt">0： <span class="m"><i>m</i> = 3, <i>n</i> = 3</span></span>
-            <span class="copt">1： <span class="m"><i>m</i> = 1, <i>n</i> = 3</span></span>
-            <span class="copt">2： <span class="m"><i>m</i> = 2, <i>n</i> = 2</span></span>
-            <span class="copt">3： <span class="m"><i>m</i> = 2, <i>n</i> = 1</span></span>
+            <span class="copt">0： <math><mi>m</mi><mo>=</mo><mn>3</mn><mo>,</mo><mi>n</mi><mo>=</mo><mn>3</mn></math></span>
+            <span class="copt">1： <math><mi>m</mi><mo>=</mo><mn>1</mn><mo>,</mo><mi>n</mi><mo>=</mo><mn>3</mn></math></span>
+            <span class="copt">2： <math><mi>m</mi><mo>=</mo><mn>2</mn><mo>,</mo><mi>n</mi><mo>=</mo><mn>2</mn></math></span>
+            <span class="copt">3： <math><mi>m</mi><mo>=</mo><mn>2</mn><mo>,</mo><mi>n</mi><mo>=</mo><mn>1</mn></math></span>
           </p>
         </div>
         <p class="think-note">「反例」という言葉の意味から確認しよう。4つの候補を1つずつ判定する問題だよ。</p>
@@ -384,40 +446,40 @@
 
         <div class="stages">
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">反例とは「p を満たすのに q を満たさない」例</span></div>
-            <p>命題 <span class="m"><i>p</i> ⇒ <i>q</i></span> の<strong>反例</strong>とは、「<span class="m"><i>p</i></span> は正しいのに <span class="m"><i>q</i></span> は正しくない」ような <span class="m"><i>m</i></span>, <span class="m"><i>n</i></span> の組のこと。</p>
-            <p>ここで <span class="m"><i>q</i></span> を満たさないとは、<span class="m"><i>m</i> + <i>n</i></span> が<strong>奇数</strong>であること。つまり「少なくとも一方は偶数」で、「和は奇数」になる組を探せばよい。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">反例とは「p を満たすのに q を満たさない」例</span></div><p class="cite"><span class="cite-tag">使う定義</span>反例 <math><mi>p</mi><mo>⇒</mo><mi>q</mi></math>。このステップでは、pは真なのにqは偽になる組が反例になることを確認する。</p>
+            <p>命題 <math><mi>p</mi><mo>⇒</mo><mi>q</mi></math> の<strong>反例</strong>とは、「<math><mi>p</mi></math> は正しいのに <math><mi>q</mi></math> は正しくない」ような <math><mi>m</mi><mo>,</mo><mi>n</mi></math> の組のこと。</p>
+            <p>ここで <math><mi>q</mi></math> を満たさないとは、<math><mi>m</mi><mo>+</mo><mi>n</mi></math> が<strong>奇数</strong>であること。<br>つまり「少なくとも一方は偶数」で、「和は奇数」になる組を探せばよい。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">和が奇数になるのは「偶数＋奇数」のときだけ</span></div>
+            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">和が奇数になるのは「偶数＋奇数」のときだけ</span></div><p class="cite"><span class="cite-tag">使う性質</span>和の偶奇 <math><mi>m</mi><mo>+</mo><mi>n</mi></math>。このステップでは、和が奇数になる組の形をこの決まりで絞り込む。</p>
             <p>2数の和の偶奇は、次の決まりで決まる。</p>
             <ul class="steps">
               <li>偶数＋偶数 ＝ 偶数</li>
               <li>奇数＋奇数 ＝ 偶数</li>
               <li>偶数＋奇数 ＝ <strong>奇数</strong></li>
             </ul>
-            <p>だから和が奇数になるのは「片方が偶数、もう片方が奇数」の組だけ。そしてその組は、自動的に <span class="m"><i>p</i></span>（少なくとも一方は偶数）も満たすね。</p>
+            <p>だから和が奇数になるのは「片方が偶数、もう片方が奇数」の組だけ。<br>そしてその組は、自動的に <math><mi>p</mi><mo>(</mo></math>少なくとも一方は偶数）も満たすね。</p>
           </article>
 
           <article class="stage hint" hidden>
             <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">候補を1つずつ判定する</span></div>
             <ul class="steps">
-              <li>0（<span class="m"><i>m</i>=3, <i>n</i>=3</span>）：和は 6 で偶数 → <span class="m"><i>q</i></span> を満たしてしまう ×</li>
-              <li>1（<span class="m"><i>m</i>=1, <i>n</i>=3</span>）：和は 4 で偶数 ×</li>
-              <li>2（<span class="m"><i>m</i>=2, <i>n</i>=2</span>）：和は 4 で偶数 ×</li>
-              <li>3（<span class="m"><i>m</i>=2, <i>n</i>=1</span>）：和は 3 で奇数。しかも <span class="m"><i>m</i></span> が偶数だから <span class="m"><i>p</i></span> も ○</li>
+              <li><math><mn>0</mn><mrow><mo>(</mo><mi>m</mi><mo>=</mo><mn>3</mn><mo>,</mo><mi>n</mi><mo>=</mo><mn>3</mn><mo>)</mo></mrow></math>：和は 6 で偶数<math><mo>→</mo><mi>q</mi></math> を満たしてしまう ×</li>
+              <li><math><mn>1</mn><mrow><mo>(</mo><mi>m</mi><mo>=</mo><mn>1</mn><mo>,</mo><mi>n</mi><mo>=</mo><mn>3</mn><mo>)</mo></mrow></math>：和は 4 で偶数 ×</li>
+              <li><math><mn>2</mn><mrow><mo>(</mo><mi>m</mi><mo>=</mo><mn>2</mn><mo>,</mo><mi>n</mi><mo>=</mo><mn>2</mn><mo>)</mo></mrow></math>：和は 4 で偶数 ×</li>
+              <li><math><mn>3</mn><mrow><mo>(</mo><mi>m</mi><mo>=</mo><mn>2</mn><mo>,</mo><mi>n</mi><mo>=</mo><mn>1</mn><mo>)</mo></mrow></math>：和は 3 で奇数。しかも <math><mi>m</mi></math> が偶数だから <math><mi>p</mi></math> も ○</li>
             </ul>
             <p>反例の条件を両方満たすのは、1つだけ残ったね。</p>
           </article>
 
           <article class="stage answer" hidden>
             <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(1) の答え</span></div>
-            <p><span class="m"><i>m</i> = 2, <i>n</i> = 1</span> のとき、<span class="m"><i>m</i></span> は偶数だから <span class="m"><i>p</i></span> は真。一方 <span class="m"><i>m</i> + <i>n</i> = 3</span> は奇数だから <span class="m"><i>q</i></span> は偽。よって、これは命題 <span class="m"><i>p</i> ⇒ <i>q</i></span> の反例である。</p>
+            <p><math><mi>m</mi><mo>=</mo><mn>2</mn><mo>,</mo><mi>n</mi><mo>=</mo><mn>1</mn></math> のとき、<math><mi>m</mi></math> は偶数だから <math><mi>p</mi></math> は真。<br>一方 <math><mi>m</mi><mo>+</mo><mi>n</mi><mo>=</mo><mn>3</mn></math> は奇数だから <math><mi>q</mi></math> は偽。よって、これは命題 <math><mi>p</mi><mo>⇒</mo><mi>q</mi></math> の反例である。</p>
             <div class="ans-line">
-              <span class="ans-chip"><span class="kana">ア</span><span class="m">3</span><span class="pts">3点</span></span>
+              <span class="ans-chip"><span class="kana">ア</span><math><mn>3</mn></math><span class="pts">3点</span></span>
             </div>
-            <div class="point-box"><span class="pt">ポイント</span>反例は「仮定（<span class="m"><i>p</i></span>）は満たすが、結論（<span class="m"><i>q</i></span>）は満たさない」例。和が奇数になるのは偶数＋奇数の組だけ、が判定の近道。</div>
+            <div class="point-box"><span class="pt">ポイント</span><p class="cite"><span class="cite-tag">使う定義</span>反例 <math><mi>p</mi><mo>⇒</mo><mi>q</mi></math>。このまとめでは、反例の条件を満たすかどうかで候補を判定する。</p>反例は「仮定<math><mo>(</mo><mi>p</mi><mo>)</mo></math>は満たすが、結論<math><mo>(</mo><mi>q</mi><mo>)</mo></math>は満たさない」例。和が奇数になるのは偶数＋奇数の組だけ、が判定の近道。</div>
           </article>
         </div>
 
@@ -430,14 +492,14 @@
       </section>
 
       <!-- ========== 〔1〕(2) 必要条件・十分条件 ========== -->
-      <section class="problem active" id="p1-2" data-group="g1">
+      <section class="nofig problem active" id="p1-2" data-group="g1">
         <div class="qside">
         <div class="qcard">
           <div class="q-head">
             <span class="q-num">(2)</span><span class="q-title">必要条件・十分条件</span>
             <span class="q-points">配点 5点（イ 3点・ウ 2点）</span>
           </div>
-          <p class="q-body"><span class="m"><i>q</i></span> は <span class="m"><i>r</i></span> であるための<span class="blank" data-kana="イ" data-ans="0">イ</span>。また、<span class="m"><i>p</i></span> の否定 <span class="m"><i>p</i>&#772;</span> は <span class="m"><i>r</i></span> であるための<span class="blank" data-kana="ウ" data-ans="2">ウ</span>。<span class="blank" data-kana="イ" data-ans="0">イ</span>，<span class="blank" data-kana="ウ" data-ans="2">ウ</span>に当てはまるものを、次の 0〜3 のうちから一つずつ選べ。</p>
+          <p class="q-body"><math><mi>q</mi></math> は <math><mi>r</mi></math> であるための<span class="blank" data-kana="イ" data-ans="0">イ</span>。また、<math><mi>p</mi></math> の否定 <math><mi>p</mi><mo>̄</mo></math> は <math><mi>r</mi></math> であるための<span class="blank" data-kana="ウ" data-ans="2">ウ</span>。<span class="blank" data-kana="イ" data-ans="0">イ</span>，<span class="blank" data-kana="ウ" data-ans="2">ウ</span>に当てはまるものを、次の 0〜3 のうちから一つずつ選べ。</p>
           <p class="choices">
             <span class="copt">0： 必要条件であるが，十分条件ではない</span>
             <span class="copt">1： 十分条件であるが，必要条件ではない</span>
@@ -445,34 +507,34 @@
             <span class="copt">3： 必要条件でも十分条件でもない</span>
           </p>
         </div>
-        <p class="think-note">判定は「⇒ の向きを両方調べる」だけ。まず イ から、<span class="m"><i>q</i>⇒<i>r</i></span> と <span class="m"><i>r</i>⇒<i>q</i></span> の真偽を決めよう。</p>
+        <p class="think-note">判定は「⇒ の向きを両方調べる」だけ。まず イ から、<math><mi>q</mi><mo>⇒</mo><mi>r</mi></math> と <math><mi>r</mi><mo>⇒</mo><mi>q</mi></math> の真偽を決めよう。</p>
         </div>
 
         <div class="stages">
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">両向きの真偽で決める。まず q⇒r の反例探し</span></div>
-            <p>「<span class="m"><i>q</i></span> は <span class="m"><i>r</i></span> であるための〜」は、2つの命題 <span class="m"><i>q</i> ⇒ <i>r</i></span> と <span class="m"><i>r</i> ⇒ <i>q</i></span> の真偽の組み合わせで決まる。</p>
-            <p>まず <span class="m"><i>q</i> ⇒ <i>r</i></span>： <span class="m"><i>m</i> + <i>n</i></span> が偶数でも、<span class="m">3<i>mn</i></span> が奇数になるとは限らないはず。反例になりそうな組を探してみよう（たとえば両方とも偶数の組）。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">両向きの真偽で決める。まず q⇒r の反例探し</span></div><p class="cite"><span class="cite-tag">使う定義</span>必要条件と十分条件 <math><mi>q</mi><mo>⇒</mo><mi>r</mi></math>。このステップでは、両向きの命題の真偽を調べることに帰着させる。</p>
+            <p>「<math><mi>q</mi></math> は <math><mi>r</mi></math> であるための〜」は、2つの命題 <math><mi>q</mi><mo>⇒</mo><mi>r</mi></math> と <math><mi>r</mi><mo>⇒</mo><mi>q</mi></math> の真偽の組み合わせで決まる。</p>
+            <p>まず <math><mi>q</mi><mo>⇒</mo><mi>r</mi></math>： <math><mi>m</mi><mo>+</mo><mi>n</mi></math> が偶数でも、<math><mn>3</mn><mi>mn</mi></math> が奇数になるとは限らないはず。<br>反例になりそうな組を探してみよう（たとえば両方とも偶数の組）。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">q⇒r は偽、r⇒q は真</span></div>
-            <p><strong><span class="m"><i>q</i> ⇒ <i>r</i></span> は偽</strong>：反例は <span class="m"><i>m</i> = <i>n</i> = 2</span>。和は 4 で偶数（<span class="m"><i>q</i></span> は真）だが、<span class="m">3<i>mn</i> = 12</span> は偶数（<span class="m"><i>r</i></span> は偽）。</p>
-            <p><strong><span class="m"><i>r</i> ⇒ <i>q</i></span> は真</strong>：<span class="m">3<i>mn</i></span> が奇数なら、<span class="m"><i>m</i></span>, <span class="m"><i>n</i></span> はともに奇数でなければならない（どちらか偶数なら積 <span class="m"><i>mn</i></span> は偶数になる）。奇数＋奇数 ＝ 偶数だから、和 <span class="m"><i>m</i> + <i>n</i></span> は偶数になる。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">q⇒r は偽、r⇒q は真</span></div><p class="cite"><span class="cite-tag">使う性質</span>積の偶奇 <math><mn>3</mn><mi>mn</mi><mo>=</mo><mn>12</mn></math>。このステップでは、どちらか一方が偶数なら積は偶数になることを使う。</p>
+            <p><strong><math><mi>q</mi><mo>⇒</mo><mi>r</mi></math> は偽</strong>：反例は <math><mi>m</mi><mo>=</mo><mi>n</mi><mo>=</mo><mn>2</mn></math>。<br>和は 4 で偶数<math><mo>(</mo><mi>q</mi></math> は真）だが、<math><mn>3</mn><mi>mn</mi><mo>=</mo><mn>12</mn></math> は偶数<math><mo>(</mo><mi>r</mi></math> は偽）。</p>
+            <p><strong><math><mi>r</mi><mo>⇒</mo><mi>q</mi></math> は真</strong>：<math><mn>3</mn><mi>mn</mi></math> が奇数なら、<math><mi>m</mi><mo>,</mo><mi>n</mi></math> はともに奇数でなければならない（どちらか偶数なら積 <math><mi>mn</mi></math> は偶数になる）。<br>奇数＋奇数 ＝ 偶数だから、和 <math><mi>m</mi><mo>+</mo><mi>n</mi></math> は偶数になる。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">イ を決める：片方だけ真なら「必要条件のみ」</span></div>
-            <p><span class="m"><i>q</i> ⇒ <i>r</i></span> が偽で <span class="m"><i>r</i> ⇒ <i>q</i></span> が真、ということは、<span class="m"><i>r</i></span> が成り立つとき <span class="m"><i>q</i></span> は必ず成り立つ（＝ <span class="m"><i>q</i></span> は <span class="m"><i>r</i></span> の<strong>必要条件</strong>）が、<span class="m"><i>q</i></span> だけでは <span class="m"><i>r</i></span> は決まらない（＝十分条件ではない）。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">イ を決める：片方だけ真なら「必要条件のみ」</span></div><p class="cite"><span class="cite-tag">使う定義</span>必要条件 <math><mi>r</mi><mo>⇒</mo><mi>q</mi></math>。このステップでは、rが成り立つときqが必ず成り立つことから必要条件と判断する。</p>
+            <p><math><mi>q</mi><mo>⇒</mo><mi>r</mi></math> が偽で <math><mi>r</mi><mo>⇒</mo><mi>q</mi></math> が真、ということは、<math><mi>r</mi></math> が成り立つとき <math><mi>q</mi></math> は必ず成り立つ<math><mo>(</mo><mo>=</mo><mi>q</mi></math> は <math><mi>r</mi></math> の<strong>必要条件</strong>）が、<math><mi>q</mi></math> だけでは <math><mi>r</mi></math> は決まらない（＝十分条件ではない）。</p>
             <p>選択群でこれに当たるのは <strong>0</strong>。イ は 0 だね。次は ウ に進もう。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">ウ：p̄「ともに奇数」と r の関係</span></div>
-            <p><span class="m"><i>p</i></span> の否定 <span class="m"><i>p</i>&#772;</span> は「<span class="m"><i>m</i></span>, <span class="m"><i>n</i></span> ともに奇数」という条件。これと <span class="m"><i>r</i></span>「<span class="m">3<i>mn</i></span> は奇数」の関係を両向きに調べる。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">ウ：p̄「ともに奇数」と r の関係</span></div><p class="cite"><span class="cite-tag">使う性質</span>積の偶奇 <math><mn>3</mn><mi>mn</mi></math>。このステップでは、ともに奇数なら積も奇数になることを両向きに使う。</p>
+            <p><math><mi>p</mi></math> の否定 <math><mi>p</mi><mo>̄</mo></math> は「<math><mi>m</mi><mo>,</mo><mi>n</mi></math> ともに奇数」という条件。<br>これと <math><mi>r</mi></math>「<math><mn>3</mn><mi>mn</mi></math> は奇数」の関係を両向きに調べる。</p>
             <ul class="steps">
-              <li><span class="m"><i>p</i>&#772; ⇒ <i>r</i></span>：ともに奇数なら積 <span class="m"><i>mn</i></span> は奇数、<span class="m">3<i>mn</i></span> も奇数 → 真</li>
-              <li><span class="m"><i>r</i> ⇒ <i>p</i>&#772;</span>：<span class="m">3<i>mn</i></span> が奇数なら、どちらか偶数だと積が偶数になってしまうので、ともに奇数 → 真</li>
+              <li><math><mi>p</mi><mo>̄</mo><mo>⇒</mo><mi>r</mi></math>：ともに奇数なら積 <math><mi>mn</mi></math> は奇数、<math><mn>3</mn><mi>mn</mi></math> も奇数 → 真</li>
+              <li><math><mi>r</mi><mo>⇒</mo><mi>p</mi><mo>̄</mo></math>：<math><mn>3</mn><mi>mn</mi></math> が奇数なら、どちらか偶数だと積が偶数になってしまうので、ともに奇数 → 真</li>
             </ul>
             <p>両向きとも真。これは選択群のどれに当たるか考えてみよう。</p>
           </article>
@@ -480,14 +542,14 @@
           <article class="stage answer" hidden>
             <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(2) の答え</span></div>
             <ol class="steps">
-              <li><span class="m"><i>q</i> ⇒ <i>r</i></span> は偽（反例 <span class="m"><i>m</i>=<i>n</i>=2</span>）、<span class="m"><i>r</i> ⇒ <i>q</i></span> は真。よって <span class="m"><i>q</i></span> は <span class="m"><i>r</i></span> であるための必要条件であるが，十分条件ではない。</li>
-              <li><span class="m"><i>p</i>&#772;</span>「ともに奇数」と <span class="m"><i>r</i></span>「<span class="m">3<i>mn</i></span> は奇数」は両向きとも真。よって <span class="m"><i>p</i>&#772;</span> は <span class="m"><i>r</i></span> であるための必要十分条件である。</li>
+              <li><math><mi>q</mi><mo>⇒</mo><mi>r</mi></math> は偽（反例 <math><mi>m</mi><mo>=</mo><mi>n</mi><mo>=</mo><mn>2</mn><mo>)</mo></math>、<math><mi>r</mi><mo>⇒</mo><mi>q</mi></math> は真。よって <math><mi>q</mi></math> は <math><mi>r</mi></math> であるための必要条件であるが，十分条件ではない。</li>
+              <li><math><mi>p</mi><mo>̄</mo></math>「ともに奇数」と <math><mi>r</mi></math>「<math><mn>3</mn><mi>mn</mi></math> は奇数」は両向きとも真。よって <math><mi>p</mi><mo>̄</mo></math> は <math><mi>r</mi></math> であるための必要十分条件である。</li>
             </ol>
             <div class="ans-line">
-              <span class="ans-chip"><span class="kana">イ</span><span class="m">0</span><span class="pts">3点</span></span>
-              <span class="ans-chip"><span class="kana">ウ</span><span class="m">2</span><span class="pts">2点</span></span>
+              <span class="ans-chip"><span class="kana">イ</span><math><mn>0</mn></math><span class="pts">3点</span></span>
+              <span class="ans-chip"><span class="kana">ウ</span><math><mn>2</mn></math><span class="pts">2点</span></span>
             </div>
-            <div class="point-box"><span class="pt">ポイント</span>必要・十分の判定は、<strong>両向きの命題の真偽</strong>に直すのが型。反例は「仮定を満たして結論を満たさない」具体的な組を1つ挙げれば十分。</div>
+            <div class="point-box"><span class="pt">ポイント</span><p class="cite"><span class="cite-tag">使う定義</span>必要十分条件 <math><mi>q</mi><mo>⇒</mo><mi>r</mi></math>。このまとめでは、両向きとも真のとき必要十分条件になると整理する。</p>必要・十分の判定は、<strong>両向きの命題の真偽</strong>に直すのが型。反例は「仮定を満たして結論を満たさない」具体的な組を1つ挙げれば十分。</div>
           </article>
         </div>
 
@@ -500,57 +562,57 @@
       </section>
 
       <!-- ========== 〔1〕(3) 十分条件だが必要条件でない条件 ========== -->
-      <section class="problem active" id="p1-3" data-group="g1">
+      <section class="nofig problem active" id="p1-3" data-group="g1">
         <div class="qside">
         <div class="qcard">
           <div class="q-head">
             <span class="q-num">(3)</span><span class="q-title">十分条件だが必要条件でないもの</span>
             <span class="q-points">配点 2点</span>
           </div>
-          <p class="q-body">条件 <span class="m"><i>s</i></span> は <span class="m"><i>p</i></span> であるための十分条件であるが、必要条件ではない。<span class="m"><i>s</i></span> として正しいものは<span class="blank" data-kana="エ" data-ans="4">エ</span>である。<span class="blank" data-kana="エ" data-ans="4">エ</span>に当てはまるものを、次の 0〜4 のうちから一つ選べ。</p>
+          <p class="q-body">条件 <math><mi>s</mi></math> は <math><mi>p</mi></math> であるための十分条件であるが、必要条件ではない。<math><mi>s</mi></math> として正しいものは<span class="blank" data-kana="エ" data-ans="4">エ</span>である。<span class="blank" data-kana="エ" data-ans="4">エ</span>に当てはまるものを、次の 0〜4 のうちから一つ選べ。</p>
           <p class="choices">
-            <span class="copt">0： <span class="m"><i>mn</i></span> は偶数</span>
-            <span class="copt">1： <span class="m"><i>mn</i></span> は奇数</span>
-            <span class="copt">2： <span class="m"><i>mn</i></span> は 3 の倍数</span>
-            <span class="copt">3： <span class="m"><i>m</i> + <i>n</i></span> は偶数</span>
-            <span class="copt">4： <span class="m"><i>m</i> + <i>n</i></span> は奇数</span>
+            <span class="copt">0： <math><mi>mn</mi></math> は偶数</span>
+            <span class="copt">1： <math><mi>mn</mi></math> は奇数</span>
+            <span class="copt">2： <math><mi>mn</mi></math> は 3 の倍数</span>
+            <span class="copt">3： <math><mi>m</mi><mo>+</mo><mi>n</mi></math> は偶数</span>
+            <span class="copt">4： <math><mi>m</mi><mo>+</mo><mi>n</mi></math> は奇数</span>
           </p>
         </div>
-        <p class="think-note">条件は2つ：「<span class="m"><i>s</i> ⇒ <i>p</i></span> が真」かつ「<span class="m"><i>p</i> ⇒ <i>s</i></span> が偽」。順番にチェックしよう。</p>
+        <p class="think-note">条件は2つ：「<math><mi>s</mi><mo>⇒</mo><mi>p</mi></math> が真」かつ「<math><mi>p</mi><mo>⇒</mo><mi>s</mi></math> が偽」。順番にチェックしよう。</p>
         </div>
 
         <div class="stages">
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">まず s⇒p が真になる候補を絞る</span></div>
-            <p>求める <span class="m"><i>s</i></span> は「<span class="m"><i>s</i> ⇒ <i>p</i></span> が真」かつ「<span class="m"><i>p</i> ⇒ <i>s</i></span> が偽」を満たすもの。</p>
-            <p>一度に2つは大変なので、まず <span class="m"><i>s</i> ⇒ <i>p</i></span> が真になる候補を絞る。各候補について「その条件が成り立てば、少なくとも一方は偶数と言えるか？」を考えてみよう。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">まず s⇒p が真になる候補を絞る</span></div><p class="cite"><span class="cite-tag">使う定義</span>十分条件 <math><mi>s</mi><mo>⇒</mo><mi>p</mi></math>。このステップでは、まずsならばpと言える候補だけを残す。</p>
+            <p>求める <math><mi>s</mi></math> は「<math><mi>s</mi><mo>⇒</mo><mi>p</mi></math> が真」かつ「<math><mi>p</mi><mo>⇒</mo><mi>s</mi></math> が偽」を満たすもの。</p>
+            <p>一度に2つは大変なので、まず <math><mi>s</mi><mo>⇒</mo><mi>p</mi></math> が真になる候補を絞る。<br>各候補について「その条件が成り立てば、少なくとも一方は偶数と言えるか？」を考えてみよう。</p>
           </article>
 
           <article class="stage hint" hidden>
             <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">判定：残る候補は 0 と 4</span></div>
-            <ul class="steps">
-              <li>0（<span class="m"><i>mn</i></span> は偶数）：積が偶数なら少なくとも一方は偶数 → <span class="m"><i>p</i></span> は真 ○</li>
-              <li>1（<span class="m"><i>mn</i></span> は奇数）：両方とも奇数で <span class="m"><i>p</i></span> は偽 ×</li>
-              <li>2（<span class="m"><i>mn</i></span> は 3 の倍数）：<span class="m"><i>m</i>=1, <i>n</i>=3</span> で <span class="m"><i>p</i></span> は偽 ×</li>
-              <li>3（<span class="m"><i>m</i>+<i>n</i></span> は偶数）：<span class="m"><i>m</i>=<i>n</i>=3</span> で <span class="m"><i>p</i></span> は偽 ×</li>
-              <li>4（<span class="m"><i>m</i>+<i>n</i></span> は奇数）：和が奇数なら一方は必ず偶数 → <span class="m"><i>p</i></span> は真 ○</li>
+            <p class="cite"><span class="cite-tag">使う性質</span>積の偶奇 <math><mn>0</mn><mo>(</mo><mi>mn</mi></math>。このステップでは、各候補の条件から積や和の偶奇を読み取って判定する。</p><ul class="steps">
+              <li><math><mn>0</mn><mo>(</mo><mi>mn</mi></math> は偶数）：積が偶数なら少なくとも一方は偶数<math><mo>→</mo><mi>p</mi></math> は真 ○</li>
+              <li><math><mn>1</mn><mo>(</mo><mi>mn</mi></math> は奇数）：両方とも奇数で <math><mi>p</mi></math> は偽 ×</li>
+              <li><math><mn>2</mn><mo>(</mo><mi>mn</mi></math> は 3 の倍数）：<math><mi>m</mi><mo>=</mo><mn>1</mn><mo>,</mo><mi>n</mi><mo>=</mo><mn>3</mn></math> で <math><mi>p</mi></math> は偽 ×</li>
+              <li><math><mn>3</mn><mo>(</mo><mi>m</mi><mo>+</mo><mi>n</mi></math> は偶数）：<math><mi>m</mi><mo>=</mo><mi>n</mi><mo>=</mo><mn>3</mn></math> で <math><mi>p</mi></math> は偽 ×</li>
+              <li><math><mn>4</mn><mo>(</mo><mi>m</mi><mo>+</mo><mi>n</mi></math> は奇数）：和が奇数なら一方は必ず偶数<math><mo>→</mo><mi>p</mi></math> は真 ○</li>
             </ul>
-            <p><span class="m"><i>s</i> ⇒ <i>p</i></span> が真なのは 0 と 4。あと1つの条件で決まるよ。</p>
+            <p><math><mi>s</mi><mo>⇒</mo><mi>p</mi></math> が真なのは 0 と 4。あと1つの条件で決まるよ。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">p⇒s が偽になる方を選ぶ</span></div>
-            <p>候補 0： <span class="m"><i>p</i></span>（少なくとも一方は偶数）が成り立てば、積 <span class="m"><i>mn</i></span> は必ず偶数になる。つまり <span class="m"><i>p</i> ⇒ <i>s</i></span> も真になってしまい、<span class="m"><i>s</i></span> は必要条件にもなってしまうので不適。</p>
-            <p>候補 4： <span class="m"><i>m</i> = <i>n</i> = 2</span> のとき <span class="m"><i>p</i></span> は真だが、和は 4 で <span class="m"><i>s</i></span> は偽。だから <span class="m"><i>p</i> ⇒ <i>s</i></span> は偽 ○。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">p⇒s が偽になる方を選ぶ</span></div><p class="cite"><span class="cite-tag">使う定義</span>反例 <math><mi>p</mi><mo>⇒</mo><mi>s</mi></math>。このステップでは、pは真なのにsは偽になる組があるかどうかを調べる。</p>
+            <p>候補 0： <math><mi>p</mi><mo>(</mo></math>少なくとも一方は偶数）が成り立てば、積 <math><mi>mn</mi></math> は必ず偶数になる。<br>つまり <math><mi>p</mi><mo>⇒</mo><mi>s</mi></math> も真になってしまい、<math><mi>s</mi></math> は必要条件にもなってしまうので不適。</p>
+            <p>候補 4： <math><mi>m</mi><mo>=</mo><mi>n</mi><mo>=</mo><mn>2</mn></math> のとき <math><mi>p</mi></math> は真だが、和は 4 で <math><mi>s</mi></math> は偽。<br>だから <math><mi>p</mi><mo>⇒</mo><mi>s</mi></math> は偽 ○。</p>
           </article>
 
           <article class="stage answer" hidden>
             <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">(3) の答え</span></div>
-            <p><span class="m"><i>s</i></span>：「<span class="m"><i>m</i> + <i>n</i></span> は奇数」とすると、和が奇数なら一方は偶数だから <span class="m"><i>s</i> ⇒ <i>p</i></span> は真。一方、<span class="m"><i>m</i> = <i>n</i> = 2</span> は <span class="m"><i>p</i></span> を満たすが <span class="m"><i>s</i></span> を満たさないので、<span class="m"><i>p</i> ⇒ <i>s</i></span> は偽。よって <span class="m"><i>s</i></span> は <span class="m"><i>p</i></span> の十分条件であるが、必要条件ではない。</p>
+            <p><math><mi>s</mi></math>：「<math><mi>m</mi><mo>+</mo><mi>n</mi></math> は奇数」とすると、和が奇数なら一方は偶数だから <math><mi>s</mi><mo>⇒</mo><mi>p</mi></math> は真。<br>一方、<math><mi>m</mi><mo>=</mo><mi>n</mi><mo>=</mo><mn>2</mn></math> は <math><mi>p</mi></math> を満たすが <math><mi>s</mi></math> を満たさないので、<math><mi>p</mi><mo>⇒</mo><mi>s</mi></math> は偽。よって <math><mi>s</mi></math> は <math><mi>p</mi></math> の十分条件であるが、必要条件ではない。</p>
             <div class="ans-line">
-              <span class="ans-chip"><span class="kana">エ</span><span class="m">4</span><span class="pts">2点</span></span>
+              <span class="ans-chip"><span class="kana">エ</span><math><mn>4</mn></math><span class="pts">2点</span></span>
             </div>
-            <div class="point-box"><span class="pt">ポイント</span>「十分だが<strong>必要でない</strong>」は、<span class="m"><i>p</i> ⇒ <i>s</i></span> の<strong>反例が存在する</strong>こととセットで確認する。候補を1つずつ、両向きに判定するのが確実。</div>
+            <div class="point-box"><span class="pt">ポイント</span><p class="cite"><span class="cite-tag">使う定義</span>十分条件 <math><mi>s</mi><mo>⇒</mo><mi>p</mi></math>。このまとめでは、十分条件であることと必要条件でないことをセットで確認する。</p>「十分だが<strong>必要でない</strong>」は、<math><mi>p</mi><mo>⇒</mo><mi>s</mi></math> の<strong>反例が存在する</strong>こととセットで確認する。候補を1つずつ、両向きに判定するのが確実。</div>
           </article>
         </div>
 
@@ -570,7 +632,7 @@
           <span class="q-num">〔2〕</span><span class="q-title">図形と計量 ― 三角錐型のテント</span>
           <span class="q-points">配点 20点</span>
         </div>
-        <p class="q-body">地面に3本の杭 A, B, C が打たれていて、<span class="m">AB = 4 m</span>、<span class="m">BC = 6 m</span>、<span class="m">CA = 5 m</span> である。この3本の杭と、地面に垂直に立てたポールの上端 P を、3本の同じ長さのロープで結んでテントを張る。ポールの足もとを H とすると <span class="m">PH = 2 m</span> で、H は <span class="m">△ABC</span> の内部にある。以下の問いに答えよ。</p>
+        <p class="q-body">地面に3本の杭 A, B, C が打たれていて、<math><mi>AB</mi><mo>=</mo><mn>4</mn><mi>m</mi></math>、<math><mi>BC</mi><mo>=</mo><mn>6</mn><mi>m</mi></math>、<math><mi>CA</mi><mo>=</mo><mn>5</mn><mi>m</mi></math> である。この3本の杭と、地面に垂直に立てたポールの上端 P を、3本の同じ長さのロープで結んでテントを張る。ポールの足もとを H とすると <math><mi>PH</mi><mo>=</mo><mn>2</mn><mi>m</mi></math> で、H は <math><mo>△</mo><mi>ABC</mi></math> の内部にある。以下の問いに答えよ。</p>
       </div>
 
       <!-- ========== 〔2〕A cos・sin ========== -->
@@ -578,10 +640,10 @@
         <div class="qside">
         <div class="qcard">
           <div class="q-head">
-            <span class="q-num">A</span><span class="q-title">cos∠BAC と sin∠BAC</span>
+            <span class="q-num">A</span><span class="q-title"><math><mi>cos</mi><mo>∠</mo><mi>BAC</mi></math>と<math><mi>sin</mi><mo>∠</mo><mi>BAC</mi></math></span>
             <span class="q-points">配点 5点（オカ 3点・キクケ 2点）</span>
           </div>
-          <p class="q-body"><span class="m">△ABC</span> において、<span class="m">cos∠BAC = <span class="blank" data-kana="オ" data-ans="1">オ</span>/<span class="blank" data-kana="カ" data-ans="8">カ</span></span>、<span class="m">sin∠BAC = <span class="blank" data-kana="キ" data-ans="3">キ</span>√<span class="blank" data-kana="ク" data-ans="7">ク</span>/<span class="blank" data-kana="ケ" data-ans="8">ケ</span></span> である。</p>
+          <p class="q-body"><math><mo>△</mo><mi>ABC</mi></math> において、<math><mi>cos</mi><mo>∠</mo><mi>BAC</mi><mo>=</mo><mfrac><mtext><span class="blank" data-kana="オ" data-ans="1">オ</span></mtext><mtext><span class="blank" data-kana="カ" data-ans="8">カ</span></mtext></mfrac></math>、<math><mi>sin</mi><mo>∠</mo><mi>BAC</mi><mo>=</mo><mtext><span class="blank" data-kana="キ" data-ans="3">キ</span></mtext><mfrac><msqrt><mtext><span class="blank" data-kana="ク" data-ans="7">ク</span></mtext></msqrt><mtext><span class="blank" data-kana="ケ" data-ans="8">ケ</span></mtext></mfrac></math> である。</p>
         </div>
 
         <div class="viz" id="viz-base">
@@ -607,35 +669,47 @@
         <div class="stages">
           <article class="stage hint" hidden>
             <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">余弦定理に3辺の長さを入れる</span></div>
-            <p>角 A をはさむ2辺は CA と AB、向かいの辺は BC。<strong>余弦定理</strong>を cos の形にすると：</p>
-            <div class="formula-line"><span class="m">cos <i>A</i> = <span class="frac"><span class="num">CA<sup>2</sup> + AB<sup>2</sup> − BC<sup>2</sup></span><span class="den">2・CA・AB</span></span></span></div>
-            <p>ここに <span class="m">AB = 4</span>、<span class="m">BC = 6</span>、<span class="m">CA = 5</span> を代入してみよう。</p>
+            <p>角 A をはさむ2辺は CA と AB、向かいの辺は BC。<br><strong>余弦定理</strong>を cos の形にすると：</p>
+            <p class="cite"><span class="cite-tag">使う公式</span>余弦定理 <math><mi>cos</mi><mi>A</mi><mo>=</mo><mfrac><mrow><msup><mi>CA</mi><mn>2</mn></msup><mo>+</mo><msup><mi>AB</mi><mn>2</mn></msup><mo>−</mo><msup><mi>BC</mi><mn>2</mn></msup></mrow><mrow><mn>2</mn><mo>⋅</mo><mi>CA</mi><mo>⋅</mo><mi>AB</mi></mrow></mfrac></math>。このステップでは、角Aをはさむ2辺と向かいの辺をこの式に当てはめる。</p><div class="formula-line"><math><mi>cos</mi><mi>A</mi><mo>=</mo><mfrac><mrow><msup><mi>CA</mi><mn>2</mn></msup><mo>+</mo><msup><mi>AB</mi><mn>2</mn></msup><mo>−</mo><msup><mi>BC</mi><mn>2</mn></msup></mrow><mrow><mn>2</mn><mo>⋅</mo><mi>CA</mi><mo>⋅</mo><mi>AB</mi></mrow></mfrac></math></div>
+            <p>ここに <math><mi>AB</mi><mo>=</mo><mn>4</mn></math>、<math><mi>BC</mi><mo>=</mo><mn>6</mn></math>、<math><mi>CA</mi><mo>=</mo><mn>5</mn></math> を代入してみよう。</p>
           </article>
 
           <article class="stage hint" hidden>
             <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">計算すると cos はきれいな分数に</span></div>
-            <div class="formula-line"><span class="m">cos∠BAC = <span class="frac"><span class="num">5<sup>2</sup> + 4<sup>2</sup> − 6<sup>2</sup></span><span class="den">2×5×4</span></span> = <span class="frac"><span class="num">25 + 16 − 36</span><span class="den">40</span></span> = <span class="frac"><span class="num">5</span><span class="den">40</span></span></span></div>
-            <p>約分すれば <span class="m">cos∠BAC</span> が決まる。ここまでで オ と カ は確定だね。次は sin に進もう。</p>
+            <div class="formula-line"><div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>cos</mi><mo>∠</mo><mi>BAC</mi><mo>=</mo><mfrac><mrow><msup><mn>5</mn><mn>2</mn></msup><mo>+</mo><msup><mn>4</mn><mn>2</mn></msup><mo>−</mo><msup><mn>6</mn><mn>2</mn></msup></mrow><mrow><mn>2</mn><mo>×</mo><mn>5</mn><mo>×</mo><mn>4</mn></mrow></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>cos</mi><mo>∠</mo><mi>BAC</mi></mphantom><mo>=</mo><mfrac><mrow><mn>25</mn><mo>+</mo><mn>16</mn><mo>−</mo><mn>36</mn></mrow><mn>40</mn></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>cos</mi><mo>∠</mo><mi>BAC</mi></mphantom><mo>=</mo><mfrac><mn>5</mn><mn>40</mn></mfrac></math></div>
+</div></div>
+            <p>約分すれば <math><mi>cos</mi><mo>∠</mo><mi>BAC</mi></math> が決まる。<br>ここまでで オ と カ は確定だね。次は sin に進もう。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">sin は sin²A + cos²A = 1 から出す</span></div>
-            <div class="formula-line"><span class="m">sin <i>A</i> = <span class="sqrt">√<span class="rad">1 − cos<sup>2</sup><i>A</i></span></span> = <span class="sqrt">√<span class="rad">1 − <span class="frac"><span class="num">1</span><span class="den">64</span></span></span></span> = <span class="frac"><span class="num"><span class="sqrt">√<span class="rad">63</span></span></span><span class="den">8</span></span></span></div>
-            <p class="mini">∠BAC は三角形の内角だから sin はプラス。符号に迷うことはないよ。</p>
-            <p>あとは <span class="m"><span class="sqrt">√<span class="rad">63</span></span> = <span class="sqrt">√<span class="rad">9×7</span></span></span> を <span class="m">3<span class="sqrt">√<span class="rad">7</span></span></span> と直せば、キ, ク, ケ の形になる。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">sin は<math><msup><mi>sin</mi><mn>2</mn></msup><mi>A</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>A</mi><mo>=</mo><mn>1</mn></math>から出す</span></div>
+            <p class="cite"><span class="cite-tag">使う公式</span>三角関数の相互関係 <math displaystyle="true"><mi>sin</mi><mi>A</mi><mo>=</mo><msqrt><mrow><mn>1</mn><mo>−</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>A</mi></mrow></msqrt></math>。このステップでは、cosの値からsinの値をこの関係で求める。</p><div class="formula-line"><div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>sin</mi><mi>A</mi><mo>=</mo><msqrt><mrow><mn>1</mn><mo>−</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>A</mi></mrow></msqrt></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mi>A</mi></mphantom><mo>=</mo><msqrt><mrow><mn>1</mn><mo>−</mo><mfrac><mn>1</mn><mn>64</mn></mfrac></mrow></msqrt></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mi>A</mi></mphantom><mo>=</mo><mfrac><msqrt><mn>63</mn></msqrt><mn>8</mn></mfrac></math></div>
+</div></div>
+            <p class="mini"><math><mo>∠</mo><mi>BAC</mi></math>は三角形の内角だから sin はプラス。符号に迷うことはないよ。</p>
+            <p>あとは <math><msqrt><mn>63</mn></msqrt><mo>=</mo><msqrt><mrow><mn>9</mn><mo>×</mo><mn>7</mn></mrow></msqrt></math> を <math><mn>3</mn><msqrt><mn>7</mn></msqrt></math> と直せば、キ, ク, ケ の形になる。</p>
           </article>
 
           <article class="stage answer" hidden>
             <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">A の答え</span></div>
-            <div class="formula-line">
-              <span class="m">cos∠BAC = <span class="frac"><span class="num">25 + 16 − 36</span><span class="den">2×5×4</span></span> = <span class="frac"><span class="num">1</span><span class="den">8</span></span></span><br />
-              <span class="m">sin∠BAC = <span class="sqrt">√<span class="rad">1 − (<span class="frac"><span class="num">1</span><span class="den">8</span></span>)<sup>2</sup></span></span> = <span class="frac"><span class="num"><span class="sqrt">√<span class="rad">63</span></span></span><span class="den">8</span></span> = <span class="frac"><span class="num">3<span class="sqrt">√<span class="rad">7</span></span></span><span class="den">8</span></span></span>
+            <p class="cite"><span class="cite-tag">使う公式</span>余弦定理 <math><mi>cos</mi><mo>∠</mo><mi>BAC</mi><mo>=</mo><mfrac><mrow><mn>25</mn><mo>+</mo><mn>16</mn><mo>−</mo><mn>36</mn></mrow><mrow><mn>2</mn><mo>×</mo><mn>5</mn><mo>×</mo><mn>4</mn></mrow></mfrac><mo>=</mo><mfrac><mn>1</mn><mn>8</mn></mfrac></math>。このステップでは、3辺の長さを余弦定理に入れてcosを確定させる。</p><div class="formula-line">
+              <math><mi>cos</mi><mo>∠</mo><mi>BAC</mi><mo>=</mo><mfrac><mrow><mn>25</mn><mo>+</mo><mn>16</mn><mo>−</mo><mn>36</mn></mrow><mrow><mn>2</mn><mo>×</mo><mn>5</mn><mo>×</mo><mn>4</mn></mrow></mfrac><mo>=</mo><mfrac><mn>1</mn><mn>8</mn></mfrac></math><br />
+              <div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>sin</mi><mo>∠</mo><mi>BAC</mi><mo>=</mo><msqrt><mrow><mn>1</mn><mo>−</mo><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>8</mn></mfrac><mo>)</mo></mrow><mn>2</mn></msup></mrow></msqrt></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mo>∠</mo><mi>BAC</mi></mphantom><mo>=</mo><mfrac><msqrt><mn>63</mn></msqrt><mn>8</mn></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mo>∠</mo><mi>BAC</mi></mphantom><mo>=</mo><mfrac><mrow><mn>3</mn><msqrt><mn>7</mn></msqrt></mrow><mn>8</mn></mfrac></math></div>
+</div>
             </div>
             <div class="ans-line">
-              <span class="ans-chip"><span class="kana">オカ</span><span class="m"><span class="frac"><span class="num">1</span><span class="den">8</span></span></span><span class="pts">3点</span></span>
-              <span class="ans-chip"><span class="kana">キクケ</span><span class="m"><span class="frac"><span class="num">3√7</span><span class="den">8</span></span></span><span class="pts">2点</span></span>
+              <span class="ans-chip"><span class="kana">オカ</span><math><mfrac><mn>1</mn><mn>8</mn></mfrac></math><span class="pts">3点</span></span>
+              <span class="ans-chip"><span class="kana">キクケ</span><math><mfrac><mrow><mn>3</mn><msqrt><mn>7</mn></msqrt></mrow><mn>8</mn></mfrac></math><span class="pts">2点</span></span>
             </div>
-            <div class="point-box"><span class="pt">ポイント</span>3辺が分かれば<strong>余弦定理</strong>で cos、sin は <span class="m">sin<sup>2</sup><i>A</i> + cos<sup>2</sup><i>A</i> = 1</span> から。この sin の値は次のブロックでも使うよ。</div>
+            <div class="point-box"><span class="pt">ポイント</span>3辺が分かれば<strong>余弦定理</strong>で cos、sin は <math><msup><mi>sin</mi><mn>2</mn></msup><mi>A</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>A</mi><mo>=</mo><mn>1</mn></math> から。この sin の値は次のブロックでも使うよ。</div>
           </article>
         </div>
 
@@ -648,51 +722,55 @@
       </section>
 
       <!-- ========== 〔2〕B 面積と外接円の半径 ========== -->
-      <section class="problem active" id="p2-b" data-group="g2">
+      <section class="nofig problem active" id="p2-b" data-group="g2">
         <div class="qside">
         <div class="qcard">
           <div class="q-head">
             <span class="q-num">B</span><span class="q-title">面積と外接円の半径</span>
             <span class="q-points">配点 6点（各3点）</span>
           </div>
-          <p class="q-body"><span class="m">△ABC</span> の面積は <span class="m"><span class="blank" data-kana="コ" data-ans="1">コ</span><span class="blank" data-kana="サ" data-ans="5">サ</span>√<span class="blank" data-kana="シ" data-ans="7">シ</span>/<span class="blank" data-kana="ス" data-ans="4">ス</span> m<sup>2</sup></span> であり、<span class="m">△ABC</span> の外接円の半径は <span class="m"><span class="blank" data-kana="セ" data-ans="8">セ</span>√<span class="blank" data-kana="ソ" data-ans="7">ソ</span>/<span class="blank" data-kana="タ" data-ans="7">タ</span> m</span> である。</p>
+          <p class="q-body"><math><mo>△</mo><mi>ABC</mi></math> の面積は <math><mtext><span class="blank" data-kana="コ" data-ans="1">コ</span></mtext><mtext><span class="blank" data-kana="サ" data-ans="5">サ</span></mtext><mfrac><msqrt><mtext><span class="blank" data-kana="シ" data-ans="7">シ</span></mtext></msqrt><mtext><span class="blank" data-kana="ス" data-ans="4">ス</span></mtext></mfrac><msup><mi>m</mi><mn>2</mn></msup></math> であり、<math><mo>△</mo><mi>ABC</mi></math> の外接円の半径は <math><mtext><span class="blank" data-kana="セ" data-ans="8">セ</span></mtext><mfrac><msqrt><mtext><span class="blank" data-kana="ソ" data-ans="7">ソ</span></mtext></msqrt><mtext><span class="blank" data-kana="タ" data-ans="7">タ</span></mtext></mfrac><mi>m</mi></math> である。</p>
         </div>
-        <p class="think-note">ブロック A で求めた sin∠BAC が、ここで2回とも主役になるよ。</p>
+        <p class="think-note">ブロック A で求めた<math><mi>sin</mi><mo>∠</mo><mi>BAC</mi></math>が、ここで2回とも主役になるよ。</p>
         </div>
 
         <div class="stages">
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">面積の公式に sin を代入する</span></div>
-            <p>2辺とその間の角が分かっているときの面積の公式を使う。角 A をはさむ2辺は CA と AB だから：</p>
-            <div class="formula-line"><span class="m">面積 = <span class="frac"><span class="num">1</span><span class="den">2</span></span>・CA・AB・sin <i>A</i></span></div>
-            <p><span class="m">CA = 5</span>、<span class="m">AB = 4</span>、そして <span class="m">sin <i>A</i></span> はブロック A の答えを代入してみよう。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">面積の公式に sin を代入する</span></div><p class="cite"><span class="cite-tag">使う公式</span>三角形の面積 <math><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>⋅</mo><mi>CA</mi><mo>⋅</mo><mi>AB</mi><mo>⋅</mo><mi>sin</mi><mi>A</mi></math>。このステップでは、角Aをはさむ2辺とその間の角のsinで面積を表す。</p>
+            <p>2辺とその間の角が分かっているときの面積の公式を使う。<br>角 A をはさむ2辺は CA と AB だから：</p>
+            <div class="formula-line"><span class="m">面積<math><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>⋅</mo><mi>CA</mi><mo>⋅</mo><mi>AB</mi><mo>⋅</mo><mi>sin</mi><mi>A</mi></math></span></div>
+            <p><math><mi>CA</mi><mo>=</mo><mn>5</mn></math>、<math><mi>AB</mi><mo>=</mo><mn>4</mn></math>、そして <math><mi>sin</mi><mi>A</mi></math> はブロック A の答えを代入してみよう。</p>
           </article>
 
           <article class="stage hint" hidden>
             <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">面積の計算</span></div>
-            <div class="formula-line"><span class="m">面積 = <span class="frac"><span class="num">1</span><span class="den">2</span></span>×5×4×<span class="frac"><span class="num">3<span class="sqrt">√<span class="rad">7</span></span></span><span class="den">8</span></span></span></div>
-            <p><span class="m"><span class="frac"><span class="num">1</span><span class="den">2</span></span>×5×4 = 10</span> を先に計算してから <span class="m"><span class="frac"><span class="num">3<span class="sqrt">√<span class="rad">7</span></span></span><span class="den">8</span></span></span> を掛けて約分すると、コサ√シ/ス の形になる。次は外接円の半径だよ。</p>
+            <div class="formula-line"><span class="m">面積<math><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>×</mo><mn>5</mn><mo>×</mo><mn>4</mn><mo>×</mo><mfrac><mrow><mn>3</mn><msqrt><mn>7</mn></msqrt></mrow><mn>8</mn></mfrac></math></span></div>
+            <p><math><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>×</mo><mn>5</mn><mo>×</mo><mn>4</mn><mo>=</mo><mn>10</mn></math> を先に計算してから <math><mfrac><mrow><mn>3</mn><msqrt><mn>7</mn></msqrt></mrow><mn>8</mn></mfrac></math> を掛けて約分すると、コサ<math><mo>√</mo></math>シ/ス の形になる。次は外接円の半径だよ。</p>
           </article>
 
           <article class="stage hint" hidden>
             <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">半径 R は正弦定理から</span></div>
-            <p>外接円の半径を <span class="m"><i>R</i></span> とすると、<strong>正弦定理</strong>より <span class="m">2<i>R</i> = <span class="frac"><span class="num">BC</span><span class="den">sin <i>A</i></span></span></span>。値を入れると：</p>
-            <div class="formula-line"><span class="m">2<i>R</i> = 6 ÷ <span class="frac"><span class="num">3<span class="sqrt">√<span class="rad">7</span></span></span><span class="den">8</span></span> = <span class="frac"><span class="num">48</span><span class="den">3<span class="sqrt">√<span class="rad">7</span></span></span></span> = <span class="frac"><span class="num">16<span class="sqrt">√<span class="rad">7</span></span></span><span class="den">7</span></span></span></div>
-            <p class="mini">割り算の途中で分母の <span class="m"><span class="sqrt">√<span class="rad">7</span></span></span> を有理化しているよ（<span class="m"><span class="frac"><span class="num">16</span><span class="den"><span class="sqrt">√<span class="rad">7</span></span></span></span> = <span class="frac"><span class="num">16<span class="sqrt">√<span class="rad">7</span></span></span><span class="den">7</span></span></span>）。</p>
-            <p>あとは両辺を 2 で割れば <span class="m"><i>R</i></span> が出る。</p>
+            <p>外接円の半径を <math><mi>R</mi></math> とすると、<strong>正弦定理</strong>より <math><mn>2</mn><mi>R</mi><mo>=</mo><mfrac><mi>BC</mi><mrow><mi>sin</mi><mi>A</mi></mrow></mfrac></math>。値を入れると：</p>
+            <p class="cite"><span class="cite-tag">使う公式</span>正弦定理 <math><mn>2</mn><mi>R</mi><mo>=</mo><mfrac><mi>BC</mi><mrow><mi>sin</mi><mi>A</mi></mrow></mfrac></math>。このステップでは、辺BCとその向かいの角Aのsinから外接円の半径を求める。</p><div class="formula-line"><div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mn>2</mn><mi>R</mi><mo>=</mo><mn>6</mn><mo>÷</mo><mfrac><mrow><mn>3</mn><msqrt><mn>7</mn></msqrt></mrow><mn>8</mn></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mn>2</mn><mi>R</mi></mphantom><mo>=</mo><mfrac><mn>48</mn><mrow><mn>3</mn><msqrt><mn>7</mn></msqrt></mrow></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mn>2</mn><mi>R</mi></mphantom><mo>=</mo><mfrac><mrow><mn>16</mn><msqrt><mn>7</mn></msqrt></mrow><mn>7</mn></mfrac></math></div>
+</div></div>
+            <p class="mini">割り算の途中で分母の <math><msqrt><mn>7</mn></msqrt></math> を有理化しているよ<math><mo>(</mo><mfrac><mn>16</mn><msqrt><mn>7</mn></msqrt></mfrac><mo>=</mo><mfrac><mrow><mn>16</mn><msqrt><mn>7</mn></msqrt></mrow><mn>7</mn></mfrac><mo>)</mo></math>。</p>
+            <p>あとは両辺を 2 で割れば <math><mi>R</mi></math> が出る。</p>
           </article>
 
           <article class="stage answer" hidden>
             <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">B の答え</span></div>
             <div class="formula-line">
-              <span class="m">面積 = <span class="frac"><span class="num">1</span><span class="den">2</span></span>×5×4×<span class="frac"><span class="num">3<span class="sqrt">√<span class="rad">7</span></span></span><span class="den">8</span></span> = <span class="frac"><span class="num">15<span class="sqrt">√<span class="rad">7</span></span></span><span class="den">4</span></span> m<sup>2</sup></span><br />
-              <span class="m">2<i>R</i> = <span class="frac"><span class="num">6</span><span class="den">sin <i>A</i></span></span> = <span class="frac"><span class="num">16<span class="sqrt">√<span class="rad">7</span></span></span><span class="den">7</span></span></span> より <span class="m"><i>R</i> = <span class="frac"><span class="num">8<span class="sqrt">√<span class="rad">7</span></span></span><span class="den">7</span></span> m</span>
+              <span class="m">面積<math><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>×</mo><mn>5</mn><mo>×</mo><mn>4</mn><mo>×</mo><mfrac><mrow><mn>3</mn><msqrt><mn>7</mn></msqrt></mrow><mn>8</mn></mfrac><mo>=</mo><mfrac><mrow><mn>15</mn><msqrt><mn>7</mn></msqrt></mrow><mn>4</mn></mfrac><msup><mi>m</mi><mn>2</mn></msup></math></span><br />
+              <math><mn>2</mn><mi>R</mi><mo>=</mo><mfrac><mn>6</mn><mrow><mi>sin</mi><mi>A</mi></mrow></mfrac><mo>=</mo><mfrac><mrow><mn>16</mn><msqrt><mn>7</mn></msqrt></mrow><mn>7</mn></mfrac></math> より <math><mi>R</mi><mo>=</mo><mfrac><mrow><mn>8</mn><msqrt><mn>7</mn></msqrt></mrow><mn>7</mn></mfrac><mi>m</mi></math>
             </div>
             <div class="ans-line">
-              <span class="ans-chip"><span class="kana">コサシス</span><span class="m"><span class="frac"><span class="num">15√7</span><span class="den">4</span></span> m<sup>2</sup></span><span class="pts">3点</span></span>
-              <span class="ans-chip"><span class="kana">セソタ</span><span class="m"><span class="frac"><span class="num">8√7</span><span class="den">7</span></span> m</span><span class="pts">3点</span></span>
+              <span class="ans-chip"><span class="kana">コサシス</span><math><mfrac><mrow><mn>15</mn><msqrt><mn>7</mn></msqrt></mrow><mn>4</mn></mfrac><msup><mi>m</mi><mn>2</mn></msup></math><span class="pts">3点</span></span>
+              <span class="ans-chip"><span class="kana">セソタ</span><math><mfrac><mrow><mn>8</mn><msqrt><mn>7</mn></msqrt></mrow><mn>7</mn></mfrac><mi>m</mi></math><span class="pts">3点</span></span>
             </div>
-            <div class="point-box"><span class="pt">ポイント</span>面積は「<span class="m"><span class="frac"><span class="num">1</span><span class="den">2</span></span></span>×2辺×sin（間の角）」、半径は<strong>正弦定理</strong> <span class="m">2<i>R</i> = <span class="frac"><span class="num"><i>a</i></span><span class="den">sin <i>A</i></span></span></span>。この <span class="m"><i>R</i></span> の値はブロック C でも使うよ。</div>
+            <div class="point-box"><span class="pt">ポイント</span><p class="cite"><span class="cite-tag">使う公式</span>正弦定理 <math><mn>2</mn><mi>R</mi><mo>=</mo><mfrac><mn>6</mn><mrow><mi>sin</mi><mi>A</mi></mrow></mfrac><mo>=</mo><mfrac><mrow><mn>16</mn><msqrt><mn>7</mn></msqrt></mrow><mn>7</mn></mfrac></math>。このまとめでは、面積の公式と正弦定理を続けて使う流れを整理する。</p>面積は「<math><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>×</mo><mn>2</mn></math>辺×sin（間の角）」、半径は<strong>正弦定理</strong> <math><mn>2</mn><mi>R</mi><mo>=</mo><mfrac><mi>a</mi><mrow><mi>sin</mi><mi>A</mi></mrow></mfrac></math>。この <math><mi>R</mi></math> の値はブロック C でも使うよ。</div>
           </article>
         </div>
 
@@ -714,19 +792,19 @@
           </div>
           <p class="q-body">このとき<span class="blank" data-kana="チ" data-ans="2">チ</span>が成り立つ。<span class="blank" data-kana="チ" data-ans="2">チ</span>に当てはまるものを、次の 0〜2 のうちから一つ選べ。また、ロープ1本の長さは<span class="blank" data-kana="ツ" data-ans="6">ツ</span> m である。<span class="blank" data-kana="ツ" data-ans="6">ツ</span>に当てはまるものを、下の 0〜7 のうちから一つ選べ。</p>
           <p class="choices">
-            <span class="copt">0： <span class="m">△ABH ≡ △BCH ≡ △CAH</span></span>
-            <span class="copt">1： <span class="m">△ABP ≡ △BCP ≡ △CAP</span></span>
-            <span class="copt">2： <span class="m">△AHP ≡ △BHP ≡ △CHP</span></span>
+            <span class="copt">0： <math><mo>△</mo><mi>ABH</mi><mo>≡</mo><mo>△</mo><mi>BCH</mi><mo>≡</mo><mo>△</mo><mi>CAH</mi></math></span>
+            <span class="copt">1： <math><mo>△</mo><mi>ABP</mi><mo>≡</mo><mo>△</mo><mi>BCP</mi><mo>≡</mo><mo>△</mo><mi>CAP</mi></math></span>
+            <span class="copt">2： <math><mo>△</mo><mi>AHP</mi><mo>≡</mo><mo>△</mo><mi>BHP</mi><mo>≡</mo><mo>△</mo><mi>CHP</mi></math></span>
           </p>
           <p class="choices">
-            <span class="copt">0： <span class="m"><span class="frac"><span class="num"><span class="sqrt">√<span class="rad">161</span></span></span><span class="den">14</span></span></span></span>
-            <span class="copt">1： <span class="m"><span class="frac"><span class="num">3<span class="sqrt">√<span class="rad">23</span></span></span><span class="den">14</span></span></span></span>
-            <span class="copt">2： <span class="m"><span class="frac"><span class="num">2<span class="sqrt">√<span class="rad">23</span></span></span><span class="den">7</span></span></span></span>
-            <span class="copt">3： <span class="m"><span class="frac"><span class="num"><span class="sqrt">√<span class="rad">161</span></span></span><span class="den">7</span></span></span></span>
-            <span class="copt">4： <span class="m"><span class="frac"><span class="num">8<span class="sqrt">√<span class="rad">7</span></span></span><span class="den">7</span></span></span></span>
-            <span class="copt">5： <span class="m"><span class="frac"><span class="num">4<span class="sqrt">√<span class="rad">35</span></span></span><span class="den">7</span></span></span></span>
-            <span class="copt">6： <span class="m"><span class="frac"><span class="num">2<span class="sqrt">√<span class="rad">161</span></span></span><span class="den">7</span></span></span></span>
-            <span class="copt">7： <span class="m">2<span class="sqrt">√<span class="rad">23</span></span></span></span>
+            <span class="copt">0： <math><mfrac><msqrt><mn>161</mn></msqrt><mn>14</mn></mfrac></math></span>
+            <span class="copt">1： <math><mfrac><mrow><mn>3</mn><msqrt><mn>23</mn></msqrt></mrow><mn>14</mn></mfrac></math></span>
+            <span class="copt">2： <math><mfrac><mrow><mn>2</mn><msqrt><mn>23</mn></msqrt></mrow><mn>7</mn></mfrac></math></span>
+            <span class="copt">3： <math><mfrac><msqrt><mn>161</mn></msqrt><mn>7</mn></mfrac></math></span>
+            <span class="copt">4： <math><mfrac><mrow><mn>8</mn><msqrt><mn>7</mn></msqrt></mrow><mn>7</mn></mfrac></math></span>
+            <span class="copt">5： <math><mfrac><mrow><mn>4</mn><msqrt><mn>35</mn></msqrt></mrow><mn>7</mn></mfrac></math></span>
+            <span class="copt">6： <math><mfrac><mrow><mn>2</mn><msqrt><mn>161</mn></msqrt></mrow><mn>7</mn></mfrac></math></span>
+            <span class="copt">7： <math><mn>2</mn><msqrt><mn>23</mn></msqrt></math></span>
           </p>
         </div>
 
@@ -766,42 +844,52 @@
 
         <div class="stages">
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">3つの直角三角形に注目する</span></div>
-            <p>ロープが同じ長さだから <span class="m">PA = PB = PC</span>。そして辺 PH は3つの三角形 <span class="m">△AHP</span>, <span class="m">△BHP</span>, <span class="m">△CHP</span> の<strong>共通の辺</strong>で、ポールは地面に垂直だから <span class="m">∠AHP = ∠BHP = ∠CHP = 90°</span>。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">3つの直角三角形に注目する</span></div><p class="cite"><span class="cite-tag">使う性質</span>垂直と直角 <math displaystyle="true"><mphantom><mo>∠</mo><mi>AHP</mi></mphantom><mo>=</mo><mn>90</mn><mo>°</mo></math>。このステップでは、ポールが地面に垂直なことから3つの角が直角になると読む。</p>
+            <p>ロープが同じ長さだから <math><mi>PA</mi><mo>=</mo><mi>PB</mi><mo>=</mo><mi>PC</mi></math>。<br>そして辺 PH は3つの三角形 <math><mo>△</mo><mi>AHP</mi><mo>,</mo><mo>△</mo><mi>BHP</mi><mo>,</mo><mo>△</mo><mi>CHP</mi></math> の<strong>共通の辺</strong>で、ポールは地面に垂直だから</p>
+<div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mo>∠</mo><mi>AHP</mi><mo>=</mo><mo>∠</mo><mi>BHP</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mo>∠</mo><mi>AHP</mi></mphantom><mo>=</mo><mo>∠</mo><mi>CHP</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mo>∠</mo><mi>AHP</mi></mphantom><mo>=</mo><mn>90</mn><mo>°</mo></math></div>
+</div>。
             <p>上の図に H とポール、ロープが出たので、3つの直角三角形の形を確認しよう。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">合同条件から、H は外心だと分かる</span></div>
-            <p>直角三角形の合同条件「<strong>斜辺と他の1辺がそれぞれ等しい</strong>」が使える：斜辺 <span class="m">PA = PB = PC</span>、共通の辺 PH。だから3つの三角形は合同で、チ は選択肢 <strong>2</strong>。</p>
-            <p>合同なら対応する辺も等しいから <span class="m">AH = BH = CH</span>。地面の3点 A, B, C から等しい距離にある点 H は、<span class="m">△ABC</span> の<strong>外心</strong>（外接円の中心）だね。つまり <span class="m">AH</span> は外接円の半径そのもの：</p>
-            <div class="formula-line"><span class="m">AH = <i>R</i> = <span class="frac"><span class="num">8<span class="sqrt">√<span class="rad">7</span></span></span><span class="den">7</span></span></span></div>
+            <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">合同条件から、H は外心だと分かる</span></div><p class="cite"><span class="cite-tag">使う性質</span>直角三角形の合同条件 <math><mi>PA</mi><mo>=</mo><mi>PB</mi><mo>=</mo><mi>PC</mi></math>。このステップでは、斜辺と共通の辺が等しいことから3つの三角形の合同を示す。</p>
+            <p>直角三角形の合同条件「<strong>斜辺と他の1辺がそれぞれ等しい</strong>」が使える：斜辺 <math><mi>PA</mi><mo>=</mo><mi>PB</mi><mo>=</mo><mi>PC</mi></math>、共通の辺 PH。<br>だから3つの三角形は合同で、チ は選択肢 <strong>2</strong>。</p>
+            <p>合同なら対応する辺も等しいから <math><mi>AH</mi><mo>=</mo><mi>BH</mi><mo>=</mo><mi>CH</mi></math>。<br>地面の3点 A, B, C から等しい距離にある点 H は、<math><mo>△</mo><mi>ABC</mi></math> の<strong>外心</strong>（外接円の中心）だね。つまり <math><mi>AH</mi></math> は外接円の半径そのもの：</p>
+            <div class="formula-line"><math><mi>AH</mi><mo>=</mo><mi>R</mi><mo>=</mo><mfrac><mrow><mn>8</mn><msqrt><mn>7</mn></msqrt></mrow><mn>7</mn></mfrac></math></div>
           </article>
 
           <article class="stage hint" hidden>
             <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">ロープ PA は直角三角形 AHP の斜辺</span></div>
             <p>ロープ1本の長さ PA は、直角三角形 AHP の斜辺。<strong>三平方の定理</strong>で：</p>
-            <div class="formula-line"><span class="m">PA = <span class="sqrt">√<span class="rad">AH<sup>2</sup> + PH<sup>2</sup></span></span> = <span class="sqrt">√<span class="rad">(<span class="frac"><span class="num">8<span class="sqrt">√<span class="rad">7</span></span></span><span class="den">7</span></span>)<sup>2</sup> + 2<sup>2</sup></span></span></span></div>
-            <p><span class="m">AH</span> はヒント2の値、<span class="m">PH = 2</span> は問題文の値だね。あとは中身を計算するだけ。</p>
+            <p class="cite"><span class="cite-tag">使う公式</span>三平方の定理 <math><mi>PA</mi><mo>=</mo><msqrt><mrow><msup><mi>AH</mi><mn>2</mn></msup><mo>+</mo><msup><mi>PH</mi><mn>2</mn></msup></mrow></msqrt><mo>=</mo><msqrt><mrow><msup><mrow><mo>(</mo><mfrac><mrow><mn>8</mn><msqrt><mn>7</mn></msqrt></mrow><mn>7</mn></mfrac><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mn>2</mn><mn>2</mn></msup></mrow></msqrt></math>。このステップでは、直角三角形AHPの斜辺としてロープの長さを求める。</p><div class="formula-line"><math><mi>PA</mi><mo>=</mo><msqrt><mrow><msup><mi>AH</mi><mn>2</mn></msup><mo>+</mo><msup><mi>PH</mi><mn>2</mn></msup></mrow></msqrt><mo>=</mo><msqrt><mrow><msup><mrow><mo>(</mo><mfrac><mrow><mn>8</mn><msqrt><mn>7</mn></msqrt></mrow><mn>7</mn></mfrac><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mn>2</mn><mn>2</mn></msup></mrow></msqrt></math></div>
+            <p><math><mi>AH</mi></math> はヒント2の値、<math><mi>PH</mi><mo>=</mo><mn>2</mn></math> は問題文の値だね。あとは中身を計算するだけ。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title">√ の中身を計算して、選択肢と比べる</span></div>
-            <div class="formula-line"><span class="m">(<span class="frac"><span class="num">8<span class="sqrt">√<span class="rad">7</span></span></span><span class="den">7</span></span>)<sup>2</sup> = <span class="frac"><span class="num">64</span><span class="den">7</span></span></span>，　<span class="m">2<sup>2</sup> = 4 = <span class="frac"><span class="num">28</span><span class="den">7</span></span></span></div>
-            <p>合計は <span class="m"><span class="frac"><span class="num">64</span><span class="den">7</span></span> + <span class="frac"><span class="num">28</span><span class="den">7</span></span> = <span class="frac"><span class="num">92</span><span class="den">7</span></span></span>。だから <span class="m">PA = <span class="sqrt">√<span class="rad"><span class="frac"><span class="num">92</span><span class="den">7</span></span></span></span></span>。92 = 4×23, … と変形して、選択肢の形に合わせてみよう。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 4</span><span class="stage-title"><math><mo>√</mo></math>の中身を計算して、選択肢と比べる</span></div>
+            <div class="formula-line"><math><msup><mrow><mo>(</mo><mfrac><mrow><mn>8</mn><msqrt><mn>7</mn></msqrt></mrow><mn>7</mn></mfrac><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mfrac><mn>64</mn><mn>7</mn></mfrac><mo>,</mo></math>　<math><msup><mn>2</mn><mn>2</mn></msup><mo>=</mo><mn>4</mn><mo>=</mo><mfrac><mn>28</mn><mn>7</mn></mfrac></math></div>
+            <p>合計は <math><mfrac><mn>64</mn><mn>7</mn></mfrac><mo>+</mo><mfrac><mn>28</mn><mn>7</mn></mfrac><mo>=</mo><mfrac><mn>92</mn><mn>7</mn></mfrac></math>。<br>だから <math><mi>PA</mi><mo>=</mo><msqrt><mfrac><mn>92</mn><mn>7</mn></mfrac></msqrt></math>。<math><mn>92</mn><mo>=</mo><mn>4</mn><mo>×</mo><mn>23</mn><mo>,</mo><mo>…</mo></math>と変形して、選択肢の形に合わせてみよう。</p>
           </article>
 
           <article class="stage answer" hidden>
-            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">C の答え</span></div>
+            <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">C の答え</span></div><p class="cite"><span class="cite-tag">使う定義</span>外心 <math><mi>AH</mi><mo>=</mo><mi>BH</mi><mo>=</mo><mi>CH</mi></math>。このステップでは、3点から等しい距離にある点が外心であることを使う。</p>
             <ol class="steps">
-              <li><span class="m">PA = PB = PC</span>、PH は共通、角はいずれも 90° だから、直角三角形の合同条件より <span class="m">△AHP ≡ △BHP ≡ △CHP</span>。よって <span class="m">AH = BH = CH</span> で、H は外心、<span class="m">AH = <i>R</i> = <span class="frac"><span class="num">8<span class="sqrt">√<span class="rad">7</span></span></span><span class="den">7</span></span></span>。</li>
-              <li><span class="m">PA = <span class="sqrt">√<span class="rad">(<span class="frac"><span class="num">8<span class="sqrt">√<span class="rad">7</span></span></span><span class="den">7</span></span>)<sup>2</sup> + 2<sup>2</sup></span></span> = <span class="sqrt">√<span class="rad"><span class="frac"><span class="num">64</span><span class="den">7</span></span> + <span class="frac"><span class="num">28</span><span class="den">7</span></span></span></span> = <span class="sqrt">√<span class="rad"><span class="frac"><span class="num">92</span><span class="den">7</span></span></span></span> = <span class="frac"><span class="num">2<span class="sqrt">√<span class="rad">161</span></span></span><span class="den">7</span></span></span>。これは選択肢 6。</li>
+              <li><math><mi>PA</mi><mo>=</mo><mi>PB</mi><mo>=</mo><mi>PC</mi></math>、PH は共通、角はいずれも<math><mn>90</mn><mo>°</mo></math>だから、直角三角形の合同条件より <math><mo>△</mo><mi>AHP</mi><mo>≡</mo><mo>△</mo><mi>BHP</mi><mo>≡</mo><mo>△</mo><mi>CHP</mi></math>。よって <math><mi>AH</mi><mo>=</mo><mi>BH</mi><mo>=</mo><mi>CH</mi></math> で、H は外心、<math><mi>AH</mi><mo>=</mo><mi>R</mi><mo>=</mo><mfrac><mrow><mn>8</mn><msqrt><mn>7</mn></msqrt></mrow><mn>7</mn></mfrac></math>。</li>
+              <li><div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>PA</mi><mo>=</mo><msqrt><mrow><msup><mrow><mo>(</mo><mfrac><mrow><mn>8</mn><msqrt><mn>7</mn></msqrt></mrow><mn>7</mn></mfrac><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mn>2</mn><mn>2</mn></msup></mrow></msqrt></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>PA</mi></mphantom><mo>=</mo><msqrt><mrow><mfrac><mn>64</mn><mn>7</mn></mfrac><mo>+</mo><mfrac><mn>28</mn><mn>7</mn></mfrac></mrow></msqrt></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>PA</mi></mphantom><mo>=</mo><msqrt><mfrac><mn>92</mn><mn>7</mn></mfrac></msqrt></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>PA</mi></mphantom><mo>=</mo><mfrac><mrow><mn>2</mn><msqrt><mn>161</mn></msqrt></mrow><mn>7</mn></mfrac></math></div>
+</div>。これは選択肢 6。</li>
             </ol>
             <div class="ans-line">
-              <span class="ans-chip"><span class="kana">チ</span><span class="m">2</span><span class="pts">2点</span></span>
-              <span class="ans-chip"><span class="kana">ツ</span><span class="m">6</span><span class="pts">3点</span></span>
+              <span class="ans-chip"><span class="kana">チ</span><math><mn>2</mn></math><span class="pts">2点</span></span>
+              <span class="ans-chip"><span class="kana">ツ</span><math><mn>6</mn></math><span class="pts">3点</span></span>
             </div>
-            <div class="point-box"><span class="pt">ポイント</span>「同じ長さのロープ＋垂直なポール」→ <strong>直角三角形の合同</strong> → H は外心。ロープの長さは三平方の定理で、半径 <span class="m"><i>R</i></span> と <span class="m">PH</span> を組み合わせる。</div>
+            <div class="point-box"><span class="pt">ポイント</span>「同じ長さのロープ＋垂直なポール」→ <strong>直角三角形の合同</strong> → H は外心。ロープの長さは三平方の定理で、半径 <math><mi>R</mi></math> と <math><mi>PH</mi></math> を組み合わせる。</div>
           </article>
         </div>
 
@@ -821,7 +909,7 @@
             <span class="q-num">D</span><span class="q-title">△BCD の面積の最大値</span>
             <span class="q-points">配点 4点</span>
           </div>
-          <p class="q-body">杭 A を、もとの <span class="m">△ABC</span> の外接円の周上の点に打ち直して、その点を D とする。<span class="m">△BCD</span> の面積が最大になるとき、その面積は <span class="m"><span class="blank" data-kana="テ" data-ans="2">テ</span><span class="blank" data-kana="ト" data-ans="7">ト</span>√<span class="blank" data-kana="ナ" data-ans="7">ナ</span>/<span class="blank" data-kana="ニ" data-ans="7">ニ</span> m<sup>2</sup></span> である。</p>
+          <p class="q-body">杭 A を、もとの <math><mo>△</mo><mi>ABC</mi></math> の外接円の周上の点に打ち直して、その点を D とする。<math><mo>△</mo><mi>BCD</mi></math> の面積が最大になるとき、その面積は <math><mtext><span class="blank" data-kana="テ" data-ans="2">テ</span></mtext><mtext><span class="blank" data-kana="ト" data-ans="7">ト</span></mtext><mfrac><msqrt><mtext><span class="blank" data-kana="ナ" data-ans="7">ナ</span></mtext></msqrt><mtext><span class="blank" data-kana="ニ" data-ans="7">ニ</span></mtext></mfrac><msup><mi>m</mi><mn>2</mn></msup></math> である。</p>
         </div>
 
         <div class="viz" id="viz-d">
@@ -859,36 +947,41 @@
 
         <div class="stages">
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">面積は D から BC への「高さ」で決まる</span></div>
-            <p>底辺 BC は固定だから、<span class="m">△BCD</span> の面積は、点 D から辺 BC までの距離（高さ）だけで決まる。</p>
-            <p>D は外接円の周上にあるから、高さが最大になるのは、D が BC から<strong>一番遠い点</strong>のとき。つまり D は、BC の<strong>垂直二等分線</strong>と円の交点のうち、BC から遠い方にある。上の図で D の位置を確認しよう。</p>
+            <div class="stage-head"><span class="stage-badge">ヒント 1</span><span class="stage-title">面積は D から BC への「高さ」で決まる</span></div><p class="cite"><span class="cite-tag">使う公式</span>三角形の面積 <math><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>×</mo><mi>BC</mi><mo>×</mo><mi>DM</mi></math>。このステップでは、底辺をBCに固定し、面積は高さだけで決まると考える。</p>
+            <p>底辺 BC は固定だから、<math><mo>△</mo><mi>BCD</mi></math> の面積は、点 D から辺 BC までの距離（高さ）だけで決まる。</p>
+            <p>D は外接円の周上にあるから、高さが最大になるのは、D が BC から<strong>一番遠い点</strong>のとき。<br>つまり D は、BC の<strong>垂直二等分線</strong>と円の交点のうち、BC から遠い方にある。上の図で D の位置を確認しよう。</p>
           </article>
 
           <article class="stage hint" hidden>
             <div class="stage-head"><span class="stage-badge">ヒント 2</span><span class="stage-title">BC の中点 M を使って HM を出す</span></div>
-            <p>BC の中点を M とする。D, H, M は BC の垂直二等分線上に並ぶ（図の点線）。直角三角形 HMC に三平方の定理を使うと：</p>
-            <div class="formula-line"><span class="m">HM = <span class="sqrt">√<span class="rad"><i>R</i><sup>2</sup> − CM<sup>2</sup></span></span> = <span class="sqrt">√<span class="rad"><span class="frac"><span class="num">64</span><span class="den">7</span></span> − 9</span></span> = <span class="sqrt">√<span class="rad"><span class="frac"><span class="num">1</span><span class="den">7</span></span></span></span> = <span class="frac"><span class="num"><span class="sqrt">√<span class="rad">7</span></span></span><span class="den">7</span></span></span></div>
-            <p class="mini"><span class="m">CM</span> は BC の半分で 3、<span class="m"><i>R</i><sup>2</sup> = (<span class="frac"><span class="num">8<span class="sqrt">√<span class="rad">7</span></span></span><span class="den">7</span></span>)<sup>2</sup> = <span class="frac"><span class="num">64</span><span class="den">7</span></span></span> だよ。</p>
+            <p>BC の中点を M とする。D, H, M は BC の垂直二等分線上に並ぶ（図の点線）。<br>直角三角形 HMC に三平方の定理を使うと：</p>
+            <p class="cite"><span class="cite-tag">使う公式</span>三平方の定理 <math displaystyle="true"><mi>HM</mi><mo>=</mo><msqrt><mrow><msup><mi>R</mi><mn>2</mn></msup><mo>−</mo><msup><mi>CM</mi><mn>2</mn></msup></mrow></msqrt></math>。このステップでは、直角三角形HMCにこの定理を使ってHMを求める。</p><div class="formula-line"><div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>HM</mi><mo>=</mo><msqrt><mrow><msup><mi>R</mi><mn>2</mn></msup><mo>−</mo><msup><mi>CM</mi><mn>2</mn></msup></mrow></msqrt></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>HM</mi></mphantom><mo>=</mo><msqrt><mrow><mfrac><mn>64</mn><mn>7</mn></mfrac><mo>−</mo><mn>9</mn></mrow></msqrt></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>HM</mi></mphantom><mo>=</mo><msqrt><mfrac><mn>1</mn><mn>7</mn></mfrac></msqrt></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>HM</mi></mphantom><mo>=</mo><mfrac><msqrt><mn>7</mn></msqrt><mn>7</mn></mfrac></math></div>
+</div></div>
+            <p class="mini"><math><mi>CM</mi></math> は BC の半分で 3、<math><msup><mi>R</mi><mn>2</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><mfrac><mrow><mn>8</mn><msqrt><mn>7</mn></msqrt></mrow><mn>7</mn></mfrac><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mfrac><mn>64</mn><mn>7</mn></mfrac></math> だよ。</p>
           </article>
 
           <article class="stage hint" hidden>
-            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">高さ DM を組み立てて、面積を計算する</span></div>
+            <div class="stage-head"><span class="stage-badge">ヒント 3</span><span class="stage-title">高さ DM を組み立てて、面積を計算する</span></div><p class="cite"><span class="cite-tag">使う公式</span>三角形の面積 <math><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>×</mo><mi>BC</mi><mo>×</mo><mi>DM</mi></math>。このステップでは、組み立てた高さDMと底辺BCから面積を計算する。</p>
             <p>高さ DM は、円の半径 DH と HM をつないだ長さ：</p>
-            <div class="formula-line"><span class="m">DM = DH + HM = <span class="frac"><span class="num">8<span class="sqrt">√<span class="rad">7</span></span></span><span class="den">7</span></span> + <span class="frac"><span class="num"><span class="sqrt">√<span class="rad">7</span></span></span><span class="den">7</span></span></span></div>
-            <p>分母をそろえて足すと高さが出る。あとは面積 <span class="m">= <span class="frac"><span class="num">1</span><span class="den">2</span></span>×BC×DM</span> に <span class="m">BC = 6</span> を入れるだけだよ。</p>
+            <div class="formula-line"><math><mi>DM</mi><mo>=</mo><mi>DH</mi><mo>+</mo><mi>HM</mi><mo>=</mo><mfrac><mrow><mn>8</mn><msqrt><mn>7</mn></msqrt></mrow><mn>7</mn></mfrac><mo>+</mo><mfrac><msqrt><mn>7</mn></msqrt><mn>7</mn></mfrac></math></div>
+            <p>分母をそろえて足すと高さが出る。<br>あとは面積 <math><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>×</mo><mi>BC</mi><mo>×</mo><mi>DM</mi></math> に <math><mi>BC</mi><mo>=</mo><mn>6</mn></math> を入れるだけだよ。</p>
           </article>
 
           <article class="stage answer" hidden>
             <div class="stage-head"><span class="stage-badge">解答</span><span class="stage-title">D の答え</span></div>
             <ol class="steps">
               <li>面積が最大になるのは、D が BC の垂直二等分線と外接円の交点のうち遠い方にあるとき。</li>
-              <li><span class="m">HM = <span class="sqrt">√<span class="rad"><i>R</i><sup>2</sup> − 3<sup>2</sup></span></span> = <span class="frac"><span class="num"><span class="sqrt">√<span class="rad">7</span></span></span><span class="den">7</span></span></span> だから、高さは <span class="m">DM = <span class="frac"><span class="num">8<span class="sqrt">√<span class="rad">7</span></span></span><span class="den">7</span></span> + <span class="frac"><span class="num"><span class="sqrt">√<span class="rad">7</span></span></span><span class="den">7</span></span> = <span class="frac"><span class="num">9<span class="sqrt">√<span class="rad">7</span></span></span><span class="den">7</span></span></span>。</li>
-              <li>面積 <span class="m">= <span class="frac"><span class="num">1</span><span class="den">2</span></span>×6×<span class="frac"><span class="num">9<span class="sqrt">√<span class="rad">7</span></span></span><span class="den">7</span></span> = <span class="frac"><span class="num">27<span class="sqrt">√<span class="rad">7</span></span></span><span class="den">7</span></span> m<sup>2</sup></span>。</li>
+              <li><math><mi>HM</mi><mo>=</mo><msqrt><mrow><msup><mi>R</mi><mn>2</mn></msup><mo>−</mo><msup><mn>3</mn><mn>2</mn></msup></mrow></msqrt><mo>=</mo><mfrac><msqrt><mn>7</mn></msqrt><mn>7</mn></mfrac></math> だから、高さは <math><mi>DM</mi><mo>=</mo><mfrac><mrow><mn>8</mn><msqrt><mn>7</mn></msqrt></mrow><mn>7</mn></mfrac><mo>+</mo><mfrac><msqrt><mn>7</mn></msqrt><mn>7</mn></mfrac><mo>=</mo><mfrac><mrow><mn>9</mn><msqrt><mn>7</mn></msqrt></mrow><mn>7</mn></mfrac></math>。</li>
+              <li>面積 <math><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>×</mo><mn>6</mn><mo>×</mo><mfrac><mrow><mn>9</mn><msqrt><mn>7</mn></msqrt></mrow><mn>7</mn></mfrac><mo>=</mo><mfrac><mrow><mn>27</mn><msqrt><mn>7</mn></msqrt></mrow><mn>7</mn></mfrac><msup><mi>m</mi><mn>2</mn></msup></math>。</li>
             </ol>
             <div class="ans-line">
-              <span class="ans-chip"><span class="kana">テトナニ</span><span class="m"><span class="frac"><span class="num">27√7</span><span class="den">7</span></span> m<sup>2</sup></span><span class="pts">4点</span></span>
+              <span class="ans-chip"><span class="kana">テトナニ</span><math><mfrac><mrow><mn>27</mn><msqrt><mn>7</mn></msqrt></mrow><mn>7</mn></mfrac><msup><mi>m</mi><mn>2</mn></msup></math><span class="pts">4点</span></span>
             </div>
-            <div class="point-box"><span class="pt">ポイント</span>底辺が固定なら、面積の最大は<strong>高さの最大</strong>。円周上の点で直線から一番遠いのは、中心を通る垂線（＝垂直二等分線）と円の交点。高さは「半径＋中心から底辺までの距離」で組み立てる。</div>
+            <div class="point-box"><span class="pt">ポイント</span><p class="cite"><span class="cite-tag">使う性質</span>円周上の点と距離 <math><mi>DM</mi><mo>=</mo><mfrac><mrow><mn>8</mn><msqrt><mn>7</mn></msqrt></mrow><mn>7</mn></mfrac><mo>+</mo><mfrac><msqrt><mn>7</mn></msqrt><mn>7</mn></mfrac><mo>=</mo><mfrac><mrow><mn>9</mn><msqrt><mn>7</mn></msqrt></mrow><mn>7</mn></mfrac></math>。このまとめでは、高さが最大になる点の位置を垂直二等分線で決める。</p>底辺が固定なら、面積の最大は<strong>高さの最大</strong>。円周上の点で直線から一番遠いのは、中心を通る垂線（＝垂直二等分線）と円の交点。高さは「半径＋中心から底辺までの距離」で組み立てる。</div>
           </article>
         </div>
 
