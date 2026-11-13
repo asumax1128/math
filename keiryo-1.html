@@ -309,7 +309,64 @@
 }
 @media (prefers-color-scheme: dark){ .finish-btn{color:#0c1712} }
 .finish-btn:active{transform:scale(.98)}
-    </style>
+    
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+
+      /* 積分記号は大きめに表示する（元のページの可読化デザインに合わせる） */
+      math .int-op{font-size:1.35em}
+      /* calc-12 世代（.card）と calc-18 世代（.unit）の、図のない問題の全幅化 */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig>.step{position:static !important}
+        .card.nofig>.steps-wrap{max-height:none !important;overflow:visible !important}
+        .unit.nofig{display:block !important}
+        .unit.nofig>.qside{position:static !important}
+        .unit.nofig>.steps-stack{max-height:none !important;overflow:visible !important}
+      }
+
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける・第3弾c） */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig .qside{position:static !important}
+        .card.nofig .steps-wrap,.card.nofig .tabpanel .steps-wrap{max-height:none !important;overflow:visible !important}
+      }
+</style>
   </head>
   <body>
     <div class="wrap">
@@ -321,7 +378,7 @@
       <section class="howto" aria-label="使い方">
         <h2>このページの使い方（自習の流れ）</h2>
         <ol>
-          <li><b>解説</b>を読んで、sin・cos・tan の定義と、辺の長さへの使い方をつかむ</li>
+          <li><b>解説</b>を読んで、<math><mi>sin</mi></math>・<math><mi>cos</mi></math>・<math><mi>tan</mi></math> の定義と、辺の長さへの使い方をつかむ</li>
           <li><b>例・例題</b>をヒントで確認する ― 分からなければ下の <span class="next-word">次へ</span> でヒントを1つずつ開く</li>
           <li><b>練習問題</b>に挑戦 ― 三角比の表の値は、このページの解説の中の表でも確かめられるよ</li>
         </ol>
@@ -332,13 +389,13 @@
         <span class="pno">教科書 p.134〜135</span>
       </div>
       <section class="card">
-<p>1辺の長さが 2 の正三角形を半分に折ってできる直角三角形では、3辺の長さは 1, √<span class="rad">3</span>, 2 で、角は 30°, 60°, 90° になる。このように、直角三角形では <span class="key">2辺の長さの比</span> と角の大きさに関係がある。</p>
-<p>右の図の2つの直角三角形 PQR（PQ = 2, QR = 1, PR = √<span class="rad">3</span>, ∠R = 90°）と ABC は、2組の角がそれぞれ等しいので相似である。直角三角形 ABC における比</p>
-<p class="formula"><span class="frac"><span class="num">BC</span><span class="den">AB</span></span>,　<span class="frac"><span class="num">AC</span><span class="den">AB</span></span>,　<span class="frac"><span class="num">BC</span><span class="den">AC</span></span>　…… ①</p>
-<p>の値は、それぞれ BC/AB = QR/PQ = <span class="formula" style="display:inline-block;vertical-align:middle;margin:0 4px"><span class="frac"><span class="num">1</span><span class="den">2</span></span></span>、AC/AB = PR/PQ = <span class="formula" style="display:inline-block;vertical-align:middle;margin:0 4px"><span class="frac"><span class="num">√<span class="rad">3</span></span><span class="den">2</span></span></span>、BC/AC = QR/PR = <span class="formula" style="display:inline-block;vertical-align:middle;margin:0 4px"><span class="frac"><span class="num">1</span><span class="den">√<span class="rad">3</span></span></span></span> となり、<span class="key">① の各値は、直角三角形 ABC の大きさに関係なく、いずれも一定</span>になる（相似な図形では、対応する線分の長さの比はすべて等しい）。</p>
-<p>直角三角形の鋭角（0° &lt; θ &lt; 90° の角）の1つを θ とし、斜辺の長さを r、他の辺の長さを図のように x, y とするとき、<span class="formula" style="display:inline-block;vertical-align:middle;margin:0 4px"><span class="frac"><span class="num">y</span><span class="den">r</span></span></span>, <span class="formula" style="display:inline-block;vertical-align:middle;margin:0 4px"><span class="frac"><span class="num">x</span><span class="den">r</span></span></span>, <span class="formula" style="display:inline-block;vertical-align:middle;margin:0 4px"><span class="frac"><span class="num">y</span><span class="den">x</span></span></span> の各値は、三角形の大きさに関係なく、角 θ の大きさだけで決まる。これらを、それぞれ θ の<span class="key">正弦</span>（sine）、<span class="key">余弦</span>（cosine）、<span class="key">正接</span>（tangent）といい、sin θ, cos θ, tan θ と書く。正弦をサイン、余弦をコサイン、正接をタンジェントともいう。正弦、余弦、正接をまとめて<span class="key">三角比</span>という。</p>
-<div class="def"><p><b>三角比の定義</b></p><p class="formula">sin θ = <span class="frac"><span class="num">y</span><span class="den">r</span></span>　（θ の向かいの辺 ÷ 斜辺）</p><p class="formula">cos θ = <span class="frac"><span class="num">x</span><span class="den">r</span></span>　（θ に隣り合う辺 ÷ 斜辺）</p><p class="formula">tan θ = <span class="frac"><span class="num">y</span><span class="den">x</span></span>　（θ の向かいの辺 ÷ θ に隣り合う辺）</p></div>
-<figure><div class="figbox"><svg viewBox="0 0 300 190" role="img" aria-label="直角三角形の鋭角の1つを θ とし、斜辺を r、他の2辺を x, y とする"><polygon points="45.0,155.0 185.0,50.0 185.0,155.0" fill="var(--accent-soft)" stroke="var(--ink)" stroke-width="2"/><path d="M 185.0 155.0 h -11 v -11" fill="none" stroke="var(--ink)" stroke-width="1.4"/><path d="M 71.0 155.0 A 26.0 26.0 0 0 0 65.8 139.4" fill="none" stroke="var(--orange)" stroke-width="1.6"/><text x="77.0" y="151.0" class="svg-txt" font-size="14">θ</text><circle cx="45.0" cy="155.0" r="3" fill="var(--ink)"/><circle cx="185.0" cy="50.0" r="3" fill="var(--ink)"/><circle cx="185.0" cy="155.0" r="3" fill="var(--ink)"/><text x="29.0" y="173.0" class="svg-txt" font-size="15">A</text><text x="187.0" y="42.0" class="svg-txt" font-size="15">B</text><text x="181.0" y="175.0" class="svg-txt" font-size="15">C</text><text x="115.0" y="175.0" text-anchor="middle" class="svg-txt" font-size="14">x</text><text x="193.0" y="107.5" class="svg-txt" font-size="14">y</text><text x="103.0" y="96.5" text-anchor="middle" class="svg-txt" font-size="14">r</text></svg></div><figcaption>直角三角形の鋭角の1つを θ とし、斜辺を r、他の2辺を x, y とする</figcaption></figure>
+<p>1辺の長さが 2 の正三角形を半分に折ってできる直角三角形では、3辺の長さは<math><mn>1</mn><mo>,</mo><msqrt><mn>3</mn></msqrt><mo>,</mo><mn>2</mn></math>で、角は<math><mn>30</mn><mo>°</mo><mo>,</mo><mn>60</mn><mo>°</mo><mo>,</mo><mn>90</mn><mo>°</mo></math>になる。<br>このように、直角三角形では <span class="key">2辺の長さの比</span> と角の大きさに関係がある。</p>
+<p>右の図の2つの直角三角形<math><mi>PQR</mi><mrow><mo>(</mo><mi>PQ</mi><mo>=</mo><mn>2</mn><mo>,</mo><mi>QR</mi><mo>=</mo><mn>1</mn><mo>,</mo><mi>PR</mi><mo>=</mo><msqrt><mn>3</mn></msqrt><mo>,</mo><mo>∠</mo><mi>R</mi><mo>=</mo><mn>90</mn><mo>°</mo><mo>)</mo></mrow></math>と <math><mi>ABC</mi></math> は、2組の角がそれぞれ等しいので相似である。直角三角形 <math><mi>ABC</mi></math> における比</p>
+<p class="formula"><math><mfrac><mi>BC</mi><mi>AB</mi></mfrac><mo>,</mo><mspace width="2em"/><mfrac><mi>AC</mi><mi>AB</mi></mfrac><mo>,</mo><mspace width="2em"/><mfrac><mi>BC</mi><mi>AC</mi></mfrac></math>　…… ①</p>
+<p class="cite"><span class="cite-tag">使う性質</span><math><mfrac><mrow><mi>BC</mi></mrow><mrow><mi>AB</mi></mrow></mfrac><mo>=</mo><mfrac><mrow><mi>QR</mi></mrow><mrow><mi>PQ</mi></mrow></mfrac></math>相似な図形では、対応する線分の長さの比はすべて等しい。ここでは <math><mi>BC</mi></math> と <math><mi>QR</mi></math> などが対応している。</p><p>の値は、それぞれ<math><mfrac><mi>BC</mi><mi>AB</mi></mfrac><mo>=</mo><mfrac><mi>QR</mi><mi>PQ</mi></mfrac><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math>、<math><mfrac><mi>AC</mi><mi>AB</mi></mfrac><mo>=</mo><mfrac><mi>PR</mi><mi>PQ</mi></mfrac><mo>=</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac></math>、<math><mfrac><mi>BC</mi><mi>AC</mi></mfrac><mo>=</mo><mfrac><mi>QR</mi><mi>PR</mi></mfrac><mo>=</mo><mfrac><mn>1</mn><msqrt><mn>3</mn></msqrt></mfrac></math> となり、<span class="key">① の各値は、直角三角形 <math><mi>ABC</mi></math> の大きさに関係なく、いずれも一定</span>になる（相似な図形では、対応する線分の長さの比はすべて等しい）。</p>
+<p>直角三角形の鋭角<math><mo>(</mo><mn>0</mn><mo>°</mo><mo>&lt;</mo><mi>θ</mi><mo>&lt;</mo><mn>90</mn><mo>°</mo></math>の角）の1つを <math><mi>θ</mi></math> とし、斜辺の長さを <math><mi>r</mi></math>、他の辺の長さを図のように <math><mi>x</mi></math>, <math><mi>y</mi></math> とするとき、<math><mfrac><mi>y</mi><mi>r</mi></mfrac><mo>,</mo><mfrac><mi>x</mi><mi>r</mi></mfrac><mo>,</mo><mfrac><mi>y</mi><mi>x</mi></mfrac></math> の各値は、三角形の大きさに関係なく、角 <math><mi>θ</mi></math> の大きさだけで決まる。これらを、それぞれ <math><mi>θ</mi></math> の<span class="key">正弦</span>（sine）、<span class="key">余弦</span>（cosine）、<span class="key">正接</span>（tangent）といい、<math><mi>sin</mi></math> <math><mi>θ</mi></math>, <math><mi>cos</mi></math> <math><mi>θ</mi></math>, <math><mi>tan</mi></math> <math><mi>θ</mi></math> と書く。正弦をサイン、余弦をコサイン、正接をタンジェントともいう。正弦、余弦、正接をまとめて<span class="key">三角比</span>という。</p>
+<div class="def"><p><b>三角比の定義</b></p><p class="formula"><math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mi>y</mi><mi>r</mi></mfrac></math>　（<math><mi>θ</mi></math> の向かいの辺 ÷ 斜辺）</p><p class="formula"><math><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><mi>x</mi><mi>r</mi></mfrac></math>　（<math><mi>θ</mi></math> に隣り合う辺 ÷ 斜辺）</p><p class="formula"><math><mi>tan</mi><mi>θ</mi><mo>=</mo><mfrac><mi>y</mi><mi>x</mi></mfrac></math>　（<math><mi>θ</mi></math> の向かいの辺 ÷ <math><mi>θ</mi></math> に隣り合う辺）</p></div>
+<figure><div class="figbox"><svg viewBox="0 0 300 190" role="img" aria-label="直角三角形の鋭角の1つを θ とし、斜辺を r、他の2辺を x, y とする"><polygon points="45.0,155.0 185.0,50.0 185.0,155.0" fill="var(--accent-soft)" stroke="var(--ink)" stroke-width="2"/><path d="M 185.0 155.0 h -11 v -11" fill="none" stroke="var(--ink)" stroke-width="1.4"/><path d="M 71.0 155.0 A 26.0 26.0 0 0 0 65.8 139.4" fill="none" stroke="var(--orange)" stroke-width="1.6"/><text x="77.0" y="151.0" class="svg-txt" font-size="14">θ</text><circle cx="45.0" cy="155.0" r="3" fill="var(--ink)"/><circle cx="185.0" cy="50.0" r="3" fill="var(--ink)"/><circle cx="185.0" cy="155.0" r="3" fill="var(--ink)"/><text x="29.0" y="173.0" class="svg-txt" font-size="15">A</text><text x="187.0" y="42.0" class="svg-txt" font-size="15">B</text><text x="181.0" y="175.0" class="svg-txt" font-size="15">C</text><text x="115.0" y="175.0" text-anchor="middle" class="svg-txt" font-size="14">x</text><text x="193.0" y="107.5" class="svg-txt" font-size="14">y</text><text x="103.0" y="96.5" text-anchor="middle" class="svg-txt" font-size="14">r</text></svg></div><figcaption>直角三角形の鋭角の1つを <math><mi>θ</mi></math> とし、斜辺を <math><mi>r</mi></math>、他の2辺を <math><mi>x</mi></math>, <math><mi>y</mi></math> とする</figcaption></figure>
       </section>
       <section class="card prob" id="prob-ex1" data-flow="ex1" data-label="例1">
         <div class="prob-head">
@@ -347,36 +404,68 @@
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">右の図の直角三角形 ABC において、θ の正弦、余弦、正接を求めよ。<figure><div class="figbox"><svg viewBox="0 0 300 190" role="img" aria-label="例1 の直角三角形 ABC：∠C = 90°、AC = 4、BC = 3、AB = 5、θ = ∠A"><polygon points="45.0,155.0 185.0,50.0 185.0,155.0" fill="var(--accent-soft)" stroke="var(--ink)" stroke-width="2"/><path d="M 185.0 155.0 h -11 v -11" fill="none" stroke="var(--ink)" stroke-width="1.4"/><path d="M 71.0 155.0 A 26.0 26.0 0 0 0 65.8 139.4" fill="none" stroke="var(--orange)" stroke-width="1.6"/><text x="77.0" y="151.0" class="svg-txt" font-size="14">θ</text><circle cx="45.0" cy="155.0" r="3" fill="var(--ink)"/><circle cx="185.0" cy="50.0" r="3" fill="var(--ink)"/><circle cx="185.0" cy="155.0" r="3" fill="var(--ink)"/><text x="29.0" y="173.0" class="svg-txt" font-size="15">A</text><text x="187.0" y="42.0" class="svg-txt" font-size="15">B</text><text x="181.0" y="175.0" class="svg-txt" font-size="15">C</text><text x="115.0" y="175.0" text-anchor="middle" class="svg-txt" font-size="14">4</text><text x="193.0" y="107.5" class="svg-txt" font-size="14">3</text><text x="103.0" y="96.5" text-anchor="middle" class="svg-txt" font-size="14">5</text></svg></div><figcaption>例1 の直角三角形 ABC：∠C = 90°、AC = 4、BC = 3、AB = 5、θ = ∠A</figcaption></figure></p>
+        <p class="prob-q">右の図の直角三角形 <math><mi>ABC</mi></math> において、<math><mi>θ</mi></math> の正弦、余弦、正接を求めよ。<figure><div class="figbox"><svg viewBox="0 0 300 190" role="img" aria-label="例1 の直角三角形 ABC：∠C = 90°、AC = 4、BC = 3、AB = 5、θ = ∠A"><polygon points="45.0,155.0 185.0,50.0 185.0,155.0" fill="var(--accent-soft)" stroke="var(--ink)" stroke-width="2"/><path d="M 185.0 155.0 h -11 v -11" fill="none" stroke="var(--ink)" stroke-width="1.4"/><path d="M 71.0 155.0 A 26.0 26.0 0 0 0 65.8 139.4" fill="none" stroke="var(--orange)" stroke-width="1.6"/><text x="77.0" y="151.0" class="svg-txt" font-size="14">θ</text><circle cx="45.0" cy="155.0" r="3" fill="var(--ink)"/><circle cx="185.0" cy="50.0" r="3" fill="var(--ink)"/><circle cx="185.0" cy="155.0" r="3" fill="var(--ink)"/><text x="29.0" y="173.0" class="svg-txt" font-size="15">A</text><text x="187.0" y="42.0" class="svg-txt" font-size="15">B</text><text x="181.0" y="175.0" class="svg-txt" font-size="15">C</text><text x="115.0" y="175.0" text-anchor="middle" class="svg-txt" font-size="14">4</text><text x="193.0" y="107.5" class="svg-txt" font-size="14">3</text><text x="103.0" y="96.5" text-anchor="middle" class="svg-txt" font-size="14">5</text></svg></div><figcaption>例1 の直角三角形 <math><mi>ABC</mi></math>：<math><mo>∠</mo><mi>C</mi><mo>=</mo><mn>90</mn><mo>°</mo></math>、<math><mi>AC</mi><mo>=</mo><mn>4</mn></math>、<math><mi>BC</mi><mo>=</mo><mn>3</mn></math>、<math><mi>AB</mi><mo>=</mo><mn>5</mn></math>、<math><mi>θ</mi><mo>=</mo><mo>∠</mo><mi>A</mi></math></figcaption></figure></p>
         </div>
         <div class="step hint">
           <h3>ヒント 1 ― 3辺の長さを読み取る</h3>
-<p>∠C = 90° だから斜辺は AB = 5。θ（∠A）の向かいの辺は BC = 3、θ に隣り合う辺は AC = 4 だね。</p>
+<p><math><mo>∠</mo><mi>C</mi><mo>=</mo><mn>90</mn><mo>°</mo></math>だから斜辺は<math><mi>AB</mi><mo>=</mo><mn>5</mn></math>。<math><mi>θ</mi><mrow><mo>(</mo><mo>∠</mo><mi>A</mi><mo>)</mo></mrow></math>の向かいの辺は<math><mi>BC</mi><mo>=</mo><mn>3</mn></math>、<math><mi>θ</mi></math> に隣り合う辺は<math><mi>AC</mi><mo>=</mo><mn>4</mn></math>だね。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 定義に当てはめる</h3>
-<p>sin θ = 向かい ÷ 斜辺、cos θ = 隣り合う ÷ 斜辺、tan θ = 向かい ÷ 隣り合う、の順に当てはめよう。</p>
+<p class="cite"><span class="cite-tag">使う定義</span><math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mi>BC</mi></mrow><mrow><mi>AB</mi></mrow></mfrac></math><math><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mi>AC</mi></mrow><mrow><mi>AB</mi></mrow></mfrac></math><math><mi>tan</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mi>BC</mi></mrow><mrow><mi>AC</mi></mrow></mfrac></math>ここでは向かいの辺が <math><mi>BC</mi><mo>=</mo><mn>3</mn></math>、隣り合う辺が <math><mi>AC</mi><mo>=</mo><mn>4</mn></math>、斜辺が <math><mi>AB</mi><mo>=</mo><mn>5</mn></math> だ。</p><p><math><mi>sin</mi><mi>θ</mi><mo>=</mo></math>向かい ÷ 斜辺、<math><mi>cos</mi><mi>θ</mi><mo>=</mo></math>隣り合う ÷ 斜辺、<math><mi>tan</mi><mi>θ</mi><mo>=</mo></math>向かい ÷ 隣り合う、の順に当てはめよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">sin θ = <span class="frac"><span class="num">3</span><span class="den">5</span></span>,　cos θ = <span class="frac"><span class="num">4</span><span class="den">5</span></span>,　tan θ = <span class="frac"><span class="num">3</span><span class="den">4</span></span></p>
-<p class="formula left">sin θ = <span class="frac"><span class="num">BC</span><span class="den">AB</span></span> = <span class="frac"><span class="num">3</span><span class="den">5</span></span></p><p class="formula left">cos θ = <span class="frac"><span class="num">AC</span><span class="den">AB</span></span> = <span class="frac"><span class="num">4</span><span class="den">5</span></span></p><p class="formula left">tan θ = <span class="frac"><span class="num">BC</span><span class="den">AC</span></span> = <span class="frac"><span class="num">3</span><span class="den">4</span></span></p>
+          <div class="chain-crow big">
+<div class="crow"><math displaystyle="true"><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mn>3</mn><mn>5</mn></mfrac><mo>,</mo><mspace width="2em"/><mi>cos</mi><mi>θ</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mi>θ</mi></mphantom><mo>=</mo><mfrac><mn>4</mn><mn>5</mn></mfrac><mo>,</mo><mspace width="2em"/><mi>tan</mi><mi>θ</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mi>θ</mi></mphantom><mo>=</mo><mfrac><mn>3</mn><mn>4</mn></mfrac></math></div>
+</div><p class="cite"><span class="cite-tag">使う定義</span><math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mi>BC</mi></mrow><mrow><mi>AB</mi></mrow></mfrac></math><math><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mi>AC</mi></mrow><mrow><mi>AB</mi></mrow></mfrac></math><math><mi>tan</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mi>BC</mi></mrow><mrow><mi>AC</mi></mrow></mfrac></math>解答では <math><mi>BC</mi><mo>=</mo><mn>3</mn></math>、<math><mi>AC</mi><mo>=</mo><mn>4</mn></math>、<math><mi>AB</mi><mo>=</mo><mn>5</mn></math> をこの定義に当てはめている。</p>
+<p class="formula left"><math display="block"><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mi>BC</mi><mi>AB</mi></mfrac><mo>=</mo><mfrac><mn>3</mn><mn>5</mn></mfrac></math></p><p class="formula left"><math display="block"><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><mi>AC</mi><mi>AB</mi></mfrac><mo>=</mo><mfrac><mn>4</mn><mn>5</mn></mfrac></math></p><p class="formula left"><math display="block"><mi>tan</mi><mi>θ</mi><mo>=</mo><mfrac><mi>BC</mi><mi>AC</mi></mfrac><mo>=</mo><mfrac><mn>3</mn><mn>4</mn></mfrac></math></p>
         </div>
         <p class="prob-done">例1 クリア！　次は例2に進もう。</p>
       </section>
       <div class="sec-head">
         <span class="sec-tag">解説 B</span>
-        <h2>30°・45°・60° の三角比</h2>
+        <h2><math><mn>30</mn><mo>°</mo><mo>⋅</mo><mn>45</mn><mo>°</mo><mo>⋅</mo><mn>60</mn><mo>°</mo></math>の三角比</h2>
         <span class="pno">教科書 p.136</span>
       </div>
       <section class="card">
-<p>30°, 45°, 60° の三角比は、次の2つの図から求められる。</p>
-<p><b>［1］</b> 辺の比 1 : √<span class="rad">3</span> : 2 の直角三角形（30°, 60°, 90°）：∠A = 30°, ∠B = 60°, ∠C = 90°、BC = 1, AC = √<span class="rad">3</span>, AB = 2。</p>
-<p><b>［2］</b> 辺の比 1 : 1 : √<span class="rad">2</span> の直角二等辺三角形（45°, 45°, 90°）：∠A = 45°, ∠C = 90°、BC = 1, AC = 1, AB = √<span class="rad">2</span>。</p>
-<p>たとえば図［1］から sin 30° = <span class="formula" style="display:inline-block;vertical-align:middle;margin:0 4px"><span class="frac"><span class="num">1</span><span class="den">2</span></span></span>、図［2］から cos 45° = <span class="formula" style="display:inline-block;vertical-align:middle;margin:0 4px"><span class="frac"><span class="num">1</span><span class="den">√<span class="rad">2</span></span></span></span>、図［1］の ∠B = 60° から tan 60° = <span class="formula" style="display:inline-block;vertical-align:middle;margin:0 4px"><span class="frac"><span class="num">√<span class="rad">3</span></span><span class="den">1</span></span></span> = √<span class="rad">3</span> が分かる。他の値も、同じ図で「どの角から見るか」を変えて読み取る。</p>
-<div class="def"><p><b>30°・45°・60° の三角比</b></p><p class="formula">sin 30° = <span class="frac"><span class="num">1</span><span class="den">2</span></span>,　cos 30° = <span class="frac"><span class="num">√<span class="rad">3</span></span><span class="den">2</span></span>,　tan 30° = <span class="frac"><span class="num">1</span><span class="den">√<span class="rad">3</span></span></span></p><p class="formula">sin 45° = <span class="frac"><span class="num">1</span><span class="den">√<span class="rad">2</span></span></span>,　cos 45° = <span class="frac"><span class="num">1</span><span class="den">√<span class="rad">2</span></span></span>,　tan 45° = 1</p><p class="formula">sin 60° = <span class="frac"><span class="num">√<span class="rad">3</span></span><span class="den">2</span></span>,　cos 60° = <span class="frac"><span class="num">1</span><span class="den">2</span></span>,　tan 60° = √<span class="rad">3</span></p></div>
-<figure><div class="figbox"><svg viewBox="0 0 300 190" role="img" aria-label="図［1］：∠A = 30°、∠C = 90° の直角三角形。BC = 1、AC = √3、AB = 2"><polygon points="45.0,155.0 226.9,50.0 226.9,155.0" fill="var(--accent-soft)" stroke="var(--ink)" stroke-width="2"/><path d="M 226.9 155.0 h -11 v -11" fill="none" stroke="var(--ink)" stroke-width="1.4"/><path d="M 71.0 155.0 A 26.0 26.0 0 0 0 67.5 142.0" fill="none" stroke="var(--orange)" stroke-width="1.6"/><text x="77.0" y="151.0" class="svg-txt" font-size="14">30°</text><circle cx="45.0" cy="155.0" r="3" fill="var(--ink)"/><circle cx="226.9" cy="50.0" r="3" fill="var(--ink)"/><circle cx="226.9" cy="155.0" r="3" fill="var(--ink)"/><text x="29.0" y="173.0" class="svg-txt" font-size="15">A</text><text x="228.9" y="42.0" class="svg-txt" font-size="15">B</text><text x="222.9" y="175.0" class="svg-txt" font-size="15">C</text><text x="135.9" y="175.0" text-anchor="middle" class="svg-txt" font-size="14">√<span class="rad">3</span></text><text x="234.9" y="107.5" class="svg-txt" font-size="14">1</text><text x="123.9" y="96.5" text-anchor="middle" class="svg-txt" font-size="14">2</text></svg></div><figcaption>図［1］：∠A = 30°、∠C = 90° の直角三角形。BC = 1、AC = √3、AB = 2</figcaption></figure><figure><div class="figbox"><svg viewBox="0 0 300 190" role="img" aria-label="図［2］：∠A = 45°、∠C = 90° の直角二等辺三角形。BC = 1、AC = 1、AB = √2"><polygon points="45.0,155.0 150.0,50.0 150.0,155.0" fill="var(--accent-soft)" stroke="var(--ink)" stroke-width="2"/><path d="M 150.0 155.0 h -11 v -11" fill="none" stroke="var(--ink)" stroke-width="1.4"/><path d="M 71.0 155.0 A 26.0 26.0 0 0 0 63.4 136.6" fill="none" stroke="var(--orange)" stroke-width="1.6"/><text x="77.0" y="151.0" class="svg-txt" font-size="14">45°</text><circle cx="45.0" cy="155.0" r="3" fill="var(--ink)"/><circle cx="150.0" cy="50.0" r="3" fill="var(--ink)"/><circle cx="150.0" cy="155.0" r="3" fill="var(--ink)"/><text x="29.0" y="173.0" class="svg-txt" font-size="15">A</text><text x="152.0" y="42.0" class="svg-txt" font-size="15">B</text><text x="146.0" y="175.0" class="svg-txt" font-size="15">C</text><text x="97.5" y="175.0" text-anchor="middle" class="svg-txt" font-size="14">1</text><text x="158.0" y="107.5" class="svg-txt" font-size="14">1</text><text x="85.5" y="96.5" text-anchor="middle" class="svg-txt" font-size="14">√<span class="rad">2</span></text></svg></div><figcaption>図［2］：∠A = 45°、∠C = 90° の直角二等辺三角形。BC = 1、AC = 1、AB = √2</figcaption></figure>
+<p><math><mn>30</mn><mo>°</mo><mo>,</mo><mn>45</mn><mo>°</mo><mo>,</mo><mn>60</mn><mo>°</mo></math>の三角比は、次の2つの図から求められる。</p>
+<p><b>［1］</b> 辺の比<math><mn>1</mn><mo>:</mo><msqrt><mn>3</mn></msqrt><mo>:</mo><mn>2</mn></math>の直角三角形<math><mo>(</mo><mn>30</mn><mo>°</mo><mo>,</mo><mn>60</mn><mo>°</mo><mo>,</mo><mn>90</mn><mo>°</mo><mo>)</mo></math>：</p>
+<div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mo>∠</mo><mi>A</mi><mo>=</mo><mn>30</mn><mo>°</mo><mo>,</mo><mo>∠</mo><mi>B</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mo>∠</mo><mi>A</mi></mphantom><mo>=</mo><mn>60</mn><mo>°</mo><mo>,</mo><mo>∠</mo><mi>C</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mo>∠</mo><mi>A</mi></mphantom><mo>=</mo><mn>90</mn><mo>°</mo></math></div>
+</div>
+<p>、</p>
+<div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>BC</mi><mo>=</mo><mn>1</mn><mo>,</mo><mi>AC</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>BC</mi></mphantom><mo>=</mo><msqrt><mn>3</mn></msqrt><mo>,</mo><mi>AB</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>BC</mi></mphantom><mo>=</mo><mn>2</mn></math></div>
+</div>。
+<p><b>［2］</b> 辺の比<math><mn>1</mn><mo>:</mo><mn>1</mn><mo>:</mo><msqrt><mn>2</mn></msqrt></math> の直角二等辺三角形<math><mo>(</mo><mn>45</mn><mo>°</mo><mo>,</mo><mn>45</mn><mo>°</mo><mo>,</mo><mn>90</mn><mo>°</mo><mo>)</mo></math>：<math><mo>∠</mo><mi>A</mi><mo>=</mo><mn>45</mn><mo>°</mo><mo>,</mo><mo>∠</mo><mi>C</mi><mo>=</mo><mn>90</mn><mo>°</mo></math>、</p>
+<div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>BC</mi><mo>=</mo><mn>1</mn><mo>,</mo><mi>AC</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>BC</mi></mphantom><mo>=</mo><mn>1</mn><mo>,</mo><mi>AB</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>BC</mi></mphantom><mo>=</mo><msqrt><mn>2</mn></msqrt></math></div>
+</div>。
+<p class="cite"><span class="cite-tag">使う定義</span><math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mtext>向かいの辺</mtext></mrow><mrow><mtext>斜辺</mtext></mrow></mfrac></math>図［1］で <math><mn>30</mn><mo>°</mo></math> の向かいの辺は <math><mn>1</mn></math>、斜辺は <math><mn>2</mn></math> のように、図の辺の比から読み取る。</p><p>たとえば図［1］から<math><mi>sin</mi><mn>30</mn><mo>°</mo><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math>、図［2］から<math><mi>cos</mi><mn>45</mn><mo>°</mo><mo>=</mo><mfrac><mn>1</mn><msqrt><mn>2</mn></msqrt></mfrac></math>、図［1］の<math><mo>∠</mo><mi>B</mi><mo>=</mo><mn>60</mn><mo>°</mo></math>から<math><mi>tan</mi><mn>60</mn><mo>°</mo><mo>=</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>1</mn></mfrac><mo>=</mo><msqrt><mn>3</mn></msqrt></math> が分かる。他の値も、同じ図で「どの角から見るか」を変えて読み取る。</p>
+<div class="def"><p><b><math><mn>30</mn><mo>°</mo><mo>⋅</mo><mn>45</mn><mo>°</mo><mo>⋅</mo><mn>60</mn><mo>°</mo></math>の三角比</b></p><div class="chain-crow formula">
+<div class="crow"><math displaystyle="true"><mi>sin</mi><mn>30</mn><mo>°</mo><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>,</mo><mspace width="2em"/><mi>cos</mi><mn>30</mn><mo>°</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mn>30</mn><mo>°</mo></mphantom><mo>=</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac><mo>,</mo><mspace width="2em"/><mi>tan</mi><mn>30</mn><mo>°</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mn>30</mn><mo>°</mo></mphantom><mo>=</mo><mfrac><mn>1</mn><msqrt><mn>3</mn></msqrt></mfrac></math></div>
+</div><div class="chain-crow formula">
+<div class="crow"><math displaystyle="true"><mi>sin</mi><mn>45</mn><mo>°</mo><mo>=</mo><mfrac><mn>1</mn><msqrt><mn>2</mn></msqrt></mfrac><mo>,</mo><mspace width="2em"/><mi>cos</mi><mn>45</mn><mo>°</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mn>45</mn><mo>°</mo></mphantom><mo>=</mo><mfrac><mn>1</mn><msqrt><mn>2</mn></msqrt></mfrac><mo>,</mo><mspace width="2em"/><mi>tan</mi><mn>45</mn><mo>°</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mn>45</mn><mo>°</mo></mphantom><mo>=</mo><mn>1</mn></math></div>
+</div><div class="chain-crow formula">
+<div class="crow"><math displaystyle="true"><mi>sin</mi><mn>60</mn><mo>°</mo><mo>=</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac><mo>,</mo><mspace width="2em"/><mi>cos</mi><mn>60</mn><mo>°</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mn>60</mn><mo>°</mo></mphantom><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>,</mo><mspace width="2em"/><mi>tan</mi><mn>60</mn><mo>°</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mn>60</mn><mo>°</mo></mphantom><mo>=</mo><msqrt><mn>3</mn></msqrt></math></div>
+</div></div>
+<figure><div class="figbox"><svg viewBox="0 0 300 190" role="img" aria-label="図［1］：∠A = 30°、∠C = 90° の直角三角形。BC = 1、AC = √3、AB = 2"><polygon points="45.0,155.0 226.9,50.0 226.9,155.0" fill="var(--accent-soft)" stroke="var(--ink)" stroke-width="2"/><path d="M 226.9 155.0 h -11 v -11" fill="none" stroke="var(--ink)" stroke-width="1.4"/><path d="M 71.0 155.0 A 26.0 26.0 0 0 0 67.5 142.0" fill="none" stroke="var(--orange)" stroke-width="1.6"/><text x="77.0" y="151.0" class="svg-txt" font-size="14">30°</text><circle cx="45.0" cy="155.0" r="3" fill="var(--ink)"/><circle cx="226.9" cy="50.0" r="3" fill="var(--ink)"/><circle cx="226.9" cy="155.0" r="3" fill="var(--ink)"/><text x="29.0" y="173.0" class="svg-txt" font-size="15">A</text><text x="228.9" y="42.0" class="svg-txt" font-size="15">B</text><text x="222.9" y="175.0" class="svg-txt" font-size="15">C</text><text x="135.9" y="175.0" text-anchor="middle" class="svg-txt" font-size="14">√<span class="rad">3</span></text><text x="234.9" y="107.5" class="svg-txt" font-size="14">1</text><text x="123.9" y="96.5" text-anchor="middle" class="svg-txt" font-size="14">2</text></svg></div><figcaption>図［1］：<math><mo>∠</mo><mi>A</mi><mo>=</mo><mn>30</mn><mo>°</mo></math>、<math><mo>∠</mo><mi>C</mi><mo>=</mo><mn>90</mn><mo>°</mo></math>の直角三角形。<math><mi>BC</mi><mo>=</mo><mn>1</mn></math>、<math><mi>AC</mi><mo>=</mo><msqrt><mn>3</mn></msqrt></math>、<math><mi>AB</mi><mo>=</mo><mn>2</mn></math></figcaption></figure><figure><div class="figbox"><svg viewBox="0 0 300 190" role="img" aria-label="図［2］：∠A = 45°、∠C = 90° の直角二等辺三角形。BC = 1、AC = 1、AB = √2"><polygon points="45.0,155.0 150.0,50.0 150.0,155.0" fill="var(--accent-soft)" stroke="var(--ink)" stroke-width="2"/><path d="M 150.0 155.0 h -11 v -11" fill="none" stroke="var(--ink)" stroke-width="1.4"/><path d="M 71.0 155.0 A 26.0 26.0 0 0 0 63.4 136.6" fill="none" stroke="var(--orange)" stroke-width="1.6"/><text x="77.0" y="151.0" class="svg-txt" font-size="14">45°</text><circle cx="45.0" cy="155.0" r="3" fill="var(--ink)"/><circle cx="150.0" cy="50.0" r="3" fill="var(--ink)"/><circle cx="150.0" cy="155.0" r="3" fill="var(--ink)"/><text x="29.0" y="173.0" class="svg-txt" font-size="15">A</text><text x="152.0" y="42.0" class="svg-txt" font-size="15">B</text><text x="146.0" y="175.0" class="svg-txt" font-size="15">C</text><text x="97.5" y="175.0" text-anchor="middle" class="svg-txt" font-size="14">1</text><text x="158.0" y="107.5" class="svg-txt" font-size="14">1</text><text x="85.5" y="96.5" text-anchor="middle" class="svg-txt" font-size="14">√<span class="rad">2</span></text></svg></div><figcaption>図［2］：<math><mo>∠</mo><mi>A</mi><mo>=</mo><mn>45</mn><mo>°</mo></math>、<math><mo>∠</mo><mi>C</mi><mo>=</mo><mn>90</mn><mo>°</mo></math>の直角二等辺三角形。<math><mi>BC</mi><mo>=</mo><mn>1</mn></math>、<math><mi>AC</mi><mo>=</mo><mn>1</mn></math>、<math><mi>AB</mi><mo>=</mo><msqrt><mn>2</mn></msqrt></math></figcaption></figure>
       </section>
       <section class="card prob" id="prob-ex2" data-flow="ex2" data-label="例2">
         <div class="prob-head">
@@ -385,27 +474,31 @@
           <span class="prob-state">ヒント 0 / 1</span>
         </div>
         <div class="qside">
-        <p class="prob-q">右の図の直角三角形 ABC において、θ の正弦、余弦、正接を求めよ。<figure><div class="figbox"><svg viewBox="0 0 300 190" role="img" aria-label="例2 の直角三角形 ABC：∠C = 90°、BC = 1、AC = 2、AB = √5、θ = ∠A"><polygon points="255.0,155.0 55.0,55.0 55.0,155.0" fill="var(--accent-soft)" stroke="var(--ink)" stroke-width="2"/><path d="M 55.0 155.0 h 11 v -11" fill="none" stroke="var(--ink)" stroke-width="1.4"/><path d="M 229.0 155.0 A 26 26 0 0 1 231.7 143.4" fill="none" stroke="var(--orange)" stroke-width="1.6"/><text x="211.0" y="151.0" class="svg-txt" font-size="14">θ</text><circle cx="255.0" cy="155.0" r="3" fill="var(--ink)"/><circle cx="55.0" cy="55.0" r="3" fill="var(--ink)"/><circle cx="55.0" cy="155.0" r="3" fill="var(--ink)"/><text x="259.0" y="173.0" class="svg-txt" font-size="15">A</text><text x="51.0" y="47.0" class="svg-txt" font-size="15">B</text><text x="49.0" y="175.0" class="svg-txt" font-size="15">C</text><text x="155.0" y="175.0" text-anchor="middle" class="svg-txt" font-size="14">2</text><text x="47.0" y="110.0" text-anchor="end" class="svg-txt" font-size="14">1</text><text x="169.0" y="99.0" text-anchor="middle" class="svg-txt" font-size="14">√<span class="rad">5</span></text></svg></div><figcaption>例2 の直角三角形 ABC：∠C = 90°、BC = 1、AC = 2、AB = √5、θ = ∠A</figcaption></figure></p>
+        <p class="prob-q">右の図の直角三角形 <math><mi>ABC</mi></math> において、<math><mi>θ</mi></math> の正弦、余弦、正接を求めよ。<figure><div class="figbox"><svg viewBox="0 0 300 190" role="img" aria-label="例2 の直角三角形 ABC：∠C = 90°、BC = 1、AC = 2、AB = √5、θ = ∠A"><polygon points="255.0,155.0 55.0,55.0 55.0,155.0" fill="var(--accent-soft)" stroke="var(--ink)" stroke-width="2"/><path d="M 55.0 155.0 h 11 v -11" fill="none" stroke="var(--ink)" stroke-width="1.4"/><path d="M 229.0 155.0 A 26 26 0 0 1 231.7 143.4" fill="none" stroke="var(--orange)" stroke-width="1.6"/><text x="211.0" y="151.0" class="svg-txt" font-size="14">θ</text><circle cx="255.0" cy="155.0" r="3" fill="var(--ink)"/><circle cx="55.0" cy="55.0" r="3" fill="var(--ink)"/><circle cx="55.0" cy="155.0" r="3" fill="var(--ink)"/><text x="259.0" y="173.0" class="svg-txt" font-size="15">A</text><text x="51.0" y="47.0" class="svg-txt" font-size="15">B</text><text x="49.0" y="175.0" class="svg-txt" font-size="15">C</text><text x="155.0" y="175.0" text-anchor="middle" class="svg-txt" font-size="14">2</text><text x="47.0" y="110.0" text-anchor="end" class="svg-txt" font-size="14">1</text><text x="169.0" y="99.0" text-anchor="middle" class="svg-txt" font-size="14">√<span class="rad">5</span></text></svg></div><figcaption>例2 の直角三角形 <math><mi>ABC</mi></math>：<math><mo>∠</mo><mi>C</mi><mo>=</mo><mn>90</mn><mo>°</mo></math>、<math><mi>BC</mi><mo>=</mo><mn>1</mn></math>、<math><mi>AC</mi><mo>=</mo><mn>2</mn></math>、<math><mi>AB</mi><mo>=</mo><msqrt><mn>5</mn></msqrt></math>、<math><mi>θ</mi><mo>=</mo><mo>∠</mo><mi>A</mi></math></figcaption></figure></p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― θ から見た辺を確認する</h3>
-<p>θ は ∠A（右下）。斜辺は AB = √<span class="rad">5</span>、θ の向かいの辺は BC = 1、隣り合う辺は AC = 2 だね。</p>
+          <h3>ヒント<math><mn>1</mn><mo>―</mo><mi>θ</mi></math>から見た辺を確認する</h3>
+<p><math><mi>θ</mi></math> は<math><mo>∠</mo><mi>A</mi><mo>(</mo></math>右下）。斜辺は<math><mi>AB</mi><mo>=</mo><msqrt><mn>5</mn></msqrt></math>、<math><mi>θ</mi></math> の向かいの辺は<math><mi>BC</mi><mo>=</mo><mn>1</mn></math>、隣り合う辺は<math><mi>AC</mi><mo>=</mo><mn>2</mn></math>だね。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">sin θ = <span class="frac"><span class="num">1</span><span class="den">√<span class="rad">5</span></span></span>,　cos θ = <span class="frac"><span class="num">2</span><span class="den">√<span class="rad">5</span></span></span>,　tan θ = <span class="frac"><span class="num">1</span><span class="den">2</span></span></p>
-<p class="formula left">sin θ = <span class="frac"><span class="num">BC</span><span class="den">AB</span></span> = <span class="frac"><span class="num">1</span><span class="den">√<span class="rad">5</span></span></span></p><p class="formula left">cos θ = <span class="frac"><span class="num">AC</span><span class="den">AB</span></span> = <span class="frac"><span class="num">2</span><span class="den">√<span class="rad">5</span></span></span></p><p class="formula left">tan θ = <span class="frac"><span class="num">BC</span><span class="den">AC</span></span> = <span class="frac"><span class="num">1</span><span class="den">2</span></span></p>
+          <div class="chain-crow big">
+<div class="crow"><math displaystyle="true"><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mn>1</mn><msqrt><mn>5</mn></msqrt></mfrac><mo>,</mo><mspace width="2em"/><mi>cos</mi><mi>θ</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mi>θ</mi></mphantom><mo>=</mo><mfrac><mn>2</mn><msqrt><mn>5</mn></msqrt></mfrac><mo>,</mo><mspace width="2em"/><mi>tan</mi><mi>θ</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mi>θ</mi></mphantom><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math></div>
+</div><p class="cite"><span class="cite-tag">使う定義</span><math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mi>BC</mi></mrow><mrow><mi>AB</mi></mrow></mfrac></math><math><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mi>AC</mi></mrow><mrow><mi>AB</mi></mrow></mfrac></math><math><mi>tan</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mi>BC</mi></mrow><mrow><mi>AC</mi></mrow></mfrac></math>ここでは <math><mi>BC</mi><mo>=</mo><mn>1</mn></math>、<math><mi>AC</mi><mo>=</mo><mn>2</mn></math>、斜辺は <math><mi>AB</mi><mo>=</mo><msqrt><mn>5</mn></msqrt></math> だ。</p>
+<p class="formula left"><math display="block"><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mi>BC</mi><mi>AB</mi></mfrac><mo>=</mo><mfrac><mn>1</mn><msqrt><mn>5</mn></msqrt></mfrac></math></p><p class="formula left"><math display="block"><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><mi>AC</mi><mi>AB</mi></mfrac><mo>=</mo><mfrac><mn>2</mn><msqrt><mn>5</mn></msqrt></mfrac></math></p><p class="formula left"><math display="block"><mi>tan</mi><mi>θ</mi><mo>=</mo><mfrac><mi>BC</mi><mi>AC</mi></mfrac><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math></p>
         </div>
         <p class="prob-done">例2 クリア！　次は練習1に挑戦しよう。</p>
       </section>
-      <section class="card prob" id="prob-ren1" data-label="練習1">
+      <section class="nofig card prob" id="prob-ren1" data-label="練習1">
         <div class="prob-head">
           <span class="prob-tag ren">練習 1</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
         <div class="qside">
-        <p class="prob-q">下の図において、sin θ, cos θ, tan θ の値を、それぞれ求めよ。</p>
+        <p class="prob-q">下の図において、<math><mi>sin</mi></math> <math><mi>θ</mi></math>, <math><mi>cos</mi></math> <math><mi>θ</mi></math>, <math><mi>tan</mi></math> <math><mi>θ</mi></math> の値を、それぞれ求めよ。</p>
         </div>
         <div class="tabs" role="tablist" aria-label="練習1の小問">
           <button class="tab" role="tab" data-tab="ren1-1" aria-selected="true">(1)</button>
@@ -414,16 +507,16 @@
         </div>
         <div class="tabpanel show" id="panel-ren1-1" data-flow="ren1-1" data-label="練習1 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　∠C = 90°、AB = 3、BC = 2、AC = √<span class="rad">5</span>、θ = ∠A<figure><div class="figbox"><svg viewBox="0 0 300 190" role="img" aria-label="練習1 (1) の直角三角形"><polygon points="45.0,155.0 162.4,50.0 162.4,155.0" fill="var(--accent-soft)" stroke="var(--ink)" stroke-width="2"/><path d="M 162.4 155.0 h -11 v -11" fill="none" stroke="var(--ink)" stroke-width="1.4"/><path d="M 71.0 155.0 A 26.0 26.0 0 0 0 64.4 137.7" fill="none" stroke="var(--orange)" stroke-width="1.6"/><text x="77.0" y="151.0" class="svg-txt" font-size="14">θ</text><circle cx="45.0" cy="155.0" r="3" fill="var(--ink)"/><circle cx="162.4" cy="50.0" r="3" fill="var(--ink)"/><circle cx="162.4" cy="155.0" r="3" fill="var(--ink)"/><text x="29.0" y="173.0" class="svg-txt" font-size="15">A</text><text x="164.4" y="42.0" class="svg-txt" font-size="15">B</text><text x="158.4" y="175.0" class="svg-txt" font-size="15">C</text><text x="103.7" y="175.0" text-anchor="middle" class="svg-txt" font-size="14">√<span class="rad">5</span></text><text x="170.4" y="107.5" class="svg-txt" font-size="14">2</text><text x="91.7" y="96.5" text-anchor="middle" class="svg-txt" font-size="14">3</text></svg></div><figcaption>練習1 (1) の直角三角形</figcaption></figure></span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><mo>∠</mo><mi>C</mi><mo>=</mo><mn>90</mn><mo>°</mo></math>、<math><mi>AB</mi><mo>=</mo><mn>3</mn></math>、<math><mi>BC</mi><mo>=</mo><mn>2</mn></math>、<math><mi>AC</mi><mo>=</mo><msqrt><mn>5</mn></msqrt></math>、<math><mi>θ</mi><mo>=</mo><mo>∠</mo><mi>A</mi></math><figure><div class="figbox"><svg viewBox="0 0 300 190" role="img" aria-label="練習1 (1) の直角三角形"><polygon points="45.0,155.0 162.4,50.0 162.4,155.0" fill="var(--accent-soft)" stroke="var(--ink)" stroke-width="2"/><path d="M 162.4 155.0 h -11 v -11" fill="none" stroke="var(--ink)" stroke-width="1.4"/><path d="M 71.0 155.0 A 26.0 26.0 0 0 0 64.4 137.7" fill="none" stroke="var(--orange)" stroke-width="1.6"/><text x="77.0" y="151.0" class="svg-txt" font-size="14">θ</text><circle cx="45.0" cy="155.0" r="3" fill="var(--ink)"/><circle cx="162.4" cy="50.0" r="3" fill="var(--ink)"/><circle cx="162.4" cy="155.0" r="3" fill="var(--ink)"/><text x="29.0" y="173.0" class="svg-txt" font-size="15">A</text><text x="164.4" y="42.0" class="svg-txt" font-size="15">B</text><text x="158.4" y="175.0" class="svg-txt" font-size="15">C</text><text x="103.7" y="175.0" text-anchor="middle" class="svg-txt" font-size="14">√<span class="rad">5</span></text><text x="170.4" y="107.5" class="svg-txt" font-size="14">2</text><text x="91.7" y="96.5" text-anchor="middle" class="svg-txt" font-size="14">3</text></svg></div><figcaption>練習1 (1) の直角三角形</figcaption></figure></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
           <div class="quiz" id="q-ren1-1" data-correct="1">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>sin θ = <span class="frac"><span class="num">2</span><span class="den">3</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>sin θ = <span class="frac"><span class="num">√<span class="rad">5</span></span><span class="den">3</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>sin θ = <span class="frac"><span class="num">2</span><span class="den">√<span class="rad">5</span></span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>sin θ = <span class="frac"><span class="num">3</span><span class="den">2</span></span></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mn>2</mn><mn>3</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><msqrt><mn>5</mn></msqrt><mn>3</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mn>2</mn><msqrt><mn>5</mn></msqrt></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mn>3</mn><mn>2</mn></mfrac></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
@@ -431,82 +524,94 @@
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― 斜辺と向かいの辺を確認する</h3>
-<p>斜辺は AB = 3、θ の向かいの辺は BC = 2、隣り合う辺は AC = √<span class="rad">5</span> だね（三平方の定理でも (√5)² + 2² = 9 = 3² と確かめられる）。</p>
+<p>斜辺は<math><mi>AB</mi><mo>=</mo><mn>3</mn></math>、<math><mi>θ</mi></math> の向かいの辺は<math><mi>BC</mi><mo>=</mo><mn>2</mn></math>、隣り合う辺は<math><mi>AC</mi><mo>=</mo><msqrt><mn>5</mn></msqrt></math> だね（三平方の定理でも<math><msup><mrow><mo>(</mo><msqrt><mn>5</mn></msqrt><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mn>2</mn><mn>2</mn></msup><mo>=</mo><mn>9</mn><mo>=</mo><msup><mn>3</mn><mn>2</mn></msup></math>と確かめられる）。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">sin θ = <span class="frac"><span class="num">2</span><span class="den">3</span></span>,　cos θ = <span class="frac"><span class="num">√<span class="rad">5</span></span><span class="den">3</span></span>,　tan θ = <span class="frac"><span class="num">2</span><span class="den">√<span class="rad">5</span></span></span></p>
-<p class="formula left">sin θ = <span class="frac"><span class="num">2</span><span class="den">3</span></span>、cos θ = <span class="frac"><span class="num">√<span class="rad">5</span></span><span class="den">3</span></span>、tan θ = <span class="frac"><span class="num">2</span><span class="den">√<span class="rad">5</span></span></span></p>
+          <div class="chain-crow big">
+<div class="crow"><math displaystyle="true"><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mo>,</mo><mspace width="2em"/><mi>cos</mi><mi>θ</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mi>θ</mi></mphantom><mo>=</mo><mfrac><msqrt><mn>5</mn></msqrt><mn>3</mn></mfrac><mo>,</mo><mspace width="2em"/><mi>tan</mi><mi>θ</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mi>θ</mi></mphantom><mo>=</mo><mfrac><mn>2</mn><msqrt><mn>5</mn></msqrt></mfrac></math></div>
+</div><p class="cite"><span class="cite-tag">使う定義</span><math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mi>BC</mi></mrow><mrow><mi>AB</mi></mrow></mfrac></math><math><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mi>AC</mi></mrow><mrow><mi>AB</mi></mrow></mfrac></math><math><mi>tan</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mi>BC</mi></mrow><mrow><mi>AC</mi></mrow></mfrac></math>ここでは斜辺 <math><mi>AB</mi><mo>=</mo><mn>3</mn></math>、向かいの辺 <math><mi>BC</mi><mo>=</mo><mn>2</mn></math>、隣り合う辺 <math><mi>AC</mi><mo>=</mo><msqrt><mn>5</mn></msqrt></math> を当てはめている。</p>
+<p class="formula left"><math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mn>2</mn><mn>3</mn></mfrac></math>、<math><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><msqrt><mn>5</mn></msqrt><mn>3</mn></mfrac></math>、<math><mi>tan</mi><mi>θ</mi><mo>=</mo><mfrac><mn>2</mn><msqrt><mn>5</mn></msqrt></mfrac></math></p>
         </div>
           <p class="prob-done">練習1 (1) クリア！</p>
         </div>
         <div class="tabpanel" id="panel-ren1-2" data-flow="ren1-2" data-label="練習1 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　∠C = 90°、AB = 13、BC = 5、AC = 12、θ = ∠A<figure><div class="figbox"><svg viewBox="0 0 300 190" role="img" aria-label="練習1 (2) の直角三角形"><polygon points="45.0,155.0 245.0,71.7 245.0,155.0" fill="var(--accent-soft)" stroke="var(--ink)" stroke-width="2"/><path d="M 245.0 155.0 h -11 v -11" fill="none" stroke="var(--ink)" stroke-width="1.4"/><path d="M 71.0 155.0 A 26.0 26.0 0 0 0 69.0 145.0" fill="none" stroke="var(--orange)" stroke-width="1.6"/><text x="77.0" y="151.0" class="svg-txt" font-size="14">θ</text><circle cx="45.0" cy="155.0" r="3" fill="var(--ink)"/><circle cx="245.0" cy="71.7" r="3" fill="var(--ink)"/><circle cx="245.0" cy="155.0" r="3" fill="var(--ink)"/><text x="29.0" y="173.0" class="svg-txt" font-size="15">A</text><text x="247.0" y="63.7" class="svg-txt" font-size="15">B</text><text x="241.0" y="175.0" class="svg-txt" font-size="15">C</text><text x="145.0" y="175.0" text-anchor="middle" class="svg-txt" font-size="14">12</text><text x="253.0" y="118.3" class="svg-txt" font-size="14">5</text><text x="133.0" y="107.3" text-anchor="middle" class="svg-txt" font-size="14">13</text></svg></div><figcaption>練習1 (2) の直角三角形</figcaption></figure></span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><mo>∠</mo><mi>C</mi><mo>=</mo><mn>90</mn><mo>°</mo></math>、<math><mi>AB</mi><mo>=</mo><mn>13</mn></math>、<math><mi>BC</mi><mo>=</mo><mn>5</mn></math>、<math><mi>AC</mi><mo>=</mo><mn>12</mn></math>、<math><mi>θ</mi><mo>=</mo><mo>∠</mo><mi>A</mi></math><figure><div class="figbox"><svg viewBox="0 0 300 190" role="img" aria-label="練習1 (2) の直角三角形"><polygon points="45.0,155.0 245.0,71.7 245.0,155.0" fill="var(--accent-soft)" stroke="var(--ink)" stroke-width="2"/><path d="M 245.0 155.0 h -11 v -11" fill="none" stroke="var(--ink)" stroke-width="1.4"/><path d="M 71.0 155.0 A 26.0 26.0 0 0 0 69.0 145.0" fill="none" stroke="var(--orange)" stroke-width="1.6"/><text x="77.0" y="151.0" class="svg-txt" font-size="14">θ</text><circle cx="45.0" cy="155.0" r="3" fill="var(--ink)"/><circle cx="245.0" cy="71.7" r="3" fill="var(--ink)"/><circle cx="245.0" cy="155.0" r="3" fill="var(--ink)"/><text x="29.0" y="173.0" class="svg-txt" font-size="15">A</text><text x="247.0" y="63.7" class="svg-txt" font-size="15">B</text><text x="241.0" y="175.0" class="svg-txt" font-size="15">C</text><text x="145.0" y="175.0" text-anchor="middle" class="svg-txt" font-size="14">12</text><text x="253.0" y="118.3" class="svg-txt" font-size="14">5</text><text x="133.0" y="107.3" text-anchor="middle" class="svg-txt" font-size="14">13</text></svg></div><figcaption>練習1 (2) の直角三角形</figcaption></figure></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― 5・12・13 の組に気づく</h3>
-<p>斜辺は AB = 13、θ の向かいの辺は BC = 5、隣り合う辺は AC = 12。5² + 12² = 13² の有名な組だね。</p>
+<p>斜辺は<math><mi>AB</mi><mo>=</mo><mn>13</mn></math>、<math><mi>θ</mi></math> の向かいの辺は<math><mi>BC</mi><mo>=</mo><mn>5</mn></math>、隣り合う辺は<math><mi>AC</mi><mo>=</mo><mn>12</mn></math>。<math><msup><mn>5</mn><mn>2</mn></msup><mo>+</mo><msup><mn>12</mn><mn>2</mn></msup><mo>=</mo><msup><mn>13</mn><mn>2</mn></msup></math>の有名な組だね。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">sin θ = <span class="frac"><span class="num">5</span><span class="den">13</span></span>,　cos θ = <span class="frac"><span class="num">12</span><span class="den">13</span></span>,　tan θ = <span class="frac"><span class="num">5</span><span class="den">12</span></span></p>
-<p class="formula left">sin θ = <span class="frac"><span class="num">5</span><span class="den">13</span></span>、cos θ = <span class="frac"><span class="num">12</span><span class="den">13</span></span>、tan θ = <span class="frac"><span class="num">5</span><span class="den">12</span></span></p>
+          <div class="chain-crow big">
+<div class="crow"><math displaystyle="true"><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mn>5</mn><mn>13</mn></mfrac><mo>,</mo><mspace width="2em"/><mi>cos</mi><mi>θ</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mi>θ</mi></mphantom><mo>=</mo><mfrac><mn>12</mn><mn>13</mn></mfrac><mo>,</mo><mspace width="2em"/><mi>tan</mi><mi>θ</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mi>θ</mi></mphantom><mo>=</mo><mfrac><mn>5</mn><mn>12</mn></mfrac></math></div>
+</div><p class="cite"><span class="cite-tag">使う定義</span><math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mi>BC</mi></mrow><mrow><mi>AB</mi></mrow></mfrac></math><math><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mi>AC</mi></mrow><mrow><mi>AB</mi></mrow></mfrac></math><math><mi>tan</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mi>BC</mi></mrow><mrow><mi>AC</mi></mrow></mfrac></math>ここでは <math><mi>BC</mi><mo>=</mo><mn>5</mn></math>、<math><mi>AC</mi><mo>=</mo><mn>12</mn></math>、<math><mi>AB</mi><mo>=</mo><mn>13</mn></math> の組を当てはめている。</p>
+<p class="formula left"><math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mn>5</mn><mn>13</mn></mfrac></math>、<math><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><mn>12</mn><mn>13</mn></mfrac></math>、<math><mi>tan</mi><mi>θ</mi><mo>=</mo><mfrac><mn>5</mn><mn>12</mn></mfrac></math></p>
         </div>
           <p class="prob-done">練習1 (2) クリア！</p>
         </div>
         <div class="tabpanel" id="panel-ren1-3" data-flow="ren1-3" data-label="練習1 (3)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(3) ★　∠C = 90°、AC = 3、BC = √<span class="rad">7</span>、θ = ∠A<figure><div class="figbox"><svg viewBox="0 0 300 190" role="img" aria-label="練習1 (3) の三角形"><polygon points="45.0,155.0 253.0,155.0 162.0,51.8" fill="var(--accent-soft)" stroke="var(--ink)" stroke-width="2"/><path d="M 71.0 155.0 A 26.0 26.0 0 0 0 64.5 137.8" fill="none" stroke="var(--orange)" stroke-width="1.6"/><text x="77.0" y="151.0" class="svg-txt" font-size="14">θ</text><circle cx="45.0" cy="155.0" r="3" fill="var(--ink)"/><circle cx="253.0" cy="155.0" r="3" fill="var(--ink)"/><circle cx="162.0" cy="51.8" r="3" fill="var(--ink)"/><text x="29.0" y="173.0" class="svg-txt" font-size="15">A</text><text x="251.0" y="175.0" class="svg-txt" font-size="15">B</text><text x="158.0" y="41.8" class="svg-txt" font-size="15">C</text><text x="89.5" y="103.4" text-anchor="middle" class="svg-txt" font-size="14">3</text><text x="221.5" y="103.4" text-anchor="middle" class="svg-txt" font-size="14">√<span class="rad">7</span></text></svg></div><figcaption>∠C = 90°、AC = 3、BC = √7 の直角三角形。θ は ∠A（★）</figcaption></figure></span>
+            <span class="sub prob-q" style="margin:0">(3) ★　<math><mo>∠</mo><mi>C</mi><mo>=</mo><mn>90</mn><mo>°</mo></math>、<math><mi>AC</mi><mo>=</mo><mn>3</mn></math>、<math><mi>BC</mi><mo>=</mo><msqrt><mn>7</mn></msqrt></math>、<math><mi>θ</mi><mo>=</mo><mo>∠</mo><mi>A</mi></math><figure><div class="figbox"><svg viewBox="0 0 300 190" role="img" aria-label="練習1 (3) の三角形"><polygon points="45.0,155.0 253.0,155.0 162.0,51.8" fill="var(--accent-soft)" stroke="var(--ink)" stroke-width="2"/><path d="M 71.0 155.0 A 26.0 26.0 0 0 0 64.5 137.8" fill="none" stroke="var(--orange)" stroke-width="1.6"/><text x="77.0" y="151.0" class="svg-txt" font-size="14">θ</text><circle cx="45.0" cy="155.0" r="3" fill="var(--ink)"/><circle cx="253.0" cy="155.0" r="3" fill="var(--ink)"/><circle cx="162.0" cy="51.8" r="3" fill="var(--ink)"/><text x="29.0" y="173.0" class="svg-txt" font-size="15">A</text><text x="251.0" y="175.0" class="svg-txt" font-size="15">B</text><text x="158.0" y="41.8" class="svg-txt" font-size="15">C</text><text x="89.5" y="103.4" text-anchor="middle" class="svg-txt" font-size="14">3</text><text x="221.5" y="103.4" text-anchor="middle" class="svg-txt" font-size="14">√<span class="rad">7</span></text></svg></div><figcaption><math><mo>∠</mo><mi>C</mi><mo>=</mo><mn>90</mn><mo>°</mo></math>、<math><mi>AC</mi><mo>=</mo><mn>3</mn></math>、<math><mi>BC</mi><mo>=</mo><msqrt><mn>7</mn></msqrt></math>の直角三角形。<math><mi>θ</mi></math> は<math><mo>∠</mo><mi>A</mi><mrow><mo>(</mo><mo>★</mo><mo>)</mo></mrow></math></figcaption></figure></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
           <div class="quiz" id="q-ren1-3" data-correct="2">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>cos θ = <span class="frac"><span class="num">√<span class="rad">7</span></span><span class="den">4</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>cos θ = <span class="frac"><span class="num">3</span><span class="den">4</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>cos θ = <span class="frac"><span class="num">3</span><span class="den">√<span class="rad">7</span></span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>cos θ = <span class="frac"><span class="num">4</span><span class="den">3</span></span></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><msqrt><mn>7</mn></msqrt><mn>4</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><mn>3</mn><mn>4</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><mn>3</mn><msqrt><mn>7</mn></msqrt></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><mn>4</mn><mn>3</mn></mfrac></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
           <p class="verdict"></p>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― まず斜辺 AB を求める</h3>
-<p>斜辺が図に書かれていない。三平方の定理で AB = √(3² + (√7)²) = √16 を計算しよう。</p>
+          <h3>ヒント 1 ― まず斜辺 <math><mi>AB</mi></math> を求める</h3>
+<p class="cite"><span class="cite-tag">使う公式</span><math><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup><mo>=</mo><msup><mi>c</mi><mn>2</mn></msup></math>斜辺 <math><mi>AB</mi></math> は三平方の定理で求める。ここでは <math><msup><mi>BC</mi><mn>2</mn></msup><mo>+</mo><msup><mi>AC</mi><mn>2</mn></msup></math> の平方根が斜辺になる。</p><p>斜辺が図に書かれていない。三平方の定理で<math><mi>AB</mi><mo>=</mo><msqrt><mrow><msup><mn>3</mn><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><msqrt><mn>7</mn></msqrt><mo>)</mo></mrow><mn>2</mn></msup></mrow></msqrt><mo>=</mo><msqrt><mn>16</mn></msqrt></math>を計算しよう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 定義に当てはめる</h3>
-<p>AB = 4 が分かったら、sin θ = BC ÷ AB、cos θ = AC ÷ AB、tan θ = BC ÷ AC の順に当てはめよう。</p>
+<p><math><mi>AB</mi><mo>=</mo><mn>4</mn></math>が分かったら、<math><mi>sin</mi><mi>θ</mi><mo>=</mo><mi>BC</mi><mo>÷</mo><mi>AB</mi></math>、<math><mi>cos</mi><mi>θ</mi><mo>=</mo><mi>AC</mi><mo>÷</mo><mi>AB</mi></math>、<math><mi>tan</mi><mi>θ</mi><mo>=</mo><mi>BC</mi><mo>÷</mo><mi>AC</mi></math>の順に当てはめよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">sin θ = <span class="frac"><span class="num">√<span class="rad">7</span></span><span class="den">4</span></span>,　cos θ = <span class="frac"><span class="num">3</span><span class="den">4</span></span>,　tan θ = <span class="frac"><span class="num">√<span class="rad">7</span></span><span class="den">3</span></span></p>
-<p class="formula left">AB = √(9 + 7) = 4</p><p class="formula left">sin θ = <span class="frac"><span class="num">√<span class="rad">7</span></span><span class="den">4</span></span>、cos θ = <span class="frac"><span class="num">3</span><span class="den">4</span></span>、tan θ = <span class="frac"><span class="num">√<span class="rad">7</span></span><span class="den">3</span></span></p>
+          <div class="chain-crow big">
+<div class="crow"><math displaystyle="true"><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><msqrt><mn>7</mn></msqrt><mn>4</mn></mfrac><mo>,</mo><mspace width="2em"/><mi>cos</mi><mi>θ</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mi>θ</mi></mphantom><mo>=</mo><mfrac><mn>3</mn><mn>4</mn></mfrac><mo>,</mo><mspace width="2em"/><mi>tan</mi><mi>θ</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mi>θ</mi></mphantom><mo>=</mo><mfrac><msqrt><mn>7</mn></msqrt><mn>3</mn></mfrac></math></div>
+</div><p class="cite"><span class="cite-tag">使う定義</span><math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mi>BC</mi></mrow><mrow><mi>AB</mi></mrow></mfrac></math><math><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mi>AC</mi></mrow><mrow><mi>AB</mi></mrow></mfrac></math><math><mi>tan</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mi>BC</mi></mrow><mrow><mi>AC</mi></mrow></mfrac></math>ヒントで求めた <math><mi>AB</mi><mo>=</mo><mn>4</mn></math> を使って、3つの比をこの定義で計算する。</p>
+<p class="formula left"><math display="block"><mi>AB</mi><mo>=</mo><msqrt><mrow><mn>9</mn><mo>+</mo><mn>7</mn></mrow></msqrt><mo>=</mo><mn>4</mn></math></p><p class="formula left"><math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><msqrt><mn>7</mn></msqrt><mn>4</mn></mfrac></math>、<math><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><mn>3</mn><mn>4</mn></mfrac></math>、<math><mi>tan</mi><mi>θ</mi><mo>=</mo><mfrac><msqrt><mn>7</mn></msqrt><mn>3</mn></mfrac></math></p>
         </div>
           <p class="prob-done">練習1 (3) クリア！　次は練習2に進もう。</p>
         </div>
       </section>
-      <section class="card prob" id="prob-ren2" data-flow="ren2" data-label="練習2">
+      <section class="nofig card prob" id="prob-ren2" data-flow="ren2" data-label="練習2">
         <div class="prob-head">
           <span class="prob-tag ren">練習 2</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">右の表の空らんに適する数値を入れて、表を完成させよ。（教科書の表には sin 30° = <span class="formula" style="display:inline-block;vertical-align:middle;margin:0 4px"><span class="frac"><span class="num">1</span><span class="den">2</span></span></span>、cos 45° = <span class="formula" style="display:inline-block;vertical-align:middle;margin:0 4px"><span class="frac"><span class="num">1</span><span class="den">√<span class="rad">2</span></span></span></span>、tan 60° = √<span class="rad">3</span> が与えられている）</p>
+        <p class="prob-q">右の表の空らんに適する数値を入れて、表を完成させよ。（教科書の表には<math><mi>sin</mi><mn>30</mn><mo>°</mo><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math>、<math><mi>cos</mi><mn>45</mn><mo>°</mo><mo>=</mo><mfrac><mn>1</mn><msqrt><mn>2</mn></msqrt></mfrac></math>、<math><mi>tan</mi><mn>60</mn><mo>°</mo><mo>=</mo><msqrt><mn>3</mn></msqrt></math> が与えられている）</p>
           <div class="quiz" id="q-ren2" data-correct="3">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>sin 60° = <span class="frac"><span class="num">1</span><span class="den">2</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>sin 60° = <span class="frac"><span class="num">1</span><span class="den">√<span class="rad">2</span></span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>sin 60° = <span class="frac"><span class="num">√<span class="rad">3</span></span><span class="den">2</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>sin 60° = √<span class="rad">3</span></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mi>sin</mi><mn>60</mn><mo>°</mo><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mi>sin</mi><mn>60</mn><mo>°</mo><mo>=</mo><mfrac><mn>1</mn><msqrt><mn>2</mn></msqrt></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mi>sin</mi><mn>60</mn><mo>°</mo><mo>=</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mi>sin</mi><mn>60</mn><mo>°</mo><mo>=</mo><msqrt><mn>3</mn></msqrt></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
@@ -514,18 +619,25 @@
           </div>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 30° と 60° は同じ図［1］から読む</h3>
-<p>図［1］で ∠A = 30° から読むと cos 30°、tan 30° が、∠B = 60° から読むと sin 60°、cos 60° が分かるよ。</p>
+          <h3>ヒント<math><mn>1</mn><mo>―</mo><mn>30</mn><mo>°</mo></math>と<math><mn>60</mn><mo>°</mo></math>は同じ図［1］から読む</h3>
+<p class="cite"><span class="cite-tag">使う定義</span><math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mtext>向かいの辺</mtext></mrow><mrow><mtext>斜辺</mtext></mrow></mfrac></math><math><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mtext>隣り合う辺</mtext></mrow><mrow><mtext>斜辺</mtext></mrow></mfrac></math>図［1］では <math><mo>∠</mo><mi>A</mi><mo>=</mo><mn>30</mn><mo>°</mo></math> と <math><mo>∠</mo><mi>B</mi><mo>=</mo><mn>60</mn><mo>°</mo></math> の両方から読み取る。</p><p>図［1］で<math><mo>∠</mo><mi>A</mi><mo>=</mo><mn>30</mn><mo>°</mo></math>から読むと<math><mi>cos</mi><mn>30</mn><mo>°</mo></math>、<math><mi>tan</mi><mn>30</mn><mo>°</mo></math>が、<math><mo>∠</mo><mi>B</mi><mo>=</mo><mn>60</mn><mo>°</mo></math>から読むと<math><mi>sin</mi><mn>60</mn><mo>°</mo></math>、<math><mi>cos</mi><mn>60</mn><mo>°</mo></math>が分かるよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― 45° は図［2］から読む</h3>
-<p>直角二等辺三角形では sin 45° = cos 45° で、tan 45° は 向かい ÷ 隣り合う = 1 ÷ 1 だね。</p>
+          <h3>ヒント<math><mn>2</mn><mo>―</mo><mn>45</mn><mo>°</mo></math>は図［2］から読む</h3>
+<p>直角二等辺三角形では<math><mi>sin</mi><mn>45</mn><mo>°</mo><mo>=</mo><mi>cos</mi><mn>45</mn><mo>°</mo></math>で、<math><mi>tan</mi><mn>45</mn><mo>°</mo></math>は 向かい ÷ 隣り合う<math><mo>=</mo><mn>1</mn><mo>÷</mo><mn>1</mn></math>だね。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">sin 45° = <span class="frac"><span class="num">1</span><span class="den">√<span class="rad">2</span></span></span>, sin 60° = <span class="frac"><span class="num">√<span class="rad">3</span></span><span class="den">2</span></span>, cos 30° = <span class="frac"><span class="num">√<span class="rad">3</span></span><span class="den">2</span></span>, cos 60° = <span class="frac"><span class="num">1</span><span class="den">2</span></span>, tan 30° = <span class="frac"><span class="num">1</span><span class="den">√<span class="rad">3</span></span></span>, tan 45° = 1</p>
-<p>完成した表は次の通り。</p><table class="comp"><tr><th>θ</th><th>30°</th><th>45°</th><th>60°</th></tr><tr><th>sin θ</th><td><span class="frac"><span class="num">1</span><span class="den">2</span></span></td><td><span class="frac"><span class="num">1</span><span class="den">√<span class="rad">2</span></span></span></td><td><span class="frac"><span class="num">√<span class="rad">3</span></span><span class="den">2</span></span></td></tr><tr><th>cos θ</th><td><span class="frac"><span class="num">√<span class="rad">3</span></span><span class="den">2</span></span></td><td><span class="frac"><span class="num">1</span><span class="den">√<span class="rad">2</span></span></span></td><td><span class="frac"><span class="num">1</span><span class="den">2</span></span></td></tr><tr><th>tan θ</th><td><span class="frac"><span class="num">1</span><span class="den">√<span class="rad">3</span></span></span></td><td>1</td><td>√<span class="rad">3</span></td></tr></table>
+          <div class="chain-crow big">
+<div class="crow"><math displaystyle="true"><mi>sin</mi><mn>45</mn><mo>°</mo><mo>=</mo><mfrac><mn>1</mn><msqrt><mn>2</mn></msqrt></mfrac><mo>,</mo><mi>sin</mi><mn>60</mn><mo>°</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mn>45</mn><mo>°</mo></mphantom><mo>=</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac><mo>,</mo><mi>cos</mi><mn>30</mn><mo>°</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mn>45</mn><mo>°</mo></mphantom><mo>=</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac><mo>,</mo><mi>cos</mi><mn>60</mn><mo>°</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mn>45</mn><mo>°</mo></mphantom><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>,</mo><mi>tan</mi><mn>30</mn><mo>°</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mn>45</mn><mo>°</mo></mphantom><mo>=</mo><mfrac><mn>1</mn><msqrt><mn>3</mn></msqrt></mfrac><mo>,</mo><mi>tan</mi><mn>45</mn><mo>°</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mn>45</mn><mo>°</mo></mphantom><mo>=</mo><mn>1</mn></math></div>
+</div>
+<p>完成した表は次の通り。</p><table class="comp"><tr><th><math><mi>θ</mi></math></th><th><math><mn>30</mn><mo>°</mo></math></th><th><math><mn>45</mn><mo>°</mo></math></th><th><math><mn>60</mn><mo>°</mo></math></th></tr><tr><th><math><mi>sin</mi></math> <math><mi>θ</mi></math></th><td><math><mfrac><mn>1</mn><mn>2</mn></mfrac></math></td><td><math><mfrac><mn>1</mn><msqrt><mn>2</mn></msqrt></mfrac></math></td><td><math><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac></math></td></tr><tr><th><math><mi>cos</mi></math> <math><mi>θ</mi></math></th><td><math><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac></math></td><td><math><mfrac><mn>1</mn><msqrt><mn>2</mn></msqrt></mfrac></math></td><td><math><mfrac><mn>1</mn><mn>2</mn></mfrac></math></td></tr><tr><th><math><mi>tan</mi></math> <math><mi>θ</mi></math></th><td><math><mfrac><mn>1</mn><msqrt><mn>3</mn></msqrt></mfrac></math></td><td>1</td><td><math><msqrt><mn>3</mn></msqrt></math></td></tr></table>
         </div>
         <p class="prob-done">練習2 クリア！　次は解説Cに進もう。</p>
       </section>
@@ -535,12 +647,16 @@
         <span class="pno">教科書 p.137</span>
       </div>
       <section class="card">
-<p>三角比 sin θ, cos θ, tan θ の値は、θ に対して決まっている。巻末の見返しには、1° ごとの角 θ について、それらの値を表にして載せた。この表の値は、小数第5位を四捨五入して小数第4位までで示したものである。たとえば</p>
-<p class="formula">sin 29° = 0.4848,　cos 32° = 0.8480,　tan 36° = 0.7265</p>
-<p>として使う。下は教科書 p.137 に載っている表の一部（29°〜37°）だよ。練習3・練習4では、必要に応じてこの表と巻末の表を使おう。</p>
-<table class="comp"><tr><th>θ</th><th>sin θ</th><th>cos θ</th><th>tan θ</th></tr><tr><td>29°</td><td>0.4848</td><td>0.8746</td><td>0.5543</td></tr><tr><td>30°</td><td>0.5000</td><td>0.8660</td><td>0.5774</td></tr><tr><td>31°</td><td>0.5150</td><td>0.8572</td><td>0.6009</td></tr><tr><td>32°</td><td>0.5299</td><td>0.8480</td><td>0.6249</td></tr><tr><td>33°</td><td>0.5446</td><td>0.8387</td><td>0.6494</td></tr><tr><td>34°</td><td>0.5592</td><td>0.8290</td><td>0.6745</td></tr><tr><td>35°</td><td>0.5736</td><td>0.8192</td><td>0.7002</td></tr><tr><td>36°</td><td>0.5878</td><td>0.8090</td><td>0.7265</td></tr><tr><td>37°</td><td>0.6018</td><td>0.7986</td><td>0.7536</td></tr></table><p>逆に、三角比の値から角のおよその大きさも、表を逆向きに読んで求められる。なお、a ≒ b は「a と b がほぼ等しい」ということを意味する。</p>
+<p>三角比 <math><mi>sin</mi></math> <math><mi>θ</mi></math>, <math><mi>cos</mi></math> <math><mi>θ</mi></math>, <math><mi>tan</mi></math> <math><mi>θ</mi></math> の値は、<math><mi>θ</mi></math> に対して決まっている。<br>巻末の見返しには、<math><mn>1</mn><mo>°</mo></math>ごとの角 <math><mi>θ</mi></math> について、それらの値を表にして載せた。この表の値は、小数第5位を四捨五入して小数第4位までで示したものである。たとえば</p>
+<div class="chain-crow formula">
+<div class="crow"><math displaystyle="true"><mi>sin</mi><mn>29</mn><mo>°</mo><mo>=</mo><mn>0.4848</mn><mo>,</mo><mspace width="2em"/><mi>cos</mi><mn>32</mn><mo>°</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mn>29</mn><mo>°</mo></mphantom><mo>=</mo><mn>0.8480</mn><mo>,</mo><mspace width="2em"/><mi>tan</mi><mn>36</mn><mo>°</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mn>29</mn><mo>°</mo></mphantom><mo>=</mo><mn>0.7265</mn></math></div>
+</div>
+<p>として使う。下は教科書 p.137 に載っている表の一部<math><mo>(</mo><mn>29</mn><mo>°</mo></math>〜<math><mn>37</mn><mo>°</mo><mo>)</mo></math>だよ。練習3・練習4では、必要に応じてこの表と巻末の表を使おう。</p>
+<table class="comp"><tr><th><math><mi>θ</mi></math></th><th><math><mi>sin</mi></math> <math><mi>θ</mi></math></th><th><math><mi>cos</mi></math> <math><mi>θ</mi></math></th><th><math><mi>tan</mi></math> <math><mi>θ</mi></math></th></tr><tr><td><math><mn>29</mn><mo>°</mo></math></td><td>0.4848</td><td>0.8746</td><td>0.5543</td></tr><tr><td><math><mn>30</mn><mo>°</mo></math></td><td>0.5000</td><td>0.8660</td><td>0.5774</td></tr><tr><td><math><mn>31</mn><mo>°</mo></math></td><td>0.5150</td><td>0.8572</td><td>0.6009</td></tr><tr><td><math><mn>32</mn><mo>°</mo></math></td><td>0.5299</td><td>0.8480</td><td>0.6249</td></tr><tr><td><math><mn>33</mn><mo>°</mo></math></td><td>0.5446</td><td>0.8387</td><td>0.6494</td></tr><tr><td><math><mn>34</mn><mo>°</mo></math></td><td>0.5592</td><td>0.8290</td><td>0.6745</td></tr><tr><td><math><mn>35</mn><mo>°</mo></math></td><td>0.5736</td><td>0.8192</td><td>0.7002</td></tr><tr><td><math><mn>36</mn><mo>°</mo></math></td><td>0.5878</td><td>0.8090</td><td>0.7265</td></tr><tr><td><math><mn>37</mn><mo>°</mo></math></td><td>0.6018</td><td>0.7986</td><td>0.7536</td></tr></table><p>逆に、三角比の値から角のおよその大きさも、表を逆向きに読んで求められる。<br>なお、<math><mi>a</mi><mo>≒</mo><mi>b</mi></math>は「<math><mi>a</mi></math> と <math><mi>b</mi></math> がほぼ等しい」ということを意味する。</p>
       </section>
-      <section class="card prob" id="prob-ren3" data-label="練習3">
+      <section class="nofig card prob" id="prob-ren3" data-label="練習3">
         <div class="prob-head">
           <span class="prob-tag ren">練習 3</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
@@ -555,63 +671,63 @@
         </div>
         <div class="tabpanel show" id="panel-ren3-1" data-flow="ren3-1" data-label="練習3 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　sin 12°</span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><mi>sin</mi><mn>12</mn><mo>°</mo></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
           <div class="quiz" id="q-ren3-1" data-correct="2">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>0.2057</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>0.2079</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>0.2126</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>0.9781</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mn>0.2057</mn></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mn>0.2079</mn></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mn>0.2126</mn></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mn>0.9781</mn></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
           <p class="verdict"></p>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 表の sin の列を見る</h3>
-<p>巻末の三角比の表で、θ = 12° の行の sin θ の値を読み取ろう。</p>
+          <h3>ヒント 1 ― 表の <math><mi>sin</mi></math> の列を見る</h3>
+<p>巻末の三角比の表で、<math><mi>θ</mi><mo>=</mo><mn>12</mn><mo>°</mo></math>の行の <math><mi>sin</mi></math> <math><mi>θ</mi></math> の値を読み取ろう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">sin 12° = 0.2079</p>
+          <p class="big"><math display="block"><mi>sin</mi><mn>12</mn><mo>°</mo><mo>=</mo><mn>0.2079</mn></math></p>
         </div>
           <p class="prob-done">練習3 (1) クリア！</p>
         </div>
         <div class="tabpanel" id="panel-ren3-2" data-flow="ren3-2" data-label="練習3 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　cos 48°</span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><mi>cos</mi><mn>48</mn><mo>°</mo></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 表の cos の列を見る</h3>
-<p>θ = 48° の行の cos θ の値を読み取ろう。cos は角が大きいほど小さくなるよ。</p>
+          <h3>ヒント 1 ― 表の <math><mi>cos</mi></math> の列を見る</h3>
+<p><math><mi>θ</mi><mo>=</mo><mn>48</mn><mo>°</mo></math>の行の <math><mi>cos</mi></math> <math><mi>θ</mi></math> の値を読み取ろう。<math><mi>cos</mi></math> は角が大きいほど小さくなるよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">cos 48° = 0.6691</p>
+          <p class="big"><math display="block"><mi>cos</mi><mn>48</mn><mo>°</mo><mo>=</mo><mn>0.6691</mn></math></p>
         </div>
           <p class="prob-done">練習3 (2) クリア！</p>
         </div>
         <div class="tabpanel" id="panel-ren3-3" data-flow="ren3-3" data-label="練習3 (3)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(3)　tan 75°</span>
+            <span class="sub prob-q" style="margin:0">(3)　<math><mi>tan</mi><mn>75</mn><mo>°</mo></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 表の tan の列を見る</h3>
-<p>θ = 75° の行の tan θ の値を読み取ろう。tan は 45° を超えると 1 より大きくなり、急に大きくなるよ。</p>
+          <h3>ヒント 1 ― 表の <math><mi>tan</mi></math> の列を見る</h3>
+<p><math><mi>θ</mi><mo>=</mo><mn>75</mn><mo>°</mo></math>の行の <math><mi>tan</mi></math> <math><mi>θ</mi></math> の値を読み取ろう。<math><mi>tan</mi></math> は<math><mn>45</mn><mo>°</mo></math>を超えると 1 より大きくなり、急に大きくなるよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">tan 75° = 3.7321</p>
+          <p class="big"><math display="block"><mi>tan</mi><mn>75</mn><mo>°</mo><mo>=</mo><mn>3.7321</mn></math></p>
         </div>
           <p class="prob-done">練習3 (3) クリア！</p>
         </div>
@@ -623,31 +739,37 @@
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">右の図における θ のおよその大きさを求めよ。<figure><div class="figbox"><svg viewBox="0 0 300 190" role="img" aria-label="例3 の直角三角形 ABC：∠C = 90°、AC = 4、AB = 5、θ = ∠A"><polygon points="45.0,155.0 185.0,50.0 185.0,155.0" fill="var(--accent-soft)" stroke="var(--ink)" stroke-width="2"/><path d="M 185.0 155.0 h -11 v -11" fill="none" stroke="var(--ink)" stroke-width="1.4"/><path d="M 71.0 155.0 A 26.0 26.0 0 0 0 65.8 139.4" fill="none" stroke="var(--orange)" stroke-width="1.6"/><text x="77.0" y="151.0" class="svg-txt" font-size="14">θ</text><circle cx="45.0" cy="155.0" r="3" fill="var(--ink)"/><circle cx="185.0" cy="50.0" r="3" fill="var(--ink)"/><circle cx="185.0" cy="155.0" r="3" fill="var(--ink)"/><text x="29.0" y="173.0" class="svg-txt" font-size="15">A</text><text x="187.0" y="42.0" class="svg-txt" font-size="15">B</text><text x="181.0" y="175.0" class="svg-txt" font-size="15">C</text><text x="115.0" y="175.0" text-anchor="middle" class="svg-txt" font-size="14">4</text><text x="193.0" y="107.5" class="svg-txt" font-size="14"></text><text x="103.0" y="96.5" text-anchor="middle" class="svg-txt" font-size="14">5</text></svg></div><figcaption>例3 の直角三角形 ABC：∠C = 90°、AC = 4、AB = 5、θ = ∠A</figcaption></figure></p>
+        <p class="prob-q">右の図における <math><mi>θ</mi></math> のおよその大きさを求めよ。<figure><div class="figbox"><svg viewBox="0 0 300 190" role="img" aria-label="例3 の直角三角形 ABC：∠C = 90°、AC = 4、AB = 5、θ = ∠A"><polygon points="45.0,155.0 185.0,50.0 185.0,155.0" fill="var(--accent-soft)" stroke="var(--ink)" stroke-width="2"/><path d="M 185.0 155.0 h -11 v -11" fill="none" stroke="var(--ink)" stroke-width="1.4"/><path d="M 71.0 155.0 A 26.0 26.0 0 0 0 65.8 139.4" fill="none" stroke="var(--orange)" stroke-width="1.6"/><text x="77.0" y="151.0" class="svg-txt" font-size="14">θ</text><circle cx="45.0" cy="155.0" r="3" fill="var(--ink)"/><circle cx="185.0" cy="50.0" r="3" fill="var(--ink)"/><circle cx="185.0" cy="155.0" r="3" fill="var(--ink)"/><text x="29.0" y="173.0" class="svg-txt" font-size="15">A</text><text x="187.0" y="42.0" class="svg-txt" font-size="15">B</text><text x="181.0" y="175.0" class="svg-txt" font-size="15">C</text><text x="115.0" y="175.0" text-anchor="middle" class="svg-txt" font-size="14">4</text><text x="193.0" y="107.5" class="svg-txt" font-size="14"></text><text x="103.0" y="96.5" text-anchor="middle" class="svg-txt" font-size="14">5</text></svg></div><figcaption>例3 の直角三角形 <math><mi>ABC</mi></math>：<math><mo>∠</mo><mi>C</mi><mo>=</mo><mn>90</mn><mo>°</mo></math>、<math><mi>AC</mi><mo>=</mo><mn>4</mn></math>、<math><mi>AB</mi><mo>=</mo><mn>5</mn></math>、<math><mi>θ</mi><mo>=</mo><mo>∠</mo><mi>A</mi></math></figcaption></figure></p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― まず cos θ の値を出す</h3>
-<p>図より cos θ = AC ÷ AB = 4 ÷ 5 = 0.8 だね。</p>
+          <h3>ヒント 1 ― まず <math><mi>cos</mi></math> <math><mi>θ</mi></math> の値を出す</h3>
+<p>図より</p>
+<div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>cos</mi><mi>θ</mi><mo>=</mo><mi>AC</mi><mo>÷</mo><mi>AB</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>cos</mi><mi>θ</mi></mphantom><mo>=</mo><mn>4</mn><mo>÷</mo><mn>5</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>cos</mi><mi>θ</mi></mphantom><mo>=</mo><mn>0.8</mn></math></div>
+</div>
+<p>だね。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 表を逆向きに読む</h3>
-<p>三角比の表の cos の列で、値が 0.8 に一番近い行を探そう。cos 37° = 0.7986 が一番近いね。</p>
+<p>三角比の表の <math><mi>cos</mi></math> の列で、値が 0.8 に一番近い行を探そう。<math><mi>cos</mi><mn>37</mn><mo>°</mo><mo>=</mo><mn>0.7986</mn></math>が一番近いね。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">θ ≒ 37°</p>
-<p class="formula left">図より　cos θ = <span class="frac"><span class="num">4</span><span class="den">5</span></span> = 0.8</p><p>三角比の表から、cos θ の値が 0.8 に近い θ を求めると</p>
+          <p class="big"><math display="block"><mi>θ</mi><mo>≒</mo><mn>37</mn><mo>°</mo></math></p><p class="cite"><span class="cite-tag">使う定義</span><math><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mi>AC</mi></mrow><mrow><mi>AB</mi></mrow></mfrac></math>図より <math><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>4</mn></mrow><mrow><mn>5</mn></mrow></mfrac><mo>=</mo><mn>0</mn><mo>.</mo><mn>8</mn></math> となり、表でこの値に一番近い角を逆向きに探す。</p>
+<p class="formula left">図より　<math><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><mn>4</mn><mn>5</mn></mfrac><mo>=</mo><mn>0.8</mn></math></p><p>三角比の表から、<math><mi>cos</mi></math> <math><mi>θ</mi></math> の値が 0.8 に近い <math><mi>θ</mi></math> を求めると</p>
         </div>
         <p class="prob-done">例3 クリア！　次は練習4に挑戦しよう。</p>
       </section>
-      <section class="card prob" id="prob-ren4" data-label="練習4">
+      <section class="nofig card prob" id="prob-ren4" data-label="練習4">
         <div class="prob-head">
           <span class="prob-tag ren">練習 4</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
         <div class="qside">
-        <p class="prob-q">下の図における θ のおよその大きさを、三角比の表を用いて求めよ。</p>
+        <p class="prob-q">下の図における <math><mi>θ</mi></math> のおよその大きさを、三角比の表を用いて求めよ。</p>
         </div>
         <div class="tabs" role="tablist" aria-label="練習4の小問">
           <button class="tab" role="tab" data-tab="ren4-1" aria-selected="true">(1)</button>
@@ -655,48 +777,58 @@
         </div>
         <div class="tabpanel show" id="panel-ren4-1" data-flow="ren4-1" data-label="練習4 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　∠C = 90°、AB = 5、BC = 2、θ = ∠A<figure><div class="figbox"><svg viewBox="0 0 300 190" role="img" aria-label="練習4 (1) の直角三角形（AC は図の通り）"><polygon points="45.0,155.0 245.0,67.7 245.0,155.0" fill="var(--accent-soft)" stroke="var(--ink)" stroke-width="2"/><path d="M 245.0 155.0 h -11 v -11" fill="none" stroke="var(--ink)" stroke-width="1.4"/><path d="M 71.0 155.0 A 26.0 26.0 0 0 0 68.8 144.6" fill="none" stroke="var(--orange)" stroke-width="1.6"/><text x="77.0" y="151.0" class="svg-txt" font-size="14">θ</text><circle cx="45.0" cy="155.0" r="3" fill="var(--ink)"/><circle cx="245.0" cy="67.7" r="3" fill="var(--ink)"/><circle cx="245.0" cy="155.0" r="3" fill="var(--ink)"/><text x="29.0" y="173.0" class="svg-txt" font-size="15">A</text><text x="247.0" y="59.7" class="svg-txt" font-size="15">B</text><text x="241.0" y="175.0" class="svg-txt" font-size="15">C</text><text x="145.0" y="175.0" text-anchor="middle" class="svg-txt" font-size="14"></text><text x="253.0" y="116.4" class="svg-txt" font-size="14">2</text><text x="133.0" y="105.4" text-anchor="middle" class="svg-txt" font-size="14">5</text></svg></div><figcaption>練習4 (1) の直角三角形（AC は図の通り）</figcaption></figure></span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><mo>∠</mo><mi>C</mi><mo>=</mo><mn>90</mn><mo>°</mo></math>、<math><mi>AB</mi><mo>=</mo><mn>5</mn></math>、<math><mi>BC</mi><mo>=</mo><mn>2</mn></math>、<math><mi>θ</mi><mo>=</mo><mo>∠</mo><mi>A</mi></math><figure><div class="figbox"><svg viewBox="0 0 300 190" role="img" aria-label="練習4 (1) の直角三角形（AC は図の通り）"><polygon points="45.0,155.0 245.0,67.7 245.0,155.0" fill="var(--accent-soft)" stroke="var(--ink)" stroke-width="2"/><path d="M 245.0 155.0 h -11 v -11" fill="none" stroke="var(--ink)" stroke-width="1.4"/><path d="M 71.0 155.0 A 26.0 26.0 0 0 0 68.8 144.6" fill="none" stroke="var(--orange)" stroke-width="1.6"/><text x="77.0" y="151.0" class="svg-txt" font-size="14">θ</text><circle cx="45.0" cy="155.0" r="3" fill="var(--ink)"/><circle cx="245.0" cy="67.7" r="3" fill="var(--ink)"/><circle cx="245.0" cy="155.0" r="3" fill="var(--ink)"/><text x="29.0" y="173.0" class="svg-txt" font-size="15">A</text><text x="247.0" y="59.7" class="svg-txt" font-size="15">B</text><text x="241.0" y="175.0" class="svg-txt" font-size="15">C</text><text x="145.0" y="175.0" text-anchor="middle" class="svg-txt" font-size="14"></text><text x="253.0" y="116.4" class="svg-txt" font-size="14">2</text><text x="133.0" y="105.4" text-anchor="middle" class="svg-txt" font-size="14">5</text></svg></div><figcaption>練習4 (1) の直角三角形（<math><mi>AC</mi></math> は図の通り）</figcaption></figure></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
           <div class="quiz" id="q-ren4-1" data-correct="3">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>θ ≒ 23°</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>θ ≒ 26°</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>θ ≒ 24°</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>θ ≒ 30°</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mi>θ</mi></math> ≒ 23°</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mi>θ</mi></math> ≒ 26°</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mi>θ</mi></math> ≒ 24°</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mi>θ</mi></math> ≒ 30°</span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
           <p class="verdict"></p>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― sin θ の値を出す</h3>
-<p>sin θ = BC ÷ AB = 2 ÷ 5 = 0.4。表の sin の列で 0.4 に一番近い値を探そう（sin 24° = 0.4067、sin 23° = 0.3907）。</p>
+          <h3>ヒント<math><mn>1</mn><mo>―</mo><mi>sin</mi><mi>θ</mi></math>の値を出す</h3>
+<div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>sin</mi><mi>θ</mi><mo>=</mo><mi>BC</mi><mo>÷</mo><mi>AB</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mi>θ</mi></mphantom><mo>=</mo><mn>2</mn><mo>÷</mo><mn>5</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mi>θ</mi></mphantom><mo>=</mo><mn>0.4</mn></math></div>
+</div>
+<p>。表の <math><mi>sin</mi></math> の列で 0.4 に一番近い値を探そう<math><mo>(</mo><mi>sin</mi><mn>24</mn><mo>°</mo><mo>=</mo><mn>0.4067</mn></math>、<math><mi>sin</mi><mn>23</mn><mo>°</mo><mo>=</mo><mn>0.3907</mn><mo>)</mo></math>。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">θ ≒ 24°</p>
-<p class="formula left">図より　sin θ = <span class="frac"><span class="num">2</span><span class="den">5</span></span> = 0.4</p><p>表から、sin θ の値が 0.4 に一番近いのは 24° のときだね。</p>
+          <p class="big"><math display="block"><mi>θ</mi><mo>≒</mo><mn>24</mn><mo>°</mo></math></p><p class="cite"><span class="cite-tag">使う定義</span><math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mtext>向かいの辺</mtext></mrow><mrow><mtext>斜辺</mtext></mrow></mfrac></math>ここでは <math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>2</mn></mrow><mrow><mn>5</mn></mrow></mfrac><mo>=</mo><mn>0</mn><mo>.</mo><mn>4</mn></math> となり、表の <math><mi>sin</mi></math> の列で <math><mn>0</mn><mo>.</mo><mn>4</mn></math> に一番近い角を探す。</p>
+<p class="formula left">図より　<math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mn>2</mn><mn>5</mn></mfrac><mo>=</mo><mn>0.4</mn></math></p><p>表から、<math><mi>sin</mi></math> <math><mi>θ</mi></math> の値が 0.4 に一番近いのは<math><mn>24</mn><mo>°</mo></math>のときだね。</p>
         </div>
           <p class="prob-done">練習4 (1) クリア！</p>
         </div>
         <div class="tabpanel" id="panel-ren4-2" data-flow="ren4-2" data-label="練習4 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　∠C = 90°、AC = 2、BC = 1、θ = ∠A<figure><div class="figbox"><svg viewBox="0 0 300 190" role="img" aria-label="練習4 (2) の直角三角形"><polygon points="45.0,155.0 245.0,55.0 245.0,155.0" fill="var(--accent-soft)" stroke="var(--ink)" stroke-width="2"/><path d="M 245.0 155.0 h -11 v -11" fill="none" stroke="var(--ink)" stroke-width="1.4"/><path d="M 71.0 155.0 A 26.0 26.0 0 0 0 68.3 143.4" fill="none" stroke="var(--orange)" stroke-width="1.6"/><text x="77.0" y="151.0" class="svg-txt" font-size="14">θ</text><circle cx="45.0" cy="155.0" r="3" fill="var(--ink)"/><circle cx="245.0" cy="55.0" r="3" fill="var(--ink)"/><circle cx="245.0" cy="155.0" r="3" fill="var(--ink)"/><text x="29.0" y="173.0" class="svg-txt" font-size="15">A</text><text x="247.0" y="47.0" class="svg-txt" font-size="15">B</text><text x="241.0" y="175.0" class="svg-txt" font-size="15">C</text><text x="145.0" y="175.0" text-anchor="middle" class="svg-txt" font-size="14">2</text><text x="253.0" y="110.0" class="svg-txt" font-size="14">1</text><text x="133.0" y="99.0" text-anchor="middle" class="svg-txt" font-size="14"></text></svg></div><figcaption>練習4 (2) の直角三角形</figcaption></figure></span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><mo>∠</mo><mi>C</mi><mo>=</mo><mn>90</mn><mo>°</mo></math>、<math><mi>AC</mi><mo>=</mo><mn>2</mn></math>、<math><mi>BC</mi><mo>=</mo><mn>1</mn></math>、<math><mi>θ</mi><mo>=</mo><mo>∠</mo><mi>A</mi></math><figure><div class="figbox"><svg viewBox="0 0 300 190" role="img" aria-label="練習4 (2) の直角三角形"><polygon points="45.0,155.0 245.0,55.0 245.0,155.0" fill="var(--accent-soft)" stroke="var(--ink)" stroke-width="2"/><path d="M 245.0 155.0 h -11 v -11" fill="none" stroke="var(--ink)" stroke-width="1.4"/><path d="M 71.0 155.0 A 26.0 26.0 0 0 0 68.3 143.4" fill="none" stroke="var(--orange)" stroke-width="1.6"/><text x="77.0" y="151.0" class="svg-txt" font-size="14">θ</text><circle cx="45.0" cy="155.0" r="3" fill="var(--ink)"/><circle cx="245.0" cy="55.0" r="3" fill="var(--ink)"/><circle cx="245.0" cy="155.0" r="3" fill="var(--ink)"/><text x="29.0" y="173.0" class="svg-txt" font-size="15">A</text><text x="247.0" y="47.0" class="svg-txt" font-size="15">B</text><text x="241.0" y="175.0" class="svg-txt" font-size="15">C</text><text x="145.0" y="175.0" text-anchor="middle" class="svg-txt" font-size="14">2</text><text x="253.0" y="110.0" class="svg-txt" font-size="14">1</text><text x="133.0" y="99.0" text-anchor="middle" class="svg-txt" font-size="14"></text></svg></div><figcaption>練習4 (2) の直角三角形</figcaption></figure></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― tan θ の値を出す</h3>
-<p>tan θ = BC ÷ AC = 1 ÷ 2 = 0.5。表の tan の列で 0.5 に一番近い値を探そう（tan 27° = 0.5095、tan 26° = 0.4877）。</p>
+          <h3>ヒント<math><mn>1</mn><mo>―</mo><mi>tan</mi><mi>θ</mi></math>の値を出す</h3>
+<div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>tan</mi><mi>θ</mi><mo>=</mo><mi>BC</mi><mo>÷</mo><mi>AC</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>tan</mi><mi>θ</mi></mphantom><mo>=</mo><mn>1</mn><mo>÷</mo><mn>2</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>tan</mi><mi>θ</mi></mphantom><mo>=</mo><mn>0.5</mn></math></div>
+</div>
+<p>。表の <math><mi>tan</mi></math> の列で 0.5 に一番近い値を探そう<math><mo>(</mo><mi>tan</mi><mn>27</mn><mo>°</mo><mo>=</mo><mn>0.5095</mn></math>、<math><mi>tan</mi><mn>26</mn><mo>°</mo><mo>=</mo><mn>0.4877</mn><mo>)</mo></math>。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">θ ≒ 27°</p>
-<p class="formula left">図より　tan θ = <span class="frac"><span class="num">1</span><span class="den">2</span></span> = 0.5</p><p>表から、tan θ の値が 0.5 に一番近いのは 27° のときだね。</p>
+          <p class="big"><math display="block"><mi>θ</mi><mo>≒</mo><mn>27</mn><mo>°</mo></math></p><p class="cite"><span class="cite-tag">使う定義</span><math><mi>tan</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mtext>向かいの辺</mtext></mrow><mrow><mtext>隣り合う辺</mtext></mrow></mfrac></math>ここでは <math><mi>tan</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac><mo>=</mo><mn>0</mn><mo>.</mo><mn>5</mn></math> となり、表の <math><mi>tan</mi></math> の列で一番近い角を探す。</p>
+<p class="formula left">図より　<math><mi>tan</mi><mi>θ</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>=</mo><mn>0.5</mn></math></p><p>表から、<math><mi>tan</mi></math> <math><mi>θ</mi></math> の値が 0.5 に一番近いのは<math><mn>27</mn><mo>°</mo></math>のときだね。</p>
         </div>
           <p class="prob-done">練習4 (2) クリア！</p>
         </div>
@@ -707,12 +839,12 @@
         <span class="pno">教科書 p.138〜139</span>
       </div>
       <section class="card">
-<p>直角三角形において sin θ = <span class="formula" style="display:inline-block;vertical-align:middle;margin:0 4px"><span class="frac"><span class="num">y</span><span class="den">r</span></span></span> であるから、次が成り立つ。</p>
-<p class="formula">y = r × sin θ</p>
-<p>また、cos θ = <span class="formula" style="display:inline-block;vertical-align:middle;margin:0 4px"><span class="frac"><span class="num">x</span><span class="den">r</span></span></span>、tan θ = <span class="formula" style="display:inline-block;vertical-align:middle;margin:0 4px"><span class="frac"><span class="num">y</span><span class="den">x</span></span></span> であるから、次が成り立つ。</p>
-<div class="def"><p class="formula">y = r sin θ　（向かいの辺 ＝ 斜辺 × sin θ）</p><p class="formula">x = r cos θ　（隣り合う辺 ＝ 斜辺 × cos θ）</p><p class="formula">y = x tan θ　（向かいの辺 ＝ 隣り合う辺 × tan θ）</p></div>
+<p>直角三角形において<math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mi>y</mi><mi>r</mi></mfrac></math> であるから、次が成り立つ。</p>
+<p class="formula"><math display="block"><mi>y</mi><mo>=</mo><mi>r</mi><mo>×</mo><mi>sin</mi><mi>θ</mi></math></p>
+<p>また、<math><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><mi>x</mi><mi>r</mi></mfrac></math>、<math><mi>tan</mi><mi>θ</mi><mo>=</mo><mfrac><mi>y</mi><mi>x</mi></mfrac></math> であるから、次が成り立つ。</p>
+<div class="def"><p class="cite"><span class="cite-tag">使う公式</span><math><mi>y</mi><mo>=</mo><mi>r</mi><mi>sin</mi><mi>θ</mi></math><math><mi>x</mi><mo>=</mo><mi>r</mi><mi>cos</mi><mi>θ</mi></math><math><mi>y</mi><mo>=</mo><mi>x</mi><mi>tan</mi><mi>θ</mi></math>定義の式を変形したもので、向かいの辺・隣り合う辺を、ほかの辺と <math><mi>θ</mi></math> から求めるときに使う。</p><p class="formula"><math><mi>y</mi><mo>=</mo><mi>r</mi><mi>sin</mi><mi>θ</mi></math>　（向かいの辺 ＝ 斜辺 × <math><mi>sin</mi></math> <math><mi>θ</mi></math>）</p><p class="formula"><math><mi>x</mi><mo>=</mo><mi>r</mi><mi>cos</mi><mi>θ</mi></math>　（隣り合う辺 ＝ 斜辺 × <math><mi>cos</mi></math> <math><mi>θ</mi></math>）</p><p class="formula"><math><mi>y</mi><mo>=</mo><mi>x</mi><mi>tan</mi><mi>θ</mi></math>　（向かいの辺 ＝ 隣り合う辺 × <math><mi>tan</mi></math> <math><mi>θ</mi></math>）</p></div>
 <p>このように、<span class="key">直角三角形の1つの鋭角の大きさと1辺の長さが分かっている場合、三角比を用いて、他の辺の長さを求めることができる</span>。</p>
-<figure><div class="figbox"><svg viewBox="0 0 300 190" role="img" aria-label="直角三角形の鋭角の1つを θ とし、斜辺を r、他の2辺を x, y とする"><polygon points="45.0,155.0 185.0,50.0 185.0,155.0" fill="var(--accent-soft)" stroke="var(--ink)" stroke-width="2"/><path d="M 185.0 155.0 h -11 v -11" fill="none" stroke="var(--ink)" stroke-width="1.4"/><path d="M 71.0 155.0 A 26.0 26.0 0 0 0 65.8 139.4" fill="none" stroke="var(--orange)" stroke-width="1.6"/><text x="77.0" y="151.0" class="svg-txt" font-size="14">θ</text><circle cx="45.0" cy="155.0" r="3" fill="var(--ink)"/><circle cx="185.0" cy="50.0" r="3" fill="var(--ink)"/><circle cx="185.0" cy="155.0" r="3" fill="var(--ink)"/><text x="29.0" y="173.0" class="svg-txt" font-size="15">A</text><text x="187.0" y="42.0" class="svg-txt" font-size="15">B</text><text x="181.0" y="175.0" class="svg-txt" font-size="15">C</text><text x="115.0" y="175.0" text-anchor="middle" class="svg-txt" font-size="14">x</text><text x="193.0" y="107.5" class="svg-txt" font-size="14">y</text><text x="103.0" y="96.5" text-anchor="middle" class="svg-txt" font-size="14">r</text></svg></div><figcaption>直角三角形の鋭角の1つを θ とし、斜辺を r、他の2辺を x, y とする</figcaption></figure>
+<figure><div class="figbox"><svg viewBox="0 0 300 190" role="img" aria-label="直角三角形の鋭角の1つを θ とし、斜辺を r、他の2辺を x, y とする"><polygon points="45.0,155.0 185.0,50.0 185.0,155.0" fill="var(--accent-soft)" stroke="var(--ink)" stroke-width="2"/><path d="M 185.0 155.0 h -11 v -11" fill="none" stroke="var(--ink)" stroke-width="1.4"/><path d="M 71.0 155.0 A 26.0 26.0 0 0 0 65.8 139.4" fill="none" stroke="var(--orange)" stroke-width="1.6"/><text x="77.0" y="151.0" class="svg-txt" font-size="14">θ</text><circle cx="45.0" cy="155.0" r="3" fill="var(--ink)"/><circle cx="185.0" cy="50.0" r="3" fill="var(--ink)"/><circle cx="185.0" cy="155.0" r="3" fill="var(--ink)"/><text x="29.0" y="173.0" class="svg-txt" font-size="15">A</text><text x="187.0" y="42.0" class="svg-txt" font-size="15">B</text><text x="181.0" y="175.0" class="svg-txt" font-size="15">C</text><text x="115.0" y="175.0" text-anchor="middle" class="svg-txt" font-size="14">x</text><text x="193.0" y="107.5" class="svg-txt" font-size="14">y</text><text x="103.0" y="96.5" text-anchor="middle" class="svg-txt" font-size="14">r</text></svg></div><figcaption>直角三角形の鋭角の1つを <math><mi>θ</mi></math> とし、斜辺を <math><mi>r</mi></math>、他の2辺を <math><mi>x</mi></math>, <math><mi>y</mi></math> とする</figcaption></figure>
       </section>
       <section class="card prob" id="prob-ex4" data-flow="ex4" data-label="例4">
         <div class="prob-head">
@@ -721,34 +853,34 @@
           <span class="prob-state">ヒント 0 / 1</span>
         </div>
         <div class="qside">
-        <p class="prob-q">右の図の直角三角形 ABC（∠C = 90°、∠A = 36°）において、辺 BC の長さを求める式を、(1) AB の長さが分かっている場合、(2) AC の長さが分かっている場合について示せ。<figure><div class="figbox"><svg viewBox="0 0 300 190" role="img" aria-label="例4 の直角三角形 ABC：∠A = 36°、∠C = 90°（辺は 36° に合う実寸比で描画）"><polygon points="45.0,155.0 189.5,50.0 189.5,155.0" fill="var(--accent-soft)" stroke="var(--ink)" stroke-width="2"/><path d="M 189.5 155.0 h -11 v -11" fill="none" stroke="var(--ink)" stroke-width="1.4"/><path d="M 71.0 155.0 A 26.0 26.0 0 0 0 66.0 139.7" fill="none" stroke="var(--orange)" stroke-width="1.6"/><text x="77.0" y="151.0" class="svg-txt" font-size="14">36°</text><circle cx="45.0" cy="155.0" r="3" fill="var(--ink)"/><circle cx="189.5" cy="50.0" r="3" fill="var(--ink)"/><circle cx="189.5" cy="155.0" r="3" fill="var(--ink)"/><text x="29.0" y="173.0" class="svg-txt" font-size="15">A</text><text x="191.5" y="42.0" class="svg-txt" font-size="15">B</text><text x="185.5" y="175.0" class="svg-txt" font-size="15">C</text><text x="117.3" y="175.0" text-anchor="middle" class="svg-txt" font-size="14">AC</text><text x="197.5" y="107.5" class="svg-txt" font-size="14">BC</text><text x="105.3" y="96.5" text-anchor="middle" class="svg-txt" font-size="14">AB</text></svg></div><figcaption>例4 の直角三角形 ABC：∠A = 36°、∠C = 90°（辺は 36° に合う実寸比で描画）</figcaption></figure></p>
+        <p class="prob-q">右の図の直角三角形<math><mi>ABC</mi><mo>(</mo><mo>∠</mo><mi>C</mi><mo>=</mo><mn>90</mn><mo>°</mo></math>、<math><mo>∠</mo><mi>A</mi><mo>=</mo><mn>36</mn><mo>°</mo><mo>)</mo></math>において、辺 <math><mi>BC</mi></math> の長さを求める式を、(1) <math><mi>AB</mi></math> の長さが分かっている場合、(2) <math><mi>AC</mi></math> の長さが分かっている場合について示せ。<figure><div class="figbox"><svg viewBox="0 0 300 190" role="img" aria-label="例4 の直角三角形 ABC：∠A = 36°、∠C = 90°（辺は 36° に合う実寸比で描画）"><polygon points="45.0,155.0 189.5,50.0 189.5,155.0" fill="var(--accent-soft)" stroke="var(--ink)" stroke-width="2"/><path d="M 189.5 155.0 h -11 v -11" fill="none" stroke="var(--ink)" stroke-width="1.4"/><path d="M 71.0 155.0 A 26.0 26.0 0 0 0 66.0 139.7" fill="none" stroke="var(--orange)" stroke-width="1.6"/><text x="77.0" y="151.0" class="svg-txt" font-size="14">36°</text><circle cx="45.0" cy="155.0" r="3" fill="var(--ink)"/><circle cx="189.5" cy="50.0" r="3" fill="var(--ink)"/><circle cx="189.5" cy="155.0" r="3" fill="var(--ink)"/><text x="29.0" y="173.0" class="svg-txt" font-size="15">A</text><text x="191.5" y="42.0" class="svg-txt" font-size="15">B</text><text x="185.5" y="175.0" class="svg-txt" font-size="15">C</text><text x="117.3" y="175.0" text-anchor="middle" class="svg-txt" font-size="14">AC</text><text x="197.5" y="107.5" class="svg-txt" font-size="14">BC</text><text x="105.3" y="96.5" text-anchor="middle" class="svg-txt" font-size="14">AB</text></svg></div><figcaption>例4 の直角三角形 <math><mi>ABC</mi></math>：<math><mo>∠</mo><mi>A</mi><mo>=</mo><mn>36</mn><mo>°</mo></math>、<math><mo>∠</mo><mi>C</mi><mo>=</mo><mn>90</mn><mo>°</mo><mo>(</mo></math>辺は<math><mn>36</mn><mo>°</mo></math>に合う実寸比で描画）</figcaption></figure></p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― BC は ∠A の向かいの辺</h3>
-<p>BC は 36° の向かいの辺だね。斜辺 AB が分かれば「向かい ＝ 斜辺 × sin」、隣り合う辺 AC が分かれば「向かい ＝ 隣り合う × tan」を使おう。</p>
+          <h3>ヒント 1 ― <math><mi>BC</mi></math> は<math><mo>∠</mo><mi>A</mi></math>の向かいの辺</h3>
+<p><math><mi>BC</mi></math> は<math><mn>36</mn><mo>°</mo></math>の向かいの辺だね。斜辺 <math><mi>AB</mi></math> が分かれば「向かい ＝ 斜辺 × <math><mi>sin</mi></math>」、隣り合う辺 <math><mi>AC</mi></math> が分かれば「向かい ＝ 隣り合う × <math><mi>tan</mi></math>」を使おう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">BC = AB × sin 36° ／ BC = AC × tan 36°</p>
-<p class="formula left">① AB の長さが分かっている場合　BC = AB × sin 36°</p><p class="formula left">② AC の長さが分かっている場合　BC = AC × tan 36°</p>
+          <p class="big"><math display="block"><mi>BC</mi><mo>=</mo><mi>AB</mi><mo>×</mo><mi>sin</mi><mn>36</mn><mo>°</mo><mo>／</mo><mi>BC</mi><mo>=</mo><mi>AC</mi><mo>×</mo><mi>tan</mi><mn>36</mn><mo>°</mo></math></p><p class="cite"><span class="cite-tag">使う公式</span><math><mi>BC</mi><mo>=</mo><mi>AB</mi><mi>sin</mi><mn>36</mn><mo>°</mo></math><math><mi>BC</mi><mo>=</mo><mi>AC</mi><mi>tan</mi><mn>36</mn><mo>°</mo></math>求める <math><mi>BC</mi></math> は <math><mn>36</mn><mo>°</mo></math> の向かいの辺なので、斜辺が分かれば <math><mi>sin</mi></math>、隣り合う辺が分かれば <math><mi>tan</mi></math> を使う。</p>
+<p class="formula left">① <math><mi>AB</mi></math> の長さが分かっている場合　<math><mi>BC</mi><mo>=</mo><mi>AB</mi><mo>×</mo><mi>sin</mi><mn>36</mn><mo>°</mo></math></p><p class="formula left">② <math><mi>AC</mi></math> の長さが分かっている場合　<math><mi>BC</mi><mo>=</mo><mi>AC</mi><mo>×</mo><mi>tan</mi><mn>36</mn><mo>°</mo></math></p>
         </div>
         <p class="prob-done">例4 クリア！　次は練習5に挑戦しよう。</p>
       </section>
-      <section class="card prob" id="prob-ren5" data-flow="ren5" data-label="練習5">
+      <section class="nofig card prob" id="prob-ren5" data-flow="ren5" data-label="練習5">
         <div class="prob-head">
           <span class="prob-tag ren">練習 5</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">例4 の直角三角形 ABC において、辺 AC の長さを表す式は次のようになる。□ に sin, cos, tan のうち適するものを入れよ。（∠B = 54°）<br>AC = AB × □ 36°<br>AC = BC × □ 54°</p>
+        <p class="prob-q">例4 の直角三角形 <math><mi>ABC</mi></math> において、辺 <math><mi>AC</mi></math> の長さを表す式は次のようになる。□ に <math><mi>sin</mi></math>, <math><mi>cos</mi></math>, <math><mi>tan</mi></math> のうち適するものを入れよ。<math><mo>(</mo><mo>∠</mo><mi>B</mi><mo>=</mo><mn>54</mn><mo>°</mo><mo>)</mo></math><br><math><mi>AC</mi><mo>=</mo><mi>AB</mi><mo>×</mo><mo>□</mo><mn>36</mn><mo>°</mo></math><br><math><mi>AC</mi><mo>=</mo><mi>BC</mi><mo>×</mo><mo>□</mo><mn>54</mn><mo>°</mo></math></p>
           <div class="quiz" id="q-ren5" data-correct="2">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>sin, tan</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>cos, tan</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>cos, sin</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>tan, cos</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mi>sin</mi><mo>,</mo><mi>tan</mi></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mi>cos</mi><mo>,</mo><mi>tan</mi></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mi>cos</mi><mo>,</mo><mi>sin</mi></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mi>tan</mi><mo>,</mo><mi>cos</mi></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
@@ -756,18 +888,18 @@
           </div>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 36° から AC を見る</h3>
-<p>AC は ∠A = 36° に隣り合う辺で、AB は斜辺。「隣り合う辺 ＝ 斜辺 × □」の □ は何だったかな。</p>
+          <h3>ヒント<math><mn>1</mn><mo>―</mo><mn>36</mn><mo>°</mo></math>から <math><mi>AC</mi></math> を見る</h3>
+<p><math><mi>AC</mi></math> は<math><mo>∠</mo><mi>A</mi><mo>=</mo><mn>36</mn><mo>°</mo></math>に隣り合う辺で、<math><mi>AB</mi></math> は斜辺。「隣り合う辺 ＝ 斜辺 × □」の □ は何だったかな。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― 54° から AC を見る</h3>
-<p>∠B = 54° から見ると、AC は向かいの辺、BC は隣り合う辺。「向かい ＝ 隣り合う × □」の □ を考えよう。</p>
+          <h3>ヒント<math><mn>2</mn><mo>―</mo><mn>54</mn><mo>°</mo></math>から <math><mi>AC</mi></math> を見る</h3>
+<p><math><mo>∠</mo><mi>B</mi><mo>=</mo><mn>54</mn><mo>°</mo></math>から見ると、<math><mi>AC</mi></math> は向かいの辺、<math><mi>BC</mi></math> は隣り合う辺。「向かい ＝ 隣り合う × □」の □ を考えよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">1つ目：cos　／　2つ目：tan</p>
-<p class="formula left">AC = AB × cos 36°</p><p class="formula left">AC = BC × tan 54°</p>
+          <p class="big">1つ目：<math><mi>cos</mi></math>　／　2つ目：<math><mi>tan</mi></math></p><p class="cite"><span class="cite-tag">使う公式</span><math><mi>x</mi><mo>=</mo><mi>r</mi><mi>cos</mi><mi>θ</mi></math><math><mi>y</mi><mo>=</mo><mi>x</mi><mi>tan</mi><mi>θ</mi></math>1つ目は <math><mn>36</mn><mo>°</mo></math> から見た隣り合う辺、2つ目は <math><mn>54</mn><mo>°</mo></math> から見た向かいの辺として当てはめている。</p>
+<p class="formula left"><math display="block"><mi>AC</mi><mo>=</mo><mi>AB</mi><mo>×</mo><mi>cos</mi><mn>36</mn><mo>°</mo></math></p><p class="formula left"><math display="block"><mi>AC</mi><mo>=</mo><mi>BC</mi><mo>×</mo><mi>tan</mi><mn>54</mn><mo>°</mo></math></p>
         </div>
         <p class="prob-done">練習5 クリア！　次は例題1に進もう。</p>
       </section>
@@ -778,38 +910,42 @@
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">傾斜角 19° の坂をまっすぐに 100 m 登るとき、鉛直方向には何 m 上がることになるか。1 m 未満を四捨五入して求めよ。<figure><div class="figbox"><svg viewBox="0 0 300 190" role="img" aria-label="例題1 の坂の図"><polygon points="40.0,150.0 233.8,83.3 233.8,150.0" fill="var(--accent-soft)" stroke="var(--ink)" stroke-width="2"/><path d="M 233.8 150.0 h -11 v -11" fill="none" stroke="var(--ink)" stroke-width="1.4"/><path d="M 70.0 150.0 A 30.0 30.0 0 0 0 68.4 140.2" fill="none" stroke="var(--orange)" stroke-width="1.6"/><text x="76.0" y="146.0" class="svg-txt" font-size="14">19°</text><text x="24.0" y="168.0" class="svg-txt" font-size="15">A</text><text x="235.8" y="75.3" class="svg-txt" font-size="15">B</text><text x="229.8" y="170.0" class="svg-txt" font-size="15">C</text><text x="130.9" y="108.6" text-anchor="middle" class="svg-txt" font-size="14">100 m</text><text x="136.9" y="170.0" text-anchor="middle" class="svg-txt-soft" font-size="13">水平方向</text><text x="239.8" y="116.6" class="svg-txt-soft" font-size="13">鉛直方向</text></svg></div><figcaption>坂 AB = 100 m、傾斜角 ∠A = 19°。BC が鉛直方向に上がる高さ</figcaption></figure></p>
+        <p class="prob-q">傾斜角<math><mn>19</mn><mo>°</mo></math>の坂をまっすぐに 100 <math><mi>m</mi></math> 登るとき、鉛直方向には何 <math><mi>m</mi></math> 上がることになるか。1 <math><mi>m</mi></math> 未満を四捨五入して求めよ。<figure><div class="figbox"><svg viewBox="0 0 300 190" role="img" aria-label="例題1 の坂の図"><polygon points="40.0,150.0 233.8,83.3 233.8,150.0" fill="var(--accent-soft)" stroke="var(--ink)" stroke-width="2"/><path d="M 233.8 150.0 h -11 v -11" fill="none" stroke="var(--ink)" stroke-width="1.4"/><path d="M 70.0 150.0 A 30.0 30.0 0 0 0 68.4 140.2" fill="none" stroke="var(--orange)" stroke-width="1.6"/><text x="76.0" y="146.0" class="svg-txt" font-size="14">19°</text><text x="24.0" y="168.0" class="svg-txt" font-size="15">A</text><text x="235.8" y="75.3" class="svg-txt" font-size="15">B</text><text x="229.8" y="170.0" class="svg-txt" font-size="15">C</text><text x="130.9" y="108.6" text-anchor="middle" class="svg-txt" font-size="14">100 m</text><text x="136.9" y="170.0" text-anchor="middle" class="svg-txt-soft" font-size="13">水平方向</text><text x="239.8" y="116.6" class="svg-txt-soft" font-size="13">鉛直方向</text></svg></div><figcaption>坂<math><mi>AB</mi><mo>=</mo><mn>100</mn><mi>m</mi></math>、傾斜角<math><mo>∠</mo><mi>A</mi><mo>=</mo><mn>19</mn><mo>°</mo></math>。<math><mi>BC</mi></math> が鉛直方向に上がる高さ</figcaption></figure></p>
         </div>
         <div class="step hint">
           <h3>ヒント 1 ― 直角三角形に置き換える</h3>
-<p>坂を斜辺 AB = 100 m、∠A = 19° の直角三角形と見る。鉛直方向に上がる高さは、19° の向かいの辺 BC だね。</p>
+<p>坂を斜辺<math><mi>AB</mi><mo>=</mo><mn>100</mn><mi>m</mi></math>、<math><mo>∠</mo><mi>A</mi><mo>=</mo><mn>19</mn><mo>°</mo></math>の直角三角形と見る。鉛直方向に上がる高さは、<math><mn>19</mn><mo>°</mo></math>の向かいの辺 <math><mi>BC</mi></math> だね。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― sin を使う</h3>
-<p>「向かい ＝ 斜辺 × sin」より BC = 100 × sin 19°。表から sin 19° = 0.3256 を使おう。</p>
+          <h3>ヒント 2 ― <math><mi>sin</mi></math> を使う</h3>
+<p class="cite"><span class="cite-tag">使う公式</span><math><mi>y</mi><mo>=</mo><mi>r</mi><mi>sin</mi><mi>θ</mi></math>向かいの辺は斜辺 × <math><mi>sin</mi><mi>θ</mi></math>。ここでは斜辺 <math><mn>100</mn><mi>m</mi></math> と <math><mi>sin</mi><mn>19</mn><mo>°</mo></math> を使う。</p><p>「向かい ＝ 斜辺 × <math><mi>sin</mi></math>」より<math><mi>BC</mi><mo>=</mo><mn>100</mn><mo>×</mo><mi>sin</mi><mn>19</mn><mo>°</mo></math>。表から<math><mi>sin</mi><mn>19</mn><mo>°</mo><mo>=</mo><mn>0.3256</mn></math>を使おう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">33 m</p>
-<p class="formula left">BC = AB × sin 19° = 100 × 0.3256 = 32.56 ≒ 33</p>
+          <p class="big">33 <math><mi>m</mi></math></p><p class="cite"><span class="cite-tag">使う公式</span><math><mi>BC</mi><mo>=</mo><mn>100</mn><mi>sin</mi><mn>19</mn><mo>°</mo></math>表の値 <math><mi>sin</mi><mn>19</mn><mo>°</mo><mo>=</mo><mn>0</mn><mo>.</mo><mn>3256</mn></math> を代入し、<math><mn>1</mn><mi>m</mi></math> 未満を四捨五入する。</p>
+<div class="chain-crow formula left">
+<div class="crow"><math displaystyle="true"><mi>BC</mi><mo>=</mo><mi>AB</mi><mo>×</mo><mi>sin</mi><mn>19</mn><mo>°</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>BC</mi></mphantom><mo>=</mo><mn>100</mn><mo>×</mo><mn>0.3256</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>BC</mi></mphantom><mo>=</mo><mn>32.56</mn><mo>≒</mo><mn>33</mn></math></div>
+</div>
         </div>
         <p class="prob-done">例題1 クリア！　次は練習6に挑戦しよう。</p>
       </section>
-      <section class="card prob" id="prob-ren6" data-flow="ren6" data-label="練習6">
+      <section class="nofig card prob" id="prob-ren6" data-flow="ren6" data-label="練習6">
         <div class="prob-head">
           <span class="prob-tag ren">練習 6</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">例題1 において、水平方向には何 m 進むことになるか。1 m 未満を四捨五入して求めよ。</p>
+        <p class="prob-q">例題1 において、水平方向には何 <math><mi>m</mi></math> 進むことになるか。1 <math><mi>m</mi></math> 未満を四捨五入して求めよ。</p>
           <div class="quiz" id="q-ren6" data-correct="3">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>33 m</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>66 m</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>95 m</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>100 m</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mn>33</mn><mi>m</mi></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mn>66</mn><mi>m</mi></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mn>95</mn><mi>m</mi></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mn>100</mn><mi>m</mi></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
@@ -817,18 +953,22 @@
           </div>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 水平方向は隣り合う辺 AC</h3>
-<p>水平方向に進む距離は AC で、∠A = 19° に隣り合う辺だね。「隣り合う辺 ＝ 斜辺 × cos」を使おう。</p>
+          <h3>ヒント 1 ― 水平方向は隣り合う辺 <math><mi>AC</mi></math></h3>
+<p>水平方向に進む距離は <math><mi>AC</mi></math> で、<math><mo>∠</mo><mi>A</mi><mo>=</mo><mn>19</mn><mo>°</mo></math>に隣り合う辺だね。「隣り合う辺 ＝ 斜辺 × <math><mi>cos</mi></math>」を使おう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 表の値を使う</h3>
-<p>AC = 100 × cos 19°。表から cos 19° = 0.9455 を使って計算しよう。</p>
+<p><math><mi>AC</mi><mo>=</mo><mn>100</mn><mo>×</mo><mi>cos</mi><mn>19</mn><mo>°</mo></math>。表から<math><mi>cos</mi><mn>19</mn><mo>°</mo><mo>=</mo><mn>0.9455</mn></math>を使って計算しよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">95 m</p>
-<p class="formula left">AC = AB × cos 19° = 100 × 0.9455 = 94.55 ≒ 95</p>
+          <p class="big">95 <math><mi>m</mi></math></p><p class="cite"><span class="cite-tag">使う公式</span><math><mi>x</mi><mo>=</mo><mi>r</mi><mi>cos</mi><mi>θ</mi></math>水平方向の辺は隣り合う辺だから斜辺 × <math><mi>cos</mi><mi>θ</mi></math>。ここでは <math><mn>100</mn><mi>cos</mi><mn>19</mn><mo>°</mo></math> を計算する。</p>
+<div class="chain-crow formula left">
+<div class="crow"><math displaystyle="true"><mi>AC</mi><mo>=</mo><mi>AB</mi><mo>×</mo><mi>cos</mi><mn>19</mn><mo>°</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>AC</mi></mphantom><mo>=</mo><mn>100</mn><mo>×</mo><mn>0.9455</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>AC</mi></mphantom><mo>=</mo><mn>94.55</mn><mo>≒</mo><mn>95</mn></math></div>
+</div>
         </div>
         <p class="prob-done">練習6 クリア！　次は応用例題1に進もう。</p>
       </section>
@@ -839,38 +979,51 @@
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">木の根もとから水平に 10 m 離れた地点に立って木の先端を見上げると、水平面とのなす角が 21° であった。目の高さを 1.6 m として、木の高さを求めよ。ただし、小数第2位を四捨五入せよ。<figure><div class="figbox"><svg viewBox="0 0 300 200" role="img" aria-label="応用例題1 の木の高さの図"><line x1="45.0" y1="134.4" x2="255.0" y2="53.8" stroke="var(--ink)" stroke-width="2"/><line x1="45.0" y1="134.4" x2="255.0" y2="134.4" stroke="var(--ink)" stroke-width="2"/><line x1="255.0" y1="53.8" x2="255.0" y2="168.0" stroke="var(--ink)" stroke-width="2.6"/><line x1="45.0" y1="168.0" x2="255.0" y2="168.0" stroke="var(--ink-soft)" stroke-width="1.4" stroke-dasharray="4 3"/><path d="M 255.0 134.4 h -10 v -10" fill="none" stroke="var(--ink)" stroke-width="1.3"/><path d="M 75.0 134.4 A 30.0 30.0 0 0 0 73.0 123.6" fill="none" stroke="var(--orange)" stroke-width="1.6"/><text x="81.0" y="130.4" class="svg-txt" font-size="14">21°</text><circle cx="45.0" cy="134.4" r="3" fill="var(--ink)"/><text x="29.0" y="138.4" class="svg-txt" font-size="15">A</text><circle cx="255.0" cy="53.8" r="3" fill="var(--ink)"/><text x="259.0" y="49.8" class="svg-txt" font-size="15">B</text><circle cx="255.0" cy="134.4" r="3" fill="var(--ink)"/><text x="261.0" y="148.4" class="svg-txt" font-size="15">C</text><circle cx="45.0" cy="168.0" r="3" fill="var(--ink)"/><text x="31.0" y="184.0" class="svg-txt" font-size="15">E</text><circle cx="255.0" cy="168.0" r="3" fill="var(--ink)"/><text x="255.0" y="184.0" class="svg-txt" font-size="15">D</text><text x="51.0" y="155.2" class="svg-txt-soft" font-size="13">1.6 m</text><text x="150.0" y="184.0" text-anchor="middle" class="svg-txt-soft" font-size="13">10 m</text></svg></div><figcaption>A は目の位置、AC = 10 m、∠BAC = 21°、CD = 1.6 m。木の高さは BD</figcaption></figure></p>
+        <p class="prob-q">木の根もとから水平に 10 <math><mi>m</mi></math> 離れた地点に立って木の先端を見上げると、水平面とのなす角が<math><mn>21</mn><mo>°</mo></math>であった。目の高さを 1.6 <math><mi>m</mi></math> として、木の高さを求めよ。ただし、小数第2位を四捨五入せよ。<figure><div class="figbox"><svg viewBox="0 0 300 200" role="img" aria-label="応用例題1 の木の高さの図"><line x1="45.0" y1="134.4" x2="255.0" y2="53.8" stroke="var(--ink)" stroke-width="2"/><line x1="45.0" y1="134.4" x2="255.0" y2="134.4" stroke="var(--ink)" stroke-width="2"/><line x1="255.0" y1="53.8" x2="255.0" y2="168.0" stroke="var(--ink)" stroke-width="2.6"/><line x1="45.0" y1="168.0" x2="255.0" y2="168.0" stroke="var(--ink-soft)" stroke-width="1.4" stroke-dasharray="4 3"/><path d="M 255.0 134.4 h -10 v -10" fill="none" stroke="var(--ink)" stroke-width="1.3"/><path d="M 75.0 134.4 A 30.0 30.0 0 0 0 73.0 123.6" fill="none" stroke="var(--orange)" stroke-width="1.6"/><text x="81.0" y="130.4" class="svg-txt" font-size="14">21°</text><circle cx="45.0" cy="134.4" r="3" fill="var(--ink)"/><text x="29.0" y="138.4" class="svg-txt" font-size="15">A</text><circle cx="255.0" cy="53.8" r="3" fill="var(--ink)"/><text x="259.0" y="49.8" class="svg-txt" font-size="15">B</text><circle cx="255.0" cy="134.4" r="3" fill="var(--ink)"/><text x="261.0" y="148.4" class="svg-txt" font-size="15">C</text><circle cx="45.0" cy="168.0" r="3" fill="var(--ink)"/><text x="31.0" y="184.0" class="svg-txt" font-size="15">E</text><circle cx="255.0" cy="168.0" r="3" fill="var(--ink)"/><text x="255.0" y="184.0" class="svg-txt" font-size="15">D</text><text x="51.0" y="155.2" class="svg-txt-soft" font-size="13">1.6 m</text><text x="150.0" y="184.0" text-anchor="middle" class="svg-txt-soft" font-size="13">10 m</text></svg></div><figcaption><math><mi>A</mi></math> は目の位置、<math><mi>AC</mi><mo>=</mo><mn>10</mn><mi>m</mi></math>、<math><mo>∠</mo><mi>BAC</mi><mo>=</mo><mn>21</mn><mo>°</mo></math>、<math><mi>CD</mi><mo>=</mo><mn>1.6</mn><mi>m</mi></math>。木の高さは <math><mi>BD</mi></math></figcaption></figure></p>
         </div>
         <div class="step hint">
           <h3>ヒント 1 ― 目の高さより上の部分を先に求める</h3>
-<p>まず、目の高さより上にある部分 BC を求める。AC = 10 m、∠A = 21° の直角三角形で、BC は向かいの辺だね。</p>
+<p class="cite"><span class="cite-tag">使う定義</span><math><mi>tan</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mtext>向かいの辺</mtext></mrow><mrow><mtext>隣り合う辺</mtext></mrow></mfrac></math>目の高さより上の部分 <math><mi>BC</mi></math> は <math><mn>21</mn><mo>°</mo></math> の向かいの辺で、隣り合う辺 <math><mi>AC</mi><mo>=</mo><mn>10</mn><mi>m</mi></math> との比が <math><mi>tan</mi><mn>21</mn><mo>°</mo></math> になる。</p><p>まず、目の高さより上にある部分 <math><mi>BC</mi></math> を求める。<math><mi>AC</mi><mo>=</mo><mn>10</mn><mi>m</mi></math>、<math><mo>∠</mo><mi>A</mi><mo>=</mo><mn>21</mn><mo>°</mo></math>の直角三角形で、<math><mi>BC</mi></math> は向かいの辺だね。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― tan を使う</h3>
-<p>BC = AC × tan 21° = 10 × 0.3839 = 3.839。木の高さ BD は、これに目の高さ 1.6 m を加えたものだよ。</p>
+          <h3>ヒント 2 ― <math><mi>tan</mi></math> を使う</h3>
+<div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>BC</mi><mo>=</mo><mi>AC</mi><mo>×</mo><mi>tan</mi><mn>21</mn><mo>°</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>BC</mi></mphantom><mo>=</mo><mn>10</mn><mo>×</mo><mn>0.3839</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>BC</mi></mphantom><mo>=</mo><mn>3.839</mn></math></div>
+</div>
+<p>。木の高さ <math><mi>BD</mi></math> は、これに目の高さ 1.6 <math><mi>m</mi></math> を加えたものだよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">5.4 m</p>
-<p class="formula left">BC = AC × tan 21° = 10 × 0.3839 = 3.839</p><p class="formula left">BD = BC + CD = 3.839 + 1.6 = 5.439 ≒ 5.4</p>
+          <p class="big">5.4 <math><mi>m</mi></math></p><p class="cite"><span class="cite-tag">使う公式</span><math><mi>BC</mi><mo>=</mo><mi>AC</mi><mi>tan</mi><mn>21</mn><mo>°</mo></math>上の部分を <math><mn>10</mn><mi>tan</mi><mn>21</mn><mo>°</mo></math> で求めてから、目の高さ <math><mn>1</mn><mo>.</mo><mn>6</mn><mi>m</mi></math> を加える。</p>
+<div class="chain-crow formula left">
+<div class="crow"><math displaystyle="true"><mi>BC</mi><mo>=</mo><mi>AC</mi><mo>×</mo><mi>tan</mi><mn>21</mn><mo>°</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>BC</mi></mphantom><mo>=</mo><mn>10</mn><mo>×</mo><mn>0.3839</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>BC</mi></mphantom><mo>=</mo><mn>3.839</mn></math></div>
+</div><div class="chain-crow formula left">
+<div class="crow"><math displaystyle="true"><mi>BD</mi><mo>=</mo><mi>BC</mi><mo>+</mo><mi>CD</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>BD</mi></mphantom><mo>=</mo><mn>3.839</mn><mo>+</mo><mn>1.6</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>BD</mi></mphantom><mo>=</mo><mn>5.439</mn><mo>≒</mo><mn>5.4</mn></math></div>
+</div>
         </div>
         <p class="prob-done">応用例題1 クリア！　次は練習7に挑戦しよう。</p>
       </section>
-      <section class="card prob" id="prob-ren7" data-flow="ren7" data-label="練習7">
+      <section class="nofig card prob" id="prob-ren7" data-flow="ren7" data-label="練習7">
         <div class="prob-head">
           <span class="prob-tag ren">練習 7</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">鉄塔の先端の真下から水平に 20 m 離れた地点に立って鉄塔の先端を見上げると、水平面とのなす角が 40° であった。目の高さを 1.6 m として、鉄塔の高さを求めよ。ただし、小数第2位を四捨五入せよ。</p>
+        <p class="prob-q">鉄塔の先端の真下から水平に 20 <math><mi>m</mi></math> 離れた地点に立って鉄塔の先端を見上げると、水平面とのなす角が<math><mn>40</mn><mo>°</mo></math>であった。目の高さを 1.6 <math><mi>m</mi></math> として、鉄塔の高さを求めよ。ただし、小数第2位を四捨五入せよ。</p>
           <div class="quiz" id="q-ren7" data-correct="2">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>16.8 m</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>18.4 m</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>17.6 m</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>20.0 m</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mn>16.8</mn><mi>m</mi></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mn>18.4</mn><mi>m</mi></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mn>17.6</mn><mi>m</mi></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mn>20.0</mn><mi>m</mi></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
@@ -879,17 +1032,21 @@
         </div>
         <div class="step hint">
           <h3>ヒント 1 ― 応用例題1 と同じ形に置く</h3>
-<p>目の高さより上の部分は、距離 20 m・仰角 40° の直角三角形の向かいの辺。tan 40° = 0.8391（表の値）を使おう。</p>
+<p>目の高さより上の部分は、距離 20 <math><mi>m</mi></math>・仰角<math><mn>40</mn><mo>°</mo></math>の直角三角形の向かいの辺。<math><mi>tan</mi><mn>40</mn><mo>°</mo><mo>=</mo><mn>0.8391</mn><mo>(</mo></math>表の値）を使おう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 目の高さを加える</h3>
-<p>上の部分 = 20 × tan 40° を計算したら、最後に目の高さ 1.6 m を加えるのを忘れずに。</p>
+<p>上の部分<math><mo>=</mo><mn>20</mn><mo>×</mo><mi>tan</mi><mn>40</mn><mo>°</mo></math>を計算したら、最後に目の高さ 1.6 <math><mi>m</mi></math> を加えるのを忘れずに。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">18.4 m</p>
-<p class="formula left">目の高さより上の部分 = 20 × tan 40° = 20 × 0.8391 = 16.782</p><p class="formula left">鉄塔の高さ = 16.782 + 1.6 = 18.382 ≒ 18.4</p>
+          <p class="big">18.4 <math><mi>m</mi></math></p><p class="cite"><span class="cite-tag">使う公式</span><math><mi>y</mi><mo>=</mo><mi>x</mi><mi>tan</mi><mi>θ</mi></math>目の高さより上の部分は <math><mn>20</mn><mi>tan</mi><mn>40</mn><mo>°</mo></math> で求め、最後に目の高さ <math><mn>1</mn><mo>.</mo><mn>6</mn><mi>m</mi></math> を加える。</p>
+<p class="formula left">目の高さより上の部分<div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mo>=</mo><mn>20</mn><mo>×</mo><mi>tan</mi><mn>40</mn><mo>°</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo><mn>20</mn><mo>×</mo><mn>0.8391</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo><mn>16.782</mn></math></div>
+</div></p><p class="formula left">鉄塔の高さ<math><mo>=</mo><mn>16.782</mn><mo>+</mo><mn>1.6</mn><mo>=</mo><mn>18.382</mn><mo>≒</mo><mn>18.4</mn></math></p>
         </div>
         <p class="prob-done">練習7 クリア！　項1 はここまで。おつかれさま！</p>
       </section>
@@ -899,11 +1056,11 @@
       <section class="card summary" id="summaryCard" style="display:none">
         <h2>この項のポイント</h2>
         <ul>
-          <li>三角比の定義：sin θ = 向かいの辺 ÷ 斜辺、cos θ = 隣り合う辺 ÷ 斜辺、tan θ = 向かいの辺 ÷ 隣り合う辺。値は三角形の大きさによらず、θ だけで決まる。</li>
-          <li>30°・45°・60° の三角比は、辺の比 1 : √3 : 2 と 1 : 1 : √2 の2つの三角形から読み取る。</li>
-          <li>三角比の表は小数第4位まで。値を読む（θ → 三角比）ことも、逆向きに読んで角のおよその大きさ（三角比 → θ）を求めることもできる。</li>
-          <li>辺の長さへの応用：向かいの辺 ＝ 斜辺 × sin θ、隣り合う辺 ＝ 斜辺 × cos θ、向かいの辺 ＝ 隣り合う辺 × tan θ。</li>
-          <li>見上げる問題では、目の高さより上の部分を直角三角形で求めてから、目の高さを加える。</li>
+          <li><p class="cite"><span class="cite-tag">使う定義</span><math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mtext>向かいの辺</mtext></mrow><mrow><mtext>斜辺</mtext></mrow></mfrac></math><math><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mtext>隣り合う辺</mtext></mrow><mrow><mtext>斜辺</mtext></mrow></mfrac></math><math><mi>tan</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mtext>向かいの辺</mtext></mrow><mrow><mtext>隣り合う辺</mtext></mrow></mfrac></math>値は三角形の大きさによらず、<math><mi>θ</mi></math> だけで決まる。</p>三角比の定義：<math><mi>sin</mi><mi>θ</mi><mo>=</mo></math>向かいの辺 ÷ 斜辺、<math><mi>cos</mi><mi>θ</mi><mo>=</mo></math>隣り合う辺 ÷ 斜辺、<math><mi>tan</mi><mi>θ</mi><mo>=</mo></math>向かいの辺 ÷ 隣り合う辺。値は三角形の大きさによらず、<math><mi>θ</mi></math> だけで決まる。</li>
+          <li><p class="cite"><span class="cite-tag">使う性質</span><math><mi>sin</mi><mn>30</mn><mo>°</mo><mo>=</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac></math><math><mi>cos</mi><mn>45</mn><mo>°</mo><mo>=</mo><mfrac><mrow><mn>1</mn></mrow><mrow><msqrt><mn>2</mn></msqrt></mrow></mfrac></math>辺の比 <math><mn>1</mn><mo>:</mo><msqrt><mn>3</mn></msqrt><mo>:</mo><mn>2</mn></math> と <math><mn>1</mn><mo>:</mo><mn>1</mn><mo>:</mo><msqrt><mn>2</mn></msqrt></math> の2つの三角形から読み取る。</p><math><mn>30</mn><mo>°</mo><mo>⋅</mo><mn>45</mn><mo>°</mo><mo>⋅</mo><mn>60</mn><mo>°</mo></math>の三角比は、辺の比<math><mn>1</mn><mo>:</mo><msqrt><mn>3</mn></msqrt><mo>:</mo><mn>2</mn></math>と<math><mn>1</mn><mo>:</mo><mn>1</mn><mo>:</mo><msqrt><mn>2</mn></msqrt></math>の2つの三角形から読み取る。</li>
+          <li>三角比の表は小数第4位まで。値を読む（<math><mi>θ</mi></math> → 三角比）ことも、逆向きに読んで角のおよその大きさ（三角比 → <math><mi>θ</mi></math>）を求めることもできる。</li>
+          <li><p class="cite"><span class="cite-tag">使う公式</span><math><mi>y</mi><mo>=</mo><mi>r</mi><mi>sin</mi><mi>θ</mi></math><math><mi>x</mi><mo>=</mo><mi>r</mi><mi>cos</mi><mi>θ</mi></math><math><mi>y</mi><mo>=</mo><mi>x</mi><mi>tan</mi><mi>θ</mi></math>1つの鋭角と1辺が分かれば、ほかの辺の長さが求められる。</p>辺の長さへの応用：向かいの辺 ＝ 斜辺 × <math><mi>sin</mi></math> <math><mi>θ</mi></math>、隣り合う辺 ＝ 斜辺 × <math><mi>cos</mi></math> <math><mi>θ</mi></math>、向かいの辺 ＝ 隣り合う辺 × <math><mi>tan</mi></math> <math><mi>θ</mi></math>。</li>
+          <li><p class="cite"><span class="cite-tag">使う公式</span><math><mi>BD</mi><mo>=</mo><mi>BC</mi><mo>+</mo><mi>CD</mi></math>見上げる問題では、直角三角形で求めた上の部分 <math><mi>BC</mi></math> に、目の高さにあたる <math><mi>CD</mi></math> を加える。</p>見上げる問題では、目の高さより上の部分を直角三角形で求めてから、目の高さを加える。</li>
         </ul>
       </section>
       <footer>

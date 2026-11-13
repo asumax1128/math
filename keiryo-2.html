@@ -309,7 +309,64 @@
 }
 @media (prefers-color-scheme: dark){ .finish-btn{color:#0c1712} }
 .finish-btn:active{transform:scale(.98)}
-    </style>
+    
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+
+      /* 積分記号は大きめに表示する（元のページの可読化デザインに合わせる） */
+      math .int-op{font-size:1.35em}
+      /* calc-12 世代（.card）と calc-18 世代（.unit）の、図のない問題の全幅化 */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig>.step{position:static !important}
+        .card.nofig>.steps-wrap{max-height:none !important;overflow:visible !important}
+        .unit.nofig{display:block !important}
+        .unit.nofig>.qside{position:static !important}
+        .unit.nofig>.steps-stack{max-height:none !important;overflow:visible !important}
+      }
+
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける・第3弾c） */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig .qside{position:static !important}
+        .card.nofig .steps-wrap,.card.nofig .tabpanel .steps-wrap{max-height:none !important;overflow:visible !important}
+      }
+</style>
   </head>
   <body>
     <div class="wrap">
@@ -321,9 +378,9 @@
       <section class="howto" aria-label="使い方">
         <h2>このページの使い方（自習の流れ）</h2>
         <ol>
-          <li><b>解説</b>を読んで、三角比の相互関係（3つの公式）と 90° − θ の三角比をつかむ</li>
+          <li><b>解説</b>を読んで、三角比の相互関係（3つの公式）と<math><mn>90</mn><mo>°</mo><mo>−</mo><mi>θ</mi></math>の三角比をつかむ</li>
           <li><b>例題</b>をヒントで確認する ― 1つの三角比から残りを求める手順を身につけよう</li>
-          <li><b>練習問題</b>に挑戦 ― θ は鋭角なので、sin θ, cos θ, tan θ はすべて正の値だよ</li>
+          <li><b>練習問題</b>に挑戦 ― <math><mi>θ</mi></math> は鋭角なので、<math><mi>sin</mi></math> <math><mi>θ</mi></math>, <math><mi>cos</mi></math> <math><mi>θ</mi></math>, <math><mi>tan</mi></math> <math><mi>θ</mi></math> はすべて正の値だよ</li>
         </ol>
       </section>
       <div class="sec-head">
@@ -332,32 +389,36 @@
         <span class="pno">教科書 p.140〜141</span>
       </div>
       <section class="card">
-<p>直角三角形では3辺の長さの関係として、三平方の定理が成り立つ。ここでは、三平方の定理などを利用して、三角比 sin θ, cos θ, tan θ の間にどのような関係が成り立つかを調べる。</p>
-<p>右の図の直角三角形において x = r cos θ, y = r sin θ である。よって</p>
-<p class="formula">tan θ = <span class="frac"><span class="num">y</span><span class="den">x</span></span> = <span class="frac"><span class="num">r sin θ</span><span class="den">r cos θ</span></span> = <span class="frac"><span class="num">sin θ</span><span class="den">cos θ</span></span></p>
-<p>となる。また、三平方の定理により x<sup>2</sup> + y<sup>2</sup> = r<sup>2</sup>、すなわち r<sup>2</sup>(cos θ)<sup>2</sup> + r<sup>2</sup>(sin θ)<sup>2</sup> = r<sup>2</sup> が成り立つ。両辺を r<sup>2</sup> で割って</p>
-<p class="formula">(cos θ)<sup>2</sup> + (sin θ)<sup>2</sup> = 1</p>
-<p>となる。また、この等式の両辺を (cos θ)<sup>2</sup> で割ると、<span class="frac"><span class="num">sin θ</span><span class="den">cos θ</span></span> = tan θ を使って</p>
-<p class="formula">1 + (<span class="frac"><span class="num">sin θ</span><span class="den">cos θ</span></span>)<sup>2</sup> = <span class="frac"><span class="num">1</span><span class="den">(cos θ)<sup>2</sup></span></span></p>
+<p>直角三角形では3辺の長さの関係として、三平方の定理が成り立つ。<br>ここでは、三平方の定理などを利用して、三角比 <math><mi>sin</mi></math> <math><mi>θ</mi></math>, <math><mi>cos</mi></math> <math><mi>θ</mi></math>, <math><mi>tan</mi></math> <math><mi>θ</mi></math> の間にどのような関係が成り立つかを調べる。</p>
+<p>右の図の直角三角形において<math><mi>x</mi><mo>=</mo><mi>r</mi><mi>cos</mi><mi>θ</mi><mo>,</mo><mi>y</mi><mo>=</mo><mi>r</mi><mi>sin</mi><mi>θ</mi></math>である。よって</p>
+<div class="chain-crow formula">
+<div class="crow"><math displaystyle="true"><mi>tan</mi><mi>θ</mi><mo>=</mo><mfrac><mi>y</mi><mi>x</mi></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>tan</mi><mi>θ</mi></mphantom><mo>=</mo><mfrac><mrow><mi>r</mi><mi>sin</mi><mi>θ</mi></mrow><mrow><mi>r</mi><mi>cos</mi><mi>θ</mi></mrow></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>tan</mi><mi>θ</mi></mphantom><mo>=</mo><mfrac><mrow><mi>sin</mi><mi>θ</mi></mrow><mrow><mi>cos</mi><mi>θ</mi></mrow></mfrac></math></div>
+</div>
+<p class="cite"><span class="cite-tag">使う公式</span><math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><msup><mi>r</mi><mn>2</mn></msup></math>直角三角形の3辺には三平方の定理が成り立つ。ここでは <math><mi>x</mi><mo>=</mo><mi>r</mi><mi>cos</mi><mi>θ</mi></math>、<math><mi>y</mi><mo>=</mo><mi>r</mi><mi>sin</mi><mi>θ</mi></math> をこれに代入する。</p><p>となる。また、三平方の定理により<math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><msup><mi>r</mi><mn>2</mn></msup></math>、すなわち<math><msup><mi>r</mi><mn>2</mn></msup><msup><mrow><mo>(</mo><mi>cos</mi><mi>θ</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mi>r</mi><mn>2</mn></msup><msup><mrow><mo>(</mo><mi>sin</mi><mi>θ</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mi>r</mi><mn>2</mn></msup></math> が成り立つ。両辺を<math><msup><mi>r</mi><mn>2</mn></msup></math> で割って</p>
+<p class="formula"><math display="block"><msup><mrow><mo>(</mo><mi>cos</mi><mi>θ</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mi>sin</mi><mi>θ</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>1</mn></math></p>
+<p class="cite"><span class="cite-tag">使う公式</span><math><mi>tan</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mi>sin</mi><mi>θ</mi></mrow><mrow><mi>cos</mi><mi>θ</mi></mrow></mfrac></math>両辺を <math><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></math> で割ると、<math><mfrac><mrow><mi>sin</mi><mi>θ</mi></mrow><mrow><mi>cos</mi><mi>θ</mi></mrow></mfrac></math> が現れるので、この関係1を使う。</p><p>となる。また、この等式の両辺を<math><msup><mrow><mo>(</mo><mi>cos</mi><mi>θ</mi><mo>)</mo></mrow><mn>2</mn></msup></math> で割ると、<math><mfrac><mrow><mi>sin</mi><mi>θ</mi></mrow><mrow><mi>cos</mi><mi>θ</mi></mrow></mfrac><mo>=</mo><mi>tan</mi><mi>θ</mi></math>を使って</p>
+<p class="formula"><math display="block"><mn>1</mn><mo>+</mo><msup><mrow><mo>(</mo><mfrac><mrow><mi>sin</mi><mi>θ</mi></mrow><mrow><mi>cos</mi><mi>θ</mi></mrow></mfrac><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mfrac><mn>1</mn><msup><mrow><mo>(</mo><mi>cos</mi><mi>θ</mi><mo>)</mo></mrow><mn>2</mn></msup></mfrac></math></p>
 <p>となる。以上から、三角比の間に次の関係が成り立つ。</p>
-<div class="def"><p><b>三角比の相互関係</b></p><p class="formula">1　tan θ = <span class="frac"><span class="num">sin θ</span><span class="den">cos θ</span></span></p><p class="formula">2　sin<sup>2</sup> θ + cos<sup>2</sup> θ = 1</p><p class="formula">3　1 + tan<sup>2</sup> θ = <span class="frac"><span class="num">1</span><span class="den">cos<sup>2</sup> θ</span></span></p></div>
-<p>注意 ― (sin θ)<sup>2</sup>, (cos θ)<sup>2</sup>, (tan θ)<sup>2</sup> を、それぞれ sin<sup>2</sup> θ, cos<sup>2</sup> θ, tan<sup>2</sup> θ と書く。</p>
-<figure><div class="figbox"><svg viewBox="0 0 300 190" role="img" aria-label="直角三角形の鋭角の1つを θ とし、斜辺を r、他の2辺を x, y とする"><polygon points="45.0,155.0 185.0,50.0 185.0,155.0" fill="var(--accent-soft)" stroke="var(--ink)" stroke-width="2"/><path d="M 185.0 155.0 h -11 v -11" fill="none" stroke="var(--ink)" stroke-width="1.4"/><path d="M 71.0 155.0 A 26.0 26.0 0 0 0 65.8 139.4" fill="none" stroke="var(--orange)" stroke-width="1.6"/><text x="77.0" y="151.0" class="svg-txt" font-size="14">θ</text><circle cx="45.0" cy="155.0" r="3" fill="var(--ink)"/><circle cx="185.0" cy="50.0" r="3" fill="var(--ink)"/><circle cx="185.0" cy="155.0" r="3" fill="var(--ink)"/><text x="29.0" y="173.0" class="svg-txt" font-size="15">A</text><text x="187.0" y="42.0" class="svg-txt" font-size="15">B</text><text x="181.0" y="175.0" class="svg-txt" font-size="15">C</text><text x="115.0" y="175.0" text-anchor="middle" class="svg-txt" font-size="14">x</text><text x="193.0" y="107.5" class="svg-txt" font-size="14">y</text><text x="103.0" y="96.5" text-anchor="middle" class="svg-txt" font-size="14">r</text></svg></div><figcaption>直角三角形の鋭角の1つを θ とし、斜辺を r、他の2辺を x, y とする</figcaption></figure>
+<div class="def"><p><b>三角比の相互関係</b></p><p class="formula">1　<math><mi>tan</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mi>sin</mi><mi>θ</mi></mrow><mrow><mi>cos</mi><mi>θ</mi></mrow></mfrac></math></p><p class="formula">2　<math><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn></math></p><p class="formula">3　<math><mn>1</mn><mo>+</mo><msup><mi>tan</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mfrac><mn>1</mn><mrow><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></mrow></mfrac></math></p></div>
+<p>注意<math><mo>―</mo><msup><mrow><mo>(</mo><mi>sin</mi><mi>θ</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>,</mo><msup><mrow><mo>(</mo><mi>cos</mi><mi>θ</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>,</mo><msup><mrow><mo>(</mo><mi>tan</mi><mi>θ</mi><mo>)</mo></mrow><mn>2</mn></msup></math> を、それぞれ<math><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>,</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>,</mo><msup><mi>tan</mi><mn>2</mn></msup><mi>θ</mi></math>と書く。</p>
+<figure><div class="figbox"><svg viewBox="0 0 300 190" role="img" aria-label="直角三角形の鋭角の1つを θ とし、斜辺を r、他の2辺を x, y とする"><polygon points="45.0,155.0 185.0,50.0 185.0,155.0" fill="var(--accent-soft)" stroke="var(--ink)" stroke-width="2"/><path d="M 185.0 155.0 h -11 v -11" fill="none" stroke="var(--ink)" stroke-width="1.4"/><path d="M 71.0 155.0 A 26.0 26.0 0 0 0 65.8 139.4" fill="none" stroke="var(--orange)" stroke-width="1.6"/><text x="77.0" y="151.0" class="svg-txt" font-size="14">θ</text><circle cx="45.0" cy="155.0" r="3" fill="var(--ink)"/><circle cx="185.0" cy="50.0" r="3" fill="var(--ink)"/><circle cx="185.0" cy="155.0" r="3" fill="var(--ink)"/><text x="29.0" y="173.0" class="svg-txt" font-size="15">A</text><text x="187.0" y="42.0" class="svg-txt" font-size="15">B</text><text x="181.0" y="175.0" class="svg-txt" font-size="15">C</text><text x="115.0" y="175.0" text-anchor="middle" class="svg-txt" font-size="14">x</text><text x="193.0" y="107.5" class="svg-txt" font-size="14">y</text><text x="103.0" y="96.5" text-anchor="middle" class="svg-txt" font-size="14">r</text></svg></div><figcaption>直角三角形の鋭角の1つを <math><mi>θ</mi></math> とし、斜辺を <math><mi>r</mi></math>、他の2辺を <math><mi>x</mi></math>, <math><mi>y</mi></math> とする</figcaption></figure>
       </section>
-      <section class="card prob" id="prob-ren8" data-flow="ren8" data-label="練習8">
+      <section class="nofig card prob" id="prob-ren8" data-flow="ren8" data-label="練習8">
         <div class="prob-head">
           <span class="prob-tag ren">練習 8</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">θ = 30° のとき、上の三角比の相互関係 1, 2, 3 が成り立つことを確かめよ。</p>
+        <p class="prob-q"><math><mi>θ</mi><mo>=</mo><mn>30</mn><mo>°</mo></math>のとき、上の三角比の相互関係 1, 2, 3 が成り立つことを確かめよ。</p>
           <div class="quiz" id="q-ren8" data-correct="1">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>1</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><span class="frac"><span class="num">3</span><span class="den">4</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><span class="frac"><span class="num">1</span><span class="den">4</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>0</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mn>1</mn></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mfrac><mn>3</mn><mn>4</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mfrac><mn>1</mn><mn>4</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mn>0</mn></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
@@ -365,18 +426,27 @@
           </div>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 30° の三角比を思い出す</h3>
-<p>sin 30° = <span class="formula" style="display:inline-block;vertical-align:middle;margin:0 4px"><span class="frac"><span class="num">1</span><span class="den">2</span></span></span>、cos 30° = <span class="formula" style="display:inline-block;vertical-align:middle;margin:0 4px"><span class="frac"><span class="num">√<span class="rad">3</span></span><span class="den">2</span></span></span>、tan 30° = <span class="formula" style="display:inline-block;vertical-align:middle;margin:0 4px"><span class="frac"><span class="num">1</span><span class="den">√<span class="rad">3</span></span></span></span> だったね。この3つの値を各公式の両辺に代入しよう。</p>
+          <h3>ヒント<math><mn>1</mn><mo>―</mo><mn>30</mn><mo>°</mo></math>の三角比を思い出す</h3>
+<p class="cite"><span class="cite-tag">使う性質</span><math><mi>sin</mi><mn>30</mn><mo>°</mo><mo>=</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac></math><math><mi>cos</mi><mn>30</mn><mo>°</mo><mo>=</mo><mfrac><mrow><msqrt><mn>3</mn></msqrt></mrow><mrow><mn>2</mn></mrow></mfrac></math><math><mi>tan</mi><mn>30</mn><mo>°</mo><mo>=</mo><mfrac><mrow><mn>1</mn></mrow><mrow><msqrt><mn>3</mn></msqrt></mrow></mfrac></math>項1で求めた <math><mn>30</mn><mo>°</mo></math> の三角比の値を、各公式の両辺に代入して確かめる。</p><p><math><mi>sin</mi><mn>30</mn><mo>°</mo><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math>、<math><mi>cos</mi><mn>30</mn><mo>°</mo><mo>=</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac></math>、<math><mi>tan</mi><mn>30</mn><mo>°</mo><mo>=</mo><mfrac><mn>1</mn><msqrt><mn>3</mn></msqrt></mfrac></math> だったね。この3つの値を各公式の両辺に代入しよう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 1つずつ計算する</h3>
-<p>1 は sin ÷ cos、2 は2乗の和、3 は 1 + tan² と 1 ÷ cos² を別々に計算して、一致するか見よう。</p>
+<p>1 は <math><mi>sin</mi></math> ÷ <math><mi>cos</mi></math>、2 は2乗の和、3 は<math><mn>1</mn><mo>+</mo><msup><mi>tan</mi><mn>2</mn></msup></math>と<math><mn>1</mn><mo>÷</mo><msup><mi>cos</mi><mn>2</mn></msup></math>を別々に計算して、一致するか見よう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">1, 2, 3 のすべてが成り立つ</p>
-<p class="formula left">1： sin 30° ÷ cos 30° = <span class="frac"><span class="num">1</span><span class="den">2</span></span> ÷ <span class="frac"><span class="num">√<span class="rad">3</span></span><span class="den">2</span></span> = <span class="frac"><span class="num">1</span><span class="den">√<span class="rad">3</span></span></span> = tan 30°</p><p class="formula left">2： sin² 30° + cos² 30° = <span class="frac"><span class="num">1</span><span class="den">4</span></span> + <span class="frac"><span class="num">3</span><span class="den">4</span></span> = 1</p><p class="formula left">3： 1 + tan² 30° = 1 + <span class="frac"><span class="num">1</span><span class="den">3</span></span> = <span class="frac"><span class="num">4</span><span class="den">3</span></span>、　1 ÷ cos² 30° = 1 ÷ <span class="frac"><span class="num">3</span><span class="den">4</span></span> = <span class="frac"><span class="num">4</span><span class="den">3</span></span></p><p>よって、1, 2, 3 のいずれも成り立つ。</p>
+          <p class="big">1, 2, 3 のすべてが成り立つ</p><p class="cite"><span class="cite-tag">使う公式</span><math><mi>tan</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mi>sin</mi><mi>θ</mi></mrow><mrow><mi>cos</mi><mi>θ</mi></mrow></mfrac></math><math><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn></math><math><mn>1</mn><mo>+</mo><msup><mi>tan</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>1</mn></mrow><mrow><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></mrow></mfrac></math>解答では <math><mn>30</mn><mo>°</mo></math> の値を3つの関係の両辺に代入し、左右が一致するか確かめている。</p>
+<p class="mq-wide formula left">1：<div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>sin</mi><mn>30</mn><mo>°</mo><mo>÷</mo><mi>cos</mi><mn>30</mn><mo>°</mo><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>÷</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mn>30</mn><mo>°</mo><mo>÷</mo><mi>cos</mi><mn>30</mn><mo>°</mo></mphantom><mo>=</mo><mfrac><mn>1</mn><msqrt><mn>3</mn></msqrt></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mn>30</mn><mo>°</mo><mo>÷</mo><mi>cos</mi><mn>30</mn><mo>°</mo></mphantom><mo>=</mo><mi>tan</mi><mn>30</mn><mo>°</mo></math></div>
+</div></p>
+<div class="mq-narrow">
+<p>1：</p>
+<p class="formula"><math display="block"><mi>sin</mi><mn>30</mn><mo>°</mo><mo>÷</mo><mi>cos</mi><mn>30</mn><mo>°</mo><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>÷</mo><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac><mo>=</mo><mfrac><mn>1</mn><msqrt><mn>3</mn></msqrt></mfrac></math></p>
+<p class="formula cont"><math display="block"><mo>=</mo><mi>tan</mi><mn>30</mn><mo>°</mo></math></p>
+</div><p class="formula left">2：<math><msup><mi>sin</mi><mn>2</mn></msup><mn>30</mn><mo>°</mo><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mn>30</mn><mo>°</mo><mo>=</mo><mfrac><mn>1</mn><mn>4</mn></mfrac><mo>+</mo><mfrac><mn>3</mn><mn>4</mn></mfrac><mo>=</mo><mn>1</mn></math></p><p class="formula left">3：<math><mn>1</mn><mo>+</mo><msup><mi>tan</mi><mn>2</mn></msup><mn>30</mn><mo>°</mo><mo>=</mo><mn>1</mn><mo>+</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>=</mo><mfrac><mn>4</mn><mn>3</mn></mfrac></math>、　<math><mn>1</mn><mo>÷</mo><msup><mi>cos</mi><mn>2</mn></msup><mn>30</mn><mo>°</mo><mo>=</mo><mn>1</mn><mo>÷</mo><mfrac><mn>3</mn><mn>4</mn></mfrac><mo>=</mo><mfrac><mn>4</mn><mn>3</mn></mfrac></math></p><p>よって、1, 2, 3 のいずれも成り立つ。</p>
         </div>
         <p class="prob-done">練習8 クリア！　次は例題2に進もう。</p>
       </section>
@@ -387,38 +457,46 @@
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">θ は鋭角とする。sin θ = <span class="formula" style="display:inline-block;vertical-align:middle;margin:0 4px"><span class="frac"><span class="num">2</span><span class="den">3</span></span></span> のとき、cos θ と tan θ の値を求めよ。<figure><div class="figbox"><svg viewBox="0 0 300 190" role="img" aria-label="例題2 の参考図：斜辺 3、向かいの辺 2 の直角三角形（隣り合う辺は √5）"><polygon points="45.0,155.0 162.4,50.0 162.4,155.0" fill="var(--accent-soft)" stroke="var(--ink)" stroke-width="2"/><path d="M 162.4 155.0 h -11 v -11" fill="none" stroke="var(--ink)" stroke-width="1.4"/><path d="M 71.0 155.0 A 26.0 26.0 0 0 0 64.4 137.7" fill="none" stroke="var(--orange)" stroke-width="1.6"/><text x="77.0" y="151.0" class="svg-txt" font-size="14">θ</text><circle cx="45.0" cy="155.0" r="3" fill="var(--ink)"/><circle cx="162.4" cy="50.0" r="3" fill="var(--ink)"/><circle cx="162.4" cy="155.0" r="3" fill="var(--ink)"/><text x="29.0" y="173.0" class="svg-txt" font-size="15">A</text><text x="164.4" y="42.0" class="svg-txt" font-size="15">B</text><text x="158.4" y="175.0" class="svg-txt" font-size="15">C</text><text x="103.7" y="175.0" text-anchor="middle" class="svg-txt" font-size="14">√<span class="rad">5</span></text><text x="170.4" y="107.5" class="svg-txt" font-size="14">2</text><text x="91.7" y="96.5" text-anchor="middle" class="svg-txt" font-size="14">3</text></svg></div><figcaption>例題2 の参考図：斜辺 3、向かいの辺 2 の直角三角形（隣り合う辺は √5）</figcaption></figure></p>
+        <p class="prob-q"><math><mi>θ</mi></math> は鋭角とする。<math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mn>2</mn><mn>3</mn></mfrac></math> のとき、<math><mi>cos</mi></math> <math><mi>θ</mi></math> と <math><mi>tan</mi></math> <math><mi>θ</mi></math> の値を求めよ。<figure><div class="figbox"><svg viewBox="0 0 300 190" role="img" aria-label="例題2 の参考図：斜辺 3、向かいの辺 2 の直角三角形（隣り合う辺は √5）"><polygon points="45.0,155.0 162.4,50.0 162.4,155.0" fill="var(--accent-soft)" stroke="var(--ink)" stroke-width="2"/><path d="M 162.4 155.0 h -11 v -11" fill="none" stroke="var(--ink)" stroke-width="1.4"/><path d="M 71.0 155.0 A 26.0 26.0 0 0 0 64.4 137.7" fill="none" stroke="var(--orange)" stroke-width="1.6"/><text x="77.0" y="151.0" class="svg-txt" font-size="14">θ</text><circle cx="45.0" cy="155.0" r="3" fill="var(--ink)"/><circle cx="162.4" cy="50.0" r="3" fill="var(--ink)"/><circle cx="162.4" cy="155.0" r="3" fill="var(--ink)"/><text x="29.0" y="173.0" class="svg-txt" font-size="15">A</text><text x="164.4" y="42.0" class="svg-txt" font-size="15">B</text><text x="158.4" y="175.0" class="svg-txt" font-size="15">C</text><text x="103.7" y="175.0" text-anchor="middle" class="svg-txt" font-size="14">√<span class="rad">5</span></text><text x="170.4" y="107.5" class="svg-txt" font-size="14">2</text><text x="91.7" y="96.5" text-anchor="middle" class="svg-txt" font-size="14">3</text></svg></div><figcaption>例題2 の参考図：斜辺 3、向かいの辺 2 の直角三角形（隣り合う辺は<math><msqrt><mn>5</mn></msqrt><mo>)</mo></math></figcaption></figure></p>
         </div>
         <div class="step hint">
           <h3>ヒント 1 ― 相互関係 2 を使う</h3>
-<p>sin² θ + cos² θ = 1 から cos² θ = 1 − sin² θ を計算しよう。</p>
+<p class="cite"><span class="cite-tag">使う公式</span><math><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn></math>関係2から <math><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn><mo>−</mo><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi></math> と計算して <math><mi>cos</mi><mi>θ</mi></math> を求める。</p><p><math><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn></math>から<math><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn><mo>−</mo><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi></math>を計算しよう。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― 符号と tan に進む</h3>
-<p>θ は鋭角だから cos θ &gt; 0。正の平方根をとって cos θ を出し、次に tan θ = sin θ ÷ cos θ を計算しよう。</p>
+          <h3>ヒント 2 ― 符号と <math><mi>tan</mi></math> に進む</h3>
+<p><math><mi>θ</mi></math> は鋭角だから<math><mi>cos</mi><mi>θ</mi><mo>&gt;</mo><mn>0</mn></math>。正の平方根をとって <math><mi>cos</mi></math> <math><mi>θ</mi></math> を出し、次に<math><mi>tan</mi><mi>θ</mi><mo>=</mo><mi>sin</mi><mi>θ</mi><mo>÷</mo><mi>cos</mi><mi>θ</mi></math>を計算しよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">cos θ = <span class="frac"><span class="num">√<span class="rad">5</span></span><span class="den">3</span></span>,　tan θ = <span class="frac"><span class="num">2</span><span class="den">√<span class="rad">5</span></span></span></p>
-<p class="formula left">sin² θ + cos² θ = 1 から　cos² θ = 1 − sin² θ = 1 − (<span class="frac"><span class="num">2</span><span class="den">3</span></span>)<sup>2</sup> = <span class="frac"><span class="num">5</span><span class="den">9</span></span></p><p class="formula left">cos θ &gt; 0 であるから　cos θ = √(<span class="frac"><span class="num">5</span><span class="den">9</span></span>) = <span class="frac"><span class="num">√<span class="rad">5</span></span><span class="den">3</span></span></p><p class="formula left">また　tan θ = <span class="frac"><span class="num">sin θ</span><span class="den">cos θ</span></span> = <span class="frac"><span class="num">2</span><span class="den">3</span></span> ÷ <span class="frac"><span class="num">√<span class="rad">5</span></span><span class="den">3</span></span> = <span class="frac"><span class="num">2</span><span class="den">√<span class="rad">5</span></span></span></p>
+          <p class="big"><math display="block"><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><msqrt><mn>5</mn></msqrt><mn>3</mn></mfrac><mo>,</mo><mspace width="2em"/><mi>tan</mi><mi>θ</mi><mo>=</mo><mfrac><mn>2</mn><msqrt><mn>5</mn></msqrt></mfrac></math></p><p class="cite"><span class="cite-tag">使う公式</span><math><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn></math><math><mi>tan</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mi>sin</mi><mi>θ</mi></mrow><mrow><mi>cos</mi><mi>θ</mi></mrow></mfrac></math>ここでは <math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>2</mn></mrow><mrow><mn>3</mn></mrow></mfrac></math> を関係2に代入し、<math><mi>θ</mi></math> が鋭角なので正の平方根をとってから、関係1で <math><mi>tan</mi><mi>θ</mi></math> を出す。</p>
+<p class="formula left"><math><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn></math>から　<div class="chain-crow">
+<div class="crow"><math displaystyle="true"><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn><mo>−</mo><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></mphantom><mo>=</mo><mn>1</mn><mo>−</mo><msup><mrow><mo>(</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mo>)</mo></mrow><mn>2</mn></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></mphantom><mo>=</mo><mfrac><mn>5</mn><mn>9</mn></mfrac></math></div>
+</div></p><p class="formula left"><math><mi>cos</mi><mi>θ</mi><mo>&gt;</mo><mn>0</mn></math>であるから　<math><mi>cos</mi><mi>θ</mi><mo>=</mo><msqrt><mfrac><mn>5</mn><mn>9</mn></mfrac></msqrt><mo>=</mo><mfrac><msqrt><mn>5</mn></msqrt><mn>3</mn></mfrac></math></p><p class="formula left">また　<div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>tan</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mi>sin</mi><mi>θ</mi></mrow><mrow><mi>cos</mi><mi>θ</mi></mrow></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>tan</mi><mi>θ</mi></mphantom><mo>=</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mo>÷</mo><mfrac><msqrt><mn>5</mn></msqrt><mn>3</mn></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>tan</mi><mi>θ</mi></mphantom><mo>=</mo><mfrac><mn>2</mn><msqrt><mn>5</mn></msqrt></mfrac></math></div>
+</div></p>
         </div>
         <p class="prob-done">例題2 クリア！　次は練習9に挑戦しよう。</p>
       </section>
-      <section class="card prob" id="prob-ren9" data-flow="ren9" data-label="練習9">
+      <section class="nofig card prob" id="prob-ren9" data-flow="ren9" data-label="練習9">
         <div class="prob-head">
           <span class="prob-tag ren">練習 9</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">θ は鋭角とする。cos θ = <span class="formula" style="display:inline-block;vertical-align:middle;margin:0 4px"><span class="frac"><span class="num">1</span><span class="den">3</span></span></span> のとき、sin θ と tan θ の値を求めよ。</p>
+        <p class="prob-q"><math><mi>θ</mi></math> は鋭角とする。<math><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><mn>1</mn><mn>3</mn></mfrac></math> のとき、<math><mi>sin</mi></math> <math><mi>θ</mi></math> と <math><mi>tan</mi></math> <math><mi>θ</mi></math> の値を求めよ。</p>
           <div class="quiz" id="q-ren9" data-correct="4">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>sin θ = <span class="frac"><span class="num">2</span><span class="den">3</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>sin θ = <span class="frac"><span class="num">√<span class="rad">2</span></span><span class="den">3</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>tan θ = √<span class="rad">2</span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>sin θ = <span class="frac"><span class="num">2√<span class="rad">2</span></span><span class="den">3</span></span>, tan θ = 2√<span class="rad">2</span></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mn>2</mn><mn>3</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><msqrt><mn>2</mn></msqrt><mn>3</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mi>tan</mi><mi>θ</mi><mo>=</mo><msqrt><mn>2</mn></msqrt></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>2</mn><msqrt><mn>2</mn></msqrt></mrow><mn>3</mn></mfrac><mo>,</mo><mi>tan</mi><mi>θ</mi><mo>=</mo><mn>2</mn><msqrt><mn>2</mn></msqrt></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
@@ -426,18 +504,22 @@
           </div>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 例題2 と同じ手順で sin から</h3>
-<p>sin² θ = 1 − cos² θ = 1 − (1/3)² を計算しよう。θ は鋭角だから sin θ &gt; 0 だよ。</p>
+          <h3>ヒント 1 ― 例題2 と同じ手順で <math><mi>sin</mi></math> から</h3>
+<p class="cite"><span class="cite-tag">使う公式</span><math><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn></math>関係2を <math><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn><mo>−</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></math> の形にして、<math><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>3</mn></mrow></mfrac></math> を代入する。</p><p><math><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn><mo>−</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn><mo>−</mo><msup><mrow><mo>(</mo><mn>1</mn><mo>/</mo><mn>3</mn><mo>)</mo></mrow><mn>2</mn></msup></math>を計算しよう。<math><mi>θ</mi></math> は鋭角だから<math><mi>sin</mi><mi>θ</mi><mo>&gt;</mo><mn>0</mn></math>だよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― tan は sin ÷ cos</h3>
-<p>sin θ が出たら、tan θ = sin θ ÷ cos θ で仕上げよう。</p>
+          <h3>ヒント 2 ― <math><mi>tan</mi></math> は <math><mi>sin</mi></math> ÷ <math><mi>cos</mi></math></h3>
+<p><math><mi>sin</mi></math> <math><mi>θ</mi></math> が出たら、<math><mi>tan</mi><mi>θ</mi><mo>=</mo><mi>sin</mi><mi>θ</mi><mo>÷</mo><mi>cos</mi><mi>θ</mi></math>で仕上げよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">sin θ = <span class="frac"><span class="num">2√<span class="rad">2</span></span><span class="den">3</span></span>,　tan θ = 2√<span class="rad">2</span></p>
-<p class="formula left">sin² θ = 1 − (<span class="frac"><span class="num">1</span><span class="den">3</span></span>)<sup>2</sup> = <span class="frac"><span class="num">8</span><span class="den">9</span></span>、sin θ &gt; 0 より　sin θ = <span class="frac"><span class="num">2√<span class="rad">2</span></span><span class="den">3</span></span></p><p class="formula left">tan θ = sin θ ÷ cos θ = <span class="frac"><span class="num">2√<span class="rad">2</span></span><span class="den">3</span></span> ÷ <span class="frac"><span class="num">1</span><span class="den">3</span></span> = 2√<span class="rad">2</span></p>
+          <p class="big"><math display="block"><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>2</mn><msqrt><mn>2</mn></msqrt></mrow><mn>3</mn></mfrac><mo>,</mo><mspace width="2em"/><mi>tan</mi><mi>θ</mi><mo>=</mo><mn>2</mn><msqrt><mn>2</mn></msqrt></math></p><p class="cite"><span class="cite-tag">使う公式</span><math><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn></math><math><mi>tan</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mi>sin</mi><mi>θ</mi></mrow><mrow><mi>cos</mi><mi>θ</mi></mrow></mfrac></math>関係2で <math><mi>sin</mi><mi>θ</mi></math> を求め、鋭角なので正の平方根をとり、最後に関係1 <math><mi>tan</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mi>sin</mi><mi>θ</mi></mrow><mrow><mi>cos</mi><mi>θ</mi></mrow></mfrac></math> で仕上げる。</p>
+<p class="formula left"><math><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn><mo>−</mo><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mfrac><mn>8</mn><mn>9</mn></mfrac></math>、<math><mi>sin</mi><mi>θ</mi><mo>&gt;</mo><mn>0</mn></math>より　<math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>2</mn><msqrt><mn>2</mn></msqrt></mrow><mn>3</mn></mfrac></math></p><div class="chain-crow formula left">
+<div class="crow"><math displaystyle="true"><mi>tan</mi><mi>θ</mi><mo>=</mo><mi>sin</mi><mi>θ</mi><mo>÷</mo><mi>cos</mi><mi>θ</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>tan</mi><mi>θ</mi></mphantom><mo>=</mo><mfrac><mrow><mn>2</mn><msqrt><mn>2</mn></msqrt></mrow><mn>3</mn></mfrac><mo>÷</mo><mfrac><mn>1</mn><mn>3</mn></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>tan</mi><mi>θ</mi></mphantom><mo>=</mo><mn>2</mn><msqrt><mn>2</mn></msqrt></math></div>
+</div>
         </div>
         <p class="prob-done">練習9 クリア！　次は例題3に進もう。</p>
       </section>
@@ -448,38 +530,42 @@
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">θ は鋭角とする。tan θ = 2 のとき、cos θ と sin θ の値を求めよ。<figure><div class="figbox"><svg viewBox="0 0 300 190" role="img" aria-label="例題3 の参考図：隣り合う辺 1、向かいの辺 2 の直角三角形（斜辺は √5）"><polygon points="45.0,155.0 97.5,50.0 97.5,155.0" fill="var(--accent-soft)" stroke="var(--ink)" stroke-width="2"/><path d="M 97.5 155.0 h -11 v -11" fill="none" stroke="var(--ink)" stroke-width="1.4"/><path d="M 71.0 155.0 A 26.0 26.0 0 0 0 56.6 131.7" fill="none" stroke="var(--orange)" stroke-width="1.6"/><text x="77.0" y="151.0" class="svg-txt" font-size="14">θ</text><circle cx="45.0" cy="155.0" r="3" fill="var(--ink)"/><circle cx="97.5" cy="50.0" r="3" fill="var(--ink)"/><circle cx="97.5" cy="155.0" r="3" fill="var(--ink)"/><text x="29.0" y="173.0" class="svg-txt" font-size="15">A</text><text x="99.5" y="42.0" class="svg-txt" font-size="15">B</text><text x="93.5" y="175.0" class="svg-txt" font-size="15">C</text><text x="71.2" y="175.0" text-anchor="middle" class="svg-txt" font-size="14">1</text><text x="105.5" y="107.5" class="svg-txt" font-size="14">2</text><text x="59.2" y="96.5" text-anchor="middle" class="svg-txt" font-size="14">√<span class="rad">5</span></text></svg></div><figcaption>例題3 の参考図：隣り合う辺 1、向かいの辺 2 の直角三角形（斜辺は √5）</figcaption></figure></p>
+        <p class="prob-q"><math><mi>θ</mi></math> は鋭角とする。<math><mi>tan</mi><mi>θ</mi><mo>=</mo><mn>2</mn></math>のとき、<math><mi>cos</mi></math> <math><mi>θ</mi></math> と <math><mi>sin</mi></math> <math><mi>θ</mi></math> の値を求めよ。<figure><div class="figbox"><svg viewBox="0 0 300 190" role="img" aria-label="例題3 の参考図：隣り合う辺 1、向かいの辺 2 の直角三角形（斜辺は √5）"><polygon points="45.0,155.0 97.5,50.0 97.5,155.0" fill="var(--accent-soft)" stroke="var(--ink)" stroke-width="2"/><path d="M 97.5 155.0 h -11 v -11" fill="none" stroke="var(--ink)" stroke-width="1.4"/><path d="M 71.0 155.0 A 26.0 26.0 0 0 0 56.6 131.7" fill="none" stroke="var(--orange)" stroke-width="1.6"/><text x="77.0" y="151.0" class="svg-txt" font-size="14">θ</text><circle cx="45.0" cy="155.0" r="3" fill="var(--ink)"/><circle cx="97.5" cy="50.0" r="3" fill="var(--ink)"/><circle cx="97.5" cy="155.0" r="3" fill="var(--ink)"/><text x="29.0" y="173.0" class="svg-txt" font-size="15">A</text><text x="99.5" y="42.0" class="svg-txt" font-size="15">B</text><text x="93.5" y="175.0" class="svg-txt" font-size="15">C</text><text x="71.2" y="175.0" text-anchor="middle" class="svg-txt" font-size="14">1</text><text x="105.5" y="107.5" class="svg-txt" font-size="14">2</text><text x="59.2" y="96.5" text-anchor="middle" class="svg-txt" font-size="14">√<span class="rad">5</span></text></svg></div><figcaption>例題3 の参考図：隣り合う辺 1、向かいの辺 2 の直角三角形（斜辺は<math><msqrt><mn>5</mn></msqrt><mo>)</mo></math></figcaption></figure></p>
         </div>
         <div class="step hint">
           <h3>ヒント 1 ― 相互関係 3 を使う</h3>
-<p>1 + tan² θ = 1 ÷ cos² θ に tan θ = 2 を代入して、cos² θ を求めよう。</p>
+<p class="cite"><span class="cite-tag">使う公式</span><math><mn>1</mn><mo>+</mo><msup><mi>tan</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>1</mn></mrow><mrow><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></mrow></mfrac></math>関係3に <math><mi>tan</mi><mi>θ</mi></math> の値を代入すると、<math><mfrac><mrow><mn>1</mn></mrow><mrow><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></mrow></mfrac></math> の値が分かり、<math><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></math> が求まる。</p><p><math><mn>1</mn><mo>+</mo><msup><mi>tan</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn><mo>÷</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></math>に<math><mi>tan</mi><mi>θ</mi><mo>=</mo><mn>2</mn></math>を代入して、<math><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></math>を求めよう。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― sin は tan × cos</h3>
-<p>cos θ &gt; 0 だから正の平方根をとる。sin θ は、tan θ = sin θ ÷ cos θ を変形して sin θ = tan θ × cos θ で求めよう。</p>
+          <h3>ヒント 2 ― <math><mi>sin</mi></math> は <math><mi>tan</mi></math> × <math><mi>cos</mi></math></h3>
+<p><math><mi>cos</mi><mi>θ</mi><mo>&gt;</mo><mn>0</mn></math>だから正の平方根をとる。<math><mi>sin</mi></math> <math><mi>θ</mi></math> は、<math><mi>tan</mi><mi>θ</mi><mo>=</mo><mi>sin</mi><mi>θ</mi><mo>÷</mo><mi>cos</mi><mi>θ</mi></math>を変形して<math><mi>sin</mi><mi>θ</mi><mo>=</mo><mi>tan</mi><mi>θ</mi><mo>×</mo><mi>cos</mi><mi>θ</mi></math>で求めよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">cos θ = <span class="frac"><span class="num">1</span><span class="den">√<span class="rad">5</span></span></span>,　sin θ = <span class="frac"><span class="num">2</span><span class="den">√<span class="rad">5</span></span></span></p>
-<p class="formula left">1 + tan² θ = <span class="frac"><span class="num">1</span><span class="den">cos<sup>2</sup> θ</span></span> から　1 + 2<sup>2</sup> = <span class="frac"><span class="num">1</span><span class="den">cos<sup>2</sup> θ</span></span>、よって　cos² θ = <span class="frac"><span class="num">1</span><span class="den">5</span></span></p><p class="formula left">cos θ &gt; 0 であるから　cos θ = √(<span class="frac"><span class="num">1</span><span class="den">5</span></span>) = <span class="frac"><span class="num">1</span><span class="den">√<span class="rad">5</span></span></span></p><p class="formula left">tan θ = <span class="frac"><span class="num">sin θ</span><span class="den">cos θ</span></span> より　sin θ = tan θ × cos θ = 2 × <span class="frac"><span class="num">1</span><span class="den">√<span class="rad">5</span></span></span> = <span class="frac"><span class="num">2</span><span class="den">√<span class="rad">5</span></span></span></p>
+          <p class="big"><math display="block"><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><mn>1</mn><msqrt><mn>5</mn></msqrt></mfrac><mo>,</mo><mspace width="2em"/><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mn>2</mn><msqrt><mn>5</mn></msqrt></mfrac></math></p><p class="cite"><span class="cite-tag">使う公式</span><math><mn>1</mn><mo>+</mo><msup><mi>tan</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>1</mn></mrow><mrow><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></mrow></mfrac></math><math><mi>tan</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mi>sin</mi><mi>θ</mi></mrow><mrow><mi>cos</mi><mi>θ</mi></mrow></mfrac></math>関係3で <math><mi>cos</mi><mi>θ</mi></math> を求め、関係1を変形した <math><mi>sin</mi><mi>θ</mi><mo>=</mo><mi>tan</mi><mi>θ</mi><mo>×</mo><mi>cos</mi><mi>θ</mi></math> で <math><mi>sin</mi><mi>θ</mi></math> を出す。</p>
+<p class="formula left"><math><mn>1</mn><mo>+</mo><msup><mi>tan</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mfrac><mn>1</mn><mrow><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></mrow></mfrac></math> から　<math><mn>1</mn><mo>+</mo><msup><mn>2</mn><mn>2</mn></msup><mo>=</mo><mfrac><mn>1</mn><mrow><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></mrow></mfrac></math>、よって　<math><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mfrac><mn>1</mn><mn>5</mn></mfrac></math></p><p class="formula left"><math><mi>cos</mi><mi>θ</mi><mo>&gt;</mo><mn>0</mn></math>であるから　<math><mi>cos</mi><mi>θ</mi><mo>=</mo><msqrt><mfrac><mn>1</mn><mn>5</mn></mfrac></msqrt><mo>=</mo><mfrac><mn>1</mn><msqrt><mn>5</mn></msqrt></mfrac></math></p><p class="formula left"><math><mi>tan</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mi>sin</mi><mi>θ</mi></mrow><mrow><mi>cos</mi><mi>θ</mi></mrow></mfrac></math> より　<div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>sin</mi><mi>θ</mi><mo>=</mo><mi>tan</mi><mi>θ</mi><mo>×</mo><mi>cos</mi><mi>θ</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mi>θ</mi></mphantom><mo>=</mo><mn>2</mn><mo>×</mo><mfrac><mn>1</mn><msqrt><mn>5</mn></msqrt></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mi>θ</mi></mphantom><mo>=</mo><mfrac><mn>2</mn><msqrt><mn>5</mn></msqrt></mfrac></math></div>
+</div></p>
         </div>
         <p class="prob-done">例題3 クリア！　次は練習10に挑戦しよう。</p>
       </section>
-      <section class="card prob" id="prob-ren10" data-flow="ren10" data-label="練習10">
+      <section class="nofig card prob" id="prob-ren10" data-flow="ren10" data-label="練習10">
         <div class="prob-head">
           <span class="prob-tag ren">練習 10</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">θ は鋭角とする。tan θ = √<span class="rad">2</span> のとき、cos θ と sin θ の値を求めよ。</p>
+        <p class="prob-q"><math><mi>θ</mi></math> は鋭角とする。<math><mi>tan</mi><mi>θ</mi><mo>=</mo><msqrt><mn>2</mn></msqrt></math> のとき、<math><mi>cos</mi></math> <math><mi>θ</mi></math> と <math><mi>sin</mi></math> <math><mi>θ</mi></math> の値を求めよ。</p>
           <div class="quiz" id="q-ren10" data-correct="2">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>cos θ = <span class="frac"><span class="num">1</span><span class="den">√<span class="rad">2</span></span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>cos θ = <span class="frac"><span class="num">1</span><span class="den">√<span class="rad">3</span></span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>cos θ = <span class="frac"><span class="num">√<span class="rad">2</span></span><span class="den">√<span class="rad">3</span></span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>cos θ = <span class="frac"><span class="num">1</span><span class="den">3</span></span></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><mn>1</mn><msqrt><mn>2</mn></msqrt></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><mn>1</mn><msqrt><mn>3</mn></msqrt></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><msqrt><mn>2</mn></msqrt><msqrt><mn>3</mn></msqrt></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><mn>1</mn><mn>3</mn></mfrac></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
@@ -488,62 +574,70 @@
         </div>
         <div class="step hint">
           <h3>ヒント 1 ― 相互関係 3 に代入する</h3>
-<p>1 + (√<span class="rad">2</span>)² = 1 ÷ cos² θ、つまり 3 = 1 ÷ cos² θ から cos² θ を求めよう。</p>
+<p class="cite"><span class="cite-tag">使う公式</span><math><mn>1</mn><mo>+</mo><msup><mi>tan</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>1</mn></mrow><mrow><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></mrow></mfrac></math>関係3にこの問題の <math><mi>tan</mi><mi>θ</mi></math> の値を代入して、<math><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></math> から求める。</p><p><math><mn>1</mn><mo>+</mo><msup><mrow><mo>(</mo><msqrt><mn>2</mn></msqrt><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>1</mn><mo>÷</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></math>、つまり<math><mn>3</mn><mo>=</mo><mn>1</mn><mo>÷</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></math>から<math><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></math>を求めよう。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― sin は tan × cos</h3>
-<p>cos θ &gt; 0 だから cos θ = √(1/3)。sin θ = tan θ × cos θ = √<span class="rad">2</span> × cos θ で仕上げよう。</p>
+          <h3>ヒント 2 ― <math><mi>sin</mi></math> は <math><mi>tan</mi></math> × <math><mi>cos</mi></math></h3>
+<p><math><mi>cos</mi><mi>θ</mi><mo>&gt;</mo><mn>0</mn></math>だから<math><mi>cos</mi><mi>θ</mi><mo>=</mo><msqrt><mrow><mn>1</mn><mo>/</mo><mn>3</mn></mrow></msqrt></math>。<math><mi>sin</mi><mi>θ</mi><mo>=</mo><mi>tan</mi><mi>θ</mi><mo>×</mo><mi>cos</mi><mi>θ</mi><mo>=</mo><msqrt><mn>2</mn></msqrt><mo>×</mo><mi>cos</mi><mi>θ</mi></math>で仕上げよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">cos θ = <span class="frac"><span class="num">1</span><span class="den">√<span class="rad">3</span></span></span>,　sin θ = <span class="frac"><span class="num">√<span class="rad">2</span></span><span class="den">√<span class="rad">3</span></span></span></p>
-<p class="formula left">1 + tan² θ = <span class="frac"><span class="num">1</span><span class="den">cos<sup>2</sup> θ</span></span> から　1 + (√<span class="rad">2</span>)<sup>2</sup> = 3 = <span class="frac"><span class="num">1</span><span class="den">cos<sup>2</sup> θ</span></span>、よって　cos² θ = <span class="frac"><span class="num">1</span><span class="den">3</span></span></p><p class="formula left">cos θ &gt; 0 であるから　cos θ = <span class="frac"><span class="num">1</span><span class="den">√<span class="rad">3</span></span></span></p><p class="formula left">sin θ = tan θ × cos θ = √<span class="rad">2</span> × <span class="frac"><span class="num">1</span><span class="den">√<span class="rad">3</span></span></span> = <span class="frac"><span class="num">√<span class="rad">2</span></span><span class="den">√<span class="rad">3</span></span></span></p>
+          <p class="big"><math display="block"><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><mn>1</mn><msqrt><mn>3</mn></msqrt></mfrac><mo>,</mo><mspace width="2em"/><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><msqrt><mn>2</mn></msqrt><msqrt><mn>3</mn></msqrt></mfrac></math></p><p class="cite"><span class="cite-tag">使う公式</span><math><mn>1</mn><mo>+</mo><msup><mi>tan</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>1</mn></mrow><mrow><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></mrow></mfrac></math><math><mi>tan</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mi>sin</mi><mi>θ</mi></mrow><mrow><mi>cos</mi><mi>θ</mi></mrow></mfrac></math>関係3で <math><mi>cos</mi><mi>θ</mi></math> を求め、<math><mi>sin</mi><mi>θ</mi><mo>=</mo><mi>tan</mi><mi>θ</mi><mo>×</mo><mi>cos</mi><mi>θ</mi></math> で <math><mi>sin</mi><mi>θ</mi></math> を出す。鋭角なので平方根は正の方をとる。</p>
+<p class="formula left"><math><mn>1</mn><mo>+</mo><msup><mi>tan</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mfrac><mn>1</mn><mrow><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></mrow></mfrac></math> から　<math><mn>1</mn><mo>+</mo><msup><mrow><mo>(</mo><msqrt><mn>2</mn></msqrt><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>3</mn><mo>=</mo><mfrac><mn>1</mn><mrow><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></mrow></mfrac></math>、よって　<math><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mfrac><mn>1</mn><mn>3</mn></mfrac></math></p><p class="formula left"><math><mi>cos</mi><mi>θ</mi><mo>&gt;</mo><mn>0</mn></math>であるから　<math><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><mn>1</mn><msqrt><mn>3</mn></msqrt></mfrac></math></p><div class="chain-crow formula left">
+<div class="crow"><math displaystyle="true"><mi>sin</mi><mi>θ</mi><mo>=</mo><mi>tan</mi><mi>θ</mi><mo>×</mo><mi>cos</mi><mi>θ</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mi>θ</mi></mphantom><mo>=</mo><msqrt><mn>2</mn></msqrt><mo>×</mo><mfrac><mn>1</mn><msqrt><mn>3</mn></msqrt></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>sin</mi><mi>θ</mi></mphantom><mo>=</mo><mfrac><msqrt><mn>2</mn></msqrt><msqrt><mn>3</mn></msqrt></mfrac></math></div>
+</div>
         </div>
         <p class="prob-done">練習10 クリア！　次は解説Bに進もう。</p>
       </section>
       <div class="sec-head">
         <span class="sec-tag">解説 B</span>
-        <h2>90° − θ の三角比</h2>
+        <h2><math><mn>90</mn><mo>°</mo><mo>−</mo><mi>θ</mi></math>の三角比</h2>
         <span class="pno">教科書 p.142</span>
       </div>
       <section class="card">
-<p>直角三角形において、1つの鋭角を θ とすると、もう1つの鋭角は 90° − θ である。よって、図（辺は x, y、斜辺 r）において、次のことがいえる。</p>
-<p class="formula">sin (90° − θ) = <span class="frac"><span class="num">x</span><span class="den">r</span></span> = cos θ</p>
-<p class="formula">cos (90° − θ) = <span class="frac"><span class="num">y</span><span class="den">r</span></span> = sin θ</p>
-<p>また、tan (90° − θ) × tan θ = <span class="frac"><span class="num">x</span><span class="den">y</span></span> × <span class="frac"><span class="num">y</span><span class="den">x</span></span> = 1 だから、tan (90° − θ) = <span class="frac"><span class="num">1</span><span class="den">tan θ</span></span> である。したがって、鋭角 θ について、次の関係が成り立つ。</p>
-<div class="def"><p><b>90° − θ の三角比</b></p><p class="formula">sin (90° − θ) = cos θ</p><p class="formula">cos (90° − θ) = sin θ</p><p class="formula">tan (90° − θ) = <span class="frac"><span class="num">1</span><span class="den">tan θ</span></span></p></div>
-<p>○ + △ = 90° のとき、sin ○ = cos △、cos ○ = sin △、tan ○ = 1 ÷ tan △ とも読める。「90° から引いた角では sin と cos が入れ替わり、tan は逆数になる」と覚えよう。</p>
-<figure><div class="figbox"><svg viewBox="0 0 300 190" role="img" aria-label="直角三角形の鋭角の1つを θ とし、斜辺を r、他の2辺を x, y とする"><polygon points="45.0,155.0 185.0,50.0 185.0,155.0" fill="var(--accent-soft)" stroke="var(--ink)" stroke-width="2"/><path d="M 185.0 155.0 h -11 v -11" fill="none" stroke="var(--ink)" stroke-width="1.4"/><path d="M 71.0 155.0 A 26.0 26.0 0 0 0 65.8 139.4" fill="none" stroke="var(--orange)" stroke-width="1.6"/><text x="77.0" y="151.0" class="svg-txt" font-size="14">θ</text><circle cx="45.0" cy="155.0" r="3" fill="var(--ink)"/><circle cx="185.0" cy="50.0" r="3" fill="var(--ink)"/><circle cx="185.0" cy="155.0" r="3" fill="var(--ink)"/><text x="29.0" y="173.0" class="svg-txt" font-size="15">A</text><text x="187.0" y="42.0" class="svg-txt" font-size="15">B</text><text x="181.0" y="175.0" class="svg-txt" font-size="15">C</text><text x="115.0" y="175.0" text-anchor="middle" class="svg-txt" font-size="14">x</text><text x="193.0" y="107.5" class="svg-txt" font-size="14">y</text><text x="103.0" y="96.5" text-anchor="middle" class="svg-txt" font-size="14">r</text></svg></div><figcaption>直角三角形の鋭角の1つを θ とし、斜辺を r、他の2辺を x, y とする</figcaption></figure>
+<p>直角三角形において、1つの鋭角を <math><mi>θ</mi></math> とすると、もう1つの鋭角は<math><mn>90</mn><mo>°</mo><mo>−</mo><mi>θ</mi></math>である。<br>よって、図（辺は <math><mi>x</mi></math>, <math><mi>y</mi></math>、斜辺 <math><mi>r</mi></math>）において、次のことがいえる。</p>
+<p class="cite"><span class="cite-tag">使う定義</span><math><mi>sin</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mi>y</mi></mrow><mrow><mi>r</mi></mrow></mfrac></math><math><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mi>x</mi></mrow><mrow><mi>r</mi></mrow></mfrac></math><math><mi>tan</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mi>y</mi></mrow><mrow><mi>x</mi></mrow></mfrac></math>直角三角形で見る角を <math><mn>90</mn><mo>°</mo><mo>−</mo><mi>θ</mi></math> に変えると、向かいの辺と隣り合う辺が入れ替わる。</p><p class="formula"><math display="block"><mi>sin</mi><mrow><mo>(</mo><mn>90</mn><mo>°</mo><mo>−</mo><mi>θ</mi><mo>)</mo></mrow><mo>=</mo><mfrac><mi>x</mi><mi>r</mi></mfrac><mo>=</mo><mi>cos</mi><mi>θ</mi></math></p>
+<p class="formula"><math display="block"><mi>cos</mi><mrow><mo>(</mo><mn>90</mn><mo>°</mo><mo>−</mo><mi>θ</mi><mo>)</mo></mrow><mo>=</mo><mfrac><mi>y</mi><mi>r</mi></mfrac><mo>=</mo><mi>sin</mi><mi>θ</mi></math></p>
+<p>また、<math><mi>tan</mi><mrow><mo>(</mo><mn>90</mn><mo>°</mo><mo>−</mo><mi>θ</mi><mo>)</mo></mrow><mo>×</mo><mi>tan</mi><mi>θ</mi><mo>=</mo><mfrac><mi>x</mi><mi>y</mi></mfrac><mo>×</mo><mfrac><mi>y</mi><mi>x</mi></mfrac><mo>=</mo><mn>1</mn></math>だから、<math><mi>tan</mi><mrow><mo>(</mo><mn>90</mn><mo>°</mo><mo>−</mo><mi>θ</mi><mo>)</mo></mrow><mo>=</mo><mfrac><mn>1</mn><mrow><mi>tan</mi><mi>θ</mi></mrow></mfrac></math> である。したがって、鋭角 <math><mi>θ</mi></math> について、次の関係が成り立つ。</p>
+<div class="def"><p><b><math><mn>90</mn><mo>°</mo><mo>−</mo><mi>θ</mi></math>の三角比</b></p><p class="formula"><math display="block"><mi>sin</mi><mrow><mo>(</mo><mn>90</mn><mo>°</mo><mo>−</mo><mi>θ</mi><mo>)</mo></mrow><mo>=</mo><mi>cos</mi><mi>θ</mi></math></p><p class="formula"><math display="block"><mi>cos</mi><mrow><mo>(</mo><mn>90</mn><mo>°</mo><mo>−</mo><mi>θ</mi><mo>)</mo></mrow><mo>=</mo><mi>sin</mi><mi>θ</mi></math></p><p class="formula"><math display="block"><mi>tan</mi><mrow><mo>(</mo><mn>90</mn><mo>°</mo><mo>−</mo><mi>θ</mi><mo>)</mo></mrow><mo>=</mo><mfrac><mn>1</mn><mrow><mi>tan</mi><mi>θ</mi></mrow></mfrac></math></p></div>
+<p><math><mo>○</mo><mo>+</mo><mo>△</mo><mo>=</mo><mn>90</mn><mo>°</mo></math>のとき、<math><mi>sin</mi><mo>○</mo><mo>=</mo><mi>cos</mi><mo>△</mo></math>、<math><mi>cos</mi><mo>○</mo><mo>=</mo><mi>sin</mi><mo>△</mo></math>、<math><mi>tan</mi><mo>○</mo><mo>=</mo><mn>1</mn><mo>÷</mo><mi>tan</mi><mo>△</mo></math>とも読める。<br>「<math><mn>90</mn><mo>°</mo></math>から引いた角では <math><mi>sin</mi></math> と <math><mi>cos</mi></math> が入れ替わり、<math><mi>tan</mi></math> は逆数になる」と覚えよう。</p>
+<figure><div class="figbox"><svg viewBox="0 0 300 190" role="img" aria-label="直角三角形の鋭角の1つを θ とし、斜辺を r、他の2辺を x, y とする"><polygon points="45.0,155.0 185.0,50.0 185.0,155.0" fill="var(--accent-soft)" stroke="var(--ink)" stroke-width="2"/><path d="M 185.0 155.0 h -11 v -11" fill="none" stroke="var(--ink)" stroke-width="1.4"/><path d="M 71.0 155.0 A 26.0 26.0 0 0 0 65.8 139.4" fill="none" stroke="var(--orange)" stroke-width="1.6"/><text x="77.0" y="151.0" class="svg-txt" font-size="14">θ</text><circle cx="45.0" cy="155.0" r="3" fill="var(--ink)"/><circle cx="185.0" cy="50.0" r="3" fill="var(--ink)"/><circle cx="185.0" cy="155.0" r="3" fill="var(--ink)"/><text x="29.0" y="173.0" class="svg-txt" font-size="15">A</text><text x="187.0" y="42.0" class="svg-txt" font-size="15">B</text><text x="181.0" y="175.0" class="svg-txt" font-size="15">C</text><text x="115.0" y="175.0" text-anchor="middle" class="svg-txt" font-size="14">x</text><text x="193.0" y="107.5" class="svg-txt" font-size="14">y</text><text x="103.0" y="96.5" text-anchor="middle" class="svg-txt" font-size="14">r</text></svg></div><figcaption>直角三角形の鋭角の1つを <math><mi>θ</mi></math> とし、斜辺を <math><mi>r</mi></math>、他の2辺を <math><mi>x</mi></math>, <math><mi>y</mi></math> とする</figcaption></figure>
       </section>
-      <section class="card prob" id="prob-ex5" data-flow="ex5" data-label="例5">
+      <section class="nofig card prob" id="prob-ex5" data-flow="ex5" data-label="例5">
         <div class="prob-head">
           <span class="prob-tag ">例 5</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 1</span>
         </div>
         <div class="qside">
-        <p class="prob-q">次の等式を示せ。　(1) sin 53° = cos 37°　(2) cos 80° = sin 10°　(3) tan 75° = <span class="formula" style="display:inline-block;vertical-align:middle;margin:0 4px"><span class="frac"><span class="num">1</span><span class="den">tan 15°</span></span></span></p>
+        <p class="prob-q">次の等式を示せ。　<math><mrow><mo>(</mo><mn>1</mn><mo>)</mo></mrow><mi>sin</mi><mn>53</mn><mo>°</mo><mo>=</mo><mi>cos</mi><mn>37</mn><mo>°</mo></math>　<math><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow><mi>cos</mi><mn>80</mn><mo>°</mo><mo>=</mo><mi>sin</mi><mn>10</mn><mo>°</mo></math>　<math><mrow><mo>(</mo><mn>3</mn><mo>)</mo></mrow><mi>tan</mi><mn>75</mn><mo>°</mo><mo>=</mo><mfrac><mn>1</mn><mrow><mi>tan</mi><mn>15</mn><mo>°</mo></mrow></mfrac></math></p>
         </div>
         <div class="step hint">
           <h3>ヒント 1 ― 2つの角の和を見る</h3>
-<p>(1) 53° + 37° = 90°、(2) 80° + 10° = 90°、(3) 75° + 15° = 90°。どの組も和が 90° になっているね。</p>
+<p><math><mrow><mo>(</mo><mn>1</mn><mo>)</mo></mrow><mn>53</mn><mo>°</mo><mo>+</mo><mn>37</mn><mo>°</mo><mo>=</mo><mn>90</mn><mo>°</mo></math>、<math><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow><mn>80</mn><mo>°</mo><mo>+</mo><mn>10</mn><mo>°</mo><mo>=</mo><mn>90</mn><mo>°</mo></math>、<math><mrow><mo>(</mo><mn>3</mn><mo>)</mo></mrow><mn>75</mn><mo>°</mo><mo>+</mo><mn>15</mn><mo>°</mo><mo>=</mo><mn>90</mn><mo>°</mo></math>。どの組も和が<math><mn>90</mn><mo>°</mo></math>になっているね。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">(1) sin 53° = cos 37°　(2) cos 80° = sin 10°　(3) tan 75° = <span class="frac"><span class="num">1</span><span class="den">tan 15°</span></span></p>
-<p>(1) 53° = 90° − 37° だから、sin 53° = sin (90° − 37°) = cos 37°。</p><p>(2) 80° = 90° − 10° だから、cos 80° = cos (90° − 10°) = sin 10°。</p><p>(3) 75° = 90° − 15° だから、tan 75° = tan (90° − 15°) = 1 ÷ tan 15°。</p>
+          <div class="chain-crow big">
+<div class="crow"><math displaystyle="true"><mrow><mo>(</mo><mn>1</mn><mo>)</mo></mrow><mi>sin</mi><mn>53</mn><mo>°</mo><mo>=</mo><mi>cos</mi><mn>37</mn><mo>°</mo><mspace width="2em"/><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow><mi>cos</mi><mn>80</mn><mo>°</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mrow><mo>(</mo><mn>1</mn><mo>)</mo></mrow><mi>sin</mi><mn>53</mn><mo>°</mo></mphantom><mo>=</mo><mi>sin</mi><mn>10</mn><mo>°</mo><mspace width="2em"/><mrow><mo>(</mo><mn>3</mn><mo>)</mo></mrow><mi>tan</mi><mn>75</mn><mo>°</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mrow><mo>(</mo><mn>1</mn><mo>)</mo></mrow><mi>sin</mi><mn>53</mn><mo>°</mo></mphantom><mo>=</mo><mfrac><mn>1</mn><mrow><mi>tan</mi><mn>15</mn><mo>°</mo></mrow></mfrac></math></div>
+</div><p class="cite"><span class="cite-tag">使う公式</span><math><mi>sin</mi><mo>(</mo><mn>90</mn><mo>°</mo><mo>−</mo><mi>θ</mi><mo>)</mo><mo>=</mo><mi>cos</mi><mi>θ</mi></math><math><mi>cos</mi><mo>(</mo><mn>90</mn><mo>°</mo><mo>−</mo><mi>θ</mi><mo>)</mo><mo>=</mo><mi>sin</mi><mi>θ</mi></math><math><mi>tan</mi><mo>(</mo><mn>90</mn><mo>°</mo><mo>−</mo><mi>θ</mi><mo>)</mo><mo>=</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mi>tan</mi><mi>θ</mi></mrow></mfrac></math>和が <math><mn>90</mn><mo>°</mo></math> になる2つの角の組に、この3つの関係を当てはめている。</p>
+<p><math><mrow><mo>(</mo><mn>1</mn><mo>)</mo></mrow><mn>53</mn><mo>°</mo><mo>=</mo><mn>90</mn><mo>°</mo><mo>−</mo><mn>37</mn><mo>°</mo></math>だから、<math><mi>sin</mi><mn>53</mn><mo>°</mo><mo>=</mo><mi>sin</mi><mrow><mo>(</mo><mn>90</mn><mo>°</mo><mo>−</mo><mn>37</mn><mo>°</mo><mo>)</mo></mrow><mo>=</mo><mi>cos</mi><mn>37</mn><mo>°</mo></math>。</p><p><math><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow><mn>80</mn><mo>°</mo><mo>=</mo><mn>90</mn><mo>°</mo><mo>−</mo><mn>10</mn><mo>°</mo></math>だから、<math><mi>cos</mi><mn>80</mn><mo>°</mo><mo>=</mo><mi>cos</mi><mrow><mo>(</mo><mn>90</mn><mo>°</mo><mo>−</mo><mn>10</mn><mo>°</mo><mo>)</mo></mrow><mo>=</mo><mi>sin</mi><mn>10</mn><mo>°</mo></math>。</p><p><math><mrow><mo>(</mo><mn>3</mn><mo>)</mo></mrow><mn>75</mn><mo>°</mo><mo>=</mo><mn>90</mn><mo>°</mo><mo>−</mo><mn>15</mn><mo>°</mo></math>だから、<math><mi>tan</mi><mn>75</mn><mo>°</mo><mo>=</mo><mi>tan</mi><mrow><mo>(</mo><mn>90</mn><mo>°</mo><mo>−</mo><mn>15</mn><mo>°</mo><mo>)</mo></mrow><mo>=</mo><mn>1</mn><mo>÷</mo><mi>tan</mi><mn>15</mn><mo>°</mo></math>。</p>
         </div>
         <p class="prob-done">例5 クリア！　次は練習11に挑戦しよう。</p>
       </section>
-      <section class="card prob" id="prob-ren11" data-label="練習11">
+      <section class="nofig card prob" id="prob-ren11" data-label="練習11">
         <div class="prob-head">
           <span class="prob-tag ren">練習 11</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
         <div class="qside">
-        <p class="prob-q">次の □ に、sin, cos, tan のうち適するものを入れよ。</p>
+        <p class="prob-q">次の □ に、<math><mi>sin</mi></math>, <math><mi>cos</mi></math>, <math><mi>tan</mi></math> のうち適するものを入れよ。</p>
         </div>
         <div class="tabs" role="tablist" aria-label="練習11の小問">
           <button class="tab" role="tab" data-tab="ren11-1" aria-selected="true">(1)</button>
@@ -552,83 +646,83 @@
         </div>
         <div class="tabpanel show" id="panel-ren11-1" data-flow="ren11-1" data-label="練習11 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　sin 62° = □ 28°</span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><mi>sin</mi><mn>62</mn><mo>°</mo><mo>=</mo><mo>□</mo><mn>28</mn><mo>°</mo></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
           <div class="quiz" id="q-ren11-1" data-correct="2">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>sin</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>cos</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>tan</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mi>sin</mi></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mi>cos</mi></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mi>tan</mi></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
           <p class="verdict"></p>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 和が 90° か確認する</h3>
-<p>62° + 28° = 90°。sin (90° − θ) = cos θ の形だから、sin は何に変わるかな。</p>
+          <h3>ヒント 1 ― 和が<math><mn>90</mn><mo>°</mo></math>か確認する</h3>
+<p><math><mn>62</mn><mo>°</mo><mo>+</mo><mn>28</mn><mo>°</mo><mo>=</mo><mn>90</mn><mo>°</mo></math>。<math><mi>sin</mi><mrow><mo>(</mo><mn>90</mn><mo>°</mo><mo>−</mo><mi>θ</mi><mo>)</mo></mrow><mo>=</mo><mi>cos</mi><mi>θ</mi></math>の形だから、<math><mi>sin</mi></math> は何に変わるかな。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">sin 62° = cos 28°</p>
+          <p class="big"><math display="block"><mi>sin</mi><mn>62</mn><mo>°</mo><mo>=</mo><mi>cos</mi><mn>28</mn><mo>°</mo></math></p><p class="cite"><span class="cite-tag">使う公式</span><math><mi>sin</mi><mo>(</mo><mn>90</mn><mo>°</mo><mo>−</mo><mi>θ</mi><mo>)</mo><mo>=</mo><mi>cos</mi><mi>θ</mi></math>ここでは <math><mn>62</mn><mo>°</mo><mo>=</mo><mn>90</mn><mo>°</mo><mo>−</mo><mn>28</mn><mo>°</mo></math> とみて、<math><mi>sin</mi></math> が <math><mi>cos</mi></math> に変わる。</p>
         </div>
           <p class="prob-done">練習11 (1) クリア！</p>
         </div>
         <div class="tabpanel" id="panel-ren11-2" data-flow="ren11-2" data-label="練習11 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　cos 78° = □ 12°</span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><mi>cos</mi><mn>78</mn><mo>°</mo><mo>=</mo><mo>□</mo><mn>12</mn><mo>°</mo></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
           <div class="quiz" id="q-ren11-2" data-correct="1">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>sin</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>cos</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>tan</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mi>sin</mi></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mi>cos</mi></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mi>tan</mi></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
           <p class="verdict"></p>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 和が 90° か確認する</h3>
-<p>78° + 12° = 90°。cos (90° − θ) = sin θ の形だね。</p>
+          <h3>ヒント 1 ― 和が<math><mn>90</mn><mo>°</mo></math>か確認する</h3>
+<p><math><mn>78</mn><mo>°</mo><mo>+</mo><mn>12</mn><mo>°</mo><mo>=</mo><mn>90</mn><mo>°</mo></math>。<math><mi>cos</mi><mrow><mo>(</mo><mn>90</mn><mo>°</mo><mo>−</mo><mi>θ</mi><mo>)</mo></mrow><mo>=</mo><mi>sin</mi><mi>θ</mi></math>の形だね。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">cos 78° = sin 12°</p>
+          <p class="big"><math display="block"><mi>cos</mi><mn>78</mn><mo>°</mo><mo>=</mo><mi>sin</mi><mn>12</mn><mo>°</mo></math></p><p class="cite"><span class="cite-tag">使う公式</span><math><mi>cos</mi><mo>(</mo><mn>90</mn><mo>°</mo><mo>−</mo><mi>θ</mi><mo>)</mo><mo>=</mo><mi>sin</mi><mi>θ</mi></math>ここでは <math><mn>78</mn><mo>°</mo><mo>=</mo><mn>90</mn><mo>°</mo><mo>−</mo><mn>12</mn><mo>°</mo></math> とみて、<math><mi>cos</mi></math> が <math><mi>sin</mi></math> に変わる。</p>
         </div>
           <p class="prob-done">練習11 (2) クリア！</p>
         </div>
         <div class="tabpanel" id="panel-ren11-3" data-flow="ren11-3" data-label="練習11 (3)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(3)　tan 67° = <span class="formula" style="display:inline-block;vertical-align:middle;margin:0 4px"><span class="frac"><span class="num">1</span><span class="den">□ 23°</span></span></span></span>
+            <span class="sub prob-q" style="margin:0">(3)　<math><mi>tan</mi><mn>67</mn><mo>°</mo><mo>=</mo><mfrac><mn>1</mn><mrow><mo>□</mo><mn>23</mn><mo>°</mo></mrow></mfrac></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― tan は逆数になる</h3>
-<p>67° + 23° = 90°。tan (90° − θ) = 1 ÷ tan θ だから、分母に入るのは何かな。</p>
+          <h3>ヒント 1 ― <math><mi>tan</mi></math> は逆数になる</h3>
+<p><math><mn>67</mn><mo>°</mo><mo>+</mo><mn>23</mn><mo>°</mo><mo>=</mo><mn>90</mn><mo>°</mo></math>。<math><mi>tan</mi><mrow><mo>(</mo><mn>90</mn><mo>°</mo><mo>−</mo><mi>θ</mi><mo>)</mo></mrow><mo>=</mo><mn>1</mn><mo>÷</mo><mi>tan</mi><mi>θ</mi></math>だから、分母に入るのは何かな。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">tan 67° = <span class="frac"><span class="num">1</span><span class="den">tan 23°</span></span></p>
+          <p class="big"><math display="block"><mi>tan</mi><mn>67</mn><mo>°</mo><mo>=</mo><mfrac><mn>1</mn><mrow><mi>tan</mi><mn>23</mn><mo>°</mo></mrow></mfrac></math></p><p class="cite"><span class="cite-tag">使う公式</span><math><mi>tan</mi><mo>(</mo><mn>90</mn><mo>°</mo><mo>−</mo><mi>θ</mi><mo>)</mo><mo>=</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mi>tan</mi><mi>θ</mi></mrow></mfrac></math>ここでは <math><mn>67</mn><mo>°</mo><mo>=</mo><mn>90</mn><mo>°</mo><mo>−</mo><mn>23</mn><mo>°</mo></math> とみて、<math><mi>tan</mi></math> は逆数になる。</p>
         </div>
           <p class="prob-done">練習11 (3) クリア！</p>
         </div>
       </section>
-      <section class="card prob" id="prob-ren12" data-label="練習12">
+      <section class="nofig card prob" id="prob-ren12" data-label="練習12">
         <div class="prob-head">
           <span class="prob-tag ren">練習 12</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
         <div class="qside">
-        <p class="prob-q">次の三角比を 45° 以下の角の三角比で表せ。</p>
+        <p class="prob-q">次の三角比を<math><mn>45</mn><mo>°</mo></math>以下の角の三角比で表せ。</p>
         </div>
         <div class="tabs" role="tablist" aria-label="練習12の小問">
           <button class="tab" role="tab" data-tab="ren12-1" aria-selected="true">(1)</button>
@@ -637,77 +731,77 @@
         </div>
         <div class="tabpanel show" id="panel-ren12-1" data-flow="ren12-1" data-label="練習12 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　sin 64°</span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><mi>sin</mi><mn>64</mn><mo>°</mo></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
           <div class="quiz" id="q-ren12-1" data-correct="1">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>cos 26°</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>sin 26°</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>cos 36°</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>tan 26°</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mi>cos</mi><mn>26</mn><mo>°</mo></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mi>sin</mi><mn>26</mn><mo>°</mo></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mi>cos</mi><mn>36</mn><mo>°</mo></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mi>tan</mi><mn>26</mn><mo>°</mo></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
           <p class="verdict"></p>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 90° − 64° を計算する</h3>
-<p>64° = 90° − 26° と書ける。sin (90° − θ) = cos θ を使おう。26° は 45° 以下だね。</p>
+          <h3>ヒント<math><mn>1</mn><mo>―</mo><mn>90</mn><mo>°</mo><mo>−</mo><mn>64</mn><mo>°</mo></math>を計算する</h3>
+<p><math><mn>64</mn><mo>°</mo><mo>=</mo><mn>90</mn><mo>°</mo><mo>−</mo><mn>26</mn><mo>°</mo></math>と書ける。<math><mi>sin</mi><mrow><mo>(</mo><mn>90</mn><mo>°</mo><mo>−</mo><mi>θ</mi><mo>)</mo></mrow><mo>=</mo><mi>cos</mi><mi>θ</mi></math>を使おう。<math><mn>26</mn><mo>°</mo></math>は<math><mn>45</mn><mo>°</mo></math>以下だね。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">sin 64° = cos 26°</p>
-<p class="formula left">sin 64° = sin (90° − 26°) = cos 26°</p>
+          <p class="big"><math display="block"><mi>sin</mi><mn>64</mn><mo>°</mo><mo>=</mo><mi>cos</mi><mn>26</mn><mo>°</mo></math></p><p class="cite"><span class="cite-tag">使う公式</span><math><mi>sin</mi><mo>(</mo><mn>90</mn><mo>°</mo><mo>−</mo><mi>θ</mi><mo>)</mo><mo>=</mo><mi>cos</mi><mi>θ</mi></math>ここでは <math><mn>64</mn><mo>°</mo><mo>=</mo><mn>90</mn><mo>°</mo><mo>−</mo><mn>26</mn><mo>°</mo></math> と書いて、<math><mn>45</mn><mo>°</mo></math> 以下の角の三角比に直す。</p>
+<p class="formula left"><math display="block"><mi>sin</mi><mn>64</mn><mo>°</mo><mo>=</mo><mi>sin</mi><mrow><mo>(</mo><mn>90</mn><mo>°</mo><mo>−</mo><mn>26</mn><mo>°</mo><mo>)</mo></mrow><mo>=</mo><mi>cos</mi><mn>26</mn><mo>°</mo></math></p>
         </div>
           <p class="prob-done">練習12 (1) クリア！</p>
         </div>
         <div class="tabpanel" id="panel-ren12-2" data-flow="ren12-2" data-label="練習12 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　cos 58°</span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><mi>cos</mi><mn>58</mn><mo>°</mo></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 90° − 58° を計算する</h3>
-<p>58° = 90° − 32°。cos (90° − θ) = sin θ を使おう。</p>
+          <h3>ヒント<math><mn>1</mn><mo>―</mo><mn>90</mn><mo>°</mo><mo>−</mo><mn>58</mn><mo>°</mo></math>を計算する</h3>
+<p><math><mn>58</mn><mo>°</mo><mo>=</mo><mn>90</mn><mo>°</mo><mo>−</mo><mn>32</mn><mo>°</mo></math>。<math><mi>cos</mi><mrow><mo>(</mo><mn>90</mn><mo>°</mo><mo>−</mo><mi>θ</mi><mo>)</mo></mrow><mo>=</mo><mi>sin</mi><mi>θ</mi></math>を使おう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">cos 58° = sin 32°</p>
-<p class="formula left">cos 58° = cos (90° − 32°) = sin 32°</p>
+          <p class="big"><math display="block"><mi>cos</mi><mn>58</mn><mo>°</mo><mo>=</mo><mi>sin</mi><mn>32</mn><mo>°</mo></math></p><p class="cite"><span class="cite-tag">使う公式</span><math><mi>cos</mi><mo>(</mo><mn>90</mn><mo>°</mo><mo>−</mo><mi>θ</mi><mo>)</mo><mo>=</mo><mi>sin</mi><mi>θ</mi></math>ここでは <math><mn>58</mn><mo>°</mo><mo>=</mo><mn>90</mn><mo>°</mo><mo>−</mo><mn>32</mn><mo>°</mo></math> と書いて、<math><mn>45</mn><mo>°</mo></math> 以下の角の三角比に直す。</p>
+<p class="formula left"><math display="block"><mi>cos</mi><mn>58</mn><mo>°</mo><mo>=</mo><mi>cos</mi><mrow><mo>(</mo><mn>90</mn><mo>°</mo><mo>−</mo><mn>32</mn><mo>°</mo><mo>)</mo></mrow><mo>=</mo><mi>sin</mi><mn>32</mn><mo>°</mo></math></p>
         </div>
           <p class="prob-done">練習12 (2) クリア！</p>
         </div>
         <div class="tabpanel" id="panel-ren12-3" data-flow="ren12-3" data-label="練習12 (3)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(3)　tan 83°</span>
+            <span class="sub prob-q" style="margin:0">(3)　<math><mi>tan</mi><mn>83</mn><mo>°</mo></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
           <div class="quiz" id="q-ren12-3" data-correct="3">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>tan 7°</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><span class="frac"><span class="num">1</span><span class="den">cos 7°</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><span class="frac"><span class="num">1</span><span class="den">tan 7°</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>cos 7°</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mi>tan</mi><mn>7</mn><mo>°</mo></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mfrac><mn>1</mn><mrow><mi>cos</mi><mn>7</mn><mo>°</mo></mrow></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mfrac><mn>1</mn><mrow><mi>tan</mi><mn>7</mn><mo>°</mo></mrow></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mi>cos</mi><mn>7</mn><mo>°</mo></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
           <p class="verdict"></p>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 90° − 83° を計算する</h3>
-<p>83° = 90° − 7°。tan (90° − θ) = 1 ÷ tan θ を使おう。</p>
+          <h3>ヒント<math><mn>1</mn><mo>―</mo><mn>90</mn><mo>°</mo><mo>−</mo><mn>83</mn><mo>°</mo></math>を計算する</h3>
+<p><math><mn>83</mn><mo>°</mo><mo>=</mo><mn>90</mn><mo>°</mo><mo>−</mo><mn>7</mn><mo>°</mo></math>。<math><mi>tan</mi><mrow><mo>(</mo><mn>90</mn><mo>°</mo><mo>−</mo><mi>θ</mi><mo>)</mo></mrow><mo>=</mo><mn>1</mn><mo>÷</mo><mi>tan</mi><mi>θ</mi></math>を使おう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">tan 83° = <span class="frac"><span class="num">1</span><span class="den">tan 7°</span></span></p>
-<p class="formula left">tan 83° = tan (90° − 7°) = <span class="frac"><span class="num">1</span><span class="den">tan 7°</span></span></p>
+          <p class="big"><math display="block"><mi>tan</mi><mn>83</mn><mo>°</mo><mo>=</mo><mfrac><mn>1</mn><mrow><mi>tan</mi><mn>7</mn><mo>°</mo></mrow></mfrac></math></p><p class="cite"><span class="cite-tag">使う公式</span><math><mi>tan</mi><mo>(</mo><mn>90</mn><mo>°</mo><mo>−</mo><mi>θ</mi><mo>)</mo><mo>=</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mi>tan</mi><mi>θ</mi></mrow></mfrac></math>ここでは <math><mn>83</mn><mo>°</mo><mo>=</mo><mn>90</mn><mo>°</mo><mo>−</mo><mn>7</mn><mo>°</mo></math> と書いて、<math><mn>45</mn><mo>°</mo></math> 以下の角の三角比に直す。</p>
+<p class="formula left"><math display="block"><mi>tan</mi><mn>83</mn><mo>°</mo><mo>=</mo><mi>tan</mi><mrow><mo>(</mo><mn>90</mn><mo>°</mo><mo>−</mo><mn>7</mn><mo>°</mo><mo>)</mo></mrow><mo>=</mo><mfrac><mn>1</mn><mrow><mi>tan</mi><mn>7</mn><mo>°</mo></mrow></mfrac></math></p>
         </div>
           <p class="prob-done">練習12 (3) クリア！</p>
         </div>
@@ -718,11 +812,11 @@
       <section class="card summary" id="summaryCard" style="display:none">
         <h2>この項のポイント</h2>
         <ul>
-          <li>三角比の相互関係：1 tan θ = sin θ ÷ cos θ、2 sin² θ + cos² θ = 1、3 1 + tan² θ = 1 ÷ cos² θ。</li>
-          <li>sin か cos が分かれば、関係 2 で他方を求め（鋭角なので正の平方根）、関係 1 で tan を出す。</li>
-          <li>tan が分かれば、関係 3 で cos を求め、sin θ = tan θ × cos θ で sin を出す。</li>
-          <li>90° − θ の三角比：sin (90° − θ) = cos θ、cos (90° − θ) = sin θ、tan (90° − θ) = 1 ÷ tan θ。</li>
-          <li>45° より大きい角の三角比は、90° − θ の関係で 45° 以下の角の三角比に書き換えられる。</li>
+          <li><p class="cite"><span class="cite-tag">使う公式</span><math><mi>tan</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mi>sin</mi><mi>θ</mi></mrow><mrow><mi>cos</mi><mi>θ</mi></mrow></mfrac></math><math><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn></math><math><mn>1</mn><mo>+</mo><msup><mi>tan</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>1</mn></mrow><mrow><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></mrow></mfrac></math>1つの三角比が分かれば、この3つの関係で残りが求められる。</p>三角比の相互関係：<math><mn>1</mn><mi>tan</mi><mi>θ</mi><mo>=</mo><mi>sin</mi><mi>θ</mi><mo>÷</mo><mi>cos</mi><mi>θ</mi></math>、<math><mn>2</mn><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn></math>、<math><mn>3</mn><mn>1</mn><mo>+</mo><msup><mi>tan</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn><mo>÷</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></math>。</li>
+          <li><p class="cite"><span class="cite-tag">使う公式</span><math><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn></math><math><mi>tan</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mi>sin</mi><mi>θ</mi></mrow><mrow><mi>cos</mi><mi>θ</mi></mrow></mfrac></math>関係2で他方を求めるときは、鋭角なので正の平方根をとり、関係1で <math><mi>tan</mi><mi>θ</mi></math> を出す。</p><math><mi>sin</mi></math> か <math><mi>cos</mi></math> が分かれば、関係 2 で他方を求め（鋭角なので正の平方根）、関係 1 で <math><mi>tan</mi></math> を出す。</li>
+          <li><p class="cite"><span class="cite-tag">使う公式</span><math><mn>1</mn><mo>+</mo><msup><mi>tan</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mfrac><mrow><mn>1</mn></mrow><mrow><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></mrow></mfrac></math>関係3でまず <math><mi>cos</mi><mi>θ</mi></math> を求め、<math><mi>sin</mi><mi>θ</mi><mo>=</mo><mi>tan</mi><mi>θ</mi><mo>×</mo><mi>cos</mi><mi>θ</mi></math> と変形して <math><mi>sin</mi><mi>θ</mi></math> を出す。</p><math><mi>tan</mi></math> が分かれば、関係 3 で <math><mi>cos</mi></math> を求め、<math><mi>sin</mi><mi>θ</mi><mo>=</mo><mi>tan</mi><mi>θ</mi><mo>×</mo><mi>cos</mi><mi>θ</mi></math>で <math><mi>sin</mi></math> を出す。</li>
+          <li><p class="cite"><span class="cite-tag">使う公式</span><math><mi>sin</mi><mo>(</mo><mn>90</mn><mo>°</mo><mo>−</mo><mi>θ</mi><mo>)</mo><mo>=</mo><mi>cos</mi><mi>θ</mi></math><math><mi>cos</mi><mo>(</mo><mn>90</mn><mo>°</mo><mo>−</mo><mi>θ</mi><mo>)</mo><mo>=</mo><mi>sin</mi><mi>θ</mi></math><math><mi>tan</mi><mo>(</mo><mn>90</mn><mo>°</mo><mo>−</mo><mi>θ</mi><mo>)</mo><mo>=</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mi>tan</mi><mi>θ</mi></mrow></mfrac></math>和が <math><mn>90</mn><mo>°</mo></math> の角どうしでは、<math><mi>sin</mi></math> と <math><mi>cos</mi></math> が入れ替わり、<math><mi>tan</mi></math> は逆数になる。</p><math><mn>90</mn><mo>°</mo><mo>−</mo><mi>θ</mi></math>の三角比：<math><mi>sin</mi><mrow><mo>(</mo><mn>90</mn><mo>°</mo><mo>−</mo><mi>θ</mi><mo>)</mo></mrow><mo>=</mo><mi>cos</mi><mi>θ</mi></math>、<math><mi>cos</mi><mrow><mo>(</mo><mn>90</mn><mo>°</mo><mo>−</mo><mi>θ</mi><mo>)</mo></mrow><mo>=</mo><mi>sin</mi><mi>θ</mi></math>、<math><mi>tan</mi><mrow><mo>(</mo><mn>90</mn><mo>°</mo><mo>−</mo><mi>θ</mi><mo>)</mo></mrow><mo>=</mo><mn>1</mn><mo>÷</mo><mi>tan</mi><mi>θ</mi></math>。</li>
+          <li><math><mn>45</mn><mo>°</mo></math>より大きい角の三角比は、<math><mn>90</mn><mo>°</mo><mo>−</mo><mi>θ</mi></math>の関係で<math><mn>45</mn><mo>°</mo></math>以下の角の三角比に書き換えられる。</li>
         </ul>
       </section>
       <footer>
