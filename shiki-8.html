@@ -310,7 +310,64 @@
       }
       @media (prefers-color-scheme: dark){ .finish-btn{color:#0c1712} }
       .finish-btn:active{transform:scale(.98)}
-    </style>
+    
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+
+      /* 積分記号は大きめに表示する（元のページの可読化デザインに合わせる） */
+      math .int-op{font-size:1.35em}
+      /* calc-12 世代（.card）と calc-18 世代（.unit）の、図のない問題の全幅化 */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig>.step{position:static !important}
+        .card.nofig>.steps-wrap{max-height:none !important;overflow:visible !important}
+        .unit.nofig{display:block !important}
+        .unit.nofig>.qside{position:static !important}
+        .unit.nofig>.steps-stack{max-height:none !important;overflow:visible !important}
+      }
+
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける・第3弾c） */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig .qside{position:static !important}
+        .card.nofig .steps-wrap,.card.nofig .tabpanel .steps-wrap{max-height:none !important;overflow:visible !important}
+      }
+</style>
   </head>
   <body>
     <div class="wrap">
@@ -333,12 +390,12 @@
         <span class="pno">教科書 p.42〜43</span>
       </div>
       <section class="card">
-        <p><i>x</i> のとるべき値を決める条件を表した不等式を、<i>x</i> についての不等式という。<i>x</i> についての不等式において、不等式を成り立たせる <i>x</i> の値を、その不等式の<span class="key">解</span>という。不等式のすべての解を求めることを、その不等式を<span class="key">解く</span>という。</p>
-        <p>不等式の項を移項して、(<i>x</i> の 1 次式) &gt; 0、(<i>x</i> の 1 次式) ≦ 0 などのような形に表される不等式を、<i>x</i> についての<span class="key">1 次不等式</span>という。</p>
+        <p><math><mi>x</mi></math> のとるべき値を決める条件を表した不等式を、<math><mi>x</mi></math> についての不等式という。<math><mi>x</mi></math> についての不等式において、不等式を成り立たせる <math><mi>x</mi></math> の値を、その不等式の<span class="key">解</span>という。不等式のすべての解を求めることを、その不等式を<span class="key">解く</span>という。</p>
+        <p>不等式の項を移項して、<math><mo>(</mo><mi>x</mi></math> の 1 次式) &gt; 0、<math><mo>(</mo><mi>x</mi></math> の 1 次式<math><mo>)</mo><mo>≦</mo><mn>0</mn></math>などのような形に表される不等式を、<math><mi>x</mi></math> についての<span class="key">1 次不等式</span>という。</p>
         <div class="def">
           <p><b>1 次不等式の解き方</b></p>
-          <p>① 不等式を <i>ax</i> &gt; <i>b</i>, <i>ax</i> ≦ <i>b</i> などの形に整理する。</p>
-          <p>② 整理された不等式の両辺を <i>x</i> の係数 <i>a</i> で割る。ただし、<i>a</i> が負の数のときは、不等号の向きが変わることに注意する。</p>
+          <p>① 不等式を <math><mi>ax</mi><mo>&gt;</mo><mi>b</mi><mo>,</mo><mi>ax</mi><mo>≦</mo><mi>b</mi></math> などの形に整理する。</p>
+          <p>② 整理された不等式の両辺を <math><mi>x</mi></math> の係数 <math><mi>a</mi></math> で割る。ただし、<math><mi>a</mi></math> が負の数のときは、不等号の向きが変わることに注意する。</p>
         </div>
         <p>解を数直線で表すとき、図中の白丸（○）はその数が範囲に<b>含まれない</b>こと、黒丸（●）はその数が範囲に<b>含まれる</b>ことを表している。</p>
 <figure><div class="figbox"><svg viewBox="0 0 520 88" role="img" aria-label="数直線">
@@ -350,7 +407,7 @@
 <circle cx="355" cy="58" r="5.5" fill="var(--surface)" stroke="currentColor" stroke-width="2.2"/>
 <text x="355" y="82" font-size="16" text-anchor="middle" fill="currentColor">5</text>
 </svg></div>
-<figcaption>例：<i>x</i> &lt; 5 の数直線。5 は白丸で、範囲は 5 より左側。</figcaption>
+<figcaption>例：<math><mi>x</mi><mo>&lt;</mo><mn>5</mn></math>の数直線。5 は白丸で、範囲は 5 より左側。</figcaption>
 </figure><figure><div class="figbox"><svg viewBox="0 0 520 88" role="img" aria-label="数直線">
 <line x1="145" y1="34" x2="488" y2="34" stroke="currentColor" stroke-width="13" opacity="0.28"/>
 <line x1="145" y1="34" x2="145" y2="56" stroke="currentColor" stroke-width="2" opacity="0.5"/>
@@ -360,14 +417,14 @@
 <circle cx="145" cy="58" r="5.5" fill="currentColor"/>
 <text x="145" y="82" font-size="16" text-anchor="middle" fill="currentColor">−4</text>
 </svg></div>
-<figcaption>例：<i>x</i> ≧ −4 の数直線。−4 は黒丸で、範囲は −4 より右側。</figcaption>
+<figcaption>例：<math><mi>x</mi><mo>≧</mo><mo>−</mo><mn>4</mn></math>の数直線。−4 は黒丸で、範囲は −4 より右側。</figcaption>
 </figure>
         <table class="comp">
           <tr><th>解</th><th>端点</th><th>範囲の向き</th></tr>
-          <tr><td><i>x</i> &lt; 2</td><td>2 は ○（含まない）</td><td>左側</td></tr>
-          <tr><td><i>x</i> ≦ 2</td><td>2 は ●（含む）</td><td>左側</td></tr>
-          <tr><td><i>x</i> &gt; 2</td><td>2 は ○（含まない）</td><td>右側</td></tr>
-          <tr><td><i>x</i> ≧ 2</td><td>2 は ●（含む）</td><td>右側</td></tr>
+          <tr><td><math><mi>x</mi><mo>&lt;</mo><mn>2</mn></math></td><td>2 は ○（含まない）</td><td>左側</td></tr>
+          <tr><td><math><mi>x</mi><mo>≦</mo><mn>2</mn></math></td><td>2 は ●（含む）</td><td>左側</td></tr>
+          <tr><td><math><mi>x</mi><mo>&gt;</mo><mn>2</mn></math></td><td>2 は ○（含まない）</td><td>右側</td></tr>
+          <tr><td><math><mi>x</mi><mo>≧</mo><mn>2</mn></math></td><td>2 は ●（含む）</td><td>右側</td></tr>
         </table>
       </section>
       <div class="sec-head">
@@ -375,53 +432,53 @@
         <h2>例28・29・30で解き方を確認</h2>
         <span class="pno">教科書 p.42〜43</span>
       </div>
-      <section class="card prob" id="prob-ex28" data-flow="ex28" data-label="例28">
+      <section class="nofig card prob" id="prob-ex28" data-flow="ex28" data-label="例28">
         <div class="prob-head">
           <span class="prob-tag ">例 28</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">不等式　3<i>x</i> − 5 &lt; 10　について、<i>x</i> = 1 と <i>x</i> = 6 が解であるかどうかを調べる。</p>
+        <p class="prob-q">不等式　<math><mn>3</mn><mi>x</mi><mo>−</mo><mn>5</mn><mo>&lt;</mo><mn>10</mn></math>　について、<math><mi>x</mi><mo>=</mo><mn>1</mn></math>と <math><mi>x</mi><mo>=</mo><mn>6</mn></math>が解であるかどうかを調べる。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― <i>x</i> = 1 を代入する</h3>
-          <p>左辺は 3・1 − 5 = −2 で、10 より小さい。成り立つかどうかを確認しよう。</p>
+          <h3>ヒント<math><mn>1</mn><mo>―</mo><mi>x</mi><mo>=</mo><mn>1</mn></math>を代入する</h3><p class="cite"><span class="cite-tag">使う定義</span><math><mn>3</mn><mo>⋅</mo><mn>1</mn><mo>−</mo><mn>5</mn><mo>=</mo><mo>−</mo><mn>2</mn></math>不等式の解とは、代入したときに不等式を成り立たせる値のことである。左辺の値を計算して、右辺の 10 と比べよう。</p>
+          <p>左辺は<math><mn>3</mn><mo>⋅</mo><mn>1</mn><mo>−</mo><mn>5</mn><mo>=</mo><mo>−</mo><mn>2</mn></math>で、10 より小さい。成り立つかどうかを確認しよう。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― <i>x</i> = 6 を代入する</h3>
-          <p>左辺は 3・6 − 5 = 13 で、10 より大きいよ。</p>
+          <h3>ヒント<math><mn>2</mn><mo>―</mo><mi>x</mi><mo>=</mo><mn>6</mn></math>を代入する</h3>
+          <p>左辺は<math><mn>3</mn><mo>⋅</mo><mn>6</mn><mo>−</mo><mn>5</mn><mo>=</mo><mn>13</mn></math>で、10 より大きいよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big"><i>x</i> = 1 は解、<i>x</i> = 6 は解ではない</p>
-          <p><i>x</i> = 1 とすると左辺は −2 で 10 より小さいから、不等式は成り立ち、<i>x</i> = 1 はこの不等式の解である。<br><i>x</i> = 6 とすると左辺は 13 で 10 より大きいから、不等式は成り立たず、<i>x</i> = 6 はこの不等式の解ではない。</p>
+          <p class="big"><math><mi>x</mi><mo>=</mo><mn>1</mn></math>は解、<math><mi>x</mi><mo>=</mo><mn>6</mn></math>は解ではない</p>
+          <p><math><mi>x</mi><mo>=</mo><mn>1</mn></math>とすると左辺は −2 で 10 より小さいから、不等式は成り立ち、<math><mi>x</mi><mo>=</mo><mn>1</mn></math>はこの不等式の解である。<br><math><mi>x</mi><mo>=</mo><mn>6</mn></math>とすると左辺は 13 で 10 より大きいから、不等式は成り立たず、<math><mi>x</mi><mo>=</mo><mn>6</mn></math>はこの不等式の解ではない。</p>
         </div>
         <p class="prob-done">例28 クリア！　次は例29だよ。</p>
       </section>
-      <section class="card prob" id="prob-ex29" data-flow="ex29" data-label="例29">
+      <section class="nofig card prob" id="prob-ex29" data-flow="ex29" data-label="例29">
         <div class="prob-head">
           <span class="prob-tag ">例 29</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">不等式　3<i>x</i> − 5 &lt; 10　を解く。</p>
+        <p class="prob-q">不等式　<math><mn>3</mn><mi>x</mi><mo>−</mo><mn>5</mn><mo>&lt;</mo><mn>10</mn></math>　を解く。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 両辺に 5 を足す（性質 1）</h3>
-          <p>左辺を <i>x</i> の項だけにするために、両辺に 5 を足そう。3<i>x</i> − 5 + 5 &lt; 10 + 5 となるよ。</p>
+          <h3>ヒント 1 ― 両辺に 5 を足す（性質 1）</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mn>3</mn><mi>x</mi><mo>−</mo><mn>5</mn><mo>&lt;</mo><mn>10</mn></math>両辺に同じ数 5 を足しても、不等号の向きは変わらない（性質 1）。左辺を <math><mi>x</mi></math> の項だけにしよう。</p>
+          <p>左辺を <math><mi>x</mi></math> の項だけにするために、両辺に 5 を足そう。<math><mn>3</mn><mi>x</mi><mo>−</mo><mn>5</mn><mo>+</mo><mn>5</mn><mo>&lt;</mo><mn>10</mn><mo>+</mo><mn>5</mn></math>となるよ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 両辺を 3 で割る（性質 3）</h3>
-          <p>3<i>x</i> &lt; 15 の両辺を正の数 3 で割ろう。向きは変わらないよ。</p>
+          <p><math><mn>3</mn><mi>x</mi><mo>&lt;</mo><mn>15</mn></math>の両辺を正の数 3 で割ろう。向きは変わらないよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big"><i>x</i> &lt; 5</p>
-          <p>両辺に 5 を足すと　3<i>x</i> &lt; 15<br>両辺を 3 で割って　<i>x</i> &lt; 5</p><figure><div class="figbox"><svg viewBox="0 0 520 88" role="img" aria-label="数直線">
+          <p class="big"><math display="block"><mi>x</mi><mo>&lt;</mo><mn>5</mn></math></p>
+          <p>両辺に 5 を足すと　<math><mn>3</mn><mi>x</mi><mo>&lt;</mo><mn>15</mn></math><br>両辺を 3 で割って　<math><mi>x</mi><mo>&lt;</mo><mn>5</mn></math></p><figure><div class="figbox"><svg viewBox="0 0 520 88" role="img" aria-label="数直線">
 <line x1="18" y1="34" x2="355" y2="34" stroke="currentColor" stroke-width="13" opacity="0.28"/>
 <line x1="355" y1="34" x2="355" y2="56" stroke="currentColor" stroke-width="2" opacity="0.5"/>
 <line x1="18" y1="58" x2="492" y2="58" stroke="currentColor" stroke-width="1.8"/>
@@ -430,33 +487,33 @@
 <circle cx="355" cy="58" r="5.5" fill="var(--surface)" stroke="currentColor" stroke-width="2.2"/>
 <text x="355" y="82" font-size="16" text-anchor="middle" fill="currentColor">5</text>
 </svg></div>
-<figcaption>解 <i>x</i> &lt; 5 を数直線で表した図。</figcaption>
+<figcaption>解 <math><mi>x</mi><mo>&lt;</mo><mn>5</mn></math>を数直線で表した図。</figcaption>
 </figure>
         </div>
         <p class="prob-done">例29 クリア！　次は例30だよ。</p>
       </section>
-      <section class="card prob" id="prob-ex30" data-flow="ex30" data-label="例30">
+      <section class="nofig card prob" id="prob-ex30" data-flow="ex30" data-label="例30">
         <div class="prob-head">
           <span class="prob-tag ">例 30</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">不等式　−2<i>x</i> + 1 ≦ 9　を解く。</p>
+        <p class="prob-q">不等式　<math><mo>−</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>1</mn><mo>≦</mo><mn>9</mn></math>　を解く。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 両辺から 1 を引く（性質 2）</h3>
-          <p>−2<i>x</i> + 1 − 1 ≦ 9 − 1、すなわち −2<i>x</i> ≦ 8 となるよ。</p>
+          <h3>ヒント 1 ― 両辺から 1 を引く（性質 2）</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mo>−</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>1</mn><mo>≦</mo><mn>9</mn></math>両辺から同じ数 1 を引いても、不等号の向きは変わらない（性質 2）。</p>
+          <p><math><mo>−</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>1</mn><mo>−</mo><mn>1</mn><mo>≦</mo><mn>9</mn><mo>−</mo><mn>1</mn></math>、すなわち<math><mo>−</mo><mn>2</mn><mi>x</mi><mo>≦</mo><mn>8</mn></math>となるよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― 両辺を −2 で割る（性質 4）</h3>
+          <h3>ヒント 2 ― 両辺を −2 で割る（性質 4）</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mo>−</mo><mn>2</mn><mi>x</mi><mo>≦</mo><mn>8</mn></math>両辺を負の数 −2 で割ると、不等号の向きが変わる（性質 4）。</p>
           <p>負の数で割るから、不等号の向きが変わることに注意しよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big"><i>x</i> ≧ −4</p>
-          <p>両辺から 1 を引くと　−2<i>x</i> ≦ 8<br>両辺を −2 で割ると（不等号の向きが変わる）　<i>x</i> ≧ −4</p><figure><div class="figbox"><svg viewBox="0 0 520 88" role="img" aria-label="数直線">
+          <p class="big"><math display="block"><mi>x</mi><mo>≧</mo><mo>−</mo><mn>4</mn></math></p>
+          <p>両辺から 1 を引くと　<math><mo>−</mo><mn>2</mn><mi>x</mi><mo>≦</mo><mn>8</mn></math><br>両辺を −2 で割ると（不等号の向きが変わる）　<math><mi>x</mi><mo>≧</mo><mo>−</mo><mn>4</mn></math></p><figure><div class="figbox"><svg viewBox="0 0 520 88" role="img" aria-label="数直線">
 <line x1="145" y1="34" x2="488" y2="34" stroke="currentColor" stroke-width="13" opacity="0.28"/>
 <line x1="145" y1="34" x2="145" y2="56" stroke="currentColor" stroke-width="2" opacity="0.5"/>
 <line x1="18" y1="58" x2="492" y2="58" stroke="currentColor" stroke-width="1.8"/>
@@ -465,7 +522,7 @@
 <circle cx="145" cy="58" r="5.5" fill="currentColor"/>
 <text x="145" y="82" font-size="16" text-anchor="middle" fill="currentColor">−4</text>
 </svg></div>
-<figcaption>解 <i>x</i> ≧ −4 を数直線で表した図。</figcaption>
+<figcaption>解 <math><mi>x</mi><mo>≧</mo><mo>−</mo><mn>4</mn></math>を数直線で表した図。</figcaption>
 </figure>
         </div>
         <p class="prob-done">例30 クリア！　次は練習44に挑戦しよう。</p>
@@ -475,7 +532,7 @@
         <h2>練習問題に挑戦</h2>
         <span class="pno">教科書 p.43</span>
       </div>
-      <section class="card prob" id="prob-ren44" data-label="練習44">
+      <section class="nofig card prob" id="prob-ren44" data-label="練習44">
         <div class="prob-head">
           <span class="prob-tag ren">練習 44</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
@@ -490,63 +547,63 @@
         </div>
         <div class="tabpanel show" id="panel-ren44-1" data-flow="ren44-1" data-label="練習44 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　5<i>x</i> − 9 &gt; 1</span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><mn>5</mn><mi>x</mi><mo>−</mo><mn>9</mn><mo>&gt;</mo><mn>1</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― 移項して整理する</h3>
-          <p>−9 を移項すると 5<i>x</i> &gt; 1 + 9、すなわち 5<i>x</i> &gt; 10。両辺を 5 で割ろう。</p>
+          <p>−9 を移項すると<math><mn>5</mn><mi>x</mi><mo>&gt;</mo><mn>1</mn><mo>+</mo><mn>9</mn></math>、すなわち<math><mn>5</mn><mi>x</mi><mo>&gt;</mo><mn>10</mn></math>。両辺を 5 で割ろう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big"><i>x</i> &gt; 2</p>
+          <p class="big"><math display="block"><mi>x</mi><mo>&gt;</mo><mn>2</mn></math></p>
         </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren44-2" data-flow="ren44-2" data-label="練習44 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　2<i>x</i> + 3 ≦ 5</span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><mn>2</mn><mi>x</mi><mo>+</mo><mn>3</mn><mo>≦</mo><mn>5</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― 移項して整理する</h3>
-          <p>3 を移項すると 2<i>x</i> ≦ 5 − 3、すなわち 2<i>x</i> ≦ 2。両辺を 2 で割ろう。</p>
+          <p>3 を移項すると<math><mn>2</mn><mi>x</mi><mo>≦</mo><mn>5</mn><mo>−</mo><mn>3</mn></math>、すなわち<math><mn>2</mn><mi>x</mi><mo>≦</mo><mn>2</mn></math>。両辺を 2 で割ろう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big"><i>x</i> ≦ 1</p>
+          <p class="big"><math display="block"><mi>x</mi><mo>≦</mo><mn>1</mn></math></p>
         </div>
           <p class="prob-done">(2) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren44-3" data-flow="ren44-3" data-label="練習44 (3)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(3)　−4<i>x</i> − 5 &lt; 7</span>
+            <span class="sub prob-q" style="margin:0">(3)　<math><mo>−</mo><mn>4</mn><mi>x</mi><mo>−</mo><mn>5</mn><mo>&lt;</mo><mn>7</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
           <div class="quiz" id="qz-ren44-3" data-correct="2">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><i>x</i> &lt; −3</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><i>x</i> &gt; −3</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><i>x</i> &gt; 3</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><i>x</i> &lt; 3</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mi>x</mi><mo>&lt;</mo><mo>−</mo><mn>3</mn></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mi>x</mi><mo>&gt;</mo><mo>−</mo><mn>3</mn></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mi>x</mi><mo>&gt;</mo><mn>3</mn></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mi>x</mi><mo>&lt;</mo><mn>3</mn></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
           <p class="verdict"></p>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 移項してから −4 で割る</h3>
-          <p>−5 を移項すると −4<i>x</i> &lt; 12。両辺を負の数 −4 で割るから、向きが変わるよ。</p>
+          <h3>ヒント 1 ― 移項してから −4 で割る</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mo>−</mo><mn>4</mn><mi>x</mi><mo>&lt;</mo><mn>12</mn></math>移項するとこの形になる。両辺を負の数 −4 で割るので、不等号の向きが変わる（性質 4）。</p>
+          <p>−5 を移項すると<math><mo>−</mo><mn>4</mn><mi>x</mi><mo>&lt;</mo><mn>12</mn></math>。両辺を負の数 −4 で割るから、向きが変わるよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big"><i>x</i> &gt; −3</p>
+          <p class="big"><math display="block"><mi>x</mi><mo>&gt;</mo><mo>−</mo><mn>3</mn></math></p>
         </div>
           <p class="prob-done">(3) クリア！　練習44は全部おわり。次は例題7だよ。</p>
         </div>
@@ -556,28 +613,28 @@
         <h2>例題7・8に挑戦</h2>
         <span class="pno">教科書 p.44</span>
       </div>
-      <section class="card prob" id="prob-reidai7" data-flow="reidai7" data-label="例題7">
+      <section class="nofig card prob" id="prob-reidai7" data-flow="reidai7" data-label="例題7">
         <div class="prob-head">
           <span class="prob-tag ">例題 7</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">次の 1 次不等式を解け。　2<i>x</i> − 7 ≦ 5<i>x</i> − 1</p>
+        <p class="prob-q">次の 1 次不等式を解け。　<math><mn>2</mn><mi>x</mi><mo>−</mo><mn>7</mn><mo>≦</mo><mn>5</mn><mi>x</mi><mo>−</mo><mn>1</mn></math></p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 移項する</h3>
-          <p>5<i>x</i> を左辺へ、−7 を右辺へ移項しよう。2<i>x</i> − 5<i>x</i> ≦ −1 + 7 となるよ。</p>
+          <h3>ヒント 1 ― 移項する</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mn>2</mn><mi>x</mi><mo>−</mo><mn>5</mn><mi>x</mi><mo>≦</mo><mo>−</mo><mn>1</mn><mo>+</mo><mn>7</mn></math>移項は性質 1・2 を使った変形で、移項した項は符号が変わる。<math><mn>5</mn><mi>x</mi></math> を左辺へ、−7 を右辺へ移そう。</p>
+          <p><math><mn>5</mn><mi>x</mi></math> を左辺へ、−7 を右辺へ移項しよう。<math><mn>2</mn><mi>x</mi><mo>−</mo><mn>5</mn><mi>x</mi><mo>≦</mo><mo>−</mo><mn>1</mn><mo>+</mo><mn>7</mn></math>となるよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― −3 で割る</h3>
-          <p>整理すると −3<i>x</i> ≦ 6。両辺を負の数 −3 で割るから、向きが変わるよ。</p>
+          <h3>ヒント 2 ― −3 で割る</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mo>−</mo><mn>3</mn><mi>x</mi><mo>≦</mo><mn>6</mn></math>整理するとこの形になる。両辺を負の数 −3 で割るので、不等号の向きが変わる。</p>
+          <p>整理すると<math><mo>−</mo><mn>3</mn><mi>x</mi><mo>≦</mo><mn>6</mn></math>。両辺を負の数 −3 で割るから、向きが変わるよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big"><i>x</i> ≧ −2</p>
-          <p>移項すると　2<i>x</i> − 5<i>x</i> ≦ −1 + 7<br>整理すると　−3<i>x</i> ≦ 6<br>両辺を −3 で割って　<i>x</i> ≧ −2</p>
+          <p class="big"><math display="block"><mi>x</mi><mo>≧</mo><mo>−</mo><mn>2</mn></math></p>
+          <p>移項すると　<math><mn>2</mn><mi>x</mi><mo>−</mo><mn>5</mn><mi>x</mi><mo>≦</mo><mo>−</mo><mn>1</mn><mo>+</mo><mn>7</mn></math><br>整理すると　<math><mo>−</mo><mn>3</mn><mi>x</mi><mo>≦</mo><mn>6</mn></math><br>両辺を −3 で割って　<math><mi>x</mi><mo>≧</mo><mo>−</mo><mn>2</mn></math></p>
         </div>
         <p class="prob-done">例題7 クリア！　次は練習45に挑戦しよう。</p>
       </section>
@@ -586,7 +643,7 @@
         <h2>練習問題に挑戦</h2>
         <span class="pno">教科書 p.44</span>
       </div>
-      <section class="card prob" id="prob-ren45" data-label="練習45">
+      <section class="nofig card prob" id="prob-ren45" data-label="練習45">
         <div class="prob-head">
           <span class="prob-tag ren">練習 45</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
@@ -602,108 +659,108 @@
         </div>
         <div class="tabpanel show" id="panel-ren45-1" data-flow="ren45-1" data-label="練習45 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　5<i>x</i> − 2 &lt; 2<i>x</i> + 4</span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><mn>5</mn><mi>x</mi><mo>−</mo><mn>2</mn><mo>&lt;</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>4</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― 移項して整理する</h3>
-          <p>2<i>x</i> を左辺へ、−2 を右辺へ移項すると 3<i>x</i> &lt; 6 となるよ。</p>
+          <p><math><mn>2</mn><mi>x</mi></math> を左辺へ、−2 を右辺へ移項すると<math><mn>3</mn><mi>x</mi><mo>&lt;</mo><mn>6</mn></math>となるよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big"><i>x</i> &lt; 2</p>
+          <p class="big"><math display="block"><mi>x</mi><mo>&lt;</mo><mn>2</mn></math></p>
         </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren45-2" data-flow="ren45-2" data-label="練習45 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　6<i>x</i> − 3 ≧ 8<i>x</i> + 7</span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><mn>6</mn><mi>x</mi><mo>−</mo><mn>3</mn><mo>≧</mo><mn>8</mn><mi>x</mi><mo>+</mo><mn>7</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 移項して整理する</h3>
-          <p>8<i>x</i> を左辺へ、−3 を右辺へ移項すると −2<i>x</i> ≧ 10。負の数で割るときの向きに注意。</p>
+          <h3>ヒント 1 ― 移項して整理する</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mo>−</mo><mn>2</mn><mi>x</mi><mo>≧</mo><mn>10</mn></math>移項して整理するとこの形になる。両辺を負の数 −2 で割るので、不等号の向きが変わる。</p>
+          <p><math><mn>8</mn><mi>x</mi></math> を左辺へ、−3 を右辺へ移項すると<math><mo>−</mo><mn>2</mn><mi>x</mi><mo>≧</mo><mn>10</mn></math>。負の数で割るときの向きに注意。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big"><i>x</i> ≦ −5</p>
+          <p class="big"><math display="block"><mi>x</mi><mo>≦</mo><mo>−</mo><mn>5</mn></math></p>
         </div>
           <p class="prob-done">(2) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren45-3" data-flow="ren45-3" data-label="練習45 (3)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(3)　2(4<i>x</i> − 1) ≧ 5<i>x</i> − 11</span>
+            <span class="sub prob-q" style="margin:0">(3)　<math><mn>2</mn><mrow><mo>(</mo><mn>4</mn><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mo>≧</mo><mn>5</mn><mi>x</mi><mo>−</mo><mn>11</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― かっこをはずす</h3>
-          <p>左辺を展開すると 8<i>x</i> − 2 ≧ 5<i>x</i> − 11。移項して整理しよう。</p>
+          <h3>ヒント 1 ― かっこをはずす</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mn>2</mn><mrow><mo>(</mo><mn>4</mn><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mo>=</mo><mn>8</mn><mi>x</mi><mo>−</mo><mn>2</mn></math>かっこは分配法則で外す。そのあと移項して整理しよう。</p>
+          <p>左辺を展開すると<math><mn>8</mn><mi>x</mi><mo>−</mo><mn>2</mn><mo>≧</mo><mn>5</mn><mi>x</mi><mo>−</mo><mn>11</mn></math>。移項して整理しよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big"><i>x</i> ≧ −3</p>
-          <p>展開して移項すると　8<i>x</i> − 5<i>x</i> ≧ −11 + 2　すなわち　3<i>x</i> ≧ −9　よって</p>
+          <p class="big"><math display="block"><mi>x</mi><mo>≧</mo><mo>−</mo><mn>3</mn></math></p>
+          <p>展開して移項すると　<math><mn>8</mn><mi>x</mi><mo>−</mo><mn>5</mn><mi>x</mi><mo>≧</mo><mo>−</mo><mn>11</mn><mo>+</mo><mn>2</mn></math>　すなわち　<math><mn>3</mn><mi>x</mi><mo>≧</mo><mo>−</mo><mn>9</mn></math>　よって</p>
         </div>
           <p class="prob-done">(3) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren45-4" data-flow="ren45-4" data-label="練習45 (4)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(4)　3(3 − 2<i>x</i>) &lt; 4 − 3<i>x</i></span>
+            <span class="sub prob-q" style="margin:0">(4)　<math><mn>3</mn><mrow><mo>(</mo><mn>3</mn><mo>−</mo><mn>2</mn><mi>x</mi><mo>)</mo></mrow><mo>&lt;</mo><mn>4</mn><mo>−</mo><mn>3</mn><mi>x</mi></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
           <div class="quiz" id="qz-ren45-4" data-correct="3">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><i>x</i> &lt; <span class="frac"><span class="num">5</span><span class="den">3</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><i>x</i> &gt; −<span class="frac"><span class="num">5</span><span class="den">3</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><i>x</i> &gt; <span class="frac"><span class="num">5</span><span class="den">3</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><i>x</i> &lt; −<span class="frac"><span class="num">5</span><span class="den">3</span></span></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mi>x</mi><mo>&lt;</mo><mfrac><mn>5</mn><mn>3</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mi>x</mi><mo>&gt;</mo><mo>−</mo><mfrac><mn>5</mn><mn>3</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mi>x</mi><mo>&gt;</mo><mfrac><mn>5</mn><mn>3</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mi>x</mi><mo>&lt;</mo><mo>−</mo><mfrac><mn>5</mn><mn>3</mn></mfrac></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
           <p class="verdict"></p>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― かっこをはずして移項する</h3>
-          <p>左辺を展開すると 9 − 6<i>x</i> &lt; 4 − 3<i>x</i>。−3<i>x</i> を左辺へ、9 を右辺へ移項しよう。</p>
+          <h3>ヒント 1 ― かっこをはずして移項する</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mn>9</mn><mo>−</mo><mn>6</mn><mi>x</mi><mo>&lt;</mo><mn>4</mn><mo>−</mo><mn>3</mn><mi>x</mi></math>かっこを外すとこの形になる。<math><mi>x</mi></math> の項を左辺へ、定数項を右辺へ移項しよう。</p>
+          <p>左辺を展開すると<math><mn>9</mn><mo>−</mo><mn>6</mn><mi>x</mi><mo>&lt;</mo><mn>4</mn><mo>−</mo><mn>3</mn><mi>x</mi></math>。<math><mo>−</mo><mn>3</mn><mi>x</mi></math> を左辺へ、9 を右辺へ移項しよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big"><i>x</i> &gt; <span class="frac"><span class="num">5</span><span class="den">3</span></span></p>
-          <p>展開して移項すると　−6<i>x</i> + 3<i>x</i> &lt; 4 − 9　すなわち　−3<i>x</i> &lt; −5<br>両辺を −3 で割って（向きが変わる）</p>
+          <p class="big"><math display="block"><mi>x</mi><mo>&gt;</mo><mfrac><mn>5</mn><mn>3</mn></mfrac></math></p>
+          <p>展開して移項すると　<math><mo>−</mo><mn>6</mn><mi>x</mi><mo>+</mo><mn>3</mn><mi>x</mi><mo>&lt;</mo><mn>4</mn><mo>−</mo><mn>9</mn></math>　すなわち　<math><mo>−</mo><mn>3</mn><mi>x</mi><mo>&lt;</mo><mo>−</mo><mn>5</mn></math><br>両辺を −3 で割って（向きが変わる）</p>
         </div>
           <p class="prob-done">(4) クリア！　練習45は全部おわり。次は例題8だよ。</p>
         </div>
       </section>
-      <section class="card prob" id="prob-reidai8" data-flow="reidai8" data-label="例題8">
+      <section class="nofig card prob" id="prob-reidai8" data-flow="reidai8" data-label="例題8">
         <div class="prob-head">
           <span class="prob-tag ">例題 8</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">次の 1 次不等式を解け。　<span class="frac"><span class="num">4</span><span class="den">3</span></span><i>x</i> + 1 ≧ <span class="frac"><span class="num">1</span><span class="den">2</span></span><i>x</i> − <span class="frac"><span class="num">1</span><span class="den">3</span></span></p>
+        <p class="prob-q">次の 1 次不等式を解け。　<math><mfrac><mn>4</mn><mn>3</mn></mfrac><mi>x</mi><mo>+</mo><mn>1</mn><mo>≧</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mi>x</mi><mo>−</mo><mfrac><mn>1</mn><mn>3</mn></mfrac></math></p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 両辺に 6 を掛ける</h3>
+          <h3>ヒント 1 ― 両辺に 6 を掛ける</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mi>A</mi><mo>&lt;</mo><mi>B</mi><mo>⇒</mo><mn>6</mn><mi>A</mi><mo>&lt;</mo><mn>6</mn><mi>B</mi></math>両辺に正の数を掛けても、不等号の向きは変わらない。ここでは分母 2 と 3 の最小公倍数 6 を両辺に掛けて、分母をはらう。</p>
           <p>分母をはらうために、分母 2 と 3 の最小公倍数 6 を両辺に掛けよう。各項すべてに 6 を掛けること。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 移項して整理する</h3>
-          <p>6 を掛けると 8<i>x</i> + 6 ≧ 3<i>x</i> − 2。移項すると 5<i>x</i> ≧ −8 となるよ。</p>
+          <p>6 を掛けると<math><mn>8</mn><mi>x</mi><mo>+</mo><mn>6</mn><mo>≧</mo><mn>3</mn><mi>x</mi><mo>−</mo><mn>2</mn></math>。移項すると<math><mn>5</mn><mi>x</mi><mo>≧</mo><mo>−</mo><mn>8</mn></math>となるよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big"><i>x</i> ≧ −<span class="frac"><span class="num">8</span><span class="den">5</span></span></p>
-          <p>両辺に 6 を掛けると　8<i>x</i> + 6 ≧ 3<i>x</i> − 2<br>移項して整理すると　5<i>x</i> ≧ −8　よって</p>
+          <p class="big"><math display="block"><mi>x</mi><mo>≧</mo><mo>−</mo><mfrac><mn>8</mn><mn>5</mn></mfrac></math></p>
+          <p>両辺に 6 を掛けると　<math><mn>8</mn><mi>x</mi><mo>+</mo><mn>6</mn><mo>≧</mo><mn>3</mn><mi>x</mi><mo>−</mo><mn>2</mn></math><br>移項して整理すると　<math><mn>5</mn><mi>x</mi><mo>≧</mo><mo>−</mo><mn>8</mn></math>　よって</p>
         </div>
         <p class="prob-done">例題8 クリア！　次は練習46に挑戦しよう。</p>
       </section>
@@ -712,7 +769,7 @@
         <h2>練習問題に挑戦</h2>
         <span class="pno">教科書 p.44</span>
       </div>
-      <section class="card prob" id="prob-ren46" data-label="練習46">
+      <section class="nofig card prob" id="prob-ren46" data-label="練習46">
         <div class="prob-head">
           <span class="prob-tag ren">練習 46</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
@@ -726,48 +783,48 @@
         </div>
         <div class="tabpanel show" id="panel-ren46-1" data-flow="ren46-1" data-label="練習46 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　<span class="frac"><span class="num">1</span><span class="den">2</span></span><i>x</i> − 1 ≦ <span class="frac"><span class="num">2</span><span class="den">7</span></span><i>x</i> + <span class="frac"><span class="num">1</span><span class="den">2</span></span></span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><mfrac><mn>1</mn><mn>2</mn></mfrac><mi>x</mi><mo>−</mo><mn>1</mn><mo>≦</mo><mfrac><mn>2</mn><mn>7</mn></mfrac><mi>x</mi><mo>+</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― 両辺に 14 を掛ける</h3>
-          <p>分母 2 と 7 の最小公倍数 14 を両辺に掛けると、7<i>x</i> − 14 ≦ 4<i>x</i> + 7 となるよ。</p>
+          <p>分母 2 と 7 の最小公倍数 14 を両辺に掛けると、<math><mn>7</mn><mi>x</mi><mo>−</mo><mn>14</mn><mo>≦</mo><mn>4</mn><mi>x</mi><mo>+</mo><mn>7</mn></math>となるよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big"><i>x</i> ≦ 7</p>
-          <p>両辺に 14 を掛けると　7<i>x</i> − 14 ≦ 4<i>x</i> + 7<br>移項すると　7<i>x</i> − 4<i>x</i> ≦ 7 + 14　すなわち　3<i>x</i> ≦ 21　よって</p>
+          <p class="big"><math display="block"><mi>x</mi><mo>≦</mo><mn>7</mn></math></p>
+          <p>両辺に 14 を掛けると　<math><mn>7</mn><mi>x</mi><mo>−</mo><mn>14</mn><mo>≦</mo><mn>4</mn><mi>x</mi><mo>+</mo><mn>7</mn></math><br>移項すると　<math><mn>7</mn><mi>x</mi><mo>−</mo><mn>4</mn><mi>x</mi><mo>≦</mo><mn>7</mn><mo>+</mo><mn>14</mn></math>　すなわち　<math><mn>3</mn><mi>x</mi><mo>≦</mo><mn>21</mn></math>　よって</p>
         </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren46-2" data-flow="ren46-2" data-label="練習46 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　<span class="frac"><span class="num">1</span><span class="den">3</span></span><i>x</i> + 1 &lt; <span class="frac"><span class="num">3</span><span class="den">4</span></span><i>x</i> − <span class="frac"><span class="num">1</span><span class="den">2</span></span></span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><mfrac><mn>1</mn><mn>3</mn></mfrac><mi>x</mi><mo>+</mo><mn>1</mn><mo>&lt;</mo><mfrac><mn>3</mn><mn>4</mn></mfrac><mi>x</mi><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
           <div class="quiz" id="qz-ren46-2" data-correct="2">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><i>x</i> &lt; <span class="frac"><span class="num">18</span><span class="den">5</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><i>x</i> &gt; <span class="frac"><span class="num">18</span><span class="den">5</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><i>x</i> &gt; <span class="frac"><span class="num">5</span><span class="den">18</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><i>x</i> &lt; −<span class="frac"><span class="num">18</span><span class="den">5</span></span></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mi>x</mi><mo>&lt;</mo><mfrac><mn>18</mn><mn>5</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mi>x</mi><mo>&gt;</mo><mfrac><mn>18</mn><mn>5</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mi>x</mi><mo>&gt;</mo><mfrac><mn>5</mn><mn>18</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mi>x</mi><mo>&lt;</mo><mo>−</mo><mfrac><mn>18</mn><mn>5</mn></mfrac></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
           <p class="verdict"></p>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 両辺に 12 を掛ける</h3>
-          <p>分母 3 と 4 の最小公倍数 12 を両辺に掛けると、4<i>x</i> + 12 &lt; 9<i>x</i> − 6 となるよ。</p>
+          <h3>ヒント 1 ― 両辺に 12 を掛ける</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mn>4</mn><mi>x</mi><mo>+</mo><mn>12</mn><mo>&lt;</mo><mn>9</mn><mi>x</mi><mo>−</mo><mn>6</mn></math>分母 3 と 4 の最小公倍数 12 を両辺に掛けると、この形になる。あとは移項して整理しよう。</p>
+          <p>分母 3 と 4 の最小公倍数 12 を両辺に掛けると、<math><mn>4</mn><mi>x</mi><mo>+</mo><mn>12</mn><mo>&lt;</mo><mn>9</mn><mi>x</mi><mo>−</mo><mn>6</mn></math>となるよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big"><i>x</i> &gt; <span class="frac"><span class="num">18</span><span class="den">5</span></span></p>
-          <p>移項すると　4<i>x</i> − 9<i>x</i> &lt; −6 − 12　すなわち　−5<i>x</i> &lt; −18<br>両辺を −5 で割って（向きが変わる）</p>
+          <p class="big"><math display="block"><mi>x</mi><mo>&gt;</mo><mfrac><mn>18</mn><mn>5</mn></mfrac></math></p>
+          <p>移項すると　<math><mn>4</mn><mi>x</mi><mo>−</mo><mn>9</mn><mi>x</mi><mo>&lt;</mo><mo>−</mo><mn>6</mn><mo>−</mo><mn>12</mn></math>　すなわち　<math><mo>−</mo><mn>5</mn><mi>x</mi><mo>&lt;</mo><mo>−</mo><mn>18</mn></math><br>両辺を −5 で割って（向きが変わる）</p>
         </div>
           <p class="prob-done">(2) クリア！　練習46は全部おわり。次は連立不等式だよ。</p>
         </div>
@@ -779,7 +836,7 @@
       </div>
       <section class="card">
         <p>いくつかの不等式を組み合わせたものを<span class="key">連立不等式</span>といい、それらの不等式の解に共通する範囲を、その連立不等式の<span class="key">解</span>という。また、連立不等式の解を求めることを、その連立不等式を<span class="key">解く</span>という。</p>
-        <p>共通範囲は数直線で重なる部分を読む。たとえば例31 (1) では、<i>x</i> ≧ −2（①）と <i>x</i> &lt; 5（②）の共通範囲は −2 ≦ <i>x</i> &lt; 5 で、(2) では <i>x</i> ≧ 3（①）と <i>x</i> &gt; 0（②）の共通範囲は <i>x</i> ≧ 3 である。</p>
+        <p>共通範囲は数直線で重なる部分を読む。たとえば例31 (1) では、<math><mi>x</mi><mo>≧</mo><mo>−</mo><mn>2</mn><mrow><mo>(</mo><mo>①</mo><mo>)</mo></mrow></math>と <math><mi>x</mi><mo>&lt;</mo><mn>5</mn><mrow><mo>(</mo><mo>②</mo><mo>)</mo></mrow></math>の共通範囲は<math><mo>−</mo><mn>2</mn><mo>≦</mo><mi>x</mi><mo>&lt;</mo><mn>5</mn></math>で、(2) では <math><mi>x</mi><mo>≧</mo><mn>3</mn><mrow><mo>(</mo><mo>①</mo><mo>)</mo></mrow></math>と <math><mi>x</mi><mo>&gt;</mo><mn>0</mn><mrow><mo>(</mo><mo>②</mo><mo>)</mo></mrow></math>の共通範囲は <math><mi>x</mi><mo>≧</mo><mn>3</mn></math>である。</p>
 <figure><div class="figbox"><svg viewBox="0 0 520 88" role="img" aria-label="数直線">
 <line x1="116.364" y1="34" x2="383.636" y2="34" stroke="currentColor" stroke-width="13" opacity="0.28"/>
 <line x1="116.364" y1="34" x2="116.364" y2="56" stroke="currentColor" stroke-width="2" opacity="0.5"/>
@@ -792,7 +849,7 @@
 <circle cx="383.636" cy="58" r="5.5" fill="var(--surface)" stroke="currentColor" stroke-width="2.2"/>
 <text x="383.636" y="82" font-size="16" text-anchor="middle" fill="currentColor">5</text>
 </svg></div>
-<figcaption>例31 (1) の共通範囲 −2 ≦ <i>x</i> &lt; 5。左端 −2 は ●（含む）、右端 5 は ○（含まない）。</figcaption>
+<figcaption>例31 (1) の共通範囲<math><mo>−</mo><mn>2</mn><mo>≦</mo><mi>x</mi><mo>&lt;</mo><mn>5</mn></math>。左端 −2 は ●（含む）、右端 5 は ○（含まない）。</figcaption>
 </figure><figure><div class="figbox"><svg viewBox="0 0 520 88" role="img" aria-label="数直線">
 <line x1="302.5" y1="34" x2="488" y2="34" stroke="currentColor" stroke-width="13" opacity="0.28"/>
 <line x1="302.5" y1="34" x2="302.5" y2="56" stroke="currentColor" stroke-width="2" opacity="0.5"/>
@@ -804,26 +861,26 @@
 <circle cx="302.5" cy="58" r="5.5" fill="currentColor"/>
 <text x="302.5" y="82" font-size="16" text-anchor="middle" fill="currentColor">3</text>
 </svg></div>
-<figcaption>例31 (2) の共通範囲 <i>x</i> ≧ 3。3 以上の部分が両方に共通する。</figcaption>
+<figcaption>例31 (2) の共通範囲 <math><mi>x</mi><mo>≧</mo><mn>3</mn></math>。3 以上の部分が両方に共通する。</figcaption>
 </figure>
-        <p>また、<i>A</i> &lt; <i>B</i> &lt; <i>C</i> は、<i>A</i> &lt; <i>B</i> と <i>B</i> &lt; <i>C</i> が同時に成り立つことと同じである（p.46）。</p>
+        <p>また、<math><mi>A</mi><mo>&lt;</mo><mi>B</mi><mo>&lt;</mo><mi>C</mi></math> は、<math><mi>A</mi><mo>&lt;</mo><mi>B</mi></math> と <math><mi>B</mi><mo>&lt;</mo><mi>C</mi></math> が同時に成り立つことと同じである（p.46）。</p>
       </section>
       <div class="sec-head">
         <span class="sec-tag">例</span>
         <h2>例31で共通範囲を確認</h2>
         <span class="pno">教科書 p.45</span>
       </div>
-      <section class="card prob" id="prob-ex31" data-flow="ex31" data-label="例31">
+      <section class="nofig card prob" id="prob-ex31" data-flow="ex31" data-label="例31">
         <div class="prob-head">
           <span class="prob-tag ">例 31</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">2 つの不等式の共通範囲を求める。<br>(1)　<i>x</i> ≧ −2 …… ①,　<i>x</i> &lt; 5 …… ②<br>(2)　<i>x</i> ≧ 3 …… ①,　<i>x</i> &gt; 0 …… ②</p>
+        <p class="prob-q">2 つの不等式の共通範囲を求める。<br>(1)　<math><mi>x</mi><mo>≧</mo><mo>−</mo><mn>2</mn><mo>…</mo><mo>…</mo><mo>①</mo><mo>,</mo></math>　<math><mi>x</mi><mo>&lt;</mo><mn>5</mn><mo>…</mo><mo>…</mo><mo>②</mo></math><br>(2)　<math><mi>x</mi><mo>≧</mo><mn>3</mn><mo>…</mo><mo>…</mo><mo>①</mo><mo>,</mo></math>　<math><mi>x</mi><mo>&gt;</mo><mn>0</mn><mo>…</mo><mo>…</mo><mo>②</mo></math></p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― (1) 数直線で重なる部分を読む</h3>
+          <h3>ヒント 1 ― (1) 数直線で重なる部分を読む</h3><p class="cite"><span class="cite-tag">使う定義</span><math><mo>−</mo><mn>2</mn><mo>≦</mo><mi>x</mi><mo>&lt;</mo><mn>5</mn></math>連立不等式の解は、2 つの不等式の範囲が重なる共通部分である。(1) は −2 以上、5 未満の部分が重なる。</p>
           <p>① は −2 以上の部分、② は 5 より小さい部分。重なるのは −2 以上 5 未満の部分だよ。</p>
         </div>
         <div class="step hint">
@@ -833,8 +890,8 @@
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">(1)　−2 ≦ <i>x</i> &lt; 5　　(2)　<i>x</i> ≧ 3</p>
-          <p>(1) の共通範囲は　−2 ≦ <i>x</i> &lt; 5<br>(2) の共通範囲は　<i>x</i> ≧ 3</p><figure><div class="figbox"><svg viewBox="0 0 520 88" role="img" aria-label="数直線">
+          <p class="big">(1)　<math><mo>−</mo><mn>2</mn><mo>≦</mo><mi>x</mi><mo>&lt;</mo><mn>5</mn></math>　　(2)　<math><mi>x</mi><mo>≧</mo><mn>3</mn></math></p>
+          <p>(1) の共通範囲は　<math><mo>−</mo><mn>2</mn><mo>≦</mo><mi>x</mi><mo>&lt;</mo><mn>5</mn></math><br>(2) の共通範囲は　<math><mi>x</mi><mo>≧</mo><mn>3</mn></math></p><figure><div class="figbox"><svg viewBox="0 0 520 88" role="img" aria-label="数直線">
 <line x1="116.364" y1="34" x2="383.636" y2="34" stroke="currentColor" stroke-width="13" opacity="0.28"/>
 <line x1="116.364" y1="34" x2="116.364" y2="56" stroke="currentColor" stroke-width="2" opacity="0.5"/>
 <line x1="383.636" y1="34" x2="383.636" y2="56" stroke="currentColor" stroke-width="2" opacity="0.5"/>
@@ -866,28 +923,28 @@
         <h2>例題9・10に挑戦</h2>
         <span class="pno">教科書 p.45〜46</span>
       </div>
-      <section class="card prob" id="prob-reidai9" data-flow="reidai9" data-label="例題9">
+      <section class="nofig card prob" id="prob-reidai9" data-flow="reidai9" data-label="例題9">
         <div class="prob-head">
           <span class="prob-tag ">例題 9</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">次の連立不等式を解け。<br>｛ 5<i>x</i> + 3 &gt; 3<i>x</i> + 1<br>｛ −<i>x</i> + 4 ≧ 2(<i>x</i> − 1)</p>
+        <p class="prob-q">次の連立不等式を解け。<br><math><mo>｛</mo><mn>5</mn><mi>x</mi><mo>+</mo><mn>3</mn><mo>&gt;</mo><mn>3</mn><mi>x</mi><mo>+</mo><mn>1</mn></math><br><math><mo>｛</mo><mo>−</mo><mi>x</mi><mo>+</mo><mn>4</mn><mo>≧</mo><mn>2</mn><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow></math></p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 1 つ目を解く</h3>
-          <p>5<i>x</i> + 3 &gt; 3<i>x</i> + 1 から、2<i>x</i> &gt; −2、よって <i>x</i> &gt; −1 …… ① となるよ。</p>
+          <h3>ヒント 1 ― 1 つ目を解く</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mn>5</mn><mi>x</mi><mo>+</mo><mn>3</mn><mo>&gt;</mo><mn>3</mn><mi>x</mi><mo>+</mo><mn>1</mn></math>連立不等式は、1 つずつ解いてから共通範囲を取る。まず 1 つ目の不等式を解こう。</p>
+          <p><math><mn>5</mn><mi>x</mi><mo>+</mo><mn>3</mn><mo>&gt;</mo><mn>3</mn><mi>x</mi><mo>+</mo><mn>1</mn></math>から、<math><mn>2</mn><mi>x</mi><mo>&gt;</mo><mo>−</mo><mn>2</mn></math>、よって <math><mi>x</mi><mo>&gt;</mo><mo>−</mo><mn>1</mn><mo>…</mo><mo>…</mo><mo>①</mo></math>となるよ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 2 つ目を解いて共通範囲を取る</h3>
-          <p>−<i>x</i> + 4 ≧ 2(<i>x</i> − 1) から、−3<i>x</i> ≧ −6、よって <i>x</i> ≦ 2 …… ②。① と ② の共通範囲を数直線で読もう。</p>
+          <p><math><mo>−</mo><mi>x</mi><mo>+</mo><mn>4</mn><mo>≧</mo><mn>2</mn><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow></math>から、<math><mo>−</mo><mn>3</mn><mi>x</mi><mo>≧</mo><mo>−</mo><mn>6</mn></math>、よって <math><mi>x</mi><mo>≦</mo><mn>2</mn><mo>…</mo><mo>…</mo><mo>②</mo></math>。① と ② の共通範囲を数直線で読もう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">−1 &lt; <i>x</i> ≦ 2</p>
-          <p>5<i>x</i> + 3 &gt; 3<i>x</i> + 1 から　<i>x</i> &gt; −1 …… ①<br>−<i>x</i> + 4 ≧ 2(<i>x</i> − 1) から　<i>x</i> ≦ 2 …… ②<br>① と ② の共通範囲を求めて</p><figure><div class="figbox"><svg viewBox="0 0 520 88" role="img" aria-label="数直線">
+          <p class="big"><math display="block"><mo>−</mo><mn>1</mn><mo>&lt;</mo><mi>x</mi><mo>≦</mo><mn>2</mn></math></p>
+          <p><math><mn>5</mn><mi>x</mi><mo>+</mo><mn>3</mn><mo>&gt;</mo><mn>3</mn><mi>x</mi><mo>+</mo><mn>1</mn></math>から　<math><mi>x</mi><mo>&gt;</mo><mo>−</mo><mn>1</mn><mo>…</mo><mo>…</mo><mo>①</mo></math><br><math><mo>−</mo><mi>x</mi><mo>+</mo><mn>4</mn><mo>≧</mo><mn>2</mn><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow></math>から　<math><mi>x</mi><mo>≦</mo><mn>2</mn><mo>…</mo><mo>…</mo><mo>②</mo></math><br>① と ② の共通範囲を求めて</p><figure><div class="figbox"><svg viewBox="0 0 520 88" role="img" aria-label="数直線">
 <line x1="160" y1="34" x2="340" y2="34" stroke="currentColor" stroke-width="13" opacity="0.28"/>
 <line x1="160" y1="34" x2="160" y2="56" stroke="currentColor" stroke-width="2" opacity="0.5"/>
 <line x1="340" y1="34" x2="340" y2="56" stroke="currentColor" stroke-width="2" opacity="0.5"/>
@@ -899,7 +956,7 @@
 <circle cx="340" cy="58" r="5.5" fill="currentColor"/>
 <text x="340" y="82" font-size="16" text-anchor="middle" fill="currentColor">2</text>
 </svg></div>
-<figcaption>共通範囲 −1 &lt; <i>x</i> ≦ 2。−1 は ○、2 は ●。</figcaption>
+<figcaption>共通範囲<math><mo>−</mo><mn>1</mn><mo>&lt;</mo><mi>x</mi><mo>≦</mo><mn>2</mn></math>。−1 は ○、2 は ●。</figcaption>
 </figure>
         </div>
         <p class="prob-done">例題9 クリア！　次は練習47に挑戦しよう。</p>
@@ -909,7 +966,7 @@
         <h2>練習問題に挑戦</h2>
         <span class="pno">教科書 p.45</span>
       </div>
-      <section class="card prob" id="prob-ren47" data-label="練習47">
+      <section class="nofig card prob" id="prob-ren47" data-label="練習47">
         <div class="prob-head">
           <span class="prob-tag ren">練習 47</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
@@ -923,16 +980,16 @@
         </div>
         <div class="tabpanel show" id="panel-ren47-1" data-flow="ren47-1" data-label="練習47 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　｛ 6<i>x</i> − 9 &lt; 2<i>x</i> − 1<br>　　　｛ 3<i>x</i> + 7 ≦ 4(2<i>x</i> + 3)</span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><mo>｛</mo><mn>6</mn><mi>x</mi><mo>−</mo><mn>9</mn><mo>&lt;</mo><mn>2</mn><mi>x</mi><mo>−</mo><mn>1</mn></math><br>　　　<math><mo>｛</mo><mn>3</mn><mi>x</mi><mo>+</mo><mn>7</mn><mo>≦</mo><mn>4</mn><mrow><mo>(</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>3</mn><mo>)</mo></mrow></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
           <div class="quiz" id="qz-ren47-1" data-correct="2">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>−1 &lt; <i>x</i> &lt; 2</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>−1 ≦ <i>x</i> &lt; 2</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><i>x</i> &lt; 2</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>−1 ≦ <i>x</i> ≦ 2</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mo>−</mo><mn>1</mn><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mn>2</mn></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mo>−</mo><mn>1</mn><mo>≦</mo><mi>x</mi><mo>&lt;</mo><mn>2</mn></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mi>x</mi><mo>&lt;</mo><mn>2</mn></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mo>−</mo><mn>1</mn><mo>≦</mo><mi>x</mi><mo>≦</mo><mn>2</mn></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
@@ -940,13 +997,13 @@
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― それぞれを解く</h3>
-          <p>1 つ目から 4<i>x</i> &lt; 8、よって <i>x</i> &lt; 2。2 つ目から 3<i>x</i> + 7 ≦ 8<i>x</i> + 12、よって −5 ≦ 5<i>x</i>、すなわち <i>x</i> ≧ −1 だよ。</p>
+          <p>1 つ目から<math><mn>4</mn><mi>x</mi><mo>&lt;</mo><mn>8</mn></math>、よって <math><mi>x</mi><mo>&lt;</mo><mn>2</mn></math>。2 つ目から<math><mn>3</mn><mi>x</mi><mo>+</mo><mn>7</mn><mo>≦</mo><mn>8</mn><mi>x</mi><mo>+</mo><mn>12</mn></math>、よって<math><mo>−</mo><mn>5</mn><mo>≦</mo><mn>5</mn><mi>x</mi></math>、すなわち <math><mi>x</mi><mo>≧</mo><mo>−</mo><mn>1</mn></math>だよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">−1 ≦ <i>x</i> &lt; 2</p>
-          <p>1 つ目から　<i>x</i> &lt; 2 …… ①<br>2 つ目から　<i>x</i> ≧ −1 …… ②<br>① と ② の共通範囲は</p><figure><div class="figbox"><svg viewBox="0 0 520 88" role="img" aria-label="数直線">
+          <p class="big"><math display="block"><mo>−</mo><mn>1</mn><mo>≦</mo><mi>x</mi><mo>&lt;</mo><mn>2</mn></math></p>
+          <p>1 つ目から　<math><mi>x</mi><mo>&lt;</mo><mn>2</mn><mo>…</mo><mo>…</mo><mo>①</mo></math><br>2 つ目から　<math><mi>x</mi><mo>≧</mo><mo>−</mo><mn>1</mn><mo>…</mo><mo>…</mo><mo>②</mo></math><br>① と ② の共通範囲は</p><figure><div class="figbox"><svg viewBox="0 0 520 88" role="img" aria-label="数直線">
 <line x1="160" y1="34" x2="340" y2="34" stroke="currentColor" stroke-width="13" opacity="0.28"/>
 <line x1="160" y1="34" x2="160" y2="56" stroke="currentColor" stroke-width="2" opacity="0.5"/>
 <line x1="340" y1="34" x2="340" y2="56" stroke="currentColor" stroke-width="2" opacity="0.5"/>
@@ -958,26 +1015,26 @@
 <circle cx="340" cy="58" r="5.5" fill="var(--surface)" stroke="currentColor" stroke-width="2.2"/>
 <text x="340" y="82" font-size="16" text-anchor="middle" fill="currentColor">2</text>
 </svg></div>
-<figcaption>共通範囲 −1 ≦ <i>x</i> &lt; 2。</figcaption>
+<figcaption>共通範囲<math><mo>−</mo><mn>1</mn><mo>≦</mo><mi>x</mi><mo>&lt;</mo><mn>2</mn></math>。</figcaption>
 </figure>
         </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren47-2" data-flow="ren47-2" data-label="練習47 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　｛ 3<i>x</i> + 1 ≧ 7<i>x</i> − 5<br>　　　｛ −<i>x</i> + 6 &lt; 3(1 − 2<i>x</i>)</span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><mo>｛</mo><mn>3</mn><mi>x</mi><mo>+</mo><mn>1</mn><mo>≧</mo><mn>7</mn><mi>x</mi><mo>−</mo><mn>5</mn></math><br>　　　<math><mo>｛</mo><mo>−</mo><mi>x</mi><mo>+</mo><mn>6</mn><mo>&lt;</mo><mn>3</mn><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mn>2</mn><mi>x</mi><mo>)</mo></mrow></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― それぞれを解く</h3>
-          <p>1 つ目から 6 ≧ 4<i>x</i>、よって <i>x</i> ≦ <span class="frac"><span class="num">3</span><span class="den">2</span></span>。2 つ目から −<i>x</i> + 6 &lt; 3 − 6<i>x</i>、よって 5<i>x</i> &lt; −3、すなわち <i>x</i> &lt; −<span class="frac"><span class="num">3</span><span class="den">5</span></span> だよ。共通範囲は小さい方に合わせよう。</p>
+          <p>1 つ目から<math><mn>6</mn><mo>≧</mo><mn>4</mn><mi>x</mi></math>、よって <math><mi>x</mi><mo>≦</mo><mfrac><mn>3</mn><mn>2</mn></mfrac></math>。2 つ目から<math><mo>−</mo><mi>x</mi><mo>+</mo><mn>6</mn><mo>&lt;</mo><mn>3</mn><mo>−</mo><mn>6</mn><mi>x</mi></math>、よって<math><mn>5</mn><mi>x</mi><mo>&lt;</mo><mo>−</mo><mn>3</mn></math>、すなわち <math><mi>x</mi><mo>&lt;</mo><mo>−</mo><mfrac><mn>3</mn><mn>5</mn></mfrac></math> だよ。共通範囲は小さい方に合わせよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big"><i>x</i> &lt; −<span class="frac"><span class="num">3</span><span class="den">5</span></span></p>
-          <p>1 つ目から　<i>x</i> ≦ <span class="frac"><span class="num">3</span><span class="den">2</span></span> …… ①<br>2 つ目から　<i>x</i> &lt; −<span class="frac"><span class="num">3</span><span class="den">5</span></span> …… ②<br>① と ② の共通範囲は</p><figure><div class="figbox"><svg viewBox="0 0 520 88" role="img" aria-label="数直線">
+          <p class="big"><math display="block"><mi>x</mi><mo>&lt;</mo><mo>−</mo><mfrac><mn>3</mn><mn>5</mn></mfrac></math></p>
+          <p>1 つ目から　<math><mi>x</mi><mo>≦</mo><mfrac><mn>3</mn><mn>2</mn></mfrac><mo>…</mo><mo>…</mo><mo>①</mo></math><br>2 つ目から　<math><mi>x</mi><mo>&lt;</mo><mo>−</mo><mfrac><mn>3</mn><mn>5</mn></mfrac><mo>…</mo><mo>…</mo><mo>②</mo></math><br>① と ② の共通範囲は</p><figure><div class="figbox"><svg viewBox="0 0 520 88" role="img" aria-label="数直線">
 <line x1="18" y1="34" x2="241.6" y2="34" stroke="currentColor" stroke-width="13" opacity="0.28"/>
 <line x1="241.6" y1="34" x2="241.6" y2="56" stroke="currentColor" stroke-width="2" opacity="0.5"/>
 <line x1="18" y1="58" x2="492" y2="58" stroke="currentColor" stroke-width="1.8"/>
@@ -986,34 +1043,34 @@
 <circle cx="241.6" cy="58" r="5.5" fill="var(--surface)" stroke="currentColor" stroke-width="2.2"/>
 <text x="241.6" y="82" font-size="16" text-anchor="middle" fill="currentColor">−3/5</text>
 </svg></div>
-<figcaption>共通範囲 <i>x</i> &lt; −3/5。端点 −3/5 は ○。</figcaption>
+<figcaption>共通範囲 <math><mi>x</mi><mo>&lt;</mo><mo>−</mo><mfrac><mn>3</mn><mn>5</mn></mfrac></math>。端点<math><mo>−</mo><mfrac><mn>3</mn><mn>5</mn></mfrac></math>は ○。</figcaption>
 </figure>
         </div>
           <p class="prob-done">(2) クリア！　練習47は全部おわり。次は例題10だよ。</p>
         </div>
       </section>
-      <section class="card prob" id="prob-reidai10" data-flow="reidai10" data-label="例題10">
+      <section class="nofig card prob" id="prob-reidai10" data-flow="reidai10" data-label="例題10">
         <div class="prob-head">
           <span class="prob-tag ">例題 10</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">次の不等式を解け。<br>(1)　0 &lt; <i>x</i> &lt; 10 − <i>x</i>　　(2)　−1 ≦ 2<i>x</i> − 3 ≦ 8</p>
+        <p class="prob-q">次の不等式を解け。<br>(1)　<math><mn>0</mn><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mn>10</mn><mo>−</mo><mi>x</mi></math>　　(2)　<math><mo>−</mo><mn>1</mn><mo>≦</mo><mn>2</mn><mi>x</mi><mo>−</mo><mn>3</mn><mo>≦</mo><mn>8</mn></math></p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― (1) 連立不等式に分ける</h3>
-          <p>0 &lt; <i>x</i> …… ① と <i>x</i> &lt; 10 − <i>x</i> …… ② に分けよう。② から 2<i>x</i> &lt; 10、よって <i>x</i> &lt; 5 …… ③。① と ③ の共通範囲だよ。</p>
+          <h3>ヒント 1 ― (1) 連立不等式に分ける</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mi>A</mi><mo>&lt;</mo><mi>B</mi><mo>&lt;</mo><mi>C</mi></math>3 つの式が連なった不等式は、<math><mi>A</mi><mo>&lt;</mo><mi>B</mi></math> と <math><mi>B</mi><mo>&lt;</mo><mi>C</mi></math> の連立不等式に分けて解く。</p>
+          <p><math><mn>0</mn><mo>&lt;</mo><mi>x</mi><mo>…</mo><mo>…</mo><mo>①</mo></math>と <math><mi>x</mi><mo>&lt;</mo><mn>10</mn><mo>−</mo><mi>x</mi><mo>…</mo><mo>…</mo><mo>②</mo></math>に分けよう。② から<math><mn>2</mn><mi>x</mi><mo>&lt;</mo><mn>10</mn></math>、よって <math><mi>x</mi><mo>&lt;</mo><mn>5</mn><mo>…</mo><mo>…</mo><mo>③</mo></math>。① と ③ の共通範囲だよ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― (2) 各辺に同じ操作をする</h3>
-          <p>各辺に 3 を足すと 2 ≦ 2<i>x</i> ≦ 11。次に各辺を 2 で割ろう。</p>
+          <p>各辺に 3 を足すと<math><mn>2</mn><mo>≦</mo><mn>2</mn><mi>x</mi><mo>≦</mo><mn>11</mn></math>。次に各辺を 2 で割ろう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">(1)　0 &lt; <i>x</i> &lt; 5　　(2)　1 ≦ <i>x</i> ≦ <span class="frac"><span class="num">11</span><span class="den">2</span></span></p>
-          <p>(1) ② から <i>x</i> &lt; 5 …… ③。① と ③ の共通範囲を求めて　0 &lt; <i>x</i> &lt; 5<br>(2) 各辺に 3 を足して　2 ≦ 2<i>x</i> ≦ 11<br>各辺を 2 で割って　1 ≦ <i>x</i> ≦ <span class="frac"><span class="num">11</span><span class="den">2</span></span></p><figure><div class="figbox"><svg viewBox="0 0 520 88" role="img" aria-label="数直線">
+          <p class="big">(1)　<math><mn>0</mn><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mn>5</mn></math>　　(2)　<math><mn>1</mn><mo>≦</mo><mi>x</mi><mo>≦</mo><mfrac><mn>11</mn><mn>2</mn></mfrac></math></p>
+          <p>(1) ② から <math><mi>x</mi><mo>&lt;</mo><mn>5</mn><mo>…</mo><mo>…</mo><mo>③</mo></math>。① と ③ の共通範囲を求めて　<math><mn>0</mn><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mn>5</mn></math><br>(2) 各辺に 3 を足して　<math><mn>2</mn><mo>≦</mo><mn>2</mn><mi>x</mi><mo>≦</mo><mn>11</mn></math><br>各辺を 2 で割って　<math><mn>1</mn><mo>≦</mo><mi>x</mi><mo>≦</mo><mfrac><mn>11</mn><mn>2</mn></mfrac></math></p><figure><div class="figbox"><svg viewBox="0 0 520 88" role="img" aria-label="数直線">
 <line x1="92.5" y1="34" x2="355" y2="34" stroke="currentColor" stroke-width="13" opacity="0.28"/>
 <line x1="92.5" y1="34" x2="92.5" y2="56" stroke="currentColor" stroke-width="2" opacity="0.5"/>
 <line x1="355" y1="34" x2="355" y2="56" stroke="currentColor" stroke-width="2" opacity="0.5"/>
@@ -1025,7 +1082,7 @@
 <circle cx="355" cy="58" r="5.5" fill="var(--surface)" stroke="currentColor" stroke-width="2.2"/>
 <text x="355" y="82" font-size="16" text-anchor="middle" fill="currentColor">5</text>
 </svg></div>
-<figcaption>(1) の共通範囲 0 &lt; <i>x</i> &lt; 5。両端とも ○。</figcaption>
+<figcaption>(1) の共通範囲<math><mn>0</mn><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mn>5</mn></math>。両端とも ○。</figcaption>
 </figure>
         </div>
         <p class="prob-done">例題10 クリア！　次は練習48に挑戦しよう。</p>
@@ -1035,7 +1092,7 @@
         <h2>練習問題に挑戦</h2>
         <span class="pno">教科書 p.46</span>
       </div>
-      <section class="card prob" id="prob-ren48" data-label="練習48">
+      <section class="nofig card prob" id="prob-ren48" data-label="練習48">
         <div class="prob-head">
           <span class="prob-tag ren">練習 48</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
@@ -1049,18 +1106,18 @@
         </div>
         <div class="tabpanel show" id="panel-ren48-1" data-flow="ren48-1" data-label="練習48 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　1 ≦ <i>x</i> ≦ 15 − 2<i>x</i></span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><mn>1</mn><mo>≦</mo><mi>x</mi><mo>≦</mo><mn>15</mn><mo>−</mo><mn>2</mn><mi>x</mi></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 連立不等式に分ける</h3>
-          <p>1 ≦ <i>x</i> …… ① と <i>x</i> ≦ 15 − 2<i>x</i> …… ② に分けよう。② から 3<i>x</i> ≦ 15、よって <i>x</i> ≦ 5 だよ。</p>
+          <h3>ヒント 1 ― 連立不等式に分ける</h3><p class="cite"><span class="cite-tag">使う定義</span><math><mn>1</mn><mo>≦</mo><mi>x</mi><mo>≦</mo><mn>15</mn><mo>−</mo><mn>2</mn><mi>x</mi></math>連なった不等式は 2 つの不等式に分け、それぞれを解いて共通範囲を取る。</p>
+          <p><math><mn>1</mn><mo>≦</mo><mi>x</mi><mo>…</mo><mo>…</mo><mo>①</mo></math>と <math><mi>x</mi><mo>≦</mo><mn>15</mn><mo>−</mo><mn>2</mn><mi>x</mi><mo>…</mo><mo>…</mo><mo>②</mo></math>に分けよう。② から<math><mn>3</mn><mi>x</mi><mo>≦</mo><mn>15</mn></math>、よって <math><mi>x</mi><mo>≦</mo><mn>5</mn></math>だよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">1 ≦ <i>x</i> ≦ 5</p>
+          <p class="big"><math display="block"><mn>1</mn><mo>≦</mo><mi>x</mi><mo>≦</mo><mn>5</mn></math></p>
           <p>① と ② の共通範囲は</p><figure><div class="figbox"><svg viewBox="0 0 520 88" role="img" aria-label="数直線">
 <line x1="145" y1="34" x2="355" y2="34" stroke="currentColor" stroke-width="13" opacity="0.28"/>
 <line x1="145" y1="34" x2="145" y2="56" stroke="currentColor" stroke-width="2" opacity="0.5"/>
@@ -1073,36 +1130,36 @@
 <circle cx="355" cy="58" r="5.5" fill="currentColor"/>
 <text x="355" y="82" font-size="16" text-anchor="middle" fill="currentColor">5</text>
 </svg></div>
-<figcaption>共通範囲 1 ≦ <i>x</i> ≦ 5。両端とも ●。</figcaption>
+<figcaption>共通範囲<math><mn>1</mn><mo>≦</mo><mi>x</mi><mo>≦</mo><mn>5</mn></math>。両端とも ●。</figcaption>
 </figure>
         </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren48-2" data-flow="ren48-2" data-label="練習48 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　−2 &lt; 3<i>x</i> + 1 &lt; 5</span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><mo>−</mo><mn>2</mn><mo>&lt;</mo><mn>3</mn><mi>x</mi><mo>+</mo><mn>1</mn><mo>&lt;</mo><mn>5</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
           <div class="quiz" id="qz-ren48-2" data-correct="1">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>−1 &lt; <i>x</i> &lt; <span class="frac"><span class="num">4</span><span class="den">3</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>−1 ≦ <i>x</i> ≦ <span class="frac"><span class="num">4</span><span class="den">3</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><i>x</i> &lt; <span class="frac"><span class="num">4</span><span class="den">3</span></span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>−<span class="frac"><span class="num">4</span><span class="den">3</span></span> &lt; <i>x</i> &lt; 1</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mo>−</mo><mn>1</mn><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mfrac><mn>4</mn><mn>3</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mo>−</mo><mn>1</mn><mo>≦</mo><mi>x</mi><mo>≦</mo><mfrac><mn>4</mn><mn>3</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mi>x</mi><mo>&lt;</mo><mfrac><mn>4</mn><mn>3</mn></mfrac></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mo>−</mo><mfrac><mn>4</mn><mn>3</mn></mfrac><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mn>1</mn></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
           <p class="verdict"></p>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 各辺から 1 を引く</h3>
-          <p>各辺から 1 を引くと −3 &lt; 3<i>x</i> &lt; 4。次に各辺を 3 で割ろう。</p>
+          <h3>ヒント 1 ― 各辺から 1 を引く</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mo>−</mo><mn>3</mn><mo>&lt;</mo><mn>3</mn><mi>x</mi><mo>&lt;</mo><mn>4</mn></math>各辺から同じ数を引いても、大小関係は変わらない。次に各辺を正の数 3 で割る操作も、向きは変わらない。</p>
+          <p>各辺から 1 を引くと<math><mo>−</mo><mn>3</mn><mo>&lt;</mo><mn>3</mn><mi>x</mi><mo>&lt;</mo><mn>4</mn></math>。次に各辺を 3 で割ろう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">−1 &lt; <i>x</i> &lt; <span class="frac"><span class="num">4</span><span class="den">3</span></span></p>
+          <p class="big"><math display="block"><mo>−</mo><mn>1</mn><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mfrac><mn>4</mn><mn>3</mn></mfrac></math></p>
         </div>
           <p class="prob-done">(2) クリア！　練習48は全部おわり。次は 1 次不等式の応用だよ。</p>
         </div>
@@ -1113,35 +1170,35 @@
         <span class="pno">教科書 p.46〜47</span>
       </div>
       <section class="card">
-        <p>文章題では、まず求めるものを文字で置き、条件を不等式に表して解く。最後に、文字が自然数・整数などの条件に合う値を選ぶことが大切である。たとえば「不等式を解くと <i>n</i> ≧ 26.6…」となったら、それを満たす最小の自然数は 27 である。</p>
+        <p>文章題では、まず求めるものを文字で置き、条件を不等式に表して解く。最後に、文字が自然数・整数などの条件に合う値を選ぶことが大切である。たとえば「不等式を解くと <math><mi>n</mi><mo>≧</mo><mn>26.6</mn><mo>…</mo></math>」となったら、それを満たす最小の自然数は 27 である。</p>
       </section>
       <div class="sec-head">
         <span class="sec-tag">応用例題</span>
         <h2>応用例題5・6に挑戦</h2>
         <span class="pno">教科書 p.46〜47</span>
       </div>
-      <section class="card prob" id="prob-ouyou5" data-flow="ouyou5" data-label="応用例題5">
+      <section class="nofig card prob" id="prob-ouyou5" data-flow="ouyou5" data-label="応用例題5">
         <div class="prob-head">
           <span class="prob-tag ouyou">応用例題 5</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">次の不等式を満たす最小の自然数 <i>n</i> を求めよ。<p class="formula">200 + 12(<i>n</i> − 10) ≦ 15<i>n</i></p></p>
+        <p class="prob-q">次の不等式を満たす最小の自然数 <math><mi>n</mi></math> を求めよ。<p class="formula"><math display="block"><mn>200</mn><mo>+</mo><mn>12</mn><mrow><mo>(</mo><mi>n</mi><mo>−</mo><mn>10</mn><mo>)</mo></mrow><mo>≦</mo><mn>15</mn><mi>n</mi></math></p></p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 考え方：まず不等式を解く</h3>
-          <p>まず、<i>n</i> についての不等式を解く。次に、<i>n</i> が自然数であることに注意して、最小となる <i>n</i> の値を求めよう。</p>
+          <h3>ヒント 1 ― 考え方：まず不等式を解く</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mn>200</mn><mo>+</mo><mn>12</mn><mrow><mo>(</mo><mi>n</mi><mo>−</mo><mn>10</mn><mo>)</mo></mrow><mo>≦</mo><mn>15</mn><mi>n</mi></math>求める <math><mi>n</mi></math> についての不等式を、まず普通の 1 次不等式として解く。そのあと、<math><mi>n</mi></math> が自然数である条件を使う。</p>
+          <p>まず、<math><mi>n</mi></math> についての不等式を解く。次に、<math><mi>n</mi></math> が自然数であることに注意して、最小となる <math><mi>n</mi></math> の値を求めよう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 整理する</h3>
-          <p>展開して整理すると −3<i>n</i> ≦ −80。両辺を −3 で割ると向きが変わるよ。</p>
+          <p>展開して整理すると<math><mo>−</mo><mn>3</mn><mi>n</mi><mo>≦</mo><mo>−</mo><mn>80</mn></math>。両辺を −3 で割ると向きが変わるよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big"><i>n</i> = 27</p>
-          <p>不等式を整理すると　−3<i>n</i> ≦ −80<br>よって　<i>n</i> ≧ <span class="frac"><span class="num">80</span><span class="den">3</span></span>　すなわち　<i>n</i> ≧ 26.6…<br>不等式を満たす最小の自然数 <i>n</i> は</p>
+          <p class="big"><math display="block"><mi>n</mi><mo>=</mo><mn>27</mn></math></p>
+          <p>不等式を整理すると　<math><mo>−</mo><mn>3</mn><mi>n</mi><mo>≦</mo><mo>−</mo><mn>80</mn></math><br>よって　<math><mi>n</mi><mo>≧</mo><mfrac><mn>80</mn><mn>3</mn></mfrac></math>　すなわち　<math><mi>n</mi><mo>≧</mo><mn>26.6</mn><mo>…</mo></math><br>不等式を満たす最小の自然数 <math><mi>n</mi></math> は</p>
         </div>
         <p class="prob-done">応用例題5 クリア！　次は練習49・50に挑戦しよう。</p>
       </section>
@@ -1150,20 +1207,20 @@
         <h2>練習問題に挑戦</h2>
         <span class="pno">教科書 p.47</span>
       </div>
-      <section class="card prob" id="prob-ren49" data-flow="ren49" data-label="練習49">
+      <section class="nofig card prob" id="prob-ren49" data-flow="ren49" data-label="練習49">
         <div class="prob-head">
           <span class="prob-tag ren">練習 49</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 1</span>
         </div>
         <div class="qside">
-        <p class="prob-q">次の不等式を満たす最小の自然数 <i>n</i> を求めよ。<p class="formula">600 + 25(<i>n</i> − 20) ≦ 32<i>n</i></p></p>
+        <p class="prob-q">次の不等式を満たす最小の自然数 <math><mi>n</mi></math> を求めよ。<p class="formula"><math display="block"><mn>600</mn><mo>+</mo><mn>25</mn><mrow><mo>(</mo><mi>n</mi><mo>−</mo><mn>20</mn><mo>)</mo></mrow><mo>≦</mo><mn>32</mn><mi>n</mi></math></p></p>
           <div class="quiz" id="qz-ren49" data-correct="2">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>14</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>15</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>16</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>13</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mn>14</mn></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mn>15</mn></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mn>16</mn></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mn>13</mn></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
@@ -1172,70 +1229,70 @@
         </div>
         <div class="step hint">
           <h3>ヒント 1 ― 展開して整理する</h3>
-          <p>展開すると 600 + 25<i>n</i> − 500 ≦ 32<i>n</i>、すなわち 100 ≦ 7<i>n</i> となるよ。</p>
+          <p>展開すると<math><mn>600</mn><mo>+</mo><mn>25</mn><mi>n</mi><mo>−</mo><mn>500</mn><mo>≦</mo><mn>32</mn><mi>n</mi></math>、すなわち<math><mn>100</mn><mo>≦</mo><mn>7</mn><mi>n</mi></math> となるよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big"><i>n</i> = 15</p>
-          <p>整理すると　100 ≦ 7<i>n</i>　よって　<i>n</i> ≧ <span class="frac"><span class="num">100</span><span class="den">7</span></span> = 14.2…<br>不等式を満たす最小の自然数 <i>n</i> は</p>
+          <p class="big"><math display="block"><mi>n</mi><mo>=</mo><mn>15</mn></math></p>
+          <p>整理すると　<math><mn>100</mn><mo>≦</mo><mn>7</mn><mi>n</mi></math>　よって　<math><mi>n</mi><mo>≧</mo><mfrac><mn>100</mn><mn>7</mn></mfrac><mo>=</mo><mn>14.2</mn><mo>…</mo></math><br>不等式を満たす最小の自然数 <math><mi>n</mi></math> は</p>
         </div>
         <p class="prob-done">練習49 クリア！　次は練習50だよ。</p>
       </section>
-      <section class="card prob" id="prob-ren50" data-flow="ren50" data-label="練習50">
+      <section class="nofig card prob" id="prob-ren50" data-flow="ren50" data-label="練習50">
         <div class="prob-head">
           <span class="prob-tag ren">練習 50</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 1</span>
         </div>
         <div class="qside">
-        <p class="prob-q">次の不等式を満たす最大の自然数 <i>n</i> を求めよ。<p class="formula">4 + <span class="frac"><span class="num">1</span><span class="den">5</span></span>(<i>n</i> − 4) &gt; <span class="frac"><span class="num">1</span><span class="den">2</span></span><i>n</i></p></p>
+        <p class="prob-q">次の不等式を満たす最大の自然数 <math><mi>n</mi></math> を求めよ。<p class="formula"><math display="block"><mn>4</mn><mo>+</mo><mfrac><mn>1</mn><mn>5</mn></mfrac><mrow><mo>(</mo><mi>n</mi><mo>−</mo><mn>4</mn><mo>)</mo></mrow><mo>&gt;</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mi>n</mi></math></p></p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 両辺を 10 倍する</h3>
-          <p>分母をはらうために両辺を 10 倍すると、40 + 2(<i>n</i> − 4) &gt; 5<i>n</i> となるよ。展開して整理しよう。</p>
+          <h3>ヒント 1 ― 両辺を 10 倍する</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mn>40</mn><mo>+</mo><mn>2</mn><mrow><mo>(</mo><mi>n</mi><mo>−</mo><mn>4</mn><mo>)</mo></mrow><mo>&gt;</mo><mn>5</mn><mi>n</mi></math>分母をはらうために両辺を 10 倍すると、この形になる。正の数で掛けるので、不等号の向きは変わらない。</p>
+          <p>分母をはらうために両辺を 10 倍すると、<math><mn>40</mn><mo>+</mo><mn>2</mn><mrow><mo>(</mo><mi>n</mi><mo>−</mo><mn>4</mn><mo>)</mo></mrow><mo>&gt;</mo><mn>5</mn><mi>n</mi></math> となるよ。展開して整理しよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big"><i>n</i> = 10</p>
-          <p>整理すると　32 &gt; 3<i>n</i>　よって　<i>n</i> &lt; <span class="frac"><span class="num">32</span><span class="den">3</span></span> = 10.6…<br>不等式を満たす最大の自然数 <i>n</i> は</p>
+          <p class="big"><math display="block"><mi>n</mi><mo>=</mo><mn>10</mn></math></p>
+          <p>整理すると　<math><mn>32</mn><mo>&gt;</mo><mn>3</mn><mi>n</mi></math>　よって　<math><mi>n</mi><mo>&lt;</mo><mfrac><mn>32</mn><mn>3</mn></mfrac><mo>=</mo><mn>10.6</mn><mo>…</mo></math><br>不等式を満たす最大の自然数 <math><mi>n</mi></math> は</p>
         </div>
         <p class="prob-done">練習50 クリア！　次は応用例題6だよ。</p>
       </section>
-      <section class="card prob" id="prob-ouyou6" data-flow="ouyou6" data-label="応用例題6">
+      <section class="nofig card prob" id="prob-ouyou6" data-flow="ouyou6" data-label="応用例題6">
         <div class="prob-head">
           <span class="prob-tag ouyou">応用例題 6</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">1 個 60 円の品物 A と 1 個 100 円の品物 B を合わせて 50 個買い、100 円の箱に詰めてもらう。品物代と箱代の合計金額を 4000 円以下にするとき、品物 B は最大で何個買えるか。</p>
+        <p class="prob-q">1 個 60 円の品物 <math><mi>A</mi></math> と 1 個 100 円の品物 <math><mi>B</mi></math> を合わせて 50 個買い、100 円の箱に詰めてもらう。品物代と箱代の合計金額を 4000 円以下にするとき、品物 <math><mi>B</mi></math> は最大で何個買えるか。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 考え方：品物 B を <i>x</i> 個とする</h3>
-          <p>品物 B を <i>x</i> 個買うとして、条件から不等式を作る。<i>x</i> は整数であることに注意しよう。品物 A は (50 − <i>x</i>) 個になるよ。</p>
+          <h3>ヒント 1 ― 考え方：品物 <math><mi>B</mi></math> を <math><mi>x</mi></math> 個とする</h3><p class="cite"><span class="cite-tag">使う定義</span><math><mn>50</mn><mo>−</mo><mi>x</mi></math>品物 B を <math><mi>x</mi></math> 個買うとすると、品物 A は残りのこの個数になる。合計金額が 4000 円以下という条件を不等式にしよう。</p>
+          <p>品物 <math><mi>B</mi></math> を <math><mi>x</mi></math> 個買うとして、条件から不等式を作る。<math><mi>x</mi></math> は整数であることに注意しよう。品物 <math><mi>A</mi></math> は<math><mo>(</mo><mn>50</mn><mo>−</mo><mi>x</mi><mo>)</mo></math>個になるよ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 合計金額の不等式を作る</h3>
-          <p>合計金額は 60(50 − <i>x</i>) + 100<i>x</i> + 100（円）。これが 4000 以下という不等式を立てよう。</p>
+          <p>合計金額は<math><mn>60</mn><mrow><mo>(</mo><mn>50</mn><mo>−</mo><mi>x</mi><mo>)</mo></mrow><mo>+</mo><mn>100</mn><mi>x</mi><mo>+</mo><mn>100</mn><mo>(</mo></math>円）。これが 4000 以下という不等式を立てよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">答　22 個</p>
-          <p>品物 B を <i>x</i> 個買うとすると、品物 A は (50 − <i>x</i>) 個買うことになる。このとき、品物代と箱代の合計金額は　60(50 − <i>x</i>) + 100<i>x</i> + 100（円）<br>これが 4000 円以下であるから　60(50 − <i>x</i>) + 100<i>x</i> + 100 ≦ 4000<br>整理すると　40<i>x</i> ≦ 900<br>よって　<i>x</i> ≦ <span class="frac"><span class="num">900</span><span class="den">40</span></span>　すなわち　<i>x</i> ≦ 22.5<br>不等式を満たす最大の整数 <i>x</i> は　<i>x</i> = 22</p>
+          <p class="big">答　22 個</p><p class="cite"><span class="cite-tag">使う性質</span><math><mn>40</mn><mi>x</mi><mo>≦</mo><mn>900</mn></math>合計金額の不等式を整理するとこの形になり、<math><mi>x</mi><mo>≦</mo><mn>22.5</mn></math> を満たす最大の整数が答えになる。</p>
+          <p>品物 <math><mi>B</mi></math> を <math><mi>x</mi></math> 個買うとすると、品物 <math><mi>A</mi></math> は<math><mo>(</mo><mn>50</mn><mo>−</mo><mi>x</mi><mo>)</mo></math>個買うことになる。<br>このとき、品物代と箱代の合計金額は　<math><mn>60</mn><mrow><mo>(</mo><mn>50</mn><mo>−</mo><mi>x</mi><mo>)</mo></mrow><mo>+</mo><mn>100</mn><mi>x</mi><mo>+</mo><mn>100</mn><mo>(</mo></math>円）<br>これが 4000 円以下であるから　<math><mn>60</mn><mrow><mo>(</mo><mn>50</mn><mo>−</mo><mi>x</mi><mo>)</mo></mrow><mo>+</mo><mn>100</mn><mi>x</mi><mo>+</mo><mn>100</mn><mo>≦</mo><mn>4000</mn></math><br>整理すると　<math><mn>40</mn><mi>x</mi><mo>≦</mo><mn>900</mn></math><br>よって　<math><mi>x</mi><mo>≦</mo><mfrac><mn>900</mn><mn>40</mn></mfrac></math>　すなわち　<math><mi>x</mi><mo>≦</mo><mn>22.5</mn></math><br>不等式を満たす最大の整数 <math><mi>x</mi></math> は　<math><mi>x</mi><mo>=</mo><mn>22</mn></math></p>
         </div>
         <p class="prob-done">応用例題6 クリア！　次は練習51に挑戦しよう。</p>
       </section>
-      <section class="card prob" id="prob-ren51" data-flow="ren51" data-label="練習51">
+      <section class="nofig card prob" id="prob-ren51" data-flow="ren51" data-label="練習51">
         <div class="prob-head">
           <span class="prob-tag ren">練習 51</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">1 個 120 円の菓子 A と 1 個 80 円の菓子 B を合わせて 30 個買い、100 円の箱に詰めてもらう。菓子代と箱代の合計金額を 3000 円以下にするとき、菓子 A は最大で何個買えるか。</p>
+        <p class="prob-q">1 個 120 円の菓子 <math><mi>A</mi></math> と 1 個 80 円の菓子 <math><mi>B</mi></math> を合わせて 30 個買い、100 円の箱に詰めてもらう。菓子代と箱代の合計金額を 3000 円以下にするとき、菓子 <math><mi>A</mi></math> は最大で何個買えるか。</p>
           <div class="quiz" id="qz-ren51" data-correct="3">
           <div class="choices">
             <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>10 個</span><span class="mark"></span></button>
@@ -1249,18 +1306,18 @@
           </div>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 菓子 A を <i>x</i> 個とする</h3>
-          <p>菓子 A を <i>x</i> 個とすると、菓子 B は (30 − <i>x</i>) 個。合計金額は 120<i>x</i> + 80(30 − <i>x</i>) + 100（円）だよ。</p>
+          <h3>ヒント 1 ― 菓子 <math><mi>A</mi></math> を <math><mi>x</mi></math> 個とする</h3>
+          <p>菓子 <math><mi>A</mi></math> を <math><mi>x</mi></math> 個とすると、菓子 <math><mi>B</mi></math> は<math><mo>(</mo><mn>30</mn><mo>−</mo><mi>x</mi><mo>)</mo></math>個。合計金額は<math><mn>120</mn><mi>x</mi><mo>+</mo><mn>80</mn><mrow><mo>(</mo><mn>30</mn><mo>−</mo><mi>x</mi><mo>)</mo></mrow><mo>+</mo><mn>100</mn><mo>(</mo></math>円）だよ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 不等式を解く</h3>
-          <p>合計が 3000 以下という不等式を整理すると、40<i>x</i> ≦ 500 となるよ。</p>
+          <p>合計が 3000 以下という不等式を整理すると、<math><mn>40</mn><mi>x</mi><mo>≦</mo><mn>500</mn></math>となるよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
           <p class="big">答　12 個</p>
-          <p>120<i>x</i> + 80(30 − <i>x</i>) + 100 ≦ 3000 を整理すると　40<i>x</i> ≦ 500<br>よって　<i>x</i> ≦ 12.5<br>不等式を満たす最大の整数 <i>x</i> は　<i>x</i> = 12</p>
+          <p><math><mn>120</mn><mi>x</mi><mo>+</mo><mn>80</mn><mrow><mo>(</mo><mn>30</mn><mo>−</mo><mi>x</mi><mo>)</mo></mrow><mo>+</mo><mn>100</mn><mo>≦</mo><mn>3000</mn></math>を整理すると　<math><mn>40</mn><mi>x</mi><mo>≦</mo><mn>500</mn></math><br>よって　<math><mi>x</mi><mo>≦</mo><mn>12.5</mn></math><br>不等式を満たす最大の整数 <math><mi>x</mi></math> は　<math><mi>x</mi><mo>=</mo><mn>12</mn></math></p>
         </div>
         <p class="prob-done">練習51 クリア！　この項は終了だよ。</p>
       </section>
@@ -1270,10 +1327,10 @@
       <section class="card summary" id="summaryCard" style="display:none">
         <h2>この項のポイント</h2>
         <ul>
-          <li><b>1 次不等式の解き方：</b><i>ax</i> &gt; <i>b</i> の形に整理し、両辺を <i>a</i> で割る。<i>a</i> が負のときは不等号の向きが変わる。</li>
-          <li><b>数直線の表し方：</b>端点を含むときは ●、含まないときは ○。&lt; は左側、&gt; は右側が範囲。</li>
-          <li><b>連立不等式：</b>それぞれを解いて、数直線で共通範囲を取る。<i>A</i> &lt; <i>B</i> &lt; <i>C</i> の形は各辺に同じ操作をして解くこともできる。</li>
-          <li><b>応用：</b>求めるものを文字で置いて不等式を作り、解いたあと自然数・整数の条件に合う最大・最小の値を選ぶ。</li>
+          <li><p class="cite"><span class="cite-tag">使う性質</span><math><mi>a</mi><mi>x</mi><mo>&gt;</mo><mi>b</mi></math>1 次不等式はこの形に整理して、両辺を <math><mi>a</mi></math> で割って解く。<math><mi>a</mi></math> が負のときは、不等号の向きが変わる。</p><b>1 次不等式の解き方：</b><math><mi>ax</mi><mo>&gt;</mo><mi>b</mi></math> の形に整理し、両辺を <math><mi>a</mi></math> で割る。<math><mi>a</mi></math> が負のときは不等号の向きが変わる。</li>
+          <li><p class="cite"><span class="cite-tag">使う定義</span><math><mi>x</mi><mo>≦</mo><mi>a</mi></math>端点を含む範囲はこのように ≦ で表し、数直線では ● で示す。端点を含まないときは ○ で示す。</p><b>数直線の表し方：</b>端点を含むときは ●、含まないときは ○。&lt; は左側、&gt; は右側が範囲。</li>
+          <li><p class="cite"><span class="cite-tag">使う性質</span><math><mi>A</mi><mo>&lt;</mo><mi>B</mi><mo>&lt;</mo><mi>C</mi></math>連なった不等式は、<math><mi>A</mi><mo>&lt;</mo><mi>B</mi></math> と <math><mi>B</mi><mo>&lt;</mo><mi>C</mi></math> の連立不等式とみて解き、共通範囲を取る。</p><b>連立不等式：</b>それぞれを解いて、数直線で共通範囲を取る。<math><mi>A</mi><mo>&lt;</mo><mi>B</mi><mo>&lt;</mo><mi>C</mi></math> の形は各辺に同じ操作をして解くこともできる。</li>
+          <li><p class="cite"><span class="cite-tag">使う性質</span><math><mn>40</mn><mi>x</mi><mo>≦</mo><mn>900</mn><mo>⇒</mo><mi>x</mi><mo>≦</mo><mn>22.5</mn></math>解が小数の範囲として得られたら、最後に整数の条件に合う最大・最小の値を選ぶ。</p><b>応用：</b>求めるものを文字で置いて不等式を作り、解いたあと自然数・整数の条件に合う最大・最小の値を選ぶ。</li>
         </ul>
       </section>
       <footer>

@@ -310,7 +310,64 @@
       }
       @media (prefers-color-scheme: dark){ .finish-btn{color:#0c1712} }
       .finish-btn:active{transform:scale(.98)}
-    </style>
+    
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+
+      /* 積分記号は大きめに表示する（元のページの可読化デザインに合わせる） */
+      math .int-op{font-size:1.35em}
+      /* calc-12 世代（.card）と calc-18 世代（.unit）の、図のない問題の全幅化 */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig>.step{position:static !important}
+        .card.nofig>.steps-wrap{max-height:none !important;overflow:visible !important}
+        .unit.nofig{display:block !important}
+        .unit.nofig>.qside{position:static !important}
+        .unit.nofig>.steps-stack{max-height:none !important;overflow:visible !important}
+      }
+
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける・第3弾c） */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig .qside{position:static !important}
+        .card.nofig .steps-wrap,.card.nofig .tabpanel .steps-wrap{max-height:none !important;overflow:visible !important}
+      }
+</style>
   </head>
   <body>
     <div class="wrap">
@@ -333,24 +390,28 @@
         <span class="pno">教科書 p.27〜28</span>
       </div>
       <section class="card">
-        <p>自然数 1, 2, 3, …… に、0 と −1, −2, −3, …… とを合わせて<b>整数</b>という。また、整数 m と 0 でない整数 n を用いて分数 <span class="formula" style="display:inline-block;vertical-align:middle;margin:0 4px"><span class="frac"><span class="num">m</span><span class="den">n</span></span></span> の形に表される数を<b>有理数</b>という。整数 m は <span class="formula" style="display:inline-block;vertical-align:middle;margin:0 4px"><span class="frac"><span class="num">m</span><span class="den">1</span></span></span> と表されるから、有理数である。</p>
+        <p>自然数 1, 2, 3, …… に、0 と −1, −2, −3, …… とを合わせて<b>整数</b>という。また、整数 <math><mi>m</mi></math> と 0 でない整数 <math><mi>n</mi></math> を用いて分数 <math><mfrac><mi>m</mi><mi>n</mi></mfrac></math> の形に表される数を<b>有理数</b>という。整数 <math><mi>m</mi></math> は <math><mfrac><mi>m</mi><mn>1</mn></mfrac></math> と表されるから、有理数である。</p>
         <p>整数以外の有理数を小数で表すと、たとえば次のようになる。</p>
-        <p class="formula">①　<span class="frac"><span class="num">1</span><span class="den">4</span></span> = 0.25　　②　<span class="frac"><span class="num">2</span><span class="den">3</span></span> = 0.666……　　③　<span class="frac"><span class="num">7</span><span class="den">27</span></span> = 0.259259259……</p>
+        <p class="formula">①　<math><mfrac><mn>1</mn><mn>4</mn></mfrac><mo>=</mo><mn>0.25</mn></math>　　②　<math><mfrac><mn>2</mn><mn>3</mn></mfrac><mo>=</mo><mn>0.666</mn><mo>…</mo><mo>…</mo></math>　　③　<math><mfrac><mn>7</mn><mn>27</mn></mfrac><mo>=</mo><mn>0.259259259</mn><mo>…</mo><mo>…</mo></math></p>
         <p>① のように小数第何位かで終わる小数を<b>有限小数</b>という。これに対し、小数点以下の数字が限りなく続く小数を<b>無限小数</b>という。無限小数のうち、②, ③ のように、ある位以下では数字の同じ並びが繰り返される小数を<b>循環小数</b>という。</p>
         <p>循環小数は、繰り返される数字の最初と最後の上に点をつけて書くことがある。</p>
-        <p class="formula">0.666…… = 0.6̇　　0.3181818…… = 0.31̇8̇　　2.452452452…… = 2.4̇52̇</p>
+        <div class="chain-crow formula" style="font-size:15px">
+<div class="crow"><math displaystyle="true"><mn>0.666</mn><mo>…</mo><mo>…</mo><mo>=</mo><mn>0.</mn><mover><mn>6</mn><mo>˙</mo></mover><mspace width="2em"/><mn>0.3181818</mn><mo>…</mo><mo>…</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mn>0.666</mn><mo>…</mo><mo>…</mo></mphantom><mo>=</mo><mn>0.3</mn><mover><mn>1</mn><mo>˙</mo></mover><mover><mn>8</mn><mo>˙</mo></mover><mspace width="2em"/><mn>2.452452452</mn><mo>…</mo><mo>…</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mn>0.666</mn><mo>…</mo><mo>…</mo></mphantom><mo>=</mo><mn>2.</mn><mover><mn>4</mn><mo>˙</mo></mover><mn>5</mn><mover><mn>2</mn><mo>˙</mo></mover></math></div>
+</div>
         <div class="def">
           <p><b>有理数について</b></p>
           <p>整数以外の有理数は、有限小数か循環小数のいずれかで表される。逆に、有限小数と循環小数は必ず分数で表され、有理数である。</p>
         </div>
-        <p>なぜそうなるかは、割り算の仕組みから確かめられる。たとえば <span class="frac"><span class="num">9</span><span class="den">7</span></span> を小数で表す割り算では、7 で割った余りは 0, 1, 2, 3, 4, 5, 6 のいずれかしかない。余りに 0 が出れば有限小数になり、0 が出なくても余りの種類は限られているから、割り算を続けると必ず同じ余りが出てきて、そこから先は同じ計算の繰り返し（循環小数）になる。一般の分数 <span class="formula" style="display:inline-block;vertical-align:middle;margin:0 4px"><span class="frac"><span class="num">m</span><span class="den">n</span></span></span> についても同じことがいえる。</p>
+        <p>なぜそうなるかは、割り算の仕組みから確かめられる。たとえば <math><mfrac><mn>9</mn><mn>7</mn></mfrac></math> を小数で表す割り算では、7 で割った余りは 0, 1, 2, 3, 4, 5, 6 のいずれかしかない。余りに 0 が出れば有限小数になり、0 が出なくても余りの種類は限られているから、割り算を続けると必ず同じ余りが出てきて、そこから先は同じ計算の繰り返し（循環小数）になる。一般の分数 <math><mfrac><mi>m</mi><mi>n</mi></mfrac></math> についても同じことがいえる。</p>
       </section>
       <div class="sec-head">
         <span class="sec-tag">練習</span>
         <h2>練習問題に挑戦</h2>
         <span class="pno">教科書 p.27</span>
       </div>
-      <section class="card prob" id="prob-ren26" data-label="練習26">
+      <section class="nofig card prob" id="prob-ren26" data-label="練習26">
         <div class="prob-head">
           <span class="prob-tag ren">練習 26</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
@@ -366,80 +427,80 @@
         </div>
         <div class="tabpanel show" id="panel-ren26-1" data-flow="ren26-1" data-label="練習26 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　<span class="frac"><span class="num">8</span><span class="den">9</span></span></span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><mfrac><mn>8</mn><mn>9</mn></mfrac></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 割り算を続ける</h3>
+          <h3>ヒント 1 ― 割り算を続ける</h3><p class="cite"><span class="cite-tag">使う定義</span><math><mfrac><mn>8</mn><mn>9</mn></mfrac><mo>=</mo><mn>0.888</mn><mo>…</mo></math>割り算を続けると 8 が繰り返される。循環小数は、繰り返される数字の最初と最後の上に点をつけて表す。</p>
           <p>8 ÷ 9 を計算すると、商は 0.888…… と 8 が繰り返されるよ。繰り返される数字は 8 の 1 つだけだね。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">0.8̇</p>
+          <p class="big">0.<math><mover><mn>8</mn><mo>˙</mo></mover></math></p>
         </div>
           <p class="prob-done">(1) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren26-2" data-flow="ren26-2" data-label="練習26 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　<span class="frac"><span class="num">6</span><span class="den">11</span></span></span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><mfrac><mn>6</mn><mn>11</mn></mfrac></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
           <div class="quiz" id="qz-ren26-2" data-correct="1">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>0.5̇4̇</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>0.54</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>0.5̇4</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>0.̇54̇</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>0.<math><mover><mn>5</mn><mo>˙</mo></mover></math><math><mover><mn>4</mn><mo>˙</mo></mover></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mn>0.54</mn></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>0.<math><mover><mn>5</mn><mo>˙</mo></mover></math>4</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>0.̇5<math><mover><mn>4</mn><mo>˙</mo></mover></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
           <p class="verdict"></p>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 割り算を続ける</h3>
-          <p>6 ÷ 11 = 0.5454…… と「54」が繰り返されるよ。点は 5 と 4 の両方につけるんだね。</p>
+          <h3>ヒント 1 ― 割り算を続ける</h3><p class="cite"><span class="cite-tag">使う定義</span><math><mfrac><mn>6</mn><mn>11</mn></mfrac><mo>=</mo><mn>0.5454</mn><mo>…</mo></math>ここでは「54」が繰り返されるので、5 と 4 の上に点をつける。</p>
+          <p><math><mn>6</mn><mo>÷</mo><mn>11</mn><mo>=</mo><mn>0.5454</mn><mo>…</mo><mo>…</mo></math>と「54」が繰り返されるよ。点は 5 と 4 の両方につけるんだね。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">0.5̇4̇</p>
+          <p class="big">0.<math><mover><mn>5</mn><mo>˙</mo></mover></math><math><mover><mn>4</mn><mo>˙</mo></mover></math></p>
         </div>
           <p class="prob-done">(2) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren26-3" data-flow="ren26-3" data-label="練習26 (3)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(3)　<span class="frac"><span class="num">10</span><span class="den">27</span></span></span>
+            <span class="sub prob-q" style="margin:0">(3)　<math><mfrac><mn>10</mn><mn>27</mn></mfrac></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 割り算を続ける</h3>
-          <p>10 ÷ 27 = 0.370370…… と「370」が繰り返されるよ。点は 3 と 0 につけよう。</p>
+          <h3>ヒント 1 ― 割り算を続ける</h3><p class="cite"><span class="cite-tag">使う定義</span><math><mfrac><mn>10</mn><mn>27</mn></mfrac><mo>=</mo><mn>0.370370</mn><mo>…</mo></math>ここでは「370」が繰り返されるので、3 と 0 の上に点をつける。</p>
+          <p><math><mn>10</mn><mo>÷</mo><mn>27</mn><mo>=</mo><mn>0.370370</mn><mo>…</mo><mo>…</mo></math>と「370」が繰り返されるよ。点は 3 と 0 につけよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">0.3̇70̇</p>
+          <p class="big">0.<math><mover><mn>3</mn><mo>˙</mo></mover></math>7<math><mover><mn>0</mn><mo>˙</mo></mover></math></p>
         </div>
           <p class="prob-done">(3) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren26-4" data-flow="ren26-4" data-label="練習26 (4)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(4)　<span class="frac"><span class="num">25</span><span class="den">22</span></span></span>
+            <span class="sub prob-q" style="margin:0">(4)　<math><mfrac><mn>25</mn><mn>22</mn></mfrac></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 割り算を続ける</h3>
-          <p>25 ÷ 22 = 1.13636……。整数部分は 1、小数第 1 位は 1、そのあと「36」が繰り返されるよ。繰り返しが始まるのは小数第 2 位からだね。</p>
+          <h3>ヒント 1 ― 割り算を続ける</h3><p class="cite"><span class="cite-tag">使う定義</span><math><mfrac><mn>25</mn><mn>22</mn></mfrac><mo>=</mo><mn>1.13636</mn><mo>…</mo></math>繰り返しは小数第 2 位から始まるので、点は 3 と 6 につける。</p>
+          <p><math><mn>25</mn><mo>÷</mo><mn>22</mn><mo>=</mo><mn>1.13636</mn><mo>…</mo><mo>…</mo></math>。整数部分は 1、小数第 1 位は 1、そのあと「36」が繰り返されるよ。<br>繰り返しが始まるのは小数第 2 位からだね。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">1.13̇6̇</p>
+          <p class="big">1.1<math><mover><mn>3</mn><mo>˙</mo></mover></math><math><mover><mn>6</mn><mo>˙</mo></mover></math></p>
         </div>
           <p class="prob-done">(4) クリア！　練習26は全部おわり。次は実数だよ。</p>
         </div>
@@ -451,34 +512,38 @@
       </div>
       <section class="card">
         <p>整数と、有限小数または無限小数で表される数とを合わせて<b>実数</b>という。実数のうち、有理数でない数を<b>無理数</b>という。</p>
-        <p><b>無理数</b>は、循環しない無限小数で表される数であり、分母と分子がともに整数である分数で表すことはできない。たとえば、√<span class="rad">2</span> や √<span class="rad">3</span>、円周率 π は、無理数であることが知られている。</p>
-        <p class="formula">√<span class="rad">2</span> = 1.4142135623……　　√<span class="rad">3</span> = 1.7320508075……　　π = 3.1415926535……</p>
-        <p>2 つの数 a, b の四則計算（加法・減法・乗法・除法。ただし 0 で割ることは考えない）の結果が、数の範囲の中にいつも収まるかどうかを考えてみよう。</p>
+        <p><b>無理数</b>は、循環しない無限小数で表される数であり、分母と分子がともに整数である分数で表すことはできない。たとえば、<math><msqrt><mn>2</mn></msqrt></math> や<math><msqrt><mn>3</mn></msqrt></math>、円周率 <math><mi>π</mi></math> は、無理数であることが知られている。</p>
+        <div class="chain-crow formula">
+<div class="crow"><math displaystyle="true"><msqrt><mn>2</mn></msqrt><mo>=</mo><mn>1.4142135623</mn><mo>…</mo><mo>…</mo><mspace width="2em"/><msqrt><mn>3</mn></msqrt></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msqrt><mn>2</mn></msqrt></mphantom><mo>=</mo><mn>1.7320508075</mn><mo>…</mo><mo>…</mo><mspace width="2em"/><mi>π</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msqrt><mn>2</mn></msqrt></mphantom><mo>=</mo><mn>3.1415926535</mn><mo>…</mo><mo>…</mo></math></div>
+</div>
+        <p>2 つの数 <math><mi>a</mi></math>, <math><mi>b</mi></math> の四則計算（加法・減法・乗法・除法。ただし 0 で割ることは考えない）の結果が、数の範囲の中にいつも収まるかどうかを考えてみよう。</p>
       </section>
       <div class="sec-head">
         <span class="sec-tag">例</span>
         <h2>例18で考え方を確認</h2>
         <span class="pno">教科書 p.29</span>
       </div>
-      <section class="card prob" id="prob-ex18" data-flow="ex18" data-label="例18">
+      <section class="nofig card prob" id="prob-ex18" data-flow="ex18" data-label="例18">
         <div class="prob-head">
           <span class="prob-tag ">例 18</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 1</span>
         </div>
         <div class="qside">
-        <p class="prob-q">(1) a, b が自然数のとき　(2) a, b が整数のとき、四則計算の結果は常にその範囲の数になるか。</p>
+        <p class="prob-q">(1) <math><mi>a</mi></math>, <math><mi>b</mi></math> が自然数のとき　(2) <math><mi>a</mi></math>, <math><mi>b</mi></math> が整数のとき、四則計算の結果は常にその範囲の数になるか。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 反例を探す</h3>
-          <p>「必ずしも〜とは限らない」ことを示すには、範囲から外れる例を 1 つあげればよいよ。(1) では a = 1, b = 2、(2) では a = −2, b = 3 などの場合を考えてみよう。</p>
+          <h3>ヒント 1 ― 反例を探す</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mn>1</mn><mo>−</mo><mn>2</mn><mo>=</mo><mo>−</mo><mn>1</mn></math>「常に成り立つ」を否定するには、範囲から外れる例を 1 つあげればよい。(1) では自然数の差が自然数でなくなる例として使う。</p>
+          <p>「必ずしも〜とは限らない」ことを示すには、範囲から外れる例を 1 つあげればよいよ。(1) では<math><mi>a</mi><mo>=</mo><mn>1</mn><mo>,</mo><mi>b</mi><mo>=</mo><mn>2</mn></math>、(2) では<math><mi>a</mi><mo>=</mo><mo>−</mo><mn>2</mn><mo>,</mo><mi>b</mi><mo>=</mo><mn>3</mn></math>などの場合を考えてみよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">(1) 差・商は限らない　　(2) 商は限らない</p>
-          <p>(1) a, b が自然数のとき、和 a + b、積 ab は常に自然数であるが、差 a − b、商 <span class="formula" style="display:inline-block;vertical-align:middle;margin:0 4px"><span class="frac"><span class="num">a</span><span class="den">b</span></span></span> は必ずしも自然数であるとは限らない。</p>
-          <p>(2) a, b が整数のとき、和 a + b、差 a − b、積 ab は常に整数であるが、商 <span class="formula" style="display:inline-block;vertical-align:middle;margin:0 4px"><span class="frac"><span class="num">a</span><span class="den">b</span></span></span> は必ずしも整数であるとは限らない。</p>
+          <p class="big">(1) 差・商は限らない　　(2) 商は限らない</p><p class="cite"><span class="cite-tag">使う性質</span><math><mfrac><mi>a</mi><mi>b</mi></mfrac></math>和・積は範囲の中に残るが、差・商は範囲を出ることがある。商はこの形で確かめる。</p>
+          <p>(1) <math><mi>a</mi></math>, <math><mi>b</mi></math> が自然数のとき、和 <math><mi>a</mi></math> + <math><mi>b</mi></math>、積 ab は常に自然数であるが、差 <math><mi>a</mi></math> − <math><mi>b</mi></math>、商 <math><mfrac><mi>a</mi><mi>b</mi></mfrac></math> は必ずしも自然数であるとは限らない。</p>
+          <p>(2) <math><mi>a</mi></math>, <math><mi>b</mi></math> が整数のとき、和 <math><mi>a</mi></math> + <math><mi>b</mi></math>、差 <math><mi>a</mi></math> − <math><mi>b</mi></math>、積 ab は常に整数であるが、商 <math><mfrac><mi>a</mi><mi>b</mi></mfrac></math> は必ずしも整数であるとは限らない。</p>
         </div>
         <p class="prob-done">例18 クリア！　次は練習27に挑戦しよう。</p>
       </section>
@@ -495,7 +560,7 @@
         <h2>練習問題に挑戦</h2>
         <span class="pno">教科書 p.30</span>
       </div>
-      <section class="card prob" id="prob-ren27" data-flow="ren27" data-label="練習27">
+      <section class="nofig card prob" id="prob-ren27" data-flow="ren27" data-label="練習27">
         <div class="prob-head">
           <span class="prob-tag ren">練習 27</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
@@ -511,19 +576,19 @@
 </table></p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 乗法の欄を考える</h3>
+          <h3>ヒント 1 ― 乗法の欄を考える</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mi>a</mi><mi>b</mi></math>積はこの形で表される。① は自然数どうしの積、③ は整数どうしの積で、どちらも範囲の中に収まるかを考える。</p>
           <p>自然数どうしの積、整数どうしの積は、それぞれ常に自然数、常に整数になるかな。① と ③ を考えよう。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― 除法の欄は反例を探す</h3>
+          <h3>ヒント 2 ― 除法の欄は反例を探す</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mn>1</mn><mo>÷</mo><mn>2</mn><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math>1÷2 の結果は自然数でも整数でもないので、除法の欄 ② と ④ は × になる。</p>
           <p>② は自然数どうしの割り算、④ は整数どうしの割り算。たとえば 1 ÷ 2 の結果は自然数でも整数でもないね。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
           <p class="big">① ○　② ×　③ ○　④ ×</p>
-          <p>① ○（自然数どうしの積は常に自然数）　② ×（例：1 ÷ 2 = <span class="formula" style="display:inline-block;vertical-align:middle;margin:0 4px"><span class="frac"><span class="num">1</span><span class="den">2</span></span></span> は自然数でない）　③ ○（整数どうしの積は常に整数）　④ ×（例：1 ÷ 2 = <span class="formula" style="display:inline-block;vertical-align:middle;margin:0 4px"><span class="frac"><span class="num">1</span><span class="den">2</span></span></span> は整数でない）</p>
-          <p>なお、表で × がついている自然数の減法についても、例として 1 − 2 = −1（自然数でない）があげられるよ。</p>
+          <p>① ○（自然数どうしの積は常に自然数）　② ×（例：<math><mn>1</mn><mo>÷</mo><mn>2</mn><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math> は自然数でない）　③ ○（整数どうしの積は常に整数）　④ ×（例：<math><mn>1</mn><mo>÷</mo><mn>2</mn><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math> は整数でない）</p>
+          <p>なお、表で × がついている自然数の減法についても、例として<math><mn>1</mn><mo>−</mo><mn>2</mn><mo>=</mo><mo>−</mo><mn>1</mn><mo>(</mo></math>自然数でない）があげられるよ。</p>
         </div>
         <p class="prob-done">練習27 クリア！　次は数直線と絶対値だよ。</p>
       </section>
@@ -533,7 +598,7 @@
         <span class="pno">教科書 p.30〜31</span>
       </div>
       <section class="card">
-        <p>直線上に基準となる点 O をとって数 0 を対応させ、その点の両側に数の目もりをつけた直線を<b>数直線</b>という。点 O を<b>原点</b>という。数直線上では、1 つの実数に 1 つの点が対応している。</p>
+        <p>直線上に基準となる点 <math><mi>O</mi></math> をとって数 0 を対応させ、その点の両側に数の目もりをつけた直線を<b>数直線</b>という。点 <math><mi>O</mi></math> を<b>原点</b>という。数直線上では、1 つの実数に 1 つの点が対応している。</p>
 <figure><div class="figbox"><svg viewBox="0 0 600 116" role="img" aria-label="数直線">
 <line x1="24" y1="58" x2="584" y2="58" stroke="currentColor" stroke-width="1.8"/>
 <path d="M 584 58 l -11 -5 v 10 z" fill="currentColor"/>
@@ -560,40 +625,40 @@
 <circle cx="501.062" cy="58" r="5.5" fill="currentColor"/>
 <text x="501.062" y="34" font-size="17" text-anchor="middle" fill="currentColor">π</text>
 </svg></div>
-<figcaption>教科書の数直線（−12/5, √2, 15/7, π に対応する点）</figcaption>
+<figcaption>教科書の数直線<math><mo>(</mo><mo>−</mo><mfrac><mn>12</mn><mn>5</mn></mfrac><mo>,</mo><msqrt><mn>2</mn></msqrt><mo>,</mo><mfrac><mn>15</mn><mn>7</mn></mfrac><mo>,</mo><mi>π</mi></math>に対応する点）</figcaption>
 </figure>
-        <p>数直線上で、点 P に実数 a が対応しているとき、a を点 P の<b>座標</b>といい、座標が a である点 P を P(a) で表す。</p>
-        <p>数直線上の原点 O(0) と点 P(a) の間の距離を、a の<b>絶対値</b>といい、記号 |a| で表す。0 の絶対値は |0| = 0 である。</p>
+        <p>数直線上で、点 <math><mi>P</mi></math> に実数 <math><mi>a</mi></math> が対応しているとき、<math><mi>a</mi></math> を点 <math><mi>P</mi></math> の<b>座標</b>といい、座標が <math><mi>a</mi></math> である点 <math><mi>P</mi></math> を <math><mi>P</mi><mrow><mo>(</mo><mi>a</mi><mo>)</mo></mrow></math> で表す。</p>
+        <p>数直線上の原点 <math><mi>O</mi><mrow><mo>(</mo><mn>0</mn><mo>)</mo></mrow></math> と点 <math><mi>P</mi><mrow><mo>(</mo><mi>a</mi><mo>)</mo></mrow></math> の間の距離を、<math><mi>a</mi></math> の<b>絶対値</b>といい、記号 |<math><mi>a</mi></math>| で表す。0 の絶対値は<math><mrow><mo>|</mo><mn>0</mn><mo>|</mo></mrow><mo>=</mo><mn>0</mn></math>である。</p>
         <div class="def">
           <p><b>絶対値</b></p>
-          <p>a が正の数または 0 のとき　|a| = a</p>
-          <p>a が負の数のとき　|a| = −a</p>
+          <p><math><mi>a</mi></math> が正の数または 0 のとき　<math><mrow><mo>|</mo><mi>a</mi><mo>|</mo></mrow><mo>=</mo><mi>a</mi></math></p>
+          <p><math><mi>a</mi></math> が負の数のとき　<math><mrow><mo>|</mo><mi>a</mi><mo>|</mo></mrow><mo>=</mo><mo>−</mo><mi>a</mi></math></p>
         </div>
-        <p>実数 a の絶対値 |a| は、0 以上の数である。</p>
+        <p>実数 <math><mi>a</mi></math> の絶対値 |<math><mi>a</mi></math>| は、0 以上の数である。</p>
       </section>
       <div class="sec-head">
         <span class="sec-tag">練習</span>
         <h2>練習問題に挑戦</h2>
         <span class="pno">教科書 p.30</span>
       </div>
-      <section class="card prob" id="prob-ren28" data-flow="ren28" data-label="練習28">
+      <section class="nofig card prob" id="prob-ren28" data-flow="ren28" data-label="練習28">
         <div class="prob-head">
           <span class="prob-tag ren">練習 28</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 1</span>
         </div>
         <div class="qside">
-        <p class="prob-q">次の実数に対応する点を、解説 C の数直線上にしるせ。　(1) 0.5　(2) <span class="frac"><span class="num">5</span><span class="den">2</span></span>　(3) −<span class="frac"><span class="num">7</span><span class="den">4</span></span>　(4) −√<span class="rad">2</span></p>
+        <p class="prob-q">次の実数に対応する点を、解説 C の数直線上にしるせ。　(1) 0.5　<math><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow><mfrac><mn>5</mn><mn>2</mn></mfrac></math>　<math><mrow><mo>(</mo><mn>3</mn><mo>)</mo></mrow><mo>−</mo><mfrac><mn>7</mn><mn>4</mn></mfrac></math>　<math><mrow><mo>(</mo><mn>4</mn><mo>)</mo></mrow><mo>−</mo><msqrt><mn>2</mn></msqrt></math></p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 小数になおして位置を決める</h3>
-          <p>(2) <span class="frac"><span class="num">5</span><span class="den">2</span></span> = 2.5、(3) −<span class="frac"><span class="num">7</span><span class="den">4</span></span> = −1.75、(4) −√<span class="rad">2</span> は −1.414…… だから −1.5 と −1 の間だよ。それぞれ 0.5 きざみの目もりとの位置関係で場所を決めよう。</p>
+          <h3>ヒント 1 ― 小数になおして位置を決める</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mfrac><mn>5</mn><mn>2</mn></mfrac><mo>=</mo><mn>2.5</mn></math>分数は小数に直してから、数直線上の位置を決める。(3) の分数と (4) の根号も同じように直す。</p>
+          <p><math><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow><mfrac><mn>5</mn><mn>2</mn></mfrac><mo>=</mo><mn>2.5</mn></math>、<math><mrow><mo>(</mo><mn>3</mn><mo>)</mo></mrow><mo>−</mo><mfrac><mn>7</mn><mn>4</mn></mfrac><mo>=</mo><mo>−</mo><mn>1.75</mn></math>、<math><mrow><mo>(</mo><mn>4</mn><mo>)</mo></mrow><mo>−</mo><msqrt><mn>2</mn></msqrt></math> は −1.414…… だから −1.5 と −1 の間だよ。<br>それぞれ 0.5 きざみの目もりとの位置関係で場所を決めよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">(1) 0.5　(2) 2.5　(3) −1.75　(4) −√<span class="rad">2</span> ≒ −1.41 の位置</p>
-          <p>(1) 0.5 は 0 と 1 の真ん中、(2) 2.5 は 2 と 3 の真ん中、(3) −1.75 は −2 と −1 の間で −1 より −0.75 の位置、(4) −√<span class="rad">2</span> ≒ −1.41 は −1.5 と −1 の間で −1.75 より右の位置に点をしるす。</p>
+          <p class="big">(1) 0.5　(2) 2.5　(3) −1.75　<math><mrow><mo>(</mo><mn>4</mn><mo>)</mo></mrow><mo>−</mo><msqrt><mn>2</mn></msqrt><mo>≒</mo><mo>−</mo><mn>1.41</mn></math>の位置</p>
+          <p>(1) 0.5 は 0 と 1 の真ん中、(2) 2.5 は 2 と 3 の真ん中、(3) −1.75 は −2 と −1 の間で −1 より −0.75 の位置、<math><mrow><mo>(</mo><mn>4</mn><mo>)</mo></mrow><mo>−</mo><msqrt><mn>2</mn></msqrt><mo>≒</mo><mo>−</mo><mn>1.41</mn></math>は −1.5 と −1 の間で −1.75 より右の位置に点をしるす。</p>
 <figure><div class="figbox"><svg viewBox="0 0 600 116" role="img" aria-label="数直線">
 <line x1="24" y1="58" x2="584" y2="58" stroke="currentColor" stroke-width="1.8"/>
 <path d="M 584 58 l -11 -5 v 10 z" fill="currentColor"/>
@@ -620,7 +685,7 @@
 <circle cx="460" cy="58" r="5.5" fill="currentColor"/>
 <text x="460" y="34" font-size="17" text-anchor="middle" fill="currentColor">5/2</text>
 </svg></div>
-<figcaption>練習28の答え（0.5, 5/2, −7/4, −√2 に対応する点）</figcaption>
+<figcaption>練習28の答え<math><mo>(</mo><mn>0.5</mn><mo>,</mo><mfrac><mn>5</mn><mn>2</mn></mfrac><mo>,</mo><mo>−</mo><mfrac><mn>7</mn><mn>4</mn></mfrac><mo>,</mo><mo>−</mo><msqrt><mn>2</mn></msqrt></math>に対応する点）</figcaption>
 </figure>
         </div>
         <p class="prob-done">練習28 クリア！　次は絶対値の計算だよ。</p>
@@ -630,7 +695,7 @@
         <h2>例19・例20で解き方を確認</h2>
         <span class="pno">教科書 p.31</span>
       </div>
-      <section class="card prob" id="prob-ex19" data-flow="ex19" data-label="例19">
+      <section class="nofig card prob" id="prob-ex19" data-flow="ex19" data-label="例19">
         <div class="prob-head">
           <span class="prob-tag ">例 19</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
@@ -640,14 +705,14 @@
         <p class="prob-q">2 の絶対値と、−3 の絶対値を求めよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 原点からの距離で考える</h3>
+          <h3>ヒント 1 ― 原点からの距離で考える</h3><p class="cite"><span class="cite-tag">使う定義</span><math><mrow><mo>|</mo><mi>a</mi><mo>|</mo></mrow></math>絶対値は、数直線上で原点からの距離を表す。ここでは 2 と −3 の原点からの距離を読む。</p>
           <p>絶対値は原点からの距離。2 は原点から 2、−3 は原点から 3 離れているね。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">|2| = 2，　|−3| = 3</p>
-          <p>2 の絶対値は |2| = 2、−3 の絶対値は |−3| = 3 である。</p>
+          <p class="big"><math display="block"><mrow><mo>|</mo><mn>2</mn><mo>|</mo></mrow><mo>=</mo><mn>2</mn><mo>,</mo><mspace width="2em"/><mrow><mo>|</mo><mo>−</mo><mn>3</mn><mo>|</mo></mrow><mo>=</mo><mn>3</mn></math></p>
+          <p>2 の絶対値は<math><mrow><mo>|</mo><mn>2</mn><mo>|</mo></mrow><mo>=</mo><mn>2</mn></math>、−3 の絶対値は<math><mrow><mo>|</mo><mo>−</mo><mn>3</mn><mo>|</mo></mrow><mo>=</mo><mn>3</mn></math>である。</p>
         </div>
         <p class="prob-done">例19 クリア！　次は練習29に挑戦しよう。</p>
       </section>
@@ -656,7 +721,7 @@
         <h2>練習問題に挑戦</h2>
         <span class="pno">教科書 p.31</span>
       </div>
-      <section class="card prob" id="prob-ren29" data-label="練習29">
+      <section class="nofig card prob" id="prob-ren29" data-label="練習29">
         <div class="prob-head">
           <span class="prob-tag ren">練習 29</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
@@ -677,7 +742,7 @@
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 中身は正の数</h3>
+          <h3>ヒント 1 ― 中身は正の数</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mo>|</mo><mi>a</mi><mo>|</mo></mrow><mo>=</mo><mi>a</mi></math><math><mi>a</mi><mo>≧</mo><mn>0</mn></math> のとき、絶対値はそのまま外れる。ここでは中身が 3 の場合に使う。</p>
           <p>中身が正の数または 0 のときは、そのまま外そう。</p>
         </div>
         <div class="step answer">
@@ -694,8 +759,8 @@
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 中身は負の数</h3>
-          <p>中身が負の数のときは、符号を変えて（− を掛けて）外そう。|−4| = −(−4) だよ。</p>
+          <h3>ヒント 1 ― 中身は負の数</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mo>|</mo><mi>a</mi><mo>|</mo></mrow><mo>=</mo><mo>−</mo><mi>a</mi></math><math><mi>a</mi><mo>&lt;</mo><mn>0</mn></math> のとき、絶対値は符号を変えて外れる。ここでは <math><mrow><mo>|</mo><mo>−</mo><mn>4</mn><mo>|</mo></mrow></math> を <math><mo>−</mo><mrow><mo>(</mo><mo>−</mo><mn>4</mn><mo>)</mo></mrow></math> と直す。</p>
+          <p>中身が負の数のときは、符号を変えて（− を掛けて）外そう。<math><mrow><mo>|</mo><mo>−</mo><mn>4</mn><mo>|</mo></mrow><mo>=</mo><mo>−</mo><mrow><mo>(</mo><mo>−</mo><mn>4</mn><mo>)</mo></mrow></math>だよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
@@ -706,51 +771,51 @@
         </div>
         <div class="tabpanel" id="panel-ren29-3" data-flow="ren29-3" data-label="練習29 (3)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(3)　|<span class="frac"><span class="num">2</span><span class="den">3</span></span>|</span>
+            <span class="sub prob-q" style="margin:0">(3)　<math><mo>|</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mo>|</mo></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 中身は正の数</h3>
-          <p><span class="frac"><span class="num">2</span><span class="den">3</span></span> は正の数だから、そのまま外そう。</p>
+          <h3>ヒント 1 ― 中身は正の数</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mo>|</mo><mi>a</mi><mo>|</mo></mrow><mo>=</mo><mi>a</mi></math>中身が正の数のときはそのまま外れる。ここでは中身が <math><mfrac><mn>2</mn><mn>3</mn></mfrac></math> の場合に使う。</p>
+          <p><math><mfrac><mn>2</mn><mn>3</mn></mfrac></math> は正の数だから、そのまま外そう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big"><span class="frac"><span class="num">2</span><span class="den">3</span></span></p>
+          <p class="big"><math display="block"><mfrac><mn>2</mn><mn>3</mn></mfrac></math></p>
         </div>
           <p class="prob-done">(3) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren29-4" data-flow="ren29-4" data-label="練習29 (4)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(4)　|−√<span class="rad">2</span>|</span>
+            <span class="sub prob-q" style="margin:0">(4)　<math><mo>|</mo><mo>−</mo><msqrt><mn>2</mn></msqrt><mo>|</mo></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
           <div class="quiz" id="qz-ren29-4" data-correct="2">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>−√<span class="rad">2</span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>√<span class="rad">2</span></span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>2</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>−2</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mo>−</mo><msqrt><mn>2</mn></msqrt></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><msqrt><mn>2</mn></msqrt></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mn>2</mn></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mo>−</mo><mn>2</mn></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
           <p class="verdict"></p>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 中身は負の数</h3>
-          <p>−√<span class="rad">2</span> は負の数だから、符号を変えて外そう。−(−√<span class="rad">2</span>) となるよ。</p>
+          <h3>ヒント 1 ― 中身は負の数</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mo>|</mo><mi>a</mi><mo>|</mo></mrow><mo>=</mo><mo>−</mo><mi>a</mi></math>中身が負の数のときは符号を変えて外れる。ここでは中身 <math><mo>−</mo><msqrt><mn>2</mn></msqrt></math> が負の数である場合に使う。</p>
+          <p><math><mo>−</mo><msqrt><mn>2</mn></msqrt></math> は負の数だから、符号を変えて外そう。<math><mo>−</mo><mrow><mo>(</mo><mo>−</mo><msqrt><mn>2</mn></msqrt><mo>)</mo></mrow></math>となるよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">√<span class="rad">2</span></p>
+          <p class="big"><math display="block"><msqrt><mn>2</mn></msqrt></math></p>
         </div>
           <p class="prob-done">(4) クリア！　練習29は全部おわり。次は練習30だよ。</p>
         </div>
       </section>
-      <section class="card prob" id="prob-ren30" data-flow="ren30" data-label="練習30">
+      <section class="nofig card prob" id="prob-ren30" data-flow="ren30" data-label="練習30">
         <div class="prob-head">
           <span class="prob-tag ren">練習 30</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
@@ -760,10 +825,10 @@
         <p class="prob-q">絶対値が 5 である数をすべて求めよ。</p>
           <div class="quiz" id="qz-ren30" data-correct="3">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>5</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>−5</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mn>5</mn></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mo>−</mo><mn>5</mn></math></span><span class="mark"></span></button>
             <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>5 と −5</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>0</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mn>0</mn></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
@@ -771,7 +836,7 @@
           </div>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 数直線で考える</h3>
+          <h3>ヒント 1 ― 数直線で考える</h3><p class="cite"><span class="cite-tag">使う定義</span><math><mrow><mo>|</mo><mi>x</mi><mo>|</mo></mrow><mo>=</mo><mn>5</mn></math>原点からの距離が 5 である点は、右側の 5 と左側の −5 の 2 つある。</p>
           <p>絶対値が 5 というのは、原点からの距離が 5 ということ。数直線上で原点から距離 5 の点は、右側と左側に 1 つずつあるよ。</p>
         </div>
         <div class="step answer">
@@ -782,26 +847,30 @@
         </div>
         <p class="prob-done">練習30 クリア！　次は例20だよ。</p>
       </section>
-      <section class="card prob" id="prob-ex20" data-flow="ex20" data-label="例20">
+      <section class="nofig card prob" id="prob-ex20" data-flow="ex20" data-label="例20">
         <div class="prob-head">
           <span class="prob-tag ">例 20</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 1</span>
         </div>
         <div class="qside">
-        <p class="prob-q">(1) |5 − 3|　(2) |3 − 5|　(3) |1 − √<span class="rad">2</span>| の値を求めよ。</p>
+        <p class="prob-q">(1) |5 − 3|　(2) |3 − 5|　<math><mrow><mo>(</mo><mn>3</mn><mo>)</mo></mrow><mrow><mo>|</mo><mn>1</mn><mo>−</mo><msqrt><mn>2</mn></msqrt><mo>|</mo></mrow></math>の値を求めよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 中身を先に計算・判定する</h3>
-          <p>(1)(2) は中身を計算してから絶対値を外そう。(3) は √<span class="rad">2</span> が 1 より大きいことから、1 − √<span class="rad">2</span> が負の数だと分かるね。</p>
+          <h3>ヒント 1 ― 中身を先に計算・判定する</h3><p class="cite"><span class="cite-tag">使う性質</span><math><msqrt><mn>2</mn></msqrt><mo>≒</mo><mn>1.41</mn></math>√2 は 1 より大きいので <math><mn>1</mn><mo>−</mo><msqrt><mn>2</mn></msqrt></math> は負の数になり、絶対値は符号を変えて外す。</p>
+          <p>(1)(2) は中身を計算してから絶対値を外そう。(3) は<math><msqrt><mn>2</mn></msqrt></math> が 1 より大きいことから、<math><mn>1</mn><mo>−</mo><msqrt><mn>2</mn></msqrt></math> が負の数だと分かるね。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">(1) 2　　(2) 2　　(3) √<span class="rad">2</span> − 1</p>
-          <p>(1) |5 − 3| = |2| = 2</p>
-          <p>(2) |3 − 5| = |−2| = −(−2) = 2</p>
-          <p>(3) 1 − √<span class="rad">2</span> は負の数であるから、|1 − √<span class="rad">2</span>| = −(1 − √<span class="rad">2</span>) = √<span class="rad">2</span> − 1</p>
+          <p class="big">(1) 2　　(2) 2　　<math><mrow><mo>(</mo><mn>3</mn><mo>)</mo></mrow><msqrt><mn>2</mn></msqrt><mo>−</mo><mn>1</mn></math></p><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mo>|</mo><mrow><mn>1</mn><mo>−</mo><msqrt><mn>2</mn></msqrt></mrow><mo>|</mo></mrow><mo>=</mo><mo>−</mo><mrow><mo>(</mo><mrow><mn>1</mn><mo>−</mo><msqrt><mn>2</mn></msqrt></mrow><mo>)</mo></mrow></math>(3) は中身が負の数なので符号を変えて外し、<math><msqrt><mn>2</mn></msqrt><mo>−</mo><mn>1</mn></math> を得る。(1)(2) は中身を先に計算してから外す。</p>
+          <p><math><mrow><mo>(</mo><mn>1</mn><mo>)</mo></mrow><mrow><mo>|</mo><mn>5</mn><mo>−</mo><mn>3</mn><mo>|</mo></mrow><mo>=</mo><mrow><mo>|</mo><mn>2</mn><mo>|</mo></mrow><mo>=</mo><mn>2</mn></math></p>
+          <div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow><mrow><mo>|</mo><mn>3</mn><mo>−</mo><mn>5</mn><mo>|</mo></mrow><mo>=</mo><mrow><mo>|</mo><mo>−</mo><mn>2</mn><mo>|</mo></mrow></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow><mrow><mo>|</mo><mn>3</mn><mo>−</mo><mn>5</mn><mo>|</mo></mrow></mphantom><mo>=</mo><mo>−</mo><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow><mrow><mo>|</mo><mn>3</mn><mo>−</mo><mn>5</mn><mo>|</mo></mrow></mphantom><mo>=</mo><mn>2</mn></math></div>
+</div>
+          <p><math><mrow><mo>(</mo><mn>3</mn><mo>)</mo></mrow><mn>1</mn><mo>−</mo><msqrt><mn>2</mn></msqrt></math> は負の数であるから、<math><mrow><mo>|</mo><mn>1</mn><mo>−</mo><msqrt><mn>2</mn></msqrt><mo>|</mo></mrow><mo>=</mo><mo>−</mo><mrow><mo>(</mo><mn>1</mn><mo>−</mo><msqrt><mn>2</mn></msqrt><mo>)</mo></mrow><mo>=</mo><msqrt><mn>2</mn></msqrt><mo>−</mo><mn>1</mn></math></p>
         </div>
         <p class="prob-done">例20 クリア！　次は練習31に挑戦しよう。</p>
       </section>
@@ -810,7 +879,7 @@
         <h2>練習問題に挑戦</h2>
         <span class="pno">教科書 p.31</span>
       </div>
-      <section class="card prob" id="prob-ren31" data-label="練習31">
+      <section class="nofig card prob" id="prob-ren31" data-label="練習31">
         <div class="prob-head">
           <span class="prob-tag ren">練習 31</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
@@ -831,8 +900,8 @@
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 中身を計算する</h3>
-          <p>2 − 3 = −1。絶対値を外すとどうなるかな。</p>
+          <h3>ヒント 1 ― 中身を計算する</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mrow><mo>|</mo><mi>a</mi><mo>|</mo></mrow><mo>=</mo><mo>−</mo><mi>a</mi></math>まず中身 <math><mn>2</mn><mo>−</mo><mn>3</mn><mo>=</mo><mo>−</mo><mn>1</mn></math> を計算し、負の数なので符号を変えて外す。</p>
+          <p><math><mn>2</mn><mo>−</mo><mn>3</mn><mo>=</mo><mo>−</mo><mn>1</mn></math>。絶対値を外すとどうなるかな。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
@@ -849,7 +918,7 @@
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― 中身を計算する</h3>
-          <p>1 − (−3) = 1 + 3 = 4。正の数だからそのまま外せるね。</p>
+          <p><math><mn>1</mn><mo>−</mo><mrow><mo>(</mo><mo>−</mo><mn>3</mn><mo>)</mo></mrow><mo>=</mo><mn>1</mn><mo>+</mo><mn>3</mn><mo>=</mo><mn>4</mn></math>。正の数だからそのまま外せるね。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
@@ -860,46 +929,46 @@
         </div>
         <div class="tabpanel" id="panel-ren31-3" data-flow="ren31-3" data-label="練習31 (3)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(3)　|2 − √<span class="rad">2</span>|</span>
+            <span class="sub prob-q" style="margin:0">(3)　<math><mo>|</mo><mn>2</mn><mo>−</mo><msqrt><mn>2</mn></msqrt><mo>|</mo></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 中身の符号を判定する</h3>
-          <p>√<span class="rad">2</span> ≒ 1.41 だから、2 − √<span class="rad">2</span> は正の数だよ。そのまま外そう。</p>
+          <h3>ヒント 1 ― 中身の符号を判定する</h3><p class="cite"><span class="cite-tag">使う性質</span><math><msqrt><mn>2</mn></msqrt><mo>≒</mo><mn>1.41</mn></math>この値から <math><mn>2</mn><mo>−</mo><msqrt><mn>2</mn></msqrt></math> は正の数だと分かるので、絶対値はそのまま外す。</p>
+          <p><math><msqrt><mn>2</mn></msqrt><mo>≒</mo><mn>1.41</mn></math>だから、<math><mn>2</mn><mo>−</mo><msqrt><mn>2</mn></msqrt></math> は正の数だよ。そのまま外そう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">2 − √<span class="rad">2</span></p>
+          <p class="big"><math display="block"><mn>2</mn><mo>−</mo><msqrt><mn>2</mn></msqrt></math></p>
         </div>
           <p class="prob-done">(3) クリア！　次の小問のタブを開いてみよう。</p>
         </div>
         <div class="tabpanel" id="panel-ren31-4" data-flow="ren31-4" data-label="練習31 (4)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(4)　|3 − π|</span>
+            <span class="sub prob-q" style="margin:0">(4)　<math><mo>|</mo><mn>3</mn><mo>−</mo><mi>π</mi><mo>|</mo></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
           <div class="quiz" id="qz-ren31-4" data-correct="3">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>3 − π</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>3 + π</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>π − 3</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span>0</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mn>3</mn><mo>−</mo><mi>π</mi></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mn>3</mn><mo>+</mo><mi>π</mi></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mi>π</mi><mo>−</mo><mn>3</mn></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="4"><span class="cno">④</span><span><math><mn>0</mn></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
           <p class="verdict"></p>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 中身の符号を判定する</h3>
-          <p>π ≒ 3.14 だから、3 − π は負の数だよ。符号を変えて外そう。</p>
+          <h3>ヒント 1 ― 中身の符号を判定する</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mi>π</mi><mo>≒</mo><mn>3.14</mn></math>この値から <math><mn>3</mn><mo>−</mo><mi>π</mi></math> は負の数だと分かるので、絶対値は符号を変えて外す。</p>
+          <p><math><mi>π</mi><mo>≒</mo><mn>3.14</mn></math>だから、<math><mn>3</mn><mo>−</mo><mi>π</mi></math>は負の数だよ。符号を変えて外そう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">π − 3</p>
+          <p class="big"><math display="block"><mi>π</mi><mo>−</mo><mn>3</mn></math></p>
         </div>
           <p class="prob-done">(4) クリア！　練習31は全部おわり。この項は終了だよ。</p>
         </div>
@@ -910,10 +979,10 @@
       <section class="card summary" id="summaryCard" style="display:none">
         <h2>この項のポイント</h2>
         <ul>
-          <li><b>有理数：</b>整数以外の有理数は有限小数か循環小数で表され、逆も成り立つ。循環小数は繰り返しの最初と最後に点をつけて書く。</li>
-          <li><b>実数と無理数：</b>有理数でない実数が無理数で、循環しない無限小数で表される（√<span class="rad">2</span>, π など）。</li>
-          <li><b>四則計算：</b>有理数どうし、実数どうしの和・差・積・商は常に同じ範囲の数になる。自然数・整数では割り算などが範囲を出ることがある。</li>
-          <li><b>絶対値：</b>|a| は原点からの距離。a ≧ 0 のとき |a| = a、a < 0 のとき |a| = −a で、まず中身の符号を判定してから外す。</li>
+          <li><p class="cite"><span class="cite-tag">使う定義</span><math><mn>0.</mn><mover><mn>5</mn><mo>˙</mo></mover><mover><mn>4</mn><mo>˙</mo></mover></math>循環小数は、繰り返される数字の最初と最後の上に点をつけて書く。</p><b>有理数：</b>整数以外の有理数は有限小数か循環小数で表され、逆も成り立つ。循環小数は繰り返しの最初と最後に点をつけて書く。</li>
+          <li><p class="cite"><span class="cite-tag">使う定義</span><math><msqrt><mn>2</mn></msqrt></math>√2 や π のように、循環しない無限小数で表される数が無理数である。</p><b>実数と無理数：</b>有理数でない実数が無理数で、循環しない無限小数で表される<math><mo>(</mo><msqrt><mn>2</mn></msqrt><mo>,</mo><mi>π</mi></math>など）。</li>
+          <li><p class="cite"><span class="cite-tag">使う性質</span><math><mfrac><mi>m</mi><mi>n</mi></mfrac></math>有理数はこの形の分数で表され、有理数どうしの四則計算の結果も有理数の範囲に収まる。</p><b>四則計算：</b>有理数どうし、実数どうしの和・差・積・商は常に同じ範囲の数になる。自然数・整数では割り算などが範囲を出ることがある。</li>
+          <li><p class="cite"><span class="cite-tag">使う定義</span><math><mrow><mo>|</mo><mi>a</mi><mo>|</mo></mrow><mo>=</mo><mi>a</mi></math><math><mrow><mo>|</mo><mi>a</mi><mo>|</mo></mrow><mo>=</mo><mo>−</mo><mi>a</mi></math><math><mi>a</mi><mo>≧</mo><mn>0</mn></math> のときは左の式、<math><mi>a</mi><mo>&lt;</mo><mn>0</mn></math> のときは右の式で絶対値を外す。</p><b>絶対値：</b>|<math><mi>a</mi></math>| は原点からの距離。<math><mi>a</mi><mo>≧</mo><mn>0</mn></math>のとき<math><mrow><mo>|</mo><mi>a</mi><mo>|</mo></mrow><mo>=</mo><mi>a</mi></math>、<math><mi>a</mi></math> < 0 のとき<math><mrow><mo>|</mo><mi>a</mi><mo>|</mo></mrow><mo>=</mo><mo>−</mo><mi>a</mi></math>で、まず中身の符号を判定してから外す。</li>
         </ul>
       </section>
       <footer>
