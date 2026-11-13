@@ -309,7 +309,64 @@ padding:16px 34px;box-shadow:var(--shadow);
 }
 @media (prefers-color-scheme: dark){.finish-btn{color:#0c1712}}
 .finish-btn:active{transform:scale(.98)}
- </style>
+ 
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+
+      /* 積分記号は大きめに表示する（元のページの可読化デザインに合わせる） */
+      math .int-op{font-size:1.35em}
+      /* calc-12 世代（.card）と calc-18 世代（.unit）の、図のない問題の全幅化 */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig>.step{position:static !important}
+        .card.nofig>.steps-wrap{max-height:none !important;overflow:visible !important}
+        .unit.nofig{display:block !important}
+        .unit.nofig>.qside{position:static !important}
+        .unit.nofig>.steps-stack{max-height:none !important;overflow:visible !important}
+      }
+
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける・第3弾c） */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig .qside{position:static !important}
+        .card.nofig .steps-wrap,.card.nofig .tabpanel .steps-wrap{max-height:none !important;overflow:visible !important}
+      }
+</style>
 </head>
 <body>
 <div class="wrap">
@@ -332,16 +389,16 @@ padding:16px 34px;box-shadow:var(--shadow);
         <span class="pno">教科書 p.68</span>
       </div>
       <section class="card">
-        <p>命題 <span class="formula">p ⇒ q</span> に対して</p>
-        <p class="formula">q ⇒ p を p ⇒ q の <b>逆</b><br><span style="text-decoration:overline">q</span> ⇒ <span style="text-decoration:overline">p</span> を p ⇒ q の <b>対偶</b><br><span style="text-decoration:overline">p</span> ⇒ <span style="text-decoration:overline">q</span> を p ⇒ q の <b>裏</b></p>
-        <p>という。命題 <span class="formula">p ⇒ q</span> とその逆、対偶、裏は、互いに次のような関係にある。</p>
-        <p class="formula">もとの命題 p ⇒ q ―（逆）― q ⇒ p<br>もとの命題 p ⇒ q ―（裏）― <span style="text-decoration:overline">p</span> ⇒ <span style="text-decoration:overline">q</span><br>もとの命題 p ⇒ q ―（対偶）― <span style="text-decoration:overline">q</span> ⇒ <span style="text-decoration:overline">p</span></p>
+        <p>命題 <math><mi>p</mi><mo>⇒</mo><mi>q</mi></math> に対して</p>
+        <p class="formula"><math><mi>q</mi></math> ⇒ <math><mi>p</mi></math> を <math><mi>p</mi></math> ⇒ <math><mi>q</mi></math> の <b>逆</b><br><math><mover><mi>q</mi><mo>‾</mo></mover><mo>⇒</mo><mover><mi>p</mi><mo>‾</mo></mover></math> を <math><mi>p</mi></math> ⇒ <math><mi>q</mi></math> の <b>対偶</b><br><math><mover><mi>p</mi><mo>‾</mo></mover><mo>⇒</mo><mover><mi>q</mi><mo>‾</mo></mover></math> を <math><mi>p</mi></math> ⇒ <math><mi>q</mi></math> の <b>裏</b></p>
+        <p>という。命題 <math><mi>p</mi><mo>⇒</mo><mi>q</mi></math> とその逆、対偶、裏は、互いに次のような関係にある。</p>
+        <p class="formula">もとの命題 <math><mi>p</mi></math> ⇒ <math><mi>q</mi></math> ―（逆）― <math><mi>q</mi></math> ⇒ <math><mi>p</mi></math><br>もとの命題 <math><mi>p</mi></math> ⇒ <math><mi>q</mi></math> ―（裏<math><mo>)</mo><mo>―</mo><mover><mi>p</mi><mo>‾</mo></mover><mo>⇒</mo><mover><mi>q</mi><mo>‾</mo></mover></math><br>もとの命題 <math><mi>p</mi></math> ⇒ <math><mi>q</mi></math> ―（対偶<math><mo>)</mo><mo>―</mo><mover><mi>q</mi><mo>‾</mo></mover><mo>⇒</mo><mover><mi>p</mi><mo>‾</mo></mover></math></p>
         <div class="def">
-          <p style="margin:0 0 6px"><b>逆</b> … 仮定と結論を入れ替える：<span class="formula">q ⇒ p</span></p>
-          <p style="margin:0 0 6px"><b>対偶</b> … 仮定と結論を入れ替え、両方を否定する：<span class="formula"><span style="text-decoration:overline">q</span> ⇒ <span style="text-decoration:overline">p</span></span></p>
-          <p style="margin:0"><b>裏</b> … 仮定と結論の順序はそのままに、両方を否定する：<span class="formula"><span style="text-decoration:overline">p</span> ⇒ <span style="text-decoration:overline">q</span></span></p>
+          <p style="margin:0 0 6px"><b>逆</b> … 仮定と結論を入れ替える：<math><mi>q</mi><mo>⇒</mo><mi>p</mi></math></p>
+          <p style="margin:0 0 6px"><b>対偶</b> … 仮定と結論を入れ替え、両方を否定する：<math><mover><mi>q</mi><mo>‾</mo></mover><mo>⇒</mo><mover><mi>p</mi><mo>‾</mo></mover></math></p>
+          <p style="margin:0"><b>裏</b> … 仮定と結論の順序はそのままに、両方を否定する：<math><mover><mi>p</mi><mo>‾</mo></mover><mo>⇒</mo><mover><mi>q</mi><mo>‾</mo></mover></math></p>
         </div>
-        <p>命題 <span class="formula">p ⇒ q</span> の真偽と、その逆 <span class="formula">q ⇒ p</span> の真偽について考えてみよう。例15 の命題「<span class="formula">a = 1 ⇒ a<sup>2</sup> = 1</span>」は真である。しかし、この命題の逆「<span class="formula">a<sup>2</sup> = 1 ⇒ a = 1</span>」は、<span class="formula">a = −1</span> が反例となり、偽である。一般に、命題とその逆の真偽については、次のことがいえる。</p>
+        <p>命題 <math><mi>p</mi><mo>⇒</mo><mi>q</mi></math> の真偽と、その逆 <math><mi>q</mi><mo>⇒</mo><mi>p</mi></math> の真偽について考えてみよう。例15 の命題「<math><mi>a</mi><mo>=</mo><mn>1</mn><mo>⇒</mo><msup><mi>a</mi><mn>2</mn></msup><mo>=</mo><mn>1</mn></math>」は真である。しかし、この命題の逆「<math><msup><mi>a</mi><mn>2</mn></msup><mo>=</mo><mn>1</mn><mo>⇒</mo><mi>a</mi><mo>=</mo><mn>1</mn></math>」は、<math><mi>a</mi><mo>=</mo><mo>−</mo><mn>1</mn></math> が反例となり、偽である。一般に、命題とその逆の真偽については、次のことがいえる。</p>
         <div class="def">
           <p style="margin:0"><b>もとの命題が真であっても、その逆が真であるとは限らない。</b></p>
         </div>
@@ -351,28 +408,28 @@ padding:16px 34px;box-shadow:var(--shadow);
         <h2>例15で考え方を確認</h2>
         <span class="pno">教科書 p.68</span>
       </div>
-      <section class="card prob" id="prob-re15" data-flow="re15" data-label="例 15">
+      <section class="nofig card prob" id="prob-re15" data-flow="re15" data-label="例 15">
         <div class="prob-head">
           <span class="prob-tag ">例 15</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q"><span class="formula">a</span> を実数とするとき、命題「<span class="formula">a = 1 ⇒ a<sup>2</sup> = 1</span>」の逆、対偶、裏を述べる。</p>
+        <p class="prob-q"><math><mi>a</mi></math> を実数とするとき、命題「<math><mi>a</mi><mo>=</mo><mn>1</mn><mo>⇒</mo><msup><mi>a</mi><mn>2</mn></msup><mo>=</mo><mn>1</mn></math>」の逆、対偶、裏を述べる。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント1 ― まず仮定 p と結論 q を確認する</h3>
-          <p>もとの命題では、仮定 <span class="formula">p</span> は「<span class="formula">a = 1</span>」、結論 <span class="formula">q</span> は「<span class="formula">a<sup>2</sup> = 1</span>」である。逆はこの 2 つを入れ替えるので、まず逆から作ろう。</p>
+          <h3>ヒント1 ― まず仮定 <math><mi>p</mi></math> と結論 <math><mi>q</mi></math> を確認する</h3><p class="cite"><span class="cite-tag">使う定義</span><math><mi>q</mi><mo>⇒</mo><mi>p</mi></math>逆は、もとの命題の仮定と結論を入れ替えたもの。ここでは仮定 a=1、結論 a²=1 を入れ替える。</p>
+          <p>もとの命題では、仮定 <math><mi>p</mi></math> は「<math><mi>a</mi><mo>=</mo><mn>1</mn></math>」、結論 <math><mi>q</mi></math> は「<math><msup><mi>a</mi><mn>2</mn></msup><mo>=</mo><mn>1</mn></math>」である。逆はこの 2 つを入れ替えるので、まず逆から作ろう。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント2 ― 否定 <span style="text-decoration:overline">p</span>，<span style="text-decoration:overline">q</span> を作る</h3>
-          <p>対偶と裏には否定が必要である。「<span class="formula">a = 1</span>」の否定は「<span class="formula">a ≠ 1</span>」、「<span class="formula">a<sup>2</sup> = 1</span>」の否定は「<span class="formula">a<sup>2</sup> ≠ 1</span>」。対偶は入れ替えて両方否定、裏は順序そのまま両方否定である。</p>
+          <h3>ヒント2 ― 否定 <math><mover><mi>p</mi><mo>‾</mo></mover><mo>,</mo><mover><mi>q</mi><mo>‾</mo></mover></math> を作る</h3><p class="cite"><span class="cite-tag">使う定義</span><math><mover><mi>p</mi><mo>‾</mo></mover></math>否定は「〜でない」の形。a=1 の否定は a≠1、a²=1 の否定は a²≠1 で、対偶と裏を作るときに使う。</p>
+          <p>対偶と裏には否定が必要である。「<math><mi>a</mi><mo>=</mo><mn>1</mn></math>」の否定は「<math><mi>a</mi><mo>≠</mo><mn>1</mn></math>」、「<math><msup><mi>a</mi><mn>2</mn></msup><mo>=</mo><mn>1</mn></math>」の否定は「<math><msup><mi>a</mi><mn>2</mn></msup><mo>≠</mo><mn>1</mn></math>」。対偶は入れ替えて両方否定、裏は順序そのまま両方否定である。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">逆：a<sup>2</sup> = 1 ⇒ a = 1，　対偶：a<sup>2</sup> ≠ 1 ⇒ a ≠ 1，　裏：a ≠ 1 ⇒ a<sup>2</sup> ≠ 1</p>
-          <p>逆は「<span class="formula">a<sup>2</sup> = 1 ⇒ a = 1</span>」、対偶は「<span class="formula">a<sup>2</sup> ≠ 1 ⇒ a ≠ 1</span>」、裏は「<span class="formula">a ≠ 1 ⇒ a<sup>2</sup> ≠ 1</span>」である。</p>
+          <p class="big">逆：<math><msup><mi>a</mi><mn>2</mn></msup><mo>=</mo><mn>1</mn><mo>⇒</mo><mi>a</mi><mo>=</mo><mn>1</mn><mo>,</mo></math>　対偶：<math><msup><mi>a</mi><mn>2</mn></msup><mo>≠</mo><mn>1</mn><mo>⇒</mo><mi>a</mi><mo>≠</mo><mn>1</mn><mo>,</mo></math>　裏：<math><mi>a</mi><mo>≠</mo><mn>1</mn><mo>⇒</mo><msup><mi>a</mi><mn>2</mn></msup><mo>≠</mo><mn>1</mn></math></p><p class="cite"><span class="cite-tag">使う定義</span><math><mover><mi>q</mi><mo>‾</mo></mover><mo>⇒</mo><mover><mi>p</mi><mo>‾</mo></mover></math>対偶は、入れ替えて両方を否定したもの。裏は、順序そのまま両方を否定したもの。</p>
+          <p>逆は「<math><msup><mi>a</mi><mn>2</mn></msup><mo>=</mo><mn>1</mn><mo>⇒</mo><mi>a</mi><mo>=</mo><mn>1</mn></math>」、対偶は「<math><msup><mi>a</mi><mn>2</mn></msup><mo>≠</mo><mn>1</mn><mo>⇒</mo><mi>a</mi><mo>≠</mo><mn>1</mn></math>」、裏は「<math><mi>a</mi><mo>≠</mo><mn>1</mn><mo>⇒</mo><msup><mi>a</mi><mn>2</mn></msup><mo>≠</mo><mn>1</mn></math>」である。</p>
         </div>
         <p class="prob-done">例15 が解けた！</p>
       </section>
@@ -381,13 +438,13 @@ padding:16px 34px;box-shadow:var(--shadow);
         <h2>練習問題に挑戦</h2>
         <span class="pno">教科書 p.68</span>
       </div>
-      <section class="card prob" id="prob-r20" data-label="練習 20">
+      <section class="nofig card prob" id="prob-r20" data-label="練習 20">
         <div class="prob-head">
           <span class="prob-tag ren">練習 20</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
         <div class="qside">
-        <p class="prob-q"><span class="formula">a</span>, <span class="formula">b</span> は実数とする。次の命題の真偽を調べよ。また、その逆、対偶、裏を述べ、それらの真偽を調べよ。</p>
+        <p class="prob-q"><math><mi>a</mi><mo>,</mo><mi>b</mi></math> は実数とする。次の命題の真偽を調べよ。また、その逆、対偶、裏を述べ、それらの真偽を調べよ。</p>
         </div>
         <div class="tabs" role="tablist" aria-label="練習 20の小問">
           <button class="tab" role="tab" data-tab="r20-1" aria-selected="true">(1)</button>
@@ -395,7 +452,7 @@ padding:16px 34px;box-shadow:var(--shadow);
         </div>
         <div class="tabpanel show" id="panel-r20-1" data-flow="r20-1" data-label="練習 20 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0"><span class="formula">a &gt; b ⇒ a − b &gt; 0</span></span>
+            <span class="sub prob-q" style="margin:0"><math><mi>a</mi><mo>&gt;</mo><mi>b</mi><mo>⇒</mo><mi>a</mi><mo>−</mo><mi>b</mi><mo>&gt;</mo><mn>0</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
@@ -410,27 +467,27 @@ padding:16px 34px;box-shadow:var(--shadow);
           </div>
         <div class="step hint">
           <h3>ヒント1 ― もとの命題の真偽を調べる</h3>
-          <p><span class="formula">a &gt; b</span> の両辺から <span class="formula">b</span> を引くと、どんな不等式になるか計算しよう。それが結論と一致すれば、もとの命題は真である。</p>
+          <p><math><mi>a</mi><mo>&gt;</mo><mi>b</mi></math> の両辺から <math><mi>b</mi></math> を引くと、どんな不等式になるか計算しよう。それが結論と一致すれば、もとの命題は真である。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント2 ― 逆を作って真偽を調べる</h3>
-          <p>逆は「<span class="formula">a − b &gt; 0 ⇒ a &gt; b</span>」である。今度は両辺に <span class="formula">b</span> を加えて、仮定から結論が導けるか確かめよう。</p>
+          <h3>ヒント2 ― 逆を作って真偽を調べる</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mi>a</mi><mo>−</mo><mi>b</mi><mo>&gt;</mo><mn>0</mn><mo>⇔</mo><mi>a</mi><mo>&gt;</mo><mi>b</mi></math>不等式は、両辺に同じ数を加えても大小関係が変わらない。逆の仮定 a−b>0 の両辺に b を加えると、結論 a>b になる。</p>
+          <p>逆は「<math><mi>a</mi><mo>−</mo><mi>b</mi><mo>&gt;</mo><mn>0</mn><mo>⇒</mo><mi>a</mi><mo>&gt;</mo><mi>b</mi></math>」である。今度は両辺に <math><mi>b</mi></math> を加えて、仮定から結論が導けるか確かめよう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント3 ― 対偶と裏を作る</h3>
-          <p>否定は「<span class="formula">a ≦ b</span>」と「<span class="formula">a − b ≦ 0</span>」。対偶は「<span class="formula">a − b ≦ 0 ⇒ a ≦ b</span>」、裏は「<span class="formula">a ≦ b ⇒ a − b ≦ 0</span>」。どちらも不等式の変形で確かめよう。</p>
+          <p>否定は「<math><mi>a</mi><mo>≦</mo><mi>b</mi></math>」と「<math><mi>a</mi><mo>−</mo><mi>b</mi><mo>≦</mo><mn>0</mn></math>」。対偶は「<math><mi>a</mi><mo>−</mo><mi>b</mi><mo>≦</mo><mn>0</mn><mo>⇒</mo><mi>a</mi><mo>≦</mo><mi>b</mi></math>」、裏は「<math><mi>a</mi><mo>≦</mo><mi>b</mi><mo>⇒</mo><mi>a</mi><mo>−</mo><mi>b</mi><mo>≦</mo><mn>0</mn></math>」。どちらも不等式の変形で確かめよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">もとの命題：真，　逆：真，　対偶：真，　裏：真</p>
-          <p>もとの命題は、<span class="formula">a &gt; b</span> の両辺から <span class="formula">b</span> を引けば <span class="formula">a − b &gt; 0</span> となるので真である。<br>逆「<span class="formula">a − b &gt; 0 ⇒ a &gt; b</span>」は、両辺に <span class="formula">b</span> を加えれば <span class="formula">a &gt; b</span> となるので真である。<br>対偶「<span class="formula">a − b ≦ 0 ⇒ a ≦ b</span>」は、両辺に <span class="formula">b</span> を加えれば <span class="formula">a ≦ b</span> となるので真である。<br>裏「<span class="formula">a ≦ b ⇒ a − b ≦ 0</span>」は、両辺から <span class="formula">b</span> を引けば <span class="formula">a − b ≦ 0</span> となるので真である。</p>
+          <p class="big">もとの命題：真，　逆：真，　対偶：真，　裏：真</p><p class="cite"><span class="cite-tag">使う性質</span><math><mi>a</mi><mo>−</mo><mi>b</mi><mo>&gt;</mo><mn>0</mn><mo>⇔</mo><mi>a</mi><mo>&gt;</mo><mi>b</mi></math>もとの命題・逆・対偶・裏のどれも、両辺から b を引く／両辺に b を加える変形で確かめられる。</p>
+          <p>もとの命題は、<math><mi>a</mi><mo>&gt;</mo><mi>b</mi></math> の両辺から <math><mi>b</mi></math> を引けば <math><mi>a</mi><mo>−</mo><mi>b</mi><mo>&gt;</mo><mn>0</mn></math> となるので真である。<br>逆「<math><mi>a</mi><mo>−</mo><mi>b</mi><mo>&gt;</mo><mn>0</mn><mo>⇒</mo><mi>a</mi><mo>&gt;</mo><mi>b</mi></math>」は、両辺に <math><mi>b</mi></math> を加えれば <math><mi>a</mi><mo>&gt;</mo><mi>b</mi></math> となるので真である。<br>対偶「<math><mi>a</mi><mo>−</mo><mi>b</mi><mo>≦</mo><mn>0</mn><mo>⇒</mo><mi>a</mi><mo>≦</mo><mi>b</mi></math>」は、両辺に <math><mi>b</mi></math> を加えれば <math><mi>a</mi><mo>≦</mo><mi>b</mi></math> となるので真である。<br>裏「<math><mi>a</mi><mo>≦</mo><mi>b</mi><mo>⇒</mo><mi>a</mi><mo>−</mo><mi>b</mi><mo>≦</mo><mn>0</mn></math>」は、両辺から <math><mi>b</mi></math> を引けば <math><mi>a</mi><mo>−</mo><mi>b</mi><mo>≦</mo><mn>0</mn></math> となるので真である。</p>
         </div>
           <p class="prob-done">練習20 (1) が解けた！</p>
         </div>
         <div class="tabpanel" id="panel-r20-2" data-flow="r20-2" data-label="練習 20 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0"><span class="formula">a = 0 ⇒ ab = 0</span></span>
+            <span class="sub prob-q" style="margin:0"><math><mi>a</mi><mo>=</mo><mn>0</mn><mo>⇒</mo><mi>a</mi><mi>b</mi><mo>=</mo><mn>0</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
@@ -445,21 +502,21 @@ padding:16px 34px;box-shadow:var(--shadow);
           </div>
         <div class="step hint">
           <h3>ヒント1 ― もとの命題の真偽を調べる</h3>
-          <p><span class="formula">a = 0</span> のとき積 <span class="formula">ab</span> はどうなるか考えよう。<span class="formula">b</span> がどんな実数でも、0 を掛けた積は決まる。</p>
+          <p><math><mi>a</mi><mo>=</mo><mn>0</mn></math> のとき積 <math><mi>a</mi><mi>b</mi></math> はどうなるか考えよう。<math><mi>b</mi></math> がどんな実数でも、0 を掛けた積は決まる。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント2 ― 逆を作って反例を探す</h3>
-          <p>逆は「<span class="formula">ab = 0 ⇒ a = 0</span>」である。積が 0 になるのは、<span class="formula">a = 0</span> のときだけだろうか。<span class="formula">b</span> の値に注目して、反例がないか探そう。</p>
+          <h3>ヒント2 ― 逆を作って反例を探す</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mi>a</mi><mi>b</mi><mo>=</mo><mn>0</mn><mo>⇔</mo><mi>a</mi><mo>=</mo><mn>0</mn><mtext> または </mtext><mi>b</mi><mo>=</mo><mn>0</mn></math>積が 0 になるのは、少なくとも一方が 0 のとき。a=0 でなくても b=0 なら積は 0 になるので、逆には反例がある。</p>
+          <p>逆は「<math><mi>a</mi><mi>b</mi><mo>=</mo><mn>0</mn><mo>⇒</mo><mi>a</mi><mo>=</mo><mn>0</mn></math>」である。積が 0 になるのは、<math><mi>a</mi><mo>=</mo><mn>0</mn></math> のときだけだろうか。<math><mi>b</mi></math> の値に注目して、反例がないか探そう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント3 ― 対偶と裏を作る</h3>
-          <p>否定は「<span class="formula">a ≠ 0</span>」と「<span class="formula">ab ≠ 0</span>」。対偶は「<span class="formula">ab ≠ 0 ⇒ a ≠ 0</span>」、裏は「<span class="formula">a ≠ 0 ⇒ ab ≠ 0</span>」。対偶は「積が 0 でないなら <span class="formula">a</span> は 0 であり得ない」こと、裏はヒント2 で見つけた反例がそのまま使えることを確かめよう。</p>
+          <p>否定は「<math><mi>a</mi><mo>≠</mo><mn>0</mn></math>」と「<math><mi>a</mi><mi>b</mi><mo>≠</mo><mn>0</mn></math>」。対偶は「<math><mi>a</mi><mi>b</mi><mo>≠</mo><mn>0</mn><mo>⇒</mo><mi>a</mi><mo>≠</mo><mn>0</mn></math>」、裏は「<math><mi>a</mi><mo>≠</mo><mn>0</mn><mo>⇒</mo><mi>a</mi><mi>b</mi><mo>≠</mo><mn>0</mn></math>」。対偶は「積が 0 でないなら <math><mi>a</mi></math> は 0 であり得ない」こと、裏はヒント2 で見つけた反例がそのまま使えることを確かめよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">もとの命題：真，　逆：偽，　対偶：真，　裏：偽</p>
-          <p>もとの命題は、<span class="formula">a = 0</span> ならば <span class="formula">ab = 0</span> となるので真である。<br>逆「<span class="formula">ab = 0 ⇒ a = 0</span>」は、<span class="formula">a = 1</span>, <span class="formula">b = 0</span> のとき <span class="formula">ab = 0</span> だが <span class="formula">a ≠ 0</span> となる反例があるので偽である。<br>対偶「<span class="formula">ab ≠ 0 ⇒ a ≠ 0</span>」は、<span class="formula">ab ≠ 0</span> ならば <span class="formula">a = 0</span> ではあり得ないので真である。<br>裏「<span class="formula">a ≠ 0 ⇒ ab ≠ 0</span>」は、<span class="formula">a = 1</span>, <span class="formula">b = 0</span> が反例となり偽である。</p>
+          <p class="big">もとの命題：真，　逆：偽，　対偶：真，　裏：偽</p><p class="cite"><span class="cite-tag">使う性質</span><math><mover><mi>q</mi><mo>‾</mo></mover><mo>⇒</mo><mover><mi>p</mi><mo>‾</mo></mover></math>命題とその対偶の真偽は必ず一致する。逆と裏の真偽も一致する（裏は逆の対偶）。</p>
+          <p>もとの命題は、<math><mi>a</mi><mo>=</mo><mn>0</mn></math> ならば <math><mi>a</mi><mi>b</mi><mo>=</mo><mn>0</mn></math> となるので真である。<br>逆「<math><mi>a</mi><mi>b</mi><mo>=</mo><mn>0</mn><mo>⇒</mo><mi>a</mi><mo>=</mo><mn>0</mn></math>」は、<math><mi>a</mi><mo>=</mo><mn>1</mn><mo>,</mo><mi>b</mi><mo>=</mo><mn>0</mn></math> のとき <math><mi>a</mi><mi>b</mi><mo>=</mo><mn>0</mn></math> だが <math><mi>a</mi><mo>≠</mo><mn>0</mn></math> となる反例があるので偽である。<br>対偶「<math><mi>a</mi><mi>b</mi><mo>≠</mo><mn>0</mn><mo>⇒</mo><mi>a</mi><mo>≠</mo><mn>0</mn></math>」は、<math><mi>a</mi><mi>b</mi><mo>≠</mo><mn>0</mn></math> ならば <math><mi>a</mi><mo>=</mo><mn>0</mn></math> ではあり得ないので真である。<br><br>裏「<math><mi>a</mi><mo>≠</mo><mn>0</mn><mo>⇒</mo><mi>a</mi><mi>b</mi><mo>≠</mo><mn>0</mn></math>」は、<math><mi>a</mi><mo>=</mo><mn>1</mn><mo>,</mo><mi>b</mi><mo>=</mo><mn>0</mn></math> が反例となり偽である。</p>
         </div>
           <p class="prob-done">練習20 (2) が解けた！</p>
         </div>
@@ -470,14 +527,14 @@ padding:16px 34px;box-shadow:var(--shadow);
         <span class="pno">教科書 p.69</span>
       </div>
       <section class="card">
-        <p>命題 <span class="formula">p ⇒ q</span> の真偽と、その命題の対偶 <span style="text-decoration:overline">q</span> ⇒ <span style="text-decoration:overline">p</span> の真偽について考えてみよう。</p>
-        <p><span class="formula">n</span> は自然数とする。たとえば、命題「<span class="formula">n</span> は 6 の倍数 <span class="formula">⇒ n</span> は 3 の倍数」は真である。また、この命題の対偶「<span class="formula">n</span> は 3 の倍数でない <span class="formula">⇒ n</span> は 6 の倍数でない」も真である。</p>
-        <p>さらに、命題「<span class="formula">n</span> は奇数 <span class="formula">⇒ n</span> は素数」は偽である。また、この命題の対偶「<span class="formula">n</span> は素数でない <span class="formula">⇒ n</span> は偶数」も偽である。</p>
-        <p>全体集合 <span class="formula">U</span> の要素の中で、条件 <span class="formula">p</span> を満たすもの全体の集合を <span class="formula">P</span> で、条件 <span class="formula">q</span> を満たすもの全体の集合を <span class="formula">Q</span> で表す。一般に、</p>
-        <p class="formula">p ⇒ q が真であることは P ⊂ Q が成り立つことと同じ，<br><span style="text-decoration:overline">q</span> ⇒ <span style="text-decoration:overline">p</span> が真であることは <span style="text-decoration:overline">Q</span> ⊂ <span style="text-decoration:overline">P</span> が成り立つことと同じ</p>
-        <p>である。また、集合 <span class="formula">P</span>, <span class="formula">Q</span> については <span class="formula">P ⊂ Q ⇔ <span style="text-decoration:overline">Q</span> ⊂ <span style="text-decoration:overline">P</span></span> が成り立つ。以上のことから、次のことがいえる。</p>
+        <p>命題 <math><mi>p</mi><mo>⇒</mo><mi>q</mi></math> の真偽と、その命題の対偶 <math><mover><mi>q</mi><mo>‾</mo></mover><mo>⇒</mo><mover><mi>p</mi><mo>‾</mo></mover></math> の真偽について考えてみよう。</p>
+        <p><math><mi>n</mi></math> は自然数とする。たとえば、命題「<math><mi>n</mi></math> は 6 の倍数 <math><mo>⇒</mo><mi>n</mi></math> は 3 の倍数」は真である。また、この命題の対偶「<math><mi>n</mi></math> は 3 の倍数でない <math><mo>⇒</mo><mi>n</mi></math> は 6 の倍数でない」も真である。</p>
+        <p>さらに、命題「<math><mi>n</mi></math> は奇数 <math><mo>⇒</mo><mi>n</mi></math> は素数」は偽である。また、この命題の対偶「<math><mi>n</mi></math> は素数でない <math><mo>⇒</mo><mi>n</mi></math> は偶数」も偽である。</p>
+        <p>全体集合 <math><mi>U</mi></math> の要素の中で、条件 <math><mi>p</mi></math> を満たすもの全体の集合を <math><mi>P</mi></math> で、条件 <math><mi>q</mi></math> を満たすもの全体の集合を <math><mi>Q</mi></math> で表す。一般に、</p>
+        <p class="formula"><math><mi>p</mi></math> ⇒ <math><mi>q</mi></math> が真であることは <math><mi>P</mi></math> ⊂ <math><mi>Q</mi></math> が成り立つことと同じ，<br><math><mover><mi>q</mi><mo>‾</mo></mover><mo>⇒</mo><mover><mi>p</mi><mo>‾</mo></mover></math> が真であることは <math><mover><mi>Q</mi><mo>‾</mo></mover><mo>⊂</mo><mover><mi>P</mi><mo>‾</mo></mover></math> が成り立つことと同じ</p>
+        <p>である。また、集合 <math><mi>P</mi><mo>,</mo><mi>Q</mi></math> については <math><mi>P</mi><mo>⊂</mo><mi>Q</mi><mo>⇔</mo><mover><mi>Q</mi><mo>‾</mo></mover><mo>⊂</mo><mover><mi>P</mi><mo>‾</mo></mover></math> が成り立つ。以上のことから、次のことがいえる。</p>
         <div class="def">
-          <p style="margin:0"><b>命題とその対偶の真偽</b> … 命題 <span class="formula">p ⇒ q</span> とその対偶 <span style="text-decoration:overline">q</span> ⇒ <span style="text-decoration:overline">p</span> の真偽は一致する。</p>
+          <p style="margin:0"><b>命題とその対偶の真偽</b> … 命題 <math><mi>p</mi><mo>⇒</mo><mi>q</mi></math> とその対偶 <math><mover><mi>q</mi><mo>‾</mo></mover><mo>⇒</mo><mover><mi>p</mi><mo>‾</mo></mover></math> の真偽は一致する。</p>
         </div>
       </section>
       <div class="sec-head">
@@ -485,13 +542,13 @@ padding:16px 34px;box-shadow:var(--shadow);
         <h2>練習問題に挑戦</h2>
         <span class="pno">教科書 p.69</span>
       </div>
-      <section class="card prob" id="prob-r21" data-label="練習 21">
+      <section class="nofig card prob" id="prob-r21" data-label="練習 21">
         <div class="prob-head">
           <span class="prob-tag ren">練習 21</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
         <div class="qside">
-        <p class="prob-q"><span class="formula">m</span>, <span class="formula">n</span> は自然数とする。次の命題とその対偶の真偽を調べ、それらが一致することを確かめよ。</p>
+        <p class="prob-q"><math><mi>m</mi><mo>,</mo><mi>n</mi></math> は自然数とする。次の命題とその対偶の真偽を調べ、それらが一致することを確かめよ。</p>
         </div>
         <div class="tabs" role="tablist" aria-label="練習 21の小問">
           <button class="tab" role="tab" data-tab="r21-1" aria-selected="true">(1)</button>
@@ -499,7 +556,7 @@ padding:16px 34px;box-shadow:var(--shadow);
         </div>
         <div class="tabpanel show" id="panel-r21-1" data-flow="r21-1" data-label="練習 21 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0"><span class="formula">m</span> は 4 の倍数 <span class="formula">⇒ m</span> は偶数</span>
+            <span class="sub prob-q" style="margin:0"><math><mi>m</mi></math> は 4 の倍数 <math><mo>⇒</mo><mi>m</mi></math> は偶数</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
@@ -513,28 +570,28 @@ padding:16px 34px;box-shadow:var(--shadow);
           <p class="verdict"></p>
           </div>
         <div class="step hint">
-          <h3>ヒント1 ― もとの命題の真偽を調べる</h3>
-          <p>4 の倍数は <span class="formula">m = 4k</span>（<span class="formula">k</span> は自然数）と書ける。これを 2 でくくると、<span class="formula">m</span> が偶数といえるか考えよう。</p>
+          <h3>ヒント1 ― もとの命題の真偽を調べる</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mi>m</mi><mo>=</mo><mn>4</mn><mi>k</mi><mo>=</mo><mn>2</mn><mrow><mo>(</mo><mn>2</mn><mi>k</mi><mo>)</mo></mrow></math>4 の倍数は 4k と書け、2 でくくると 2×(整数) の形になるので、偶数といえる。</p>
+          <p>4 の倍数は <math><mi>m</mi><mo>=</mo><mn>4</mn><mi>k</mi><mo>(</mo><mi>k</mi></math> は自然数）と書ける。これを 2 でくくると、<math><mi>m</mi></math> が偶数といえるか考えよう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント2 ― 対偶を作る</h3>
-          <p>結論「<span class="formula">m</span> は偶数」の否定は「<span class="formula">m</span> は奇数」、仮定「<span class="formula">m</span> は 4 の倍数」の否定は「<span class="formula">m</span> は 4 の倍数でない」。対偶は、否定した結論を仮定に、否定した仮定を結論にして作ろう。</p>
+          <p>結論「<math><mi>m</mi></math> は偶数」の否定は「<math><mi>m</mi></math> は奇数」、仮定「<math><mi>m</mi></math> は 4 の倍数」の否定は「<math><mi>m</mi></math> は 4 の倍数でない」。対偶は、否定した結論を仮定に、否定した仮定を結論にして作ろう。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント3 ― 対偶の真偽を調べる</h3>
-          <p>対偶は「<span class="formula">m</span> は奇数 <span class="formula">⇒ m</span> は 4 の倍数でない」である。奇数が 4 の倍数になることはあるか、4 の倍数はすべて偶数であることと結びつけて考えよう。</p>
+          <h3>ヒント3 ― 対偶の真偽を調べる</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mover><mi>q</mi><mo>‾</mo></mover><mo>⇒</mo><mover><mi>p</mi><mo>‾</mo></mover></math>対偶が真なら、もとの命題も真。奇数は、4 の倍数（すべて偶数）にはなり得ない。</p>
+          <p>対偶は「<math><mi>m</mi></math> は奇数 <math><mo>⇒</mo><mi>m</mi></math> は 4 の倍数でない」である。奇数が 4 の倍数になることはあるか、4 の倍数はすべて偶数であることと結びつけて考えよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">もとの命題：真，　対偶：真（一致する）</p>
-          <p>もとの命題は、4 の倍数 <span class="formula">m = 4k = 2(2k)</span> は偶数であるから真である。対偶は「<span class="formula">m</span> は奇数 <span class="formula">⇒ m</span> は 4 の倍数でない」であり、4 の倍数はすべて偶数だから、奇数は 4 の倍数ではあり得ず、真である。よって、命題とその対偶の真偽は一致する（ともに真）。</p>
+          <p class="big">もとの命題：真，　対偶：真（一致する）</p><p class="cite"><span class="cite-tag">使う性質</span><math><mover><mi>q</mi><mo>‾</mo></mover><mo>⇒</mo><mover><mi>p</mi><mo>‾</mo></mover></math>命題とその対偶の真偽は一致する。もとの命題が真なら対偶も真。</p>
+          <p>もとの命題は、4 の倍数 <math><mi>m</mi><mo>=</mo><mn>4</mn><mi>k</mi><mo>=</mo><mn>2</mn><mrow><mo>(</mo><mn>2</mn><mi>k</mi><mo>)</mo></mrow></math> は偶数であるから真である。<br>対偶は「<math><mi>m</mi></math> は奇数 <math><mo>⇒</mo><mi>m</mi></math> は 4 の倍数でない」であり、4 の倍数はすべて偶数だから、奇数は 4 の倍数ではあり得ず、真である。よって、命題とその対偶の真偽は一致する（ともに真）。</p>
         </div>
           <p class="prob-done">練習21 (1) が解けた！</p>
         </div>
         <div class="tabpanel" id="panel-r21-2" data-flow="r21-2" data-label="練習 21 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0"><span class="formula">m + n</span> は偶数 <span class="formula">⇒ m</span> は偶数 または <span class="formula">n</span> は偶数</span>
+            <span class="sub prob-q" style="margin:0"><math><mi>m</mi><mo>+</mo><mi>n</mi></math> は偶数 <math><mo>⇒</mo><mi>m</mi></math> は偶数 または <math><mi>n</mi></math> は偶数</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
@@ -549,21 +606,21 @@ padding:16px 34px;box-shadow:var(--shadow);
           </div>
         <div class="step hint">
           <h3>ヒント1 ― もとの命題に反例を探す</h3>
-          <p>和 <span class="formula">m + n</span> が偶数になるのは、2 人とも偶数のときだけだろうか。2 人とも奇数のときの和はどうなるか、<span class="formula">m = 1</span>, <span class="formula">n = 3</span> で確かめよう。</p>
+          <p>和 <math><mi>m</mi><mo>+</mo><mi>n</mi></math> が偶数になるのは、2 人とも偶数のときだけだろうか。2 人とも奇数のときの和はどうなるか、<math><mi>m</mi><mo>=</mo><mn>1</mn><mo>,</mo><mi>n</mi><mo>=</mo><mn>3</mn></math> で確かめよう。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント2 ― 対偶を作る</h3>
-          <p>結論「<span class="formula">m</span> は偶数 または <span class="formula">n</span> は偶数」の否定は、「かつ」の否定の規則を使って「<span class="formula">m</span> は奇数 かつ <span class="formula">n</span> は奇数」。仮定の否定は「<span class="formula">m + n</span> は奇数」。これらを入れ替えて対偶を作ろう。</p>
+          <h3>ヒント2 ― 対偶を作る</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mover><mrow><mi>p</mi><mtext> または </mtext><mi>q</mi></mrow><mo>‾</mo></mover><mo>⇔</mo><mover><mi>p</mi><mo>‾</mo></mover><mtext> かつ </mtext><mover><mi>q</mi><mo>‾</mo></mover></math>結論「m は偶数 または n は偶数」の否定は、「かつ」に変えて「m は奇数 かつ n は奇数」になる。</p>
+          <p>結論「<math><mi>m</mi></math> は偶数 または <math><mi>n</mi></math> は偶数」の否定は、「かつ」の否定の規則を使って「<math><mi>m</mi></math> は奇数 かつ <math><mi>n</mi></math> は奇数」。仮定の否定は「<math><mi>m</mi><mo>+</mo><mi>n</mi></math> は奇数」。これらを入れ替えて対偶を作ろう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント3 ― 対偶の真偽を調べる</h3>
-          <p>対偶は「<span class="formula">m</span>, <span class="formula">n</span> はともに奇数 <span class="formula">⇒ m + n</span> は奇数」である。ヒント1 で使った <span class="formula">m = 1</span>, <span class="formula">n = 3</span> が、この対偶の反例にもなるか確かめよう。</p>
+          <p>対偶は「<math><mi>m</mi><mo>,</mo><mi>n</mi></math> はともに奇数 <math><mo>⇒</mo><mi>m</mi><mo>+</mo><mi>n</mi></math> は奇数」である。ヒント1 で使った <math><mi>m</mi><mo>=</mo><mn>1</mn><mo>,</mo><mi>n</mi><mo>=</mo><mn>3</mn></math> が、この対偶の反例にもなるか確かめよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">もとの命題：偽，　対偶：偽（一致する）</p>
-          <p>もとの命題は、<span class="formula">m = 1</span>, <span class="formula">n = 3</span> のとき <span class="formula">m + n = 4</span> は偶数だが、<span class="formula">m</span> も <span class="formula">n</span> も偶数ではない、という反例があるので偽である。対偶は「<span class="formula">m</span>, <span class="formula">n</span> はともに奇数 <span class="formula">⇒ m + n</span> は奇数」であり、同じ <span class="formula">m = 1</span>, <span class="formula">n = 3</span> のとき <span class="formula">m + n = 4</span> は偶数となり反例があるので偽である。よって、命題とその対偶の真偽は一致する（ともに偽）。</p>
+          <p class="big">もとの命題：偽，　対偶：偽（一致する）</p><p class="cite"><span class="cite-tag">使う性質</span><math><mover><mi>q</mi><mo>‾</mo></mover><mo>⇒</mo><mover><mi>p</mi><mo>‾</mo></mover></math>対偶にも同じ反例 m=1, n=3 があるので対偶は偽。命題と対偶の真偽は一致し、もとの命題も偽。</p>
+          <p>もとの命題は、<math><mi>m</mi><mo>=</mo><mn>1</mn><mo>,</mo><mi>n</mi><mo>=</mo><mn>3</mn></math> のとき <math><mi>m</mi><mo>+</mo><mi>n</mi><mo>=</mo><mn>4</mn></math> は偶数だが、<math><mi>m</mi></math> も <math><mi>n</mi></math> も偶数ではない、という反例があるので偽である。対偶は「<math><mi>m</mi><mo>,</mo><mi>n</mi></math> はともに奇数 <math><mo>⇒</mo><mi>m</mi><mo>+</mo><mi>n</mi></math> は奇数」であり、同じ <math><mi>m</mi><mo>=</mo><mn>1</mn><mo>,</mo><mi>n</mi><mo>=</mo><mn>3</mn></math> のとき <math><mi>m</mi><mo>+</mo><mi>n</mi><mo>=</mo><mn>4</mn></math> は偶数となり反例があるので偽である。よって、命題とその対偶の真偽は一致する（ともに偽）。</p>
         </div>
           <p class="prob-done">練習21 (2) が解けた！</p>
         </div>
@@ -574,10 +631,10 @@ padding:16px 34px;box-shadow:var(--shadow);
       <section class="card summary" id="summaryCard" style="display:none">
         <h2>この項のポイント</h2>
         <ul>
-          <li>命題 <span class="formula">p ⇒ q</span> に対して、逆は <span class="formula">q ⇒ p</span>、対偶は <span style="text-decoration:overline">q</span> ⇒ <span style="text-decoration:overline">p</span>、裏は <span style="text-decoration:overline">p</span> ⇒ <span style="text-decoration:overline">q</span>。</li>
+          <p class="cite"><span class="cite-tag">使う定義</span><math><mi>q</mi><mo>⇒</mo><mi>p</mi><mo>,</mo><mover><mi>q</mi><mo>‾</mo></mover><mo>⇒</mo><mover><mi>p</mi><mo>‾</mo></mover></math>逆は入れ替え、対偶は入れ替えて両方否定、裏はそのまま両方否定。</p><li>命題 <math><mi>p</mi><mo>⇒</mo><mi>q</mi></math> に対して、逆は <math><mi>q</mi><mo>⇒</mo><mi>p</mi></math>、対偶は <math><mover><mi>q</mi><mo>‾</mo></mover><mo>⇒</mo><mover><mi>p</mi><mo>‾</mo></mover></math>、裏は <math><mover><mi>p</mi><mo>‾</mo></mover><mo>⇒</mo><mover><mi>q</mi><mo>‾</mo></mover></math>。</li>
           <li>もとの命題が真であっても、その逆（や裏）が真であるとは限らない。真偽は反例を探して確かめる。</li>
-          <li>命題とその対偶の真偽は必ず一致する（集合では <span class="formula">P ⊂ Q ⇔ <span style="text-decoration:overline">Q</span> ⊂ <span style="text-decoration:overline">P</span></span>）。</li>
-          <li>結論が「または」を含む命題の対偶を作るときは、否定で「かつ」に変わることに注意する。</li>
+          <p class="cite"><span class="cite-tag">使う性質</span><math><mi>P</mi><mo>⊂</mo><mi>Q</mi><mo>⇔</mo><mover><mrow>Q</mrow><mo>‾</mo></mover><mo>⊂</mo><mover><mrow>P</mrow><mo>‾</mo></mover></math>集合で見ても、命題と対偶の真偽の一致が確かめられる。</p><li>命題とその対偶の真偽は必ず一致する（集合では <math><mi>P</mi><mo>⊂</mo><mi>Q</mi><mo>⇔</mo><mover><mi>Q</mi><mo>‾</mo></mover><mo>⊂</mo><mover><mi>P</mi><mo>‾</mo></mover><mo>)</mo></math>。</li>
+          <p class="cite"><span class="cite-tag">使う性質</span><math><mover><mrow><mi>p</mi><mtext> または </mtext><mi>q</mi></mrow><mo>‾</mo></mover><mo>⇔</mo><mover><mi>p</mi><mo>‾</mo></mover><mtext> かつ </mtext><mover><mi>q</mi><mo>‾</mo></mover></math>結論が「または」を含む命題の対偶では、否定で「かつ」に変わる。</p><li>結論が「または」を含む命題の対偶を作るときは、否定で「かつ」に変わることに注意する。</li>
         </ul>
       </section>
  <footer>

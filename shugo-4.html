@@ -309,7 +309,64 @@ padding:16px 34px;box-shadow:var(--shadow);
 }
 @media (prefers-color-scheme: dark){.finish-btn{color:#0c1712}}
 .finish-btn:active{transform:scale(.98)}
- </style>
+ 
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+
+      /* 積分記号は大きめに表示する（元のページの可読化デザインに合わせる） */
+      math .int-op{font-size:1.35em}
+      /* calc-12 世代（.card）と calc-18 世代（.unit）の、図のない問題の全幅化 */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig>.step{position:static !important}
+        .card.nofig>.steps-wrap{max-height:none !important;overflow:visible !important}
+        .unit.nofig{display:block !important}
+        .unit.nofig>.qside{position:static !important}
+        .unit.nofig>.steps-stack{max-height:none !important;overflow:visible !important}
+      }
+
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける・第3弾c） */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig .qside{position:static !important}
+        .card.nofig .steps-wrap,.card.nofig .tabpanel .steps-wrap{max-height:none !important;overflow:visible !important}
+      }
+</style>
 </head>
 <body>
 <div class="wrap">
@@ -332,61 +389,73 @@ padding:16px 34px;box-shadow:var(--shadow);
         <span class="pno">教科書 p.70</span>
       </div>
       <section class="card">
-        <p>命題 <i>p</i> ⇒ <i>q</i> が真であることを証明したいとき、<i>p</i> を仮定して <i>q</i> を導くのが困難なこともある。命題とその対偶の真偽は一致するから、次のことがいえる。</p>
-        <div class="def"><p><span class="key">対偶を利用する証明</span></p><p class="formula">命題 <i>p</i> ⇒ <i>q</i> を証明するのに、その対偶 <i>q&#772;</i> ⇒ <i>p&#772;</i> を証明してもよい。</p></div>
+        <p>命題 <math><mi>p</mi><mo>⇒</mo><mi>q</mi></math> が真であることを証明したいとき、<math><mi>p</mi></math> を仮定して <math><mi>q</mi></math> を導くのが困難なこともある。<br>命題とその対偶の真偽は一致するから、次のことがいえる。</p>
+        <div class="def"><p><span class="key">対偶を利用する証明</span></p><p class="formula">命題 <math><mi>p</mi><mo>⇒</mo><mi>q</mi></math> を証明するのに、その対偶 <math><mover><mi>q</mi><mo>‾</mo></mover><mo>⇒</mo><mover><mi>p</mi><mo>‾</mo></mover></math> を証明してもよい。</p></div>
         <p class="mini">注意：「命題が真であることを証明する」ことを、単に「命題を証明する」と表現する。</p>
       </section>
-      <section class="card prob" id="prob-reidai1" data-flow="reidai1" data-label="例題 1">
+      <section class="nofig card prob" id="prob-reidai1" data-flow="reidai1" data-label="例題 1">
         <div class="prob-head">
           <span class="prob-tag ">例題 1</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
         <div class="qside">
-        <p class="prob-q"><i>n</i> は整数とする。対偶を利用して、次の命題を証明せよ。<br>　<i>n</i><sup>2</sup> が偶数ならば、<i>n</i> は偶数である。</p>
+        <p class="prob-q"><math><mi>n</mi></math> は整数とする。対偶を利用して、次の命題を証明せよ。<br>　<math><msup><mi>n</mi><mn>2</mn></msup></math> が偶数ならば、<math><mi>n</mi></math> は偶数である。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 対偶を書く</h3>
-<p>もとの命題の対偶は「<i>n</i> が奇数ならば、<i>n</i><sup>2</sup> は奇数である」だよ。この対偶を証明しよう。</p>
+          <h3>ヒント 1 ― 対偶を書く</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mover><mi>q</mi><mo>‾</mo></mover><mo>⇒</mo><mover><mi>p</mi><mo>‾</mo></mover></math>命題とその対偶の真偽は一致するので、対偶を証明すれば、もとの命題を証明したことになる。</p>
+<p>もとの命題の対偶は「<math><mi>n</mi></math> が奇数ならば、<math><msup><mi>n</mi><mn>2</mn></msup></math> は奇数である」だよ。この対偶を証明しよう。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― 奇数を文字で表す</h3>
-<p><i>n</i> が奇数のとき、<i>n</i> はある整数 <i>k</i> を用いて <i>n</i> = 2<i>k</i> + 1 と表される。この形で <i>n</i><sup>2</sup> を計算しよう。</p>
+          <h3>ヒント 2 ― 奇数を文字で表す</h3><p class="cite"><span class="cite-tag">使う定義</span><math><mi>n</mi><mo>=</mo><mn>2</mn><mi>k</mi><mo>+</mo><mn>1</mn></math>奇数は、整数 k を用いて 2k+1 と表せる。この形で n² を計算する。</p>
+<p><math><mi>n</mi></math> が奇数のとき、<math><mi>n</mi></math> はある整数 <math><mi>k</mi></math> を用いて <math><mi>n</mi><mo>=</mo><mn>2</mn><mi>k</mi><mo>+</mo><mn>1</mn></math>と表される。この形で <math><msup><mi>n</mi><mn>2</mn></msup></math> を計算しよう。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 3 ― <i>n</i><sup>2</sup> の形を整える</h3>
-<p><i>n</i><sup>2</sup> = (2<i>k</i> + 1)<sup>2</sup> = 4<i>k</i><sup>2</sup> + 4<i>k</i> + 1。2でくくれる部分をくくって、2×(整数)+1 の形にしよう。</p>
+          <h3>ヒント<math><mn>3</mn><mo>―</mo><msup><mi>n</mi><mn>2</mn></msup></math> の形を整える</h3><p class="cite"><span class="cite-tag">使う公式</span><math><msup><mrow><mo>(</mo><mn>2</mn><mi>k</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>4</mn><msup><mi>k</mi><mn>2</mn></msup><mo>+</mo><mn>4</mn><mi>k</mi><mo>+</mo><mn>1</mn></math>展開公式 (a+b)²=a²+2ab+b² で展開し、2 でくくれる部分をくくって 2×(整数)+1 の形にする。</p>
+<p><math><msup><mi>n</mi><mn>2</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><mn>2</mn><mi>k</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>4</mn><msup><mi>k</mi><mn>2</mn></msup><mo>+</mo><mn>4</mn><mi>k</mi><mo>+</mo><mn>1</mn></math>。2でくくれる部分をくくって、2×(整数)+1 の形にしよう。</p>
         </div>
         <div class="step answer">
-          <h3>解答</h3>
-<p>対偶「<i>n</i> が奇数ならば、<i>n</i><sup>2</sup> は奇数である」を証明する。<i>n</i> が奇数のとき、<i>n</i> はある整数 <i>k</i> を用いて <i>n</i> = 2<i>k</i> + 1 と表される。このとき <i>n</i><sup>2</sup> = (2<i>k</i> + 1)<sup>2</sup> = 4<i>k</i><sup>2</sup> + 4<i>k</i> + 1 = 2(2<i>k</i><sup>2</sup> + 2<i>k</i>) + 1。2<i>k</i><sup>2</sup> + 2<i>k</i> は整数であるから、<i>n</i><sup>2</sup> は奇数である。よって、対偶は真であり、もとの命題も真である。（証明終わり）</p>
+          <h3>解答</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mover><mi>q</mi><mo>‾</mo></mover><mo>⇒</mo><mover><mi>p</mi><mo>‾</mo></mover></math>対偶が証明できたので、真偽が一致するもとの命題「n² が偶数ならば n は偶数」も真である。</p>
+<p>対偶「<math><mi>n</mi></math> が奇数ならば、<math><msup><mi>n</mi><mn>2</mn></msup></math> は奇数である」を証明する。<math><mi>n</mi></math> が奇数のとき、<math><mi>n</mi></math> はある整数 <math><mi>k</mi></math> を用いて <math><mi>n</mi><mo>=</mo><mn>2</mn><mi>k</mi><mo>+</mo><mn>1</mn></math>と表される。このとき</p>
+<div class="chain-crow">
+<div class="crow"><math displaystyle="true"><msup><mi>n</mi><mn>2</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><mn>2</mn><mi>k</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msup><mi>n</mi><mn>2</mn></msup></mphantom><mo>=</mo><mn>4</mn><msup><mi>k</mi><mn>2</mn></msup><mo>+</mo><mn>4</mn><mi>k</mi><mo>+</mo><mn>1</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msup><mi>n</mi><mn>2</mn></msup></mphantom><mo>=</mo><mn>2</mn><mrow><mo>(</mo><mn>2</mn><msup><mi>k</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>k</mi><mo>)</mo></mrow><mo>+</mo><mn>1</mn></math></div>
+</div>
+<p>。<math><mn>2</mn><msup><mi>k</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>k</mi></math> は整数であるから、<math><msup><mi>n</mi><mn>2</mn></msup></math> は奇数である。よって、対偶は真であり、もとの命題も真である。（証明終わり）</p>
         </div>
         <p class="prob-done">例題1 クリア！　次は練習22だよ。</p>
       </section>
-      <section class="card prob" id="prob-ren22" data-flow="ren22" data-label="練習 22">
+      <section class="nofig card prob" id="prob-ren22" data-flow="ren22" data-label="練習 22">
         <div class="prob-head">
           <span class="prob-tag ren">練習 22</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
         <div class="qside">
-        <p class="prob-q"><i>n</i> は整数とする。対偶を利用して、次の命題を証明せよ。<br>　<i>n</i><sup>2</sup> が奇数ならば、<i>n</i> は奇数である。</p>
+        <p class="prob-q"><math><mi>n</mi></math> は整数とする。対偶を利用して、次の命題を証明せよ。<br>　<math><msup><mi>n</mi><mn>2</mn></msup></math> が奇数ならば、<math><mi>n</mi></math> は奇数である。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 1 ― 対偶を書く</h3>
-<p>もとの命題の対偶は「<i>n</i> が偶数ならば、<i>n</i><sup>2</sup> は偶数である」だよ。この対偶を証明しよう。</p>
+<p>もとの命題の対偶は「<math><mi>n</mi></math> が偶数ならば、<math><msup><mi>n</mi><mn>2</mn></msup></math> は偶数である」だよ。この対偶を証明しよう。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― 偶数を文字で表す</h3>
-<p><i>n</i> が偶数のとき、<i>n</i> はある整数 <i>k</i> を用いて <i>n</i> = 2<i>k</i> と表される。この形で <i>n</i><sup>2</sup> を計算しよう。</p>
+          <h3>ヒント 2 ― 偶数を文字で表す</h3><p class="cite"><span class="cite-tag">使う定義</span><math><mi>n</mi><mo>=</mo><mn>2</mn><mi>k</mi></math>偶数は、整数 k を用いて 2k と表せる。この形で n² を計算する。</p>
+<p><math><mi>n</mi></math> が偶数のとき、<math><mi>n</mi></math> はある整数 <math><mi>k</mi></math> を用いて <math><mi>n</mi><mo>=</mo><mn>2</mn><mi>k</mi></math> と表される。この形で <math><msup><mi>n</mi><mn>2</mn></msup></math> を計算しよう。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 3 ― <i>n</i><sup>2</sup> の形を整える</h3>
-<p><i>n</i><sup>2</sup> = (2<i>k</i>)<sup>2</sup> = 4<i>k</i><sup>2</sup>。2×(整数) の形に直して、偶数だと示そう。</p>
+          <h3>ヒント<math><mn>3</mn><mo>―</mo><msup><mi>n</mi><mn>2</mn></msup></math> の形を整える</h3>
+<p><math><msup><mi>n</mi><mn>2</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><mn>2</mn><mi>k</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>4</mn><msup><mi>k</mi><mn>2</mn></msup></math>。2×(整数) の形に直して、偶数だと示そう。</p>
         </div>
         <div class="step answer">
-          <h3>解答</h3>
-<p>対偶「<i>n</i> が偶数ならば、<i>n</i><sup>2</sup> は偶数である」を証明する。<i>n</i> が偶数のとき、<i>n</i> はある整数 <i>k</i> を用いて <i>n</i> = 2<i>k</i> と表される。このとき <i>n</i><sup>2</sup> = (2<i>k</i>)<sup>2</sup> = 4<i>k</i><sup>2</sup> = 2・2<i>k</i><sup>2</sup> で、2<i>k</i><sup>2</sup> は整数であるから、<i>n</i><sup>2</sup> は偶数である。よって、対偶は真であり、もとの命題も真である。（証明終わり）</p>
+          <h3>解答</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mover><mi>q</mi><mo>‾</mo></mover><mo>⇒</mo><mover><mi>p</mi><mo>‾</mo></mover></math>対偶が証明できたので、もとの命題も真である。</p>
+<p>対偶「<math><mi>n</mi></math> が偶数ならば、<math><msup><mi>n</mi><mn>2</mn></msup></math> は偶数である」を証明する。<math><mi>n</mi></math> が偶数のとき、<math><mi>n</mi></math> はある整数 <math><mi>k</mi></math> を用いて <math><mi>n</mi><mo>=</mo><mn>2</mn><mi>k</mi></math> と表される。このとき</p>
+<div class="chain-crow">
+<div class="crow"><math displaystyle="true"><msup><mi>n</mi><mn>2</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><mn>2</mn><mi>k</mi><mo>)</mo></mrow><mn>2</mn></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msup><mi>n</mi><mn>2</mn></msup></mphantom><mo>=</mo><mn>4</mn><msup><mi>k</mi><mn>2</mn></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msup><mi>n</mi><mn>2</mn></msup></mphantom><mo>=</mo><mn>2</mn><mo>⋅</mo><mn>2</mn><msup><mi>k</mi><mn>2</mn></msup></math></div>
+</div>
+<p>で、<math><mn>2</mn><msup><mi>k</mi><mn>2</mn></msup></math> は整数であるから、<math><msup><mi>n</mi><mn>2</mn></msup></math> は偶数である。よって、対偶は真であり、もとの命題も真である。（証明終わり）</p>
         </div>
         <p class="prob-done">練習22 クリア！　次は背理法だよ。</p>
       </section>
@@ -396,103 +465,103 @@ padding:16px 34px;box-shadow:var(--shadow);
         <span class="pno">教科書 p.71</span>
       </div>
       <section class="card">
-        <p>ある命題について、その命題が成り立たないと仮定して、矛盾を導くことでもとの命題を証明する方法がある。例題2の証明の流れは、次のとおりである。</p>
+        <p>ある命題について、その命題が成り立たないと仮定して、矛盾を導くことでもとの命題を証明する方法がある。<br>例題2の証明の流れは、次のとおりである。</p>
         <div class="def"><p>① 命題が成り立たないと仮定する。　② ①の仮定のもとで矛盾を導く。　③ ②で矛盾が生じたのは、①の仮定が間違っているからである。　④ したがって、もとの命題が成り立つ。</p><p>このような証明方法を<span class="key">背理法</span>という。</p><p class="formula">命題が成り立たないと仮定して矛盾を導くことにより、もとの命題が真であると結論する。</p></div>
       </section>
-      <section class="card prob" id="prob-reidai2" data-flow="reidai2" data-label="例題 2">
+      <section class="nofig card prob" id="prob-reidai2" data-flow="reidai2" data-label="例題 2">
         <div class="prob-head">
           <span class="prob-tag ">例題 2</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
         <div class="qside">
-        <p class="prob-q">√<span class="rad">2</span> が無理数であることを用いて、次の命題を証明せよ。<br>　1 + √<span class="rad">2</span> は無理数である。</p>
+        <p class="prob-q"><math><msqrt><mn>2</mn></msqrt></math> が無理数であることを用いて、次の命題を証明せよ。<br>　<math><mn>1</mn><mo>+</mo><msqrt><mn>2</mn></msqrt></math> は無理数である。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 成り立たないと仮定する</h3>
-<p>背理法で進めるよ。1 + √<span class="rad">2</span> が無理数でないと仮定すると、1 + √<span class="rad">2</span> は有理数である。その有理数を <i>r</i> と置こう。</p>
+          <h3>ヒント 1 ― 成り立たないと仮定する</h3><p class="cite"><span class="cite-tag">使う定義</span><math><mtext>背理法：成り立たないと仮定して矛盾を導く</mtext></math>ここでは「1+√2 が無理数でない」、すなわち有理数であると仮定して進める。</p>
+<p>背理法で進めるよ。<math><mn>1</mn><mo>+</mo><msqrt><mn>2</mn></msqrt></math> が無理数でないと仮定すると、<math><mn>1</mn><mo>+</mo><msqrt><mn>2</mn></msqrt></math> は有理数である。その有理数を <math><mi>r</mi></math> と置こう。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― √<span class="rad">2</span> だけの式に直す</h3>
-<p>1 + √<span class="rad">2</span> = <i>r</i> を移項して、√<span class="rad">2</span> = <i>r</i> − 1 の形にしよう。</p>
+          <h3>ヒント<math><mn>2</mn><mo>―</mo><msqrt><mn>2</mn></msqrt></math> だけの式に直す</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mn>1</mn><mo>+</mo><msqrt><mn>2</mn></msqrt><mo>=</mo><mi>r</mi><mo>⇒</mo><msqrt><mn>2</mn></msqrt><mo>=</mo><mi>r</mi><mo>−</mo><mn>1</mn></math>等式の性質：両辺から同じ数 1 を引いても等式は成り立つ。移項して √2 だけの式にする。</p>
+<p><math><mn>1</mn><mo>+</mo><msqrt><mn>2</mn></msqrt><mo>=</mo><mi>r</mi></math> を移項して、<math><msqrt><mn>2</mn></msqrt><mo>=</mo><mi>r</mi><mo>−</mo><mn>1</mn></math>の形にしよう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 3 ― 矛盾を見つける</h3>
-<p><i>r</i> が有理数ならば、<i>r</i> − 1 も有理数だね。でも左辺の √<span class="rad">2</span> は無理数のはずだった。これが矛盾だよ。</p>
+<p><math><mi>r</mi></math> が有理数ならば、<math><mi>r</mi><mo>−</mo><mn>1</mn></math>も有理数だね。でも左辺の<math><msqrt><mn>2</mn></msqrt></math> は無理数のはずだった。これが矛盾だよ。</p>
         </div>
         <div class="step answer">
-          <h3>解答</h3>
-<p>1 + √<span class="rad">2</span> が無理数でないと仮定すると、1 + √<span class="rad">2</span> は有理数である。その有理数を <i>r</i> とすると、1 + √<span class="rad">2</span> = <i>r</i> より √<span class="rad">2</span> = <i>r</i> − 1。<i>r</i> が有理数ならば <i>r</i> − 1 も有理数であるから、この等式は √<span class="rad">2</span> が無理数であることに矛盾する。したがって、1 + √<span class="rad">2</span> は無理数である。（証明終わり）</p>
+          <h3>解答</h3><p class="cite"><span class="cite-tag">使う定義</span><math><mtext>背理法：成り立たないと仮定して矛盾を導く</mtext></math>r が有理数なら r−1 も有理数で、√2 が無理数であることに矛盾する。よって仮定が誤りで、1+√2 は無理数。</p>
+<p><math><mn>1</mn><mo>+</mo><msqrt><mn>2</mn></msqrt></math> が無理数でないと仮定すると、<math><mn>1</mn><mo>+</mo><msqrt><mn>2</mn></msqrt></math> は有理数である。その有理数を <math><mi>r</mi></math> とすると、<math><mn>1</mn><mo>+</mo><msqrt><mn>2</mn></msqrt><mo>=</mo><mi>r</mi></math> より<math><msqrt><mn>2</mn></msqrt><mo>=</mo><mi>r</mi><mo>−</mo><mn>1</mn></math>。<math><mi>r</mi></math> が有理数ならば <math><mi>r</mi><mo>−</mo><mn>1</mn></math>も有理数であるから、この等式は<math><msqrt><mn>2</mn></msqrt></math> が無理数であることに矛盾する。したがって、<math><mn>1</mn><mo>+</mo><msqrt><mn>2</mn></msqrt></math> は無理数である。（証明終わり）</p>
         </div>
         <p class="prob-done">例題2 クリア！　次は練習23だよ。</p>
       </section>
-      <section class="card prob" id="prob-ren23" data-flow="ren23" data-label="練習 23">
+      <section class="nofig card prob" id="prob-ren23" data-flow="ren23" data-label="練習 23">
         <div class="prob-head">
           <span class="prob-tag ren">練習 23</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
         <div class="qside">
-        <p class="prob-q">√<span class="rad">2</span> が無理数であることを用いて、次の命題を証明せよ。<br>　1 + 3√<span class="rad">2</span> は無理数である。</p>
+        <p class="prob-q"><math><msqrt><mn>2</mn></msqrt></math> が無理数であることを用いて、次の命題を証明せよ。<br>　<math><mn>1</mn><mo>+</mo><mn>3</mn><msqrt><mn>2</mn></msqrt></math> は無理数である。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 1 ― 成り立たないと仮定する</h3>
-<p>例題2と同じ背理法だよ。1 + 3√<span class="rad">2</span> が無理数でないと仮定して、その有理数を <i>r</i> と置こう。</p>
+<p>例題2と同じ背理法だよ。<math><mn>1</mn><mo>+</mo><mn>3</mn><msqrt><mn>2</mn></msqrt></math> が無理数でないと仮定して、その有理数を <math><mi>r</mi></math> と置こう。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― √<span class="rad">2</span> だけの式に直す</h3>
-<p>1 + 3√<span class="rad">2</span> = <i>r</i> を移項すると 3√<span class="rad">2</span> = <i>r</i> − 1。両辺を3で割って、√<span class="rad">2</span> = の形にしよう。</p>
+          <h3>ヒント<math><mn>2</mn><mo>―</mo><msqrt><mn>2</mn></msqrt></math> だけの式に直す</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mn>1</mn><mo>+</mo><mn>3</mn><msqrt><mn>2</mn></msqrt><mo>=</mo><mi>r</mi><mo>⇒</mo><msqrt><mn>2</mn></msqrt><mo>=</mo><mfrac><mrow><mi>r</mi><mo>−</mo><mn>1</mn></mrow><mn>3</mn></mfrac></math>移項して 3√2=r−1 とし、両辺を 3 で割って √2 だけの式にする。</p>
+<p><math><mn>1</mn><mo>+</mo><mn>3</mn><msqrt><mn>2</mn></msqrt><mo>=</mo><mi>r</mi></math> を移項すると<math><mn>3</mn><msqrt><mn>2</mn></msqrt><mo>=</mo><mi>r</mi><mo>−</mo><mn>1</mn></math>。両辺を3で割って、<math><msqrt><mn>2</mn></msqrt><mo>=</mo></math>の形にしよう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 3 ― 矛盾を見つける</h3>
-<p><i>r</i> が有理数ならば、<span class="frac"><span class="num"><i>r</i> − 1</span><span class="den">3</span></span> も有理数だね。でも √<span class="rad">2</span> は無理数のはずだった。これが矛盾だよ。</p>
+<p><math><mi>r</mi></math> が有理数ならば、<math><mfrac><mrow><mi>r</mi><mo>−</mo><mn>1</mn></mrow><mn>3</mn></mfrac></math> も有理数だね。でも<math><msqrt><mn>2</mn></msqrt></math> は無理数のはずだった。これが矛盾だよ。</p>
         </div>
         <div class="step answer">
-          <h3>解答</h3>
-<p>1 + 3√<span class="rad">2</span> が無理数でないと仮定すると、1 + 3√<span class="rad">2</span> は有理数である。その有理数を <i>r</i> とすると、1 + 3√<span class="rad">2</span> = <i>r</i> より √<span class="rad">2</span> = <span class="frac"><span class="num"><i>r</i> − 1</span><span class="den">3</span></span>。<i>r</i> が有理数ならば <span class="frac"><span class="num"><i>r</i> − 1</span><span class="den">3</span></span> も有理数であるから、この等式は √<span class="rad">2</span> が無理数であることに矛盾する。したがって、1 + 3√<span class="rad">2</span> は無理数である。（証明終わり）</p>
+          <h3>解答</h3><p class="cite"><span class="cite-tag">使う定義</span><math><mtext>背理法：成り立たないと仮定して矛盾を導く</mtext></math>r が有理数なら (r−1)/3 も有理数で、√2 が無理数であることに矛盾する。よって 1+3√2 は無理数。</p>
+<p><math><mn>1</mn><mo>+</mo><mn>3</mn><msqrt><mn>2</mn></msqrt></math> が無理数でないと仮定すると、<math><mn>1</mn><mo>+</mo><mn>3</mn><msqrt><mn>2</mn></msqrt></math> は有理数である。その有理数を <math><mi>r</mi></math> とすると、<math><mn>1</mn><mo>+</mo><mn>3</mn><msqrt><mn>2</mn></msqrt><mo>=</mo><mi>r</mi></math> より<math><msqrt><mn>2</mn></msqrt><mo>=</mo><mfrac><mrow><mi>r</mi><mo>−</mo><mn>1</mn></mrow><mn>3</mn></mfrac></math>。<math><mi>r</mi></math> が有理数ならば <math><mfrac><mrow><mi>r</mi><mo>−</mo><mn>1</mn></mrow><mn>3</mn></mfrac></math> も有理数であるから、この等式は<math><msqrt><mn>2</mn></msqrt></math> が無理数であることに矛盾する。したがって、<math><mn>1</mn><mo>+</mo><mn>3</mn><msqrt><mn>2</mn></msqrt></math> は無理数である。（証明終わり）</p>
         </div>
         <p class="prob-done">練習23 クリア！　最後は研究の証明だよ。</p>
       </section>
       <div class="sec-head">
         <span class="sec-tag">研究</span>
-        <h2>√<span class="rad">2</span> が無理数であることの証明</h2>
+        <h2><math><msqrt><mn>2</mn></msqrt></math> が無理数であることの証明</h2>
         <span class="pno">教科書 p.72</span>
       </div>
       <section class="card">
-        <p>例題2では「√<span class="rad">2</span> が無理数である」ということを認めていた。この事実を、背理法を利用して証明してみよう。</p>
+        <p>例題2では「<math><msqrt><mn>2</mn></msqrt></math> が無理数である」ということを認めていた。この事実を、背理法を利用して証明してみよう。</p>
       </section>
-      <section class="card prob" id="prob-kenkyu" data-flow="kenkyu" data-label="研究">
+      <section class="nofig card prob" id="prob-kenkyu" data-flow="kenkyu" data-label="研究">
         <div class="prob-head">
           <span class="prob-tag ouyou">研究</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 5</span>
         </div>
         <div class="qside">
-        <p class="prob-q">√<span class="rad">2</span> が無理数であることを、背理法を利用して証明せよ。</p>
+        <p class="prob-q"><math><msqrt><mn>2</mn></msqrt></math> が無理数であることを、背理法を利用して証明せよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 成り立たないと仮定する</h3>
-<p>「√<span class="rad">2</span> が無理数でない」すなわち「√<span class="rad">2</span> が有理数である」と仮定しよう（有理数の定義は27ページを参照）。</p>
+          <h3>ヒント 1 ― 成り立たないと仮定する</h3><p class="cite"><span class="cite-tag">使う定義</span><math><msqrt><mn>2</mn></msqrt><mo>=</mo><mfrac><mi>m</mi><mi>n</mi></mfrac></math>√2 が有理数なら、自然数 m, n を用いて分数 m/n と表せる。これが背理法の出発点の仮定。</p>
+<p>「<math><msqrt><mn>2</mn></msqrt></math> が無理数でない」すなわち「<math><msqrt><mn>2</mn></msqrt></math> が有理数である」と仮定しよう（有理数の定義は27ページを参照）。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 分数で表し、既約分数にする</h3>
-<p>√<span class="rad">2</span> はある自然数 <i>m</i>, <i>n</i> を用いて √<span class="rad">2</span> = <span class="frac"><span class="num"><i>m</i></span><span class="den"><i>n</i></span></span> ……① と表すことができる。このとき、できる限り約分して、<i>m</i> と <i>n</i> に1以外の正の公約数がないような分数にする。このような分数を既約分数というよ。</p>
+<p><math><msqrt><mn>2</mn></msqrt></math> はある自然数 <math><mi>m</mi><mo>,</mo><mi>n</mi></math> を用いて<math><msqrt><mn>2</mn></msqrt><mo>=</mo><mfrac><mi>m</mi><mi>n</mi></mfrac><mo>…</mo><mo>…</mo><mo>①</mo></math>と表すことができる。このとき、できる限り約分して、<math><mi>m</mi></math> と <math><mi>n</mi></math> に1以外の正の公約数がないような分数にする。このような分数を既約分数というよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 3 ― 両辺を2乗して <i>m</i> の偶奇を調べる</h3>
-<p>①から √<span class="rad">2</span><i>n</i> = <i>m</i>。この両辺を2乗すると 2<i>n</i><sup>2</sup> = <i>m</i><sup>2</sup> ……② になる。よって <i>m</i><sup>2</sup> は偶数で、70ページの例題1により <i>m</i> も偶数になるよ。</p>
+          <h3>ヒント 3 ― 両辺を2乗して <math><mi>m</mi></math> の偶奇を調べる</h3><p class="cite"><span class="cite-tag">使う性質</span><math><msup><mi>m</mi><mn>2</mn></msup><mtext> は偶数 </mtext><mo>⇒</mo><mi>m</mi><mtext> は偶数</mtext></math>このページの例題1で証明した命題。m² が偶数と分かったら、m 自身も偶数といえる。</p>
+<p>①から<math><msqrt><mn>2</mn></msqrt><mi>n</mi><mo>=</mo><mi>m</mi></math>。この両辺を2乗すると<math><mn>2</mn><msup><mi>n</mi><mn>2</mn></msup><mo>=</mo><msup><mi>m</mi><mn>2</mn></msup><mo>…</mo><mo>…</mo><mo>②</mo></math>になる。よって <math><msup><mi>m</mi><mn>2</mn></msup></math> は偶数で、70ページの例題1により <math><mi>m</mi></math> も偶数になるよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 4 ― <i>m</i> = 2<i>k</i> を②に代入する</h3>
-<p>偶数 <i>m</i> は、ある自然数 <i>k</i> を用いて <i>m</i> = 2<i>k</i> と表される。これを②に代入して、<i>n</i><sup>2</sup> の形を調べよう。</p>
+          <h3>ヒント<math><mn>4</mn><mo>―</mo><mi>m</mi><mo>=</mo><mn>2</mn><mi>k</mi></math> を②に代入する</h3><p class="cite"><span class="cite-tag">使う定義</span><math><mi>m</mi><mo>=</mo><mn>2</mn><mi>k</mi></math>偶数 m は、自然数 k を用いて 2k と表せる。これを②に代入して n² の形を調べる。</p>
+<p>偶数 <math><mi>m</mi></math> は、ある自然数 <math><mi>k</mi></math> を用いて <math><mi>m</mi><mo>=</mo><mn>2</mn><mi>k</mi></math> と表される。これを②に代入して、<math><msup><mi>n</mi><mn>2</mn></msup></math> の形を調べよう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 5 ― 矛盾を見つける</h3>
-<p>代入すると 2<i>n</i><sup>2</sup> = 4<i>k</i><sup>2</sup>、すなわち <i>n</i><sup>2</sup> = 2<i>k</i><sup>2</sup> になる。よって <i>n</i><sup>2</sup> は偶数で、<i>n</i> も偶数になる。<i>m</i> と <i>n</i> がともに偶数になることは、何と矛盾するか考えよう。</p>
+<p>代入すると<math><mn>2</mn><msup><mi>n</mi><mn>2</mn></msup><mo>=</mo><mn>4</mn><msup><mi>k</mi><mn>2</mn></msup></math>、すなわち <math><msup><mi>n</mi><mn>2</mn></msup><mo>=</mo><mn>2</mn><msup><mi>k</mi><mn>2</mn></msup></math> になる。よって <math><msup><mi>n</mi><mn>2</mn></msup></math> は偶数で、<math><mi>n</mi></math> も偶数になる。<math><mi>m</mi></math> と <math><mi>n</mi></math> がともに偶数になることは、何と矛盾するか考えよう。</p>
         </div>
         <div class="step answer">
-          <h3>解答</h3>
-<p>「√<span class="rad">2</span> が無理数でない」すなわち「√<span class="rad">2</span> が有理数である」と仮定すると、√<span class="rad">2</span> はある自然数 <i>m</i>, <i>n</i> を用いて √<span class="rad">2</span> = <span class="frac"><span class="num"><i>m</i></span><span class="den"><i>n</i></span></span> ……① と表すことができる。このとき、できる限り約分して、<i>m</i> と <i>n</i> に1以外の正の公約数がないような分数にする。①から √<span class="rad">2</span><i>n</i> = <i>m</i>、この両辺を2乗すると 2<i>n</i><sup>2</sup> = <i>m</i><sup>2</sup> ……②。よって、<i>m</i><sup>2</sup> は偶数である。70ページの例題1により、<i>m</i><sup>2</sup> が偶数ならば、<i>m</i> も偶数となる。偶数 <i>m</i> は、ある自然数 <i>k</i> を用いて <i>m</i> = 2<i>k</i> と表されるから、②に代入して 2<i>n</i><sup>2</sup> = 4<i>k</i><sup>2</sup>、すなわち <i>n</i><sup>2</sup> = 2<i>k</i><sup>2</sup>。よって、<i>n</i><sup>2</sup> は偶数となり、<i>n</i> も偶数となる。<i>m</i> と <i>n</i> がともに偶数となることは、<i>m</i> と <i>n</i> に1以外の正の公約数がないとしたことに矛盾する。したがって、√<span class="rad">2</span> は有理数ではなく、無理数である。（証明終わり）</p>
+          <h3>解答</h3><p class="cite"><span class="cite-tag">使う定義</span><math><mfrac><mi>m</mi><mi>n</mi></mfrac><mtext> は既約分数</mtext></math>既約分数と置いたのに m, n がともに偶数になり、約分できることと矛盾する。これが背理法の矛盾。</p>
+<p>「<math><msqrt><mn>2</mn></msqrt></math> が無理数でない」すなわち「<math><msqrt><mn>2</mn></msqrt></math> が有理数である」と仮定すると、<math><msqrt><mn>2</mn></msqrt></math> はある自然数 <math><mi>m</mi><mo>,</mo><mi>n</mi></math> を用いて<math><msqrt><mn>2</mn></msqrt><mo>=</mo><mfrac><mi>m</mi><mi>n</mi></mfrac><mo>…</mo><mo>…</mo><mo>①</mo></math>と表すことができる。このとき、できる限り約分して、<math><mi>m</mi></math> と <math><mi>n</mi></math> に1以外の正の公約数がないような分数にする。①から<math><msqrt><mn>2</mn></msqrt><mi>n</mi><mo>=</mo><mi>m</mi></math>、この両辺を2乗すると<math><mn>2</mn><msup><mi>n</mi><mn>2</mn></msup><mo>=</mo><msup><mi>m</mi><mn>2</mn></msup><mo>…</mo><mo>…</mo><mo>②</mo></math>。よって、<math><msup><mi>m</mi><mn>2</mn></msup></math> は偶数である。70ページの例題1により、<math><msup><mi>m</mi><mn>2</mn></msup></math> が偶数ならば、<math><mi>m</mi></math> も偶数となる。偶数 <math><mi>m</mi></math> は、ある自然数 <math><mi>k</mi></math> を用いて <math><mi>m</mi><mo>=</mo><mn>2</mn><mi>k</mi></math> と表されるから、②に代入して<math><mn>2</mn><msup><mi>n</mi><mn>2</mn></msup><mo>=</mo><mn>4</mn><msup><mi>k</mi><mn>2</mn></msup></math>、すなわち <math><msup><mi>n</mi><mn>2</mn></msup><mo>=</mo><mn>2</mn><msup><mi>k</mi><mn>2</mn></msup></math>。よって、<math><msup><mi>n</mi><mn>2</mn></msup></math> は偶数となり、<math><mi>n</mi></math> も偶数となる。<math><mi>m</mi></math> と <math><mi>n</mi></math> がともに偶数となることは、<math><mi>m</mi></math> と <math><mi>n</mi></math> に1以外の正の公約数がないとしたことに矛盾する。したがって、<math><msqrt><mn>2</mn></msqrt></math> は有理数ではなく、無理数である。（証明終わり）</p>
         </div>
         <p class="prob-done">研究 クリア！　項4は全部おわり。次は補充問題だよ。</p>
       </section>
@@ -502,9 +571,9 @@ padding:16px 34px;box-shadow:var(--shadow);
       <section class="card summary" id="summaryCard" style="display:none">
         <h2>この項のポイント</h2>
         <ul>
-          <li><b>対偶を利用する証明：</b>命題 <i>p</i> ⇒ <i>q</i> は、その対偶 <i>q&#772;</i> ⇒ <i>p&#772;</i> を証明してもよい。</li>
-          <li><b>背理法：</b>命題が成り立たないと仮定して矛盾を導き、もとの命題が真であると結論する。</li>
-          <li><b>√<span class="rad">2</span> の無理数性：</b>既約分数 <span class="frac"><span class="num"><i>m</i></span><span class="den"><i>n</i></span></span> と置くと <i>m</i>, <i>n</i> がともに偶数になり、既約であることに矛盾する。</li>
+          <p class="cite"><span class="cite-tag">使う性質</span><math><mover><mi>q</mi><mo>‾</mo></mover><mo>⇒</mo><mover><mi>p</mi><mo>‾</mo></mover></math>命題を証明するのに、その対偶を証明してもよい。</p><li><b>対偶を利用する証明：</b>命題 <math><mi>p</mi><mo>⇒</mo><mi>q</mi></math> は、その対偶 <math><mover><mi>q</mi><mo>‾</mo></mover><mo>⇒</mo><mover><mi>p</mi><mo>‾</mo></mover></math> を証明してもよい。</li>
+          <p class="cite"><span class="cite-tag">使う定義</span><math><mtext>背理法：成り立たないと仮定して矛盾を導く</mtext></math>仮定から矛盾が出れば、その仮定が誤りで、もとの命題が真といえる。</p><li><b>背理法：</b>命題が成り立たないと仮定して矛盾を導き、もとの命題が真であると結論する。</li>
+          <p class="cite"><span class="cite-tag">使う性質</span><math><msqrt><mn>2</mn></msqrt><mo>=</mo><mfrac><mi>m</mi><mi>n</mi></mfrac></math>既約分数と置くと m, n がともに偶数になって矛盾する。これが √2 の無理数性の証明の骨組み。</p><li><b><math><msqrt><mn>2</mn></msqrt></math> の無理数性：</b>既約分数 <math><mfrac><mi>m</mi><mi>n</mi></mfrac></math> と置くと <math><mi>m</mi><mo>,</mo><mi>n</mi></math> がともに偶数になり、既約であることに矛盾する。</li>
         </ul>
       </section>
  <footer>

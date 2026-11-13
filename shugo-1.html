@@ -309,7 +309,64 @@ padding:16px 34px;box-shadow:var(--shadow);
 }
 @media (prefers-color-scheme: dark){.finish-btn{color:#0c1712}}
 .finish-btn:active{transform:scale(.98)}
- </style>
+ 
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+
+      /* 積分記号は大きめに表示する（元のページの可読化デザインに合わせる） */
+      math .int-op{font-size:1.35em}
+      /* calc-12 世代（.card）と calc-18 世代（.unit）の、図のない問題の全幅化 */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig>.step{position:static !important}
+        .card.nofig>.steps-wrap{max-height:none !important;overflow:visible !important}
+        .unit.nofig{display:block !important}
+        .unit.nofig>.qside{position:static !important}
+        .unit.nofig>.steps-stack{max-height:none !important;overflow:visible !important}
+      }
+
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける・第3弾c） */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig .qside{position:static !important}
+        .card.nofig .steps-wrap,.card.nofig .tabpanel .steps-wrap{max-height:none !important;overflow:visible !important}
+      }
+</style>
 </head>
 <body>
 <div class="wrap">
@@ -333,22 +390,22 @@ padding:16px 34px;box-shadow:var(--shadow);
       </div>
       <section class="card">
 <p>「1から10までの自然数の集まり」のように、<span class="key">範囲がはっきりしたものの集まり</span>を<span class="key">集合</span>といい、集合を構成している1つ1つのものを、その集合の<span class="key">要素</span>という。</p>
-<p>x が集合 A の要素であるとき、x は集合 A に<span class="key">属する</span>といい、次のように表す。</p>
-<p class="formula">x ∈ A　（x は A の要素である）</p>
-<p class="formula">y ∉ A　（y は A の要素でない）</p>
+<p><math><mi>x</mi></math> が集合 <math><mi>A</mi></math> の要素であるとき、<math><mi>x</mi></math> は集合 <math><mi>A</mi></math> に<span class="key">属する</span>といい、次のように表す。</p>
+<p class="formula"><math><mi>x</mi></math> ∈ <math><mi>A</mi></math>　（<math><mi>x</mi></math> は <math><mi>A</mi></math> の要素である）</p>
+<p class="formula"><math><mi>y</mi></math> ∉ <math><mi>A</mi></math>　（<math><mi>y</mi></math> は <math><mi>A</mi></math> の要素でない）</p>
 <p>「大きい数の集まり」のような、範囲がはっきりしないものは集合とはいわない。</p>
       </section>
-      <section class="card prob" id="prob-ex1" data-flow="ex1" data-label="例1">
+      <section class="nofig card prob" id="prob-ex1" data-flow="ex1" data-label="例1">
         <div class="prob-head">
           <span class="prob-tag ">例 1</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">10 以下の素数全体の集合を A とすると、A の要素は何か。また、2 と 1 はそれぞれ A に属するか。</p>
+        <p class="prob-q">10 以下の素数全体の集合を <math><mi>A</mi></math> とすると、<math><mi>A</mi></math> の要素は何か。また、2 と 1 はそれぞれ <math><mi>A</mi></math> に属するか。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 素数を小さい順に書き出す</h3>
+          <h3>ヒント 1 ― 素数を小さい順に書き出す</h3><p class="cite"><span class="cite-tag">使う定義</span><math><mtext>素数：2以上の自然数で、正の約数は 1 とその数自身のみ</mtext></math>10 以下の自然数を小さい順に調べ、この約数の条件に合うものだけを拾う。</p>
 <p>素数は、2以上の自然数で、正の約数が 1 とその数自身のみである数だよ。10 以下の素数を小さい順に書き出してみよう。</p>
         </div>
         <div class="step hint">
@@ -358,18 +415,18 @@ padding:16px 34px;box-shadow:var(--shadow);
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">2 ∈ A,　1 ∉ A</p>
-<p>A の要素は 2, 3, 5, 7 である。このとき、集合 A について、たとえば</p>
+          <p class="big">2 ∈ <math><mi>A</mi></math>,　1 ∉ <math><mi>A</mi></math></p><p class="cite"><span class="cite-tag">使う定義</span><math><mi>x</mi><mo>∈</mo><mi>A</mi></math>書き出した要素の中にあれば ∈、なければ ∉。ここでは 2 は要素、1 は要素でない。</p>
+<p><math><mi>A</mi></math> の要素は 2, 3, 5, 7 である。このとき、集合 <math><mi>A</mi></math> について、たとえば</p>
         </div>
         <p class="prob-done">例1 クリア！　次は練習1に挑戦しよう。</p>
       </section>
-      <section class="card prob" id="prob-ren1" data-label="練習1">
+      <section class="nofig card prob" id="prob-ren1" data-label="練習1">
         <div class="prob-head">
           <span class="prob-tag ren">練習 1</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
         <div class="qside">
-        <p class="prob-q">正の奇数全体の集合を A とする。次の □ に適する記号 ∈ または ∉ を入れよ。</p>
+        <p class="prob-q">正の奇数全体の集合を <math><mi>A</mi></math> とする。次の □ に適する記号 ∈ または ∉ を入れよ。</p>
         </div>
         <div class="tabs" role="tablist" aria-label="練習1の小問">
           <button class="tab" role="tab" data-tab="ren1-1" aria-selected="true">(1)</button>
@@ -378,14 +435,14 @@ padding:16px 34px;box-shadow:var(--shadow);
         </div>
         <div class="tabpanel show" id="panel-ren1-1" data-flow="ren1-1" data-label="練習1 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　5 □ A</span>
+            <span class="sub prob-q" style="margin:0">(1)　5 □ <math><mi>A</mi></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
           <div class="quiz" id="q-ren1-1" data-correct="1">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>∈（5 は A の要素である）</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>∉（5 は A の要素でない）</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>∈（5 は <math><mi>A</mi></math> の要素である）</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>∉（5 は <math><mi>A</mi></math> の要素でない）</span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
@@ -393,25 +450,25 @@ padding:16px 34px;box-shadow:var(--shadow);
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― 5 は正の奇数か</h3>
-<p>5 は正の数で、奇数だね。A の要素かどうかを考えよう。</p>
+<p>5 は正の数で、奇数だね。<math><mi>A</mi></math> の要素かどうかを考えよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">5 ∈ A</p>
+          <p class="big">5 ∈ <math><mi>A</mi></math></p>
         </div>
           <p class="prob-done">練習1 (1) クリア！</p>
         </div>
         <div class="tabpanel" id="panel-ren1-2" data-flow="ren1-2" data-label="練習1 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　6 □ A</span>
+            <span class="sub prob-q" style="margin:0">(2)　6 □ <math><mi>A</mi></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
           <div class="quiz" id="q-ren1-2" data-correct="2">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>∈（6 は A の要素である）</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>∉（6 は A の要素でない）</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>∈（6 は <math><mi>A</mi></math> の要素である）</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>∉（6 は <math><mi>A</mi></math> の要素でない）</span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
@@ -419,25 +476,25 @@ padding:16px 34px;box-shadow:var(--shadow);
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― 6 は奇数か</h3>
-<p>6 は偶数だね。正の奇数全体の集合 A に、偶数は入っているかな。</p>
+<p>6 は偶数だね。正の奇数全体の集合 <math><mi>A</mi></math> に、偶数は入っているかな。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">6 ∉ A</p>
+          <p class="big">6 ∉ <math><mi>A</mi></math></p>
         </div>
           <p class="prob-done">練習1 (2) クリア！</p>
         </div>
         <div class="tabpanel" id="panel-ren1-3" data-flow="ren1-3" data-label="練習1 (3)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(3)　−3 □ A</span>
+            <span class="sub prob-q" style="margin:0">(3)　−3 □ <math><mi>A</mi></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
           <div class="quiz" id="q-ren1-3" data-correct="2">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>∈（−3 は A の要素である）</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>∉（−3 は A の要素でない）</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>∈（−3 は <math><mi>A</mi></math> の要素である）</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>∉（−3 は <math><mi>A</mi></math> の要素でない）</span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
@@ -445,12 +502,12 @@ padding:16px 34px;box-shadow:var(--shadow);
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― 「正の」に注意</h3>
-<p>−3 は奇数だけれど、A は「正の」奇数全体の集合だよ。−3 は正の数かな。</p>
+<p>−3 は奇数だけれど、<math><mi>A</mi></math> は「正の」奇数全体の集合だよ。−3 は正の数かな。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">−3 ∉ A</p>
+          <p class="big">−3 ∉ <math><mi>A</mi></math></p>
         </div>
           <p class="prob-done">練習1 (3) クリア！</p>
         </div>
@@ -462,19 +519,23 @@ padding:16px 34px;box-shadow:var(--shadow);
       </div>
       <section class="card">
 <p>集合の表し方には、次の2つの方法がある。</p>
-<p><b>1. 要素を書き並べて表す方法</b> ― {　} の中に要素を書き並べる。規則性が明らかであるときは、省略記号 …… を用いて表すことがある。</p>
-<p class="formula">A = {1, 2, 3, 6, 9, 18},　C = {1, 2, 3, ……}</p>
+<p><b>1. 要素を書き並べて表す方法</b> ― {　} の中に要素を書き並べる。規則性が明らかであるときは、<br>省略記号 …… を用いて表すことがある。</p>
+<p class="mq-wide formula"><math display="block"><mi>A</mi><mo>=</mo><mrow><mo>{</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>6</mn><mo>,</mo><mn>9</mn><mo>,</mo><mn>18</mn><mo>}</mo></mrow><mo>,</mo><mspace width="2em"/><mi>C</mi><mo>=</mo><mrow><mo>{</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mo>…</mo><mo>…</mo><mo>}</mo></mrow></math></p>
+<div class="mq-narrow mq-stack">
+<p class="formula"><math display="block"><mi>A</mi><mo>=</mo><mrow><mo>{</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>6</mn><mo>,</mo><mn>9</mn><mo>,</mo><mn>18</mn><mo>}</mo></mrow><mo>,</mo></math></p>
+<p class="formula"><math display="block"><mi>C</mi><mo>=</mo><mrow><mo>{</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mo>…</mo><mo>…</mo><mo>}</mo></mrow></math></p>
+</div>
 <p><b>2. 要素の満たす条件を書いて表す方法</b> ― {要素の代表 | その要素の満たす条件} の形で表す。</p>
-<p class="formula">A = {x | x は 18 の正の約数}</p>
+<p class="formula"><math><mi>A</mi><mo>=</mo><mo>{</mo><mi>x</mi><mo>|</mo><mi>x</mi></math>は 18 の正の約数}</p>
       </section>
-      <section class="card prob" id="prob-ex2" data-flow="ex2" data-label="例2">
+      <section class="nofig card prob" id="prob-ex2" data-flow="ex2" data-label="例2">
         <div class="prob-head">
           <span class="prob-tag ">例 2</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">次の集合を、要素を書き並べて表せ。<br>(1) 18 の正の約数全体の集合 A　(2) 20 以下の正の偶数全体の集合 B　(3) 自然数全体の集合 C</p>
+        <p class="prob-q">次の集合を、要素を書き並べて表せ。<br>(1) 18 の正の約数全体の集合 <math><mi>A</mi></math>　(2) 20 以下の正の偶数全体の集合 <math><mi>B</mi></math>　(3) 自然数全体の集合 <math><mi>C</mi></math></p>
         </div>
         <div class="step hint">
           <h3>ヒント 1 ― (1) 約数を小さい順に探す</h3>
@@ -485,12 +546,12 @@ padding:16px 34px;box-shadow:var(--shadow);
 <p>(2) は 2, 4, 6, … と続くから、…… を使って 20 まで書こう。(3) の自然数は無限に続くから、…… で終わらせよう。</p>
         </div>
         <div class="step answer">
-          <h3>解答</h3>
-<p class="formula left">A = {1, 2, 3, 6, 9, 18}</p><p class="formula left">B = {2, 4, 6, ……, 20}</p><p class="formula left">C = {1, 2, 3, ……}</p>
+          <h3>解答</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mi>A</mi><mo>=</mo><mrow><mo>{</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>6</mn><mo>,</mo><mn>9</mn><mo>,</mo><mn>18</mn><mo>}</mo></mrow></math>要素を書き並べる方法では、要素をすべて { } の中に小さい順に並べる。(2)(3) は …… を使う。</p>
+<p class="formula left"><math display="block"><mi>A</mi><mo>=</mo><mrow><mo>{</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>6</mn><mo>,</mo><mn>9</mn><mo>,</mo><mn>18</mn><mo>}</mo></mrow></math></p><p class="formula left"><math display="block"><mi>B</mi><mo>=</mo><mrow><mo>{</mo><mn>2</mn><mo>,</mo><mn>4</mn><mo>,</mo><mn>6</mn><mo>,</mo><mo>…</mo><mo>…</mo><mo>,</mo><mn>20</mn><mo>}</mo></mrow></math></p><p class="formula left"><math display="block"><mi>C</mi><mo>=</mo><mrow><mo>{</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mo>…</mo><mo>…</mo><mo>}</mo></mrow></math></p>
         </div>
         <p class="prob-done">例2 クリア！　次は練習2に挑戦しよう。</p>
       </section>
-      <section class="card prob" id="prob-ren2" data-label="練習2">
+      <section class="nofig card prob" id="prob-ren2" data-label="練習2">
         <div class="prob-head">
           <span class="prob-tag ren">練習 2</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
@@ -504,24 +565,30 @@ padding:16px 34px;box-shadow:var(--shadow);
         </div>
         <div class="tabpanel show" id="panel-ren2-1" data-flow="ren2-1" data-label="練習2 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　12 の正の約数全体の集合 A</span>
+            <span class="sub prob-q" style="margin:0">(1)　12 の正の約数全体の集合 <math><mi>A</mi></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 12 を割り切る数を探す</h3>
-<p>1 から順に、12 を割り切る正の整数を探そう。12 = 1×12 = 2×6 = 3×4 と分解すると見つけやすいよ。</p>
+          <h3>ヒント 1 ― 12 を割り切る数を探す</h3><p class="cite"><span class="cite-tag">使う定義</span><math><mtext>12 の正の約数：12 を割り切る正の整数</mtext></math>1 から順に、12 が割り切れるかどうかを確かめていく。</p>
+<p>1 から順に、12 を割り切る正の整数を探そう。</p>
+<div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mn>12</mn><mo>=</mo><mn>1</mn><mo>×</mo><mn>12</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mn>12</mn></mphantom><mo>=</mo><mn>2</mn><mo>×</mo><mn>6</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mn>12</mn></mphantom><mo>=</mo><mn>3</mn><mo>×</mo><mn>4</mn></math></div>
+</div>
+<p>と分解すると見つけやすいよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">A = {1, 2, 3, 4, 6, 12}</p>
+          <p class="big"><math display="block"><mi>A</mi><mo>=</mo><mrow><mo>{</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>4</mn><mo>,</mo><mn>6</mn><mo>,</mo><mn>12</mn><mo>}</mo></mrow></math></p>
         </div>
           <p class="prob-done">練習2 (1) クリア！</p>
         </div>
         <div class="tabpanel" id="panel-ren2-2" data-flow="ren2-2" data-label="練習2 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　30 以下の正の奇数全体の集合 B</span>
+            <span class="sub prob-q" style="margin:0">(2)　30 以下の正の奇数全体の集合 <math><mi>B</mi></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
@@ -532,35 +599,40 @@ padding:16px 34px;box-shadow:var(--shadow);
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">B = {1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29}</p>
+          <p class="mq-wide big"><math display="block"><mi>B</mi><mo>=</mo><mrow><mo>{</mo><mn>1</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>5</mn><mo>,</mo><mn>7</mn><mo>,</mo><mn>9</mn><mo>,</mo><mn>11</mn><mo>,</mo><mn>13</mn><mo>,</mo><mn>15</mn><mo>,</mo><mn>17</mn><mo>,</mo><mn>19</mn><mo>,</mo><mn>21</mn><mo>,</mo><mn>23</mn><mo>,</mo><mn>25</mn><mo>,</mo><mn>27</mn><mo>,</mo><mn>29</mn><mo>}</mo></mrow></math></p>
+<p class="formula mq-narrow" style="font-size:15px"><math display="block"><mi>B</mi><mo>=</mo><mrow><mo>{</mo><mn>1</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>5</mn><mo>,</mo><mn>7</mn><mo>,</mo><mn>9</mn><mo>,</mo><mn>11</mn><mo>,</mo><mn>13</mn><mo>,</mo><mn>15</mn><mo>,</mo><mn>17</mn><mo>,</mo><mn>19</mn><mo>,</mo><mn>21</mn><mo>,</mo><mn>23</mn><mo>,</mo><mn>25</mn><mo>,</mo><mn>27</mn><mo>,</mo><mn>29</mn><mo>}</mo></mrow></math></p>
         </div>
           <p class="prob-done">練習2 (2) クリア！</p>
         </div>
       </section>
-      <section class="card prob" id="prob-ex3" data-flow="ex3" data-label="例3">
+      <section class="nofig card prob" id="prob-ex3" data-flow="ex3" data-label="例3">
         <div class="prob-head">
           <span class="prob-tag ">例 3</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">要素の満たす条件を書いて表す方法の例を確認しよう。<br>(1) A = {x | x は 18 の正の約数}　(2) B = {2n | n は 10 以下の自然数}</p>
+        <p class="prob-q">要素の満たす条件を書いて表す方法の例を確認しよう。<br><math><mrow><mo>(</mo><mn>1</mn><mo>)</mo></mrow><mi>A</mi><mo>=</mo><mo>{</mo><mi>x</mi><mo>|</mo><mi>x</mi></math>は 18 の正の約数}　<math><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow><mi>B</mi><mo>=</mo><mo>{</mo><mn>2</mn><mi>n</mi><mo>|</mo><mi>n</mi></math>は 10 以下の自然数}</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― {x | 条件} の読み方</h3>
-<p>{x | x は 18 の正の約数} は、「18 の正の約数であるような x 全体の集合」という意味だよ。縦棒の左が要素の代表、右が条件だね。</p>
+          <h3>ヒント 1 ― {<math><mi>x</mi></math> | 条件} の読み方</h3><p class="cite"><span class="cite-tag">使う定義</span><math><mrow><mo>{</mo><mi>x</mi><mo>|</mo><mi>x</mi><mtext> は 18 の正の約数</mtext><mo>}</mo></mrow></math>縦棒の左が要素の代表、右がその要素の満たす条件を表す。</p>
+<p>{<math><mi>x</mi></math> | <math><mi>x</mi></math> は 18 の正の約数} は、「18 の正の約数であるような <math><mi>x</mi></math> 全体の集合」という意味だよ。縦棒の左が要素の代表、右が条件だね。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― (2) は n に数を代入する</h3>
-<p>(2) では、2n の n に 1, 2, 3, ……, 10 を代入して得られる数が B の各要素だよ。2, 4, 6, ……, 20 になることを確かめよう。</p>
+          <h3>ヒント 2 ― (2) は <math><mi>n</mi></math> に数を代入する</h3>
+<p>(2) では、2n の <math><mi>n</mi></math> に 1, 2, 3, ……, 10 を代入して得られる数が <math><mi>B</mi></math> の各要素だよ。2, 4, 6, ……, 20 になることを確かめよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
-<p>(1) は例2 (1) の集合 A と同じ集合、(2) は例2 (2) の集合 B と同じ集合を、条件を書いて表したものだね。</p><p class="formula left">A = {1, 2, 3, 6, 9, 18},　B = {2, 4, 6, ……, 20}</p>
+<p>(1) は例2 (1) の集合 <math><mi>A</mi></math> と同じ集合、(2) は例2 (2) の集合 <math><mi>B</mi></math> と同じ集合を、条件を書いて表したものだね。</p><p class="mq-wide formula left"><math display="block"><mi>A</mi><mo>=</mo><mrow><mo>{</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>6</mn><mo>,</mo><mn>9</mn><mo>,</mo><mn>18</mn><mo>}</mo></mrow><mo>,</mo><mspace width="2em"/><mi>B</mi><mo>=</mo><mrow><mo>{</mo><mn>2</mn><mo>,</mo><mn>4</mn><mo>,</mo><mn>6</mn><mo>,</mo><mo>…</mo><mo>…</mo><mo>,</mo><mn>20</mn><mo>}</mo></mrow></math></p>
+<div class="mq-narrow mq-stack">
+<p class="formula"><math display="block"><mi>A</mi><mo>=</mo><mrow><mo>{</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>6</mn><mo>,</mo><mn>9</mn><mo>,</mo><mn>18</mn><mo>}</mo></mrow><mo>,</mo></math></p>
+<p class="formula"><math display="block"><mi>B</mi><mo>=</mo><mrow><mo>{</mo><mn>2</mn><mo>,</mo><mn>4</mn><mo>,</mo><mn>6</mn><mo>,</mo><mo>…</mo><mo>…</mo><mo>,</mo><mn>20</mn><mo>}</mo></mrow></math></p>
+</div>
         </div>
         <p class="prob-done">例3 クリア！　次は練習3に挑戦しよう。</p>
       </section>
-      <section class="card prob" id="prob-ren3" data-label="練習3">
+      <section class="nofig card prob" id="prob-ren3" data-label="練習3">
         <div class="prob-head">
           <span class="prob-tag ren">練習 3</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
@@ -574,35 +646,35 @@ padding:16px 34px;box-shadow:var(--shadow);
         </div>
         <div class="tabpanel show" id="panel-ren3-1" data-flow="ren3-1" data-label="練習3 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　A = {x | x は 20 以下の 3 の正の倍数}</span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><mi>A</mi><mo>=</mo><mo>{</mo><mi>x</mi><mo>|</mo><mi>x</mi></math>は 20 以下の 3 の正の倍数}</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 3 の倍数を小さい順に</h3>
+          <h3>ヒント 1 ― 3 の倍数を小さい順に</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mn>3</mn><mo>,</mo><mn>6</mn><mo>,</mo><mn>9</mn><mo>,</mo><mo>…</mo><mo>…</mo></math>3 の正の倍数は 3 ずつ増える。20 以下のものだけを並べる。</p>
 <p>3 の正の倍数は 3, 6, 9, … と 3 ずつ増えるよ。20 以下という上限に注意して、最後の要素を決めよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">A = {3, 6, 9, 12, 15, 18}</p>
+          <p class="big"><math display="block"><mi>A</mi><mo>=</mo><mrow><mo>{</mo><mn>3</mn><mo>,</mo><mn>6</mn><mo>,</mo><mn>9</mn><mo>,</mo><mn>12</mn><mo>,</mo><mn>15</mn><mo>,</mo><mn>18</mn><mo>}</mo></mrow></math></p>
         </div>
           <p class="prob-done">練習3 (1) クリア！</p>
         </div>
         <div class="tabpanel" id="panel-ren3-2" data-flow="ren3-2" data-label="練習3 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　B = {3n + 1 | n = 0, 1, 2, 3, ……}</span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><mi>B</mi><mo>=</mo><mrow><mo>{</mo><mn>3</mn><mi>n</mi><mo>+</mo><mn>1</mn><mo>|</mo><mi>n</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mo>…</mo><mo>…</mo><mo>}</mo></mrow></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― n に 0 から代入する</h3>
-<p>n = 0 のとき 3n + 1 = 1、n = 1 のとき 4、n = 2 のとき 7、… と計算していこう。無限に続くから …… で終わらせよう。</p>
+          <h3>ヒント 1 ― <math><mi>n</mi></math> に 0 から代入する</h3>
+<p><math><mi>n</mi><mo>=</mo><mn>0</mn></math>のとき<math><mn>3</mn><mi>n</mi><mo>+</mo><mn>1</mn><mo>=</mo><mn>1</mn></math>、<math><mi>n</mi><mo>=</mo><mn>1</mn></math>のとき 4、<math><mi>n</mi><mo>=</mo><mn>2</mn></math>のとき 7、… と計算していこう。無限に続くから …… で終わらせよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">B = {1, 4, 7, 10, 13, 16, ……}</p>
+          <p class="big"><math display="block"><mi>B</mi><mo>=</mo><mrow><mo>{</mo><mn>1</mn><mo>,</mo><mn>4</mn><mo>,</mo><mn>7</mn><mo>,</mo><mn>10</mn><mo>,</mo><mn>13</mn><mo>,</mo><mn>16</mn><mo>,</mo><mo>…</mo><mo>…</mo><mo>}</mo></mrow></math></p>
         </div>
           <p class="prob-done">練習3 (2) クリア！</p>
         </div>
@@ -613,9 +685,9 @@ padding:16px 34px;box-shadow:var(--shadow);
         <span class="pno">教科書 p.58</span>
       </div>
       <section class="card">
-<p>2つの集合 A, B について、<span class="key">A のすべての要素が B の要素でもある</span>とき、A を B の<span class="key">部分集合</span>という。このとき、A は B に<span class="key">含まれる</span>、または B は A を<span class="key">含む</span>といい、次のように表す。</p>
-<p class="formula">A ⊂ B,　または　B ⊃ A</p>
-<p>集合 A 自身も A の部分集合である。すなわち、A ⊂ A である。また、A と B の要素がすべて一致しているとき、A と B は<span class="key">等しい</span>といい、A = B で表す。</p>
+<p>2つの集合 <math><mi>A</mi></math>, <math><mi>B</mi></math> について、<span class="key"><math><mi>A</mi></math> のすべての要素が <math><mi>B</mi></math> の要素でもある</span>とき、<math><mi>A</mi></math> を <math><mi>B</mi></math> の<span class="key">部分集合</span>という。このとき、<math><mi>A</mi></math> は <math><mi>B</mi></math> に<span class="key">含まれる</span>、または <math><mi>B</mi></math> は <math><mi>A</mi></math> を<span class="key">含む</span>といい、次のように表す。</p>
+<p class="formula"><math><mi>A</mi></math> ⊂ <math><mi>B</mi></math>,　または　<math><mi>B</mi></math> ⊃ <math><mi>A</mi></math></p>
+<p>集合 <math><mi>A</mi></math> 自身も <math><mi>A</mi></math> の部分集合である。すなわち、<math><mi>A</mi></math> ⊂ <math><mi>A</mi></math> である。また、<math><mi>A</mi></math> と <math><mi>B</mi></math> の要素がすべて一致しているとき、<math><mi>A</mi></math> と <math><mi>B</mi></math> は<span class="key">等しい</span>といい、<math><mi>A</mi><mo>=</mo><mi>B</mi></math>で表す。</p>
 <p>要素が1つもない集合も考える。これを<span class="key">空集合</span>といい、∅ で表す。空集合 ∅ は、どんな集合に対しても、その部分集合であると約束する。</p>
 <figure><div class="figbox"><svg viewBox="0 0 280 180" role="img" aria-label="部分集合 A⊂B のベン図。円 A が円 B の中に入っている">
 <circle cx="140" cy="90" r="68" fill="none" stroke="var(--ink-soft)" stroke-width="2"/>
@@ -623,34 +695,34 @@ padding:16px 34px;box-shadow:var(--shadow);
 <text x="182" y="48" class="svg-txt" font-size="17">B</text>
 <text x="86" y="86" class="svg-txt" font-size="17">A</text>
 <text x="140" y="172" text-anchor="middle" class="svg-txt-soft" font-size="14">A ⊂ B</text>
-</svg></div><figcaption>A の要素がすべて B の要素でもあるとき、A ⊂ B</figcaption></figure>
+</svg></div><figcaption><math><mi>A</mi></math> の要素がすべて <math><mi>B</mi></math> の要素でもあるとき、<math><mi>A</mi></math> ⊂ <math><mi>B</mi></math></figcaption></figure>
       </section>
-      <section class="card prob" id="prob-ex4" data-flow="ex4" data-label="例4">
+      <section class="nofig card prob" id="prob-ex4" data-flow="ex4" data-label="例4">
         <div class="prob-head">
           <span class="prob-tag ">例 4</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">A = {1, 2, 3, 6} と B = {1, 2, 3, 4, 6, 12} について、A と B の関係をいえ。また、6 の正の約数全体の集合を C とするとき、A と C の関係をいえ。</p>
+        <p class="prob-q"><math><mi>A</mi><mo>=</mo><mrow><mo>{</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>6</mn><mo>}</mo></mrow></math>と<math><mi>B</mi><mo>=</mo><mrow><mo>{</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>4</mn><mo>,</mo><mn>6</mn><mo>,</mo><mn>12</mn><mo>}</mo></mrow></math>について、<math><mi>A</mi></math> と <math><mi>B</mi></math> の関係をいえ。また、6 の正の約数全体の集合を <math><mi>C</mi></math> とするとき、<math><mi>A</mi></math> と <math><mi>C</mi></math> の関係をいえ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― A の要素を1つずつ B と比べる</h3>
-<p>A の要素 1, 2, 3, 6 が、すべて B の中にあるか確かめよう。すべてあれば A ⊂ B だね。</p>
+          <h3>ヒント 1 ― <math><mi>A</mi></math> の要素を1つずつ <math><mi>B</mi></math> と比べる</h3><p class="cite"><span class="cite-tag">使う定義</span><math><mi>A</mi><mo>⊂</mo><mi>B</mi></math>A の要素がすべて B の要素でもあるとき、A は B の部分集合。ここでは 1, 2, 3, 6 を B と比べる。</p>
+<p><math><mi>A</mi></math> の要素 1, 2, 3, 6 が、すべて <math><mi>B</mi></math> の中にあるか確かめよう。すべてあれば <math><mi>A</mi></math> ⊂ <math><mi>B</mi></math> だね。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― C の要素を書き並べる</h3>
-<p>6 の正の約数は 1, 2, 3, 6。C = {1, 2, 3, 6} となり、A と要素がすべて一致するね。</p>
+          <h3>ヒント 2 ― <math><mi>C</mi></math> の要素を書き並べる</h3>
+<p>6 の正の約数は 1, 2, 3, 6。<math><mi>C</mi><mo>=</mo><mrow><mo>{</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>6</mn><mo>}</mo></mrow></math>となり、<math><mi>A</mi></math> と要素がすべて一致するね。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">A ⊂ B,　A = C</p>
-<p>A の要素はすべて B の要素だから A ⊂ B である。また、C = {1, 2, 3, 6} であるから、A = C である。</p>
+          <p class="big"><math><mi>A</mi></math> ⊂ <math><mi>B</mi></math>,　<math><mi>A</mi><mo>=</mo><mi>C</mi></math></p><p class="cite"><span class="cite-tag">使う性質</span><math><mi>A</mi><mo>=</mo><mi>C</mi></math>2つの集合の要素がすべて一致するとき、2つの集合は等しい。C の要素は A とすべて一致する。</p>
+<p><math><mi>A</mi></math> の要素はすべて <math><mi>B</mi></math> の要素だから <math><mi>A</mi></math> ⊂ <math><mi>B</mi></math> である。また、<math><mi>C</mi><mo>=</mo><mrow><mo>{</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>6</mn><mo>}</mo></mrow></math>であるから、<math><mi>A</mi><mo>=</mo><mi>C</mi></math>である。</p>
         </div>
         <p class="prob-done">例4 クリア！　次は練習4に挑戦しよう。</p>
       </section>
-      <section class="card prob" id="prob-ren4" data-label="練習4">
+      <section class="nofig card prob" id="prob-ren4" data-label="練習4">
         <div class="prob-head">
           <span class="prob-tag ren">練習 4</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
@@ -665,70 +737,70 @@ padding:16px 34px;box-shadow:var(--shadow);
         </div>
         <div class="tabpanel show" id="panel-ren4-1" data-flow="ren4-1" data-label="練習4 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　A = {1, 2, 4, 8},　B = {1, 2, 3, 4, 5, 6, 7, 8}</span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><mi>A</mi><mo>=</mo><mrow><mo>{</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>4</mn><mo>,</mo><mn>8</mn><mo>}</mo></mrow><mo>,</mo></math>　<math><mi>B</mi><mo>=</mo><mrow><mo>{</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>4</mn><mo>,</mo><mn>5</mn><mo>,</mo><mn>6</mn><mo>,</mo><mn>7</mn><mo>,</mo><mn>8</mn><mo>}</mo></mrow></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
           <div class="quiz" id="q-ren4-1" data-correct="1">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>A ⊂ B</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>A = B</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>B ⊂ A</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mi>A</mi></math> ⊂ <math><mi>B</mi></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mi>A</mi><mo>=</mo><mi>B</mi></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mi>B</mi></math> ⊂ <math><mi>A</mi></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
           <p class="verdict"></p>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― A の要素が全部 B にあるか</h3>
-<p>A の要素 1, 2, 4, 8 がすべて B にあるか確かめよう。逆に、B の 3 は A にないから、等しくはないね。</p>
+          <h3>ヒント 1 ― <math><mi>A</mi></math> の要素が全部 <math><mi>B</mi></math> にあるか</h3>
+<p><math><mi>A</mi></math> の要素 1, 2, 4, 8 がすべて <math><mi>B</mi></math> にあるか確かめよう。逆に、<math><mi>B</mi></math> の 3 は <math><mi>A</mi></math> にないから、等しくはないね。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">A ⊂ B</p>
+          <p class="big"><math><mi>A</mi></math> ⊂ <math><mi>B</mi></math></p>
         </div>
           <p class="prob-done">練習4 (1) クリア！</p>
         </div>
         <div class="tabpanel" id="panel-ren4-2" data-flow="ren4-2" data-label="練習4 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　C = {1, 2, 5, 10},　10 の正の約数全体の集合 D</span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><mi>C</mi><mo>=</mo><mrow><mo>{</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>5</mn><mo>,</mo><mn>10</mn><mo>}</mo></mrow><mo>,</mo></math>　10 の正の約数全体の集合 <math><mi>D</mi></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
           <div class="quiz" id="q-ren4-2" data-correct="2">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>C ⊂ D（等しくはない）</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>C = D</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>D ⊂ C（等しくはない）</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mi>C</mi></math> ⊂ <math><mi>D</mi></math>（等しくはない）</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mi>C</mi><mo>=</mo><mi>D</mi></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mi>D</mi></math> ⊂ <math><mi>C</mi></math>（等しくはない）</span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
           <p class="verdict"></p>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― D の要素を書き並べる</h3>
-<p>10 の正の約数は、10 = 1×10 = 2×5 から、1, 2, 5, 10。C と比べてみよう。</p>
+          <h3>ヒント 1 ― <math><mi>D</mi></math> の要素を書き並べる</h3>
+<p>10 の正の約数は、<math><mn>10</mn><mo>=</mo><mn>1</mn><mo>×</mo><mn>10</mn><mo>=</mo><mn>2</mn><mo>×</mo><mn>5</mn></math>から、1, 2, 5, 10。<math><mi>C</mi></math> と比べてみよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">C = D</p>
-<p>D = {1, 2, 5, 10} で、C と要素がすべて一致する。</p>
+          <p class="big"><math display="block"><mi>C</mi><mo>=</mo><mi>D</mi></math></p>
+<p><math><mi>D</mi><mo>=</mo><mrow><mo>{</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>5</mn><mo>,</mo><mn>10</mn><mo>}</mo></mrow></math>で、<math><mi>C</mi></math> と要素がすべて一致する。</p>
         </div>
           <p class="prob-done">練習4 (2) クリア！</p>
         </div>
         <div class="tabpanel" id="panel-ren4-3" data-flow="ren4-3" data-label="練習4 (3)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(3)　P = {x | x は 12 以下の自然数},　Q = {x | x は 12 の正の約数}</span>
+            <span class="sub prob-q" style="margin:0">(3)　<math><mi>P</mi><mo>=</mo><mo>{</mo><mi>x</mi><mo>|</mo><mi>x</mi></math>は 12 以下の自然数},　<math><mi>Q</mi><mo>=</mo><mo>{</mo><mi>x</mi><mo>|</mo><mi>x</mi></math>は 12 の正の約数}</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
           <div class="quiz" id="q-ren4-3" data-correct="3">
           <div class="choices">
-            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span>P ⊂ Q</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span>P = Q</span><span class="mark"></span></button>
-            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span>Q ⊂ P</span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span><math><mi>P</mi></math> ⊂ <math><mi>Q</mi></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span><math><mi>P</mi><mo>=</mo><mi>Q</mi></math></span><span class="mark"></span></button>
+            <button class="choice" type="button" data-choice="3"><span class="cno">③</span><span><math><mi>Q</mi></math> ⊂ <math><mi>P</mi></math></span><span class="mark"></span></button>
           </div>
           <p>選んだら、その場で確かめたい人は「答え合わせ」を押しましょう。ヒントを見ながら確かめたい人は、そのまま「次へ」へ進んでください。</p>
           <button class="judge-btn" type="button">答え合わせ（ヒントを見ずに判定）</button>
@@ -736,38 +808,38 @@ padding:16px 34px;box-shadow:var(--shadow);
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― 両方を書き並べる</h3>
-<p>P = {1, 2, 3, ……, 12}、Q = {1, 2, 3, 4, 6, 12}。どちらの要素が、もう一方にすべて含まれているかな。</p>
+<p><math><mi>P</mi><mo>=</mo><mrow><mo>{</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mo>…</mo><mo>…</mo><mo>,</mo><mn>12</mn><mo>}</mo></mrow></math>、<math><mi>Q</mi><mo>=</mo><mrow><mo>{</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>4</mn><mo>,</mo><mn>6</mn><mo>,</mo><mn>12</mn><mo>}</mo></mrow></math>。どちらの要素が、もう一方にすべて含まれているかな。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">Q ⊂ P</p>
+          <p class="big"><math><mi>Q</mi></math> ⊂ <math><mi>P</mi></math></p>
         </div>
           <p class="prob-done">練習4 (3) クリア！</p>
         </div>
       </section>
-      <section class="card prob" id="prob-ex5" data-flow="ex5" data-label="例5">
+      <section class="nofig card prob" id="prob-ex5" data-flow="ex5" data-label="例5">
         <div class="prob-head">
           <span class="prob-tag ">例 5</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 1</span>
         </div>
         <div class="qside">
-        <p class="prob-q">集合 {a, b} の部分集合をすべてあげよ。</p>
+        <p class="prob-q">集合 {<math><mi>a</mi></math>, <math><mi>b</mi></math>} の部分集合をすべてあげよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 要素の個数ごとに分ける</h3>
-<p>要素が0個（空集合 ∅）、1個、2個の場合に分けて考えよう。集合自身 {a, b} も部分集合だよ。</p>
+          <h3>ヒント 1 ― 要素の個数ごとに分ける</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mo>∅</mo></math>要素が1つもない集合が空集合 ∅ で、∅ も部分集合に数える。個数を 0個・1個・2個に分けて、漏れなくあげる。</p>
+<p>要素が0個（空集合 ∅）、1個、2個の場合に分けて考えよう。集合自身 {<math><mi>a</mi></math>, <math><mi>b</mi></math>} も部分集合だよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">∅,　{a},　{b},　{a, b}</p>
+          <p class="big">∅,　{<math><mi>a</mi></math>},　{<math><mi>b</mi></math>},　{<math><mi>a</mi></math>, <math><mi>b</mi></math>}</p>
 <p>部分集合は、次の4個である。</p>
         </div>
         <p class="prob-done">例5 クリア！　次は練習5に挑戦しよう。</p>
       </section>
-      <section class="card prob" id="prob-ren5" data-label="練習5">
+      <section class="nofig card prob" id="prob-ren5" data-label="練習5">
         <div class="prob-head">
           <span class="prob-tag ren">練習 5</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
@@ -798,18 +870,18 @@ padding:16px 34px;box-shadow:var(--shadow);
         </div>
         <div class="tabpanel" id="panel-ren5-2" data-flow="ren5-2" data-label="練習5 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　{a, b, c}</span>
+            <span class="sub prob-q" style="margin:0">(2)　{<math><mi>a</mi></math>, <math><mi>b</mi></math>, <math><mi>c</mi></math>}</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― 個数ごとに数える</h3>
-<p>要素0個が1通り、1個が3通り、2個が3通り、3個が1通り。全部で8個あるよ。2個の場合は {a, b}, {b, c}, {c, a} だね。</p>
+<p>要素0個が1通り、1個が3通り、2個が3通り、3個が1通り。全部で8個あるよ。2個の場合は {<math><mi>a</mi></math>, <math><mi>b</mi></math>}, {<math><mi>b</mi></math>, <math><mi>c</mi></math>}, {<math><mi>c</mi></math>, <math><mi>a</mi></math>} だね。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">∅,　{a},　{b},　{c},　{a, b},　{b, c},　{c, a},　{a, b, c}</p>
+          <p class="big">∅,　{<math><mi>a</mi></math>},　{<math><mi>b</mi></math>},　{<math><mi>c</mi></math>},　{<math><mi>a</mi></math>, <math><mi>b</mi></math>},　{<math><mi>b</mi></math>, <math><mi>c</mi></math>},　{<math><mi>c</mi></math>, <math><mi>a</mi></math>},　{<math><mi>a</mi></math>, <math><mi>b</mi></math>, <math><mi>c</mi></math>}</p>
         </div>
           <p class="prob-done">練習5 (2) クリア！</p>
         </div>
@@ -820,9 +892,9 @@ padding:16px 34px;box-shadow:var(--shadow);
         <span class="pno">教科書 p.59</span>
       </div>
       <section class="card">
-<p>集合 A, B の<span class="key">どちらにも属する</span>要素全体の集合を A と B の<span class="key">共通部分</span>といい、<span class="key">A∩B</span> で表す。また、A, B の<span class="key">少なくとも一方に属する</span>要素全体の集合を A と B の<span class="key">和集合</span>といい、<span class="key">A∪B</span> で表す。</p>
-<p class="formula">A∩B = {x | x ∈ A かつ x ∈ B}</p>
-<p class="formula">A∪B = {x | x ∈ A または x ∈ B}</p>
+<p>集合 <math><mi>A</mi></math>, <math><mi>B</mi></math> の<span class="key">どちらにも属する</span>要素全体の集合を <math><mi>A</mi></math> と <math><mi>B</mi></math> の<span class="key">共通部分</span>といい、<span class="key"><math><mi>A</mi></math>∩<math><mi>B</mi></math></span> で表す。また、<math><mi>A</mi></math>, <math><mi>B</mi></math> の<span class="key">少なくとも一方に属する</span>要素全体の集合を <math><mi>A</mi></math> と <math><mi>B</mi></math> の<span class="key">和集合</span>といい、<span class="key"><math><mi>A</mi></math>∪<math><mi>B</mi></math></span> で表す。</p>
+<p class="formula"><math><mi>A</mi><mo>∩</mo><mi>B</mi><mo>=</mo><mo>{</mo><mi>x</mi><mo>|</mo><mi>x</mi><mo>∈</mo><mi>A</mi></math>かつ <math><mi>x</mi></math> ∈ <math><mi>B</mi></math>}</p>
+<p class="formula"><math><mi>A</mi><mo>∪</mo><mi>B</mi><mo>=</mo><mo>{</mo><mi>x</mi><mo>|</mo><mi>x</mi><mo>∈</mo><mi>A</mi></math>または <math><mi>x</mi></math> ∈ <math><mi>B</mi></math>}</p>
 <figure><div class="figbox"><svg viewBox="0 0 280 165" role="img" aria-label="共通部分 A∩B のベン図。2つの円の重なった部分だけが塗られている">
 <defs><clipPath id="cid1"><circle cx="172" cy="82" r="56"/></clipPath></defs>
 <circle cx="108" cy="82" r="56" fill="none" stroke="var(--ink-soft)" stroke-width="2"/>
@@ -832,7 +904,7 @@ padding:16px 34px;box-shadow:var(--shadow);
 <text x="66" y="52" class="svg-txt" font-size="17">A</text>
 <text x="200" y="52" class="svg-txt" font-size="17">B</text>
 <text x="140" y="88" text-anchor="middle" class="svg-txt" font-size="15">A∩B</text>
-</svg></div><figcaption>共通部分 A∩B ― どちらにも属する要素全体</figcaption></figure><figure><div class="figbox"><svg viewBox="0 0 280 165" role="img" aria-label="和集合 A∪B のベン図。2つの円の全体が塗られている">
+</svg></div><figcaption>共通部分 <math><mi>A</mi></math>∩<math><mi>B</mi></math> ― どちらにも属する要素全体</figcaption></figure><figure><div class="figbox"><svg viewBox="0 0 280 165" role="img" aria-label="和集合 A∪B のベン図。2つの円の全体が塗られている">
 <circle cx="108" cy="82" r="56" fill="var(--accent-soft)"/>
 <circle cx="172" cy="82" r="56" fill="var(--accent-soft)"/>
 <circle cx="108" cy="82" r="56" fill="none" stroke="var(--ink-soft)" stroke-width="2"/>
@@ -840,15 +912,15 @@ padding:16px 34px;box-shadow:var(--shadow);
 <text x="66" y="52" class="svg-txt" font-size="17">A</text>
 <text x="200" y="52" class="svg-txt" font-size="17">B</text>
 <text x="140" y="88" text-anchor="middle" class="svg-txt" font-size="15">A∪B</text>
-</svg></div><figcaption>和集合 A∪B ― 少なくとも一方に属する要素全体</figcaption></figure>
+</svg></div><figcaption>和集合 <math><mi>A</mi></math>∪<math><mi>B</mi></math> ― 少なくとも一方に属する要素全体</figcaption></figure>
       </section>
-      <section class="card prob" id="prob-ex6" data-label="例6">
+      <section class="nofig card prob" id="prob-ex6" data-label="例6">
         <div class="prob-head">
           <span class="prob-tag ren">例 6</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
         <div class="qside">
-        <p class="prob-q">次の集合について、A∩B と A∪B を求めよ。</p>
+        <p class="prob-q">次の集合について、<math><mi>A</mi></math>∩<math><mi>B</mi></math> と <math><mi>A</mi></math>∪<math><mi>B</mi></math> を求めよ。</p>
         </div>
         <div class="tabs" role="tablist" aria-label="例6の小問">
           <button class="tab" role="tab" data-tab="ex6-1" aria-selected="true">(1)</button>
@@ -856,54 +928,63 @@ padding:16px 34px;box-shadow:var(--shadow);
         </div>
         <div class="tabpanel show" id="panel-ex6-1" data-flow="ex6-1" data-label="例6 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　A = {1, 2, 3, 6},　B = {2, 4, 6, 8, 10}</span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><mi>A</mi><mo>=</mo><mrow><mo>{</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>6</mn><mo>}</mo></mrow><mo>,</mo></math>　<math><mi>B</mi><mo>=</mo><mrow><mo>{</mo><mn>2</mn><mo>,</mo><mn>4</mn><mo>,</mo><mn>6</mn><mo>,</mo><mn>8</mn><mo>,</mo><mn>10</mn><mo>}</mo></mrow></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 両方にある要素を探す</h3>
-<p>A∩B は、A と B のどちらにもある要素の集合。A の要素を1つずつ見て、B にもあるものを拾おう。</p>
+          <h3>ヒント 1 ― 両方にある要素を探す</h3><p class="cite"><span class="cite-tag">使う定義</span><math><mi>A</mi><mo>∩</mo><mi>B</mi><mo>=</mo><mrow><mo>{</mo><mi>x</mi><mo>|</mo><mi>x</mi><mo>∈</mo><mi>A</mi><mtext> かつ </mtext><mi>x</mi><mo>∈</mo><mi>B</mi><mo>}</mo></mrow></math>共通部分は、A と B のどちらにも属する要素全体の集合。</p>
+<p><math><mi>A</mi></math>∩<math><mi>B</mi></math> は、<math><mi>A</mi></math> と <math><mi>B</mi></math> のどちらにもある要素の集合。<math><mi>A</mi></math> の要素を1つずつ見て、<math><mi>B</mi></math> にもあるものを拾おう。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― 和集合は重なりを1回だけ</h3>
-<p>A∪B は、A と B の要素を合わせた集合。両方にある 2 と 6 は、1回だけ書くよ。</p>
+          <h3>ヒント 2 ― 和集合は重なりを1回だけ</h3><p class="cite"><span class="cite-tag">使う定義</span><math><mi>A</mi><mo>∪</mo><mi>B</mi><mo>=</mo><mrow><mo>{</mo><mi>x</mi><mo>|</mo><mi>x</mi><mo>∈</mo><mi>A</mi><mtext> または </mtext><mi>x</mi><mo>∈</mo><mi>B</mi><mo>}</mo></mrow></math>和集合は、少なくとも一方に属する要素全体。両方にある 2 と 6 は1回だけ書く。</p>
+<p><math><mi>A</mi></math>∪<math><mi>B</mi></math> は、<math><mi>A</mi></math> と <math><mi>B</mi></math> の要素を合わせた集合。両方にある 2 と 6 は、1回だけ書くよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">A∩B = {2, 6},　A∪B = {1, 2, 3, 4, 6, 8, 10}</p>
+          <p class="mq-wide big"><math display="block"><mi>A</mi><mo>∩</mo><mi>B</mi><mo>=</mo><mrow><mo>{</mo><mn>2</mn><mo>,</mo><mn>6</mn><mo>}</mo></mrow><mo>,</mo><mspace width="2em"/><mi>A</mi><mo>∪</mo><mi>B</mi><mo>=</mo><mrow><mo>{</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>4</mn><mo>,</mo><mn>6</mn><mo>,</mo><mn>8</mn><mo>,</mo><mn>10</mn><mo>}</mo></mrow></math></p>
+<div class="mq-narrow mq-stack">
+<p class="formula"><math display="block"><mi>A</mi><mo>∩</mo><mi>B</mi><mo>=</mo><mrow><mo>{</mo><mn>2</mn><mo>,</mo><mn>6</mn><mo>}</mo></mrow><mo>,</mo></math></p>
+<p class="formula"><math display="block"><mi>A</mi><mo>∪</mo><mi>B</mi><mo>=</mo><mrow><mo>{</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>4</mn><mo>,</mo><mn>6</mn><mo>,</mo><mn>8</mn><mo>,</mo><mn>10</mn><mo>}</mo></mrow></math></p>
+</div>
         </div>
           <p class="prob-done">例6 (1) クリア！</p>
         </div>
         <div class="tabpanel" id="panel-ex6-2" data-flow="ex6-2" data-label="例6 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　A = {x | 0 &lt; x &lt; 3, x は実数},　B = {x | 2 ≦ x ≦ 5, x は実数}</span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><mi>A</mi><mo>=</mo><mo>{</mo><mi>x</mi><mo>|</mo><mn>0</mn><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mn>3</mn><mo>,</mo><mi>x</mi></math>は実数},　<math><mi>B</mi><mo>=</mo><mo>{</mo><mi>x</mi><mo>|</mo><mn>2</mn><mo>≦</mo><mi>x</mi><mo>≦</mo><mn>5</mn><mo>,</mo><mi>x</mi></math>は実数}</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― 数直線に重ねる</h3>
-<p>A は 0 より大きく 3 より小さい範囲、B は 2 以上 5 以下の範囲。数直線上で重なっている部分が A∩B だよ。</p>
+<p><math><mi>A</mi></math> は 0 より大きく 3 より小さい範囲、<math><mi>B</mi></math> は 2 以上 5 以下の範囲。数直線上で重なっている部分が <math><mi>A</mi></math>∩<math><mi>B</mi></math> だよ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 端の数に注意</h3>
-<p>重なる部分は 2 以上 3 より小さい範囲（2 は B に入るが、3 は A に入らない）。A∪B は 0 より大きく 5 以下の範囲だね。</p>
+<p>重なる部分は 2 以上 3 より小さい範囲（2 は <math><mi>B</mi></math> に入るが、3 は <math><mi>A</mi></math> に入らない）。<math><mi>A</mi></math>∪<math><mi>B</mi></math> は 0 より大きく 5 以下の範囲だね。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">A∩B = {x | 2 ≦ x &lt; 3, x は実数},　A∪B = {x | 0 &lt; x ≦ 5, x は実数}</p>
+          <p class="big"><math><mi>A</mi><mo>∩</mo><mi>B</mi><mo>=</mo><mo>{</mo><mi>x</mi><mo>|</mo><mn>2</mn><mo>≦</mo><mi>x</mi><mo>&lt;</mo><mn>3</mn><mo>,</mo><mi>x</mi></math>は実数},　<math><mi>A</mi><mo>∪</mo><mi>B</mi><mo>=</mo><mo>{</mo><mi>x</mi><mo>|</mo><mn>0</mn><mo>&lt;</mo><mi>x</mi><mo>≦</mo><mn>5</mn><mo>,</mo><mi>x</mi></math>は実数}</p><p class="cite"><span class="cite-tag">使う性質</span><math><mi>A</mi><mo>∩</mo><mi>B</mi><mo>=</mo><mrow><mo>{</mo><mi>x</mi><mo>|</mo><mn>2</mn><mo>≦</mo><mi>x</mi><mo>&lt;</mo><mn>3</mn><mo>}</mo></mrow></math>区間で表された集合では、数直線上で重なる範囲が共通部分、つながった範囲が和集合になる。端の数が含まれるかどうかに注意する。</p>
         </div>
           <p class="prob-done">例6 (2) クリア！</p>
         </div>
       </section>
-      <section class="card prob" id="prob-ren6" data-label="練習6">
+      <section class="nofig card prob" id="prob-ren6" data-label="練習6">
         <div class="prob-head">
           <span class="prob-tag ren">練習 6</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
         <div class="qside">
-        <p class="prob-q">A = {1, 2, 3, 4, 5, 6, 7}, B = {2, 4, 6, 8}, C = {1, 3} について、次の集合を求めよ。</p>
+        <div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>A</mi><mo>=</mo><mrow><mo>{</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>4</mn><mo>,</mo><mn>5</mn><mo>,</mo><mn>6</mn><mo>,</mo><mn>7</mn><mo>}</mo></mrow><mo>,</mo><mi>B</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>A</mi></mphantom><mo>=</mo><mrow><mo>{</mo><mn>2</mn><mo>,</mo><mn>4</mn><mo>,</mo><mn>6</mn><mo>,</mo><mn>8</mn><mo>}</mo></mrow><mo>,</mo><mi>C</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>A</mi></mphantom><mo>=</mo><mrow><mo>{</mo><mn>1</mn><mo>,</mo><mn>3</mn><mo>}</mo></mrow></math></div>
+</div>
+<p>について、次の集合を求めよ。</p>
         </div>
         <div class="tabs" role="tablist" aria-label="練習6の小問">
           <button class="tab" role="tab" data-tab="ren6-1" aria-selected="true">(1)</button>
@@ -913,7 +994,7 @@ padding:16px 34px;box-shadow:var(--shadow);
         </div>
         <div class="tabpanel show" id="panel-ren6-1" data-flow="ren6-1" data-label="練習6 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　A∩B</span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><mi>A</mi></math>∩<math><mi>B</mi></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
@@ -929,35 +1010,35 @@ padding:16px 34px;box-shadow:var(--shadow);
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― どちらにもある要素</h3>
-<p>A の要素のうち、B にもあるものを拾おう。</p>
+<p><math><mi>A</mi></math> の要素のうち、<math><mi>B</mi></math> にもあるものを拾おう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">A∩B = {2, 4, 6}</p>
+          <p class="big"><math display="block"><mi>A</mi><mo>∩</mo><mi>B</mi><mo>=</mo><mrow><mo>{</mo><mn>2</mn><mo>,</mo><mn>4</mn><mo>,</mo><mn>6</mn><mo>}</mo></mrow></math></p>
         </div>
           <p class="prob-done">練習6 (1) クリア！</p>
         </div>
         <div class="tabpanel" id="panel-ren6-2" data-flow="ren6-2" data-label="練習6 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　A∪B</span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><mi>A</mi></math>∪<math><mi>B</mi></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― 合わせて重複を除く</h3>
-<p>A と B の要素をすべて合わせ、重なっている要素は1回だけ書こう。</p>
+<p><math><mi>A</mi></math> と <math><mi>B</mi></math> の要素をすべて合わせ、重なっている要素は1回だけ書こう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">A∪B = {1, 2, 3, 4, 5, 6, 7, 8}</p>
+          <p class="big"><math display="block"><mi>A</mi><mo>∪</mo><mi>B</mi><mo>=</mo><mrow><mo>{</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>4</mn><mo>,</mo><mn>5</mn><mo>,</mo><mn>6</mn><mo>,</mo><mn>7</mn><mo>,</mo><mn>8</mn><mo>}</mo></mrow></math></p>
         </div>
           <p class="prob-done">練習6 (2) クリア！</p>
         </div>
         <div class="tabpanel" id="panel-ren6-3" data-flow="ren6-3" data-label="練習6 (3)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(3)　B∩C</span>
+            <span class="sub prob-q" style="margin:0">(3)　<math><mi>B</mi></math>∩<math><mi>C</mi></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
@@ -973,40 +1054,40 @@ padding:16px 34px;box-shadow:var(--shadow);
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― 共通する要素はあるか</h3>
-<p>B = {2, 4, 6, 8} と C = {1, 3} に共通する要素を探そう。1つもなければ空集合 ∅ だよ。</p>
+<p><math><mi>B</mi><mo>=</mo><mrow><mo>{</mo><mn>2</mn><mo>,</mo><mn>4</mn><mo>,</mo><mn>6</mn><mo>,</mo><mn>8</mn><mo>}</mo></mrow></math>と<math><mi>C</mi><mo>=</mo><mrow><mo>{</mo><mn>1</mn><mo>,</mo><mn>3</mn><mo>}</mo></mrow></math>に共通する要素を探そう。1つもなければ空集合 ∅ だよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">B∩C = ∅</p>
+          <p class="big"><math display="block"><mi>B</mi><mo>∩</mo><mi>C</mi><mo>=</mo><mo>∅</mo></math></p>
         </div>
           <p class="prob-done">練習6 (3) クリア！</p>
         </div>
         <div class="tabpanel" id="panel-ren6-4" data-flow="ren6-4" data-label="練習6 (4)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(4)　B∪C</span>
+            <span class="sub prob-q" style="margin:0">(4)　<math><mi>B</mi></math>∪<math><mi>C</mi></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― 2つの集合を合わせる</h3>
-<p>B と C の要素をすべて合わせよう。重なっている要素はないね。</p>
+<p><math><mi>B</mi></math> と <math><mi>C</mi></math> の要素をすべて合わせよう。重なっている要素はないね。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">B∪C = {1, 2, 3, 4, 6, 8}</p>
+          <p class="big"><math display="block"><mi>B</mi><mo>∪</mo><mi>C</mi><mo>=</mo><mrow><mo>{</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>4</mn><mo>,</mo><mn>6</mn><mo>,</mo><mn>8</mn><mo>}</mo></mrow></math></p>
         </div>
           <p class="prob-done">練習6 (4) クリア！</p>
         </div>
       </section>
-      <section class="card prob" id="prob-ren7" data-label="練習7">
+      <section class="nofig card prob" id="prob-ren7" data-label="練習7">
         <div class="prob-head">
           <span class="prob-tag ren">練習 7</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
         <div class="qside">
-        <p class="prob-q">A = {x | 0 &lt; x &lt; 2, x は実数}, B = {x | 1 ≦ x ≦ 4, x は実数} について、次の集合を求めよ。</p>
+        <p class="prob-q"><math><mi>A</mi><mo>=</mo><mo>{</mo><mi>x</mi><mo>|</mo><mn>0</mn><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mn>2</mn><mo>,</mo><mi>x</mi></math>は実数<math><mo>}</mo><mo>,</mo><mi>B</mi><mo>=</mo><mo>{</mo><mi>x</mi><mo>|</mo><mn>1</mn><mo>≦</mo><mi>x</mi><mo>≦</mo><mn>4</mn><mo>,</mo><mi>x</mi></math>は実数} について、次の集合を求めよ。</p>
         </div>
         <div class="tabs" role="tablist" aria-label="練習7の小問">
           <button class="tab" role="tab" data-tab="ren7-1" aria-selected="true">(1)</button>
@@ -1014,13 +1095,13 @@ padding:16px 34px;box-shadow:var(--shadow);
         </div>
         <div class="tabpanel show" id="panel-ren7-1" data-flow="ren7-1" data-label="練習7 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　A∩B</span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><mi>A</mi></math>∩<math><mi>B</mi></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 数直線で重なる部分</h3>
-<p>A は 0 より大きく 2 より小さい範囲、B は 1 以上 4 以下の範囲。重なるのは 1 以上 2 より小さい範囲だね（1 は B に入り、2 は A に入らない）。</p><figure><div class="figbox"><svg viewBox="0 0 300 105" role="img" aria-label="数直線。A は 0 より大きく 2 より小さい範囲（両端は白丸）、B は 1 以上 4 以下の範囲（両端は黒丸）">
+          <h3>ヒント 1 ― 数直線で重なる部分</h3><p class="cite"><span class="cite-tag">使う定義</span><math><mi>A</mi><mo>∩</mo><mi>B</mi></math>共通部分は2つの範囲の重なり。1 は B に入り、2 は A に入らないので、範囲は 1 以上 2 未満になる。</p>
+<p><math><mi>A</mi></math> は 0 より大きく 2 より小さい範囲、<math><mi>B</mi></math> は 1 以上 4 以下の範囲。重なるのは 1 以上 2 より小さい範囲だね（1 は <math><mi>B</mi></math> に入り、2 は <math><mi>A</mi></math> に入らない）。</p><figure><div class="figbox"><svg viewBox="0 0 300 105" role="img" aria-label="数直線。A は 0 より大きく 2 より小さい範囲（両端は白丸）、B は 1 以上 4 以下の範囲（両端は黒丸）">
 <line x1="20" y1="82" x2="288" y2="82" stroke="var(--ink-soft)" stroke-width="2"/>
 <polygon points="288,82 278,77 278,87" fill="var(--ink-soft)"/>
 <line x1="40" y1="30" x2="120" y2="30" stroke="var(--accent)" stroke-width="4"/>
@@ -1035,29 +1116,29 @@ padding:16px 34px;box-shadow:var(--shadow);
 <text x="80" y="100" text-anchor="middle" class="svg-txt-soft" font-size="14">1</text>
 <text x="120" y="100" text-anchor="middle" class="svg-txt-soft" font-size="14">2</text>
 <text x="200" y="100" text-anchor="middle" class="svg-txt-soft" font-size="14">4</text>
-</svg></div><figcaption>A（上の線）と B（下の線）を同じ数直線に重ねて考える</figcaption></figure>
+</svg></div><figcaption><math><mi>A</mi></math>（上の線）と <math><mi>B</mi></math>（下の線）を同じ数直線に重ねて考える</figcaption></figure>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">A∩B = {x | 1 ≦ x &lt; 2, x は実数}</p>
+          <p class="big"><math><mi>A</mi><mo>∩</mo><mi>B</mi><mo>=</mo><mo>{</mo><mi>x</mi><mo>|</mo><mn>1</mn><mo>≦</mo><mi>x</mi><mo>&lt;</mo><mn>2</mn><mo>,</mo><mi>x</mi></math>は実数}</p>
         </div>
           <p class="prob-done">練習7 (1) クリア！</p>
         </div>
         <div class="tabpanel" id="panel-ren7-2" data-flow="ren7-2" data-label="練習7 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　A∪B</span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><mi>A</mi></math>∪<math><mi>B</mi></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
           <h3>ヒント 1 ― 2つの範囲をつなげる</h3>
-<p>A と B は重なっているから、合わせると 0 より大きく 4 以下の1つの範囲になるよ。0 は A に入らないことに注意しよう。</p>
+<p><math><mi>A</mi></math> と <math><mi>B</mi></math> は重なっているから、合わせると 0 より大きく 4 以下の1つの範囲になるよ。0 は <math><mi>A</mi></math> に入らないことに注意しよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">A∪B = {x | 0 &lt; x ≦ 4, x は実数}</p>
+          <p class="big"><math><mi>A</mi><mo>∪</mo><mi>B</mi><mo>=</mo><mo>{</mo><mi>x</mi><mo>|</mo><mn>0</mn><mo>&lt;</mo><mi>x</mi><mo>≦</mo><mn>4</mn><mo>,</mo><mi>x</mi></math>は実数}</p>
         </div>
           <p class="prob-done">練習7 (2) クリア！</p>
         </div>
@@ -1068,19 +1149,19 @@ padding:16px 34px;box-shadow:var(--shadow);
         <span class="pno">教科書 p.60〜61</span>
       </div>
       <section class="card">
-<p>集合を考えるときは、1つの集合 U を決めて、その部分集合について考えることが多い。このとき、U を<span class="key">全体集合</span>という。全体集合 U の部分集合 A に対して、U の要素で、A には属さない要素全体の集合を、U に関する A の<span class="key">補集合</span>といい、<span class="key">Ā</span> で表す。</p>
+<p>集合を考えるときは、1つの集合 <math><mi>U</mi></math> を決めて、その部分集合について考えることが多い。このとき、<math><mi>U</mi></math> を<span class="key">全体集合</span>という。全体集合 <math><mi>U</mi></math> の部分集合 <math><mi>A</mi></math> に対して、<math><mi>U</mi></math> の要素で、<math><mi>A</mi></math> には属さない要素全体の集合を、<math><mi>U</mi></math> に関する <math><mi>A</mi></math> の<span class="key">補集合</span>といい、<span class="key">Ā</span> で表す。</p>
 <figure><div class="figbox"><svg viewBox="0 0 280 175" role="img" aria-label="補集合のベン図。全体集合 U のうち円 A の外側が塗られている">
 <rect x="14" y="14" width="252" height="140" fill="var(--accent-soft)" stroke="var(--ink-soft)" stroke-width="2"/>
 <circle cx="105" cy="84" r="48" fill="var(--surface)" stroke="var(--ink-soft)" stroke-width="2"/>
 <text x="22" y="36" class="svg-txt" font-size="17">U</text>
 <text x="66" y="58" class="svg-txt" font-size="17">A</text>
 <text x="216" y="140" class="svg-txt" font-size="17">Ā</text>
-</svg></div><figcaption>補集合 Ā ― U の要素のうち、A に属さないもの全体</figcaption></figure><p><b>補集合の性質</b> ― U を全体集合とし、A, B をその部分集合とするとき</p>
-<p class="formula">A∩Ā = ∅,　A∪Ā = U,　Ā の補集合 = A</p>
-<p class="formula">A ⊂ B　ならば　Ā ⊃ B̄</p>
-<p><b>ド・モルガンの法則</b> ― A∪B, A∩B の補集合については次が成り立つ。</p>
-<p class="formula">1　<span style="text-decoration:overline">A ∪ B</span> = Ā∩B̄</p>
-<p class="formula">2　<span style="text-decoration:overline">A ∩ B</span> = Ā∪B̄</p>
+</svg></div><figcaption>補集合 Ā ― <math><mi>U</mi></math> の要素のうち、<math><mi>A</mi></math> に属さないもの全体</figcaption></figure><p><b>補集合の性質</b> ― <math><mi>U</mi></math> を全体集合とし、<math><mi>A</mi></math>, <math><mi>B</mi></math> をその部分集合とするとき</p>
+<p class="formula"><math><mi>A</mi><mo>∩</mo><mi>Ā</mi><mo>=</mo><mo>∅</mo><mo>,</mo><mspace width="2em"/><mi>A</mi><mo>∪</mo><mi>Ā</mi><mo>=</mo><mi>U</mi><mo>,</mo></math>　Ā の補集合<math><mo>=</mo><mi>A</mi></math></p>
+<p class="formula"><math><mi>A</mi></math> ⊂ <math><mi>B</mi></math>　ならば　Ā ⊃ <math><mover><mi>B</mi><mo>‾</mo></mover></math></p>
+<p><b>ド・モルガンの法則</b> ― <math><mi>A</mi></math>∪<math><mi>B</mi></math>, <math><mi>A</mi></math>∩<math><mi>B</mi></math> の補集合については次が成り立つ。</p>
+<p class="formula">1　<math><mover><mrow><mi>A</mi><mo>∪</mo><mi>B</mi></mrow><mo>‾</mo></mover><mo>=</mo><mi>Ā</mi><mo>∩</mo><mover><mi>B</mi><mo>‾</mo></mover></math></p>
+<p class="formula">2　<math><mover><mrow><mi>A</mi><mo>∩</mo><mi>B</mi></mrow><mo>‾</mo></mover><mo>=</mo><mi>Ā</mi><mo>∪</mo><mover><mi>B</mi><mo>‾</mo></mover></math></p>
 <figure><div class="figbox"><svg viewBox="0 0 280 175" role="img" aria-label="Ā∩B̄ のベン図。全体集合 U のうち円 A と円 B の両方の外側が塗られている">
 <rect x="14" y="14" width="252" height="140" fill="var(--accent-soft)" stroke="var(--ink-soft)" stroke-width="2"/>
 <circle cx="112" cy="84" r="46" fill="var(--surface)"/>
@@ -1090,39 +1171,39 @@ padding:16px 34px;box-shadow:var(--shadow);
 <text x="22" y="36" class="svg-txt" font-size="17">U</text>
 <text x="76" y="60" class="svg-txt" font-size="16">A</text>
 <text x="192" y="60" class="svg-txt" font-size="16">B</text>
-</svg></div><figcaption>Ā∩B̄ の斜線部分 ― これは A∪B の補集合と一致する</figcaption></figure>
+</svg></div><figcaption>Ā∩<math><mover><mi>B</mi><mo>‾</mo></mover></math> の斜線部分 ― これは <math><mi>A</mi></math>∪<math><mi>B</mi></math> の補集合と一致する</figcaption></figure>
       </section>
-      <section class="card prob" id="prob-ex7" data-flow="ex7" data-label="例7">
+      <section class="nofig card prob" id="prob-ex7" data-flow="ex7" data-label="例7">
         <div class="prob-head">
           <span class="prob-tag ">例 7</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">U = {1, 2, 3, 4, 5, 6} を全体集合とする。U の部分集合 A = {1, 2, 3}, B = {3, 6} について、Ā と <span style="text-decoration:overline">A ∪ B</span> を求めよ。</p>
+        <p class="prob-q"><math><mi>U</mi><mo>=</mo><mrow><mo>{</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>4</mn><mo>,</mo><mn>5</mn><mo>,</mo><mn>6</mn><mo>}</mo></mrow></math>を全体集合とする。<math><mi>U</mi></math> の部分集合<math><mi>A</mi><mo>=</mo><mrow><mo>{</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>}</mo></mrow><mo>,</mo><mi>B</mi><mo>=</mo><mrow><mo>{</mo><mn>3</mn><mo>,</mo><mn>6</mn><mo>}</mo></mrow></math>について、Ā と <math><mover><mrow><mi>A</mi><mo>∪</mo><mi>B</mi></mrow><mo>‾</mo></mover></math> を求めよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― Ā は U から A を除いたもの</h3>
-<p>U の要素のうち、A に属さないものを拾おう。1, 2, 3 以外の要素だね。</p>
+          <h3>ヒント 1 ― Ā は <math><mi>U</mi></math> から <math><mi>A</mi></math> を除いたもの</h3><p class="cite"><span class="cite-tag">使う定義</span><math><mi>Ā</mi><mo>=</mo><mrow><mo>{</mo><mi>x</mi><mo>|</mo><mi>x</mi><mo>∈</mo><mi>U</mi><mtext> かつ </mtext><mi>x</mi><mo>∉</mo><mi>A</mi><mo>}</mo></mrow></math>補集合 Ā は、全体集合 U の要素のうち A に属さないもの全体。ここでは U から 1, 2, 3 を除く。</p>
+<p><math><mi>U</mi></math> の要素のうち、<math><mi>A</mi></math> に属さないものを拾おう。1, 2, 3 以外の要素だね。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― まず A∪B を求める</h3>
-<p>A∪B = {1, 2, 3, 6}。その補集合は、U のうち A∪B に属さない要素の集合だよ。</p>
+          <h3>ヒント 2 ― まず <math><mi>A</mi></math>∪<math><mi>B</mi></math> を求める</h3>
+<p><math><mi>A</mi><mo>∪</mo><mi>B</mi><mo>=</mo><mrow><mo>{</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>6</mn><mo>}</mo></mrow></math>。その補集合は、<math><mi>U</mi></math> のうち <math><mi>A</mi></math>∪<math><mi>B</mi></math> に属さない要素の集合だよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">Ā = {4, 5, 6},　<span style="text-decoration:overline">A ∪ B</span> = {4, 5}</p>
+          <p class="big"><math display="block"><mi>Ā</mi><mo>=</mo><mrow><mo>{</mo><mn>4</mn><mo>,</mo><mn>5</mn><mo>,</mo><mn>6</mn><mo>}</mo></mrow><mo>,</mo><mspace width="2em"/><mover><mrow><mi>A</mi><mo>∪</mo><mi>B</mi></mrow><mo>‾</mo></mover><mo>=</mo><mrow><mo>{</mo><mn>4</mn><mo>,</mo><mn>5</mn><mo>}</mo></mrow></math></p><p class="cite"><span class="cite-tag">使う定義</span><math><mover><mrow><mi>A</mi><mo>∪</mo><mi>B</mi></mrow><mo>‾</mo></mover></math>A∪B の補集合も、U の要素のうち A∪B に属さないもの全体。まず A∪B={1,2,3,6} を求めてから、残りを拾う。</p>
         </div>
         <p class="prob-done">例7 クリア！　次は練習8に挑戦しよう。</p>
       </section>
-      <section class="card prob" id="prob-ren8" data-label="練習8">
+      <section class="nofig card prob" id="prob-ren8" data-label="練習8">
         <div class="prob-head">
           <span class="prob-tag ren">練習 8</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
         <div class="qside">
-        <p class="prob-q">例7の集合 U と A, B について、次の集合を求めよ。（U = {1, 2, 3, 4, 5, 6}, A = {1, 2, 3}, B = {3, 6}）</p>
+        <p class="prob-q">例7の集合 <math><mi>U</mi></math> と <math><mi>A</mi></math>, <math><mi>B</mi></math> について、次の集合を求めよ。<math><mo>(</mo><mi>U</mi><mo>=</mo><mrow><mo>{</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>4</mn><mo>,</mo><mn>5</mn><mo>,</mo><mn>6</mn><mo>}</mo></mrow><mo>,</mo><mi>A</mi><mo>=</mo><mrow><mo>{</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>}</mo></mrow><mo>,</mo><mi>B</mi><mo>=</mo><mrow><mo>{</mo><mn>3</mn><mo>,</mo><mn>6</mn><mo>}</mo></mrow><mo>)</mo></math></p>
         </div>
         <div class="tabs" role="tablist" aria-label="練習8の小問">
           <button class="tab" role="tab" data-tab="ren8-1" aria-selected="true">(1)</button>
@@ -1134,7 +1215,7 @@ padding:16px 34px;box-shadow:var(--shadow);
         </div>
         <div class="tabpanel show" id="panel-ren8-1" data-flow="ren8-1" data-label="練習8 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1)　<span style="text-decoration:overline">B</span></span>
+            <span class="sub prob-q" style="margin:0">(1)　<math><mover><mi>B</mi><mo>‾</mo></mover></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
@@ -1149,124 +1230,124 @@ padding:16px 34px;box-shadow:var(--shadow);
           <p class="verdict"></p>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― U から B を除く</h3>
-<p>U の要素のうち、B = {3, 6} に属さないものを拾おう。</p>
+          <h3>ヒント 1 ― <math><mi>U</mi></math> から <math><mi>B</mi></math> を除く</h3>
+<p><math><mi>U</mi></math> の要素のうち、<math><mi>B</mi><mo>=</mo><mrow><mo>{</mo><mn>3</mn><mo>,</mo><mn>6</mn><mo>}</mo></mrow></math>に属さないものを拾おう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big"><span style="text-decoration:overline">B</span> = {1, 2, 4, 5}</p>
+          <p class="big"><math display="block"><mover><mi>B</mi><mo>‾</mo></mover><mo>=</mo><mrow><mo>{</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>4</mn><mo>,</mo><mn>5</mn><mo>}</mo></mrow></math></p>
         </div>
           <p class="prob-done">練習8 (1) クリア！</p>
         </div>
         <div class="tabpanel" id="panel-ren8-2" data-flow="ren8-2" data-label="練習8 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2)　<span style="text-decoration:overline">A ∩ B</span></span>
+            <span class="sub prob-q" style="margin:0">(2)　<math><mover><mrow><mi>A</mi><mo>∩</mo><mi>B</mi></mrow><mo>‾</mo></mover></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― まず A∩B から</h3>
-<p>A∩B = {3}。その補集合は、U のうち 3 以外の要素全体だよ。</p>
+          <h3>ヒント 1 ― まず <math><mi>A</mi></math>∩<math><mi>B</mi></math> から</h3>
+<p><math><mi>A</mi><mo>∩</mo><mi>B</mi><mo>=</mo><mrow><mo>{</mo><mn>3</mn><mo>}</mo></mrow></math>。その補集合は、<math><mi>U</mi></math> のうち 3 以外の要素全体だよ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big"><span style="text-decoration:overline">A ∩ B</span> = {1, 2, 4, 5, 6}</p>
+          <p class="big"><math display="block"><mover><mrow><mi>A</mi><mo>∩</mo><mi>B</mi></mrow><mo>‾</mo></mover><mo>=</mo><mrow><mo>{</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>4</mn><mo>,</mo><mn>5</mn><mo>,</mo><mn>6</mn><mo>}</mo></mrow></math></p><p class="cite"><span class="cite-tag">使う性質</span><math><mover><mrow><mi>A</mi><mo>∩</mo><mi>B</mi></mrow><mo>‾</mo></mover><mo>=</mo><mi>Ā</mi><mo>∪</mo><mover><mi>B</mi><mo>‾</mo></mover></math>ド・モルガンの法則。直接求めた答えが Ā∪B̄ と一致することの確認にもなる。</p>
         </div>
           <p class="prob-done">練習8 (2) クリア！</p>
         </div>
         <div class="tabpanel" id="panel-ren8-3" data-flow="ren8-3" data-label="練習8 (3)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(3)　Ā∩B̄</span>
+            <span class="sub prob-q" style="margin:0">(3)　Ā∩<math><mover><mi>B</mi><mo>‾</mo></mover></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― Ā と B̄ の共通部分</h3>
-<p>Ā = {4, 5, 6}、<span style="text-decoration:overline">B</span> = {1, 2, 4, 5}（(1) の結果）。どちらにもある要素を拾おう。例7で求めた <span style="text-decoration:overline">A ∪ B</span> と比べてみよう。</p>
+          <h3>ヒント 1 ― Ā と <math><mover><mi>B</mi><mo>‾</mo></mover></math> の共通部分</h3>
+<p><math><mi>Ā</mi><mo>=</mo><mrow><mo>{</mo><mn>4</mn><mo>,</mo><mn>5</mn><mo>,</mo><mn>6</mn><mo>}</mo></mrow></math>、<math><mover><mi>B</mi><mo>‾</mo></mover><mo>=</mo><mrow><mo>{</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>4</mn><mo>,</mo><mn>5</mn><mo>}</mo></mrow><mo>(</mo><mrow><mo>(</mo><mn>1</mn><mo>)</mo></mrow></math>の結果）。どちらにもある要素を拾おう。例7で求めた <math><mover><mrow><mi>A</mi><mo>∪</mo><mi>B</mi></mrow><mo>‾</mo></mover></math> と比べてみよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">Ā∩B̄ = {4, 5}</p>
-<p>これはド・モルガンの法則 1 の右辺で、例7の <span style="text-decoration:overline">A ∪ B</span> = {4, 5} と一致するね。</p>
+          <p class="big"><math display="block"><mi>Ā</mi><mo>∩</mo><mover><mi>B</mi><mo>‾</mo></mover><mo>=</mo><mrow><mo>{</mo><mn>4</mn><mo>,</mo><mn>5</mn><mo>}</mo></mrow></math></p><p class="cite"><span class="cite-tag">使う性質</span><math><mi>Ā</mi><mo>∩</mo><mover><mi>B</mi><mo>‾</mo></mover><mo>=</mo><mover><mrow><mi>A</mi><mo>∪</mo><mi>B</mi></mrow><mo>‾</mo></mover></math>ド・モルガンの法則により、Ā と B̄ の共通部分は A∪B の補集合に等しい。</p>
+<p>これはド・モルガンの法則 1 の右辺で、例7の <math><mover><mrow><mi>A</mi><mo>∪</mo><mi>B</mi></mrow><mo>‾</mo></mover><mo>=</mo><mrow><mo>{</mo><mn>4</mn><mo>,</mo><mn>5</mn><mo>}</mo></mrow></math>と一致するね。</p>
         </div>
           <p class="prob-done">練習8 (3) クリア！</p>
         </div>
         <div class="tabpanel" id="panel-ren8-4" data-flow="ren8-4" data-label="練習8 (4)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(4)　Ā∪B̄</span>
+            <span class="sub prob-q" style="margin:0">(4)　Ā∪<math><mover><mi>B</mi><mo>‾</mo></mover></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― Ā と B̄ を合わせる</h3>
-<p>Ā = {4, 5, 6} と B̄ = {1, 2, 4, 5} を合わせ、重なりは1回だけ書こう。(2) の結果と比べてみよう。</p>
+          <h3>ヒント 1 ― Ā と <math><mover><mi>B</mi><mo>‾</mo></mover></math> を合わせる</h3>
+<p><math><mi>Ā</mi><mo>=</mo><mrow><mo>{</mo><mn>4</mn><mo>,</mo><mn>5</mn><mo>,</mo><mn>6</mn><mo>}</mo></mrow></math>と<math><mover><mi>B</mi><mo>‾</mo></mover><mo>=</mo><mrow><mo>{</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>4</mn><mo>,</mo><mn>5</mn><mo>}</mo></mrow></math>を合わせ、重なりは1回だけ書こう。(2) の結果と比べてみよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">Ā∪B̄ = {1, 2, 4, 5, 6}</p>
-<p>これはド・モルガンの法則 2 の左辺 <span style="text-decoration:overline">A ∩ B</span> と一致するね。</p>
+          <p class="big"><math display="block"><mi>Ā</mi><mo>∪</mo><mover><mi>B</mi><mo>‾</mo></mover><mo>=</mo><mrow><mo>{</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>4</mn><mo>,</mo><mn>5</mn><mo>,</mo><mn>6</mn><mo>}</mo></mrow></math></p><p class="cite"><span class="cite-tag">使う性質</span><math><mi>Ā</mi><mo>∪</mo><mover><mi>B</mi><mo>‾</mo></mover><mo>=</mo><mover><mrow><mi>A</mi><mo>∩</mo><mi>B</mi></mrow><mo>‾</mo></mover></math>ド・モルガンの法則により、Ā と B̄ の和集合は A∩B の補集合に等しい。</p>
+<p>これはド・モルガンの法則 2 の左辺 <math><mover><mrow><mi>A</mi><mo>∩</mo><mi>B</mi></mrow><mo>‾</mo></mover></math> と一致するね。</p>
         </div>
           <p class="prob-done">練習8 (4) クリア！</p>
         </div>
         <div class="tabpanel" id="panel-ren8-5" data-flow="ren8-5" data-label="練習8 (5)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(5)　Ā∩B</span>
+            <span class="sub prob-q" style="margin:0">(5)　Ā∩<math><mi>B</mi></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― Ā のうち B にあるもの</h3>
-<p>Ā = {4, 5, 6} のうち、B = {3, 6} にもある要素を拾おう。</p>
+          <h3>ヒント 1 ― Ā のうち <math><mi>B</mi></math> にあるもの</h3>
+<p><math><mi>Ā</mi><mo>=</mo><mrow><mo>{</mo><mn>4</mn><mo>,</mo><mn>5</mn><mo>,</mo><mn>6</mn><mo>}</mo></mrow></math>のうち、<math><mi>B</mi><mo>=</mo><mrow><mo>{</mo><mn>3</mn><mo>,</mo><mn>6</mn><mo>}</mo></mrow></math>にもある要素を拾おう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">Ā∩B = {6}</p>
+          <p class="big"><math display="block"><mi>Ā</mi><mo>∩</mo><mi>B</mi><mo>=</mo><mrow><mo>{</mo><mn>6</mn><mo>}</mo></mrow></math></p>
         </div>
           <p class="prob-done">練習8 (5) クリア！</p>
         </div>
         <div class="tabpanel" id="panel-ren8-6" data-flow="ren8-6" data-label="練習8 (6)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(6)　A∩B̄</span>
+            <span class="sub prob-q" style="margin:0">(6)　<math><mi>A</mi></math>∩<math><mover><mi>B</mi><mo>‾</mo></mover></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 1</span>
           </div>
         <div class="step hint">
-          <h3>ヒント 1 ― A のうち B̄ にあるもの</h3>
-<p>A = {1, 2, 3} のうち、B̄ = {1, 2, 4, 5} にもある要素を拾おう。</p>
+          <h3>ヒント 1 ― <math><mi>A</mi></math> のうち <math><mover><mi>B</mi><mo>‾</mo></mover></math> にあるもの</h3>
+<p><math><mi>A</mi><mo>=</mo><mrow><mo>{</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>}</mo></mrow></math>のうち、<math><mover><mi>B</mi><mo>‾</mo></mover><mo>=</mo><mrow><mo>{</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>4</mn><mo>,</mo><mn>5</mn><mo>}</mo></mrow></math>にもある要素を拾おう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">A∩B̄ = {1, 2}</p>
+          <p class="big"><math display="block"><mi>A</mi><mo>∩</mo><mover><mi>B</mi><mo>‾</mo></mover><mo>=</mo><mrow><mo>{</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>}</mo></mrow></math></p>
         </div>
           <p class="prob-done">練習8 (6) クリア！</p>
         </div>
       </section>
-      <section class="card prob" id="prob-ren9" data-flow="ren9" data-label="練習9">
+      <section class="nofig card prob" id="prob-ren9" data-flow="ren9" data-label="練習9">
         <div class="prob-head">
           <span class="prob-tag ren">練習 9</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q"><span style="text-decoration:overline">A ∩ B</span> = Ā∪B̄ が成り立つことを、教科書の方法にならって図を用いて確かめよ。</p>
+        <p class="prob-q"><math><mover><mrow><mi>A</mi><mo>∩</mo><mi>B</mi></mrow><mo>‾</mo></mover><mo>=</mo><mi>Ā</mi><mo>∪</mo><mover><mi>B</mi><mo>‾</mo></mover></math>が成り立つことを、教科書の方法にならって図を用いて確かめよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― Ā と B̄ を別々に図に描く</h3>
-<p>まず図 [1] に Ā（U のうち A の外側）を斜線で表し、図 [2] に B̄（U のうち B の外側）を斜線で表そう。</p>
+          <h3>ヒント 1 ― Ā と <math><mover><mi>B</mi><mo>‾</mo></mover></math> を別々に図に描く</h3>
+<p>まず図 [1] に Ā（<math><mi>U</mi></math> のうち <math><mi>A</mi></math> の外側）を斜線で表し、図 [2] に <math><mover><mi>B</mi><mo>‾</mo></mover></math>（<math><mi>U</mi></math> のうち <math><mi>B</mi></math> の外側）を斜線で表そう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 2つを合わせる（∪）</h3>
-<p>Ā∪B̄ は、図 [1] と図 [2] の斜線部分を合わせたもの。斜線が付かないのは、A と B の両方に属する部分（A∩B）だけだね。</p>
+<p>Ā∪<math><mover><mi>B</mi><mo>‾</mo></mover></math> は、図 [1] と図 [2] の斜線部分を合わせたもの。斜線が付かないのは、<math><mi>A</mi></math> と <math><mi>B</mi></math> の両方に属する部分（<math><mi>A</mi></math>∩<math><mi>B</mi></math>）だけだね。</p>
         </div>
         <div class="step answer">
-          <h3>解答</h3>
-<p>Ā∪B̄ の斜線部分は、U のうち A∩B の部分だけを除いたものになる。これは <span style="text-decoration:overline">A ∩ B</span> の斜線部分と一致するから、<span style="text-decoration:overline">A ∩ B</span> = Ā∪B̄ が成り立つ。</p><figure><div class="figbox"><svg viewBox="0 0 280 175" role="img" aria-label="Ā∪B̄ のベン図。全体集合 U のうち、円 A と円 B の重なった部分だけが塗られていない">
+          <h3>解答</h3><p class="cite"><span class="cite-tag">使う性質</span><math><mi>Ā</mi><mo>∪</mo><mover><mi>B</mi><mo>‾</mo></mover><mo>=</mo><mover><mrow><mi>A</mi><mo>∩</mo><mi>B</mi></mrow><mo>‾</mo></mover></math>ド・モルガンの法則。Ā と B̄ を別々に図に描いて合わせると、A∩B の補集合になっていることが確かめられる。</p>
+<p>Ā∪<math><mover><mi>B</mi><mo>‾</mo></mover></math> の斜線部分は、<math><mi>U</mi></math> のうち <math><mi>A</mi></math>∩<math><mi>B</mi></math> の部分だけを除いたものになる。これは <math><mover><mrow><mi>A</mi><mo>∩</mo><mi>B</mi></mrow><mo>‾</mo></mover></math> の斜線部分と一致するから、<math><mover><mrow><mi>A</mi><mo>∩</mo><mi>B</mi></mrow><mo>‾</mo></mover><mo>=</mo><mi>Ā</mi><mo>∪</mo><mover><mi>B</mi><mo>‾</mo></mover></math>が成り立つ。</p><figure><div class="figbox"><svg viewBox="0 0 280 175" role="img" aria-label="Ā∪B̄ のベン図。全体集合 U のうち、円 A と円 B の重なった部分だけが塗られていない">
 <defs><clipPath id="cr9"><circle cx="112" cy="84" r="46"/></clipPath></defs>
 <rect x="14" y="14" width="252" height="140" fill="var(--accent-soft)" stroke="var(--ink-soft)" stroke-width="2"/>
 <circle cx="168" cy="84" r="46" fill="var(--surface)" clip-path="url(#cr9)"/>
@@ -1275,7 +1356,7 @@ padding:16px 34px;box-shadow:var(--shadow);
 <text x="22" y="36" class="svg-txt" font-size="17">U</text>
 <text x="76" y="60" class="svg-txt" font-size="16">A</text>
 <text x="192" y="60" class="svg-txt" font-size="16">B</text>
-</svg></div><figcaption>Ā∪B̄ の斜線部分 ― 塗られていないのは A∩B の部分だけ</figcaption></figure>
+</svg></div><figcaption>Ā∪<math><mover><mi>B</mi><mo>‾</mo></mover></math> の斜線部分 ― 塗られていないのは <math><mi>A</mi></math>∩<math><mi>B</mi></math> の部分だけ</figcaption></figure>
         </div>
         <p class="prob-done">練習9 クリア！　最後は研究に挑戦しよう。</p>
       </section>
@@ -1285,20 +1366,25 @@ padding:16px 34px;box-shadow:var(--shadow);
         <span class="pno">教科書 p.61</span>
       </div>
       <section class="card">
-<p>3つの集合 A, B, C の<span class="key">すべてに属する</span>要素全体の集合を、A, B, C の<span class="key">共通部分</span>といい、<span class="key">A∩B∩C</span> で表す。また、A, B, C の<span class="key">少なくとも1つに属する</span>要素全体の集合を、A, B, C の<span class="key">和集合</span>といい、<span class="key">A∪B∪C</span> で表す。</p>
+<p>3つの集合 <math><mi>A</mi></math>, <math><mi>B</mi></math>, <math><mi>C</mi></math> の<span class="key">すべてに属する</span>要素全体の集合を、<math><mi>A</mi></math>, <math><mi>B</mi></math>, <math><mi>C</mi></math> の<span class="key">共通部分</span>といい、<span class="key"><math><mi>A</mi></math>∩<math><mi>B</mi></math>∩<math><mi>C</mi></math></span> で表す。また、<math><mi>A</mi></math>, <math><mi>B</mi></math>, <math><mi>C</mi></math> の<span class="key">少なくとも1つに属する</span>要素全体の集合を、<math><mi>A</mi></math>, <math><mi>B</mi></math>, <math><mi>C</mi></math> の<span class="key">和集合</span>といい、<span class="key"><math><mi>A</mi></math>∪<math><mi>B</mi></math>∪<math><mi>C</mi></math></span> で表す。</p>
       </section>
-      <section class="card prob" id="prob-ken1" data-flow="ken1" data-label="研究 例1">
+      <section class="nofig card prob" id="prob-ken1" data-flow="ken1" data-label="研究 例1">
         <div class="prob-head">
           <span class="prob-tag ">研究 例 1</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">A = {3, 6, 9}, B = {1, 2, 3, 6}, C = {2, 4, 6, 8} について、A∩B∩C と A∪B∪C を求めよ。</p>
+        <div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>A</mi><mo>=</mo><mrow><mo>{</mo><mn>3</mn><mo>,</mo><mn>6</mn><mo>,</mo><mn>9</mn><mo>}</mo></mrow><mo>,</mo><mi>B</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>A</mi></mphantom><mo>=</mo><mrow><mo>{</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>6</mn><mo>}</mo></mrow><mo>,</mo><mi>C</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>A</mi></mphantom><mo>=</mo><mrow><mo>{</mo><mn>2</mn><mo>,</mo><mn>4</mn><mo>,</mo><mn>6</mn><mo>,</mo><mn>8</mn><mo>}</mo></mrow></math></div>
+</div>
+<p>について、<math><mi>A</mi></math>∩<math><mi>B</mi></math>∩<math><mi>C</mi></math> と <math><mi>A</mi></math>∪<math><mi>B</mi></math>∪<math><mi>C</mi></math> を求めよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 3つすべてにある要素</h3>
-<p>A∩B∩C は、A, B, C のすべてに属する要素の集合。A の要素 3, 6, 9 を1つずつ、B と C の両方にあるか確かめよう。</p><figure><div class="figbox"><svg viewBox="0 0 300 215" role="img" aria-label="3つの集合 A、B、C のベン図。A={3,6,9}、B={1,2,3,6}、C={2,4,6,8} の要素が正しい領域に置かれている">
+          <h3>ヒント 1 ― 3つすべてにある要素</h3><p class="cite"><span class="cite-tag">使う定義</span><math><mi>A</mi><mo>∩</mo><mi>B</mi><mo>∩</mo><mi>C</mi></math>3つの集合の共通部分は、3つすべてに属する要素全体の集合。</p>
+<p><math><mi>A</mi></math>∩<math><mi>B</mi></math>∩<math><mi>C</mi></math> は、<math><mi>A</mi></math>, <math><mi>B</mi></math>, <math><mi>C</mi></math> のすべてに属する要素の集合。<math><mi>A</mi></math> の要素 3, 6, 9 を1つずつ、<math><mi>B</mi></math> と <math><mi>C</mi></math> の両方にあるか確かめよう。</p><figure><div class="figbox"><svg viewBox="0 0 300 215" role="img" aria-label="3つの集合 A、B、C のベン図。A={3,6,9}、B={1,2,3,6}、C={2,4,6,8} の要素が正しい領域に置かれている">
 <circle cx="150" cy="62" r="52" fill="none" stroke="var(--ink-soft)" stroke-width="2"/>
 <circle cx="108" cy="120" r="52" fill="none" stroke="var(--ink-soft)" stroke-width="2"/>
 <circle cx="192" cy="120" r="52" fill="none" stroke="var(--ink-soft)" stroke-width="2"/>
@@ -1312,31 +1398,40 @@ padding:16px 34px;box-shadow:var(--shadow);
 <text x="150" y="152" text-anchor="middle" class="svg-txt" font-size="16">2</text>
 <text x="224" y="110" text-anchor="middle" class="svg-txt" font-size="16">8</text>
 <text x="206" y="164" text-anchor="middle" class="svg-txt" font-size="16">4</text>
-</svg></div><figcaption>例1の3つの集合。真ん中の領域（すべてに共通）が A∩B∩C</figcaption></figure>
+</svg></div><figcaption>例1の3つの集合。真ん中の領域（すべてに共通）が <math><mi>A</mi></math>∩<math><mi>B</mi></math>∩<math><mi>C</mi></math></figcaption></figure>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 和集合は全部合わせる</h3>
-<p>A∪B∪C は、3つの集合の要素をすべて合わせたもの。重なっている要素は1回だけ書こう。</p>
+<p><math><mi>A</mi></math>∪<math><mi>B</mi></math>∪<math><mi>C</mi></math> は、3つの集合の要素をすべて合わせたもの。重なっている要素は1回だけ書こう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">A∩B∩C = {6},　A∪B∪C = {1, 2, 3, 4, 6, 8, 9}</p>
+          <p class="mq-wide big"><math display="block"><mi>A</mi><mo>∩</mo><mi>B</mi><mo>∩</mo><mi>C</mi><mo>=</mo><mrow><mo>{</mo><mn>6</mn><mo>}</mo></mrow><mo>,</mo><mspace width="2em"/><mi>A</mi><mo>∪</mo><mi>B</mi><mo>∪</mo><mi>C</mi><mo>=</mo><mrow><mo>{</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>4</mn><mo>,</mo><mn>6</mn><mo>,</mo><mn>8</mn><mo>,</mo><mn>9</mn><mo>}</mo></mrow></math></p><p class="cite"><span class="cite-tag">使う定義</span><math><mi>A</mi><mo>∪</mo><mi>B</mi><mo>∪</mo><mi>C</mi></math>3つの集合の和集合は、少なくとも1つに属する要素全体。重なる要素は1回だけ書く。</p>
+<div class="mq-narrow mq-stack">
+<p class="formula"><math display="block"><mi>A</mi><mo>∩</mo><mi>B</mi><mo>∩</mo><mi>C</mi><mo>=</mo><mrow><mo>{</mo><mn>6</mn><mo>}</mo></mrow><mo>,</mo></math></p>
+<p class="formula"><math display="block"><mi>A</mi><mo>∪</mo><mi>B</mi><mo>∪</mo><mi>C</mi><mo>=</mo><mrow><mo>{</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>4</mn><mo>,</mo><mn>6</mn><mo>,</mo><mn>8</mn><mo>,</mo><mn>9</mn><mo>}</mo></mrow></math></p>
+</div>
         </div>
         <p class="prob-done">研究 例1 クリア！　次は研究 練習1に挑戦しよう。</p>
       </section>
-      <section class="card prob" id="prob-ken2" data-flow="ken2" data-label="研究 練習1">
+      <section class="nofig card prob" id="prob-ken2" data-flow="ken2" data-label="研究 練習1">
         <div class="prob-head">
           <span class="prob-tag ren">研究 練習 1</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">A = {1, 2, 3, 6}, B = {2, 3, 4, 5, 6}, C = {2, 4, 6, 8, 10, 12} について、A∩B∩C と A∪B∪C を求めよ。</p>
+        <div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>A</mi><mo>=</mo><mrow><mo>{</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>6</mn><mo>}</mo></mrow><mo>,</mo><mi>B</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>A</mi></mphantom><mo>=</mo><mrow><mo>{</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>4</mn><mo>,</mo><mn>5</mn><mo>,</mo><mn>6</mn><mo>}</mo></mrow><mo>,</mo><mi>C</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>A</mi></mphantom><mo>=</mo><mrow><mo>{</mo><mn>2</mn><mo>,</mo><mn>4</mn><mo>,</mo><mn>6</mn><mo>,</mo><mn>8</mn><mo>,</mo><mn>10</mn><mo>,</mo><mn>12</mn><mo>}</mo></mrow></math></div>
+</div>
+<p>について、<math><mi>A</mi></math>∩<math><mi>B</mi></math>∩<math><mi>C</mi></math> と <math><mi>A</mi></math>∪<math><mi>B</mi></math>∪<math><mi>C</mi></math> を求めよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― A の要素から確かめる</h3>
-<p>A の要素 1, 2, 3, 6 のうち、B にも C にも属するものを探そう。1 は B にない、3 は C にないね。</p>
+          <h3>ヒント 1 ― <math><mi>A</mi></math> の要素から確かめる</h3>
+<p><math><mi>A</mi></math> の要素 1, 2, 3, 6 のうち、<math><mi>B</mi></math> にも <math><mi>C</mi></math> にも属するものを探そう。1 は <math><mi>B</mi></math> にない、3 は <math><mi>C</mi></math> にないね。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 和集合は小さい順に整理</h3>
@@ -1345,7 +1440,11 @@ padding:16px 34px;box-shadow:var(--shadow);
         <div class="step answer">
           <h3>解答</h3>
 
-          <p class="big">A∩B∩C = {2, 6},　A∪B∪C = {1, 2, 3, 4, 5, 6, 8, 10, 12}</p>
+          <p class="mq-wide big"><math display="block"><mi>A</mi><mo>∩</mo><mi>B</mi><mo>∩</mo><mi>C</mi><mo>=</mo><mrow><mo>{</mo><mn>2</mn><mo>,</mo><mn>6</mn><mo>}</mo></mrow><mo>,</mo><mspace width="2em"/><mi>A</mi><mo>∪</mo><mi>B</mi><mo>∪</mo><mi>C</mi><mo>=</mo><mrow><mo>{</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>4</mn><mo>,</mo><mn>5</mn><mo>,</mo><mn>6</mn><mo>,</mo><mn>8</mn><mo>,</mo><mn>10</mn><mo>,</mo><mn>12</mn><mo>}</mo></mrow></math></p>
+<div class="mq-narrow mq-stack">
+<p class="formula"><math display="block"><mi>A</mi><mo>∩</mo><mi>B</mi><mo>∩</mo><mi>C</mi><mo>=</mo><mrow><mo>{</mo><mn>2</mn><mo>,</mo><mn>6</mn><mo>}</mo></mrow><mo>,</mo></math></p>
+<p class="formula"><math display="block"><mi>A</mi><mo>∪</mo><mi>B</mi><mo>∪</mo><mi>C</mi><mo>=</mo><mrow><mo>{</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>4</mn><mo>,</mo><mn>5</mn><mo>,</mo><mn>6</mn><mo>,</mo><mn>8</mn><mo>,</mo><mn>10</mn><mo>,</mo><mn>12</mn><mo>}</mo></mrow></math></p>
+</div>
         </div>
         <p class="prob-done">研究 練習1 クリア！　項1はこれで全部おしまい。おつかれさま！</p>
       </section>
@@ -1355,12 +1454,12 @@ padding:16px 34px;box-shadow:var(--shadow);
       <section class="card summary" id="summaryCard" style="display:none">
         <h2>この項のポイント</h2>
         <ul>
-          <li>範囲がはっきりしたものの集まりを集合といい、その1つ1つのものを要素という。x ∈ A は「x は A の要素」、x ∉ A は「x は A の要素でない」という意味。</li>
-          <li>集合の表し方は、要素を書き並べる方法と、要素の満たす条件を書く方法 {x | 条件} の2通り。</li>
-          <li>A の要素がすべて B の要素でもあるとき A ⊂ B。要素が1つもない集合が空集合 ∅ で、∅ はどんな集合の部分集合でもある。</li>
-          <li>A∩B はどちらにも属する要素全体、A∪B は少なくとも一方に属する要素全体。</li>
-          <li>全体集合 U に対して、A に属さない U の要素全体が補集合 Ā。ド・モルガンの法則：<span style="text-decoration:overline">A ∪ B</span> = Ā∩B̄、<span style="text-decoration:overline">A ∩ B</span> = Ā∪B̄。</li>
-          <li>3つの集合では、すべてに属する要素全体が A∩B∩C、少なくとも1つに属する要素全体が A∪B∪C。</li>
+          <p class="cite"><span class="cite-tag">使う定義</span><math><mi>x</mi><mo>∈</mo><mi>A</mi></math>x が A の要素であることを表す記号。要素でないときは ∉ を使う。</p><li>範囲がはっきりしたものの集まりを集合といい、<br>その1つ1つのものを要素という。<math><mi>x</mi></math> ∈ <math><mi>A</mi></math> は「<math><mi>x</mi></math> は <math><mi>A</mi></math> の要素」、<math><mi>x</mi></math> ∉ <math><mi>A</mi></math> は「<math><mi>x</mi></math> は <math><mi>A</mi></math> の要素でない」という意味。</li>
+          <li>集合の表し方は、要素を書き並べる方法と、要素の満たす条件を書く方法 {<math><mi>x</mi></math> | 条件} の2通り。</li>
+          <p class="cite"><span class="cite-tag">使う定義</span><math><mi>A</mi><mo>⊂</mo><mi>B</mi></math>A の要素がすべて B の要素であるときの記号。空集合 ∅ はどんな集合の部分集合でもある。</p><li><math><mi>A</mi></math> の要素がすべて <math><mi>B</mi></math> の要素でもあるとき <math><mi>A</mi></math> ⊂ <math><mi>B</mi></math>。要素が1つもない集合が空集合 ∅ で、∅ はどんな集合の部分集合でもある。</li>
+          <p class="cite"><span class="cite-tag">使う定義</span><math><mi>A</mi><mo>∩</mo><mi>B</mi><mo>,</mo><mi>A</mi><mo>∪</mo><mi>B</mi></math>∩ はどちらにも属する要素全体、∪ は少なくとも一方に属する要素全体。</p><li><math><mi>A</mi></math>∩<math><mi>B</mi></math> はどちらにも属する要素全体、<math><mi>A</mi></math>∪<math><mi>B</mi></math> は少なくとも一方に属する要素全体。</li>
+          <p class="cite"><span class="cite-tag">使う性質</span><math><mover><mrow><mi>A</mi><mo>∪</mo><mi>B</mi></mrow><mo>‾</mo></mover><mo>=</mo><mi>Ā</mi><mo>∩</mo><mover><mi>B</mi><mo>‾</mo></mover></math>ド・モルガンの法則。補集合をとると、∪ と ∩ が入れ替わる。</p><li>全体集合 <math><mi>U</mi></math> に対して、<math><mi>A</mi></math> に属さない <math><mi>U</mi></math> の要素全体が補集合 Ā。ド・モルガンの法則：<math><mover><mrow><mi>A</mi><mo>∪</mo><mi>B</mi></mrow><mo>‾</mo></mover><mo>=</mo><mi>Ā</mi><mo>∩</mo><mover><mi>B</mi><mo>‾</mo></mover></math>、<math><mover><mrow><mi>A</mi><mo>∩</mo><mi>B</mi></mrow><mo>‾</mo></mover><mo>=</mo><mi>Ā</mi><mo>∪</mo><mover><mi>B</mi><mo>‾</mo></mover></math>。</li>
+          <p class="cite"><span class="cite-tag">使う定義</span><math><mi>A</mi><mo>∩</mo><mi>B</mi><mo>∩</mo><mi>C</mi><mo>,</mo><mi>A</mi><mo>∪</mo><mi>B</mi><mo>∪</mo><mi>C</mi></math>3つの集合でも、すべてに属する要素全体が共通部分、少なくとも1つに属する要素全体が和集合。</p><li>3つの集合では、すべてに属する要素全体が <math><mi>A</mi></math>∩<math><mi>B</mi></math>∩<math><mi>C</mi></math>、少なくとも1つに属する要素全体が <math><mi>A</mi></math>∪<math><mi>B</mi></math>∪<math><mi>C</mi></math>。</li>
         </ul>
       </section>
  <footer>
