@@ -307,7 +307,57 @@
         .prob .qside .qpart.on{display:block}
         .prob .qside .prob-head.qpart.on{display:flex}
       }
-    </style>
+    
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+
+      /* 積分記号は大きめに表示する（元のページの可読化デザインに合わせる） */
+      math .int-op{font-size:1.35em}
+      /* calc-12 世代（.card）と calc-18 世代（.unit）の、図のない問題の全幅化 */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig>.step{position:static !important}
+        .card.nofig>.steps-wrap{max-height:none !important;overflow:visible !important}
+        .unit.nofig{display:block !important}
+        .unit.nofig>.qside{position:static !important}
+        .unit.nofig>.steps-stack{max-height:none !important;overflow:visible !important}
+      }
+</style>
   </head>
   <body>
     <div class="wrap">
@@ -345,7 +395,7 @@
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
         <div class="qside">
-        <p class="prob-q">直線 <i>y</i>＝<i>x</i>＋1 と <i>x</i>軸、および直線 <i>x</i>＝<i>t</i>（<i>t</i>＞0）で囲まれた台形の面積を <i>S</i>(<i>t</i>) とする。<i>S</i>(<i>t</i>) を微分するとどうなるか、ヒントを開きながら確かめよう。</p>
+        <p class="prob-q">直線 <math><mi>y</mi><mo>=</mo><mi>x</mi><mo>+</mo><mn>1</mn></math>と <math><mi>x</mi></math>軸、および直線 <math><mi>x</mi><mo>=</mo><mi>t</mi><mo>(</mo><mi>t</mi><mo>&gt;</mo><mn>0</mn><mo>)</mo></math>で囲まれた台形の面積を <math><mi>S</mi><mo>(</mo><mi>t</mi><mo>)</mo></math>とする。<math><mi>S</mi><mo>(</mo><mi>t</mi><mo>)</mo></math>を微分するとどうなるか、ヒントを開きながら確かめよう。</p>
         <figure>
           <div class="figbox">
             <svg viewBox="0 0 520 300" role="img" aria-label="直線yイコールxプラス1とx軸、直線xイコールtで囲まれた台形の図">
@@ -383,33 +433,33 @@
               <text x="310" y="264" text-anchor="middle" class="svg-txt" font-size="16" font-style="italic">t</text>
             </svg>
           </div>
-          <figcaption>右端の位置 <i>t</i> を動かすと、台形の面積 <i>S</i>(<i>t</i>) が変わる。この「面積の変わり方」に注目するのがこの項の出発点。</figcaption>
+          <figcaption>右端の位置 <math><mi>t</mi></math> を動かすと、台形の面積 <math><mi>S</mi><mo>(</mo><mi>t</mi><mo>)</mo></math>が変わる。この「面積の変わり方」に注目するのがこの項の出発点。</figcaption>
         </figure>
         </div>
 
         <div class="step hint">
-          <h3>ヒント 1 ― まず台形の面積を <i>t</i> の式で表す</h3>
-          <p>図の斜線部分が台形だね。この台形は、<b>上底が 1</b>（左端の高さ）、<b>下底が <i>t</i>＋1</b>（右端の高さ）、<b>高さ（横の幅）が <i>t</i></b>。</p>
-          <p>台形の面積の公式「（上底＋下底）×高さ÷2」を使うと</p>
-          <p class="formula" style="margin-bottom:4px"><i>S</i>(<i>t</i>) ＝ <span class="fr"><i>1</i><i>2</i></span>・<i>t</i>・{1＋(<i>t</i>＋1)} ＝ <span class="fr"><i>1</i><i>2</i></span><i>t</i><sup>2</sup>＋<i>t</i></p>
+          <h3>ヒント 1 ― まず台形の面積を <math><mi>t</mi></math> の式で表す</h3>
+          <p>図の斜線部分が台形だね。<br>この台形は、<b>上底が 1</b>（左端の高さ）、<br><b>下底が <math><mi>t</mi><mo>+</mo><mn>1</mn></math></b>（右端の高さ）、<br><b>高さ（横の幅）が <math><mi>t</mi></math></b>。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span>台形の面積の公式 <math><mi>S</mi><mo>(</mo><mi>t</mi><mo>)</mo><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>⋅</mo><mi>t</mi><mo>⋅</mo><mo>{</mo><mn>1</mn><mo>+</mo><mo>(</mo><mi>t</mi><mo>+</mo><mn>1</mn><mo>)</mo><mo>}</mo></math>。上底1、下底 <math><mi>t</mi><mo>+</mo><mn>1</mn></math>、高さ <math><mi>t</mi></math> を当てはめて、面積を <math><mi>t</mi></math> の式で表す</p><p>台形の面積の公式「（上底＋下底）×高さ÷2」を使うと</p>
+          <p class="formula" style="margin-bottom:4px"><math display="block"><mi>S</mi><mo>(</mo><mi>t</mi><mo>)</mo><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>⋅</mo><mi>t</mi><mo>⋅</mo><mo>{</mo><mn>1</mn><mo>+</mo><mo>(</mo><mi>t</mi><mo>+</mo><mn>1</mn><mo>)</mo><mo>}</mo><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><msup><mi>t</mi><mn>2</mn></msup><mo>+</mo><mi>t</mi></math></p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― <i>S</i>(<i>t</i>) を微分してみる</h3>
-          <p><i>S</i>(<i>t</i>) ＝ <span class="fr"><i>1</i><i>2</i></span><i>t</i><sup>2</sup>＋<i>t</i> を <i>t</i> で微分すると、（<span class="fr"><i>1</i><i>2</i></span><i>t</i><sup>2</sup>）′＝<i>t</i>、（<i>t</i>）′＝1 だから</p>
-          <p class="formula" style="margin-bottom:4px"><i>S</i>′(<i>t</i>) ＝ <i>t</i>＋1</p>
-          <p>右端 <i>x</i>＝<i>t</i> でのグラフの高さ（図のオレンジの点）がちょうど <i>t</i>＋1 になっていることを、図でも確かめよう。</p>
+          <h3>ヒント<math><mn>2</mn><mo>―</mo><mi>S</mi><mo>(</mo><mi>t</mi><mo>)</mo></math>を微分してみる</h3>
+          <p><math><mi>S</mi><mo>(</mo><mi>t</mi><mo>)</mo><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><msup><mi>t</mi><mn>2</mn></msup><mo>+</mo><mi>t</mi></math> を <math><mi>t</mi></math> で微分すると、<br><math><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><msup><mi>t</mi><mn>2</mn></msup><mo>)</mo><mo>′</mo><mo>=</mo><mi>t</mi></math>、<math><mo>(</mo><mi>t</mi><mo>)</mo><mo>′</mo><mo>=</mo><mn>1</mn></math>だから</p>
+          <p class="cite"><span class="cite-tag">使う公式</span>多項式の微分 <math><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><msup><mi>t</mi><mn>2</mn></msup><mo>)</mo><mo>′</mo><mo>=</mo><mi>t</mi></math>。<math><mi>S</mi><mo>(</mo><mi>t</mi><mo>)</mo></math> を項ごとに微分し、もう一項の <math><mo>(</mo><mi>t</mi><mo>)</mo><mo>′</mo><mo>=</mo><mn>1</mn></math> と合わせて <math><mi>S</mi><mo>′</mo><mo>(</mo><mi>t</mi><mo>)</mo></math> を求める</p><p class="formula" style="margin-bottom:4px"><math display="block"><mi>S</mi><mo>′</mo><mo>(</mo><mi>t</mi><mo>)</mo><mo>=</mo><mi>t</mi><mo>+</mo><mn>1</mn></math></p>
+          <p>右端 <math><mi>x</mi><mo>=</mo><mi>t</mi></math> でのグラフの高さ（図のオレンジの点）がちょうど <math><mi>t</mi><mo>+</mo><mn>1</mn></math>になっていることを、<br>図でも確かめよう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 3 ― もとの関数と比べてみる</h3>
-          <p>もとの関数は <i>f</i>(<i>x</i>)＝<i>x</i>＋1 だった。<i>S</i>′(<i>t</i>)＝<i>t</i>＋1 は、<i>f</i>(<i>t</i>) とまったく同じ式だ。</p>
-          <p>つまり <b><i>S</i>′(<i>t</i>)＝<i>f</i>(<i>t</i>)</b>。面積の変化率（微分）が、その地点でのグラフの<b>高さ</b>に等しくなっている。</p>
+          <p>もとの関数は <math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mi>x</mi><mo>+</mo><mn>1</mn></math>だった。<br><math><mi>S</mi><mo>′</mo><mo>(</mo><mi>t</mi><mo>)</mo><mo>=</mo><mi>t</mi><mo>+</mo><mn>1</mn></math>は、<math><mi>f</mi><mo>(</mo><mi>t</mi><mo>)</mo></math>とまったく同じ式だ。</p>
+          <p>つまり <b><math><mi>S</mi><mo>′</mo><mo>(</mo><mi>t</mi><mo>)</mo><mo>=</mo><mi>f</mi><mo>(</mo><mi>t</mi><mo>)</mo></math></b>。面積の変化率（微分）が、<br>その地点でのグラフの<b>高さ</b>に等しくなっている。</p>
         </div>
         <div class="step answer">
           <h3>まとめ ― 面積と定積分のつながり</h3>
-          <p>面積関数 <i>S</i>(<i>t</i>) の微分がもとの関数 <i>f</i> に戻るということは、逆に、<i>f</i> の<b>原始関数</b>が面積を表しているということ。</p>
-          <p><i>a</i>≦<i>x</i>≦<i>b</i> の部分の面積は、右端を <i>b</i> まで広げた面積から、<i>a</i> までの面積を引いたものだから</p>
-          <p class="big">面積 ＝ <i>S</i>(<i>b</i>)−<i>S</i>(<i>a</i>) ＝ <span class="int"><span class="int-sym">∫</span><span class="int-up"><i>b</i></span><span class="int-lo"><i>a</i></span></span> <i>f</i>(<i>x</i>) <i>dx</i></p>
-          <p>この <i>S</i>(<i>b</i>)−<i>S</i>(<i>a</i>) こそ、前項で学んだ<b>定積分</b>そのものだね。次の解説Aで、なぜ <i>S</i>′(<i>t</i>)＝<i>f</i>(<i>t</i>) になるのかを、一般の曲線で確かめる。</p>
+          <p>面積関数 <math><mi>S</mi><mo>(</mo><mi>t</mi><mo>)</mo></math>の微分がもとの関数 <math><mi>f</mi></math> に戻るということは、<br>逆に、<math><mi>f</mi></math> の<b>原始関数</b>が面積を表しているということ。</p>
+          <p><math><mi>a</mi><mo>≦</mo><mi>x</mi><mo>≦</mo><mi>b</mi></math> の部分の面積は、<br>右端を <math><mi>b</mi></math> まで広げた面積から、<br><math><mi>a</mi></math> までの面積を引いたものだから</p>
+          <p class="cite"><span class="cite-tag">使う性質</span>面積と定積分の関係 <math><mi>S</mi><mo>(</mo><mi>b</mi><mo>)</mo><mo>−</mo><mi>S</mi><mo>(</mo><mi>a</mi><mo>)</mo><mo>=</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi></math>。<math><mi>a</mi><mo>≦</mo><mi>x</mi><mo>≦</mo><mi>b</mi></math> の部分の面積は、原始関数である <math><mi>S</mi></math> の差として表せる</p><p class="big">面積<math><mo>=</mo><mi>S</mi><mo>(</mo><mi>b</mi><mo>)</mo><mo>−</mo><mi>S</mi><mo>(</mo><mi>a</mi><mo>)</mo><mo>=</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi></math></p>
+          <p>この <math><mi>S</mi><mo>(</mo><mi>b</mi><mo>)</mo><mo>−</mo><mi>S</mi><mo>(</mo><mi>a</mi><mo>)</mo></math>こそ、前項で学んだ<b>定積分</b>そのものだね。<br>次の解説Aで、なぜ <math><mi>S</mi><mo>′</mo><mo>(</mo><mi>t</mi><mo>)</mo><mo>=</mo><mi>f</mi><mo>(</mo><mi>t</mi><mo>)</mo></math>になるのかを、<br>一般の曲線で確かめる。</p>
         </div>
         <p class="prob-done">導入クリア！　次は解説Aで「面積を微分するともとの関数になる理由」を見よう。</p>
       </section>
@@ -430,7 +480,7 @@
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
         <div class="qside">
-        <p class="prob-q">放物線 <i>y</i>＝<i>x</i><sup>2</sup> と <i>x</i>軸、直線 <i>x</i>＝<i>t</i> で囲まれた部分の面積を <i>S</i>(<i>t</i>) とする。導入では直線だったが、曲線でも <i>S</i>′(<i>t</i>)＝<i>t</i><sup>2</sup> になることを、長方形で「はさむ」考え方で確かめよう。</p>
+        <p class="prob-q">放物線 <math><mi>y</mi><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup></math> と <math><mi>x</mi></math>軸、直線 <math><mi>x</mi><mo>=</mo><mi>t</mi></math> で囲まれた部分の面積を <math><mi>S</mi><mo>(</mo><mi>t</mi><mo>)</mo></math>とする。導入では直線だったが、曲線でも <math><mi>S</mi><mo>′</mo><mo>(</mo><mi>t</mi><mo>)</mo><mo>=</mo><msup><mi>t</mi><mn>2</mn></msup></math> になることを、長方形で「はさむ」考え方で確かめよう。</p>
         <figure>
           <div class="figbox">
             <svg viewBox="0 0 520 300" role="img" aria-label="放物線yイコールxの2乗の下の面積S(t)と、xイコールtからtプラスhまでの細長い部分を2つの長方形ではさんだ図">
@@ -475,33 +525,37 @@
               <text x="245" y="272" text-anchor="middle" class="svg-txt" font-size="16" font-style="italic">t＋h</text>
             </svg>
           </div>
-          <figcaption>右端を <i>t</i> から <i>t</i>＋<i>h</i> へ少し広げると、面積は細長い部分だけ増える。この増えた部分を、2つの長方形ではさむのがポイント。</figcaption>
+          <figcaption>右端を <math><mi>t</mi></math> から <math><mi>t</mi><mo>+</mo><mi>h</mi></math> へ少し広げると、面積は細長い部分だけ増える。この増えた部分を、2つの長方形ではさむのがポイント。</figcaption>
         </figure>
         </div>
 
         <div class="step hint">
-          <h3>ヒント 1 ― 面積関数 <i>S</i>(<i>t</i>) を考える</h3>
-          <p>色のついた部分が <i>S</i>(<i>t</i>)、つまり「0から <i>t</i> までの面積」だ。</p>
-          <p>右端を <i>t</i> から <i>t</i>＋<i>h</i>（<i>h</i>＞0）まで広げると、面積は <i>S</i>(<i>t</i>＋<i>h</i>) になる。その<b>増えた分</b>が <i>S</i>(<i>t</i>＋<i>h</i>)−<i>S</i>(<i>t</i>) で、図の細長い部分だ。</p>
+          <h3>ヒント 1 ― 面積関数 <math><mi>S</mi><mo>(</mo><mi>t</mi><mo>)</mo></math>を考える</h3>
+          <p>色のついた部分が <math><mi>S</mi><mo>(</mo><mi>t</mi><mo>)</mo></math>、つまり「0から <math><mi>t</mi></math> までの面積」だ。</p>
+          <p>右端を <math><mi>t</mi></math> から <math><mi>t</mi><mo>+</mo><mi>h</mi><mo>(</mo><mi>h</mi><mo>&gt;</mo><mn>0</mn><mo>)</mo></math>まで広げると、<br>面積は <math><mi>S</mi><mo>(</mo><mi>t</mi><mo>+</mo><mi>h</mi><mo>)</mo></math>になる。<br>その<b>増えた分</b>が <math><mi>S</mi><mo>(</mo><mi>t</mi><mo>+</mo><mi>h</mi><mo>)</mo><mo>−</mo><mi>S</mi><mo>(</mo><mi>t</mi><mo>)</mo></math>で、図の細長い部分だ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 増えた部分を長方形ではさむ</h3>
-          <p>細長い部分の幅は <i>h</i>。その左端での高さは <i>t</i><sup>2</sup>、右端での高さは (<i>t</i>＋<i>h</i>)<sup>2</sup> だから、細長い部分は</p>
-          <p>・幅 <i>h</i>、高さ <i>t</i><sup>2</sup> の長方形（青）より<b>大きく</b>、<br />・幅 <i>h</i>、高さ (<i>t</i>＋<i>h</i>)<sup>2</sup> の長方形（オレンジ）より<b>小さい</b>。</p>
-          <p class="formula" style="margin-bottom:4px"><i>h</i>・<i>t</i><sup>2</sup> ＜ <i>S</i>(<i>t</i>＋<i>h</i>)−<i>S</i>(<i>t</i>) ＜ <i>h</i>・(<i>t</i>＋<i>h</i>)<sup>2</sup></p>
+          <p>細長い部分の幅は <math><mi>h</mi></math>。<br>その左端での高さは <math><msup><mi>t</mi><mn>2</mn></msup></math>、<br>右端での高さは<math><msup><mrow><mo>(</mo><mi>t</mi><mo>+</mo><mi>h</mi><mo>)</mo></mrow><mn>2</mn></msup></math> だから、細長い部分は</p>
+          <p>・幅 <math><mi>h</mi></math>、高さ <math><msup><mi>t</mi><mn>2</mn></msup></math> の長方形（青）より<b>大きく</b>、<br />・幅 <math><mi>h</mi></math>、高さ<math><msup><mrow><mo>(</mo><mi>t</mi><mo>+</mo><mi>h</mi><mo>)</mo></mrow><mn>2</mn></msup></math> の長方形（オレンジ）より<b>小さい</b>。</p>
+          <p class="cite"><span class="cite-tag">使う性質</span>長方形の面積（幅×高さ） <math><mi>h</mi><mo>⋅</mo><msup><mi>t</mi><mn>2</mn></msup><mo>&lt;</mo><mi>S</mi><mo>(</mo><mi>t</mi><mo>+</mo><mi>h</mi><mo>)</mo><mo>−</mo><mi>S</mi><mo>(</mo><mi>t</mi><mo>)</mo><mo>&lt;</mo><mi>h</mi><mo>⋅</mo><msup><mrow><mo>(</mo><mi>t</mi><mo>+</mo><mi>h</mi><mo>)</mo></mrow><mn>2</mn></msup></math>。増えた面積を、高さ <math><msup><mi>t</mi><mn>2</mn></msup></math> の長方形と高さ <math><msup><mrow><mo>(</mo><mi>t</mi><mo>+</mo><mi>h</mi><mo>)</mo></mrow><mn>2</mn></msup></math> の長方形ではさむ</p><p class="mq-wide formula" style="margin-bottom:4px"><math display="block"><mi>h</mi><mo>⋅</mo><msup><mi>t</mi><mn>2</mn></msup><mo>&lt;</mo><mi>S</mi><mo>(</mo><mi>t</mi><mo>+</mo><mi>h</mi><mo>)</mo><mo>−</mo><mi>S</mi><mo>(</mo><mi>t</mi><mo>)</mo><mo>&lt;</mo><mi>h</mi><mo>⋅</mo><msup><mrow><mo>(</mo><mi>t</mi><mo>+</mo><mi>h</mi><mo>)</mo></mrow><mn>2</mn></msup></math></p>
+<div class="mq-narrow">
+<p class="formula" style="margin-bottom:4px"><math display="block"><mi>h</mi><mo>⋅</mo><msup><mi>t</mi><mn>2</mn></msup><mo>&lt;</mo><mi>S</mi><mo>(</mo><mi>t</mi><mo>+</mo><mi>h</mi><mo>)</mo></math></p>
+<p class="formula cont" style="margin-bottom:4px"><math display="block"><mo>−</mo><mi>S</mi><mo>(</mo><mi>t</mi><mo>)</mo><mo>&lt;</mo><mi>h</mi><mo>⋅</mo><msup><mrow><mo>(</mo><mi>t</mi><mo>+</mo><mi>h</mi><mo>)</mo></mrow><mn>2</mn></msup></math></p>
+</div>
         </div>
         <div class="step hint">
-          <h3>ヒント 3 ― <i>h</i> で割って、<i>h</i>→0 とする（はさみうち）</h3>
-          <p>不等式の各辺を <i>h</i> で割ると</p>
-          <p class="formula" style="margin-bottom:4px"><i>t</i><sup>2</sup> ＜ <span class="fr"><i><i>S</i>(<i>t</i>＋<i>h</i>)−<i>S</i>(<i>t</i>)</i><i>h</i></span> ＜ (<i>t</i>＋<i>h</i>)<sup>2</sup></p>
-          <p>真ん中の式は「面積の平均変化率」。ここで <i>h</i>→0 とすると、右辺の (<i>t</i>＋<i>h</i>)<sup>2</sup> は <i>t</i><sup>2</sup> に近づく。左辺も <i>t</i><sup>2</sup> だから、<b>両側から <i>t</i><sup>2</sup> にはさまれて</b>、真ん中も <i>t</i><sup>2</sup> に近づくしかない（<b>はさみうちの考え方</b>）。</p>
+          <h3>ヒント<math><mn>3</mn><mo>―</mo><mi>h</mi></math> で割って、<math><mi>h</mi><mo>→</mo><mn>0</mn></math>とする（はさみうち）</h3>
+          <p>不等式の各辺を <math><mi>h</mi></math> で割ると</p>
+          <p class="cite"><span class="cite-tag">使う性質</span>はさみうちの考え方 <math><msup><mi>t</mi><mn>2</mn></msup><mo>&lt;</mo><mfrac><mrow><mi>S</mi><mo>(</mo><mi>t</mi><mo>+</mo><mi>h</mi><mo>)</mo><mo>−</mo><mi>S</mi><mo>(</mo><mi>t</mi><mo>)</mo></mrow><mi>h</mi></mfrac><mo>&lt;</mo><msup><mrow><mo>(</mo><mi>t</mi><mo>+</mo><mi>h</mi><mo>)</mo></mrow><mn>2</mn></msup></math>。各辺を <math><mi>h</mi></math> で割って <math><mi>h</mi><mo>→</mo><mn>0</mn></math> とすると、平均変化率は両側から <math><msup><mi>t</mi><mn>2</mn></msup></math> にはさまれて決まる</p><p class="formula" style="margin-bottom:4px"><math display="block"><msup><mi>t</mi><mn>2</mn></msup><mo>&lt;</mo><mfrac><mrow><mi>S</mi><mo>(</mo><mi>t</mi><mo>+</mo><mi>h</mi><mo>)</mo><mo>−</mo><mi>S</mi><mo>(</mo><mi>t</mi><mo>)</mo></mrow><mi>h</mi></mfrac><mo>&lt;</mo><msup><mrow><mo>(</mo><mi>t</mi><mo>+</mo><mi>h</mi><mo>)</mo></mrow><mn>2</mn></msup></math></p>
+          <p>真ん中の式は「面積の平均変化率」。<br>ここで <math><mi>h</mi><mo>→</mo><mn>0</mn></math>とすると、右辺の<math><msup><mrow><mo>(</mo><mi>t</mi><mo>+</mo><mi>h</mi><mo>)</mo></mrow><mn>2</mn></msup></math> は <math><msup><mi>t</mi><mn>2</mn></msup></math> に近づく。<br>左辺も <math><msup><mi>t</mi><mn>2</mn></msup></math> だから、<br><b>両側から <math><msup><mi>t</mi><mn>2</mn></msup></math> にはさまれて</b>、真ん中も <math><msup><mi>t</mi><mn>2</mn></msup></math> に近づくしかない（<b>はさみうちの考え方</b>）。</p>
         </div>
         <div class="step answer">
-          <h3>まとめ ― <i>S</i>′(<i>t</i>)＝<i>t</i><sup>2</sup></h3>
+          <h3>まとめ<math><mo>―</mo><mi>S</mi><mo>′</mo><mo>(</mo><mi>t</mi><mo>)</mo><mo>=</mo><msup><mi>t</mi><mn>2</mn></msup></math></h3>
           <p>平均変化率の極限は微分係数だから、はさみうちにより</p>
-          <p class="big"><i>S</i>′(<i>t</i>) ＝ <i>t</i><sup>2</sup></p>
-          <p>これは、もとの関数 <i>f</i>(<i>x</i>)＝<i>x</i><sup>2</sup> の <i>x</i>＝<i>t</i> での値 <i>f</i>(<i>t</i>) そのもの。つまり曲線の場合も <b><i>S</i>′(<i>t</i>)＝<i>f</i>(<i>t</i>)</b> が成り立つ。</p>
-          <p class="note">この「面積関数の微分はもとの関数」という事実が、<b>面積を定積分で計算できる</b>理由になっている。一般の関数 <i>f</i> でも同じ考え方で示すことができるよ。</p>
+          <p class="cite"><span class="cite-tag">使う性質</span>面積関数の微分 <math><mi>S</mi><mo>′</mo><mo>(</mo><mi>t</mi><mo>)</mo><mo>=</mo><mi>f</mi><mo>(</mo><mi>t</mi><mo>)</mo></math>。はさみうちで得た極限が、もとの関数の値そのものになることを確かめる</p><p class="big"><math display="block"><mi>S</mi><mo>′</mo><mo>(</mo><mi>t</mi><mo>)</mo><mo>=</mo><msup><mi>t</mi><mn>2</mn></msup></math></p>
+          <p>これは、もとの関数 <math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup></math> の <math><mi>x</mi><mo>=</mo><mi>t</mi></math> での値 <math><mi>f</mi><mo>(</mo><mi>t</mi><mo>)</mo></math>そのもの。<br>つまり曲線の場合も <b><math><mi>S</mi><mo>′</mo><mo>(</mo><mi>t</mi><mo>)</mo><mo>=</mo><mi>f</mi><mo>(</mo><mi>t</mi><mo>)</mo></math></b> が成り立つ。</p>
+          <p class="note">この「面積関数の微分はもとの関数」という事実が、<br><b>面積を定積分で計算できる</b>理由になっている。<br>一般の関数 <math><mi>f</mi></math> でも同じ考え方で示すことができるよ。</p>
         </div>
         <p class="prob-done">解説Aクリア！　次に、面積の公式を正式に確認しよう。</p>
       </section>
@@ -509,16 +563,16 @@
       <!-- ================= 面積の公式(1) ================= -->
       <div class="sec-head">
         <span class="sec-tag">解説</span>
-        <h2>面積の公式（1）― グラフが <i>x</i>軸の上にあるとき</h2>
+        <h2>面積の公式（1）― グラフが <math><mi>x</mi></math>軸の上にあるとき</h2>
         <span class="pno">教科書 p.213</span>
       </div>
 
       <section class="card">
         <div class="def">
-          <p>区間 <i>a</i>≦<i>x</i>≦<i>b</i> で <span class="key"><i>f</i>(<i>x</i>)≧0</span> のとき、曲線 <i>y</i>＝<i>f</i>(<i>x</i>) と <i>x</i>軸、および直線 <i>x</i>＝<i>a</i>、<i>x</i>＝<i>b</i> で囲まれた部分の面積 <i>S</i> は、次の式で求められる。</p>
+          <p>区間 <math><mi>a</mi><mo>≦</mo><mi>x</mi><mo>≦</mo><mi>b</mi></math> で <span class="key"><math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>≧</mo><mn>0</mn></math></span> のとき、<br>曲線 <math><mi>y</mi><mo>=</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>と <math><mi>x</mi></math>軸、および直線 <math><mi>x</mi><mo>=</mo><mi>a</mi></math>、<math><mi>x</mi><mo>=</mo><mi>b</mi></math> で囲まれた部分の面積 <math><mi>S</mi></math> は、<br>次の式で求められる。</p>
         </div>
-        <p class="formula">面積の公式（1）　<i>S</i> ＝ <span class="int"><span class="int-sym">∫</span><span class="int-up"><i>b</i></span><span class="int-lo"><i>a</i></span></span> <i>f</i>(<i>x</i>) <i>dx</i>　（<i>f</i>(<i>x</i>)≧0 のとき）</p>
-        <p>やることはシンプルで、<b>「囲まれた部分の右端と左端を積分区間にして、<i>f</i>(<i>x</i>) をそのまま積分する」</b>だけ。グラフ全体が <i>x</i>軸の上（または上と接する位置）にあるかどうかを、先に図で確認するのがコツだよ。</p>
+        <p class="formula">面積の公式（1）　<math><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mspace width="2em"/><mo>(</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>≧</mo><mn>0</mn></math>のとき）</p>
+        <p>やることはシンプルで、<b>「囲まれた部分の右端と左端を積分区間にして、<br><math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>をそのまま積分する」</b>だけ。<br>グラフ全体が <math><mi>x</mi></math>軸の上（または上と接する位置）にあるかどうかを、<br>先に図で確認するのがコツだよ。</p>
       </section>
 
       <!-- ================= 例19 ================= -->
@@ -537,7 +591,7 @@
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
         <div class="qside">
-        <p class="prob-q">放物線 <i>y</i>＝<i>x</i><sup>2</sup>＋1 と <i>x</i>軸、および直線 <i>x</i>＝1、<i>x</i>＝2 で囲まれた部分の面積 <i>S</i> を求めよ。</p>
+        <p class="prob-q">放物線 <math><mi>y</mi><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>1</mn></math>と <math><mi>x</mi></math>軸、および直線 <math><mi>x</mi><mo>=</mo><mn>1</mn></math>、<math><mi>x</mi><mo>=</mo><mn>2</mn></math>で囲まれた部分の面積 <math><mi>S</mi></math> を求めよ。</p>
         <figure>
           <div class="figbox">
             <svg viewBox="0 0 520 300" role="img" aria-label="放物線yイコールxの2乗プラス1とx軸、直線xイコール1、xイコール2で囲まれた部分の図">
@@ -570,30 +624,34 @@
               <text x="310" y="272" text-anchor="middle" class="svg-txt" font-size="16">2</text>
             </svg>
           </div>
-          <figcaption>放物線 <i>y</i>＝<i>x</i><sup>2</sup>＋1 は、どこでも <i>x</i>軸より上にある。囲まれた部分は <i>x</i>＝1 から <i>x</i>＝2 までの帯のような形。</figcaption>
+          <figcaption>放物線 <math><mi>y</mi><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>1</mn></math>は、どこでも <math><mi>x</mi></math>軸より上にある。囲まれた部分は <math><mi>x</mi><mo>=</mo><mn>1</mn></math>から <math><mi>x</mi><mo>=</mo><mn>2</mn></math>までの帯のような形。</figcaption>
         </figure>
         </div>
 
         <div class="step hint">
           <h3>ヒント 1 ― 公式（1）が使えるか確認する</h3>
-          <p><i>x</i><sup>2</sup>＋1 は、<i>x</i><sup>2</sup>≧0 だから <b>いつも 1 以上で、つねに正</b>。グラフは <i>x</i>軸の上にあるので、公式（1）がそのまま使える。</p>
-          <p>求める部分は図の斜線部分で、区間は <b>1≦<i>x</i>≦2</b> だね。</p>
+          <p><math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>1</mn></math>は、<math><msup><mi>x</mi><mn>2</mn></msup><mo>≧</mo><mn>0</mn></math>だから <b>いつも 1 以上で、つねに正</b>。<br>グラフは <math><mi>x</mi></math>軸の上にあるので、公式（1）がそのまま使える。</p>
+          <p>求める部分は図の斜線部分で、区間は <b><math><mn>1</mn><mo>≦</mo><mi>x</mi><mo>≦</mo><mn>2</mn></math></b> だね。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 公式に当てはめて式を立てる</h3>
-          <p>公式（1）に <i>f</i>(<i>x</i>)＝<i>x</i><sup>2</sup>＋1、<i>a</i>＝1、<i>b</i>＝2 を当てはめると</p>
-          <p class="formula" style="margin-bottom:4px"><i>S</i> ＝ <span class="int"><span class="int-sym">∫</span><span class="int-up">2</span><span class="int-lo">1</span></span> (<i>x</i><sup>2</sup>＋1) <i>dx</i></p>
+          <p>公式（1）に <math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>1</mn></math>、<br><math><mi>a</mi><mo>=</mo><mn>1</mn></math>、<math><mi>b</mi><mo>=</mo><mn>2</mn></math>を当てはめると</p>
+          <p class="cite"><span class="cite-tag">使う公式</span>面積の公式（1） <math><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi></math>。<math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>1</mn></math>、<math><mi>a</mi><mo>=</mo><mn>1</mn></math>、<math><mi>b</mi><mo>=</mo><mn>2</mn></math> を当てはめて、面積を定積分の式で表す</p><p class="formula" style="margin-bottom:4px"><math display="block"><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mn>1</mn><mn>2</mn></msubsup><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>1</mn><mo>)</mo><mi>dx</mi></math></p>
           <p>あとは前項の定積分の計算をするだけだ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 3 ― 定積分を計算する</h3>
-          <p><i>x</i><sup>2</sup>＋1 の原始関数は <span class="fr"><i>1</i><i>3</i></span><i>x</i><sup>3</sup>＋<i>x</i> だから</p>
-          <p class="formula" style="margin-bottom:4px"><i>S</i> ＝ [<span class="fr"><i>1</i><i>3</i></span><i>x</i><sup>3</sup>＋<i>x</i>]<sub>1</sub><sup>2</sup> ＝ (<span class="fr"><i>8</i><i>3</i></span>＋2) − (<span class="fr"><i>1</i><i>3</i></span>＋1) ＝ <span class="fr"><i>14</i><i>3</i></span> − <span class="fr"><i>4</i><i>3</i></span></p>
+          <p><math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>1</mn></math>の原始関数は <math><mfrac><mn>1</mn><mn>3</mn></mfrac><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mi>x</mi></math> だから</p>
+          <p class="cite"><span class="cite-tag">使う公式</span>定積分の計算 <math><mfrac><mn>1</mn><mn>3</mn></mfrac><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mi>x</mi></math>。<math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>1</mn></math> の原始関数に上限2と下限1を代入し、その差を取って計算する</p><div class="chain-crow formula" style="margin-bottom:4px">
+<div class="crow"><math displaystyle="true"><mi>S</mi><mo>=</mo><msup><msub><mrow><mo>[</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mi>x</mi><mo>]</mo></mrow><mn>1</mn></msub><mn>2</mn></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>S</mi></mphantom><mo>=</mo><mo>(</mo><mfrac><mn>8</mn><mn>3</mn></mfrac><mo>+</mo><mn>2</mn><mo>)</mo><mo>−</mo><mo>(</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>+</mo><mn>1</mn><mo>)</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>S</mi></mphantom><mo>=</mo><mfrac><mn>14</mn><mn>3</mn></mfrac><mo>−</mo><mfrac><mn>4</mn><mn>3</mn></mfrac></math></div>
+</div>
         </div>
         <div class="step answer">
           <h3>解答</h3>
-          <p class="big"><i>S</i> ＝ <span class="fr"><i>10</i><i>3</i></span></p>
-          <p>手順は「①グラフが <i>x</i>軸の上にあることを確認 → ②区間を決めて公式に当てはめる → ③定積分を計算」の3ステップ。これがこの項の基本の流れだよ。</p>
+          <p class="big"><math display="block"><mi>S</mi><mo>=</mo><mfrac><mn>10</mn><mn>3</mn></mfrac></math></p>
+          <p>手順は「①グラフが <math><mi>x</mi></math>軸の上にあることを確認 <br>→ ②区間を決めて公式に当てはめる <br>→ ③定積分を計算」の3ステップ。<br>これがこの項の基本の流れだよ。</p>
         </div>
         <p class="prob-done">例19クリア！　次は練習35で自分でやってみよう。</p>
       </section>
@@ -605,13 +663,13 @@
         <span class="pno">教科書 p.213</span>
       </div>
 
-      <section class="card prob" id="prob-ren35">
+      <section class="nofig card prob" id="prob-ren35">
         <div class="prob-head">
           <span class="prob-tag ren">練習 35</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
         <div class="qside">
-        <p class="prob-q">次の曲線や直線で囲まれた部分の面積 <i>S</i> を求めよ。</p>
+        <p class="prob-q">次の曲線や直線で囲まれた部分の面積 <math><mi>S</mi></math> を求めよ。</p>
         </div>
 
         <div class="tabs" role="tablist" aria-label="練習35の小問">
@@ -622,7 +680,7 @@
         <!-- (1) -->
         <div class="tabpanel show" id="panel-ren35-1" data-flow="ren35-1" data-label="練習35 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1) 放物線 <i>y</i>＝<i>x</i><sup>2</sup> と <i>x</i>軸、および直線 <i>x</i>＝1、<i>x</i>＝3</span>
+            <span class="sub prob-q" style="margin:0">(1) 放物線 <math><mi>y</mi><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup></math> と <math><mi>x</mi></math>軸、および直線 <math><mi>x</mi><mo>=</mo><mn>1</mn></math>、<math><mi>x</mi><mo>=</mo><mn>3</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
@@ -654,27 +712,31 @@
                 <text x="355" y="280" text-anchor="middle" class="svg-txt" font-size="16">3</text>
               </svg>
             </div>
-            <figcaption>放物線は 1≦<i>x</i>≦3 の範囲では <i>x</i>軸の上にある。</figcaption>
+            <figcaption>放物線は<math><mn>1</mn><mo>≦</mo><mi>x</mi><mo>≦</mo><mn>3</mn></math>の範囲では <math><mi>x</mi></math>軸の上にある。</figcaption>
           </figure>
           <div class="step hint">
             <h3>ヒント 1 ― 公式（1）が使えるか確認する</h3>
-            <p><i>y</i>＝<i>x</i><sup>2</sup> はつねに <i>x</i><sup>2</sup>≧0 で、区間 1≦<i>x</i>≦3 ではグラフは <i>x</i>軸の上。だから公式（1）が使える。</p>
+            <p><math><mi>y</mi><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup></math> はつねに <math><msup><mi>x</mi><mn>2</mn></msup><mo>≧</mo><mn>0</mn></math>で、<br>区間<math><mn>1</mn><mo>≦</mo><mi>x</mi><mo>≦</mo><mn>3</mn></math>ではグラフは <math><mi>x</mi></math>軸の上。<br>だから公式（1）が使える。</p>
             <p>求める部分は図の斜線部分だ。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 公式に当てはめて式を立てる</h3>
-            <p>区間は <i>x</i>＝1 から <i>x</i>＝3 までだから</p>
-            <p class="formula" style="margin-bottom:4px"><i>S</i> ＝ <span class="int"><span class="int-sym">∫</span><span class="int-up">3</span><span class="int-lo">1</span></span> <i>x</i><sup>2</sup> <i>dx</i></p>
+            <p>区間は <math><mi>x</mi><mo>=</mo><mn>1</mn></math>から <math><mi>x</mi><mo>=</mo><mn>3</mn></math>までだから</p>
+            <p class="cite"><span class="cite-tag">使う公式</span>面積の公式（1） <math><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi></math>。<math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup></math>、区間 <math><mn>1</mn><mo>≦</mo><mi>x</mi><mo>≦</mo><mn>3</mn></math> を当てはめて式を立てる</p><p class="formula" style="margin-bottom:4px"><math display="block"><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mn>1</mn><mn>3</mn></msubsup><msup><mi>x</mi><mn>2</mn></msup><mi>dx</mi></math></p>
           </div>
           <div class="step hint">
             <h3>ヒント 3 ― 定積分を計算する</h3>
-            <p><i>x</i><sup>2</sup> の原始関数は <span class="fr"><i>1</i><i>3</i></span><i>x</i><sup>3</sup> だから</p>
-            <p class="formula" style="margin-bottom:4px"><i>S</i> ＝ [<span class="fr"><i>1</i><i>3</i></span><i>x</i><sup>3</sup>]<sub>1</sub><sup>3</sup> ＝ <span class="fr"><i>27</i><i>3</i></span> − <span class="fr"><i>1</i><i>3</i></span> ＝ 9 − <span class="fr"><i>1</i><i>3</i></span></p>
+            <p><math><msup><mi>x</mi><mn>2</mn></msup></math> の原始関数は <math><mfrac><mn>1</mn><mn>3</mn></mfrac><msup><mi>x</mi><mn>3</mn></msup></math> だから</p>
+            <p class="cite"><span class="cite-tag">使う公式</span>定積分の計算 <math><mfrac><mn>1</mn><mn>3</mn></mfrac><msup><mi>x</mi><mn>3</mn></msup></math>。<math><msup><mi>x</mi><mn>2</mn></msup></math> の原始関数に上限3と下限1を代入し、その差を取る</p><div class="chain-crow formula" style="margin-bottom:4px">
+<div class="crow"><math displaystyle="true"><mi>S</mi><mo>=</mo><msup><msub><mrow><mo>[</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><msup><mi>x</mi><mn>3</mn></msup><mo>]</mo></mrow><mn>1</mn></msub><mn>3</mn></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>S</mi></mphantom><mo>=</mo><mfrac><mn>27</mn><mn>3</mn></mfrac><mo>−</mo><mfrac><mn>1</mn><mn>3</mn></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>S</mi></mphantom><mo>=</mo><mn>9</mn><mo>−</mo><mfrac><mn>1</mn><mn>3</mn></mfrac></math></div>
+</div>
           </div>
           <div class="step answer">
             <h3>解答 (1)</h3>
-            <p class="big"><i>S</i> ＝ <span class="fr"><i>26</i><i>3</i></span></p>
-            <p>9＝<span class="fr"><i>27</i><i>3</i></span> と通分してから引くのが計算のコツだよ。</p>
+            <p class="big"><math display="block"><mi>S</mi><mo>=</mo><mfrac><mn>26</mn><mn>3</mn></mfrac></math></p>
+            <p><math><mn>9</mn><mo>=</mo><mfrac><mn>27</mn><mn>3</mn></mfrac></math> と通分してから引くのが計算のコツだよ。</p>
           </div>
           <p class="prob-done">(1) クリア！　(2) のタブも開いてみよう。</p>
         </div>
@@ -682,7 +744,7 @@
         <!-- (2) -->
         <div class="tabpanel" id="panel-ren35-2" data-flow="ren35-2" data-label="練習35 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2) 放物線 <i>y</i>＝<i>x</i><sup>2</sup>＋2 と <i>x</i>軸、および直線 <i>x</i>＝−1、<i>x</i>＝2</span>
+            <span class="sub prob-q" style="margin:0">(2) 放物線 <math><mi>y</mi><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn></math>と <math><mi>x</mi></math>軸、および直線 <math><mi>x</mi><mo>=</mo><mo>−</mo><mn>1</mn></math>、<math><mi>x</mi><mo>=</mo><mn>2</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
@@ -714,27 +776,31 @@
                 <text x="344" y="284" text-anchor="middle" class="svg-txt" font-size="16">2</text>
               </svg>
             </div>
-            <figcaption>放物線は <i>y</i>＝<i>x</i><sup>2</sup> を上に2だけ平行移動したもので、全体が <i>x</i>軸より上にある。</figcaption>
+            <figcaption>放物線は <math><mi>y</mi><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup></math> を上に2だけ平行移動したもので、全体が <math><mi>x</mi></math>軸より上にある。</figcaption>
           </figure>
           <div class="step hint">
             <h3>ヒント 1 ― 公式（1）が使えるか確認する</h3>
-            <p><i>x</i><sup>2</sup>＋2 はつねに 2 以上で正。区間 −1≦<i>x</i>≦2 の全体でグラフは <i>x</i>軸の上にあるので、公式（1）が使える。</p>
+            <p><math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn></math>はつねに 2 以上で正。<br>区間<math><mo>−</mo><mn>1</mn><mo>≦</mo><mi>x</mi><mo>≦</mo><mn>2</mn></math>の全体でグラフは <math><mi>x</mi></math>軸の上にあるので、<br>公式（1）が使える。</p>
             <p>区間の左端が負の数（−1）でも、手順は同じだよ。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 公式に当てはめて式を立てる</h3>
-            <p class="formula" style="margin-bottom:4px"><i>S</i> ＝ <span class="int"><span class="int-sym">∫</span><span class="int-up">2</span><span class="int-lo">−1</span></span> (<i>x</i><sup>2</sup>＋2) <i>dx</i></p>
-            <p>原始関数は <span class="fr"><i>1</i><i>3</i></span><i>x</i><sup>3</sup>＋2<i>x</i> だね。</p>
+            <p class="cite"><span class="cite-tag">使う公式</span>面積の公式（1） <math><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi></math>。<math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn></math>、区間 <math><mo>−</mo><mn>1</mn><mo>≦</mo><mi>x</mi><mo>≦</mo><mn>2</mn></math> を当てはめて式を立てる</p><p class="formula" style="margin-bottom:4px"><math display="block"><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mrow><mo>−</mo><mn>1</mn></mrow><mn>2</mn></msubsup><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mo>)</mo><mi>dx</mi></math></p>
+            <p>原始関数は <math><mfrac><mn>1</mn><mn>3</mn></mfrac><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi></math> だね。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 3 ― 定積分を計算する</h3>
-            <p class="formula" style="margin-bottom:4px"><i>S</i> ＝ [<span class="fr"><i>1</i><i>3</i></span><i>x</i><sup>3</sup>＋2<i>x</i>]<sub>−1</sub><sup>2</sup> ＝ (<span class="fr"><i>8</i><i>3</i></span>＋4) − (−<span class="fr"><i>1</i><i>3</i></span>−2) ＝ <span class="fr"><i>20</i><i>3</i></span> ＋ <span class="fr"><i>7</i><i>3</i></span></p>
-            <p>下限に −1 を代入した部分の<b>符号</b>に注意。（−1）<sup>3</sup>＝−1、2×(−1)＝−2 で、全体にマイナスがかかるから「引く負の数＝足す」になるよ。</p>
+            <p class="cite"><span class="cite-tag">使う公式</span>定積分の計算 <math><mfrac><mn>1</mn><mn>3</mn></mfrac><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi></math>。原始関数に上限2と下限 −1 を代入し、その差を取る</p><div class="chain-crow formula" style="margin-bottom:4px">
+<div class="crow"><math displaystyle="true"><mi>S</mi><mo>=</mo><msup><msub><mrow><mo>[</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>]</mo></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msub><mn>2</mn></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>S</mi></mphantom><mo>=</mo><mo>(</mo><mfrac><mn>8</mn><mn>3</mn></mfrac><mo>+</mo><mn>4</mn><mo>)</mo><mo>−</mo><mo>(</mo><mo>−</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>−</mo><mn>2</mn><mo>)</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>S</mi></mphantom><mo>=</mo><mfrac><mn>20</mn><mn>3</mn></mfrac><mo>+</mo><mfrac><mn>7</mn><mn>3</mn></mfrac></math></div>
+</div>
+            <p>下限に −1 を代入した部分の<b>符号</b>に注意。<br><math><msup><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mn>3</mn></msup><mo>=</mo><mo>−</mo><mn>1</mn></math>、<math><mn>2</mn><mo>×</mo><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo><mo>=</mo><mo>−</mo><mn>2</mn></math>で、<br>全体にマイナスがかかるから<br>「引く負の数＝足す」になるよ。</p>
           </div>
           <div class="step answer">
             <h3>解答 (2)</h3>
-            <p class="big"><i>S</i> ＝ 9</p>
-            <p><span class="fr"><i>20</i><i>3</i></span>＋<span class="fr"><i>7</i><i>3</i></span>＝<span class="fr"><i>27</i><i>3</i></span>＝9。きれいな整数になることもあるんだね。</p>
+            <p class="big"><math display="block"><mi>S</mi><mo>=</mo><mn>9</mn></math></p>
+            <p><math><mfrac><mn>20</mn><mn>3</mn></mfrac><mo>+</mo><mfrac><mn>7</mn><mn>3</mn></mfrac><mo>=</mo><mfrac><mn>27</mn><mn>3</mn></mfrac><mo>=</mo><mn>9</mn></math>。きれいな整数になることもあるんだね。</p>
           </div>
           <p class="prob-done">(2) クリア！　練習35はこれで完了。次は「グラフがx軸より下にあるとき」の公式を学ぼう。</p>
         </div>
@@ -743,7 +809,7 @@
       <!-- ================= 面積の公式(2) ================= -->
       <div class="sec-head">
         <span class="sec-tag">解説</span>
-        <h2>面積の公式（2）― グラフが <i>x</i>軸の下にあるとき</h2>
+        <h2>面積の公式（2）― グラフが <math><mi>x</mi></math>軸の下にあるとき</h2>
         <span class="pno">教科書 p.214</span>
       </div>
 
@@ -756,7 +822,7 @@
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <div class="qside">
-        <p class="prob-q">グラフが <i>x</i>軸より<b>下</b>にあるとき、そのまま積分すると値は負になってしまう。面積は正の数のはずなのに、どうすればよいか、図で考えよう。</p>
+        <p class="prob-q">グラフが <math><mi>x</mi></math>軸より<b>下</b>にあるとき、そのまま積分すると値は負になってしまう。面積は正の数のはずなのに、どうすればよいか、図で考えよう。</p>
         <figure>
           <div class="figbox">
             <svg viewBox="0 0 520 300" role="img" aria-label="x軸より下にある曲線yイコールf(x)とx軸で囲まれた部分と、それをx軸について折り返したyイコールマイナスf(x)の図">
@@ -797,25 +863,25 @@
               <text x="438" y="228" class="svg-txt" font-size="16" font-style="italic">y＝f(x)</text>
             </svg>
           </div>
-          <figcaption>下にある部分を <i>x</i>軸について「パタン」と折り返すと、<i>x</i>軸の上に来て、公式（1）が使える形になる。</figcaption>
+          <figcaption>下にある部分を <math><mi>x</mi></math>軸について「パタン」と折り返すと、<math><mi>x</mi></math>軸の上に来て、公式（1）が使える形になる。</figcaption>
         </figure>
         </div>
 
         <div class="step hint">
           <h3>ヒント 1 ― そのまま積分すると何が起こるか</h3>
-          <p>区間 <i>a</i>≦<i>x</i>≦<i>b</i> で <i>f</i>(<i>x</i>)≦0 のとき、<span class="int"><span class="int-sym">∫</span><span class="int-up"><i>b</i></span><span class="int-lo"><i>a</i></span></span> <i>f</i>(<i>x</i>) <i>dx</i> の値は<b>負</b>になる。負の値のままでは面積とは言えない。</p>
-          <p>でも、囲まれた部分の<b>広さそのもの</b>はちゃんと存在する。符号だけが問題なんだ。</p>
+          <p>区間 <math><mi>a</mi><mo>≦</mo><mi>x</mi><mo>≦</mo><mi>b</mi></math> で <math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>≦</mo><mn>0</mn></math>のとき、<math><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi></math> の値は<b>負</b>になる。<br>負の値のままでは面積とは言えない。</p>
+          <p>でも、囲まれた部分の<b>広さそのもの</b>はちゃんと存在する。<br>符号だけが問題なんだ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― <i>x</i>軸について折り返す</h3>
-          <p>グラフ <i>y</i>＝<i>f</i>(<i>x</i>) を <i>x</i>軸について折り返すと、グラフ <i>y</i>＝−<i>f</i>(<i>x</i>) になる。−<i>f</i>(<i>x</i>)≧0 だから、折り返した部分には公式（1）が使える。</p>
-          <p>そして、折り返しても<b>面積の大きさは変わらない</b>。だから、下にある部分の面積は、折り返した上の部分の面積と等しい。</p>
+          <h3>ヒント<math><mn>2</mn><mo>―</mo><mi>x</mi></math>軸について折り返す</h3>
+          <p>グラフ <math><mi>y</mi><mo>=</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>を <math><mi>x</mi></math>軸について折り返すと、<br>グラフ <math><mi>y</mi><mo>=</mo><mo>−</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>になる。<br><math><mo>−</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>≧</mo><mn>0</mn></math>だから、折り返した部分には公式（1）が使える。</p>
+          <p>そして、折り返しても<b>面積の大きさは変わらない</b>。<br>だから、下にある部分の面積は、<br>折り返した上の部分の面積と等しい。</p>
         </div>
         <div class="step answer">
           <h3>面積の公式（2）</h3>
-          <p>区間 <i>a</i>≦<i>x</i>≦<i>b</i> で <i>f</i>(<i>x</i>)≦0 のとき、曲線 <i>y</i>＝<i>f</i>(<i>x</i>) と <i>x</i>軸で囲まれた部分の面積 <i>S</i> は</p>
-          <p class="big"><i>S</i> ＝ <span class="int"><span class="int-sym">∫</span><span class="int-up"><i>b</i></span><span class="int-lo"><i>a</i></span></span> {−<i>f</i>(<i>x</i>)} <i>dx</i></p>
-          <p>ポイントは<b>「マイナスをつけてから積分する」</b>こと。−<i>f</i>(<i>x</i>) の原始関数は、<i>f</i>(<i>x</i>) の原始関数のマイナス倍だから、計算自体は難しくないよ。</p>
+          <p>区間 <math><mi>a</mi><mo>≦</mo><mi>x</mi><mo>≦</mo><mi>b</mi></math> で <math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>≦</mo><mn>0</mn></math>のとき、<br>曲線 <math><mi>y</mi><mo>=</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>と <math><mi>x</mi></math>軸で囲まれた部分の面積 <math><mi>S</mi></math> は</p>
+          <p class="cite"><span class="cite-tag">使う公式</span>面積の公式（1）（折り返したグラフに使う） <math><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mo>{</mo><mo>−</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>}</mo><mi>dx</mi></math>。折り返した <math><mo>−</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>≧</mo><mn>0</mn></math> の部分に公式（1）を使うと、下の部分の面積も同じ式で表せる</p><p class="big"><math display="block"><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mo>{</mo><mo>−</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>}</mo><mi>dx</mi></math></p>
+          <p>ポイントは<b>「マイナスをつけてから積分する」</b>こと。<br><math><mo>−</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>の原始関数は、<br><math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>の原始関数のマイナス倍だから、<br>計算自体は難しくないよ。</p>
         </div>
         <p class="prob-done">公式（2）を確認した！　次の例題8で実際に使ってみよう。</p>
       </section>
@@ -836,7 +902,7 @@
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
         <div class="qside">
-        <p class="prob-q">放物線 <i>y</i>＝<i>x</i><sup>2</sup>−4 と <i>x</i>軸で囲まれた部分の面積 <i>S</i> を求めよ。</p>
+        <p class="prob-q">放物線 <math><mi>y</mi><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn></math>と <math><mi>x</mi></math>軸で囲まれた部分の面積 <math><mi>S</mi></math> を求めよ。</p>
         <figure>
           <div class="figbox">
             <svg viewBox="0 0 520 290" role="img" aria-label="放物線yイコールxの2乗マイナス4とx軸で囲まれた、x軸より下の部分の図">
@@ -869,32 +935,36 @@
               <text x="272" y="238" class="svg-txt" font-size="15">−4</text>
             </svg>
           </div>
-          <figcaption>放物線と <i>x</i>軸で囲まれた部分は、<i>x</i>軸より<b>下</b>にある。公式（2）の出番だ。</figcaption>
+          <figcaption>放物線と <math><mi>x</mi></math>軸で囲まれた部分は、<math><mi>x</mi></math>軸より<b>下</b>にある。公式（2）の出番だ。</figcaption>
         </figure>
         </div>
 
         <div class="step hint">
           <h3>ヒント 1 ― まず交点（区間）を求める</h3>
-          <p>「放物線と <i>x</i>軸で囲まれた部分」では、区間は交点から決まる。<i>x</i><sup>2</sup>−4＝0 を解くと <i>x</i><sup>2</sup>＝4 より <b><i>x</i>＝±2</b>。</p>
-          <p>区間 −2≦<i>x</i>≦2 では <i>x</i><sup>2</sup>−4≦0 で、囲まれた部分は図の斜線部分（<i>x</i>軸の下）になる。</p>
+          <p>「放物線と <math><mi>x</mi></math>軸で囲まれた部分」では、区間は交点から決まる。<br><math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mo>=</mo><mn>0</mn></math>を解くと <math><msup><mi>x</mi><mn>2</mn></msup><mo>=</mo><mn>4</mn></math>より <b><math><mi>x</mi><mo>=</mo><mo>±</mo><mn>2</mn></math></b>。</p>
+          <p>区間<math><mo>−</mo><mn>2</mn><mo>≦</mo><mi>x</mi><mo>≦</mo><mn>2</mn></math>では <math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mo>≦</mo><mn>0</mn></math>で、<br>囲まれた部分は図の斜線部分<math><mo>(</mo><mi>x</mi></math>軸の下）になる。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 公式（2）に当てはめる</h3>
-          <p><i>f</i>(<i>x</i>)≦0 だから、<b>マイナスをつけて</b>積分する。</p>
-          <p class="formula" style="margin-bottom:4px"><i>S</i> ＝ <span class="int"><span class="int-sym">∫</span><span class="int-up">2</span><span class="int-lo">−2</span></span> {−(<i>x</i><sup>2</sup>−4)} <i>dx</i> ＝ <span class="int"><span class="int-sym">∫</span><span class="int-up">2</span><span class="int-lo">−2</span></span> (4−<i>x</i><sup>2</sup>) <i>dx</i></p>
-          <p>−(<i>x</i><sup>2</sup>−4)＝4−<i>x</i><sup>2</sup> と符号を整理してから計算しよう。</p>
+          <p><math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>≦</mo><mn>0</mn></math>だから、<b>マイナスをつけて</b>積分する。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span>面積の公式（2） <math><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mo>{</mo><mo>−</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>}</mo><mi>dx</mi></math>。<math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mo>≦</mo><mn>0</mn></math> なので、マイナスをつけて積分する形にする</p><p class="formula" style="margin-bottom:4px"><math display="block"><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mrow><mo>−</mo><mn>2</mn></mrow><mn>2</mn></msubsup><mo>{</mo><mo>−</mo><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mo>)</mo><mo>}</mo><mi>dx</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mrow><mo>−</mo><mn>2</mn></mrow><mn>2</mn></msubsup><mo>(</mo><mn>4</mn><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>)</mo><mi>dx</mi></math></p>
+          <p><math><mo>−</mo><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mo>)</mo><mo>=</mo><mn>4</mn><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup></math> と符号を整理してから計算しよう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 3 ― 定積分を計算する</h3>
-          <p>4−<i>x</i><sup>2</sup> の原始関数は 4<i>x</i>−<span class="fr"><i>1</i><i>3</i></span><i>x</i><sup>3</sup> だから</p>
-          <p class="formula" style="margin-bottom:4px"><i>S</i> ＝ [4<i>x</i>−<span class="fr"><i>1</i><i>3</i></span><i>x</i><sup>3</sup>]<sub>−2</sub><sup>2</sup> ＝ (8−<span class="fr"><i>8</i><i>3</i></span>) − (−8＋<span class="fr"><i>8</i><i>3</i></span>) ＝ <span class="fr"><i>16</i><i>3</i></span> − (−<span class="fr"><i>16</i><i>3</i></span>)</p>
+          <p><math><mn>4</mn><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup></math> の原始関数は<math><mn>4</mn><mi>x</mi><mo>−</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><msup><mi>x</mi><mn>3</mn></msup></math> だから</p>
+          <p class="cite"><span class="cite-tag">使う公式</span>定積分の計算 <math><mn>4</mn><mi>x</mi><mo>−</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><msup><mi>x</mi><mn>3</mn></msup></math>。<math><mn>4</mn><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup></math> の原始関数に上限2と下限 −2 を代入し、その差を取る</p><div class="chain-crow formula" style="margin-bottom:4px">
+<div class="crow"><math displaystyle="true"><mi>S</mi><mo>=</mo><msup><msub><mrow><mo>[</mo><mn>4</mn><mi>x</mi><mo>−</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><msup><mi>x</mi><mn>3</mn></msup><mo>]</mo></mrow><mrow><mo>−</mo><mn>2</mn></mrow></msub><mn>2</mn></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>S</mi></mphantom><mo>=</mo><mo>(</mo><mn>8</mn><mo>−</mo><mfrac><mn>8</mn><mn>3</mn></mfrac><mo>)</mo><mo>−</mo><mo>(</mo><mo>−</mo><mn>8</mn><mo>+</mo><mfrac><mn>8</mn><mn>3</mn></mfrac><mo>)</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>S</mi></mphantom><mo>=</mo><mfrac><mn>16</mn><mn>3</mn></mfrac><mo>−</mo><mo>(</mo><mo>−</mo><mfrac><mn>16</mn><mn>3</mn></mfrac><mo>)</mo></math></div>
+</div>
         </div>
         <div class="step answer">
           <h3>解答</h3>
-          <p class="big"><i>S</i> ＝ <span class="fr"><i>32</i><i>3</i></span></p>
-          <p class="note"><b>別解（対称性を使う）：</b>放物線 <i>y</i>＝<i>x</i><sup>2</sup>−4 は <i>y</i>軸について対称だから、面積は右半分（0≦<i>x</i>≦2）の2倍に等しい。<br />
-          <i>S</i> ＝ 2<span class="int"><span class="int-sym">∫</span><span class="int-up">2</span><span class="int-lo">0</span></span> (4−<i>x</i><sup>2</sup>) <i>dx</i> ＝ 2[4<i>x</i>−<span class="fr"><i>1</i><i>3</i></span><i>x</i><sup>3</sup>]<sub>0</sub><sup>2</sup> ＝ 2(8−<span class="fr"><i>8</i><i>3</i></span>) ＝ 2・<span class="fr"><i>16</i><i>3</i></span> ＝ <span class="fr"><i>32</i><i>3</i></span><br />
-          上限・下限の両方に代入する手間が半分になる、便利な方法だよ。</p>
+          <p class="big"><math display="block"><mi>S</mi><mo>=</mo><mfrac><mn>32</mn><mn>3</mn></mfrac></math></p>
+          <p class="note"><b>別解（対称性を使う）：</b>放物線 <math><mi>y</mi><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn></math>は <math><mi>y</mi></math>軸について対称だから、<br>面積は右半分<math><mo>(</mo><mn>0</mn><mo>≦</mo><mi>x</mi><mo>≦</mo><mn>2</mn><mo>)</mo></math>の2倍に等しい。<br />
+          <math><mi>S</mi><mo>=</mo><mn>2</mn><msubsup><mo class="int-op">∫</mo><mn>0</mn><mn>2</mn></msubsup><mo>(</mo><mn>4</mn><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>)</mo><mi>dx</mi><mo>=</mo><mn>2</mn><msup><msub><mrow><mo>[</mo><mn>4</mn><mi>x</mi><mo>−</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><msup><mi>x</mi><mn>3</mn></msup><mo>]</mo></mrow><mn>0</mn></msub><mn>2</mn></msup><mo>=</mo><mn>2</mn><mo>(</mo><mn>8</mn><mo>−</mo><mfrac><mn>8</mn><mn>3</mn></mfrac><mo>)</mo><mo>=</mo><mn>2</mn><mo>⋅</mo><mfrac><mn>16</mn><mn>3</mn></mfrac><mo>=</mo><mfrac><mn>32</mn><mn>3</mn></mfrac></math><br />
+          上限・下限の両方に代入する手間が半分になる、<br>便利な方法だよ。</p>
         </div>
         <p class="prob-done">例題8クリア！　最後は練習36に挑戦しよう。</p>
       </section>
@@ -906,13 +976,13 @@
         <span class="pno">教科書 p.214</span>
       </div>
 
-      <section class="card prob" id="prob-ren36">
+      <section class="nofig card prob" id="prob-ren36">
         <div class="prob-head">
           <span class="prob-tag ren">練習 36</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
         <div class="qside">
-        <p class="prob-q">次の放物線と <i>x</i>軸で囲まれた部分の面積 <i>S</i> を求めよ。</p>
+        <p class="prob-q">次の放物線と <math><mi>x</mi></math>軸で囲まれた部分の面積 <math><mi>S</mi></math> を求めよ。</p>
         </div>
 
         <div class="tabs" role="tablist" aria-label="練習36の小問">
@@ -923,7 +993,7 @@
         <!-- (1) -->
         <div class="tabpanel show" id="panel-ren36-1" data-flow="ren36-1" data-label="練習36 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1) 放物線 <i>y</i>＝<i>x</i><sup>2</sup>−1 と <i>x</i>軸</span>
+            <span class="sub prob-q" style="margin:0">(1) 放物線 <math><mi>y</mi><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn></math>と <math><mi>x</mi></math>軸</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
@@ -955,27 +1025,31 @@
                 <text x="355" y="134" text-anchor="middle" class="svg-txt" font-size="16">1</text>
               </svg>
             </div>
-            <figcaption>放物線と <i>x</i>軸で囲まれた部分は <i>x</i>軸より下にある。</figcaption>
+            <figcaption>放物線と <math><mi>x</mi></math>軸で囲まれた部分は <math><mi>x</mi></math>軸より下にある。</figcaption>
           </figure>
           <div class="step hint">
             <h3>ヒント 1 ― 交点を求めて区間を決める</h3>
-            <p><i>x</i><sup>2</sup>−1＝0 を解くと <i>x</i><sup>2</sup>＝1 より <b><i>x</i>＝±1</b>。</p>
-            <p>区間 −1≦<i>x</i>≦1 では <i>x</i><sup>2</sup>−1≦0 で、囲まれた部分は図の斜線部分（<i>x</i>軸の下）だ。</p>
+            <p><math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>=</mo><mn>0</mn></math>を解くと <math><msup><mi>x</mi><mn>2</mn></msup><mo>=</mo><mn>1</mn></math>より <b><math><mi>x</mi><mo>=</mo><mo>±</mo><mn>1</mn></math></b>。</p>
+            <p>区間<math><mo>−</mo><mn>1</mn><mo>≦</mo><mi>x</mi><mo>≦</mo><mn>1</mn></math>では <math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>≦</mo><mn>0</mn></math>で、<br>囲まれた部分は図の斜線部分<math><mo>(</mo><mi>x</mi></math>軸の下）だ。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 公式（2）に当てはめる</h3>
-            <p><i>f</i>(<i>x</i>)≦0 だから、マイナスをつけて積分する。</p>
-            <p class="formula" style="margin-bottom:4px"><i>S</i> ＝ <span class="int"><span class="int-sym">∫</span><span class="int-up">1</span><span class="int-lo">−1</span></span> {−(<i>x</i><sup>2</sup>−1)} <i>dx</i> ＝ <span class="int"><span class="int-sym">∫</span><span class="int-up">1</span><span class="int-lo">−1</span></span> (1−<i>x</i><sup>2</sup>) <i>dx</i></p>
+            <p><math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>≦</mo><mn>0</mn></math>だから、マイナスをつけて積分する。</p>
+            <p class="cite"><span class="cite-tag">使う公式</span>面積の公式（2） <math><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mo>{</mo><mo>−</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>}</mo><mi>dx</mi></math>。<math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>≦</mo><mn>0</mn></math> なので、マイナスをつけて積分する形にする</p><p class="formula" style="margin-bottom:4px"><math display="block"><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mrow><mo>−</mo><mn>1</mn></mrow><mn>1</mn></msubsup><mo>{</mo><mo>−</mo><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>)</mo><mo>}</mo><mi>dx</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mrow><mo>−</mo><mn>1</mn></mrow><mn>1</mn></msubsup><mo>(</mo><mn>1</mn><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>)</mo><mi>dx</mi></math></p>
           </div>
           <div class="step hint">
             <h3>ヒント 3 ― 定積分を計算する</h3>
-            <p>1−<i>x</i><sup>2</sup> の原始関数は <i>x</i>−<span class="fr"><i>1</i><i>3</i></span><i>x</i><sup>3</sup> だから</p>
-            <p class="formula" style="margin-bottom:4px"><i>S</i> ＝ [<i>x</i>−<span class="fr"><i>1</i><i>3</i></span><i>x</i><sup>3</sup>]<sub>−1</sub><sup>1</sup> ＝ (1−<span class="fr"><i>1</i><i>3</i></span>) − (−1＋<span class="fr"><i>1</i><i>3</i></span>) ＝ <span class="fr"><i>2</i><i>3</i></span> − (−<span class="fr"><i>2</i><i>3</i></span>)</p>
-            <p>放物線が <i>y</i>軸について対称なことに気づけば、右半分だけ計算して2倍しても同じ結果になるよ。</p>
+            <p><math><mn>1</mn><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup></math> の原始関数は <math><mi>x</mi><mo>−</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><msup><mi>x</mi><mn>3</mn></msup></math> だから</p>
+            <p class="cite"><span class="cite-tag">使う公式</span>定積分の計算 <math><mi>x</mi><mo>−</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><msup><mi>x</mi><mn>3</mn></msup></math>。<math><mn>1</mn><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup></math> の原始関数に上限1と下限 −1 を代入し、その差を取る</p><div class="chain-crow formula" style="margin-bottom:4px">
+<div class="crow"><math displaystyle="true"><mi>S</mi><mo>=</mo><msup><msub><mrow><mo>[</mo><mi>x</mi><mo>−</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><msup><mi>x</mi><mn>3</mn></msup><mo>]</mo></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msub><mn>1</mn></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>S</mi></mphantom><mo>=</mo><mo>(</mo><mn>1</mn><mo>−</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>)</mo><mo>−</mo><mo>(</mo><mo>−</mo><mn>1</mn><mo>+</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>)</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>S</mi></mphantom><mo>=</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mo>−</mo><mo>(</mo><mo>−</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mo>)</mo></math></div>
+</div>
+            <p>放物線が <math><mi>y</mi></math>軸について対称なことに気づけば、<br>右半分だけ計算して2倍しても同じ結果になるよ。</p>
           </div>
           <div class="step answer">
             <h3>解答 (1)</h3>
-            <p class="big"><i>S</i> ＝ <span class="fr"><i>4</i><i>3</i></span></p>
+            <p class="big"><math display="block"><mi>S</mi><mo>=</mo><mfrac><mn>4</mn><mn>3</mn></mfrac></math></p>
             <p>例題8とまったく同じ流れ（交点 → 公式（2）→ 計算）で解けたね。</p>
           </div>
           <p class="prob-done">(1) クリア！　(2) のタブも開いてみよう。</p>
@@ -984,7 +1058,7 @@
         <!-- (2) -->
         <div class="tabpanel" id="panel-ren36-2" data-flow="ren36-2" data-label="練習36 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2) 放物線 <i>y</i>＝<i>x</i><sup>2</sup>−2<i>x</i> と <i>x</i>軸</span>
+            <span class="sub prob-q" style="margin:0">(2) 放物線 <math><mi>y</mi><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>x</mi></math> と <math><mi>x</mi></math>軸</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
@@ -1015,28 +1089,28 @@
                 <text x="310" y="134" text-anchor="middle" class="svg-txt" font-size="16">2</text>
               </svg>
             </div>
-            <figcaption>この放物線は原点を通る。頂点は (1, −1) で、囲まれた部分はやはり <i>x</i>軸より下にある。</figcaption>
+            <figcaption>この放物線は原点を通る。頂点は<math><mo>(</mo><mn>1</mn><mo>,</mo><mo>−</mo><mn>1</mn><mo>)</mo></math>で、囲まれた部分はやはり <math><mi>x</mi></math>軸より下にある。</figcaption>
           </figure>
           <div class="step hint">
             <h3>ヒント 1 ― 交点を求めて区間を決める</h3>
-            <p><i>x</i><sup>2</sup>−2<i>x</i>＝0 を解く。<i>x</i>(<i>x</i>−2)＝0 と因数分解できるから <b><i>x</i>＝0, 2</b>。</p>
-            <p>区間 0≦<i>x</i>≦2 では <i>x</i><sup>2</sup>−2<i>x</i>≦0 で、囲まれた部分は図の斜線部分（<i>x</i>軸の下）だ。</p>
+            <p><math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>x</mi><mo>=</mo><mn>0</mn></math>を解く。<br><math><mi>x</mi><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo><mo>=</mo><mn>0</mn></math>と因数分解できるから <b><math><mi>x</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>2</mn></math></b>。</p>
+            <p>区間<math><mn>0</mn><mo>≦</mo><mi>x</mi><mo>≦</mo><mn>2</mn></math>では <math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>x</mi><mo>≦</mo><mn>0</mn></math>で、<br>囲まれた部分は図の斜線部分<math><mo>(</mo><mi>x</mi></math>軸の下）だ。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 公式（2）に当てはめる</h3>
-            <p>マイナスをつけて積分する。−(<i>x</i><sup>2</sup>−2<i>x</i>)＝2<i>x</i>−<i>x</i><sup>2</sup> だから</p>
-            <p class="formula" style="margin-bottom:4px"><i>S</i> ＝ <span class="int"><span class="int-sym">∫</span><span class="int-up">2</span><span class="int-lo">0</span></span> (2<i>x</i>−<i>x</i><sup>2</sup>) <i>dx</i></p>
+            <p>マイナスをつけて積分する。<br><math><mo>−</mo><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>x</mi><mo>)</mo><mo>=</mo><mn>2</mn><mi>x</mi><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup></math> だから</p>
+            <p class="cite"><span class="cite-tag">使う公式</span>面積の公式（2） <math><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mo>{</mo><mo>−</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>}</mo><mi>dx</mi></math>。<math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>x</mi><mo>≦</mo><mn>0</mn></math> なので、マイナスをつけて積分する形にする</p><p class="formula" style="margin-bottom:4px"><math display="block"><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mn>0</mn><mn>2</mn></msubsup><mo>(</mo><mn>2</mn><mi>x</mi><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>)</mo><mi>dx</mi></math></p>
           </div>
           <div class="step hint">
             <h3>ヒント 3 ― 定積分を計算する</h3>
-            <p>2<i>x</i>−<i>x</i><sup>2</sup> の原始関数は <i>x</i><sup>2</sup>−<span class="fr"><i>1</i><i>3</i></span><i>x</i><sup>3</sup> だから</p>
-            <p class="formula" style="margin-bottom:4px"><i>S</i> ＝ [<i>x</i><sup>2</sup>−<span class="fr"><i>1</i><i>3</i></span><i>x</i><sup>3</sup>]<sub>0</sub><sup>2</sup> ＝ (4−<span class="fr"><i>8</i><i>3</i></span>) − 0</p>
-            <p>下限が 0 のときは、代入した値が 0 になるので計算が少し楽だね。</p>
+            <p><math><mn>2</mn><mi>x</mi><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup></math> の原始関数は <math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><msup><mi>x</mi><mn>3</mn></msup></math> だから</p>
+            <p class="cite"><span class="cite-tag">使う公式</span>定積分の計算 <math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><msup><mi>x</mi><mn>3</mn></msup></math>。<math><mn>2</mn><mi>x</mi><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup></math> の原始関数に上限2と下限0を代入し、その差を取る</p><p class="formula" style="margin-bottom:4px"><math display="block"><mi>S</mi><mo>=</mo><msup><msub><mrow><mo>[</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><msup><mi>x</mi><mn>3</mn></msup><mo>]</mo></mrow><mn>0</mn></msub><mn>2</mn></msup><mo>=</mo><mo>(</mo><mn>4</mn><mo>−</mo><mfrac><mn>8</mn><mn>3</mn></mfrac><mo>)</mo><mo>−</mo><mn>0</mn></math></p>
+            <p>下限が 0 のときは、<br>代入した値が 0 になるので計算が少し楽だね。</p>
           </div>
           <div class="step answer">
             <h3>解答 (2)</h3>
-            <p class="big"><i>S</i> ＝ <span class="fr"><i>4</i><i>3</i></span></p>
-            <p>4−<span class="fr"><i>8</i><i>3</i></span>＝<span class="fr"><i>12</i><i>3</i></span>−<span class="fr"><i>8</i><i>3</i></span>＝<span class="fr"><i>4</i><i>3</i></span>。(1) と同じ答えになったのは偶然ではなく、放物線の形が関係しているよ（発展：頂点の深さと幅が効いてくる）。</p>
+            <p class="big"><math display="block"><mi>S</mi><mo>=</mo><mfrac><mn>4</mn><mn>3</mn></mfrac></math></p>
+            <p><math><mn>4</mn><mo>−</mo><mfrac><mn>8</mn><mn>3</mn></mfrac><mo>=</mo><mfrac><mn>12</mn><mn>3</mn></mfrac><mo>−</mo><mfrac><mn>8</mn><mn>3</mn></mfrac><mo>=</mo><mfrac><mn>4</mn><mn>3</mn></mfrac></math>。(1) と同じ答えになったのは偶然ではなく、<br>放物線の形が関係しているよ（発展：頂点の深さと幅が効いてくる）。</p>
           </div>
           <p class="prob-done">(2) クリア！　練習36はこれで完了。最後に「深める」と「まとめ」を確認しよう。</p>
         </div>
@@ -1050,8 +1124,8 @@
       </div>
 
       <section class="card fukameru">
-        <h2>読み物 ― <span class="fr"><i>1</i><i>2</i></span><i>ab</i> はどこから来る？</h2>
-        <p>底辺 <i>a</i>、高さ <i>b</i> の直角三角形の面積が <span class="fr"><i>1</i><i>2</i></span><i>ab</i> であることは、小学校以来おなじみだ。このページで学んだ「面積＝定積分」を使うと、この公式が<b>計算の結果として</b>確かめられる。</p>
+        <h2>読み物<math><mo>―</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mi>ab</mi></math> はどこから来る？</h2>
+        <p>底辺 <math><mi>a</mi></math>、高さ <math><mi>b</mi></math> の直角三角形の面積が <math><mfrac><mn>1</mn><mn>2</mn></mfrac><mi>ab</mi></math> であることは、<br>小学校以来おなじみだ。<br>このページで学んだ「面積＝定積分」を使うと、<br>この公式が<b>計算の結果として</b>確かめられる。</p>
         <figure>
           <div class="figbox">
             <svg viewBox="0 0 520 280" role="img" aria-label="底辺a、高さbの直角三角形。斜辺は直線yイコールb割るaかけるx">
@@ -1072,22 +1146,26 @@
               <text x="400" y="260" text-anchor="middle" class="svg-txt-soft" font-size="13.5">x＝a</text>
             </svg>
           </div>
-          <figcaption>直角三角形は、直線 <i>y</i>＝(<i>b</i>/<i>a</i>)<i>x</i> と <i>x</i>軸、直線 <i>x</i>＝<i>a</i> で囲まれた部分と見ることができる。</figcaption>
+          <figcaption>直角三角形は、直線 <math><mi>y</mi><mo>=</mo><mo>(</mo><mfrac><mi>b</mi><mi>a</mi></mfrac><mo>)</mo><mi>x</mi></math> と <math><mi>x</mi></math>軸、直線 <math><mi>x</mi><mo>=</mo><mi>a</mi></math> で囲まれた部分と見ることができる。</figcaption>
         </figure>
-        <p>斜辺は原点と点 (<i>a</i>, <i>b</i>) を通る直線だから、その式は <i>y</i>＝<span class="fr"><i><i>b</i></i><i><i>a</i></i></span><i>x</i>。直線は <i>x</i>軸の上にあるので、公式（1）で面積が求められる。</p>
-        <p class="formula"><span class="int"><span class="int-sym">∫</span><span class="int-up"><i>a</i></span><span class="int-lo">0</span></span> <span class="fr"><i><i>b</i></i><i><i>a</i></i></span><i>x</i> <i>dx</i> ＝ <span class="fr"><i><i>b</i></i><i><i>a</i></i></span>[<span class="fr"><i>1</i><i>2</i></span><i>x</i><sup>2</sup>]<sub>0</sub><sup><i>a</i></sup> ＝ <span class="fr"><i><i>b</i></i><i><i>a</i></i></span>・<span class="fr"><i>1</i><i>2</i></span><i>a</i><sup>2</sup> ＝ <span class="fr"><i>1</i><i>2</i></span><i>ab</i></p>
-        <p>小学校で覚えた <span class="fr"><i>1</i><i>2</i></span><i>ab</i> が、定積分の計算からきちんと出てきた。導入の台形（直線 <i>y</i>＝<i>x</i>＋1）で見た <i>S</i>(<i>t</i>)＝<span class="fr"><i>1</i><i>2</i></span><i>t</i><sup>2</sup>＋<i>t</i> の <span class="fr"><i>1</i><i>2</i></span><i>t</i><sup>2</sup> の部分も、実はこの三角形の面積なんだよ。</p>
+        <p>斜辺は原点と点<math><mo>(</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo>)</mo></math>を通る直線だから、<br>その式は <math><mi>y</mi><mo>=</mo><mfrac><mi>b</mi><mi>a</mi></mfrac><mi>x</mi></math>。<br>直線は <math><mi>x</mi></math>軸の上にあるので、公式（1）で面積が求められる。</p>
+        <p class="cite"><span class="cite-tag">使う公式</span>面積の公式（1） <math><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi></math>。斜辺は <math><mi>x</mi></math>軸の上にあるので、区間 <math><mn>0</mn><mo>≦</mo><mi>x</mi><mo>≦</mo><mi>a</mi></math> でそのまま積分して面積を求める</p><div class="chain-crow formula">
+<div class="crow"><math displaystyle="true"><msubsup><mo class="int-op">∫</mo><mn>0</mn><mi>a</mi></msubsup><mfrac><mi>b</mi><mi>a</mi></mfrac><mi>x</mi><mi>dx</mi><mo>=</mo><mfrac><mi>b</mi><mi>a</mi></mfrac><msup><msub><mrow><mo>[</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><msup><mi>x</mi><mn>2</mn></msup><mo>]</mo></mrow><mn>0</mn></msub><mi>a</mi></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msubsup><mo class="int-op">∫</mo><mn>0</mn><mi>a</mi></msubsup><mfrac><mi>b</mi><mi>a</mi></mfrac><mi>x</mi><mi>dx</mi></mphantom><mo>=</mo><mfrac><mi>b</mi><mi>a</mi></mfrac><mo>⋅</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><msup><mi>a</mi><mn>2</mn></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msubsup><mo class="int-op">∫</mo><mn>0</mn><mi>a</mi></msubsup><mfrac><mi>b</mi><mi>a</mi></mfrac><mi>x</mi><mi>dx</mi></mphantom><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mi>ab</mi></math></div>
+</div>
+        <p>小学校で覚えた <math><mfrac><mn>1</mn><mn>2</mn></mfrac><mi>ab</mi></math> が、定積分の計算からきちんと出てきた。<br>導入の台形（直線 <math><mi>y</mi><mo>=</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo></math>で見た <math><mi>S</mi><mo>(</mo><mi>t</mi><mo>)</mo><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><msup><mi>t</mi><mn>2</mn></msup><mo>+</mo><mi>t</mi></math> の <math><mfrac><mn>1</mn><mn>2</mn></mfrac><msup><mi>t</mi><mn>2</mn></msup></math> の部分も、<br>実はこの三角形の面積なんだよ。</p>
       </section>
 
       <!-- ================= まとめ ================= -->
       <section class="card summary">
         <h2>この項のポイント</h2>
         <ul>
-          <li><b>面積関数の微分はもとの関数</b>：<i>S</i>′(<i>t</i>)＝<i>f</i>(<i>t</i>)。だから面積は <i>f</i> の原始関数の差、つまり<b>定積分</b>で求められる。</li>
-          <li><b>公式（1）</b>：<i>f</i>(<i>x</i>)≧0 のとき　<i>S</i>＝<span class="int"><span class="int-sym">∫</span><span class="int-up"><i>b</i></span><span class="int-lo"><i>a</i></span></span> <i>f</i>(<i>x</i>) <i>dx</i>。</li>
-          <li><b>公式（2）</b>：<i>f</i>(<i>x</i>)≦0 のとき　<i>S</i>＝<span class="int"><span class="int-sym">∫</span><span class="int-up"><i>b</i></span><span class="int-lo"><i>a</i></span></span> {−<i>f</i>(<i>x</i>)} <i>dx</i>。<i>x</i>軸について折り返すイメージで、マイナスをつけてから積分する。</li>
-          <li><b>解き方の手順</b>：①交点を求めて区間を決める → ②グラフが <i>x</i>軸の上か下かを確認する → ③公式（1）か（2）を選んで計算する。</li>
-          <li><b>対称性</b>が使えるとき（<i>y</i>軸対称など）は、半分だけ計算して2倍すると速い。</li>
+          <li><p class="cite"><span class="cite-tag">使う性質</span>面積関数の微分 <math><mi>S</mi><mo>′</mo><mo>(</mo><mi>t</mi><mo>)</mo><mo>=</mo><mi>f</mi><mo>(</mo><mi>t</mi><mo>)</mo></math>。面積は <math><mi>f</mi></math> の原始関数の差、つまり定積分で求められる</p><b>面積関数の微分はもとの関数</b>：<math><mi>S</mi><mo>′</mo><mo>(</mo><mi>t</mi><mo>)</mo><mo>=</mo><mi>f</mi><mo>(</mo><mi>t</mi><mo>)</mo></math>。<br>だから面積は <math><mi>f</mi></math> の原始関数の差、つまり<b>定積分</b>で求められる。</li>
+          <li><p class="cite"><span class="cite-tag">使う公式</span>面積の公式（1） <math><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi></math>。グラフが <math><mi>x</mi></math>軸の上にあるときに使う</p><b>公式（1）</b>：<math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>≧</mo><mn>0</mn></math>のとき　<math><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi></math>。</li>
+          <li><p class="cite"><span class="cite-tag">使う公式</span>面積の公式（2） <math><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mo>{</mo><mo>−</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>}</mo><mi>dx</mi></math>。グラフが <math><mi>x</mi></math>軸の下にあるときに、マイナスをつけてから積分する</p><b>公式（2）</b>：<math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>≦</mo><mn>0</mn></math>のとき　<math><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mo>{</mo><mo>−</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>}</mo><mi>dx</mi></math>。<math><mi>x</mi></math>軸について折り返すイメージで、<br>マイナスをつけてから積分する。</li>
+          <li><b>解き方の手順</b>：①交点を求めて区間を決める <br>→ ②グラフが <math><mi>x</mi></math>軸の上か下かを確認する <br>→ ③公式（1）か（2）を選んで計算する。</li>
+          <li><b>対称性</b>が使えるとき<math><mo>(</mo><mi>y</mi></math>軸対称など）は、<br>半分だけ計算して2倍すると速い。</li>
         </ul>
       </section>
 
@@ -1106,7 +1184,7 @@
     <div class="ctrl-bar">
       <div class="ctrl-inner">
         <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
-        <p class="progress-text">全体の進み具合：<b id="progressText">0 / 35 ステップ</b></p>
+        <p class="progress-text">全体の進み具合：<b id="progressText"><math><mfrac><mn>0</mn><mn>35</mn></mfrac></math>ステップ</b></p>
         <p class="ctrl-label">いまの課題：<b id="ctrlLabel">導入</b>　―　「次へ」でヒントを1つずつ開こう</p>
         <div class="ctrl-btns">
           <button class="btn" id="btnReset" type="button">最初からやり直す</button>

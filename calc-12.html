@@ -296,7 +296,57 @@
         }
         .card>.next-btn{grid-column:2}
       }
-    </style>
+    
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+
+      /* 積分記号は大きめに表示する（元のページの可読化デザインに合わせる） */
+      math .int-op{font-size:1.35em}
+      /* calc-12 世代（.card）と calc-18 世代（.unit）の、図のない問題の全幅化 */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig>.step{position:static !important}
+        .card.nofig>.steps-wrap{max-height:none !important;overflow:visible !important}
+        .unit.nofig{display:block !important}
+        .unit.nofig>.qside{position:static !important}
+        .unit.nofig>.steps-stack{max-height:none !important;overflow:visible !important}
+      }
+</style>
   </head>
   <body>
     <main class="wrap">
@@ -330,22 +380,25 @@
         </div>
 
         <div class="step on">
-          <p>これまでは、関数が与えられたときに、その<strong>導関数</strong>を求める計算（微分）をしてきました。</p>
-          <p>たとえば、関数 <span class="m">x<sup>2</sup></span> を微分すると</p>
-          <p class="formula">(x<sup>2</sup>)′ = 2x</p>
-          <p>となります。ここでは発想を逆にして、<strong>「微分すると <span class="m">2x</span> になる関数は何か」</strong>を考えます。</p>
+          <p>これまでは、関数が与えられたときに、<br>その<strong>導関数</strong>を求める計算（微分）をしてきました。</p>
+          <p>たとえば、関数 <math><msup><mi>x</mi><mn>2</mn></msup></math> を微分すると</p>
+          <p class="cite"><span class="cite-tag">使う公式</span>xの2乗の微分 <math><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>)</mo><mo>′</mo><mo>=</mo><mn>2</mn><mi>x</mi></math>。ここではこの結果を逆向きにたどって、微分すると <math><mn>2</mn><mi>x</mi></math> になる関数を探します。</p>
+          <p class="formula"><math display="block"><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>)</mo><mo>′</mo><mo>=</mo><mn>2</mn><mi>x</mi></math></p>
+          <p>となります。ここでは発想を逆にして、<br><strong>「微分すると <math><mn>2</mn><mi>x</mi></math> になる関数は何か」</strong>を考えます。</p>
         </div>
 
         <div class="step">
-          <p><span class="m">x<sup>2</sup></span> を微分すると <span class="m">2x</span> になるので、<span class="m">x<sup>2</sup></span> は「微分すると <span class="m">2x</span> になる関数」の1つです。</p>
-          <p>このように、関数 <span class="m">f(x)</span> に対して、<strong>微分すると <span class="m">f(x)</span> になる関数</strong>を、<span class="m">f(x)</span> の<strong>原始関数</strong>といいます。</p>
-          <p class="formula">x<sup>2</sup> は 2x の原始関数である</p>
+          <p><math><msup><mi>x</mi><mn>2</mn></msup></math> を微分すると <math><mn>2</mn><mi>x</mi></math> になるので、<br><math><msup><mi>x</mi><mn>2</mn></msup></math> は「微分すると <math><mn>2</mn><mi>x</mi></math> になる関数」の1つです。</p>
+          <p>このように、関数 <math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></math> に対して、<br><strong>微分すると <math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></math> になる関数</strong>を、<math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></math> の<strong>原始関数</strong>といいます。</p>
+          <p class="cite"><span class="cite-tag">使う定義</span>原始関数の定義 <math><mi>F</mi><mo>′</mo><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>。微分して <math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></math> になる関数が原始関数で、ここでは <math><msup><mi>x</mi><mn>2</mn></msup></math> が <math><mn>2</mn><mi>x</mi></math> の原始関数に当たります。</p>
+          <p class="formula"><math><msup><mi>x</mi><mn>2</mn></msup></math> は 2x の原始関数である</p>
         </div>
 
         <div class="step">
-          <p>原始関数は <span class="m">x<sup>2</sup></span> だけではありません。<span class="m">x<sup>2</sup> + 3</span> や <span class="m">x<sup>2</sup> − 5</span> を微分してみると、</p>
-          <p class="formula">(x<sup>2</sup> + 3)′ = 2x,　　(x<sup>2</sup> − 5)′ = 2x</p>
-          <p>定数の部分は微分すると <span class="m">0</span> になって消えるので、どちらも <span class="m">2x</span> の原始関数です。<strong>違いは定数の部分だけ</strong>です。</p>
+          <p>原始関数は <math><msup><mi>x</mi><mn>2</mn></msup></math> だけではありません。<br><math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>3</mn></math> や <math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>5</mn></math> を微分してみると、</p>
+          <p class="cite"><span class="cite-tag">使う性質</span>定数を加えても導関数は変わらないこと <math><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>3</mn><mo>)</mo><mo>′</mo><mo>=</mo><mn>2</mn><mi>x</mi></math>。定数の部分は微分すると <math><mn>0</mn></math> になるので、定数を変えたものも原始関数のままです。</p>
+          <p class="formula"><math display="block"><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>3</mn><mo>)</mo><mo>′</mo><mo>=</mo><mn>2</mn><mi>x</mi><mo>,</mo><mspace width="2em"/><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>5</mn><mo>)</mo><mo>′</mo><mo>=</mo><mn>2</mn><mi>x</mi></math></p>
+          <p>定数の部分は微分すると <math><mn>0</mn></math> になって消えるので、<br>どちらも <math><mn>2</mn><mi>x</mi></math> の原始関数です。<strong>違いは定数の部分だけ</strong>です。</p>
           <figure>
             <svg viewBox="0 0 320 215" role="img" aria-label="yイコールxの2乗、yイコールxの2乗プラス3、yイコールxの2乗マイナス5の3本の放物線。形は同じで上下にずれている">
               <line class="svg-grid" x1="40" y1="123" x2="280" y2="123" stroke-dasharray="0" opacity="0"/>
@@ -371,44 +424,48 @@
         </div>
 
         <div class="step">
-          <p>一般に、<span class="m">F(x)</span> が <span class="m">f(x)</span> の原始関数の1つなら、<span class="m">F(x)</span> にどんな定数を加えたものも原始関数になります。まとめて</p>
+          <p>一般に、<math><mi>F</mi><mo>(</mo><mi>x</mi><mo>)</mo></math> が <math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></math> の原始関数の1つなら、<br><math><mi>F</mi><mo>(</mo><mi>x</mi><mo>)</mo></math> にどんな定数を加えたものも<br>原始関数になります。まとめて</p>
+          <p class="cite"><span class="cite-tag">使う定義</span>積分定数 <math><mi>F</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>+</mo><mi>C</mi></math>。原始関数全体は、1つの原始関数に定数 <math><mi>C</mi></math> を加えた形でまとめて表します。</p>
           <p class="formula">F(x) + C　（C は定数）</p>
-          <p>と書きます。この <span class="m">C</span> を<strong>積分定数</strong>といいます。</p>
+          <p>と書きます。この <math><mi>C</mi></math> を<strong>積分定数</strong>といいます。</p>
         </div>
 
         <div class="step answer">
           <p class="step-label">まとめ ― 不定積分の記号</p>
-          <p><span class="m">f(x)</span> の原始関数全体を <span class="m">f(x)</span> の<strong>不定積分</strong>といい、記号で</p>
-          <p class="formula"><span class="int">∫</span> f(x) dx = F(x) + C</p>
-          <p>と表します。不定積分を求めることを、<span class="m">f(x)</span> を<strong>積分する</strong>といいます。</p>
-          <p>たとえば <span class="m">2x</span> を積分すると、<span class="m"><span class="int">∫</span> 2x dx = x<sup>2</sup> + C</span> となります。</p>
+          <p><math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></math> の原始関数全体を <math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></math> の<strong>不定積分</strong>といい、記号で</p>
+          <p class="cite"><span class="cite-tag">使う定義</span>不定積分の定義 <math><mo class="int-op">∫</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>d</mi><mi>x</mi><mo>=</mo><mi>F</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>+</mo><mi>C</mi></math>。まとめとして、原始関数全体をこの記号で表し、それを求めることを積分するといいます。</p>
+          <p class="formula"><math display="block"><mo class="int-op">∫</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>d</mi><mi>x</mi><mo>=</mo><mi>F</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>+</mo><mi>C</mi></math></p>
+          <p>と表します。不定積分を求めることを、<br><math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></math> を<strong>積分する</strong>といいます。</p>
+          <p>たとえば <math><mn>2</mn><mi>x</mi></math> を積分すると、<math><mo class="int-op">∫</mo><mn>2</mn><mi>x</mi><mi>d</mi><mi>x</mi><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>C</mi></math> となります。</p>
         </div>
 
         <button class="next-btn" data-next type="button">次へ</button>
       </section>
 
       <!-- ================= 例11 ================= -->
-      <section class="card" data-sec data-kind="example">
+      <section class="nofig card" data-sec data-kind="example">
         <div class="card-head">
           <span class="tag example">例11</span>
-          <h2><span class="m">2x</span> の原始関数</h2>
+          <h2><math><mn>2</mn><mi>x</mi></math> の原始関数</h2>
           <div class="dots" data-dots aria-hidden="true"></div>
         </div>
 
         <div class="step on">
-          <p>関数 <span class="m">2x</span> の原始関数には、どのようなものがあるでしょうか。上の解説と結びつけて考えてみましょう。</p>
+          <p>関数 <math><mn>2</mn><mi>x</mi></math> の原始関数には、どのようなものがあるでしょうか。<br>上の解説と結びつけて考えてみましょう。</p>
         </div>
 
         <div class="step hint">
           <p class="step-label">ヒント</p>
-          <p>原始関数かどうかは、<strong>微分して元に戻るか</strong>で確かめられます。<span class="m">(x<sup>2</sup>)′ = 2x</span> でしたね。また、定数を加えても微分の結果は変わりません。</p>
+          <p class="cite"><span class="cite-tag">使う定義</span>原始関数の定義 <math><mi>F</mi><mo>′</mo><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>。候補を微分して元の関数に戻れば、その候補は原始関数だといえます。</p>
+          <p>原始関数かどうかは、<strong>微分して元に戻るか</strong>で確かめられます。<math><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>)</mo><mo>′</mo><mo>=</mo><mn>2</mn><mi>x</mi></math> でしたね。<br>また、定数を加えても<br>微分の結果は変わりません。</p>
         </div>
 
         <div class="step answer">
           <p class="step-label">解答</p>
-          <p><span class="m">x<sup>2</sup></span>、<span class="m">x<sup>2</sup> + 3</span>、<span class="m">x<sup>2</sup> − 5</span> などはいずれも <span class="m">2x</span> の原始関数です。</p>
-          <p>これらをまとめて、<span class="m">2x</span> の原始関数は</p>
-          <p class="formula">x<sup>2</sup> + C　（C は積分定数）</p>
+          <p><math><msup><mi>x</mi><mn>2</mn></msup></math>、<math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>3</mn></math>、<math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>5</mn></math> などはいずれも <math><mn>2</mn><mi>x</mi></math> の原始関数です。</p>
+          <p>これらをまとめて、<math><mn>2</mn><mi>x</mi></math> の原始関数は</p>
+          <p class="cite"><span class="cite-tag">使う定義</span>積分定数 <math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>C</mi></math>。定数の部分だけが違う原始関数を、まとめてこの形で表します。</p>
+          <p class="formula"><math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>C</mi></math>　（C は積分定数）</p>
           <p>と表されます。</p>
         </div>
 
@@ -416,15 +473,15 @@
       </section>
 
       <!-- ================= 練習23 ================= -->
-      <section class="card" data-sec data-kind="practice" id="sec-r23">
+      <section class="nofig card" data-sec data-kind="practice" id="sec-r23">
         <div class="card-head">
           <span class="tag practice">練習23</span>
-          <h2><span class="m">3x<sup>2</sup></span> の原始関数を選ぼう</h2>
+          <h2><math><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup></math> の原始関数を選ぼう</h2>
           <div class="dots" data-dots aria-hidden="true"></div>
         </div>
 
         <div class="step on">
-          <p>次の中から、<span class="m">3x<sup>2</sup></span> の原始関数であるものを<strong>すべて</strong>選びましょう。タップして選択できます（複数選択可）。</p>
+          <p>次の中から、<math><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup></math> の原始関数であるものを<strong>すべて</strong>選びましょう。タップして選択できます（複数選択可）。</p>
           <div class="choices" id="r23-choices">
             <button class="choice" type="button" data-choice="1"><span class="cno">①</span><span class="m">6x</span><span class="mark"></span></button>
             <button class="choice" type="button" data-choice="2"><span class="cno">②</span><span class="m">x<sup>3</sup></span><span class="mark"></span></button>
@@ -436,26 +493,29 @@
 
         <div class="step hint">
           <p class="step-label">ヒント1 ― 確かめ方</p>
-          <p>候補が原始関数かどうかは、<strong>その候補を微分して <span class="m">3x<sup>2</sup></span> に戻るか</strong>で確かめられます。4つとも、1つずつ微分してみましょう。</p>
+          <p class="cite"><span class="cite-tag">使う定義</span>原始関数の定義 <math><mi>F</mi><mo>′</mo><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>。候補を微分して <math><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup></math> に戻るかどうかで、原始関数かどうかを判定します。</p>
+          <p>候補が原始関数かどうかは、<strong>その候補を微分して <math><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup></math> に戻るか</strong>で確かめられます。<br>4つとも、1つずつ微分してみましょう。</p>
         </div>
 
         <div class="step hint">
           <p class="step-label">ヒント2 ― ①と③を微分すると</p>
-          <p class="formula">(6x)′ = 6</p>
-          <p class="formula">(x<sup>3</sup> + 2x)′ = 3x<sup>2</sup> + 2</p>
-          <p><span class="m">6</span> は <span class="m">3x<sup>2</sup></span> ではありません。また <span class="m">3x<sup>2</sup> + 2</span> には余分な <span class="m">+2</span> がついていて、<span class="m">3x<sup>2</sup></span> にはなりません。この2つは原始関数では<strong>ありません</strong>。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span>x^n の微分 <math><mo>(</mo><msup><mi>x</mi><mi>n</mi></msup><mo>)</mo><mo>′</mo><mo>=</mo><mi>n</mi><msup><mi>x</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup></math>。ここでは①の <math><mn>6</mn><mi>x</mi></math> と③の <math><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi></math> を微分して、<math><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup></math> に戻るかを確かめます。</p>
+          <p class="formula"><math display="block"><mo>(</mo><mn>6</mn><mi>x</mi><mo>)</mo><mo>′</mo><mo>=</mo><mn>6</mn></math></p>
+          <p class="formula"><math display="block"><mo>(</mo><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>)</mo><mo>′</mo><mo>=</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn></math></p>
+          <p><math><mn>6</mn></math> は <math><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup></math> ではありません。<br>また <math><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn></math> には余分な <math><mo>+</mo><mn>2</mn></math> がついていて、<br><math><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup></math> にはなりません。この2つは原始関数では<strong>ありません</strong>。</p>
         </div>
 
         <div class="step hint">
           <p class="step-label">ヒント3 ― ②と④を微分すると</p>
-          <p class="formula">(x<sup>3</sup>)′ = 3x<sup>2</sup>,　　(x<sup>3</sup> − 4)′ = 3x<sup>2</sup></p>
-          <p>どちらも <span class="m">3x<sup>2</sup></span> に戻ります。④の <span class="m">−4</span> のような<strong>定数は微分すると消える</strong>ので、原始関数であることに影響しません。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span>x^n の微分 <math><mo>(</mo><msup><mi>x</mi><mi>n</mi></msup><mo>)</mo><mo>′</mo><mo>=</mo><mi>n</mi><msup><mi>x</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup></math>。ここでは②と④を微分して、定数は消え、どちらも <math><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup></math> に戻ることを確かめます。</p>
+          <p class="formula"><math display="block"><mo>(</mo><msup><mi>x</mi><mn>3</mn></msup><mo>)</mo><mo>′</mo><mo>=</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>,</mo><mspace width="2em"/><mo>(</mo><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>4</mn><mo>)</mo><mo>′</mo><mo>=</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup></math></p>
+          <p>どちらも <math><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup></math> に戻ります。④の <math><mo>−</mo><mn>4</mn></math> のような<strong>定数は微分すると消える</strong>ので、<br>原始関数であることに影響しません。</p>
         </div>
 
         <div class="step answer">
           <p class="step-label">解答</p>
-          <p><span class="m">3x<sup>2</sup></span> の原始関数であるものは</p>
-          <p class="formula">② x<sup>3</sup>　と　④ x<sup>3</sup> − 4</p>
+          <p><math><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup></math> の原始関数であるものは</p>
+          <p class="formula"><math><mo>②</mo><msup><mi>x</mi><mn>3</mn></msup></math>　と　<math><mo>④</mo><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>4</mn></math></p>
           <p class="verdict" id="r23-verdict"></p>
         </div>
 
@@ -463,7 +523,7 @@
       </section>
 
       <!-- ================= 例12 ================= -->
-      <section class="card" data-sec data-kind="example">
+      <section class="nofig card" data-sec data-kind="example">
         <div class="card-head">
           <span class="tag example">例12</span>
           <h2>基本的な不定積分</h2>
@@ -472,36 +532,40 @@
 
         <div class="step on">
           <p>次の不定積分を求めてみましょう。</p>
-          <p class="formula"><span class="int">∫</span> 1 dx,　　<span class="int">∫</span> x dx,　　<span class="int">∫</span> x<sup>2</sup> dx</p>
-          <p>いずれも、「微分すると元の関数になるもの」を探すことがポイントです。</p>
+          <p class="formula"><math display="block"><mo class="int-op">∫</mo><mn>1</mn><mi>d</mi><mi>x</mi><mo>,</mo><mspace width="2em"/><mo class="int-op">∫</mo><mi>x</mi><mi>d</mi><mi>x</mi><mo>,</mo><mspace width="2em"/><mo class="int-op">∫</mo><msup><mi>x</mi><mn>2</mn></msup><mi>d</mi><mi>x</mi></math></p>
+          <p>いずれも、「微分すると元の関数になるもの」を<br>探すことがポイントです。</p>
         </div>
 
         <div class="step hint">
-          <p class="step-label">ヒント1 ― <span class="m"><span class="int">∫</span> 1 dx</span></p>
-          <p>微分すると <span class="m">1</span> になる関数は <span class="m">x</span> です（<span class="m">(x)′ = 1</span>）。よって</p>
-          <p class="formula"><span class="int">∫</span> 1 dx = x + C</p>
+          <p class="step-label">ヒント<math><mn>1</mn><mo>―</mo><mo class="int-op">∫</mo><mn>1</mn><mi>d</mi><mi>x</mi></math></p>
+          <p class="cite"><span class="cite-tag">使う定義</span>原始関数の定義 <math><mo>(</mo><mi>x</mi><mo>)</mo><mo>′</mo><mo>=</mo><mn>1</mn></math>。微分して <math><mn>1</mn></math> になる関数が、そのまま <math><mo class="int-op">∫</mo><mn>1</mn><mi>d</mi><mi>x</mi></math> の答えになります。</p>
+          <p>微分すると <math><mn>1</mn></math> になる関数は <math><mi>x</mi></math> です<math><mo>(</mo><mo>(</mo><mi>x</mi><mo>)</mo><mo>′</mo><mo>=</mo><mn>1</mn><mo>)</mo></math>。<br>よって</p>
+          <p class="formula"><math display="block"><mo class="int-op">∫</mo><mn>1</mn><mi>d</mi><mi>x</mi><mo>=</mo><mi>x</mi><mo>+</mo><mi>C</mi></math></p>
         </div>
 
         <div class="step hint">
-          <p class="step-label">ヒント2 ― <span class="m"><span class="int">∫</span> x dx</span></p>
-          <p><span class="m">(x<sup>2</sup>)′ = 2x</span> です。<span class="m">2x</span> の係数 <span class="m">2</span> を消すために <span class="m"><span class="frac"><span class="num">1</span><span class="den">2</span></span></span> をかけると、<span class="m">(<span class="frac"><span class="num">1</span><span class="den">2</span></span>x<sup>2</sup>)′ = x</span> となります。よって</p>
-          <p class="formula"><span class="int">∫</span> x dx = <span class="frac"><span class="num">1</span><span class="den">2</span></span>x<sup>2</sup> + C</p>
+          <p class="step-label">ヒント<math><mn>2</mn><mo>―</mo><mo class="int-op">∫</mo><mi>x</mi><mi>d</mi><mi>x</mi></math></p>
+          <p class="cite"><span class="cite-tag">使う公式</span>xの2乗の微分 <math><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>)</mo><mo>′</mo><mo>=</mo><mn>2</mn><mi>x</mi></math>。係数の <math><mn>2</mn></math> を <math><mfrac><mn>1</mn><mn>2</mn></mfrac></math> で消すことで、微分して <math><mi>x</mi></math> になる関数を作ります。</p>
+          <p><math><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>)</mo><mo>′</mo><mo>=</mo><mn>2</mn><mi>x</mi></math> です。<br><math><mn>2</mn><mi>x</mi></math> の係数 <math><mn>2</mn></math> を消すために <math><mfrac><mn>1</mn><mn>2</mn></mfrac></math> をかけると、<br><math><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><msup><mi>x</mi><mn>2</mn></msup><mo>)</mo><mo>′</mo><mo>=</mo><mi>x</mi></math> となります。よって</p>
+          <p class="formula"><math display="block"><mo class="int-op">∫</mo><mi>x</mi><mi>d</mi><mi>x</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>C</mi></math></p>
         </div>
 
         <div class="step hint">
-          <p class="step-label">ヒント3 ― <span class="m"><span class="int">∫</span> x<sup>2</sup> dx</span></p>
-          <p>同じように、<span class="m">(x<sup>3</sup>)′ = 3x<sup>2</sup></span> の係数 <span class="m">3</span> を <span class="m"><span class="frac"><span class="num">1</span><span class="den">3</span></span></span> で消すと、<span class="m">(<span class="frac"><span class="num">1</span><span class="den">3</span></span>x<sup>3</sup>)′ = x<sup>2</sup></span> となります。よって</p>
-          <p class="formula"><span class="int">∫</span> x<sup>2</sup> dx = <span class="frac"><span class="num">1</span><span class="den">3</span></span>x<sup>3</sup> + C</p>
+          <p class="step-label">ヒント<math><mn>3</mn><mo>―</mo><mo class="int-op">∫</mo><msup><mi>x</mi><mn>2</mn></msup><mi>d</mi><mi>x</mi></math></p>
+          <p class="cite"><span class="cite-tag">使う公式</span>xの3乗の微分 <math><mo>(</mo><msup><mi>x</mi><mn>3</mn></msup><mo>)</mo><mo>′</mo><mo>=</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup></math>。係数の <math><mn>3</mn></math> を <math><mfrac><mn>1</mn><mn>3</mn></mfrac></math> で消すことで、微分して <math><msup><mi>x</mi><mn>2</mn></msup></math> になる関数を作ります。</p>
+          <p>同じように、<math><mo>(</mo><msup><mi>x</mi><mn>3</mn></msup><mo>)</mo><mo>′</mo><mo>=</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup></math> の係数 <math><mn>3</mn></math> を <math><mfrac><mn>1</mn><mn>3</mn></mfrac></math> で消すと、<br><math><mo>(</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><msup><mi>x</mi><mn>3</mn></msup><mo>)</mo><mo>′</mo><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup></math> となります。よって</p>
+          <p class="formula"><math display="block"><mo class="int-op">∫</mo><msup><mi>x</mi><mn>2</mn></msup><mi>d</mi><mi>x</mi><mo>=</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mi>C</mi></math></p>
         </div>
 
         <div class="step answer">
           <p class="step-label">解答</p>
-          <p class="formula"><span class="int">∫</span> 1 dx = x + C</p>
-          <p class="formula"><span class="int">∫</span> x dx = <span class="frac"><span class="num">1</span><span class="den">2</span></span>x<sup>2</sup> + C</p>
-          <p class="formula"><span class="int">∫</span> x<sup>2</sup> dx = <span class="frac"><span class="num">1</span><span class="den">3</span></span>x<sup>3</sup> + C</p>
+          <p class="cite"><span class="cite-tag">使う定義</span>不定積分の定義 <math><mo class="int-op">∫</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>d</mi><mi>x</mi><mo>=</mo><mi>F</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>+</mo><mi>C</mi></math>。ここまでの3つの結果を、不定積分の形でまとめて答えます。</p>
+          <p class="formula"><math display="block"><mo class="int-op">∫</mo><mn>1</mn><mi>d</mi><mi>x</mi><mo>=</mo><mi>x</mi><mo>+</mo><mi>C</mi></math></p>
+          <p class="formula"><math display="block"><mo class="int-op">∫</mo><mi>x</mi><mi>d</mi><mi>x</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>C</mi></math></p>
+          <p class="formula"><math display="block"><mo class="int-op">∫</mo><msup><mi>x</mi><mn>2</mn></msup><mi>d</mi><mi>x</mi><mo>=</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mi>C</mi></math></p>
           <p><span class="check">✓ 確認</span>　答えを微分すると元に戻ります：
-            <span class="m">(x + C)′ = 1</span>、<span class="m">(<span class="frac"><span class="num">1</span><span class="den">2</span></span>x<sup>2</sup> + C)′ = x</span>、<span class="m">(<span class="frac"><span class="num">1</span><span class="den">3</span></span>x<sup>3</sup> + C)′ = x<sup>2</sup></span>。
-            このように、<strong>微分と積分は互いに逆の計算</strong>です。</p>
+            <math><mo>(</mo><mi>x</mi><mo>+</mo><mi>C</mi><mo>)</mo><mo>′</mo><mo>=</mo><mn>1</mn></math>、<math><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>C</mi><mo>)</mo><mo>′</mo><mo>=</mo><mi>x</mi></math>、<math><mo>(</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mi>C</mi><mo>)</mo><mo>′</mo><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup></math>。
+            このように、<br><strong>微分と積分は互いに逆の計算</strong>です。</p>
           <figure>
             <svg viewBox="0 0 340 132" role="img" aria-label="原始関数F(x)を微分するとf(x)になり、f(x)を積分するとF(x)プラスCに戻るという、微分と積分の逆の関係を示す図">
               <rect class="box-node" x="8" y="42" width="118" height="48" rx="10" />
@@ -528,36 +592,38 @@
       <section class="card" data-sec data-kind="explain">
         <div class="card-head">
           <span class="tag explain">解説</span>
-          <h2>公式 ― <span class="m">x<sup>n</sup></span> の不定積分</h2>
+          <h2>公式<math><mo>―</mo><msup><mi>x</mi><mi>n</mi></msup></math> の不定積分</h2>
           <div class="dots" data-dots aria-hidden="true"></div>
         </div>
 
         <div class="step on">
-          <p>例12で、<span class="m">1</span>（＝<span class="m">x<sup>0</sup></span>）、<span class="m">x</span>、<span class="m">x<sup>2</sup></span> の不定積分を求めました。その3つの結果を並べてみると、左辺の指数と右辺の形との間に規則性が見えてきます。</p>
+          <p>例12で、<math><mn>1</mn><mo>(</mo><mo>=</mo><msup><mi>x</mi><mn>0</mn></msup><mo>)</mo></math>、<math><mi>x</mi></math>、<math><msup><mi>x</mi><mn>2</mn></msup></math> の不定積分を求めました。<br>その3つの結果を並べてみると、<br>左辺の指数と右辺の形との間に規則性が見えてきます。</p>
           <p>「次へ」を押して、例12の結果を並べて確かめてみましょう。</p>
         </div>
 
         <div class="step">
-          <p>例12の結果を並べます（<span class="m">1</span> は <span class="m">x<sup>0</sup></span> と見ます）。</p>
-          <p class="formula"><span class="int">∫</span> x<sup>0</sup> dx = x + C</p>
-          <p class="formula"><span class="int">∫</span> x<sup>1</sup> dx = <span class="frac"><span class="num">1</span><span class="den">2</span></span>x<sup>2</sup> + C</p>
-          <p class="formula"><span class="int">∫</span> x<sup>2</sup> dx = <span class="frac"><span class="num">1</span><span class="den">3</span></span>x<sup>3</sup> + C</p>
-          <p>右辺を見ると、<strong>指数が <span class="m">1</span> 増えて</strong>いて、係数には<strong>増えた後の指数で割った</strong>分数がついています。</p>
-          <p>たとえば <span class="m">x<sup>2</sup></span> の積分では、指数 <span class="m">2</span> が <span class="m">3</span> に増え、係数は <span class="m"><span class="frac"><span class="num">1</span><span class="den">3</span></span></span> になっています。</p>
+          <p>例12の結果を並べます<math><mo>(</mo><mn>1</mn></math> は <math><msup><mi>x</mi><mn>0</mn></msup></math> と見ます）。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span>例12で求めた不定積分 <math><mo class="int-op">∫</mo><msup><mi>x</mi><mn>2</mn></msup><mi>d</mi><mi>x</mi><mo>=</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mi>C</mi></math>。例12の3つの結果を並べて、指数と係数にどんな規則性があるかを見つけます。</p>
+          <p class="formula"><math display="block"><mo class="int-op">∫</mo><msup><mi>x</mi><mn>0</mn></msup><mi>d</mi><mi>x</mi><mo>=</mo><mi>x</mi><mo>+</mo><mi>C</mi></math></p>
+          <p class="formula"><math display="block"><mo class="int-op">∫</mo><msup><mi>x</mi><mn>1</mn></msup><mi>d</mi><mi>x</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>C</mi></math></p>
+          <p class="formula"><math display="block"><mo class="int-op">∫</mo><msup><mi>x</mi><mn>2</mn></msup><mi>d</mi><mi>x</mi><mo>=</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mi>C</mi></math></p>
+          <p>右辺を見ると、<strong>指数が <math><mn>1</mn></math> 増えて</strong>いて、<br>係数には<strong>増えた後の指数で割った</strong>分数がついています。</p>
+          <p>たとえば <math><msup><mi>x</mi><mn>2</mn></msup></math> の積分では、<br>指数 <math><mn>2</mn></math> が <math><mn>3</mn></math> に増え、係数は <math><mfrac><mn>1</mn><mn>3</mn></mfrac></math> になっています。</p>
         </div>
 
         <div class="step answer">
           <p class="step-label">公式</p>
-          <p><span class="m">n</span> が <span class="m">0</span> または正の整数のとき、次の公式が成り立ちます。</p>
-          <p class="formula"><span class="int">∫</span> x<sup>n</sup> dx = <span class="frac"><span class="num">1</span><span class="den">n + 1</span></span>x<sup>n+1</sup> + C</p>
-          <p>「指数を <span class="m">1</span> 増やして、その指数で割る」と覚えましょう。</p>
+          <p><math><mi>n</mi></math> が <math><mn>0</mn></math> または正の整数のとき、次の公式が成り立ちます。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span>x^n の不定積分 <math><mo class="int-op">∫</mo><msup><mi>x</mi><mi>n</mi></msup><mi>d</mi><mi>x</mi><mo>=</mo><mfrac><mn>1</mn><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></mfrac><msup><mi>x</mi><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msup><mo>+</mo><mi>C</mi></math>。まとめとして、指数を <math><mn>1</mn></math> 増やして、その指数で割る形で表します。</p>
+          <p class="formula"><math display="block"><mo class="int-op">∫</mo><msup><mi>x</mi><mi>n</mi></msup><mi>d</mi><mi>x</mi><mo>=</mo><mfrac><mn>1</mn><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></mfrac><msup><mi>x</mi><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msup><mo>+</mo><mi>C</mi></math></p>
+          <p>「指数を <math><mn>1</mn></math> 増やして、<br>その指数で割る」と覚えましょう。</p>
         </div>
 
         <button class="next-btn" data-next type="button">次へ</button>
       </section>
 
       <!-- ================= 練習24 ================= -->
-      <section class="card" data-sec data-kind="practice">
+      <section class="nofig card" data-sec data-kind="practice">
         <div class="card-head">
           <span class="tag practice">練習24</span>
           <h2>公式を確かめて、使ってみよう</h2>
@@ -565,33 +631,37 @@
         </div>
 
         <div class="step on">
-          <p>（1）公式 <span class="m"><span class="int">∫</span> x<sup>n</sup> dx = <span class="frac"><span class="num">1</span><span class="den">n + 1</span></span>x<sup>n+1</sup> + C</span> が成り立つことを、<strong>右辺を微分して</strong>確かめましょう。</p>
-          <p>（2）公式を使って、<span class="m"><span class="int">∫</span> x<sup>3</sup> dx</span> を求めましょう。</p>
+          <p>（1）公式 <math><mo class="int-op">∫</mo><msup><mi>x</mi><mi>n</mi></msup><mi>d</mi><mi>x</mi><mo>=</mo><mfrac><mn>1</mn><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></mfrac><msup><mi>x</mi><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msup><mo>+</mo><mi>C</mi></math> が成り立つことを、<strong>右辺を微分して</strong>確かめましょう。</p>
+          <p>（2）公式を使って、<math><mo class="int-op">∫</mo><msup><mi>x</mi><mn>3</mn></msup><mi>d</mi><mi>x</mi></math> を求めましょう。</p>
         </div>
 
         <div class="step hint">
           <p class="step-label">ヒント1 ― （1）の方針</p>
-          <p>右辺 <span class="m"><span class="frac"><span class="num">1</span><span class="den">n + 1</span></span>x<sup>n+1</sup> + C</span> を微分します。<span class="m">x<sup>n+1</sup></span> を微分すると指数が前に出て、<span class="m">(n + 1)x<sup>n</sup></span> になることに注目しましょう。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span>x^n の不定積分 <math><mo class="int-op">∫</mo><msup><mi>x</mi><mi>n</mi></msup><mi>d</mi><mi>x</mi><mo>=</mo><mfrac><mn>1</mn><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></mfrac><msup><mi>x</mi><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msup><mo>+</mo><mi>C</mi></math>。ここではこの公式の右辺を微分して、左辺の <math><msup><mi>x</mi><mi>n</mi></msup></math> に戻るかを確かめます。</p>
+          <p>右辺 <math><mfrac><mn>1</mn><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></mfrac><msup><mi>x</mi><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msup><mo>+</mo><mi>C</mi></math> を微分します。<br><math><msup><mi>x</mi><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msup></math> を微分すると指数が前に出て、<br><math><mo>(</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo>)</mo><msup><mi>x</mi><mi>n</mi></msup></math> になることに注目しましょう。</p>
         </div>
 
         <div class="step hint">
           <p class="step-label">ヒント2 ― （1）の計算の途中</p>
-          <p class="formula">(<span class="frac"><span class="num">1</span><span class="den">n + 1</span></span>x<sup>n+1</sup> + C)′ = <span class="frac"><span class="num">1</span><span class="den">n + 1</span></span> · (n + 1)x<sup>n</sup></p>
-          <p>あとは、係数の <span class="m"><span class="frac"><span class="num">1</span><span class="den">n + 1</span></span></span> と <span class="m">(n + 1)</span> が約分されてどうなるかを確認しましょう。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span>x^n の微分 <math><mo>(</mo><msup><mi>x</mi><mi>n</mi></msup><mo>)</mo><mo>′</mo><mo>=</mo><mi>n</mi><msup><mi>x</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup></math>。ここでは <math><msup><mi>x</mi><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msup></math> を微分して、指数の <math><mi>n</mi><mo>+</mo><mn>1</mn></math> が係数として前に出ることを使います。</p>
+          <p class="formula"><math display="block"><mo>(</mo><mfrac><mn>1</mn><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></mfrac><msup><mi>x</mi><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msup><mo>+</mo><mi>C</mi><mo>)</mo><mo>′</mo><mo>=</mo><mfrac><mn>1</mn><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></mfrac><mo>·</mo><mo>(</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo>)</mo><msup><mi>x</mi><mi>n</mi></msup></math></p>
+          <p>あとは、係数の <math><mfrac><mn>1</mn><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></mfrac></math> と <math><mo>(</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo>)</mo></math> が約分されて<br>どうなるかを確認しましょう。</p>
         </div>
 
         <div class="step hint">
           <p class="step-label">ヒント3 ― （2）の方針</p>
-          <p><span class="m"><span class="int">∫</span> x<sup>3</sup> dx</span> は、公式の <span class="m">n</span> に <span class="m">3</span> を当てはめたものです。指数は <span class="m">3 + 1 = 4</span> になり、係数はその <span class="m">4</span> で割ります。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span>x^n の不定積分 <math><mo class="int-op">∫</mo><msup><mi>x</mi><mi>n</mi></msup><mi>d</mi><mi>x</mi><mo>=</mo><mfrac><mn>1</mn><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></mfrac><msup><mi>x</mi><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msup><mo>+</mo><mi>C</mi></math>。ここでは公式の <math><mi>n</mi></math> に <math><mn>3</mn></math> を当てはめて、<math><mo class="int-op">∫</mo><msup><mi>x</mi><mn>3</mn></msup><mi>d</mi><mi>x</mi></math> を求めます。</p>
+          <p><math><mo class="int-op">∫</mo><msup><mi>x</mi><mn>3</mn></msup><mi>d</mi><mi>x</mi></math> は、公式の <math><mi>n</mi></math> に <math><mn>3</mn></math> を当てはめたものです。<br>指数は <math><mn>3</mn><mo>+</mo><mn>1</mn><mo>=</mo><mn>4</mn></math> になり、係数はその <math><mn>4</mn></math> で割ります。</p>
         </div>
 
         <div class="step answer">
           <p class="step-label">解答</p>
+          <p class="cite"><span class="cite-tag">使う公式</span>x^n の不定積分 <math><mo class="int-op">∫</mo><msup><mi>x</mi><mi>n</mi></msup><mi>d</mi><mi>x</mi><mo>=</mo><mfrac><mn>1</mn><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></mfrac><msup><mi>x</mi><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msup><mo>+</mo><mi>C</mi></math>。（1）では右辺を微分して公式を確かめ、（2）では <math><mi>n</mi><mo>=</mo><mn>3</mn></math> を当てはめて使います。</p>
           <p>（1）右辺を微分すると</p>
-          <p class="formula">(<span class="frac"><span class="num">1</span><span class="den">n + 1</span></span>x<sup>n+1</sup> + C)′ = <span class="frac"><span class="num">1</span><span class="den">n + 1</span></span> · (n + 1)x<sup>n</sup> = x<sup>n</sup></p>
-          <p>となり、左辺の <span class="m">x<sup>n</sup></span> と一致します。よって、右辺は <span class="m">x<sup>n</sup></span> の原始関数であり、公式が成り立ちます。</p>
-          <p>（2）公式に <span class="m">n = 3</span> を当てはめて</p>
-          <p class="formula"><span class="int">∫</span> x<sup>3</sup> dx = <span class="frac"><span class="num">1</span><span class="den">4</span></span>x<sup>4</sup> + C</p>
+          <p class="formula"><math display="block"><mo>(</mo><mfrac><mn>1</mn><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></mfrac><msup><mi>x</mi><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msup><mo>+</mo><mi>C</mi><mo>)</mo><mo>′</mo><mo>=</mo><mfrac><mn>1</mn><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></mfrac><mo>·</mo><mo>(</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo>)</mo><msup><mi>x</mi><mi>n</mi></msup><mo>=</mo><msup><mi>x</mi><mi>n</mi></msup></math></p>
+          <p>となり、左辺の <math><msup><mi>x</mi><mi>n</mi></msup></math> と一致します。<br>よって、右辺は <math><msup><mi>x</mi><mi>n</mi></msup></math> の原始関数であり、<br>公式が成り立ちます。</p>
+          <p>（2）公式に <math><mi>n</mi><mo>=</mo><mn>3</mn></math> を当てはめて</p>
+          <p class="formula"><math display="block"><mo class="int-op">∫</mo><msup><mi>x</mi><mn>3</mn></msup><mi>d</mi><mi>x</mi><mo>=</mo><mfrac><mn>1</mn><mn>4</mn></mfrac><msup><mi>x</mi><mn>4</mn></msup><mo>+</mo><mi>C</mi></math></p>
         </div>
 
         <button class="next-btn" data-next type="button">次へ</button>
@@ -609,7 +679,7 @@
     <div class="ctrl" role="region" aria-label="操作バー">
       <div class="ctrl-inner">
         <div class="ctrl-progress">
-          <p class="p-label" id="p-label">全体の進捗　0 / 0 ステップ</p>
+          <p class="p-label" id="p-label">全体の進捗　<math><mfrac><mn>0</mn><mn>0</mn></mfrac></math>ステップ</p>
           <div class="p-track"><div class="p-fill" id="p-fill"></div></div>
         </div>
         <button class="reset" id="btn-reset" type="button">はじめから</button>

@@ -324,7 +324,57 @@
           padding:2px 6px 2px 2px;
         }
       }
-    </style>
+    
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+
+      /* 積分記号は大きめに表示する（元のページの可読化デザインに合わせる） */
+      math .int-op{font-size:1.35em}
+      /* calc-12 世代（.card）と calc-18 世代（.unit）の、図のない問題の全幅化 */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig>.step{position:static !important}
+        .card.nofig>.steps-wrap{max-height:none !important;overflow:visible !important}
+        .unit.nofig{display:block !important}
+        .unit.nofig>.qside{position:static !important}
+        .unit.nofig>.steps-stack{max-height:none !important;overflow:visible !important}
+      }
+</style>
   </head>
   <body>
     <div class="wrap">
@@ -353,7 +403,7 @@
         <span class="pno">教科書 p.215</span>
       </div>
 
-      <section class="card prob" id="prob-kaisetsu" data-flow="kaisetsu" data-label="解説B">
+      <section class="nofig card prob" id="prob-kaisetsu" data-flow="kaisetsu" data-label="解説B">
         <div class="prob-head">
           <span class="prob-tag">解説 B</span>
           <div class="dots" aria-hidden="true">
@@ -362,12 +412,12 @@
           <span class="prob-state">ヒント 0 / 4</span>
         </div>
         <div class="qside">
-        <p class="prob-q">a ≦ x ≦ b の範囲で、曲線 y＝f(x) が曲線 y＝g(x) の上側にある（f(x) ≧ g(x)）とき、2つの曲線の間にはさまれた部分の面積 S を定積分で表そう。下の「次へ」で、図を見ながら1つずつ確かめていくよ。</p>
+        <p class="prob-q"><math><mi>a</mi><mo>≦</mo><mi>x</mi><mo>≦</mo><mi>b</mi></math>の範囲で、曲線<math><mi>y</mi><mo>=</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>が曲線<math><mi>y</mi><mo>=</mo><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>の上側にある<math><mo>(</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>≧</mo><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>)</mo></math>とき、2つの曲線の間にはさまれた部分の面積 S を定積分で表そう。下の「次へ」で、図を見ながら1つずつ確かめていくよ。</p>
         </div>
 
         <div class="step hint">
           <h3>ステップ 1 ― まず2つの曲線を見る</h3>
-          <p>2つの曲線 y＝f(x)、y＝g(x) は、x＝a と x＝b のところで交わっている。その間の区間 a ≦ x ≦ b では、いつも <b>f(x) ≧ g(x)</b>、つまり y＝f(x) が上、y＝g(x) が下にある。</p>
+          <p>2つの曲線<math><mi>y</mi><mo>=</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>、<math><mi>y</mi><mo>=</mo><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>は、<math><mi>x</mi><mo>=</mo><mi>a</mi></math>と<math><mi>x</mi><mo>=</mo><mi>b</mi></math>のところで交わっている。<br>その間の区間<math><mi>a</mi><mo>≦</mo><mi>x</mi><mo>≦</mo><mi>b</mi></math>では、いつも <b><math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>≧</mo><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo></math></b>、つまり<math><mi>y</mi><mo>=</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>が上、<math><mi>y</mi><mo>=</mo><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>が下にある。</p>
           <figure>
             <div class="figbox">
               <svg viewBox="0 0 520 300" role="img" aria-label="2つの曲線 y=f(x) と y=g(x) が x=a と x=b で交わる図">
@@ -390,13 +440,13 @@
                 <text x="252" y="234" text-anchor="middle" class="svg-txt" font-size="16" style="fill:var(--blue)">y＝g(x)</text>
               </svg>
             </div>
-            <figcaption>緑の曲線 y＝f(x) が上、青の曲線 y＝g(x) が下。交点の x 座標が a と b。</figcaption>
+            <figcaption>緑の曲線<math><mi>y</mi><mo>=</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>が上、青の曲線<math><mi>y</mi><mo>=</mo><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>が下。交点の x 座標が a と b。</figcaption>
           </figure>
         </div>
 
         <div class="step hint">
           <h3>ステップ 2 ― 求めるのは「間」の部分</h3>
-          <p>求める面積 S は、2つの曲線と直線 x＝a、x＝b で囲まれた、<b>斜線の部分</b>だ。この部分は、x 軸と曲線 y＝f(x) の間の面積から、x 軸と曲線 y＝g(x) の間の面積を引いたもの、と見ることもできる。</p>
+          <p>求める面積 S は、2つの曲線と直線<math><mi>x</mi><mo>=</mo><mi>a</mi></math>、<math><mi>x</mi><mo>=</mo><mi>b</mi></math>で囲まれた、<b>斜線の部分</b>だ。<br>この部分は、x 軸と曲線<math><mi>y</mi><mo>=</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>の間の面積から、x 軸と曲線<math><mi>y</mi><mo>=</mo><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>の間の面積を引いたもの、と見ることもできる。</p>
           <figure>
             <div class="figbox">
               <svg viewBox="0 0 520 300" role="img" aria-label="2つの曲線の間の部分に斜線が引かれ、面積Sと示された図">
@@ -433,7 +483,8 @@
 
         <div class="step hint">
           <h3>ステップ 3 ― 縦の長さは「上 − 下」</h3>
-          <p>区間の中の1点 x で図を縦に切ると、切り口の長さは、上の曲線の値から下の曲線の値を引いた <b>f(x) − g(x)</b> になる。この長さを、x＝a から x＝b まで全部集める（積分する）と、斜線部分の面積になる。これが、この項の考え方の中心だ。</p>
+          <p class="cite"><span class="cite-tag">使う定義</span>縦の切り口の長さ「上 − 下」 <math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>−</mo><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>。区間の中の1点 x で縦に切ったときの長さが、この「上 − 下」になる。</p>
+          <p>区間の中の1点 x で図を縦に切ると、切り口の長さは、上の曲線の値から下の曲線の値を引いた <b>f(x) − g(x)</b> になる。<br>この長さを、<math><mi>x</mi><mo>=</mo><mi>a</mi></math>から<math><mi>x</mi><mo>=</mo><mi>b</mi></math>まで全部集める（積分する）と、<br>斜線部分の面積になる。<br>これが、この項の考え方の中心だ。</p>
           <figure>
             <div class="figbox">
               <svg viewBox="0 0 520 300" role="img" aria-label="あるxにおける縦の切り口の長さが f(x)-g(x) であることを示す図">
@@ -469,7 +520,7 @@
 
         <div class="step hint">
           <h3>ステップ 4 ― x 軸の下側にあっても同じ</h3>
-          <p>囲まれた部分全体が x 軸の<b>下側</b>にある場合も、考え方は変わらない。2つの曲線を同じだけ上に平行移動すれば、間の部分は x 軸の上側に移るが、<b>間の面積は変わらない</b>からだ。だから、下側にある場合も「上 − 下」を積分すればよい。</p>
+          <p>囲まれた部分全体が x 軸の<b>下側</b>にある場合も、<br>考え方は変わらない。<br>2つの曲線を同じだけ上に平行移動すれば、間の部分は x 軸の上側に移るが、<b>間の面積は変わらない</b>からだ。<br>だから、下側にある場合も「上 − 下」を積分すればよい。</p>
           <figure>
             <div class="figbox">
               <svg viewBox="0 0 520 262" role="img" aria-label="x軸の下側にある2曲線の間の部分を、上に平行移動しても面積が変わらないことを示す図">
@@ -519,9 +570,9 @@
 
         <div class="step answer">
           <h3>公式 ― 2つの曲線の間の面積</h3>
-          <p class="big">S ＝ <span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">b</span><span class="int-low">a</span></span></span> {f(x) − g(x)} dx</p>
-          <p>a ≦ x ≦ b で f(x) ≧ g(x) のとき、曲線 y＝f(x) と y＝g(x) の間にはさまれた部分の面積は、この定積分で求められる。</p>
-          <p class="note"><b>合言葉は「上 − 下」。</b>上の曲線の式から下の曲線の式を引いて、それを積分する。どちらの曲線が上にあるかを、最初に必ず確認しよう。</p>
+          <p class="big"><math display="block"><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mo>{</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>−</mo><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>}</mo><mi>d</mi><mi>x</mi></math></p>
+          <p><math><mi>a</mi><mo>≦</mo><mi>x</mi><mo>≦</mo><mi>b</mi></math>で<math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>≧</mo><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>のとき、<br>曲線<math><mi>y</mi><mo>=</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>と<math><mi>y</mi><mo>=</mo><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>の間にはさまれた部分の面積は、この定積分で求められる。</p>
+          <p class="note"><b>合言葉は「上 − 下」。</b><br>上の曲線の式から下の曲線の式を引いて、<br>それを積分する。<br>どちらの曲線が上にあるかを、最初に必ず確認しよう。</p>
         </div>
         <p class="prob-done">解説B クリア！　次は例20で、実際の計算を確かめよう。</p>
       </section>
@@ -542,7 +593,7 @@
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
         <div class="qside">
-        <p class="prob-q">2つの放物線 y＝x<sup>2</sup>、y＝2x<sup>2</sup>＋1 と y 軸および直線 x＝1 で囲まれた部分の面積を求めよ。</p>
+        <p class="prob-q">2つの放物線<math><mi>y</mi><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup></math>、<math><mi>y</mi><mo>=</mo><mn>2</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>1</mn></math>と y 軸および直線<math><mi>x</mi><mo>=</mo><mn>1</mn></math>で囲まれた部分の面積を求めよ。</p>
         <figure>
           <div class="figbox">
             <svg viewBox="0 0 520 320" role="img" aria-label="放物線 y=x² と y=2x²+1、y軸と直線 x=1 の図">
@@ -561,19 +612,20 @@
               <text x="338" y="196" class="svg-txt" font-size="16" style="fill:var(--blue)">y＝x²</text>
             </svg>
           </div>
-          <figcaption>囲まれた部分は、左が y 軸（x＝0）、右が直線 x＝1 の範囲にある。</figcaption>
+          <figcaption>囲まれた部分は、左が y 軸<math><mo>(</mo><mi>x</mi><mo>=</mo><mn>0</mn><mo>)</mo></math>、右が直線<math><mi>x</mi><mo>=</mo><mn>1</mn></math>の範囲にある。</figcaption>
         </figure>
         </div>
 
         <div class="step hint">
           <h3>ヒント 1 ― どちらが上か調べる</h3>
           <p>2つの式の差をとると</p>
-          <p style="text-align:center;font-weight:700">(2x<sup>2</sup>＋1) − x<sup>2</sup> ＝ x<sup>2</sup>＋1</p>
-          <p>x<sup>2</sup>＋1 はいつも正の数だから、0 ≦ x ≦ 1 では <b>y＝2x<sup>2</sup>＋1 が上、y＝x<sup>2</sup> が下</b>だと分かる。</p>
+          <p class="cite"><span class="cite-tag">使う性質</span>上下の判定（差の符号） <math><mo>(</mo><mn>2</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>1</mn><mo>)</mo><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>1</mn></math>。この差が正かどうかで、どちらの曲線が上にあるかが決まる。</p>
+          <p style="text-align:center;font-weight:700"><math display="block"><mo>(</mo><mn>2</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>1</mn><mo>)</mo><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>1</mn></math></p>
+          <p><math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>1</mn></math>はいつも正の数だから、<br><math><mn>0</mn><mo>≦</mo><mi>x</mi><mo>≦</mo><mn>1</mn></math>では <b><math><mi>y</mi><mo>=</mo><mn>2</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>1</mn></math>が上、<math><mi>y</mi><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup></math> が下</b>だと分かる。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 図で囲まれた部分を確認する</h3>
-          <p>斜線の部分が求める面積だ。左端は y 軸だから x＝0、右端は直線 x＝1。つまり積分の区間は 0 ≦ x ≦ 1 になる。</p>
+          <p>斜線の部分が求める面積だ。<br>左端は y 軸だから<math><mi>x</mi><mo>=</mo><mn>0</mn></math>、右端は直線<math><mi>x</mi><mo>=</mo><mn>1</mn></math>。<br>つまり積分の区間は<math><mn>0</mn><mo>≦</mo><mi>x</mi><mo>≦</mo><mn>1</mn></math>になる。</p>
           <figure>
             <div class="figbox">
               <svg viewBox="0 0 520 320" role="img" aria-label="例20の囲まれた部分に斜線が引かれた図">
@@ -600,21 +652,31 @@
                 <text x="195" y="228" text-anchor="middle" class="svg-txt" font-size="21" style="fill:var(--accent-deep)">S</text>
               </svg>
             </div>
-            <figcaption>斜線の部分が、y 軸（x＝0）から直線 x＝1 までの間の面積。</figcaption>
+            <figcaption>斜線の部分が、y 軸<math><mo>(</mo><mi>x</mi><mo>=</mo><mn>0</mn><mo>)</mo></math>から直線<math><mi>x</mi><mo>=</mo><mn>1</mn></math>までの間の面積。</figcaption>
           </figure>
         </div>
         <div class="step hint">
           <h3>ヒント 3 ― 「上 − 下」を積分する</h3>
+          <p class="cite"><span class="cite-tag">使う公式</span>2つの曲線の間の面積 <math><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mo>{</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>−</mo><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>}</mo><mi>d</mi><mi>x</mi></math>。上の式から下の式を引いたものを、区間 0 から 1 まで積分する。</p>
           <p>解説Bの公式に当てはめると</p>
-          <p style="text-align:center;font-weight:700">S ＝ <span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">1</span><span class="int-low">0</span></span></span> {(2x<sup>2</sup>＋1) − x<sup>2</sup>} dx ＝ <span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">1</span><span class="int-low">0</span></span></span> (x<sup>2</sup>＋1) dx</p>
-          <p>積分すると [ (1/3)x<sup>3</sup> ＋ x ]<sub>0</sub><sup>1</sup> という形になる。x＝1 を代入した値から、x＝0 を代入した値を引いてみよう。</p>
+          <p class="mq-wide" style="text-align:center;font-weight:700"><math display="block"><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mn>0</mn><mn>1</mn></msubsup><mo>{</mo><mo>(</mo><mn>2</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>1</mn><mo>)</mo><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>}</mo><mi>d</mi><mi>x</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mn>0</mn><mn>1</mn></msubsup><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>1</mn><mo>)</mo><mi>d</mi><mi>x</mi></math></p>
+<div class="mq-narrow">
+<p class="formula" style="text-align:center;font-weight:700"><math display="block"><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mn>0</mn><mn>1</mn></msubsup><mo>{</mo><mo>(</mo><mn>2</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>1</mn><mo>)</mo><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>}</mo><mi>d</mi><mi>x</mi></math></p>
+<p class="formula cont" style="text-align:center;font-weight:700"><math display="block"><mo>=</mo><msubsup><mo class="int-op">∫</mo><mn>0</mn><mn>1</mn></msubsup><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>1</mn><mo>)</mo><mi>d</mi><mi>x</mi></math></p>
+</div>
+          <p>積分すると<math><msup><msub><mrow><mo>[</mo><mo>(</mo><mn>1</mn><mo>/</mo><mn>3</mn><mo>)</mo><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mi>x</mi><mo>]</mo></mrow><mn>0</mn></msub><mn>1</mn></msup></math> という形になる。<br><math><mi>x</mi><mo>=</mo><mn>1</mn></math>を代入した値から、<math><mi>x</mi><mo>=</mo><mn>0</mn></math>を代入した値を引いてみよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
-          <p class="big">面積は 4/3</p>
-          <p>S ＝ <span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">1</span><span class="int-low">0</span></span></span> {(2x<sup>2</sup>＋1) − x<sup>2</sup>} dx ＝ <span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">1</span><span class="int-low">0</span></span></span> (x<sup>2</sup>＋1) dx</p>
-          <p>　＝ [ (1/3)x<sup>3</sup> ＋ x ]<sub>0</sub><sup>1</sup> ＝ (1/3 ＋ 1) − 0 ＝ <b>4/3</b></p>
-          <p class="note">y 軸は「x＝0 の直線」。左端が y 軸のときは、積分区間の左端が 0 になるよ。</p>
+          <p class="big">面積は<math><mfrac><mn>4</mn><mn>3</mn></mfrac></math></p>
+          <p class="cite"><span class="cite-tag">使う公式</span>2つの曲線の間の面積 <math><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mo>{</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>−</mo><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>}</mo><mi>d</mi><mi>x</mi></math>。ヒントで確認した上下関係のまま、「上 − 下」を 0 から 1 まで積分して計算する。</p>
+          <p><math><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mn>0</mn><mn>1</mn></msubsup><mo>{</mo><mo>(</mo><mn>2</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>1</mn><mo>)</mo><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>}</mo><mi>d</mi><mi>x</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mn>0</mn><mn>1</mn></msubsup><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>1</mn><mo>)</mo><mi>d</mi><mi>x</mi></math></p>
+          <div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mo>=</mo><msup><msub><mrow><mo>[</mo><mo>(</mo><mn>1</mn><mo>/</mo><mn>3</mn><mo>)</mo><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mi>x</mi><mo>]</mo></mrow><mn>0</mn></msub><mn>1</mn></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo><mo>(</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>+</mo><mn>1</mn><mo>)</mo><mo>−</mo><mn>0</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo><mstyle mathvariant="bold"><mfrac><mn>4</mn><mn>3</mn></mfrac></mstyle></math></div>
+</div>
+          <p class="note">y 軸は「<math><mi>x</mi><mo>=</mo><mn>0</mn></math>の直線」。<br>左端が y 軸のときは、積分区間の左端が 0 になるよ。</p>
         </div>
         <p class="prob-done">例20 クリア！　次は練習37に挑戦しよう。</p>
       </section>
@@ -626,7 +688,7 @@
         <span class="pno">教科書 p.215</span>
       </div>
 
-      <section class="card prob" id="prob-ren37" data-flow="ren37" data-label="練習37">
+      <section class="nofig card prob" id="prob-ren37" data-flow="ren37" data-label="練習37">
         <div class="prob-head">
           <span class="prob-tag ren">練習 37</span>
           <div class="dots" aria-hidden="true">
@@ -635,37 +697,53 @@
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
         <div class="qside">
-        <p class="prob-q">2つの放物線 y＝(1/2)x<sup>2</sup>、y＝x<sup>2</sup>＋x＋1 と直線 x＝1、x＝2 で囲まれた部分の面積を求めよ。</p>
+        <p class="prob-q">2つの放物線<math><mi>y</mi><mo>=</mo><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo><msup><mi>x</mi><mn>2</mn></msup></math>、<math><mi>y</mi><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi><mo>+</mo><mn>1</mn></math>と直線<math><mi>x</mi><mo>=</mo><mn>1</mn></math>、<math><mi>x</mi><mo>=</mo><mn>2</mn></math>で囲まれた部分の面積を求めよ。</p>
         </div>
 
         <div class="step hint">
           <h3>ヒント 1 ― 上下関係を確認する</h3>
           <p>まず、区間の端で2つの値を比べてみよう。</p>
           <table class="comp">
-            <tr><th></th><th>y＝(1/2)x<sup>2</sup></th><th>y＝x<sup>2</sup>＋x＋1</th></tr>
-            <tr><th>x＝1 のとき</th><td>1/2</td><td>3</td></tr>
-            <tr><th>x＝2 のとき</th><td>2</td><td>7</td></tr>
+            <tr><th></th><th><math><mi>y</mi><mo>=</mo><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo><msup><mi>x</mi><mn>2</mn></msup></math></th><th><math><mi>y</mi><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi><mo>+</mo><mn>1</mn></math></th></tr>
+            <tr><th><math><mi>x</mi><mo>=</mo><mn>1</mn></math>のとき</th><td><math><mfrac><mn>1</mn><mn>2</mn></mfrac></math></td><td>3</td></tr>
+            <tr><th><math><mi>x</mi><mo>=</mo><mn>2</mn></math>のとき</th><td>2</td><td>7</td></tr>
           </table>
-          <p>両端とも y＝x<sup>2</sup>＋x＋1 の方が大きい。さらに、差をとると (x<sup>2</sup>＋x＋1) − (1/2)x<sup>2</sup> ＝ (1/2)x<sup>2</sup>＋x＋1 で、これは正の数どうしの和だから区間全体で正。つまり 1 ≦ x ≦ 2 では <b>y＝x<sup>2</sup>＋x＋1 が上、y＝(1/2)x<sup>2</sup> が下</b>だ。</p>
+          <p class="cite"><span class="cite-tag">使う性質</span>上下の判定（差の符号） <math><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo><mo>−</mo><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo><msup><mi>x</mi><mn>2</mn></msup><mo>=</mo><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi><mo>+</mo><mn>1</mn></math>。この差が正の数どうしの和でいつも正だから、上下関係が区間全体で変わらない。</p>
+          <p>両端とも<math><mi>y</mi><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi><mo>+</mo><mn>1</mn></math>の方が大きい。<br>さらに、差をとると<math><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo><mo>−</mo><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo><msup><mi>x</mi><mn>2</mn></msup><mo>=</mo><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi><mo>+</mo><mn>1</mn></math>で、これは正の数どうしの和だから区間全体で正。<br>つまり<math><mn>1</mn><mo>≦</mo><mi>x</mi><mo>≦</mo><mn>2</mn></math>では <b><math><mi>y</mi><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi><mo>+</mo><mn>1</mn></math>が上、<math><mi>y</mi><mo>=</mo><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo><msup><mi>x</mi><mn>2</mn></msup></math> が下</b>だ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 「上 − 下」で立式する</h3>
-          <p>区間は直線 x＝1 から x＝2 まで。公式に当てはめると</p>
-          <p style="text-align:center;font-weight:700">S ＝ <span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">2</span><span class="int-low">1</span></span></span> {(x<sup>2</sup>＋x＋1) − (1/2)x<sup>2</sup>} dx ＝ <span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">2</span><span class="int-low">1</span></span></span> ((1/2)x<sup>2</sup>＋x＋1) dx</p>
+          <p class="cite"><span class="cite-tag">使う公式</span>2つの曲線の間の面積 <math><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mo>{</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>−</mo><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>}</mo><mi>d</mi><mi>x</mi></math>。上の式から下の式を引いたものを、区間 1 から 2 まで積分する。</p>
+          <p>区間は直線<math><mi>x</mi><mo>=</mo><mn>1</mn></math>から<math><mi>x</mi><mo>=</mo><mn>2</mn></math>まで。公式に当てはめると</p>
+          <p class="mq-wide" style="text-align:center;font-weight:700"><math display="block"><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mn>1</mn><mn>2</mn></msubsup><mo>{</mo><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo><mo>−</mo><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo><msup><mi>x</mi><mn>2</mn></msup><mo>}</mo><mi>d</mi><mi>x</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mn>1</mn><mn>2</mn></msubsup><mo>(</mo><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo><mi>d</mi><mi>x</mi></math></p>
+<div class="mq-narrow">
+<p class="formula" style="text-align:center;font-weight:700"><math display="block"><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mn>1</mn><mn>2</mn></msubsup><mo>{</mo><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo><mo>−</mo><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo><msup><mi>x</mi><mn>2</mn></msup><mo>}</mo><mi>d</mi><mi>x</mi></math></p>
+<p class="formula cont" style="text-align:center;font-weight:700"><math display="block"><mo>=</mo><msubsup><mo class="int-op">∫</mo><mn>1</mn><mn>2</mn></msubsup><mo>(</mo><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo><mi>d</mi><mi>x</mi></math></p>
+</div>
           <p>の形になる。あとは、この定積分を計算するだけだ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 3 ― 積分して、両端の値を比べる</h3>
-          <p>積分すると [ (1/6)x<sup>3</sup> ＋ (1/2)x<sup>2</sup> ＋ x ]<sub>1</sub><sup>2</sup> となる。</p>
-          <p>x＝2 を代入すると 8/6 ＋ 2 ＋ 2、x＝1 を代入すると 1/6 ＋ 1/2 ＋ 1。この2つの差を求めてみよう。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span>2つの曲線の間の面積 <math><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mn>1</mn><mn>2</mn></msubsup><mo>{</mo><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo><mo>−</mo><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo><msup><mi>x</mi><mn>2</mn></msup><mo>}</mo><mi>d</mi><mi>x</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mn>1</mn><mn>2</mn></msubsup><mo>(</mo><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo><mi>d</mi><mi>x</mi></math>。この定積分を計算して、x=2 の値から x=1 の値を引く。</p>
+          <p>積分すると<math><msup><msub><mrow><mo>[</mo><mo>(</mo><mn>1</mn><mo>/</mo><mn>6</mn><mo>)</mo><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mo>(</mo><mn>1</mn><mo>/</mo><mn>2</mn><mo>)</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi><mo>]</mo></mrow><mn>1</mn></msub><mn>2</mn></msup></math> となる。</p>
+          <p><math><mi>x</mi><mo>=</mo><mn>2</mn></math>を代入すると<math><mfrac><mn>8</mn><mn>6</mn></mfrac><mo>+</mo><mn>2</mn><mo>+</mo><mn>2</mn></math>、<math><mi>x</mi><mo>=</mo><mn>1</mn></math>を代入すると<math><mfrac><mn>1</mn><mn>6</mn></mfrac><mo>+</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>+</mo><mn>1</mn></math>。<br>この2つの差を求めてみよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
-          <p class="big">面積は 11/3</p>
-          <p>S ＝ <span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">2</span><span class="int-low">1</span></span></span> {(x<sup>2</sup>＋x＋1) − (1/2)x<sup>2</sup>} dx ＝ <span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">2</span><span class="int-low">1</span></span></span> ((1/2)x<sup>2</sup>＋x＋1) dx</p>
-          <p>　＝ [ (1/6)x<sup>3</sup> ＋ (1/2)x<sup>2</sup> ＋ x ]<sub>1</sub><sup>2</sup></p>
-          <p>　＝ (8/6 ＋ 2 ＋ 2) − (1/6 ＋ 1/2 ＋ 1) ＝ 16/3 − 5/3 ＝ <b>11/3</b></p>
-          <p class="note">上下の確認は、x＝1、x＝2 のような区間の端の値を比べるのが手早い。差の式が「正の数どうしの和」になれば、区間全体で符号が変わらないことも保証できるよ。</p>
+          <p class="big">面積は<math><mfrac><mn>11</mn><mn>3</mn></mfrac></math></p>
+          <p class="cite"><span class="cite-tag">使う公式</span>2つの曲線の間の面積 <math><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mo>{</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>−</mo><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>}</mo><mi>d</mi><mi>x</mi></math>。ヒントで確認した上下関係のまま、「上 − 下」を 1 から 2 まで積分して計算する。</p>
+          <p class="mq-wide"><math><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mn>1</mn><mn>2</mn></msubsup><mo>{</mo><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo><mo>−</mo><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo><msup><mi>x</mi><mn>2</mn></msup><mo>}</mo><mi>d</mi><mi>x</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mn>1</mn><mn>2</mn></msubsup><mo>(</mo><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo><mi>d</mi><mi>x</mi></math></p>
+<div class="mq-narrow">
+<p class="formula"><math display="block"><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mn>1</mn><mn>2</mn></msubsup><mo>{</mo><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo><mo>−</mo><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo><msup><mi>x</mi><mn>2</mn></msup><mo>}</mo><mi>d</mi><mi>x</mi></math></p>
+<p class="formula cont"><math display="block"><mo>=</mo><msubsup><mo class="int-op">∫</mo><mn>1</mn><mn>2</mn></msubsup><mo>(</mo><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo><mi>d</mi><mi>x</mi></math></p>
+</div>
+          <p>　<math><mo>=</mo><msup><msub><mrow><mo>[</mo><mo>(</mo><mn>1</mn><mo>/</mo><mn>6</mn><mo>)</mo><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mo>(</mo><mn>1</mn><mo>/</mo><mn>2</mn><mo>)</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi><mo>]</mo></mrow><mn>1</mn></msub><mn>2</mn></msup></math></p>
+          <div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mo>=</mo><mo>(</mo><mfrac><mn>8</mn><mn>6</mn></mfrac><mo>+</mo><mn>2</mn><mo>+</mo><mn>2</mn><mo>)</mo><mo>−</mo><mo>(</mo><mfrac><mn>1</mn><mn>6</mn></mfrac><mo>+</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>+</mo><mn>1</mn><mo>)</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo><mfrac><mn>16</mn><mn>3</mn></mfrac><mo>−</mo><mfrac><mn>5</mn><mn>3</mn></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo><mstyle mathvariant="bold"><mfrac><mn>11</mn><mn>3</mn></mfrac></mstyle></math></div>
+</div>
+          <p class="note">上下の確認は、<math><mi>x</mi><mo>=</mo><mn>1</mn></math>、<math><mi>x</mi><mo>=</mo><mn>2</mn></math>のような区間の端の値を比べるのが手早い。<br>差の式が「正の数どうしの和」になれば、<br>区間全体で符号が変わらないことも保証できるよ。</p>
         </div>
         <p class="prob-done">練習37 クリア！　次は応用例題7に進もう。</p>
       </section>
@@ -686,7 +764,7 @@
           <span class="prob-state">ヒント 0 / 4</span>
         </div>
         <div class="qside">
-        <p class="prob-q">放物線 y＝x<sup>2</sup>−1 と直線 y＝x＋1 で囲まれた部分の面積を求めよ。</p>
+        <p class="prob-q">放物線<math><mi>y</mi><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn></math>と直線<math><mi>y</mi><mo>=</mo><mi>x</mi><mo>+</mo><mn>1</mn></math>で囲まれた部分の面積を求めよ。</p>
         <figure>
           <div class="figbox">
             <svg viewBox="0 0 520 320" role="img" aria-label="放物線 y=x²-1 と直線 y=x+1 が2点で交わる図">
@@ -711,19 +789,22 @@
 
         <div class="step hint">
           <h3>ヒント 1 ― まず交点の x 座標を求める</h3>
-          <p>この問題では、直線 x＝a、x＝b が与えられていない。囲まれた部分の左端と右端は、2つのグラフの<b>交点</b>だ。</p>
-          <p>交点では2つの y の値が等しくなるから、<b>x<sup>2</sup>−1 ＝ x＋1</b> という方程式を解けば、交点の x 座標が求まる。</p>
+          <p>この問題では、直線<math><mi>x</mi><mo>=</mo><mi>a</mi></math>、<math><mi>x</mi><mo>=</mo><mi>b</mi></math>が与えられていない。<br>囲まれた部分の左端と右端は、2つのグラフの<b>交点</b>だ。</p>
+          <p class="cite"><span class="cite-tag">使う性質</span>交点では2つの y の値が等しい <math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>=</mo><mi>x</mi><mo>+</mo><mn>1</mn></math>。この方程式を解くと、囲まれた部分の両端になる交点の x 座標が求まる。</p>
+          <p>交点では2つの y の値が等しくなるから、<b><math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>=</mo><mi>x</mi><mo>+</mo><mn>1</mn></math></b> という方程式を解けば、<br>交点の x 座標が求まる。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 方程式を解いて区間を決める</h3>
-          <p>x<sup>2</sup>−1 ＝ x＋1 を整理すると</p>
-          <p style="text-align:center;font-weight:700">x<sup>2</sup> − x − 2 ＝ 0　→　(x＋1)(x−2) ＝ 0</p>
-          <p>よって、交点の x 座標は <b>x ＝ −1, 2</b>。積分の区間は −1 ≦ x ≦ 2 になる。</p>
+          <p><math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>=</mo><mi>x</mi><mo>+</mo><mn>1</mn></math>を整理すると</p>
+          <p class="cite"><span class="cite-tag">使う性質</span>交点の方程式を因数分解した形 <math><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo><mo>=</mo><mn>0</mn></math>。この形から、交点の x 座標が −1 と 2 だと読める。</p>
+          <p style="text-align:center;font-weight:700"><math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>=</mo><mn>0</mn></math>　→　<math><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo><mo>=</mo><mn>0</mn></math></p>
+          <p>よって、交点の x 座標は <b><math><mi>x</mi><mo>=</mo><mo>−</mo><mn>1</mn><mo>,</mo><mn>2</mn></math></b>。<br>積分の区間は<math><mo>−</mo><mn>1</mn><mo>≦</mo><mi>x</mi><mo>≦</mo><mn>2</mn></math>になる。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 3 ― 上下を確認して、図で見る</h3>
-          <p>区間内の点、たとえば x＝0 では、直線の値は 1、放物線の値は −1。だから区間内では<b>直線 y＝x＋1 が上、放物線 y＝x<sup>2</sup>−1 が下</b>だ。</p>
-          <p>「上 − 下」は　(x＋1) − (x<sup>2</sup>−1) ＝ −x<sup>2</sup>＋x＋2　になる。</p>
+          <p>区間内の点、たとえば<math><mi>x</mi><mo>=</mo><mn>0</mn></math>では、直線の値は 1、放物線の値は −1。<br>だから区間内では<b>直線<math><mi>y</mi><mo>=</mo><mi>x</mi><mo>+</mo><mn>1</mn></math>が上、放物線<math><mi>y</mi><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn></math>が下</b>だ。</p>
+          <p class="cite"><span class="cite-tag">使う性質</span>「上 − 下」の作り方 <math><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo><mo>−</mo><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>)</mo><mo>=</mo><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi><mo>+</mo><mn>2</mn></math>。区間内の点で上下を確かめてから、上の式から下の式を引いてこの形にする。</p>
+          <p>「上 − 下」は　<math><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo><mo>−</mo><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>)</mo><mo>=</mo><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi><mo>+</mo><mn>2</mn></math>　になる。</p>
           <figure>
             <div class="figbox">
               <svg viewBox="0 0 520 320" role="img" aria-label="応用例題7の囲まれた部分に斜線が引かれ、交点のx座標が-1と2であると示された図">
@@ -757,17 +838,31 @@
         </div>
         <div class="step hint">
           <h3>ヒント 4 ― 積分を計算する</h3>
-          <p style="text-align:center;font-weight:700">S ＝ <span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">2</span><span class="int-low">−1</span></span></span> {(x＋1) − (x<sup>2</sup>−1)} dx ＝ <span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">2</span><span class="int-low">−1</span></span></span> (−x<sup>2</sup>＋x＋2) dx</p>
-          <p>積分すると [ −(1/3)x<sup>3</sup> ＋ (1/2)x<sup>2</sup> ＋ 2x ]<sub>−1</sub><sup>2</sup> となる。x＝2 のときの値と、x＝−1 のときの値を、それぞれ計算してみよう。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span>2つの曲線の間の面積 <math><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mrow><mo>−</mo><mn>1</mn></mrow><mn>2</mn></msubsup><mo>{</mo><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo><mo>−</mo><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>)</mo><mo>}</mo><mi>d</mi><mi>x</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mrow><mo>−</mo><mn>1</mn></mrow><mn>2</mn></msubsup><mo>(</mo><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo><mi>d</mi><mi>x</mi></math>。この定積分を計算して、x=2 の値から x=−1 の値を引く。</p>
+          <p class="mq-wide" style="text-align:center;font-weight:700"><math display="block"><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mrow><mo>−</mo><mn>1</mn></mrow><mn>2</mn></msubsup><mo>{</mo><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo><mo>−</mo><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>)</mo><mo>}</mo><mi>d</mi><mi>x</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mrow><mo>−</mo><mn>1</mn></mrow><mn>2</mn></msubsup><mo>(</mo><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo><mi>d</mi><mi>x</mi></math></p>
+<div class="mq-narrow">
+<p class="formula" style="text-align:center;font-weight:700"><math display="block"><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mrow><mo>−</mo><mn>1</mn></mrow><mn>2</mn></msubsup><mo>{</mo><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo><mo>−</mo><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>)</mo><mo>}</mo><mi>d</mi><mi>x</mi></math></p>
+<p class="formula cont" style="text-align:center;font-weight:700"><math display="block"><mo>=</mo><msubsup><mo class="int-op">∫</mo><mrow><mo>−</mo><mn>1</mn></mrow><mn>2</mn></msubsup><mo>(</mo><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo><mi>d</mi><mi>x</mi></math></p>
+</div>
+          <p>積分すると<math><msup><msub><mrow><mo>[</mo><mo>−</mo><mo>(</mo><mn>1</mn><mo>/</mo><mn>3</mn><mo>)</mo><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mo>(</mo><mn>1</mn><mo>/</mo><mn>2</mn><mo>)</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>]</mo></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msub><mn>2</mn></msup></math> となる。<br><math><mi>x</mi><mo>=</mo><mn>2</mn></math>のときの値と、<math><mi>x</mi><mo>=</mo><mo>−</mo><mn>1</mn></math>のときの値を、それぞれ計算してみよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
-          <p class="big">面積は 9/2</p>
-          <p>交点の x 座標は、x<sup>2</sup>−1 ＝ x＋1 を解いて x ＝ −1, 2。この区間では直線が上にあるから</p>
-          <p>S ＝ <span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">2</span><span class="int-low">−1</span></span></span> {(x＋1) − (x<sup>2</sup>−1)} dx ＝ <span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">2</span><span class="int-low">−1</span></span></span> (−x<sup>2</sup>＋x＋2) dx</p>
-          <p>　＝ [ −(1/3)x<sup>3</sup> ＋ (1/2)x<sup>2</sup> ＋ 2x ]<sub>−1</sub><sup>2</sup></p>
-          <p>　＝ (−8/3 ＋ 2 ＋ 4) − (1/3 ＋ 1/2 − 2) ＝ 10/3 − (−7/6) ＝ <b>9/2</b></p>
-          <p class="note"><b>このタイプの第一歩は「交点を求める」こと。</b>交点の x 座標が、そのまま積分区間の両端になる。</p>
+          <p class="big">面積は<math><mfrac><mn>9</mn><mn>2</mn></mfrac></math></p>
+          <p>交点の x 座標は、<math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>=</mo><mi>x</mi><mo>+</mo><mn>1</mn></math>を解いて<math><mi>x</mi><mo>=</mo><mo>−</mo><mn>1</mn><mo>,</mo><mn>2</mn></math>。<br>この区間では直線が上にあるから</p>
+          <p class="cite"><span class="cite-tag">使う公式</span>2つの曲線の間の面積 <math><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mo>{</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>−</mo><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>}</mo><mi>d</mi><mi>x</mi></math>。交点で決めた区間 −1 から 2 まで、「上 − 下」を積分して計算する。</p>
+          <p class="mq-wide"><math><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mrow><mo>−</mo><mn>1</mn></mrow><mn>2</mn></msubsup><mo>{</mo><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo><mo>−</mo><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>)</mo><mo>}</mo><mi>d</mi><mi>x</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mrow><mo>−</mo><mn>1</mn></mrow><mn>2</mn></msubsup><mo>(</mo><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo><mi>d</mi><mi>x</mi></math></p>
+<div class="mq-narrow">
+<p class="formula"><math display="block"><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mrow><mo>−</mo><mn>1</mn></mrow><mn>2</mn></msubsup><mo>{</mo><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo><mo>−</mo><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>)</mo><mo>}</mo><mi>d</mi><mi>x</mi></math></p>
+<p class="formula cont"><math display="block"><mo>=</mo><msubsup><mo class="int-op">∫</mo><mrow><mo>−</mo><mn>1</mn></mrow><mn>2</mn></msubsup><mo>(</mo><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo><mi>d</mi><mi>x</mi></math></p>
+</div>
+          <p>　<math><mo>=</mo><msup><msub><mrow><mo>[</mo><mo>−</mo><mo>(</mo><mn>1</mn><mo>/</mo><mn>3</mn><mo>)</mo><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mo>(</mo><mn>1</mn><mo>/</mo><mn>2</mn><mo>)</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>]</mo></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msub><mn>2</mn></msup></math></p>
+          <div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mo>=</mo><mo>(</mo><mo>−</mo><mfrac><mn>8</mn><mn>3</mn></mfrac><mo>+</mo><mn>2</mn><mo>+</mo><mn>4</mn><mo>)</mo><mo>−</mo><mo>(</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>+</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>−</mo><mn>2</mn><mo>)</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo><mfrac><mn>10</mn><mn>3</mn></mfrac><mo>−</mo><mo>(</mo><mo>−</mo><mfrac><mn>7</mn><mn>6</mn></mfrac><mo>)</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo><mstyle mathvariant="bold"><mfrac><mn>9</mn><mn>2</mn></mfrac></mstyle></math></div>
+</div>
+          <p class="note"><b>このタイプの第一歩は「交点を求める」こと。</b><br>交点の x 座標が、そのまま積分区間の両端になる。</p>
         </div>
         <p class="prob-done">応用例題7 クリア！　最後は練習38に挑戦しよう。</p>
       </section>
@@ -779,7 +874,7 @@
         <span class="pno">教科書 p.216</span>
       </div>
 
-      <section class="card prob" id="prob-ren38">
+      <section class="nofig card prob" id="prob-ren38">
         <div class="prob-head">
           <span class="prob-tag ren">練習 38</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
@@ -794,72 +889,98 @@
         </div>
 
         <!-- (1) -->
-        <div class="tabpanel show" id="panel-ren38-1" data-flow="ren38-1" data-label="練習38 (1)">
+        <div class="nofig tabpanel show" id="panel-ren38-1" data-flow="ren38-1" data-label="練習38 (1)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(1) 放物線 y＝x<sup>2</sup>、直線 y＝−x＋2</span>
+            <span class="sub prob-q" style="margin:0">(1) 放物線<math><mi>y</mi><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup></math>、直線<math><mi>y</mi><mo>=</mo><mo>−</mo><mi>x</mi><mo>+</mo><mn>2</mn></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― 交点の x 座標を求める</h3>
-            <p>応用例題7と同じ流れだ。交点では y の値が等しいから、x<sup>2</sup> ＝ −x＋2 と置く。</p>
-            <p style="text-align:center;font-weight:700">x<sup>2</sup> ＋ x − 2 ＝ 0　→　(x＋2)(x−1) ＝ 0</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>交点では2つの y の値が等しい <math><msup><mi>x</mi><mn>2</mn></msup><mo>=</mo><mo>−</mo><mi>x</mi><mo>+</mo><mn>2</mn></math>。この方程式を解くと、交点の x 座標と積分の区間が決まる。</p>
+          <p>応用例題7と同じ流れだ。<br>交点では y の値が等しいから、<math><msup><mi>x</mi><mn>2</mn></msup><mo>=</mo><mo>−</mo><mi>x</mi><mo>+</mo><mn>2</mn></math>と置く。</p>
+            <p style="text-align:center;font-weight:700"><math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>=</mo><mn>0</mn></math>　→　<math><mo>(</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo><mo>=</mo><mn>0</mn></math></p>
             <p>交点の x 座標と、積分の区間が決まるはずだ。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 上下を確認する</h3>
-            <p>交点は x ＝ −2, 1 だから、区間は −2 ≦ x ≦ 1。その真ん中あたり、たとえば x＝0 では、直線の値が 2、放物線の値が 0。</p>
+            <p>交点は<math><mi>x</mi><mo>=</mo><mo>−</mo><mn>2</mn><mo>,</mo><mn>1</mn></math>だから、区間は<br><math><mo>−</mo><mn>2</mn><mo>≦</mo><mi>x</mi><mo>≦</mo><mn>1</mn></math>。その真ん中あたり、たとえば<math><mi>x</mi><mo>=</mo><mn>0</mn></math>では、<br>直線の値が 2、放物線の値が 0。</p>
             <p>どちらが上か分かったら、「上 − 下」の式を作ってみよう。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 3 ― 立式して計算する</h3>
-            <p>区間内では直線が上だから、「上 − 下」は (−x＋2) − x<sup>2</sup> ＝ −x<sup>2</sup>−x＋2。</p>
-            <p style="text-align:center;font-weight:700">S ＝ <span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">1</span><span class="int-low">−2</span></span></span> (−x<sup>2</sup>−x＋2) dx ＝ [ −(1/3)x<sup>3</sup> − (1/2)x<sup>2</sup> ＋ 2x ]<sub>−2</sub><sup>1</sup></p>
-            <p>x＝1 のときの値と、x＝−2 のときの値を計算して、差をとってみよう。</p>
+            <p class="cite"><span class="cite-tag">使う公式</span>2つの曲線の間の面積 <math><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mo>{</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>−</mo><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>}</mo><mi>d</mi><mi>x</mi></math>。上の直線の式から下の放物線の式を引いたものを、区間 −2 から 1 まで積分する。</p>
+          <p>区間内では直線が上だから、「上 − 下」は<math><mo>(</mo><mo>−</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>=</mo><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>x</mi><mo>+</mo><mn>2</mn></math>。</p>
+            <p class="mq-wide" style="text-align:center;font-weight:700"><math display="block"><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mrow><mo>−</mo><mn>2</mn></mrow><mn>1</mn></msubsup><mo>(</mo><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo><mi>d</mi><mi>x</mi><mo>=</mo><msup><msub><mrow><mo>[</mo><mo>−</mo><mo>(</mo><mn>1</mn><mo>/</mo><mn>3</mn><mo>)</mo><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mo>(</mo><mn>1</mn><mo>/</mo><mn>2</mn><mo>)</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>]</mo></mrow><mrow><mo>−</mo><mn>2</mn></mrow></msub><mn>1</mn></msup></math></p>
+<div class="mq-narrow">
+<p class="formula" style="text-align:center;font-weight:700"><math display="block"><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mrow><mo>−</mo><mn>2</mn></mrow><mn>1</mn></msubsup><mo>(</mo><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo><mi>d</mi><mi>x</mi></math></p>
+<p class="formula cont" style="text-align:center;font-weight:700"><math display="block"><mo>=</mo><msup><msub><mrow><mo>[</mo><mo>−</mo><mo>(</mo><mn>1</mn><mo>/</mo><mn>3</mn><mo>)</mo><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mo>(</mo><mn>1</mn><mo>/</mo><mn>2</mn><mo>)</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>]</mo></mrow><mrow><mo>−</mo><mn>2</mn></mrow></msub><mn>1</mn></msup></math></p>
+</div>
+            <p><math><mi>x</mi><mo>=</mo><mn>1</mn></math>のときの値と、<math><mi>x</mi><mo>=</mo><mo>−</mo><mn>2</mn></math>のときの値を計算して、<br>差をとってみよう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (1)</h3>
-            <p class="big">面積は 9/2</p>
-            <p>交点の x 座標は x ＝ −2, 1 で、この区間では直線 y＝−x＋2 が上にあるから</p>
-            <p>S ＝ <span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">1</span><span class="int-low">−2</span></span></span> {(−x＋2) − x<sup>2</sup>} dx ＝ <span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">1</span><span class="int-low">−2</span></span></span> (−x<sup>2</sup>−x＋2) dx</p>
-            <p>　＝ [ −(1/3)x<sup>3</sup> − (1/2)x<sup>2</sup> ＋ 2x ]<sub>−2</sub><sup>1</sup></p>
-            <p>　＝ (−1/3 − 1/2 ＋ 2) − (8/3 − 2 − 4) ＝ 7/6 − (−10/3) ＝ <b>9/2</b></p>
+            <p class="big">面積は<math><mfrac><mn>9</mn><mn>2</mn></mfrac></math></p>
+            <p>交点の x 座標は<math><mi>x</mi><mo>=</mo><mo>−</mo><mn>2</mn><mo>,</mo><mn>1</mn></math>で、<br>この区間では直線<math><mi>y</mi><mo>=</mo><mo>−</mo><mi>x</mi><mo>+</mo><mn>2</mn></math>が上にあるから</p>
+            <p class="cite"><span class="cite-tag">使う公式</span>2つの曲線の間の面積 <math><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mo>{</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>−</mo><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>}</mo><mi>d</mi><mi>x</mi></math>。交点で決めた区間 −2 から 1 まで、「上 − 下」を積分して計算する。</p>
+          <p><math><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mrow><mo>−</mo><mn>2</mn></mrow><mn>1</mn></msubsup><mo>{</mo><mo>(</mo><mo>−</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>}</mo><mi>d</mi><mi>x</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mrow><mo>−</mo><mn>2</mn></mrow><mn>1</mn></msubsup><mo>(</mo><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo><mi>d</mi><mi>x</mi></math></p>
+            <p>　<math><mo>=</mo><msup><msub><mrow><mo>[</mo><mo>−</mo><mo>(</mo><mn>1</mn><mo>/</mo><mn>3</mn><mo>)</mo><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mo>(</mo><mn>1</mn><mo>/</mo><mn>2</mn><mo>)</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>]</mo></mrow><mrow><mo>−</mo><mn>2</mn></mrow></msub><mn>1</mn></msup></math></p>
+            <div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mo>=</mo><mo>(</mo><mo>−</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>+</mo><mn>2</mn><mo>)</mo><mo>−</mo><mo>(</mo><mfrac><mn>8</mn><mn>3</mn></mfrac><mo>−</mo><mn>2</mn><mo>−</mo><mn>4</mn><mo>)</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo><mfrac><mn>7</mn><mn>6</mn></mfrac><mo>−</mo><mo>(</mo><mo>−</mo><mfrac><mn>10</mn><mn>3</mn></mfrac><mo>)</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo><mstyle mathvariant="bold"><mfrac><mn>9</mn><mn>2</mn></mfrac></mstyle></math></div>
+</div>
           </div>
           <p class="prob-done">(1) クリア！　(2) のタブも開いてみよう。</p>
         </div>
 
         <!-- (2) -->
-        <div class="tabpanel" id="panel-ren38-2" data-flow="ren38-2" data-label="練習38 (2)">
+        <div class="nofig tabpanel" id="panel-ren38-2" data-flow="ren38-2" data-label="練習38 (2)">
           <div class="prob-head">
-            <span class="sub prob-q" style="margin:0">(2) 放物線 y＝−x<sup>2</sup>＋3、直線 y＝2x</span>
+            <span class="sub prob-q" style="margin:0">(2) 放物線<math><mi>y</mi><mo>=</mo><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>3</mn></math>、直線<math><mi>y</mi><mo>=</mo><mn>2</mn><mi>x</mi></math></span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
           <div class="step hint">
             <h3>ヒント 1 ― 交点の x 座標を求める</h3>
-            <p>交点では y の値が等しいから、−x<sup>2</sup>＋3 ＝ 2x と置く。右辺を左辺に移項すると</p>
-            <p style="text-align:center;font-weight:700">x<sup>2</sup> ＋ 2x − 3 ＝ 0　→　(x＋3)(x−1) ＝ 0</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>交点では2つの y の値が等しい <math><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>3</mn><mo>=</mo><mn>2</mn><mi>x</mi></math>。この方程式を解くと、交点の x 座標と積分の区間が決まる。</p>
+          <p>交点では y の値が等しいから、<math><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>3</mn><mo>=</mo><mn>2</mn><mi>x</mi></math>と置く。<br>右辺を左辺に移項すると</p>
+            <p style="text-align:center;font-weight:700"><math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>−</mo><mn>3</mn><mo>=</mo><mn>0</mn></math>　→　<math><mo>(</mo><mi>x</mi><mo>+</mo><mn>3</mn><mo>)</mo><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo><mo>=</mo><mn>0</mn></math></p>
             <p>交点の x 座標と、積分の区間が決まるはずだ。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 上下を確認する</h3>
-            <p>交点は x ＝ −3, 1 だから、区間は −3 ≦ x ≦ 1。その真ん中あたり、たとえば x＝0 では、放物線の値が 3、直線の値が 0。</p>
+            <p>交点は<math><mi>x</mi><mo>=</mo><mo>−</mo><mn>3</mn><mo>,</mo><mn>1</mn></math>だから、区間は<br><math><mo>−</mo><mn>3</mn><mo>≦</mo><mi>x</mi><mo>≦</mo><mn>1</mn></math>。その真ん中あたり、たとえば<math><mi>x</mi><mo>=</mo><mn>0</mn></math>では、<br>放物線の値が 3、直線の値が 0。</p>
             <p>今度は放物線と直線のどちらが上かな？　「上 − 下」の式を作ってみよう。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 3 ― 立式して計算する</h3>
-            <p>区間内では放物線が上だから、「上 − 下」は (−x<sup>2</sup>＋3) − 2x ＝ −x<sup>2</sup>−2x＋3。</p>
-            <p style="text-align:center;font-weight:700">S ＝ <span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">1</span><span class="int-low">−3</span></span></span> (−x<sup>2</sup>−2x＋3) dx ＝ [ −(1/3)x<sup>3</sup> − x<sup>2</sup> ＋ 3x ]<sub>−3</sub><sup>1</sup></p>
-            <p>x＝1 のときの値と、x＝−3 のときの値を計算して、差をとってみよう。</p>
+            <p class="cite"><span class="cite-tag">使う公式</span>2つの曲線の間の面積 <math><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mo>{</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>−</mo><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>}</mo><mi>d</mi><mi>x</mi></math>。上の放物線の式から下の直線の式を引いたものを、区間 −3 から 1 まで積分する。</p>
+          <p>区間内では放物線が上だから、「上 − 下」は<math><mo>(</mo><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>3</mn><mo>)</mo><mo>−</mo><mn>2</mn><mi>x</mi><mo>=</mo><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>3</mn></math>。</p>
+            <p class="mq-wide" style="text-align:center;font-weight:700"><math display="block"><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mrow><mo>−</mo><mn>3</mn></mrow><mn>1</mn></msubsup><mo>(</mo><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>3</mn><mo>)</mo><mi>d</mi><mi>x</mi><mo>=</mo><msup><msub><mrow><mo>[</mo><mo>−</mo><mo>(</mo><mn>1</mn><mo>/</mo><mn>3</mn><mo>)</mo><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>3</mn><mi>x</mi><mo>]</mo></mrow><mrow><mo>−</mo><mn>3</mn></mrow></msub><mn>1</mn></msup></math></p>
+<div class="mq-narrow">
+<p class="formula" style="text-align:center;font-weight:700"><math display="block"><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mrow><mo>−</mo><mn>3</mn></mrow><mn>1</mn></msubsup><mo>(</mo><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>3</mn><mo>)</mo><mi>d</mi><mi>x</mi></math></p>
+<p class="formula cont" style="text-align:center;font-weight:700"><math display="block"><mo>=</mo><msup><msub><mrow><mo>[</mo><mo>−</mo><mo>(</mo><mn>1</mn><mo>/</mo><mn>3</mn><mo>)</mo><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>3</mn><mi>x</mi><mo>]</mo></mrow><mrow><mo>−</mo><mn>3</mn></mrow></msub><mn>1</mn></msup></math></p>
+</div>
+            <p><math><mi>x</mi><mo>=</mo><mn>1</mn></math>のときの値と、<math><mi>x</mi><mo>=</mo><mo>−</mo><mn>3</mn></math>のときの値を計算して、<br>差をとってみよう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (2)</h3>
-            <p class="big">面積は 32/3</p>
-            <p>交点の x 座標は x ＝ −3, 1 で、この区間では放物線 y＝−x<sup>2</sup>＋3 が上にあるから</p>
-            <p>S ＝ <span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">1</span><span class="int-low">−3</span></span></span> {(−x<sup>2</sup>＋3) − 2x} dx ＝ <span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">1</span><span class="int-low">−3</span></span></span> (−x<sup>2</sup>−2x＋3) dx</p>
-            <p>　＝ [ −(1/3)x<sup>3</sup> − x<sup>2</sup> ＋ 3x ]<sub>−3</sub><sup>1</sup></p>
-            <p>　＝ (−1/3 − 1 ＋ 3) − (9 − 9 − 9) ＝ 5/3 − (−9) ＝ <b>32/3</b></p>
-            <p class="note">(1) では直線が上、(2) では放物線が上。問題ごとに、必ず区間内の点で上下を確かめてから「上 − 下」を作ろう。</p>
+            <p class="big">面積は<math><mfrac><mn>32</mn><mn>3</mn></mfrac></math></p>
+            <p>交点の x 座標は<math><mi>x</mi><mo>=</mo><mo>−</mo><mn>3</mn><mo>,</mo><mn>1</mn></math>で、<br>この区間では放物線<math><mi>y</mi><mo>=</mo><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>3</mn></math>が上にあるから</p>
+            <p class="cite"><span class="cite-tag">使う公式</span>2つの曲線の間の面積 <math><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mo>{</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>−</mo><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>}</mo><mi>d</mi><mi>x</mi></math>。交点で決めた区間 −3 から 1 まで、「上 − 下」を積分して計算する。</p>
+          <p class="mq-wide"><math><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mrow><mo>−</mo><mn>3</mn></mrow><mn>1</mn></msubsup><mo>{</mo><mo>(</mo><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>3</mn><mo>)</mo><mo>−</mo><mn>2</mn><mi>x</mi><mo>}</mo><mi>d</mi><mi>x</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mrow><mo>−</mo><mn>3</mn></mrow><mn>1</mn></msubsup><mo>(</mo><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>3</mn><mo>)</mo><mi>d</mi><mi>x</mi></math></p>
+<div class="mq-narrow">
+<p class="formula"><math display="block"><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mrow><mo>−</mo><mn>3</mn></mrow><mn>1</mn></msubsup><mo>{</mo><mo>(</mo><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>3</mn><mo>)</mo><mo>−</mo><mn>2</mn><mi>x</mi><mo>}</mo><mi>d</mi><mi>x</mi></math></p>
+<p class="formula cont"><math display="block"><mo>=</mo><msubsup><mo class="int-op">∫</mo><mrow><mo>−</mo><mn>3</mn></mrow><mn>1</mn></msubsup><mo>(</mo><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>3</mn><mo>)</mo><mi>d</mi><mi>x</mi></math></p>
+</div>
+            <p>　<math><mo>=</mo><msup><msub><mrow><mo>[</mo><mo>−</mo><mo>(</mo><mn>1</mn><mo>/</mo><mn>3</mn><mo>)</mo><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>3</mn><mi>x</mi><mo>]</mo></mrow><mrow><mo>−</mo><mn>3</mn></mrow></msub><mn>1</mn></msup></math></p>
+            <div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mo>=</mo><mo>(</mo><mo>−</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>−</mo><mn>1</mn><mo>+</mo><mn>3</mn><mo>)</mo><mo>−</mo><mo>(</mo><mn>9</mn><mo>−</mo><mn>9</mn><mo>−</mo><mn>9</mn><mo>)</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo><mfrac><mn>5</mn><mn>3</mn></mfrac><mo>−</mo><mo>(</mo><mo>−</mo><mn>9</mn><mo>)</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo><mstyle mathvariant="bold"><mfrac><mn>32</mn><mn>3</mn></mfrac></mstyle></math></div>
+</div>
+            <p class="note">(1) では直線が上、(2) では放物線が上。<br>問題ごとに、必ず区間内の点で上下を確かめてから<br>「上 − 下」を作ろう。</p>
           </div>
           <p class="prob-done">(2) クリア！　練習38 全小問が終わったら、下のまとめで確認しよう。</p>
         </div>
@@ -869,10 +990,10 @@
       <section class="card summary">
         <h2>この項のポイント</h2>
         <ul>
-          <li><b>2つの曲線の間の面積は S ＝ <span class="int"><span class="int-sym">∫</span><span class="int-lims"><span class="int-up">b</span><span class="int-low">a</span></span></span> {f(x) − g(x)} dx。</b>「上の式 − 下の式」を積分するのが合言葉。</li>
-          <li><b>上下の確認が最初の一歩。</b>差をとって符号を調べるか、区間内の適当な x（0 など）で2つの値を比べて確かめる。</li>
-          <li><b>区間の両端が与えられていない問題では、交点を求める。</b>2つの式を等しいと置いた方程式を解くと、交点の x 座標がそのまま区間の両端になる。</li>
-          <li><b>全体が x 軸の下側にあっても同じ。</b>上に平行移動しても間の面積は変わらないので、「上 − 下」の公式がそのまま使える。</li>
+          <li><p class="cite"><span class="cite-tag">使う公式</span>2つの曲線の間の面積 <math><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mo>{</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>−</mo><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>}</mo><mi>d</mi><mi>x</mi></math>。上の式から下の式を引いたものを、区間 a から b まで積分する。</p><b>2つの曲線の間の面積は<math><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mo>{</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>−</mo><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>}</mo><mi>d</mi><mi>x</mi></math>。</b>「上の式 − 下の式」を積分するのが合言葉。</li>
+          <li><b>上下の確認が最初の一歩。</b><br>差をとって符号を調べるか、<br>区間内の適当な x（0 など）で2つの値を比べて確かめる。</li>
+          <li><b>区間の両端が与えられていない問題では、交点を求める。</b><br>2つの式を等しいと置いた方程式を解くと、<br>交点の x 座標がそのまま区間の両端になる。</li>
+          <li><b>全体が x 軸の下側にあっても同じ。</b><br>上に平行移動しても間の面積は変わらないので、「上 − 下」の公式がそのまま使える。</li>
         </ul>
       </section>
 
@@ -892,7 +1013,7 @@
       <div class="ctrl-inner">
         <div class="overall">
           <div class="overall-bar"><div class="overall-fill" id="overallFill"></div></div>
-          <span id="overallText">全体の進み具合：0 / 26 ステップ</span>
+          <span id="overallText">全体の進み具合：<math><mfrac><mn>0</mn><mn>26</mn></mfrac></math>ステップ</span>
         </div>
         <p class="ctrl-label">いまの課題：<b id="ctrlLabel">解説B</b>　―　「次へ」でヒントを1つずつ開こう</p>
         <div class="ctrl-btns">

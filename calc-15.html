@@ -297,7 +297,57 @@
         }
         .flow-right .step:last-child{margin-bottom:4px}
       }
-    </style>
+    
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+
+      /* 積分記号は大きめに表示する（元のページの可読化デザインに合わせる） */
+      math .int-op{font-size:1.35em}
+      /* calc-12 世代（.card）と calc-18 世代（.unit）の、図のない問題の全幅化 */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig>.step{position:static !important}
+        .card.nofig>.steps-wrap{max-height:none !important;overflow:visible !important}
+        .unit.nofig{display:block !important}
+        .unit.nofig>.qside{position:static !important}
+        .unit.nofig>.steps-stack{max-height:none !important;overflow:visible !important}
+      }
+</style>
   </head>
   <body>
     <div class="wrap">
@@ -318,7 +368,7 @@
           <li><b>練習問題</b>に挑戦 ― 答えは最後のヒントのあとに出てくるよ</li>
         </ol>
       </section>
-      <p class="overall" id="overall">全体の進み具合：<b>0 / 8</b> 課題の解答を開きました</p>
+      <p class="overall" id="overall">全体の進み具合：<b><math><mfrac><mn>0</mn><mn>8</mn></mfrac></math></b> 課題の解答を開きました</p>
 
       <!-- ================= 解説B ================= -->
       <div class="sec-head">
@@ -335,7 +385,7 @@
           </div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
-        <p>前のページで、定積分は原始関数を使って計算できることを学んだ。ここでは、計算をぐっと楽にする<b>定積分の性質</b>をまとめる。関数 <i>f</i>(<i>x</i>) の原始関数の1つを <i>F</i>(<i>x</i>) として、下の <b>次へ</b> を押しながら1つずつ確かめていこう。</p>
+        <p>前のページで、定積分は原始関数を使って計算できることを学んだ。<br>ここでは、計算をぐっと楽にする<b>定積分の性質</b>をまとめる。関数 <math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>の原始関数の1つを <math><mi>F</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>として、下の <b>次へ</b> を押しながら1つずつ確かめていこう。</p>
         <figure>
           <div class="figbox">
             <svg viewBox="0 0 520 190" role="img" aria-label="数直線上で区間 a から b を、途中の点 c で a から c と c から b に分ける図">
@@ -368,38 +418,49 @@
               </g>
             </svg>
           </div>
-          <figcaption>区間 [<i>a</i>, <i>b</i>] は、途中の点 c で [<i>a</i>, <i>c</i>] と [<i>c</i>, <i>b</i>] に分けられる。この「区間をつなげる」見方が、性質の1つになる。</figcaption>
+          <figcaption>区間<math><mo>[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo>]</mo></math>は、途中の点 c で<math><mo>[</mo><mi>a</mi><mo>,</mo><mi>c</mi><mo>]</mo></math>と<math><mo>[</mo><mi>c</mi><mo>,</mo><mi>b</mi><mo>]</mo></math>に分けられる。<br>この「区間をつなげる」見方が、性質の1つになる。</figcaption>
         </figure>
 
         <div class="step hint">
           <h3>性質 1 ― 被積分関数の定数倍・和・差</h3>
-          <p><i>k</i> を定数として、次の3つが成り立つ。不定積分の性質とまったく同じ形だ。</p>
-          <p class="formula"><span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up"><i>b</i></span><span class="int-lo"><i>a</i></span></span></span> <i>k f</i>(<i>x</i>)<i>dx</i> ＝ <i>k</i><span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up"><i>b</i></span><span class="int-lo"><i>a</i></span></span></span> <i>f</i>(<i>x</i>)<i>dx</i></p>
-          <p class="formula"><span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up"><i>b</i></span><span class="int-lo"><i>a</i></span></span></span> {<i>f</i>(<i>x</i>)＋<i>g</i>(<i>x</i>)}<i>dx</i> ＝ <span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up"><i>b</i></span><span class="int-lo"><i>a</i></span></span></span> <i>f</i>(<i>x</i>)<i>dx</i> ＋ <span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up"><i>b</i></span><span class="int-lo"><i>a</i></span></span></span> <i>g</i>(<i>x</i>)<i>dx</i></p>
-          <p class="formula"><span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up"><i>b</i></span><span class="int-lo"><i>a</i></span></span></span> {<i>f</i>(<i>x</i>)−<i>g</i>(<i>x</i>)}<i>dx</i> ＝ <span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up"><i>b</i></span><span class="int-lo"><i>a</i></span></span></span> <i>f</i>(<i>x</i>)<i>dx</i> − <span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up"><i>b</i></span><span class="int-lo"><i>a</i></span></span></span> <i>g</i>(<i>x</i>)<i>dx</i></p>
-          <p>使いどころは逆向き：<b>区間が同じ定積分どうしの和・差は、被積分関数どうしを和・差して1つの積分にまとめられる</b>。このあとの例17・練習31でさっそく使うよ。</p>
+          <p><math><mi>k</mi></math> を定数として、次の3つが成り立つ。<br>不定積分の性質とまったく同じ形だ。</p>
+          <p class="formula"><math display="block"><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>k f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>=</mo><mi>k</mi><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi></math></p>
+          <p class="mq-wide formula"><math display="block"><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mo>{</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>+</mo><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>}</mo><mi>dx</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>+</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi></math></p>
+<div class="mq-narrow">
+<p class="formula"><math display="block"><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mo>{</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>+</mo><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>}</mo><mi>dx</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi></math></p>
+<p class="formula cont"><math display="block"><mo>+</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi></math></p>
+</div>
+          <p class="mq-wide formula"><math display="block"><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mo>{</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>−</mo><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>}</mo><mi>dx</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>−</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi></math></p>
+<div class="mq-narrow">
+<p class="formula"><math display="block"><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mo>{</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>−</mo><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>}</mo><mi>dx</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi></math></p>
+<p class="formula cont"><math display="block"><mo>−</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi></math></p>
+</div>
+          <p>使いどころは逆向き：<b>区間が同じ定積分どうしの和・差は、被積分関数どうしを和・差して1つの積分にまとめられる</b>。<br>このあとの例17・練習31でさっそく使うよ。</p>
         </div>
         <div class="step hint">
           <h3>性質 2 ― 上端と下端が同じ／入れ替わるとき</h3>
-          <p class="formula"><span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up"><i>a</i></span><span class="int-lo"><i>a</i></span></span></span> <i>f</i>(<i>x</i>)<i>dx</i> ＝ 0</p>
-          <p class="formula"><span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up"><i>b</i></span><span class="int-lo"><i>a</i></span></span></span> <i>f</i>(<i>x</i>)<i>dx</i> ＝ −<span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up"><i>a</i></span><span class="int-lo"><i>b</i></span></span></span> <i>f</i>(<i>x</i>)<i>dx</i></p>
-          <p>原始関数で書けば一目瞭然だ。<span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up"><i>a</i></span><span class="int-lo"><i>a</i></span></span></span> <i>f</i>(<i>x</i>)<i>dx</i> ＝ <i>F</i>(<i>a</i>)−<i>F</i>(<i>a</i>) ＝ 0。また、<span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up"><i>a</i></span><span class="int-lo"><i>b</i></span></span></span> <i>f</i>(<i>x</i>)<i>dx</i> ＝ <i>F</i>(<i>a</i>)−<i>F</i>(<i>b</i>) は、<span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up"><i>b</i></span><span class="int-lo"><i>a</i></span></span></span> <i>f</i>(<i>x</i>)<i>dx</i> ＝ <i>F</i>(<i>b</i>)−<i>F</i>(<i>a</i>) のちょうど符号違いになっている。</p>
-          <p><b>積分区間の上下を入れ替えると、符号が変わる</b>。これも計算の途中でよく使う。</p>
+          <p class="formula"><math display="block"><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>a</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>=</mo><mn>0</mn></math></p>
+          <p class="formula"><math display="block"><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>=</mo><mo>−</mo><msubsup><mo class="int-op">∫</mo><mi>b</mi><mi>a</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi></math></p>
+          <p class="cite"><span class="cite-tag">使う定義</span>定積分の定義 <math><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>=</mo><mi>F</mi><mo>(</mo><mi>b</mi><mo>)</mo><mo>−</mo><mi>F</mi><mo>(</mo><mi>a</mi><mo>)</mo></math>。上端と下端が同じときと入れ替えたときを、原始関数の差で確かめる。</p>
+          <p>原始関数で書けば一目瞭然だ。<br><math><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>a</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>=</mo><mi>F</mi><mo>(</mo><mi>a</mi><mo>)</mo><mo>−</mo><mi>F</mi><mo>(</mo><mi>a</mi><mo>)</mo><mo>=</mo><mn>0</mn></math>。また、<math><msubsup><mo class="int-op">∫</mo><mi>b</mi><mi>a</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>=</mo><mi>F</mi><mo>(</mo><mi>a</mi><mo>)</mo><mo>−</mo><mi>F</mi><mo>(</mo><mi>b</mi><mo>)</mo></math>は、<math><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>=</mo><mi>F</mi><mo>(</mo><mi>b</mi><mo>)</mo><mo>−</mo><mi>F</mi><mo>(</mo><mi>a</mi><mo>)</mo></math>のちょうど符号違いになっている。</p>
+          <p><b>積分区間の上下を入れ替えると、符号が変わる</b>。<br>これも計算の途中でよく使う。</p>
         </div>
         <div class="step hint">
           <h3>性質 3 ― 区間をつなげる</h3>
-          <p class="formula"><span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up"><i>b</i></span><span class="int-lo"><i>a</i></span></span></span> <i>f</i>(<i>x</i>)<i>dx</i> ＝ <span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up"><i>c</i></span><span class="int-lo"><i>a</i></span></span></span> <i>f</i>(<i>x</i>)<i>dx</i> ＋ <span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up"><i>b</i></span><span class="int-lo"><i>c</i></span></span></span> <i>f</i>(<i>x</i>)<i>dx</i></p>
-          <p>なぜ成り立つか、原始関数で確かめてみよう。右辺は</p>
-          <p class="formula"><span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up"><i>c</i></span><span class="int-lo"><i>a</i></span></span></span> <i>f</i>(<i>x</i>)<i>dx</i> ＋ <span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up"><i>b</i></span><span class="int-lo"><i>c</i></span></span></span> <i>f</i>(<i>x</i>)<i>dx</i><br />＝ {<i>F</i>(<i>c</i>)−<i>F</i>(<i>a</i>)}＋{<i>F</i>(<i>b</i>)−<i>F</i>(<i>c</i>)}</p>
-          <p>ここで <i>F</i>(<i>c</i>) が <b>＋と−で打ち消し合って消える</b>から、残りは <i>F</i>(<i>b</i>)−<i>F</i>(<i>a</i>) ＝ <span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up"><i>b</i></span><span class="int-lo"><i>a</i></span></span></span> <i>f</i>(<i>x</i>)<i>dx</i> になる。だから、<i>c</i> が区間 [<i>a</i>, <i>b</i>] の<b>外</b>にあっても、この等式はそのまま成り立つんだ。</p>
+          <p class="formula"><math display="block"><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>c</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>+</mo><msubsup><mo class="int-op">∫</mo><mi>c</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi></math></p>
+          <p>なぜ成り立つか、原始関数で確かめてみよう。<br>右辺は</p>
+          <p class="cite"><span class="cite-tag">使う定義</span>定積分の定義 <math><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>=</mo><mi>F</mi><mo>(</mo><mi>b</mi><mo>)</mo><mo>−</mo><mi>F</mi><mo>(</mo><mi>a</mi><mo>)</mo></math>。右辺の2つの積分をそれぞれ原始関数の差に直して、真ん中の値が消えることを確かめる。</p>
+          <p class="formula"><math><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>c</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>+</mo><msubsup><mo class="int-op">∫</mo><mi>c</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi></math><br /><math><mo>=</mo><mo>{</mo><mi>F</mi><mo>(</mo><mi>c</mi><mo>)</mo><mo>−</mo><mi>F</mi><mo>(</mo><mi>a</mi><mo>)</mo><mo>}</mo><mo>+</mo><mo>{</mo><mi>F</mi><mo>(</mo><mi>b</mi><mo>)</mo><mo>−</mo><mi>F</mi><mo>(</mo><mi>c</mi><mo>)</mo><mo>}</mo></math></p>
+          <p>ここで <math><mi>F</mi><mo>(</mo><mi>c</mi><mo>)</mo></math>が <b>＋と−で打ち消し合って消える</b>から、残りは <math><mi>F</mi><mo>(</mo><mi>b</mi><mo>)</mo><mo>−</mo><mi>F</mi><mo>(</mo><mi>a</mi><mo>)</mo><mo>=</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi></math> になる。<br>だから、<math><mi>c</mi></math> が区間<math><mo>[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo>]</mo></math>の<b>外</b>にあっても、この等式はそのまま成り立つんだ。</p>
         </div>
         <div class="step answer">
           <h3>まとめ ― 定積分の性質</h3>
-          <p><b>被積分関数について</b>（<i>k</i> は定数）</p>
-          <p>・<span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up"><i>b</i></span><span class="int-lo"><i>a</i></span></span></span> <i>k f</i>(<i>x</i>)<i>dx</i> ＝ <i>k</i><span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up"><i>b</i></span><span class="int-lo"><i>a</i></span></span></span> <i>f</i>(<i>x</i>)<i>dx</i><br />・<span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up"><i>b</i></span><span class="int-lo"><i>a</i></span></span></span> {<i>f</i>(<i>x</i>)±<i>g</i>(<i>x</i>)}<i>dx</i> ＝ <span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up"><i>b</i></span><span class="int-lo"><i>a</i></span></span></span> <i>f</i>(<i>x</i>)<i>dx</i> ± <span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up"><i>b</i></span><span class="int-lo"><i>a</i></span></span></span> <i>g</i>(<i>x</i>)<i>dx</i></p>
+          <p><b>被積分関数について</b><math><mo>(</mo><mi>k</mi></math> は定数）</p>
+          <p><math><mo>⋅</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>k f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>=</mo><mi>k</mi><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi></math><br /><math><mo>⋅</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mo>{</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>±</mo><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>}</mo><mi>dx</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>±</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi></math></p>
+          <p class="cite"><span class="cite-tag">使う性質</span>定積分の性質3（区間をつなげる） <math><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>c</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>+</mo><msubsup><mo class="int-op">∫</mo><mi>c</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi></math>。積分区間については、途中の点で区間を分けても全体の値は変わらない。</p>
           <p><b>積分区間について</b></p>
-          <p>・<span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up"><i>a</i></span><span class="int-lo"><i>a</i></span></span></span> <i>f</i>(<i>x</i>)<i>dx</i> ＝ 0<br />・<span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up"><i>b</i></span><span class="int-lo"><i>a</i></span></span></span> <i>f</i>(<i>x</i>)<i>dx</i> ＝ −<span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up"><i>a</i></span><span class="int-lo"><i>b</i></span></span></span> <i>f</i>(<i>x</i>)<i>dx</i><br />・<span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up"><i>b</i></span><span class="int-lo"><i>a</i></span></span></span> <i>f</i>(<i>x</i>)<i>dx</i> ＝ <span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up"><i>c</i></span><span class="int-lo"><i>a</i></span></span></span> <i>f</i>(<i>x</i>)<i>dx</i> ＋ <span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up"><i>b</i></span><span class="int-lo"><i>c</i></span></span></span> <i>f</i>(<i>x</i>)<i>dx</i></p>
-          <p class="note">合言葉は3つ。<b>「区間が同じなら中身をまとめる」「上下を入れ替えると符号が変わる」「区間はつなげられる」</b>。次の例17から、実際に使ってみよう。</p>
+          <p><math><mo>⋅</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>a</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>=</mo><mn>0</mn></math><br /><math><mo>⋅</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>=</mo><mo>−</mo><msubsup><mo class="int-op">∫</mo><mi>b</mi><mi>a</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi></math><br /><math><mo>⋅</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>c</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>+</mo><msubsup><mo class="int-op">∫</mo><mi>c</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi></math></p>
+          <p class="note">合言葉は3つ。<b>「区間が同じなら中身をまとめる」「上下を入れ替えると符号が変わる」「区間はつなげられる」</b>。<br>次の例17から、実際に使ってみよう。</p>
         </div>
         <p class="prob-done">解説B クリア！　次は例17で性質を使ってみよう。</p>
       </section>
@@ -411,7 +472,7 @@
         <span class="pno">教科書 p.208</span>
       </div>
 
-      <section class="card prob" id="prob-ex17" data-flow="ex17" data-label="例17">
+      <section class="nofig card prob" id="prob-ex17" data-flow="ex17" data-label="例17">
         <div class="prob-head">
           <span class="prob-tag">例 17</span>
           <div class="dots" aria-hidden="true">
@@ -420,23 +481,34 @@
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <p class="prob-q">次の定積分を計算してみよう。</p>
-        <p class="formula"><span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up">2</span><span class="int-lo">1</span></span></span> (<i>x</i><sup>2</sup>＋3<i>x</i>)<i>dx</i> ＋ <span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up">2</span><span class="int-lo">1</span></span></span> (<i>x</i><sup>2</sup>−3<i>x</i>)<i>dx</i></p>
+        <p class="formula"><math display="block"><msubsup><mo class="int-op">∫</mo><mn>1</mn><mn>2</mn></msubsup><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>3</mn><mi>x</mi><mo>)</mo><mi>dx</mi><mo>+</mo><msubsup><mo class="int-op">∫</mo><mn>1</mn><mn>2</mn></msubsup><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>3</mn><mi>x</mi><mo>)</mo><mi>dx</mi></math></p>
 
         <div class="step hint">
           <h3>ヒント 1 ― まず「区間」に注目する</h3>
           <p>2つの定積分は、どちらも<b>1 から 2</b> までの積分で、区間がまったく同じだ。</p>
-          <p>区間が同じとき、解説Bの性質1（和）を使って、<b>被積分関数どうしを足して1つの積分にまとめる</b>ことができる。別々に計算するよりずっと楽になるよ。</p>
+          <p class="cite"><span class="cite-tag">使う性質</span>定積分の性質1（和） <math><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mo>{</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>+</mo><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>}</mo><mi>dx</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>+</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi></math>。区間が同じ2つの積分は、被積分関数どうしを足して1つにまとめられる。</p>
+          <p>区間が同じとき、解説Bの性質1（和）を使って、<b>被積分関数どうしを足して1つの積分にまとめる</b>ことができる。<br>別々に計算するよりずっと楽になるよ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 被積分関数を足す</h3>
-          <p>中身どうしを足すと (<i>x</i><sup>2</sup>＋3<i>x</i>)＋(<i>x</i><sup>2</sup>−3<i>x</i>) になる。</p>
-          <p>＋3<i>x</i> と −3<i>x</i> が打ち消し合って消えるから、残るのは <b>2<i>x</i><sup>2</sup></b> だけ。あとは <span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up">2</span><span class="int-lo">1</span></span></span> 2<i>x</i><sup>2</sup><i>dx</i> を普通に計算すればよい。</p>
+          <p>中身どうしを足すと<math><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>3</mn><mi>x</mi><mo>)</mo><mo>+</mo><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>3</mn><mi>x</mi><mo>)</mo></math>になる。</p>
+          <p class="cite"><span class="cite-tag">使う定義</span>定積分の定義 <math><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>=</mo><mi>F</mi><mo>(</mo><mi>b</mi><mo>)</mo><mo>−</mo><mi>F</mi><mo>(</mo><mi>a</mi><mo>)</mo></math>。残った1つの積分は、原始関数の値の差として計算する。</p>
+          <p><math><mo>+</mo><mn>3</mn><mi>x</mi></math> と<math><mo>−</mo><mn>3</mn><mi>x</mi></math> が打ち消し合って消えるから、残るのは <b><math><mn>2</mn><msup><mi>x</mi><mn>2</mn></msup></math></b> だけ。<br>あとは <math><msubsup><mo class="int-op">∫</mo><mn>1</mn><mn>2</mn></msubsup><mn>2</mn><msup><mi>x</mi><mn>2</mn></msup><mi>dx</mi></math> を普通に計算すればよい。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
-          <p class="big">14/3</p>
-          <p><span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up">2</span><span class="int-lo">1</span></span></span> (<i>x</i><sup>2</sup>＋3<i>x</i>)<i>dx</i> ＋ <span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up">2</span><span class="int-lo">1</span></span></span> (<i>x</i><sup>2</sup>−3<i>x</i>)<i>dx</i><br />＝ <span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up">2</span><span class="int-lo">1</span></span></span> {(<i>x</i><sup>2</sup>＋3<i>x</i>)＋(<i>x</i><sup>2</sup>−3<i>x</i>)}<i>dx</i><br />＝ <span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up">2</span><span class="int-lo">1</span></span></span> 2<i>x</i><sup>2</sup><i>dx</i> ＝ [(2/3)<i>x</i><sup>3</sup>]<span class="eval-lim"><span class="int-up">2</span><span class="int-lo">1</span></span> ＝ (2/3)(2<sup>3</sup>−1<sup>3</sup>) ＝ (2/3)・7 ＝ <b>14/3</b></p>
-          <p class="note">2つの積分を別々に計算しても同じ答えになるが、計算量は大違い。<b>「区間が同じ → まずまとめる」</b>が合言葉だよ。</p>
+          <p class="big"><math display="block"><mfrac><mn>14</mn><mn>3</mn></mfrac></math></p>
+          <p class="cite"><span class="cite-tag">使う性質</span>定積分の性質1（和） <math><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mo>{</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>+</mo><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>}</mo><mi>dx</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>+</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi></math>。解答でも、まず被積分関数どうしを足して1つの積分にまとめてから計算する。</p>
+          <p><math><msubsup><mo class="int-op">∫</mo><mn>1</mn><mn>2</mn></msubsup><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>3</mn><mi>x</mi><mo>)</mo><mi>dx</mi><mo>+</mo><msubsup><mo class="int-op">∫</mo><mn>1</mn><mn>2</mn></msubsup><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>3</mn><mi>x</mi><mo>)</mo><mi>dx</mi></math><br /><math><mo>=</mo><msubsup><mo class="int-op">∫</mo><mn>1</mn><mn>2</mn></msubsup><mo>{</mo><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>3</mn><mi>x</mi><mo>)</mo><mo>+</mo><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>3</mn><mi>x</mi><mo>)</mo><mo>}</mo><mi>dx</mi></math><br /></p>
+<div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mo>=</mo><msubsup><mo class="int-op">∫</mo><mn>1</mn><mn>2</mn></msubsup><mn>2</mn><msup><mi>x</mi><mn>2</mn></msup><mi>dx</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo><mo>[</mo><mo>(</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mo>)</mo><msup><mi>x</mi><mn>3</mn></msup><msubsup><mo>]</mo><mn>1</mn><mn>2</mn></msubsup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo><mo>(</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mo>)</mo><mo>(</mo><msup><mn>2</mn><mn>3</mn></msup><mo>−</mo><msup><mn>1</mn><mn>3</mn></msup><mo>)</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo><mo>(</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mo>)</mo><mo>⋅</mo><mn>7</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo></math></div>
+</div>
+<p><b><math><mfrac><mn>14</mn><mn>3</mn></mfrac></math></b></p>
+          <p class="note">2つの積分を別々に計算しても同じ答えになるが、計算量は大違い。<br><b>「区間が同じ → まずまとめる」</b>が合言葉だよ。</p>
         </div>
         <p class="prob-done">例17 クリア！　次は練習31に挑戦しよう。</p>
       </section>
@@ -448,7 +520,7 @@
         <span class="pno">教科書 p.209</span>
       </div>
 
-      <section class="card prob" id="prob-ren31" data-flow="ren31" data-label="練習31">
+      <section class="nofig card prob" id="prob-ren31" data-flow="ren31" data-label="練習31">
         <div class="prob-head">
           <span class="prob-tag ren">練習 31</span>
           <div class="dots" aria-hidden="true">
@@ -457,29 +529,41 @@
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
         <p class="prob-q">次の定積分を計算せよ。</p>
-        <p class="formula"><span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up">1</span><span class="int-lo">−1</span></span></span> (<i>x</i>＋2)<sup>2</sup><i>dx</i> − <span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up">1</span><span class="int-lo">−1</span></span></span> (<i>x</i>−2)<sup>2</sup><i>dx</i></p>
+        <p class="formula"><math display="block"><msubsup><mo class="int-op">∫</mo><mrow><mo>−</mo><mn>1</mn></mrow><mn>1</mn></msubsup><msup><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup><mi>dx</mi><mo>−</mo><msubsup><mo class="int-op">∫</mo><mrow><mo>−</mo><mn>1</mn></mrow><mn>1</mn></msubsup><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup><mi>dx</mi></math></p>
 
         <div class="step hint">
           <h3>ヒント 1 ― 例17と同じ見方をする</h3>
           <p>2つの定積分の区間は、どちらも <b>−1 から 1</b> で同じだ。</p>
-          <p>今度は「差」だから、解説Bの性質1（差）を使って、<b>被積分関数どうしの引き算を1つの積分にまとめる</b>ことができる。</p>
+          <p class="cite"><span class="cite-tag">使う性質</span>定積分の性質1（差） <math><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mo>{</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>−</mo><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>}</mo><mi>dx</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>−</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi></math>。区間が同じ2つの積分の差は、被積分関数どうしの引き算を1つの積分の中で行える。</p>
+          <p>今度は「差」だから、解説Bの性質1（差）を使って、<br><b>被積分関数どうしの引き算を1つの積分にまとめる</b>ことができる。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― 2つの (　)<sup>2</sup> を展開する</h3>
-          <p>まとめる前に、中身を展開しておこう。乗法公式 (<i>x</i>＋<i>a</i>)<sup>2</sup> ＝ <i>x</i><sup>2</sup>＋2<i>ax</i>＋<i>a</i><sup>2</sup> を使うと</p>
-          <p>・(<i>x</i>＋2)<sup>2</sup> ＝ <i>x</i><sup>2</sup>＋4<i>x</i>＋4<br />・(<i>x</i>−2)<sup>2</sup> ＝ <i>x</i><sup>2</sup>−4<i>x</i>＋4</p>
+          <h3>ヒント 2 ― 2つの (　<math><msup><mo>)</mo><mn>2</mn></msup></math> を展開する</h3>
+          <p class="cite"><span class="cite-tag">使う公式</span>乗法公式 <math><msup><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mi>a</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>ax</mi><mo>+</mo><msup><mi>a</mi><mn>2</mn></msup></math>。2つの2乗をそれぞれ展開してから、差をとれる形にする。</p>
+          <p>まとめる前に、中身を展開しておこう。<br>乗法公式<math><msup><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mi>a</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>ax</mi><mo>+</mo><msup><mi>a</mi><mn>2</mn></msup></math> を使うと</p>
+          <p><math><mo>⋅</mo><msup><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>4</mn><mi>x</mi><mo>+</mo><mn>4</mn></math><br /><math><mo>⋅</mo><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>x</mi><mo>+</mo><mn>4</mn></math></p>
           <p>この2つの差をとるのが次のステップだ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 3 ― 差をとると、何が残る？</h3>
-          <p>(<i>x</i><sup>2</sup>＋4<i>x</i>＋4) − (<i>x</i><sup>2</sup>−4<i>x</i>＋4) を項ごとに計算してみよう。</p>
-          <p><i>x</i><sup>2</sup> の項と定数 4 は、どちらも<b>消えてしまう</b>はずだ。残るのは <i>x</i> の項だけ。係数を集めると何倍の <i>x</i> になるか、確かめてみよう。</p>
+          <p class="cite"><span class="cite-tag">使う性質</span>定積分の性質1（差） <math><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mo>{</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>−</mo><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>}</mo><mi>dx</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>−</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi></math>。1つにまとめた積分の中では、被積分関数の差を項ごとに計算してよい。</p>
+          <p><math><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>4</mn><mi>x</mi><mo>+</mo><mn>4</mn><mo>)</mo><mo>−</mo><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>x</mi><mo>+</mo><mn>4</mn><mo>)</mo></math>を項ごとに計算してみよう。</p>
+          <p><math><msup><mi>x</mi><mn>2</mn></msup></math> の項と定数 4 は、どちらも<b>消えてしまう</b>はずだ。<br>残るのは <math><mi>x</mi></math> の項だけ。<br>係数を集めると何倍の <math><mi>x</mi></math> になるか、確かめてみよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
           <p class="big">0</p>
-          <p><span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up">1</span><span class="int-lo">−1</span></span></span> (<i>x</i>＋2)<sup>2</sup><i>dx</i> − <span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up">1</span><span class="int-lo">−1</span></span></span> (<i>x</i>−2)<sup>2</sup><i>dx</i><br />＝ <span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up">1</span><span class="int-lo">−1</span></span></span> {(<i>x</i>＋2)<sup>2</sup>−(<i>x</i>−2)<sup>2</sup>}<i>dx</i><br />＝ <span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up">1</span><span class="int-lo">−1</span></span></span> 8<i>x</i><i>dx</i> ＝ [4<i>x</i><sup>2</sup>]<span class="eval-lim"><span class="int-up">1</span><span class="int-lo">−1</span></span> ＝ 4・1<sup>2</sup> − 4・(−1)<sup>2</sup> ＝ 4 − 4 ＝ <b>0</b></p>
-          <p class="note">答えの 0 は偶然ではない。<b>被積分関数 8<i>x</i> は原点対称（奇関数）</b>で、積分区間 [−1, 1] も原点をはさんで対称だから、プラスとマイナスがちょうど打ち消し合う。この見方は、次の「定積分と面積」でもう一度出てくるよ。</p>
+          <p class="cite"><span class="cite-tag">使う性質</span>定積分の性質1（差） <math><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mo>{</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>−</mo><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>}</mo><mi>dx</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>−</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi></math>。解答でも、まず被積分関数どうしの引き算を1つの積分にまとめてから計算する。</p>
+          <p><math><msubsup><mo class="int-op">∫</mo><mrow><mo>−</mo><mn>1</mn></mrow><mn>1</mn></msubsup><msup><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup><mi>dx</mi><mo>−</mo><msubsup><mo class="int-op">∫</mo><mrow><mo>−</mo><mn>1</mn></mrow><mn>1</mn></msubsup><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup><mi>dx</mi></math><br /><math><mo>=</mo><msubsup><mo class="int-op">∫</mo><mrow><mo>−</mo><mn>1</mn></mrow><mn>1</mn></msubsup><mo>{</mo><msup><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>}</mo><mi>dx</mi></math><br /></p>
+<div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mo>=</mo><msubsup><mo class="int-op">∫</mo><mrow><mo>−</mo><mn>1</mn></mrow><mn>1</mn></msubsup><mn>8</mn><mi>x</mi><mi>dx</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo><mo>[</mo><mn>4</mn><msup><mi>x</mi><mn>2</mn></msup><msubsup><mo>]</mo><mrow><mo>−</mo><mn>1</mn></mrow><mn>1</mn></msubsup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo><mn>4</mn><mo>⋅</mo><msup><mn>1</mn><mn>2</mn></msup><mo>−</mo><mn>4</mn><mo>⋅</mo><msup><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo><mn>4</mn><mo>−</mo><mn>4</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo></math></div>
+</div>
+<p><b>0</b></p>
+          <p class="note">答えの 0 は偶然ではない。<br><b>被積分関数<math><mn>8</mn><mi>x</mi></math> は原点対称（奇関数）</b>で、積分区間 [−1, 1] も原点をはさんで対称だから、プラスとマイナスがちょうど打ち消し合う。<br>この見方は、次の「定積分と面積」でもう一度出てくるよ。</p>
         </div>
         <p class="prob-done">練習31 クリア！　次は例18で「区間をつなげる」性質を使ってみよう。</p>
       </section>
@@ -500,7 +584,7 @@
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
         <p class="prob-q">次の定積分を計算してみよう。</p>
-        <p class="formula"><span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up">4</span><span class="int-lo">0</span></span></span> (<i>x</i><sup>2</sup>−<i>x</i>)<i>dx</i> ＋ <span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up">2</span><span class="int-lo">4</span></span></span> (<i>x</i><sup>2</sup>−<i>x</i>)<i>dx</i></p>
+        <p class="formula"><math display="block"><msubsup><mo class="int-op">∫</mo><mn>0</mn><mn>4</mn></msubsup><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>+</mo><msubsup><mo class="int-op">∫</mo><mn>4</mn><mn>2</mn></msubsup><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>x</mi><mo>)</mo><mi>dx</mi></math></p>
         <figure>
           <div class="figbox">
             <svg viewBox="0 0 520 178" role="img" aria-label="数直線上で、0から4への矢印と、4から2へ戻る矢印を描いた図">
@@ -533,31 +617,50 @@
               </g>
             </svg>
           </div>
-          <figcaption>1つ目は「0 から 4 まで」、2つ目は「4 から 2 まで」。ちょうど点 4 でつながっていることに注目。</figcaption>
+          <figcaption>1つ目は「0 から 4 まで」、2つ目は「4 から 2 まで」。<br>ちょうど点 4 でつながっていることに注目。</figcaption>
         </figure>
 
         <div class="step hint">
           <h3>ヒント 1 ― 区間の「つながり」を見る</h3>
-          <p>今回は被積分関数は同じでも、区間は 0→4 と 4→2 で<b>別々</b>だ。ただし、1つ目の終点 4 と2つ目の始点 4 が一致して、区間が<b>つながっている</b>。</p>
-          <p>こういうときは解説Bの性質3（区間をつなげる）が使える。「4 → 2」のように戻ってくる場合でも、<i>F</i>(<i>c</i>) が消える計算はそのまま成り立つんだったね。</p>
+          <p>今回は被積分関数は同じでも、区間は 0→4 と 4→2 で<b>別々</b>だ。<br>ただし、1つ目の終点 4 と2つ目の始点 4 が一致して、区間が<b>つながっている</b>。</p>
+          <p class="cite"><span class="cite-tag">使う性質</span>定積分の性質3（区間をつなげる） <math><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>c</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>+</mo><msubsup><mo class="int-op">∫</mo><mi>c</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi></math>。終点と始点が一致する2つの積分は、区間をつないで1つの積分にまとめられる。</p>
+          <p>こういうときは解説Bの性質3（区間をつなげる）が使える。<br>「4 → 2」のように戻ってくる場合でも、<math><mi>F</mi><mo>(</mo><mi>c</mi><mo>)</mo></math>が消える計算はそのまま成り立つんだったね。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 1つの積分にまとめる</h3>
-          <p>性質3を <i>a</i>＝0, <i>c</i>＝4, <i>b</i>＝2 として使うと</p>
-          <p class="formula"><span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up">4</span><span class="int-lo">0</span></span></span> (<i>x</i><sup>2</sup>−<i>x</i>)<i>dx</i> ＋ <span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up">2</span><span class="int-lo">4</span></span></span> (<i>x</i><sup>2</sup>−<i>x</i>)<i>dx</i> ＝ <span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up">2</span><span class="int-lo">0</span></span></span> (<i>x</i><sup>2</sup>−<i>x</i>)<i>dx</i></p>
-          <p>と、0 から 2 までの1つの積分になる。あとは (<i>x</i><sup>2</sup>−<i>x</i>) の原始関数 (1/3)<i>x</i><sup>3</sup>−(1/2)<i>x</i><sup>2</sup> を使って計算するだけだ。</p>
+          <p>性質3を</p>
+<div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>a</mi><mo>=</mo><mn>0</mn><mo>,</mo><mi>c</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>a</mi></mphantom><mo>=</mo><mn>4</mn><mo>,</mo><mi>b</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>a</mi></mphantom><mo>=</mo><mn>2</mn></math></div>
+</div>
+<p>として使うと</p>
+          <p class="cite"><span class="cite-tag">使う性質</span>定積分の性質3（区間をつなげる） <math><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>c</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>+</mo><msubsup><mo class="int-op">∫</mo><mi>c</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi></math>。途中の点 4 で区間をつなぎ、0 から 2 までの積分にまとめる。</p>
+          <p class="mq-wide formula"><math display="block"><msubsup><mo class="int-op">∫</mo><mn>0</mn><mn>4</mn></msubsup><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>+</mo><msubsup><mo class="int-op">∫</mo><mn>4</mn><mn>2</mn></msubsup><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mn>0</mn><mn>2</mn></msubsup><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>x</mi><mo>)</mo><mi>dx</mi></math></p>
+<div class="mq-narrow">
+<p class="formula"><math display="block"><msubsup><mo class="int-op">∫</mo><mn>0</mn><mn>4</mn></msubsup><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>+</mo><msubsup><mo class="int-op">∫</mo><mn>4</mn><mn>2</mn></msubsup><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>x</mi><mo>)</mo><mi>dx</mi></math></p>
+<p class="formula cont"><math display="block"><mo>=</mo><msubsup><mo class="int-op">∫</mo><mn>0</mn><mn>2</mn></msubsup><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>x</mi><mo>)</mo><mi>dx</mi></math></p>
+</div>
+          <p>と、0 から 2 までの1つの積分になる。<br>あとは<math><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>x</mi><mo>)</mo></math>の原始関数<math><mo>(</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>)</mo><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo><msup><mi>x</mi><mn>2</mn></msup></math> を使って計算するだけだ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
-          <p class="big">2/3</p>
-          <p><span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up">4</span><span class="int-lo">0</span></span></span> (<i>x</i><sup>2</sup>−<i>x</i>)<i>dx</i> ＋ <span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up">2</span><span class="int-lo">4</span></span></span> (<i>x</i><sup>2</sup>−<i>x</i>)<i>dx</i><br />＝ <span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up">2</span><span class="int-lo">0</span></span></span> (<i>x</i><sup>2</sup>−<i>x</i>)<i>dx</i><br />＝ [(1/3)<i>x</i><sup>3</sup>−(1/2)<i>x</i><sup>2</sup>]<span class="eval-lim"><span class="int-up">2</span><span class="int-lo">0</span></span> ＝ (8/3 − 2) − 0 ＝ <b>2/3</b></p>
-          <p class="note">行き過ぎて戻ってくる積分も、つなげてしまえば一直線の積分と同じこと。<b>終点と始点がそろったら「つなげる」</b>が合言葉だよ。</p>
+          <p class="big"><math display="block"><mfrac><mn>2</mn><mn>3</mn></mfrac></math></p>
+          <p class="cite"><span class="cite-tag">使う性質</span>定積分の性質3（区間をつなげる） <math><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>c</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>+</mo><msubsup><mo class="int-op">∫</mo><mi>c</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi></math>。解答でも、まず区間をつないで 0 から 2 までの1つの積分にしてから計算する。</p>
+          <p><math><msubsup><mo class="int-op">∫</mo><mn>0</mn><mn>4</mn></msubsup><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>+</mo><msubsup><mo class="int-op">∫</mo><mn>4</mn><mn>2</mn></msubsup><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>x</mi><mo>)</mo><mi>dx</mi></math><br /><math><mo>=</mo><msubsup><mo class="int-op">∫</mo><mn>0</mn><mn>2</mn></msubsup><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>x</mi><mo>)</mo><mi>dx</mi></math><br /></p>
+<div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mo>=</mo><mo>[</mo><mo>(</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>)</mo><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo><msup><mi>x</mi><mn>2</mn></msup><msubsup><mo>]</mo><mn>0</mn><mn>2</mn></msubsup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo><mo>(</mo><mfrac><mn>8</mn><mn>3</mn></mfrac><mo>−</mo><mn>2</mn><mo>)</mo><mo>−</mo><mn>0</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo></math></div>
+</div>
+<p><b><math><mfrac><mn>2</mn><mn>3</mn></mfrac></math></b></p>
+          <p class="note">行き過ぎて戻ってくる積分も、つなげてしまえば一直線の積分と同じこと。<br><b>終点と始点がそろったら「つなげる」</b>が合言葉だよ。</p>
         </div>
         <p class="prob-done">例18 クリア！　次は練習32に挑戦しよう。</p>
       </section>
 
       <!-- ================= 練習32 ================= -->
-      <section class="card prob" id="prob-ren32">
+      <section class="nofig card prob" id="prob-ren32">
         <div class="prob-head">
           <span class="prob-tag ren">練習 32</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
@@ -570,56 +673,75 @@
         </div>
 
         <!-- (1) -->
-        <div class="tabpanel show" id="panel-ren32-1" data-flow="ren32-1" data-label="練習32 (1)">
+        <div class="nofig tabpanel show" id="panel-ren32-1" data-flow="ren32-1" data-label="練習32 (1)">
           <div class="prob-head">
             <span class="sub prob-q" style="margin:0">(1)</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
-          <p class="formula"><span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up">2</span><span class="int-lo">1</span></span></span> (3<i>x</i><sup>2</sup>−4<i>x</i>)<i>dx</i> ＋ <span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up">3</span><span class="int-lo">2</span></span></span> (3<i>x</i><sup>2</sup>−4<i>x</i>)<i>dx</i></p>
+          <p class="formula"><math display="block"><msubsup><mo class="int-op">∫</mo><mn>1</mn><mn>2</mn></msubsup><mo>(</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>x</mi><mo>)</mo><mi>dx</mi><mo>+</mo><msubsup><mo class="int-op">∫</mo><mn>2</mn><mn>3</mn></msubsup><mo>(</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>x</mi><mo>)</mo><mi>dx</mi></math></p>
           <div class="step hint">
             <h3>ヒント 1 ― 例18と同じ形だ</h3>
-            <p>区間が 1→2 と 2→3 で、点 2 でつながっている。被積分関数も同じ (3<i>x</i><sup>2</sup>−4<i>x</i>) だ。</p>
-            <p>性質3で1つの積分にまとめると、区間は <b>1 から 3</b> までになる。</p>
+            <p>区間が 1→2 と 2→3 で、点 2 でつながっている。<br>被積分関数も同じ<math><mo>(</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>x</mi><mo>)</mo></math>だ。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>定積分の性質3（区間をつなげる） <math><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>c</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>+</mo><msubsup><mo class="int-op">∫</mo><mi>c</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi></math>。点 2 でつながる2つの積分を、1 から 3 までの1つの積分にまとめる。</p>
+          <p>性質3で1つの積分にまとめると、区間は <b>1 から 3</b> までになる。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 原始関数を用意する</h3>
-            <p>3<i>x</i><sup>2</sup>−4<i>x</i> の原始関数は <i>x</i><sup>3</sup>−2<i>x</i><sup>2</sup>（微分して確かめてみよう）。</p>
-            <p>あとは [<i>x</i><sup>3</sup>−2<i>x</i><sup>2</sup>]<span class="eval-lim"><span class="int-up">3</span><span class="int-lo">1</span></span> に 3 と 1 を代入して引き算すればよい。</p>
+            <p><math><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>x</mi></math> の原始関数は <math><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>2</mn><msup><mi>x</mi><mn>2</mn></msup><mo>(</mo></math>微分して確かめてみよう）。</p>
+            <p class="cite"><span class="cite-tag">使う定義</span>定積分の定義 <math><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>=</mo><mi>F</mi><mo>(</mo><mi>b</mi><mo>)</mo><mo>−</mo><mi>F</mi><mo>(</mo><mi>a</mi><mo>)</mo></math>。原始関数に上端 3 と下端 1 を代入し、その差をとって値を求める。</p>
+          <p>あとは<math><mo>[</mo><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>2</mn><msup><mi>x</mi><mn>2</mn></msup><msubsup><mo>]</mo><mn>1</mn><mn>3</mn></msubsup></math> に 3 と 1 を代入して引き算すればよい。</p>
           </div>
           <div class="step answer">
             <h3>解答 (1)</h3>
             <p class="big">10</p>
-            <p><span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up">2</span><span class="int-lo">1</span></span></span> (3<i>x</i><sup>2</sup>−4<i>x</i>)<i>dx</i> ＋ <span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up">3</span><span class="int-lo">2</span></span></span> (3<i>x</i><sup>2</sup>−4<i>x</i>)<i>dx</i><br />＝ <span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up">3</span><span class="int-lo">1</span></span></span> (3<i>x</i><sup>2</sup>−4<i>x</i>)<i>dx</i><br />＝ [<i>x</i><sup>3</sup>−2<i>x</i><sup>2</sup>]<span class="eval-lim"><span class="int-up">3</span><span class="int-lo">1</span></span> ＝ (27−18) − (1−2) ＝ 9 − (−1) ＝ <b>10</b></p>
-            <p class="note">(1−2) ＝ −1 を引くところで符号ミスをしやすい。代入した値は、<b>かっこのまま引き算</b>するのが安全だよ。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>定積分の性質3（区間をつなげる） <math><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>c</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>+</mo><msubsup><mo class="int-op">∫</mo><mi>c</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi></math>。解答でも、まず区間をつないで 1 から 3 までの1つの積分にしてから計算する。</p>
+          <p><math><msubsup><mo class="int-op">∫</mo><mn>1</mn><mn>2</mn></msubsup><mo>(</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>x</mi><mo>)</mo><mi>dx</mi><mo>+</mo><msubsup><mo class="int-op">∫</mo><mn>2</mn><mn>3</mn></msubsup><mo>(</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>x</mi><mo>)</mo><mi>dx</mi></math><br /><math><mo>=</mo><msubsup><mo class="int-op">∫</mo><mn>1</mn><mn>3</mn></msubsup><mo>(</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>x</mi><mo>)</mo><mi>dx</mi></math><br /></p>
+<div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mo>=</mo><mo>[</mo><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>2</mn><msup><mi>x</mi><mn>2</mn></msup><msubsup><mo>]</mo><mn>1</mn><mn>3</mn></msubsup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo><mo>(</mo><mn>27</mn><mo>−</mo><mn>18</mn><mo>)</mo><mo>−</mo><mo>(</mo><mn>1</mn><mo>−</mo><mn>2</mn><mo>)</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo><mn>9</mn><mo>−</mo><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo></math></div>
+</div>
+<p><b>10</b></p>
+            <p class="note"><math><mo>(</mo><mn>1</mn><mo>−</mo><mn>2</mn><mo>)</mo><mo>=</mo><mo>−</mo><mn>1</mn></math>を引くところで符号ミスをしやすい。<br>代入した値は、<b>かっこのまま引き算</b>するのが安全だよ。</p>
           </div>
           <p class="prob-done">(1) クリア！　タブで (2) に切り替えよう。</p>
         </div>
 
         <!-- (2) -->
-        <div class="tabpanel" id="panel-ren32-2" data-flow="ren32-2" data-label="練習32 (2)">
+        <div class="nofig tabpanel" id="panel-ren32-2" data-flow="ren32-2" data-label="練習32 (2)">
           <div class="prob-head">
             <span class="sub prob-q" style="margin:0">(2)</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
-          <p class="formula"><span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up">3</span><span class="int-lo">0</span></span></span> (<i>x</i><sup>2</sup>＋2<i>x</i>)<i>dx</i> − <span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up">3</span><span class="int-lo">1</span></span></span> (<i>x</i><sup>2</sup>＋2<i>x</i>)<i>dx</i></p>
+          <p class="formula"><math display="block"><msubsup><mo class="int-op">∫</mo><mn>0</mn><mn>3</mn></msubsup><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>)</mo><mi>dx</mi><mo>−</mo><msubsup><mo class="int-op">∫</mo><mn>1</mn><mn>3</mn></msubsup><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>)</mo><mi>dx</mi></math></p>
           <div class="step hint">
             <h3>ヒント 1 ― 「引く」を「足す」に変える</h3>
-            <p>このままでは区間がつながらない。そこで、解説Bの性質2を使う。積分区間の<b>上下を入れ替えると符号が変わる</b>から</p>
-            <p class="formula">−<span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up">3</span><span class="int-lo">1</span></span></span> (<i>x</i><sup>2</sup>＋2<i>x</i>)<i>dx</i> ＝ <span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up">1</span><span class="int-lo">3</span></span></span> (<i>x</i><sup>2</sup>＋2<i>x</i>)<i>dx</i></p>
-            <p>と書き換えられる。式全体は「<span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up">3</span><span class="int-lo">0</span></span></span> ＋ <span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up">1</span><span class="int-lo">3</span></span></span>」の形になったはずだ。</p>
+            <p>このままでは区間がつながらない。<br>そこで、解説Bの性質2を使う。<br>積分区間の<b>上下を入れ替えると符号が変わる</b>から</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>定積分の性質2（上下の入れ替え） <math><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>=</mo><mo>−</mo><msubsup><mo class="int-op">∫</mo><mi>b</mi><mi>a</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi></math>。引く側の積分の上下を入れ替えると、符号が変わって足す形に書き換えられる。</p>
+          <p class="formula"><math display="block"><mo>−</mo><msubsup><mo class="int-op">∫</mo><mn>1</mn><mn>3</mn></msubsup><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>)</mo><mi>dx</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mn>3</mn><mn>1</mn></msubsup><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>)</mo><mi>dx</mi></math></p>
+            <p>と書き換えられる。<br>式全体は「<math><msubsup><mo class="int-op">∫</mo><mn>0</mn><mn>3</mn></msubsup><mo>+</mo><msubsup><mo class="int-op">∫</mo><mn>3</mn><mn>1</mn></msubsup></math>」の形になったはずだ。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 点 3 でつなげる</h3>
-            <p>0→3 と 3→1 が点 3 でつながるから、性質3でまとめると区間は <b>0 から 1</b> になる。</p>
-            <p>あとは <span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up">1</span><span class="int-lo">0</span></span></span> (<i>x</i><sup>2</sup>＋2<i>x</i>)<i>dx</i> を、原始関数 (1/3)<i>x</i><sup>3</sup>＋<i>x</i><sup>2</sup> で計算しよう。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>定積分の性質3（区間をつなげる） <math><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>c</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>+</mo><msubsup><mo class="int-op">∫</mo><mi>c</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi></math>。点 3 でつながる2つの積分を、0 から 1 までの1つの積分にまとめる。</p>
+          <p>0→3 と 3→1 が点 3 でつながるから、<br>性質3でまとめると区間は <b>0 から 1</b> になる。</p>
+            <p>あとは <math><msubsup><mo class="int-op">∫</mo><mn>0</mn><mn>1</mn></msubsup><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>)</mo><mi>dx</mi></math> を、原始関数<math><mo>(</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>)</mo><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><msup><mi>x</mi><mn>2</mn></msup></math> で計算しよう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (2)</h3>
-            <p class="big">4/3</p>
-            <p><span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up">3</span><span class="int-lo">0</span></span></span> (<i>x</i><sup>2</sup>＋2<i>x</i>)<i>dx</i> − <span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up">3</span><span class="int-lo">1</span></span></span> (<i>x</i><sup>2</sup>＋2<i>x</i>)<i>dx</i><br />＝ <span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up">3</span><span class="int-lo">0</span></span></span> (<i>x</i><sup>2</sup>＋2<i>x</i>)<i>dx</i> ＋ <span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up">1</span><span class="int-lo">3</span></span></span> (<i>x</i><sup>2</sup>＋2<i>x</i>)<i>dx</i><br />＝ <span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up">1</span><span class="int-lo">0</span></span></span> (<i>x</i><sup>2</sup>＋2<i>x</i>)<i>dx</i><br />＝ [(1/3)<i>x</i><sup>3</sup>＋<i>x</i><sup>2</sup>]<span class="eval-lim"><span class="int-up">1</span><span class="int-lo">0</span></span> ＝ (1/3＋1) − 0 ＝ <b>4/3</b></p>
-            <p class="note">考え方を整理すると、[0, 3] の積分から [1, 3] の積分を引くと、残るのは [0, 1] の積分。図で区間を思い浮かべると納得できるね。</p>
+            <p class="big"><math display="block"><mfrac><mn>4</mn><mn>3</mn></mfrac></math></p>
+            <p class="cite"><span class="cite-tag">使う性質</span>定積分の性質2（上下の入れ替え） <math><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>=</mo><mo>−</mo><msubsup><mo class="int-op">∫</mo><mi>b</mi><mi>a</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi></math>。解答の第一歩は、引く側の上下を入れ替えて足す形に直すことだ。</p>
+          <p><math><msubsup><mo class="int-op">∫</mo><mn>0</mn><mn>3</mn></msubsup><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>)</mo><mi>dx</mi><mo>−</mo><msubsup><mo class="int-op">∫</mo><mn>1</mn><mn>3</mn></msubsup><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>)</mo><mi>dx</mi></math><br /><math><mo>=</mo><msubsup><mo class="int-op">∫</mo><mn>0</mn><mn>3</mn></msubsup><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>)</mo><mi>dx</mi><mo>+</mo><msubsup><mo class="int-op">∫</mo><mn>3</mn><mn>1</mn></msubsup><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>)</mo><mi>dx</mi></math><br /><math><mo>=</mo><msubsup><mo class="int-op">∫</mo><mn>0</mn><mn>1</mn></msubsup><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>)</mo><mi>dx</mi></math><br /></p>
+<div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mo>=</mo><mo>[</mo><mo>(</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>)</mo><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><msup><mi>x</mi><mn>2</mn></msup><msubsup><mo>]</mo><mn>0</mn><mn>1</mn></msubsup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo><mo>(</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>+</mo><mn>1</mn><mo>)</mo><mo>−</mo><mn>0</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom></mphantom><mo>=</mo></math></div>
+</div>
+<p><b><math><mfrac><mn>4</mn><mn>3</mn></mfrac></math></b></p>
+            <p class="note">考え方を整理すると、[0, 3] の積分から [1, 3] の積分を引くと、残るのは [0, 1] の積分。<br>図で区間を思い浮かべると納得できるね。</p>
           </div>
           <p class="prob-done">(2) クリア！　練習32 全小問が終わったら、解説Cへ進もう。</p>
         </div>
@@ -640,9 +762,9 @@
           </div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
-        <p>これまでの定積分は、区間の両端が数のものばかりだった。では、<b>上端を文字 <i>x</i> にしたら</b>どうなるだろう？　下のスライダーで上端 <i>x</i> を動かすと、<span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up"><i>x</i></span><span class="int-lo">2</span></span></span> (3<i>t</i><sup>2</sup>−1)<i>dt</i> の値（色のついた部分）が変わっていく様子が見える。</p>
+        <p>これまでの定積分は、区間の両端が数のものばかりだった。<br>では、<b>上端を文字 <math><mi>x</mi></math> にしたら</b>どうなるだろう？　<br>下のスライダーで上端 <math><mi>x</mi></math> を動かすと、<math><msubsup><mo class="int-op">∫</mo><mn>2</mn><mi>x</mi></msubsup><mo>(</mo><mn>3</mn><msup><mi>t</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>)</mo><mi>dt</mi></math> の値（色のついた部分）が変わっていく様子が見える。</p>
         <div class="slider-row">
-          <label for="slideX">上端 <i>x</i> を動かす</label>
+          <label for="slideX">上端 <math><mi>x</mi></math> を動かす</label>
           <input type="range" id="slideX" min="2" max="4" value="3" step="0.1" aria-label="定積分の上端 x を動かすスライダー" />
         </div>
         <figure>
@@ -674,37 +796,41 @@
               <text x="297" y="238" text-anchor="middle" class="svg-txt" font-size="14.5" fill="var(--accent-deep)">積分の値 S(<tspan font-style="italic">x</tspan>)</text>
             </svg>
           </div>
-          <figcaption>下端 2 は固定、上端 <i>x</i> だけが動く。すると定積分の値 S(<i>x</i>) も <i>x</i> によって変わる。つまり <b>S(<i>x</i>) は <i>x</i> の関数</b>だ。</figcaption>
+          <figcaption>下端 2 は固定、上端 <math><mi>x</mi></math> だけが動く。すると定積分の値<math><mi>S</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>も <math><mi>x</mi></math> によって変わる。<br>つまり <b><math><mi>S</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>は <math><mi>x</mi></math> の関数</b>だ。</figcaption>
         </figure>
-        <p class="slider-state" id="intState"><i>x</i> ＝ 3.0 のとき，S(<i>x</i>) ＝ 18</p>
-        <p>なぜ積分する変数を <i>x</i> ではなく <i>t</i> と書くのかというと、上端の <i>x</i> と混ざってしまわないようにするためだ。この <i>t</i> のような変数を「仮の変数」と思えばよい。下の <b>次へ</b> で、この関数の正体を確かめていこう。</p>
+        <p class="slider-state" id="intState"><math><mi>x</mi><mo>=</mo><mn>3.0</mn></math>のとき<math><mo>,</mo><mi>S</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mn>18</mn></math></p>
+        <p>なぜ積分する変数を <math><mi>x</mi></math> ではなく <math><mi>t</mi></math> と書くのかというと、上端の <math><mi>x</mi></math> と混ざってしまわないようにするためだ。<br>この <math><mi>t</mi></math> のような変数を「仮の変数」と思えばよい。下の <b>次へ</b> で、この関数の正体を確かめていこう。</p>
 
         <div class="step hint">
           <h3>ステップ 1 ― 実際に計算すると、x の式になる</h3>
-          <p><span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up"><i>x</i></span><span class="int-lo">2</span></span></span> (3<i>t</i><sup>2</sup>−1)<i>dt</i> を、原始関数 <i>t</i><sup>3</sup>−<i>t</i> で計算してみよう。</p>
-          <p class="formula"><span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up"><i>x</i></span><span class="int-lo">2</span></span></span> (3<i>t</i><sup>2</sup>−1)<i>dt</i> ＝ [<i>t</i><sup>3</sup>−<i>t</i>]<span class="eval-lim"><span class="int-up"><i>x</i></span><span class="int-lo">2</span></span><br />＝ (<i>x</i><sup>3</sup>−<i>x</i>) − (2<sup>3</sup>−2) ＝ <i>x</i><sup>3</sup>−<i>x</i>−6</p>
-          <p>本当に <b><i>x</i> の関数</b>になった。図の S(<i>x</i>) の正体は、S(<i>x</i>) ＝ <i>x</i><sup>3</sup>−<i>x</i>−6 だということだ（スライダーの数字と比べてみよう）。</p>
+          <p><math><msubsup><mo class="int-op">∫</mo><mn>2</mn><mi>x</mi></msubsup><mo>(</mo><mn>3</mn><msup><mi>t</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>)</mo><mi>dt</mi></math> を、原始関数 <math><msup><mi>t</mi><mn>3</mn></msup><mo>−</mo><mi>t</mi></math> で計算してみよう。</p>
+          <p class="cite"><span class="cite-tag">使う定義</span>定積分の定義 <math><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>x</mi></msubsup><mi>f</mi><mo>(</mo><mi>t</mi><mo>)</mo><mi>dt</mi><mo>=</mo><mi>F</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>−</mo><mi>F</mi><mo>(</mo><mi>a</mi><mo>)</mo></math>。上端が文字 x でも、定積分は原始関数の差で計算できる。</p>
+          <p class="formula"><math><msubsup><mo class="int-op">∫</mo><mn>2</mn><mi>x</mi></msubsup><mo>(</mo><mn>3</mn><msup><mi>t</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>)</mo><mi>dt</mi><mo>=</mo><mo>[</mo><msup><mi>t</mi><mn>3</mn></msup><mo>−</mo><mi>t</mi><msubsup><mo>]</mo><mn>2</mn><mi>x</mi></msubsup></math><br /><math><mo>=</mo><mo>(</mo><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mi>x</mi><mo>)</mo><mo>−</mo><mo>(</mo><msup><mn>2</mn><mn>3</mn></msup><mo>−</mo><mn>2</mn><mo>)</mo><mo>=</mo><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mi>x</mi><mo>−</mo><mn>6</mn></math></p>
+          <p>本当に <b><math><mi>x</mi></math> の関数</b>になった。<br>図の<math><mi>S</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>の正体は、<math><mi>S</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mi>x</mi><mo>−</mo><mn>6</mn></math>だということだ（スライダーの数字と比べてみよう）。</p>
         </div>
         <div class="step hint">
           <h3>ステップ 2 ― その関数を微分すると…？</h3>
-          <p>S(<i>x</i>) ＝ <i>x</i><sup>3</sup>−<i>x</i>−6 を <i>x</i> で微分すると</p>
-          <p class="formula">S′(<i>x</i>) ＝ 3<i>x</i><sup>2</sup>−1</p>
-          <p>あれ、これは被積分関数 3<i>t</i><sup>2</sup>−1 の <b><i>t</i> を <i>x</i> に置き換えたもの</b>そのものだ。積分したものを微分すると、もとの関数に戻っている。</p>
+          <p><math><mi>S</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mi>x</mi><mo>−</mo><mn>6</mn></math>を <math><mi>x</mi></math> で微分すると</p>
+          <p class="cite"><span class="cite-tag">使う公式</span>微分の公式 <math><mo>(</mo><msup><mi>x</mi><mi>n</mi></msup><mo>)</mo><mo>′</mo><mo>=</mo><mi>n</mi><msup><mi>x</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup></math>。x の多項式は、項ごとにこの公式を使って微分する。</p>
+          <p class="formula"><math display="block"><mi>S</mi><mi>′</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn></math></p>
+          <p>あれ、これは被積分関数<math><mn>3</mn><msup><mi>t</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn></math>の <b><math><mi>t</mi></math> を <math><mi>x</mi></math> に置き換えたもの</b>そのものだ。<br>積分したものを微分すると、もとの関数に戻っている。</p>
         </div>
         <div class="step hint">
           <h3>ステップ 3 ― 一般の関数でも成り立つ理由</h3>
-          <p>一般の関数 <i>f</i>(<i>t</i>) で考えよう。原始関数を <i>F</i>(<i>t</i>) とすると</p>
-          <p class="formula"><span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up"><i>x</i></span><span class="int-lo"><i>a</i></span></span></span> <i>f</i>(<i>t</i>)<i>dt</i> ＝ <i>F</i>(<i>x</i>) − <i>F</i>(<i>a</i>)</p>
-          <p>この右辺を <i>x</i> で微分する。<i>F</i>(<i>a</i>) は <i>a</i> で決まる<b>定数</b>だから、微分すると 0 になって消える。残るのは <i>F</i>(<i>x</i>) の微分だけ、つまり</p>
-          <p class="formula">{<i>F</i>(<i>x</i>) − <i>F</i>(<i>a</i>)}′ ＝ <i>F</i>′(<i>x</i>) ＝ <i>f</i>(<i>x</i>)</p>
+          <p>一般の関数 <math><mi>f</mi><mo>(</mo><mi>t</mi><mo>)</mo></math>で考えよう。<br>原始関数を <math><mi>F</mi><mo>(</mo><mi>t</mi><mo>)</mo></math>とすると</p>
+          <p class="formula"><math display="block"><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>x</mi></msubsup><mi>f</mi><mo>(</mo><mi>t</mi><mo>)</mo><mi>dt</mi><mo>=</mo><mi>F</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>−</mo><mi>F</mi><mo>(</mo><mi>a</mi><mo>)</mo></math></p>
+          <p>この右辺を <math><mi>x</mi></math> で微分する。<math><mi>F</mi><mo>(</mo><mi>a</mi><mo>)</mo></math>は <math><mi>a</mi></math> で決まる<b>定数</b>だから、微分すると 0 になって消える。<br>残るのは <math><mi>F</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>の微分だけ、つまり</p>
+          <p class="cite"><span class="cite-tag">使う定義</span>原始関数の定義 <math><mi>F</mi><mo>′</mo><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>。原始関数を微分するともとの関数に戻り、定数の微分は 0 になる。</p>
+          <p class="formula"><math display="block"><mo>{</mo><mi>F</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>−</mo><mi>F</mi><mo>(</mo><mi>a</mi><mo>)</mo><mo>}</mo><mo>′</mo><mo>=</mo><mi>F</mi><mo>′</mo><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></math></p>
           <p>これが、ステップ2で「もとの関数に戻った」理由だ。</p>
         </div>
         <div class="step answer">
           <h3>公式 ― 定積分と微分法</h3>
-          <p class="big">(d/dx)<span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up"><i>x</i></span><span class="int-lo"><i>a</i></span></span></span> <i>f</i>(<i>t</i>)<i>dt</i> ＝ <i>f</i>(<i>x</i>)</p>
-          <p><b>上端が <i>x</i> の定積分を <i>x</i> で微分すると、被積分関数の <i>t</i> を <i>x</i> に変えたものになる。</b></p>
-          <p>言い換えると、微分と積分は「逆の操作」。この関係が、微分法と積分法を1つの章で学ぶ意味そのものだよ。</p>
-          <p class="note">注意：この公式が使えるのは、<b>上端がそのまま <i>x</i></b> のときだけ。下端が <i>x</i> のときなどは、性質2で上下を入れ替えてから考える。</p>
+          <p class="big"><math display="block"><mo>(</mo><mfrac><mi>d</mi><mi>d</mi></mfrac><mi>x</mi><mo>)</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>x</mi></msubsup><mi>f</mi><mo>(</mo><mi>t</mi><mo>)</mo><mi>dt</mi><mo>=</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></math></p>
+          <p><b>上端が <math><mi>x</mi></math> の定積分を <math><mi>x</mi></math> で微分すると、被積分関数の <math><mi>t</mi></math> を <math><mi>x</mi></math> に変えたものになる。</b></p>
+          <p>言い換えると、微分と積分は「逆の操作」。<br>この関係が、微分法と積分法を1つの章で学ぶ意味そのものだよ。</p>
+          <p class="cite"><span class="cite-tag">使う性質</span>定積分の性質2（上下の入れ替え） <math><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>=</mo><mo>−</mo><msubsup><mo class="int-op">∫</mo><mi>b</mi><mi>a</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi></math>。下端が x のときは、先に上下を入れ替えて上端が x の形にしてから公式を使う。</p>
+          <p class="note">注意：この公式が使えるのは、<b>上端がそのまま <math><mi>x</mi></math></b> のときだけ。<br>下端が <math><mi>x</mi></math> のときなどは、性質2で上下を入れ替えてから考える。</p>
         </div>
         <p class="prob-done">解説C クリア！　次は練習33で公式を使ってみよう。</p>
       </section>
@@ -716,7 +842,7 @@
         <span class="pno">教科書 p.210</span>
       </div>
 
-      <section class="card prob" id="prob-ren33" data-flow="ren33" data-label="練習33">
+      <section class="nofig card prob" id="prob-ren33" data-flow="ren33" data-label="練習33">
         <div class="prob-head">
           <span class="prob-tag ren">練習 33</span>
           <div class="dots" aria-hidden="true">
@@ -724,23 +850,26 @@
           </div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
-        <p class="prob-q"><i>x</i> の関数 <span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up"><i>x</i></span><span class="int-lo">0</span></span></span> (3<i>t</i><sup>2</sup>−2<i>t</i>−1)<i>dt</i> の導関数を求めよ。</p>
+        <p class="prob-q"><math><mi>x</mi></math> の関数 <math><msubsup><mo class="int-op">∫</mo><mn>0</mn><mi>x</mi></msubsup><mo>(</mo><mn>3</mn><msup><mi>t</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>t</mi><mo>−</mo><mn>1</mn><mo>)</mo><mi>dt</mi></math> の導関数を求めよ。</p>
 
         <div class="step hint">
           <h3>ヒント 1 ― 公式がそのまま使える形だ</h3>
-          <p>求めるのは「積分の値」ではなく、その<b>導関数</b>。しかも上端はそのまま <i>x</i> になっている。</p>
-          <p>つまり、先に積分を計算してから微分する、なんて遠回りは不要。解説Cの公式 (d/dx)<span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up"><i>x</i></span><span class="int-lo"><i>a</i></span></span></span> <i>f</i>(<i>t</i>)<i>dt</i> ＝ <i>f</i>(<i>x</i>) がそのまま使える。</p>
+          <p>求めるのは「積分の値」ではなく、その<b>導関数</b>。<br>しかも上端はそのまま <math><mi>x</mi></math> になっている。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span>定積分と微分法 <math><mo>(</mo><mfrac><mi>d</mi><mi>d</mi></mfrac><mi>x</mi><mo>)</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>x</mi></msubsup><mi>f</mi><mo>(</mo><mi>t</mi><mo>)</mo><mi>dt</mi><mo>=</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>。上端がそのまま x の定積分の導関数は、被積分関数の t を x に変えたものになる。</p>
+          <p>つまり、先に積分を計算してから微分する、なんて遠回りは不要。<br>解説Cの公式<math><mo>(</mo><mfrac><mi>d</mi><mi>d</mi></mfrac><mi>x</mi><mo>)</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>x</mi></msubsup><mi>f</mi><mo>(</mo><mi>t</mi><mo>)</mo><mi>dt</mi><mo>=</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>がそのまま使える。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― やることは「置き換え」だけ</h3>
-          <p>公式によれば、答えは被積分関数 3<i>t</i><sup>2</sup>−2<i>t</i>−1 の <b><i>t</i> をすべて <i>x</i> に置き換えたもの</b>になる。</p>
-          <p>下端の 0 は関係ない（<i>a</i> が何であっても、公式の形は変わらない）。置き換えた式を書いてみよう。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span>定積分と微分法 <math><mo>(</mo><mfrac><mi>d</mi><mi>d</mi></mfrac><mi>x</mi><mo>)</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>x</mi></msubsup><mi>f</mi><mo>(</mo><mi>t</mi><mo>)</mo><mi>dt</mi><mo>=</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>。やることは、被積分関数の t をすべて x に置き換えることだけだ。</p>
+          <p>公式によれば、答えは被積分関数<math><mn>3</mn><msup><mi>t</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>t</mi><mo>−</mo><mn>1</mn></math>の <b><math><mi>t</mi></math> をすべて <math><mi>x</mi></math> に置き換えたもの</b>になる。</p>
+          <p>下端の 0 は関係ない<math><mo>(</mo><mi>a</mi></math> が何であっても、公式の形は変わらない）。<br>置き換えた式を書いてみよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
-          <p class="big">3<i>x</i><sup>2</sup>−2<i>x</i>−1</p>
-          <p>(d/dx)<span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up"><i>x</i></span><span class="int-lo">0</span></span></span> (3<i>t</i><sup>2</sup>−2<i>t</i>−1)<i>dt</i> ＝ <b>3<i>x</i><sup>2</sup>−2<i>x</i>−1</b></p>
-          <p class="note">確かめ：積分を先に計算すると <span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up"><i>x</i></span><span class="int-lo">0</span></span></span> (3<i>t</i><sup>2</sup>−2<i>t</i>−1)<i>dt</i> ＝ [<i>t</i><sup>3</sup>−<i>t</i><sup>2</sup>−<i>t</i>]<span class="eval-lim"><span class="int-up"><i>x</i></span><span class="int-lo">0</span></span> ＝ <i>x</i><sup>3</sup>−<i>x</i><sup>2</sup>−<i>x</i>。これを微分しても 3<i>x</i><sup>2</sup>−2<i>x</i>−1 になり、一致するね。</p>
+          <p class="big"><math display="block"><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>x</mi><mo>−</mo><mn>1</mn></math></p>
+          <p class="cite"><span class="cite-tag">使う公式</span>定積分と微分法 <math><mo>(</mo><mfrac><mi>d</mi><mi>d</mi></mfrac><mi>x</mi><mo>)</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>x</mi></msubsup><mi>f</mi><mo>(</mo><mi>t</mi><mo>)</mo><mi>dt</mi><mo>=</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>。積分を計算しなくても、公式でそのまま導関数が書ける。</p>
+          <p><math><mo>(</mo><mfrac><mi>d</mi><mi>d</mi></mfrac><mi>x</mi><mo>)</mo><msubsup><mo class="int-op">∫</mo><mn>0</mn><mi>x</mi></msubsup><mo>(</mo><mn>3</mn><msup><mi>t</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>t</mi><mo>−</mo><mn>1</mn><mo>)</mo><mi>dt</mi><mo>=</mo></math><b><math><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>x</mi><mo>−</mo><mn>1</mn></math></b></p>
+          <p class="note">確かめ：積分を先に計算すると <math><msubsup><mo class="int-op">∫</mo><mn>0</mn><mi>x</mi></msubsup><mo>(</mo><mn>3</mn><msup><mi>t</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>t</mi><mo>−</mo><mn>1</mn><mo>)</mo><mi>dt</mi><mo>=</mo><mo>[</mo><msup><mi>t</mi><mn>3</mn></msup><mo>−</mo><msup><mi>t</mi><mn>2</mn></msup><mo>−</mo><mi>t</mi><msubsup><mo>]</mo><mn>0</mn><mi>x</mi></msubsup><mo>=</mo><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>x</mi></math>。<br>これを微分しても<math><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>x</mi><mo>−</mo><mn>1</mn></math>になり、一致するね。</p>
         </div>
         <p class="prob-done">練習33 クリア！　次は応用例題6に挑戦しよう。</p>
       </section>
@@ -752,7 +881,7 @@
         <span class="pno">教科書 p.210</span>
       </div>
 
-      <section class="card prob" id="prob-ouyou6" data-flow="ouyou6" data-label="応用例題6">
+      <section class="nofig card prob" id="prob-ouyou6" data-flow="ouyou6" data-label="応用例題6">
         <div class="prob-head">
           <span class="prob-tag">応用例題 6</span>
           <div class="dots" aria-hidden="true">
@@ -760,30 +889,33 @@
           </div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
-        <p class="prob-q">等式 <span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up"><i>x</i></span><span class="int-lo"><i>a</i></span></span></span> <i>f</i>(<i>t</i>)<i>dt</i> ＝ <i>x</i><sup>2</sup>−3<i>x</i>＋2 を満たす関数 <i>f</i>(<i>x</i>) と定数 <i>a</i> の値を求めよ。</p>
+        <p class="prob-q">等式 <math><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>x</mi></msubsup><mi>f</mi><mo>(</mo><mi>t</mi><mo>)</mo><mi>dt</mi><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>3</mn><mi>x</mi><mo>+</mo><mn>2</mn></math>を満たす関数 <math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>と定数 <math><mi>a</mi></math> の値を求めよ。</p>
 
         <div class="step hint">
           <h3>ヒント 1 ― まず両辺を微分する</h3>
-          <p>左辺は「上端が <i>x</i> の定積分」だから、<i>x</i> で微分すると公式で <i>f</i>(<i>x</i>) になる。</p>
-          <p>右辺 <i>x</i><sup>2</sup>−3<i>x</i>＋2 の微分は普通に計算できる。両辺を微分した式から、<i>f</i>(<i>x</i>) がまず決まるはずだ。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span>定積分と微分法 <math><mo>(</mo><mfrac><mi>d</mi><mi>d</mi></mfrac><mi>x</mi><mo>)</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>x</mi></msubsup><mi>f</mi><mo>(</mo><mi>t</mi><mo>)</mo><mi>dt</mi><mo>=</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>。左辺を x で微分すると、被積分関数そのものが得られる。</p>
+          <p>左辺は「上端が <math><mi>x</mi></math> の定積分」だから、<math><mi>x</mi></math> で微分すると公式で <math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>になる。</p>
+          <p>右辺 <math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>3</mn><mi>x</mi><mo>+</mo><mn>2</mn></math>の微分は普通に計算できる。<br>両辺を微分した式から、<math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>がまず決まるはずだ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― 次は x＝a を代入する</h3>
-          <p><i>f</i>(<i>x</i>) が分かっても、<i>a</i> はまだ決まらない。そこで、もとの等式に <b><i>x</i> ＝ <i>a</i></b> を代入してみよう。</p>
-          <p>そのとき左辺は <span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up"><i>a</i></span><span class="int-lo"><i>a</i></span></span></span> <i>f</i>(<i>t</i>)<i>dt</i> になる。区間の上下が同じ積分の値は、解説Bの性質2で学んだはず。その値と右辺 <i>a</i><sup>2</sup>−3<i>a</i>＋2 を等しくおくと、<i>a</i> の方程式ができる。</p>
+          <h3>ヒント 2 ― 次は<math><mi>x</mi><mo>=</mo><mi>a</mi></math>を代入する</h3>
+          <p><math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>が分かっても、<math><mi>a</mi></math> はまだ決まらない。<br>そこで、もとの等式に <b><math><mi>x</mi><mo>=</mo><mi>a</mi></math></b> を代入してみよう。</p>
+          <p class="cite"><span class="cite-tag">使う性質</span>定積分の性質2（上端と下端が同じとき） <math><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>a</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>=</mo><mn>0</mn></math>。x に a を代入すると左辺は区間の幅が 0 の積分になり、その値は 0 だ。</p>
+          <p>そのとき左辺は <math><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>a</mi></msubsup><mi>f</mi><mo>(</mo><mi>t</mi><mo>)</mo><mi>dt</mi></math> になる。区間の上下が同じ積分の値は、解説Bの性質2で学んだはず。その値と右辺 <math><msup><mi>a</mi><mn>2</mn></msup><mo>−</mo><mn>3</mn><mi>a</mi><mo>+</mo><mn>2</mn></math>を等しくおくと、<math><mi>a</mi></math> の方程式ができる。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
-          <p class="big"><i>f</i>(<i>x</i>) ＝ 2<i>x</i>−3，　<i>a</i> ＝ 1, 2</p>
-          <p>等式の両辺を <i>x</i> で微分すると、公式より<br /><i>f</i>(<i>x</i>) ＝ (<i>x</i><sup>2</sup>−3<i>x</i>＋2)′ ＝ <b>2<i>x</i>−3</b></p>
-          <p>次に、等式に <i>x</i> ＝ <i>a</i> を代入する。左辺は <span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up"><i>a</i></span><span class="int-lo"><i>a</i></span></span></span> <i>f</i>(<i>t</i>)<i>dt</i> ＝ 0 だから<br />0 ＝ <i>a</i><sup>2</sup>−3<i>a</i>＋2 ＝ (<i>a</i>−1)(<i>a</i>−2)<br />よって <b><i>a</i> ＝ 1, 2</b></p>
-          <p class="note">手順はいつも同じ2段階：<b>① 両辺を微分して <i>f</i>(<i>x</i>)、② <i>x</i>＝<i>a</i> を代入して <i>a</i></b>。この型の問題は入試でも頻出だよ。</p>
+          <p class="big"><math display="block"><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mn>2</mn><mi>x</mi><mo>−</mo><mn>3</mn><mo>,</mo><mspace width="2em"/><mi>a</mi><mo>=</mo><mn>1</mn><mo>,</mo><mn>2</mn></math></p>
+          <p class="cite"><span class="cite-tag">使う公式</span>定積分と微分法 <math><mo>(</mo><mfrac><mi>d</mi><mi>d</mi></mfrac><mi>x</mi><mo>)</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>x</mi></msubsup><mi>f</mi><mo>(</mo><mi>t</mi><mo>)</mo><mi>dt</mi><mo>=</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>。両辺を微分すると左辺が被積分関数になり、右辺の微分と比べて関数が決まる。</p>
+          <p>等式の両辺を <math><mi>x</mi></math> で微分すると、公式より<br /><math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>3</mn><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo><mo>′</mo><mo>=</mo></math><b><math><mn>2</mn><mi>x</mi><mo>−</mo><mn>3</mn></math></b></p>
+          <p>次に、等式に <math><mi>x</mi><mo>=</mo><mi>a</mi></math> を代入する。左辺は <math><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>a</mi></msubsup><mi>f</mi><mo>(</mo><mi>t</mi><mo>)</mo><mi>dt</mi><mo>=</mo><mn>0</mn></math>だから<br /><math><mn>0</mn><mo>=</mo><msup><mi>a</mi><mn>2</mn></msup><mo>−</mo><mn>3</mn><mi>a</mi><mo>+</mo><mn>2</mn><mo>=</mo><mo>(</mo><mi>a</mi><mo>−</mo><mn>1</mn><mo>)</mo><mo>(</mo><mi>a</mi><mo>−</mo><mn>2</mn><mo>)</mo></math><br />よって <b><math><mi>a</mi><mo>=</mo><mn>1</mn><mo>,</mo><mn>2</mn></math></b></p>
+          <p class="note">手順はいつも同じ2段階：<b>① 両辺を微分して <math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>、<math><mo>②</mo><mi>x</mi><mo>=</mo><mi>a</mi></math> を代入して <math><mi>a</mi></math></b>。<br>この型の問題は入試でも頻出だよ。</p>
         </div>
         <p class="prob-done">応用例題6 クリア！　仕上げに練習34に挑戦しよう。</p>
       </section>
 
       <!-- ================= 練習34 ================= -->
-      <section class="card prob" id="prob-ren34" data-flow="ren34" data-label="練習34">
+      <section class="nofig card prob" id="prob-ren34" data-flow="ren34" data-label="練習34">
         <div class="prob-head">
           <span class="prob-tag ren">練習 34</span>
           <div class="dots" aria-hidden="true">
@@ -791,23 +923,26 @@
           </div>
           <span class="prob-state">ヒント 0 / 2</span>
         </div>
-        <p class="prob-q">等式 <span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up"><i>x</i></span><span class="int-lo"><i>a</i></span></span></span> <i>f</i>(<i>t</i>)<i>dt</i> ＝ <i>x</i><sup>2</sup>−<i>x</i>−2 を満たす関数 <i>f</i>(<i>x</i>) と定数 <i>a</i> の値を求めよ。</p>
+        <p class="prob-q">等式 <math><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>x</mi></msubsup><mi>f</mi><mo>(</mo><mi>t</mi><mo>)</mo><mi>dt</mi><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>x</mi><mo>−</mo><mn>2</mn></math>を満たす関数 <math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>と定数 <math><mi>a</mi></math> の値を求めよ。</p>
 
         <div class="step hint">
           <h3>ヒント 1 ― 応用例題6の手順①</h3>
-          <p>応用例題6とまったく同じ型だ。まずは<b>両辺を <i>x</i> で微分</b>しよう。</p>
-          <p>左辺は公式で <i>f</i>(<i>x</i>)、右辺は <i>x</i><sup>2</sup>−<i>x</i>−2 の微分。これで <i>f</i>(<i>x</i>) が決まる。</p>
+          <p>応用例題6とまったく同じ型だ。<br>まずは<b>両辺を <math><mi>x</mi></math> で微分</b>しよう。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span>定積分と微分法 <math><mo>(</mo><mfrac><mi>d</mi><mi>d</mi></mfrac><mi>x</mi><mo>)</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>x</mi></msubsup><mi>f</mi><mo>(</mo><mi>t</mi><mo>)</mo><mi>dt</mi><mo>=</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>。左辺の微分は公式で被積分関数になり、右辺の微分と等しくおく。</p>
+          <p>左辺は公式で <math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>、右辺は <math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>x</mi><mo>−</mo><mn>2</mn></math>の微分。これで <math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>が決まる。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 2 ― 手順②：x＝a を代入</h3>
-          <p>もとの等式に <i>x</i> ＝ <i>a</i> を代入すると、左辺は <span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up"><i>a</i></span><span class="int-lo"><i>a</i></span></span></span> <i>f</i>(<i>t</i>)<i>dt</i> ＝ 0 になる。</p>
-          <p>だから右辺に <i>a</i> を代入した <i>a</i><sup>2</sup>−<i>a</i>−2 ＝ 0 という2次方程式を解けばよい。因数分解できるはずだ。</p>
+          <h3>ヒント 2 ― 手順②：<math><mi>x</mi><mo>=</mo><mi>a</mi></math>を代入</h3>
+          <p class="cite"><span class="cite-tag">使う性質</span>定積分の性質2（上端と下端が同じとき） <math><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>a</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>=</mo><mn>0</mn></math>。x に a を代入すると左辺が 0 になることから、a の方程式が作れる。</p>
+          <p>もとの等式に <math><mi>x</mi><mo>=</mo><mi>a</mi></math> を代入すると、左辺は <math><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>a</mi></msubsup><mi>f</mi><mo>(</mo><mi>t</mi><mo>)</mo><mi>dt</mi><mo>=</mo><mn>0</mn></math>になる。</p>
+          <p>だから右辺に <math><mi>a</mi></math> を代入した <math><msup><mi>a</mi><mn>2</mn></msup><mo>−</mo><mi>a</mi><mo>−</mo><mn>2</mn><mo>=</mo><mn>0</mn></math>という2次方程式を解けばよい。<br>因数分解できるはずだ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
-          <p class="big"><i>f</i>(<i>x</i>) ＝ 2<i>x</i>−1，　<i>a</i> ＝ −1, 2</p>
-          <p>両辺を微分すると <i>f</i>(<i>x</i>) ＝ (<i>x</i><sup>2</sup>−<i>x</i>−2)′ ＝ <b>2<i>x</i>−1</b></p>
-          <p><i>x</i> ＝ <i>a</i> を代入すると左辺が 0 になるから<br />0 ＝ <i>a</i><sup>2</sup>−<i>a</i>−2 ＝ (<i>a</i>−2)(<i>a</i>＋1)<br />よって <b><i>a</i> ＝ −1, 2</b></p>
+          <p class="big"><math display="block"><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mn>2</mn><mi>x</mi><mo>−</mo><mn>1</mn><mo>,</mo><mspace width="2em"/><mi>a</mi><mo>=</mo><mo>−</mo><mn>1</mn><mo>,</mo><mn>2</mn></math></p>
+          <p class="cite"><span class="cite-tag">使う公式</span>定積分と微分法 <math><mo>(</mo><mfrac><mi>d</mi><mi>d</mi></mfrac><mi>x</mi><mo>)</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>x</mi></msubsup><mi>f</mi><mo>(</mo><mi>t</mi><mo>)</mo><mi>dt</mi><mo>=</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>。両辺を微分して左辺を被積分関数に変え、右辺の微分と比べる。</p>
+          <p>両辺を微分すると <math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo><mo>′</mo><mo>=</mo></math><b><math><mn>2</mn><mi>x</mi><mo>−</mo><mn>1</mn></math></b></p>
+          <p><math><mi>x</mi><mo>=</mo><mi>a</mi></math> を代入すると左辺が 0 になるから<br /><math><mn>0</mn><mo>=</mo><msup><mi>a</mi><mn>2</mn></msup><mo>−</mo><mi>a</mi><mo>−</mo><mn>2</mn><mo>=</mo><mo>(</mo><mi>a</mi><mo>−</mo><mn>2</mn><mo>)</mo><mo>(</mo><mi>a</mi><mo>+</mo><mn>1</mn><mo>)</mo></math><br />よって <b><math><mi>a</mi><mo>=</mo><mo>−</mo><mn>1</mn><mo>,</mo><mn>2</mn></math></b></p>
         </div>
         <p class="prob-done">練習34 クリア！　この項はこれで全部おしまい。下のまとめで確認しよう。</p>
       </section>
@@ -816,11 +951,11 @@
       <section class="card summary">
         <h2>この項のポイント</h2>
         <ul>
-          <li><b>区間が同じ定積分はまとめられる：</b><span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up"><i>b</i></span><span class="int-lo"><i>a</i></span></span></span> <i>k f</i>(<i>x</i>)<i>dx</i> ＝ <i>k</i><span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up"><i>b</i></span><span class="int-lo"><i>a</i></span></span></span> <i>f</i>(<i>x</i>)<i>dx</i>、和・差も被積分関数の和・差に帰着する（性質1）。</li>
-          <li><b>区間の上下を入れ替えると符号が変わる：</b><span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up"><i>b</i></span><span class="int-lo"><i>a</i></span></span></span> <i>f</i>(<i>x</i>)<i>dx</i> ＝ −<span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up"><i>a</i></span><span class="int-lo"><i>b</i></span></span></span> <i>f</i>(<i>x</i>)<i>dx</i>。また <span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up"><i>a</i></span><span class="int-lo"><i>a</i></span></span></span> <i>f</i>(<i>x</i>)<i>dx</i> ＝ 0（性質2）。</li>
-          <li><b>区間はつなげられる：</b><span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up"><i>b</i></span><span class="int-lo"><i>a</i></span></span></span> <i>f</i>(<i>x</i>)<i>dx</i> ＝ <span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up"><i>c</i></span><span class="int-lo"><i>a</i></span></span></span> <i>f</i>(<i>x</i>)<i>dx</i> ＋ <span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up"><i>b</i></span><span class="int-lo"><i>c</i></span></span></span> <i>f</i>(<i>x</i>)<i>dx</i>。<i>c</i> が区間の外でも成り立つ（性質3）。</li>
-          <li><b>定積分と微分法：</b>(d/dx)<span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up"><i>x</i></span><span class="int-lo"><i>a</i></span></span></span> <i>f</i>(<i>t</i>)<i>dt</i> ＝ <i>f</i>(<i>x</i>)。上端が <i>x</i> の定積分は <i>x</i> の関数で、その導関数は被積分関数に戻る。</li>
-          <li><b>等式 <span class="int"><span class="int-s">∫</span><span class="int-lim"><span class="int-up"><i>x</i></span><span class="int-lo"><i>a</i></span></span></span> <i>f</i>(<i>t</i>)<i>dt</i> ＝（<i>x</i> の式）の問題</b>は、①両辺を微分して <i>f</i>(<i>x</i>)、② <i>x</i> ＝ <i>a</i> を代入して <i>a</i>、の2段階で解く。</li>
+          <li><b>区間が同じ定積分はまとめられる：</b><math><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>k f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>=</mo><mi>k</mi><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi></math>、和・差も被積分関数の和・差に帰着する（性質1）。<p class="cite"><span class="cite-tag">使う性質</span>定積分の性質1（和・差） <math><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mo>{</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>±</mo><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>}</mo><mi>dx</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>±</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi></math>。区間が同じ積分の和・差は、被積分関数の和・差として1つにまとめられる。</p></li>
+          <li><b>区間の上下を入れ替えると符号が変わる：</b><math><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>=</mo><mo>−</mo><msubsup><mo class="int-op">∫</mo><mi>b</mi><mi>a</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi></math>。<br>また <math><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>a</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>=</mo><mn>0</mn><mo>(</mo></math>性質2）。<p class="cite"><span class="cite-tag">使う性質</span>定積分の性質2（上端と下端が同じとき） <math><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>a</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>=</mo><mn>0</mn></math>。区間の幅が 0 の積分の値は 0 で、等式から定数を決める場面でも使う。</p></li>
+          <li><b>区間はつなげられる：</b><math><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>c</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>+</mo><msubsup><mo class="int-op">∫</mo><mi>c</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi></math>。<math><mi>c</mi></math> が区間の外でも成り立つ（性質3）。<p class="cite"><span class="cite-tag">使う性質</span>定積分の性質3（区間をつなげる） <math><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>c</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>+</mo><msubsup><mo class="int-op">∫</mo><mi>c</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi></math>。途中の点の位置によらず、区間を分けた積分の和は全体の積分に等しい。</p></li>
+          <li><b>定積分と微分法：</b><math><mo>(</mo><mfrac><mi>d</mi><mi>d</mi></mfrac><mi>x</mi><mo>)</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>x</mi></msubsup><mi>f</mi><mo>(</mo><mi>t</mi><mo>)</mo><mi>dt</mi><mo>=</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>。<br>上端が <math><mi>x</mi></math> の定積分は <math><mi>x</mi></math> の関数で、その導関数は被積分関数に戻る。<p class="cite"><span class="cite-tag">使う公式</span>定積分と微分法 <math><mo>(</mo><mfrac><mi>d</mi><mi>d</mi></mfrac><mi>x</mi><mo>)</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>x</mi></msubsup><mi>f</mi><mo>(</mo><mi>t</mi><mo>)</mo><mi>dt</mi><mo>=</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>。定積分で表された関数の導関数は、被積分関数の t を x に変えたものだ。</p></li>
+          <li><b>等式 <math><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>x</mi></msubsup><mi>f</mi><mo>(</mo><mi>t</mi><mo>)</mo><mi>dt</mi><mo>=</mo><mo>(</mo><mi>x</mi></math> の式）の問題</b>は、①両辺を微分して <math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>、<math><mo>②</mo><mi>x</mi><mo>=</mo><mi>a</mi></math> を代入して <math><mi>a</mi></math>、の2段階で解く。<p class="cite"><span class="cite-tag">使う性質</span>定積分の性質2（上端と下端が同じとき） <math><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>a</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>dx</mi><mo>=</mo><mn>0</mn></math>。手順の2つ目では x に a を置いて左辺を 0 にし、a の方程式を作る。</p></li>
         </ul>
       </section>
 

@@ -280,7 +280,57 @@
           padding: 2px 6px 2px 2px;
         }
       }
-    </style>
+    
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+
+      /* 積分記号は大きめに表示する（元のページの可読化デザインに合わせる） */
+      math .int-op{font-size:1.35em}
+      /* calc-12 世代（.card）と calc-18 世代（.unit）の、図のない問題の全幅化 */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig>.step{position:static !important}
+        .card.nofig>.steps-wrap{max-height:none !important;overflow:visible !important}
+        .unit.nofig{display:block !important}
+        .unit.nofig>.qside{position:static !important}
+        .unit.nofig>.steps-stack{max-height:none !important;overflow:visible !important}
+      }
+</style>
   </head>
   <body>
     <div class="wrap">
@@ -292,7 +342,7 @@
           <span class="badge">第6章 微分法と積分法</span>
           <span class="badge kenkyu">研究</span>
         </div>
-        <h1>放物線と <span class="m">x</span> 軸で囲まれた部分の面積<br />3次関数のグラフと面積</h1>
+        <h1>放物線と <math><mi>x</mi></math> 軸で囲まれた部分の面積<br />3次関数のグラフと面積</h1>
         <p class="ref">教科書 p.217〜218「研究」／ 期末考査に向けた自習ページ</p>
       </header>
 
@@ -300,7 +350,7 @@
       <div class="sticky-bar" role="region" aria-label="全体の進捗">
         <span class="pb-label">全体の進捗</span>
         <div class="pbar"><div class="fill" id="overallFill"></div></div>
-        <span class="pb-count" id="overallCount">0 / 0 ステップ</span>
+        <span class="pb-count" id="overallCount"><math><mfrac><mn>0</mn><mn>0</mn></mfrac></math>ステップ</span>
         <button type="button" class="btn small" id="resetAll">全部リセット</button>
       </div>
 
@@ -308,19 +358,19 @@
       <div class="howto">
         <div class="howto-title">このページの使い方</div>
         <p>答えは最初は隠れています。まず自分の手で考えてから、「次のヒント」ボタンを押してヒントを1つずつ開いていきましょう。</p>
-        <p>ヒントは「1つのヒント＝1つの具体的な作業」になっています。最後のステップまで進むと、緑のカードに解答が表示されます。図の斜線部分も、ステップに合わせて少しずつ現れます。</p>
+        <p>ヒントは「1つのヒント<math><mo>=</mo><mn>1</mn></math>つの具体的な作業」になっています。最後のステップまで進むと、緑のカードに解答が表示されます。図の斜線部分も、ステップに合わせて少しずつ現れます。</p>
       </div>
 
       <!-- ===== 研究1 ===== -->
       <section class="unit" data-unit id="u1">
         <div class="unit-head">
-          <h2><span class="sec-badge">研究1</span>放物線と <span class="m">x</span> 軸で囲まれた部分の面積</h2>
+          <h2><span class="sec-badge">研究1</span>放物線と <math><mi>x</mi></math> 軸で囲まれた部分の面積</h2>
           <div class="dots" aria-hidden="true"></div>
         </div>
         <div class="qside">
         <div class="qbox">
           <span class="q-label">考えよう</span>
-          <p>放物線 <span class="m">y = (x−α)(x−β)</span>（ただし <span class="m">α &lt; β</span>）と <span class="m">x</span> 軸で囲まれた部分の面積 <span class="m">S</span> を求めてみよう。</p>
+          <p>放物線 <math><mi>y</mi><mo>=</mo><mo>(</mo><mi>x</mi><mo>−</mo><mi>α</mi><mo>)</mo><mo>(</mo><mi>x</mi><mo>−</mo><mi>β</mi><mo>)</mo><mo>(</mo></math>ただし <math><mi>α</mi><mo>&lt;</mo><mi>β</mi><mo>)</mo></math>と <math><mi>x</mi></math> 軸で囲まれた部分の面積 <math><mi>S</mi></math> を求めてみよう。</p>
         </div>
 
         <figure class="fig">
@@ -332,7 +382,7 @@
               </pattern>
             </defs>
           </svg>
-          <figcaption>図1　<span class="m">y = (x−α)(x−β)</span> のグラフ</figcaption>
+          <figcaption>図1　<math><mi>y</mi><mo>=</mo><mo>(</mo><mi>x</mi><mo>−</mo><mi>α</mi><mo>)</mo><mo>(</mo><mi>x</mi><mo>−</mo><mi>β</mi><mo>)</mo></math> のグラフ</figcaption>
         </figure>
 
         <figure class="fig fade-el" data-min-step="2">
@@ -344,41 +394,54 @@
               </pattern>
             </defs>
           </svg>
-          <figcaption>図2　<span class="m">x</span> 軸方向に <span class="m">−α</span> だけ平行移動したグラフ <span class="m">y = x(x−k)</span>（<span class="m">k = β−α</span>）</figcaption>
+          <figcaption>図2　<math><mi>x</mi></math> 軸方向に <math><mo>−</mo><mi>α</mi></math> だけ平行移動したグラフ <math><mi>y</mi><mo>=</mo><mi>x</mi><mo>(</mo><mi>x</mi><mo>−</mo><mi>k</mi><mo>)</mo><mo>(</mo><mi>k</mi><mo>=</mo><mi>β</mi><mo>−</mo><mi>α</mi><mo>)</mo></math></figcaption>
         </figure>
         </div>
 
         <div class="step hint">
           <div class="step-tag">ヒント 1 ― 交点と切り取る長さ</div>
-          <p>まず <span class="m">x</span> 軸との交点を確認しよう。<span class="m">y = 0</span> とすると <span class="m">x = α, β</span> だから、放物線が <span class="m">x</span> 軸から切り取る部分の長さは <span class="m">β−α</span> である。</p>
-          <p>また <span class="m">α &lt; x &lt; β</span> では <span class="m">(x−α) &gt; 0</span>，<span class="m">(x−β) &lt; 0</span> なので <span class="m">y &lt; 0</span>、つまり放物線は <span class="m">x</span> 軸の<strong>下側</strong>にある（図1の斜線部分）。</p>
+          <p class="cite"><span class="cite-tag">使う定義</span>グラフと <math><mi>x</mi></math> 軸の交点 <math><mo>(</mo><mi>x</mi><mo>−</mo><mi>α</mi><mo>)</mo><mo>(</mo><mi>x</mi><mo>−</mo><mi>β</mi><mo>)</mo><mo>=</mo><mn>0</mn></math>。交点の <math><mi>x</mi></math> 座標は、放物線の式で <math><mi>y</mi><mo>=</mo><mn>0</mn></math> とした方程式の解であり、このステップではその解 <math><mi>α</mi><mo>,</mo><mi>β</mi></math> を確認する。</p>
+          <p>まず <math><mi>x</mi></math> 軸との交点を確認しよう。<math><mi>y</mi><mo>=</mo><mn>0</mn></math> とすると <math><mi>x</mi><mo>=</mo><mi>α</mi><mo>,</mo><mi>β</mi></math> <br>だから、放物線が <math><mi>x</mi></math> 軸から切り取る部分の長さは <math><mi>β</mi><mo>−</mo><mi>α</mi></math> である。</p>
+          <p>また <math><mi>α</mi><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mi>β</mi></math> では <math><mo>(</mo><mi>x</mi><mo>−</mo><mi>α</mi><mo>)</mo><mo>&gt;</mo><mn>0</mn><mo>,</mo><mo>(</mo><mi>x</mi><mo>−</mo><mi>β</mi><mo>)</mo><mo>&lt;</mo><mn>0</mn></math> なので <math><mi>y</mi><mo>&lt;</mo><mn>0</mn></math>、<br>つまり放物線は <math><mi>x</mi></math> 軸の<strong>下側</strong>にある（図1の斜線部分）。</p>
         </div>
 
         <div class="step hint">
           <div class="step-tag">ヒント 2 ― 平行移動して簡単に</div>
-          <p>図形を平行移動しても面積は変わらない。グラフ全体を <span class="m">x</span> 軸方向に <span class="m">−α</span> だけ平行移動すると、交点は <span class="m">0</span> と <span class="m">β−α</span> に移り、放物線の方程式は <span class="m">y = x(x−(β−α))</span> となる（図2）。</p>
+          <p class="cite"><span class="cite-tag">使う性質</span>平行移動と面積 <math><mi>k</mi><mo>=</mo><mi>β</mi><mo>−</mo><mi>α</mi></math>。図形を平行移動しても面積は変わらないので、交点が <math><mn>0</mn></math> と <math><mi>k</mi></math> になる形にずらして考える。</p>
+          <p>図形を平行移動しても面積は変わらない。<br>グラフ全体を <math><mi>x</mi></math> 軸方向に <math><mo>−</mo><mi>α</mi></math> だけ平行移動すると、<br>交点は <math><mn>0</mn></math> と <math><mi>β</mi><mo>−</mo><mi>α</mi></math> に移り、放物線の方程式は <math><mi>y</mi><mo>=</mo><mi>x</mi><mo>(</mo><mi>x</mi><mo>−</mo><mo>(</mo><mi>β</mi><mo>−</mo><mi>α</mi><mo>)</mo><mo>)</mo></math> となる（図2）。</p>
           <p>つまり、左端が原点に来るようにずらして考えてよい。</p>
         </div>
 
         <div class="step hint">
-          <div class="step-tag">ヒント 3 ― <span class="m">β−α = k</span> とおいて積分で表す</div>
-          <p><span class="m">β−α = k</span> とおくと、放物線は <span class="m">y = x(x−k)</span> となる。区間 <span class="m">0 ≦ x ≦ k</span> では <span class="m">y ≦ 0</span> だから、面積は符号を変えて</p>
-          <p style="text-align:center"><span class="m">S = <span class="intg"><span class="sym">∫</span><span class="lims"><span>k</span><span>0</span></span></span>{−x(x−k)} dx = <span class="intg"><span class="sym">∫</span><span class="lims"><span>k</span><span>0</span></span></span>(−x<sup>2</sup>+kx) dx</span></p>
+          <div class="step-tag">ヒント<math><mn>3</mn><mo>―</mo><mi>β</mi><mo>−</mo><mi>α</mi><mo>=</mo><mi>k</mi></math> とおいて積分で表す</div>
+          <p><math><mi>β</mi><mo>−</mo><mi>α</mi><mo>=</mo><mi>k</mi></math> とおくと、放物線は <math><mi>y</mi><mo>=</mo><mi>x</mi><mo>(</mo><mi>x</mi><mo>−</mo><mi>k</mi><mo>)</mo></math> となる。<br>区間 <math><mn>0</mn><mo>≦</mo><mi>x</mi><mo>≦</mo><mi>k</mi></math> では <math><mi>y</mi><mo>≦</mo><mn>0</mn></math> だから、面積は符号を変えて</p>
+          <p class="cite"><span class="cite-tag">使う性質</span><math><mi>x</mi></math> 軸の下側の部分の面積 <math><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mn>0</mn><mi>k</mi></msubsup><mo>{</mo><mo>−</mo><mi>x</mi><mo>(</mo><mi>x</mi><mo>−</mo><mi>k</mi><mo>)</mo><mo>}</mo><mi>d</mi><mi>x</mi></math>。曲線が <math><mi>x</mi></math> 軸の下側にある区間では、被積分関数の符号を変えた定積分が面積になり、ここでは <math><mo>−</mo><mi>x</mi><mo>(</mo><mi>x</mi><mo>−</mo><mi>k</mi><mo>)</mo></math> を <math><mn>0</mn></math> から <math><mi>k</mi></math> まで積分する。</p>
+          <p class="mq-wide" style="text-align:center"><math display="block"><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mn>0</mn><mi>k</mi></msubsup><mo>{</mo><mo>−</mo><mi>x</mi><mo>(</mo><mi>x</mi><mo>−</mo><mi>k</mi><mo>)</mo><mo>}</mo><mi>d</mi><mi>x</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mn>0</mn><mi>k</mi></msubsup><mo>(</mo><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>k</mi><mi>x</mi><mo>)</mo><mi>d</mi><mi>x</mi></math></p>
+<div class="mq-narrow">
+<p class="formula" style="text-align:center"><math display="block"><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mn>0</mn><mi>k</mi></msubsup><mo>{</mo><mo>−</mo><mi>x</mi><mo>(</mo><mi>x</mi><mo>−</mo><mi>k</mi><mo>)</mo><mo>}</mo><mi>d</mi><mi>x</mi></math></p>
+<p class="formula cont" style="text-align:center"><math display="block"><mo>=</mo><msubsup><mo class="int-op">∫</mo><mn>0</mn><mi>k</mi></msubsup><mo>(</mo><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>k</mi><mi>x</mi><mo>)</mo><mi>d</mi><mi>x</mi></math></p>
+</div>
           <p>と表される。</p>
         </div>
 
         <div class="step hint">
           <div class="step-tag">ヒント 4 ― 積分を計算する</div>
-          <p><span class="m">−x<sup>2</sup>+kx</span> の不定積分は <span class="m">−<span class="frac"><span class="num">x<sup>3</sup></span><span class="den">3</span></span> + <span class="frac"><span class="num">k</span><span class="den">2</span></span>x<sup>2</sup></span> だから、</p>
-          <p style="text-align:center"><span class="m">S = <span class="eval">[ −<span class="frac"><span class="num">x<sup>3</sup></span><span class="den">3</span></span> + <span class="frac"><span class="num">k</span><span class="den">2</span></span>x<sup>2</sup> ]<sub>0</sub><sup>k</sup></span> = −<span class="frac"><span class="num">k<sup>3</sup></span><span class="den">3</span></span> + <span class="frac"><span class="num">k<sup>3</sup></span><span class="den">2</span></span> = <span class="frac"><span class="num">k<sup>3</sup></span><span class="den">6</span></span></span></p>
-          <p>となり、平行移動した図形の面積は <span class="m"><span class="frac"><span class="num">k<sup>3</sup></span><span class="den">6</span></span></span> と求められた。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><msup><mi>x</mi><mi>n</mi></msup></math> の不定積分 <math><mo class="int-op">∫</mo><msup><mi>x</mi><mi>n</mi></msup><mi>d</mi><mi>x</mi><mo>=</mo><mfrac><msup><mi>x</mi><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msup><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></mfrac></math>。<math><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>k</mi><mi>x</mi></math> を項ごとにこの公式で積分し、上端 <math><mi>k</mi></math> と下端 <math><mn>0</mn></math> を代入する。</p>
+          <p><math><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>k</mi><mi>x</mi></math> の不定積分は <math><mo>−</mo><mfrac><msup><mi>x</mi><mn>3</mn></msup><mn>3</mn></mfrac><mo>+</mo><mfrac><mi>k</mi><mn>2</mn></mfrac><msup><mi>x</mi><mn>2</mn></msup></math> だから、</p>
+          <div class="chain-crow" style="text-align:center">
+<div class="crow"><math displaystyle="true"><mi>S</mi><mo>=</mo><msup><msub><mrow><mo>[</mo><mo>−</mo><mfrac><msup><mi>x</mi><mn>3</mn></msup><mn>3</mn></mfrac><mo>+</mo><mfrac><mi>k</mi><mn>2</mn></mfrac><msup><mi>x</mi><mn>2</mn></msup><mo>]</mo></mrow><mn>0</mn></msub><mi>k</mi></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>S</mi></mphantom><mo>=</mo><mo>−</mo><mfrac><msup><mi>k</mi><mn>3</mn></msup><mn>3</mn></mfrac><mo>+</mo><mfrac><msup><mi>k</mi><mn>3</mn></msup><mn>2</mn></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>S</mi></mphantom><mo>=</mo><mfrac><msup><mi>k</mi><mn>3</mn></msup><mn>6</mn></mfrac></math></div>
+</div>
+          <p>となり、<br>平行移動した図形の面積は <math><mfrac><msup><mi>k</mi><mn>3</mn></msup><mn>6</mn></mfrac></math> と求められた。</p>
         </div>
 
         <div class="step answer">
           <div class="step-tag">解答 ― 公式</div>
-          <p><span class="m">k = β−α</span> をもとに戻すと、次の公式が得られる。</p>
-          <span class="final"><span class="m">S = <span class="frac"><span class="num">(β−α)<sup>3</sup></span><span class="den">6</span></span></span></span>
-          <p>放物線と <span class="m">x</span> 軸で囲まれた部分の面積は、<strong><span class="m">x</span> 軸から切り取る長さの3乗の <span class="m"><span class="frac"><span class="num">1</span><span class="den">6</span></span></span></strong> である。交点さえ分かれば、積分を計算しなくても面積が出せる。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span>放物線と <math><mi>x</mi></math> 軸で囲まれた部分の面積（<math><mfrac><mn>1</mn><mn>6</mn></mfrac></math> 公式） <math><mi>S</mi><mo>=</mo><mfrac><msup><mrow><mo>(</mo><mi>β</mi><mo>−</mo><mi>α</mi><mo>)</mo></mrow><mn>3</mn></msup><mn>6</mn></mfrac></math>。<math><mi>k</mi><mo>=</mo><mi>β</mi><mo>−</mo><mi>α</mi></math> をもとに戻すと、面積は <math><mi>x</mi></math> 軸から切り取る長さだけで表せる。</p>
+          <p><math><mi>k</mi><mo>=</mo><mi>β</mi><mo>−</mo><mi>α</mi></math> をもとに戻すと、次の公式が得られる。</p>
+          <span class="final"><math><mi>S</mi><mo>=</mo><mfrac><msup><mrow><mo>(</mo><mi>β</mi><mo>−</mo><mi>α</mi><mo>)</mo></mrow><mn>3</mn></msup><mn>6</mn></mfrac></math></span>
+          <p>放物線と <math><mi>x</mi></math> 軸で囲まれた部分の面積は、<br><strong><math><mi>x</mi></math> 軸から切り取る長さの3乗の <math><mfrac><mn>1</mn><mn>6</mn></mfrac></math></strong> である。<br>交点さえ分かれば、積分を計算しなくても面積が出せる。</p>
         </div>
 
         <div class="unit-controls">
@@ -389,7 +452,7 @@
       </section>
 
       <!-- ===== 研究1 例1 ===== -->
-      <section class="unit" data-unit id="u2">
+      <section class="nofig unit" data-unit id="u2">
         <div class="unit-head">
           <h2><span class="sec-badge">研究1</span>例1　公式を使ってみよう</h2>
           <div class="dots" aria-hidden="true"></div>
@@ -397,38 +460,51 @@
         <div class="qside">
         <div class="qbox">
           <span class="q-label">例1</span>
-          <p>放物線 <span class="m">y = x<sup>2</sup>−4x+1</span> と <span class="m">x</span> 軸で囲まれた部分の面積を求めよ。</p>
+          <p>放物線 <math><mi>y</mi><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>x</mi><mo>+</mo><mn>1</mn></math> と <math><mi>x</mi></math> 軸で囲まれた部分の面積を求めよ。</p>
         </div>
         </div>
 
         <div class="step hint">
           <div class="step-tag">ヒント 1 ― まず交点</div>
-          <p>公式 <span class="m">S = <span class="frac"><span class="num">(β−α)<sup>3</sup></span><span class="den">6</span></span></span> を使うには、<span class="m">x</span> 軸との交点の <span class="m">x</span> 座標が要る。方程式 <span class="m">x<sup>2</sup>−4x+1 = 0</span> を解こう。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><mfrac><mn>1</mn><mn>6</mn></mfrac></math> 公式 <math><mi>S</mi><mo>=</mo><mfrac><msup><mrow><mo>(</mo><mi>β</mi><mo>−</mo><mi>α</mi><mo>)</mo></mrow><mn>3</mn></msup><mn>6</mn></mfrac></math>。この公式で必要なのは交点から分かる <math><mi>β</mi><mo>−</mo><mi>α</mi></math> だけなので、まず交点を求める。</p>
+          <p>公式 <math><mi>S</mi><mo>=</mo><mfrac><msup><mrow><mo>(</mo><mi>β</mi><mo>−</mo><mi>α</mi><mo>)</mo></mrow><mn>3</mn></msup><mn>6</mn></mfrac></math> を使うには、<math><mi>x</mi></math> 軸との交点の <math><mi>x</mi></math> 座標が要る。<br>方程式 <math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>x</mi><mo>+</mo><mn>1</mn><mo>=</mo><mn>0</mn></math> を解こう。</p>
         </div>
 
         <div class="step hint">
           <div class="step-tag">ヒント 2 ― 解の公式</div>
+          <p class="cite"><span class="cite-tag">使う公式</span>2次方程式の解の公式 <math><mi>x</mi><mo>=</mo><mfrac><mrow><mo>−</mo><mi>b</mi><mo>±</mo><msqrt><mrow><msup><mi>b</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>a</mi><mi>c</mi></mrow></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></math>。方程式 <math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>x</mi><mo>+</mo><mn>1</mn><mo>=</mo><mn>0</mn></math> の係数をこの公式に当てはめて、交点の <math><mi>x</mi></math> 座標を求める。</p>
           <p>解の公式を使うと</p>
-          <p style="text-align:center"><span class="m">x = <span class="frac"><span class="num">4 ± √(16−4)</span><span class="den">2</span></span> = <span class="frac"><span class="num">4 ± 2√3</span><span class="den">2</span></span> = 2 ± √3</span></p>
-          <p>よって <span class="m">α = 2−√3</span>，<span class="m">β = 2+√3</span> とおける。</p>
+          <div class="chain-crow" style="text-align:center">
+<div class="crow"><math displaystyle="true"><mi>x</mi><mo>=</mo><mfrac><mrow><mn>4</mn><mo>±</mo><msqrt><mrow><mn>16</mn><mo>−</mo><mn>4</mn></mrow></msqrt></mrow><mn>2</mn></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>x</mi></mphantom><mo>=</mo><mfrac><mrow><mn>4</mn><mo>±</mo><mn>2</mn><msqrt><mn>3</mn></msqrt></mrow><mn>2</mn></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>x</mi></mphantom><mo>=</mo><mn>2</mn><mo>±</mo><msqrt><mn>3</mn></msqrt></math></div>
+</div>
+          <p>よって <math><mi>α</mi><mo>=</mo><mn>2</mn><mo>−</mo><msqrt><mn>3</mn></msqrt><mo>,</mo><mi>β</mi><mo>=</mo><mn>2</mn><mo>+</mo><msqrt><mn>3</mn></msqrt></math> とおける。</p>
         </div>
 
         <div class="step hint">
-          <div class="step-tag">ヒント 3 ― 切り取る長さ <span class="m">β−α</span></div>
-          <p><span class="m">β−α = (2+√3) − (2−√3) = 2√3</span></p>
-          <p>定数部分が消えて、ルートの部分だけが残ることに注意しよう。</p>
+          <div class="step-tag">ヒント 3 ― 切り取る長さ <math><mi>β</mi><mo>−</mo><mi>α</mi></math></div>
+          <p><math><mi>β</mi><mo>−</mo><mi>α</mi><mo>=</mo><mo>(</mo><mn>2</mn><mo>+</mo><msqrt><mn>3</mn></msqrt><mo>)</mo><mo>−</mo><mo>(</mo><mn>2</mn><mo>−</mo><msqrt><mn>3</mn></msqrt><mo>)</mo><mo>=</mo><mn>2</mn><msqrt><mn>3</mn></msqrt></math></p>
+          <p>定数部分が消えて、<br>ルートの部分だけが残ることに注意しよう。</p>
         </div>
 
         <div class="step hint">
           <div class="step-tag">ヒント 4 ― 3乗を計算する</div>
-          <p><span class="m">(β−α)<sup>3</sup> = (2√3)<sup>3</sup> = 2<sup>3</sup> · (√3)<sup>3</sup> = 8 · 3√3 = 24√3</span></p>
-          <p>（<span class="m">(√3)<sup>3</sup> = (√3)<sup>2</sup> · √3 = 3√3</span> です。）</p>
+          <p class="cite"><span class="cite-tag">使う性質</span>平方根の性質 <math><msup><mrow><mo>(</mo><msqrt><mi>a</mi></msqrt><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mi>a</mi></math>。<math><msup><mrow><mo>(</mo><msqrt><mn>3</mn></msqrt><mo>)</mo></mrow><mn>3</mn></msup></math> は <math><msup><mrow><mo>(</mo><msqrt><mn>3</mn></msqrt><mo>)</mo></mrow><mn>2</mn></msup><mo>·</mo><msqrt><mn>3</mn></msqrt></math> と分けて計算すると <math><mn>3</mn><msqrt><mn>3</mn></msqrt></math> になる。</p>
+          <div class="chain-crow">
+<div class="crow"><math displaystyle="true"><msup><mrow><mo>(</mo><mi>β</mi><mo>−</mo><mi>α</mi><mo>)</mo></mrow><mn>3</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><mn>2</mn><msqrt><mn>3</mn></msqrt><mo>)</mo></mrow><mn>3</mn></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msup><mrow><mo>(</mo><mi>β</mi><mo>−</mo><mi>α</mi><mo>)</mo></mrow><mn>3</mn></msup></mphantom><mo>=</mo><msup><mn>2</mn><mn>3</mn></msup><mo>·</mo><msup><mrow><mo>(</mo><msqrt><mn>3</mn></msqrt><mo>)</mo></mrow><mn>3</mn></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msup><mrow><mo>(</mo><mi>β</mi><mo>−</mo><mi>α</mi><mo>)</mo></mrow><mn>3</mn></msup></mphantom><mo>=</mo><mn>8</mn><mo>·</mo><mn>3</mn><msqrt><mn>3</mn></msqrt></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msup><mrow><mo>(</mo><mi>β</mi><mo>−</mo><mi>α</mi><mo>)</mo></mrow><mn>3</mn></msup></mphantom><mo>=</mo><mn>24</mn><msqrt><mn>3</mn></msqrt></math></div>
+</div>
+          <p><math><mo>(</mo><msup><mrow><mo>(</mo><msqrt><mn>3</mn></msqrt><mo>)</mo></mrow><mn>3</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><msqrt><mn>3</mn></msqrt><mo>)</mo></mrow><mn>2</mn></msup><mo>·</mo><msqrt><mn>3</mn></msqrt><mo>=</mo><mn>3</mn><msqrt><mn>3</mn></msqrt></math> です。）</p>
         </div>
 
         <div class="step answer">
           <div class="step-tag">解答</div>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><mfrac><mn>1</mn><mn>6</mn></mfrac></math> 公式 <math><mi>S</mi><mo>=</mo><mfrac><msup><mrow><mo>(</mo><mi>β</mi><mo>−</mo><mi>α</mi><mo>)</mo></mrow><mn>3</mn></msup><mn>6</mn></mfrac></math>。<math><msup><mrow><mo>(</mo><mi>β</mi><mo>−</mo><mi>α</mi><mo>)</mo></mrow><mn>3</mn></msup><mo>=</mo><mn>24</mn><msqrt><mn>3</mn></msqrt></math> をこの公式に代入する。</p>
           <p>公式に代入して</p>
-          <span class="final"><span class="m">S = <span class="frac"><span class="num">24√3</span><span class="den">6</span></span> = 4√3</span></span>
+          <span class="final"><math><mi>S</mi><mo>=</mo><mfrac><mrow><mn>24</mn><msqrt><mn>3</mn></msqrt></mrow><mn>6</mn></mfrac><mo>=</mo><mn>4</mn><msqrt><mn>3</mn></msqrt></math></span>
         </div>
 
         <div class="unit-controls">
@@ -444,8 +520,8 @@
           <h2><span class="sec-badge">研究2</span>3次関数のグラフと面積</h2>
         </div>
         <div class="lead">
-          <p>2次関数については、研究1の公式のように面積を簡単に求める方法があった。では、3次関数のグラフと <span class="m">x</span> 軸で囲まれた部分の面積はどうだろうか。</p>
-          <p>3次関数についても、<strong>不定積分・定積分の計算は2次関数のときとまったく同じ方法でできる</strong>（<span class="m">x<sup>3</sup></span> の不定積分は <span class="m"><span class="frac"><span class="num">x<sup>4</sup></span><span class="den">4</span></span></span>）。だから、符号に気をつけて区間ごとに積分すれば、3次関数の場合も面積が求められる。</p>
+          <p>2次関数については、研究1の公式のように面積を簡単に求める方法があった。<br>では、3次関数のグラフと <math><mi>x</mi></math> 軸で囲まれた部分の面積はどうだろうか。</p>
+          <p>3次関数についても、<strong>不定積分・定積分の計算は2次関数のときとまったく同じ方法でできる</strong><math><mo>(</mo><msup><mi>x</mi><mn>3</mn></msup></math> の不定積分は <math><mfrac><msup><mi>x</mi><mn>4</mn></msup><mn>4</mn></mfrac><mo>)</mo></math>。<br>だから、符号に気をつけて区間ごとに積分すれば、3次関数の場合も面積が求められる。</p>
           <p>まず練習1で、3次関数の積分の計算に慣れよう。</p>
         </div>
       </section>
@@ -464,25 +540,26 @@
           <div class="panel-head">
             <div class="qbox" style="flex:1 1 260px; margin-top:6px;">
               <span class="q-label">練習1 (1)</span>
-              <p>次の不定積分を求めよ。　<span class="m"><span class="isym">∫</span>(4x<sup>3</sup>+6x<sup>2</sup>+3) dx</span></p>
+              <p>次の不定積分を求めよ。　<math><mo class="int-op">∫</mo><mo>(</mo><mn>4</mn><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mn>6</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>3</mn><mo>)</mo><mi>d</mi><mi>x</mi></math></p>
             </div>
             <div class="dots" aria-hidden="true"></div>
           </div>
 
           <div class="step hint">
             <div class="step-tag">ヒント 1 ― 項ごとに積分</div>
-            <p>和の積分は、項ごとに分けて積分できる。<span class="m">x<sup>3</sup></span> の積分は <span class="m"><span class="frac"><span class="num">x<sup>4</sup></span><span class="den">4</span></span></span>、<span class="m">x<sup>2</sup></span> の積分は <span class="m"><span class="frac"><span class="num">x<sup>3</sup></span><span class="den">3</span></span></span>、定数 <span class="m">3</span> の積分は <span class="m">3x</span> である。</p>
+            <p class="cite"><span class="cite-tag">使う公式</span><math><msup><mi>x</mi><mi>n</mi></msup></math> の不定積分 <math><mo class="int-op">∫</mo><msup><mi>x</mi><mi>n</mi></msup><mi>d</mi><mi>x</mi><mo>=</mo><mfrac><msup><mi>x</mi><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msup><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></mfrac></math>。<math><msup><mi>x</mi><mn>3</mn></msup></math>、<math><msup><mi>x</mi><mn>2</mn></msup></math>、定数を項ごとにこの公式で積分する。</p>
+            <p>和の積分は、項ごとに分けて積分できる。<br><math><msup><mi>x</mi><mn>3</mn></msup></math> の積分は <math><mfrac><msup><mi>x</mi><mn>4</mn></msup><mn>4</mn></mfrac></math>、<math><msup><mi>x</mi><mn>2</mn></msup></math> の積分は <math><mfrac><msup><mi>x</mi><mn>3</mn></msup><mn>3</mn></mfrac></math>、<br>定数 <math><mn>3</mn></math> の積分は <math><mn>3</mn><mi>x</mi></math> である。</p>
           </div>
 
           <div class="step hint">
             <div class="step-tag">ヒント 2 ― 係数を整理</div>
-            <p>係数を掛けると、<span class="m">4 · <span class="frac"><span class="num">x<sup>4</sup></span><span class="den">4</span></span> = x<sup>4</sup></span>、<span class="m">6 · <span class="frac"><span class="num">x<sup>3</sup></span><span class="den">3</span></span> = 2x<sup>3</sup></span> となる。分母と係数がちょうど約分できる形になっている。</p>
+            <p>係数を掛けると、<math><mn>4</mn><mo>·</mo><mfrac><msup><mi>x</mi><mn>4</mn></msup><mn>4</mn></mfrac><mo>=</mo><msup><mi>x</mi><mn>4</mn></msup></math>、<math><mn>6</mn><mo>·</mo><mfrac><msup><mi>x</mi><mn>3</mn></msup><mn>3</mn></mfrac><mo>=</mo><mn>2</mn><msup><mi>x</mi><mn>3</mn></msup></math> となる。<br>分母と係数がちょうど約分できる形になっている。</p>
           </div>
 
           <div class="step answer">
             <div class="step-tag">解答</div>
-            <span class="final"><span class="m"><span class="isym">∫</span>(4x<sup>3</sup>+6x<sup>2</sup>+3) dx = x<sup>4</sup>+2x<sup>3</sup>+3x+C</span></span>
-            <p>（<span class="m">C</span> は積分定数。不定積分では忘れずにつけよう。）</p>
+            <span class="final"><math><mo class="int-op">∫</mo><mo>(</mo><mn>4</mn><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mn>6</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>3</mn><mo>)</mo><mi>d</mi><mi>x</mi><mo>=</mo><msup><mi>x</mi><mn>4</mn></msup><mo>+</mo><mn>2</mn><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mn>3</mn><mi>x</mi><mo>+</mo><mi>C</mi></math></span>
+            <p><math><mo>(</mo><mi>C</mi></math> は積分定数。<br>不定積分では忘れずにつけよう。）</p>
           </div>
 
           <div class="unit-controls">
@@ -496,26 +573,29 @@
           <div class="panel-head">
             <div class="qbox" style="flex:1 1 260px; margin-top:6px;">
               <span class="q-label">練習1 (2)</span>
-              <p>次の定積分を求めよ。　<span class="m"><span class="intg"><span class="sym">∫</span><span class="lims"><span>2</span><span>−1</span></span></span>(−x<sup>3</sup>+2x) dx</span></p>
+              <p>次の定積分を求めよ。　<math><msubsup><mo class="int-op">∫</mo><mrow><mo>−</mo><mn>1</mn></mrow><mn>2</mn></msubsup><mo>(</mo><mo>−</mo><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>)</mo><mi>d</mi><mi>x</mi></math></p>
             </div>
             <div class="dots" aria-hidden="true"></div>
           </div>
 
           <div class="step hint">
             <div class="step-tag">ヒント 1 ― まず不定積分</div>
-            <p><span class="m">−x<sup>3</sup>+2x</span> の不定積分は <span class="m">−<span class="frac"><span class="num">x<sup>4</sup></span><span class="den">4</span></span> + x<sup>2</sup></span> である。定積分は「上端を代入した値 − 下端を代入した値」で計算する。</p>
+            <p class="cite"><span class="cite-tag">使う公式</span>定積分の計算 <math><msup><msub><mrow><mo>[</mo><mi>F</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>]</mo></mrow><mi>a</mi></msub><mi>b</mi></msup><mo>=</mo><mi>F</mi><mo>(</mo><mi>b</mi><mo>)</mo><mo>−</mo><mi>F</mi><mo>(</mo><mi>a</mi><mo>)</mo></math>。まず不定積分を求めてから、上端を代入した値から下端を代入した値を引く。</p>
+            <p><math><mo>−</mo><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi></math> の不定積分は <math><mo>−</mo><mfrac><msup><mi>x</mi><mn>4</mn></msup><mn>4</mn></mfrac><mo>+</mo><msup><mi>x</mi><mn>2</mn></msup></math> である。<br>定積分は「上端を代入した値 − 下端を代入した値」で計算する。</p>
           </div>
 
           <div class="step hint">
             <div class="step-tag">ヒント 2 ― 上端と下端を代入</div>
-            <p>上端 <span class="m">x = 2</span> を代入すると <span class="m">−<span class="frac"><span class="num">16</span><span class="den">4</span></span> + 4 = 0</span>。</p>
-            <p>下端 <span class="m">x = −1</span> を代入すると <span class="m">−<span class="frac"><span class="num">1</span><span class="den">4</span></span> + 1 = <span class="frac"><span class="num">3</span><span class="den">4</span></span></span>。（偶数乗では <span class="m">(−1)<sup>4</sup> = 1</span>, <span class="m">(−1)<sup>2</sup> = 1</span> になることに注意。）</p>
+            <p>上端 <math><mi>x</mi><mo>=</mo><mn>2</mn></math> を代入すると <math><mo>−</mo><mfrac><mn>16</mn><mn>4</mn></mfrac><mo>+</mo><mn>4</mn><mo>=</mo><mn>0</mn></math>。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>偶数乗の符号 <math><msup><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mn>4</mn></msup><mo>=</mo><mn>1</mn><mo>,</mo><msup><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>1</mn></math>。負の数でも偶数乗は正になるので、下端 <math><mi>x</mi><mo>=</mo><mo>−</mo><mn>1</mn></math> の代入では符号に注意する。</p>
+            <p>下端 <math><mi>x</mi><mo>=</mo><mo>−</mo><mn>1</mn></math> を代入すると <math><mo>−</mo><mfrac><mn>1</mn><mn>4</mn></mfrac><mo>+</mo><mn>1</mn><mo>=</mo><mfrac><mn>3</mn><mn>4</mn></mfrac></math>。<br>（偶数乗では <math><msup><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mn>4</mn></msup><mo>=</mo><mn>1</mn><mo>,</mo><msup><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>1</mn></math> になることに注意。）</p>
           </div>
 
           <div class="step answer">
             <div class="step-tag">解答</div>
-            <span class="final"><span class="m"><span class="intg"><span class="sym">∫</span><span class="lims"><span>2</span><span>−1</span></span></span>(−x<sup>3</sup>+2x) dx = 0 − <span class="frac"><span class="num">3</span><span class="den">4</span></span> = −<span class="frac"><span class="num">3</span><span class="den">4</span></span></span></span>
-            <p>定積分の値が負になったのは、この区間では <span class="m">x</span> 軸の下側の部分が上側の部分より大きいためである。<strong>定積分の値そのものは面積ではない</strong>ことに注意しよう（面積を聞かれたら符号をそろえる必要がある）。</p>
+            <p class="cite"><span class="cite-tag">使う公式</span>定積分の計算 <math><msup><msub><mrow><mo>[</mo><mi>F</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>]</mo></mrow><mi>a</mi></msub><mi>b</mi></msup><mo>=</mo><mi>F</mi><mo>(</mo><mi>b</mi><mo>)</mo><mo>−</mo><mi>F</mi><mo>(</mo><mi>a</mi><mo>)</mo></math>。上端を代入した値 <math><mn>0</mn></math> から、下端を代入した値 <math><mfrac><mn>3</mn><mn>4</mn></mfrac></math> を引く。</p>
+            <span class="final"><math><msubsup><mo class="int-op">∫</mo><mrow><mo>−</mo><mn>1</mn></mrow><mn>2</mn></msubsup><mo>(</mo><mo>−</mo><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>)</mo><mi>d</mi><mi>x</mi><mo>=</mo><mn>0</mn><mo>−</mo><mfrac><mn>3</mn><mn>4</mn></mfrac><mo>=</mo><mo>−</mo><mfrac><mn>3</mn><mn>4</mn></mfrac></math></span>
+            <p>定積分の値が負になったのは、<br>この区間では <math><mi>x</mi></math> 軸の下側の部分が上側の部分より大きいためである。<br><strong>定積分の値そのものは面積ではない</strong>ことに注意しよう<br>（面積を聞かれたら符号をそろえる必要がある）。</p>
           </div>
 
           <div class="unit-controls">
@@ -535,7 +615,7 @@
         <div class="qside">
         <div class="qbox">
           <span class="q-label">例1</span>
-          <p>曲線 <span class="m">y = x(x−1)(x−2)</span> と <span class="m">x</span> 軸で囲まれた2つの部分の面積の和を求めよ。</p>
+          <p>曲線 <math><mi>y</mi><mo>=</mo><mi>x</mi><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo></math> と <math><mi>x</mi></math> 軸で囲まれた2つの部分の面積の和を求めよ。</p>
         </div>
 
         <figure class="fig">
@@ -551,44 +631,57 @@
               </pattern>
             </defs>
           </svg>
-          <figcaption>図3　曲線 <span class="m">y = x(x−1)(x−2)</span> のグラフ</figcaption>
+          <figcaption>図3　曲線 <math><mi>y</mi><mo>=</mo><mi>x</mi><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo></math> のグラフ</figcaption>
         </figure>
         </div>
 
         <div class="step hint">
           <div class="step-tag">ヒント 1 ― 交点を確認</div>
-          <p><span class="m">y = 0</span> となるのは <span class="m">x = 0, 1, 2</span> のとき。曲線と <span class="m">x</span> 軸で囲まれた部分は、区間 <span class="m">[0, 1]</span> の部分と区間 <span class="m">[1, 2]</span> の部分の2つある（図3）。</p>
+          <p class="cite"><span class="cite-tag">使う定義</span>グラフと <math><mi>x</mi></math> 軸の交点 <math><mi>x</mi><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo><mo>=</mo><mn>0</mn></math>。<math><mi>y</mi><mo>=</mo><mn>0</mn></math> とした方程式の解が、<math><mi>x</mi></math> 軸との交点の <math><mi>x</mi></math> 座標になる。</p>
+          <p><math><mi>y</mi><mo>=</mo><mn>0</mn></math> となるのは <math><mi>x</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>2</mn></math> のとき。<br>曲線と <math><mi>x</mi></math> 軸で囲まれた部分は、区間 <math><mo>[</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>]</mo></math> の部分と区間 <math><mo>[</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>]</mo></math> の部分の2つある（図3）。</p>
         </div>
 
         <div class="step hint">
-          <div class="step-tag">ヒント 2 ― 区間 <span class="m">[0, 1]</span> の符号</div>
-          <p><span class="m">0 &lt; x &lt; 1</span> では、<span class="m">x &gt; 0</span>，<span class="m">x−1 &lt; 0</span>，<span class="m">x−2 &lt; 0</span> だから、積は<strong>正</strong>になる。つまり曲線は <span class="m">x</span> 軸の<strong>上側</strong>にある（図3の青い斜線部分）。</p>
+          <div class="step-tag">ヒント 2 ― 区間 <math><mo>[</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>]</mo></math> の符号</div>
+          <p class="cite"><span class="cite-tag">使う性質</span>積の符号 <math><mi>x</mi><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo><mo>&gt;</mo><mn>0</mn></math>。負の因数が2つある積は正になるので、この区間では曲線は <math><mi>x</mi></math> 軸の上側にある。</p>
+          <p><math><mn>0</mn><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mn>1</mn></math> では、<math><mi>x</mi><mo>&gt;</mo><mn>0</mn><mo>,</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>&lt;</mo><mn>0</mn><mo>,</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>&lt;</mo><mn>0</mn></math> だから、積は<strong>正</strong>になる。<br>つまり曲線は <math><mi>x</mi></math> 軸の<strong>上側</strong>にある（図3の青い斜線部分）。</p>
         </div>
 
         <div class="step hint">
-          <div class="step-tag">ヒント 3 ― 区間 <span class="m">[1, 2]</span> の符号</div>
-          <p><span class="m">1 &lt; x &lt; 2</span> では、<span class="m">x &gt; 0</span>，<span class="m">x−1 &gt; 0</span>，<span class="m">x−2 &lt; 0</span> だから、積は<strong>負</strong>になる。曲線は <span class="m">x</span> 軸の<strong>下側</strong>にある（図3の橙色の斜線部分）。</p>
-          <p>面積の和を求めるので、2つの区間を<strong>別々に</strong>計算し、下側の部分は符号を変えてから加える。</p>
+          <div class="step-tag">ヒント 3 ― 区間 <math><mo>[</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>]</mo></math> の符号</div>
+          <p class="cite"><span class="cite-tag">使う性質</span>積の符号 <math><mi>x</mi><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo><mo>&lt;</mo><mn>0</mn></math>。負の因数が1つだけの積は負になるので、この区間では曲線は <math><mi>x</mi></math> 軸の下側にあり、面積を求めるときは符号を変える。</p>
+          <p><math><mn>1</mn><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mn>2</mn></math> では、<math><mi>x</mi><mo>&gt;</mo><mn>0</mn><mo>,</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>&gt;</mo><mn>0</mn><mo>,</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>&lt;</mo><mn>0</mn></math> だから、積は<strong>負</strong>になる。<br>曲線は <math><mi>x</mi></math> 軸の<strong>下側</strong>にある（図3の橙色の斜線部分）。</p>
+          <p>面積の和を求めるので、2つの区間を<strong>別々に</strong>計算し、<br>下側の部分は符号を変えてから加える。</p>
         </div>
 
         <div class="step hint">
-          <div class="step-tag">ヒント 4 ― 展開して <span class="m">[0, 1]</span> の面積</div>
-          <p>展開すると <span class="m">y = x<sup>3</sup>−3x<sup>2</sup>+2x</span> で、不定積分は <span class="m"><span class="frac"><span class="num">x<sup>4</sup></span><span class="den">4</span></span> − x<sup>3</sup> + x<sup>2</sup></span> である。</p>
-          <p>区間 <span class="m">[0, 1]</span> の部分は上側にあるので、そのまま積分して</p>
-          <p style="text-align:center"><span class="m"><span class="intg"><span class="sym">∫</span><span class="lims"><span>1</span><span>0</span></span></span>(x<sup>3</sup>−3x<sup>2</sup>+2x) dx = <span class="eval">[ <span class="frac"><span class="num">x<sup>4</sup></span><span class="den">4</span></span> − x<sup>3</sup> + x<sup>2</sup> ]<sub>0</sub><sup>1</sup></span> = <span class="frac"><span class="num">1</span><span class="den">4</span></span> − 1 + 1 = <span class="frac"><span class="num">1</span><span class="den">4</span></span></span></p>
+          <div class="step-tag">ヒント 4 ― 展開して <math><mo>[</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>]</mo></math> の面積</div>
+          <p>展開すると <math><mi>y</mi><mo>=</mo><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi></math> で、<br>不定積分は <math><mfrac><msup><mi>x</mi><mn>4</mn></msup><mn>4</mn></mfrac><mo>−</mo><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><msup><mi>x</mi><mn>2</mn></msup></math> である。</p>
+          <p>区間 <math><mo>[</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>]</mo></math> の部分は上側にあるので、そのまま積分して</p>
+          <p class="cite"><span class="cite-tag">使う公式</span>定積分の計算 <math><msup><msub><mrow><mo>[</mo><mfrac><msup><mi>x</mi><mn>4</mn></msup><mn>4</mn></mfrac><mo>−</mo><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><msup><mi>x</mi><mn>2</mn></msup><mo>]</mo></mrow><mn>0</mn></msub><mn>1</mn></msup></math>。不定積分に上端 <math><mn>1</mn></math> と下端 <math><mn>0</mn></math> を代入し、上端の値から下端の値を引く。</p>
+          <div class="chain-crow" style="text-align:center">
+<div class="crow"><math displaystyle="true"><msubsup><mo class="int-op">∫</mo><mn>0</mn><mn>1</mn></msubsup><mo>(</mo><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>)</mo><mi>d</mi><mi>x</mi><mo>=</mo><msup><msub><mrow><mo>[</mo><mfrac><msup><mi>x</mi><mn>4</mn></msup><mn>4</mn></mfrac><mo>−</mo><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><msup><mi>x</mi><mn>2</mn></msup><mo>]</mo></mrow><mn>0</mn></msub><mn>1</mn></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msubsup><mo class="int-op">∫</mo><mn>0</mn><mn>1</mn></msubsup><mo>(</mo><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>)</mo><mi>d</mi><mi>x</mi></mphantom><mo>=</mo><mfrac><mn>1</mn><mn>4</mn></mfrac><mo>−</mo><mn>1</mn><mo>+</mo><mn>1</mn></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msubsup><mo class="int-op">∫</mo><mn>0</mn><mn>1</mn></msubsup><mo>(</mo><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>)</mo><mi>d</mi><mi>x</mi></mphantom><mo>=</mo><mfrac><mn>1</mn><mn>4</mn></mfrac></math></div>
+</div>
         </div>
 
         <div class="step hint">
-          <div class="step-tag">ヒント 5 ― <span class="m">[1, 2]</span> の面積</div>
-          <p>区間 <span class="m">[1, 2]</span> の部分は下側にあるので、積分した値の符号を変える。</p>
-          <p style="text-align:center"><span class="m">−<span class="intg"><span class="sym">∫</span><span class="lims"><span>2</span><span>1</span></span></span>(x<sup>3</sup>−3x<sup>2</sup>+2x) dx = −<span class="eval">[ <span class="frac"><span class="num">x<sup>4</sup></span><span class="den">4</span></span> − x<sup>3</sup> + x<sup>2</sup> ]<sub>1</sub><sup>2</sup></span> = −{(4−8+4) − <span class="frac"><span class="num">1</span><span class="den">4</span></span>} = <span class="frac"><span class="num">1</span><span class="den">4</span></span></span></p>
+          <div class="step-tag">ヒント<math><mn>5</mn><mo>―</mo><mo>[</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>]</mo></math> の面積</div>
+          <p>区間 <math><mo>[</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>]</mo></math> の部分は下側にあるので、積分した値の符号を変える。</p>
+          <p class="cite"><span class="cite-tag">使う性質</span><math><mi>x</mi></math> 軸の下側の部分の面積 <math><mo>−</mo><msubsup><mo class="int-op">∫</mo><mn>1</mn><mn>2</mn></msubsup><mo>(</mo><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>)</mo><mi>d</mi><mi>x</mi></math>。下側の部分は定積分の符号を変えたものが面積になるので、積分の前に <math><mo>−</mo></math> をつける。</p>
+          <div class="chain-crow" style="text-align:center;font-size:15px">
+<div class="crow"><math displaystyle="true"><mo>−</mo><msubsup><mo class="int-op">∫</mo><mn>1</mn><mn>2</mn></msubsup><mo>(</mo><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>)</mo><mi>d</mi><mi>x</mi><mo>=</mo><mo>−</mo><msup><msub><mrow><mo>[</mo><mfrac><msup><mi>x</mi><mn>4</mn></msup><mn>4</mn></mfrac><mo>−</mo><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><msup><mi>x</mi><mn>2</mn></msup><mo>]</mo></mrow><mn>1</mn></msub><mn>2</mn></msup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mo>−</mo><msubsup><mo class="int-op">∫</mo><mn>1</mn><mn>2</mn></msubsup><mo>(</mo><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>)</mo><mi>d</mi><mi>x</mi></mphantom><mo>=</mo><mo>−</mo><mo>{</mo><mo>(</mo><mn>4</mn><mo>−</mo><mn>8</mn><mo>+</mo><mn>4</mn><mo>)</mo><mo>−</mo><mfrac><mn>1</mn><mn>4</mn></mfrac><mo>}</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mo>−</mo><msubsup><mo class="int-op">∫</mo><mn>1</mn><mn>2</mn></msubsup><mo>(</mo><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>)</mo><mi>d</mi><mi>x</mi></mphantom><mo>=</mo><mfrac><mn>1</mn><mn>4</mn></mfrac></math></div>
+</div>
         </div>
 
         <div class="step answer">
           <div class="step-tag">解答</div>
           <p>2つの部分の面積の和は</p>
-          <span class="final"><span class="m"><span class="frac"><span class="num">1</span><span class="den">4</span></span> + <span class="frac"><span class="num">1</span><span class="den">4</span></span> = <span class="frac"><span class="num">1</span><span class="den">2</span></span></span></span>
-          <p>2つの部分の面積が等しくなったのは偶然ではなく、この曲線が点 <span class="m">(1, 0)</span> に関して点対称だからである。</p>
+          <span class="final"><math><mfrac><mn>1</mn><mn>4</mn></mfrac><mo>+</mo><mfrac><mn>1</mn><mn>4</mn></mfrac><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math></span>
+          <p>2つの部分の面積が等しくなったのは偶然ではなく、<br>この曲線が点 <math><mo>(</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo>)</mo></math> <br>に関して点対称だからである。</p>
         </div>
 
         <div class="unit-controls">
@@ -599,7 +692,7 @@
       </section>
 
       <!-- ===== 研究2 練習2 ===== -->
-      <section class="unit" data-unit id="u6">
+      <section class="nofig unit" data-unit id="u6">
         <div class="unit-head">
           <h2><span class="sec-badge">研究2</span>練習2　自分で解いてみよう</h2>
           <div class="dots" aria-hidden="true"></div>
@@ -607,45 +700,50 @@
         <div class="qside">
         <div class="qbox">
           <span class="q-label">練習2</span>
-          <p>曲線 <span class="m">y = x(x+1)(x−2)</span> と <span class="m">x</span> 軸で囲まれた2つの部分の面積の和を求めよ。</p>
+          <p>曲線 <math><mi>y</mi><mo>=</mo><mi>x</mi><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo></math> と <math><mi>x</mi></math> 軸で囲まれた2つの部分の面積の和を求めよ。</p>
         </div>
         </div>
 
         <div class="step hint">
           <div class="step-tag">ヒント 1 ― 交点を確認</div>
-          <p><span class="m">y = 0</span> となるのは <span class="m">x = −1, 0, 2</span> のとき。囲まれた部分は、区間 <span class="m">[−1, 0]</span> の部分と区間 <span class="m">[0, 2]</span> の部分の2つである。</p>
+          <p class="cite"><span class="cite-tag">使う定義</span>グラフと <math><mi>x</mi></math> 軸の交点 <math><mi>x</mi><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo><mo>=</mo><mn>0</mn></math>。<math><mi>y</mi><mo>=</mo><mn>0</mn></math> とした方程式の解が、<math><mi>x</mi></math> 軸との交点の <math><mi>x</mi></math> 座標になる。</p>
+          <p><math><mi>y</mi><mo>=</mo><mn>0</mn></math> となるのは <math><mi>x</mi><mo>=</mo><mo>−</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>2</mn></math> のとき。<br>囲まれた部分は、区間 <math><mo>[</mo><mo>−</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo>]</mo></math> の部分と区間 <math><mo>[</mo><mn>0</mn><mo>,</mo><mn>2</mn><mo>]</mo></math> の部分の2つである。</p>
         </div>
 
         <div class="step hint">
           <div class="step-tag">ヒント 2 ― 符号を調べる</div>
-          <p><span class="m">−1 &lt; x &lt; 0</span> では、<span class="m">x &lt; 0</span>，<span class="m">x+1 &gt; 0</span>，<span class="m">x−2 &lt; 0</span> だから積は<strong>正</strong>で、曲線は <span class="m">x</span> 軸の<strong>上側</strong>にある。</p>
-          <p><span class="m">0 &lt; x &lt; 2</span> では、<span class="m">x &gt; 0</span>，<span class="m">x+1 &gt; 0</span>，<span class="m">x−2 &lt; 0</span> だから積は<strong>負</strong>で、曲線は <span class="m">x</span> 軸の<strong>下側</strong>にある。</p>
+          <p class="cite"><span class="cite-tag">使う性質</span>積の符号 <math><mi>x</mi><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo></math>。各因数の符号を区間ごとに調べ、負の因数の個数で積の符号を決める。</p>
+          <p><math><mo>−</mo><mn>1</mn><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mn>0</mn></math> では、<math><mi>x</mi><mo>&lt;</mo><mn>0</mn><mo>,</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>&gt;</mo><mn>0</mn><mo>,</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>&lt;</mo><mn>0</mn></math> だから積は<strong>正</strong>で、<br>曲線は <math><mi>x</mi></math> 軸の<strong>上側</strong>にある。</p>
+          <p><math><mn>0</mn><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mn>2</mn></math> では、<math><mi>x</mi><mo>&gt;</mo><mn>0</mn><mo>,</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>&gt;</mo><mn>0</mn><mo>,</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>&lt;</mo><mn>0</mn></math> だから積は<strong>負</strong>で、<br>曲線は <math><mi>x</mi></math> 軸の<strong>下側</strong>にある。</p>
         </div>
 
         <div class="step hint">
           <div class="step-tag">ヒント 3 ― 展開と不定積分</div>
-          <p>展開すると <span class="m">y = x<sup>3</sup>−x<sup>2</sup>−2x</span>。不定積分は</p>
-          <p style="text-align:center"><span class="m"><span class="frac"><span class="num">x<sup>4</sup></span><span class="den">4</span></span> − <span class="frac"><span class="num">x<sup>3</sup></span><span class="den">3</span></span> − x<sup>2</sup></span></p>
-          <p>である（<span class="m">x<sup>2</sup></span> の係数が <span class="m">−1</span> なので、積分では <span class="m">−<span class="frac"><span class="num">x<sup>3</sup></span><span class="den">3</span></span></span> になる点に注意）。</p>
+          <p>展開すると <math><mi>y</mi><mo>=</mo><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>x</mi></math>。不定積分は</p>
+          <p class="cite"><span class="cite-tag">使う公式</span><math><msup><mi>x</mi><mi>n</mi></msup></math> の不定積分 <math><mo class="int-op">∫</mo><msup><mi>x</mi><mi>n</mi></msup><mi>d</mi><mi>x</mi><mo>=</mo><mfrac><msup><mi>x</mi><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msup><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></mfrac></math>。展開した <math><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>x</mi></math> を項ごとにこの公式で積分する。</p>
+          <p style="text-align:center"><math display="block"><mfrac><msup><mi>x</mi><mn>4</mn></msup><mn>4</mn></mfrac><mo>−</mo><mfrac><msup><mi>x</mi><mn>3</mn></msup><mn>3</mn></mfrac><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup></math></p>
+          <p>である<math><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup></math> の係数が <math><mo>−</mo><mn>1</mn></math> なので、<br>積分では <math><mo>−</mo><mfrac><msup><mi>x</mi><mn>3</mn></msup><mn>3</mn></mfrac></math> になる点に注意）。</p>
         </div>
 
         <div class="step hint">
-          <div class="step-tag">ヒント 4 ― <span class="m">[−1, 0]</span> の部分の面積</div>
-          <p>この区間では曲線は上側にあるので、そのまま積分する。<span class="m">x = −1</span> を代入した値は</p>
-          <p style="text-align:center"><span class="m"><span class="frac"><span class="num">1</span><span class="den">4</span></span> + <span class="frac"><span class="num">1</span><span class="den">3</span></span> − 1 = −<span class="frac"><span class="num">5</span><span class="den">12</span></span></span></p>
-          <p>だから、面積は <span class="m">0 − (−<span class="frac"><span class="num">5</span><span class="den">12</span></span>) = <span class="frac"><span class="num">5</span><span class="den">12</span></span></span> である。</p>
+          <div class="step-tag">ヒント<math><mn>4</mn><mo>―</mo><mo>[</mo><mo>−</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo>]</mo></math> の部分の面積</div>
+          <p>この区間では曲線は上側にあるので、そのまま積分する。<br><math><mi>x</mi><mo>=</mo><mo>−</mo><mn>1</mn></math> を代入した値は</p>
+          <p class="cite"><span class="cite-tag">使う公式</span>定積分の計算 <math><msup><msub><mrow><mo>[</mo><mi>F</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>]</mo></mrow><mi>a</mi></msub><mi>b</mi></msup><mo>=</mo><mi>F</mi><mo>(</mo><mi>b</mi><mo>)</mo><mo>−</mo><mi>F</mi><mo>(</mo><mi>a</mi><mo>)</mo></math>。不定積分に上端 <math><mn>0</mn></math> と下端 <math><mo>−</mo><mn>1</mn></math> を代入し、上端の値から下端の値を引く。</p>
+          <p style="text-align:center"><math display="block"><mfrac><mn>1</mn><mn>4</mn></mfrac><mo>+</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>−</mo><mn>1</mn><mo>=</mo><mo>−</mo><mfrac><mn>5</mn><mn>12</mn></mfrac></math></p>
+          <p>だから、面積は <math><mn>0</mn><mo>−</mo><mo>(</mo><mo>−</mo><mfrac><mn>5</mn><mn>12</mn></mfrac><mo>)</mo><mo>=</mo><mfrac><mn>5</mn><mn>12</mn></mfrac></math> である。</p>
         </div>
 
         <div class="step hint">
-          <div class="step-tag">ヒント 5 ― <span class="m">[0, 2]</span> の部分の面積</div>
-          <p>この区間では曲線は下側にあるので、符号を変える。<span class="m">x = 2</span> を代入した値は <span class="m">4 − <span class="frac"><span class="num">8</span><span class="den">3</span></span> − 4 = −<span class="frac"><span class="num">8</span><span class="den">3</span></span></span> だから、面積は</p>
-          <p style="text-align:center"><span class="m">−<span class="eval">[ <span class="frac"><span class="num">x<sup>4</sup></span><span class="den">4</span></span> − <span class="frac"><span class="num">x<sup>3</sup></span><span class="den">3</span></span> − x<sup>2</sup> ]<sub>0</sub><sup>2</sup></span> = <span class="frac"><span class="num">8</span><span class="den">3</span></span></span></p>
+          <div class="step-tag">ヒント<math><mn>5</mn><mo>―</mo><mo>[</mo><mn>0</mn><mo>,</mo><mn>2</mn><mo>]</mo></math> の部分の面積</div>
+          <p>この区間では曲線は下側にあるので、符号を変える。<br><math><mi>x</mi><mo>=</mo><mn>2</mn></math> を代入した値は <math><mn>4</mn><mo>−</mo><mfrac><mn>8</mn><mn>3</mn></mfrac><mo>−</mo><mn>4</mn><mo>=</mo><mo>−</mo><mfrac><mn>8</mn><mn>3</mn></mfrac></math> だから、<br>面積は</p>
+          <p class="cite"><span class="cite-tag">使う性質</span><math><mi>x</mi></math> 軸の下側の部分の面積 <math><mo>−</mo><msup><msub><mrow><mo>[</mo><mfrac><msup><mi>x</mi><mn>4</mn></msup><mn>4</mn></mfrac><mo>−</mo><mfrac><msup><mi>x</mi><mn>3</mn></msup><mn>3</mn></mfrac><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>]</mo></mrow><mn>0</mn></msub><mn>2</mn></msup></math>。下側の部分は、定積分の符号を変えたものが面積になる。</p>
+          <p style="text-align:center"><math display="block"><mo>−</mo><msup><msub><mrow><mo>[</mo><mfrac><msup><mi>x</mi><mn>4</mn></msup><mn>4</mn></mfrac><mo>−</mo><mfrac><msup><mi>x</mi><mn>3</mn></msup><mn>3</mn></mfrac><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>]</mo></mrow><mn>0</mn></msub><mn>2</mn></msup><mo>=</mo><mfrac><mn>8</mn><mn>3</mn></mfrac></math></p>
         </div>
 
         <div class="step answer">
           <div class="step-tag">解答</div>
           <p>2つの部分の面積の和は</p>
-          <span class="final"><span class="m"><span class="frac"><span class="num">5</span><span class="den">12</span></span> + <span class="frac"><span class="num">8</span><span class="den">3</span></span> = <span class="frac"><span class="num">5</span><span class="den">12</span></span> + <span class="frac"><span class="num">32</span><span class="den">12</span></span> = <span class="frac"><span class="num">37</span><span class="den">12</span></span></span></span>
+          <span class="final"><math><mfrac><mn>5</mn><mn>12</mn></mfrac><mo>+</mo><mfrac><mn>8</mn><mn>3</mn></mfrac><mo>=</mo><mfrac><mn>5</mn><mn>12</mn></mfrac><mo>+</mo><mfrac><mn>32</mn><mn>12</mn></mfrac><mo>=</mo><mfrac><mn>37</mn><mn>12</mn></mfrac></math></span>
         </div>
 
         <div class="unit-controls">

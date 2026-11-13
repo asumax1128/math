@@ -334,7 +334,57 @@
           padding:2px 6px 2px 2px;
         }
       }
-    </style>
+    
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+
+      /* 積分記号は大きめに表示する（元のページの可読化デザインに合わせる） */
+      math .int-op{font-size:1.35em}
+      /* calc-12 世代（.card）と calc-18 世代（.unit）の、図のない問題の全幅化 */
+      @media (min-width:1024px){
+        .card.nofig{display:block !important}
+        .card.nofig>.step{position:static !important}
+        .card.nofig>.steps-wrap{max-height:none !important;overflow:visible !important}
+        .unit.nofig{display:block !important}
+        .unit.nofig>.qside{position:static !important}
+        .unit.nofig>.steps-stack{max-height:none !important;overflow:visible !important}
+      }
+</style>
   </head>
   <body>
     <div class="wrap">
@@ -365,7 +415,7 @@
       </div>
 
       <!-- ===== 補充1 ===== -->
-      <section class="card prob active" id="prob-q1">
+      <section class="nofig card prob active" id="prob-q1">
         <div class="prob-head">
           <span class="prob-tag">補充 1</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
@@ -380,133 +430,139 @@
         </div>
 
         <!-- 補充1 (1) -->
-        <div class="tabpanel show" id="panel-q1-1" data-flow="q1-1" data-label="補充1 (1)">
+        <div class="nofig tabpanel show" id="panel-q1-1" data-flow="q1-1" data-label="補充1 (1)">
           <div class="prob-head">
             <span class="sub prob-q" style="margin:0">(1)</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
-          <p class="formula">lim<sub>h→0</sub> <span class="fr"><span class="fr-n">(−1＋h)<sup>2</sup> − (−1)<sup>2</sup></span><span class="fr-d">h</span></span></p>
+          <p class="formula"><math display="block"><msub><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></msub><mfrac><mrow><msup><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>+</mo><mi>h</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><msup><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup></mrow><mi>h</mi></mfrac></math></p>
           <div class="step hint">
             <h3>ヒント 1 ― 分子を展開する</h3>
-            <p>まず分子だけを計算しよう。(−1＋h)<sup>2</sup> を展開すると <b>1 − 2h ＋ h<sup>2</sup></b>、(−1)<sup>2</sup> ＝ 1 だから、分子 ＝ (1 − 2h ＋ h<sup>2</sup>) − 1 となる。</p>
-            <p>1 が消えて、分子は <b>−2h ＋ h<sup>2</sup></b> だけが残ることを確かめよう。</p>
+            <p class="cite"><span class="cite-tag">使う公式</span>［展開公式］ <math><msup><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>+</mo><mi>h</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>1</mn><mo>−</mo><mn>2</mn><mi>h</mi><mo>+</mo><msup><mi>h</mi><mn>2</mn></msup></math>。この展開で分子を作り、定数項の 1 が消えることを確かめる。</p><p>まず分子だけを計算しよう。<math><msup><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>+</mo><mi>h</mi><mo>)</mo></mrow><mn>2</mn></msup></math> を展開すると <b><math><mn>1</mn><mo>−</mo><mn>2</mn><mi>h</mi><mo>+</mo><msup><mi>h</mi><mn>2</mn></msup></math></b>、<math><msup><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>1</mn></math>だから、分子<math><mo>=</mo><mo>(</mo><mn>1</mn><mo>−</mo><mn>2</mn><mi>h</mi><mo>+</mo><msup><mi>h</mi><mn>2</mn></msup><mo>)</mo><mo>−</mo><mn>1</mn></math>となる。</p>
+            <p>1 が消えて、分子は <b><math><mo>−</mo><mn>2</mn><mi>h</mi><mo>+</mo><msup><mi>h</mi><mn>2</mn></msup></math></b> だけが残ることを確かめよう。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 分子を h で割る</h3>
-            <p>h → 0 のとき h ≠ 0 だから、分子・分母を h で約分できる。</p>
-            <p class="formula" style="margin-bottom:10px"><span class="fr"><span class="fr-n">−2h ＋ h<sup>2</sup></span><span class="fr-d">h</span></span> ＝ −2 ＋ h</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>［約分（h≠0）］ <math><mfrac><mrow><mo>−</mo><mn>2</mn><mi>h</mi><mo>+</mo><msup><mi>h</mi><mn>2</mn></msup></mrow><mi>h</mi></mfrac><mo>=</mo><mo>−</mo><mn>2</mn><mo>+</mo><mi>h</mi></math>。h で約分して、極限を調べやすい形に直す。</p><p>h → 0 のとき h ≠ 0 だから、<br>分子・分母を h で約分できる。</p>
+            <p class="formula" style="margin-bottom:10px"><math display="block"><mfrac><mrow><mo>−</mo><mn>2</mn><mi>h</mi><mo>+</mo><msup><mi>h</mi><mn>2</mn></msup></mrow><mi>h</mi></mfrac><mo>=</mo><mo>−</mo><mn>2</mn><mo>+</mo><mi>h</mi></math></p>
             <p>式がずいぶん簡単になったはずだ。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 3 ― h を 0 に近づける</h3>
-            <p>−2 ＋ h で、h を限りなく 0 に近づけると、式の値はどんな数に近づくか考えよう。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>［極限（h→0）］ <math><msub><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></msub><mo>(</mo><mo>−</mo><mn>2</mn><mo>+</mo><mi>h</mi><mo>)</mo><mo>=</mo><mo>−</mo><mn>2</mn></math>。h を含む項は 0 に近づくので、残る定数が極限値になる。</p><p>−2 ＋ h で、h を限りなく 0 に近づけると、<br>式の値はどんな数に近づくか考えよう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (1)</h3>
             <p class="big">−2</p>
-            <p>lim<sub>h→0</sub> <span class="fr"><span class="fr-n">(−1＋h)<sup>2</sup> − (−1)<sup>2</sup></span><span class="fr-d">h</span></span> ＝ lim<sub>h→0</sub> (−2 ＋ h) ＝ <b>−2</b>。</p>
-            <p class="note"><b>ポイント：</b>この極限は、関数 f(x) ＝ x<sup>2</sup> の x ＝ −1 における<b>微分係数</b>そのもの。微分係数の定義の形を見たら、「展開 → h で割る → h → 0」の順で処理する。なお f′(x) ＝ 2x から f′(−1) ＝ −2 とも一致する。</p>
+            <p class="cite"><span class="cite-tag">使う定義</span>［微分係数と導関数］ <math><mi>f</mi><mi>′</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mn>2</mn><mi>x</mi></math>。この極限は f′(−1) であり、導関数からも同じ値になることを確かめる。</p><p><math><msub><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></msub><mfrac><mrow><msup><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>+</mo><mi>h</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><msup><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup></mrow><mi>h</mi></mfrac><mo>=</mo><msub><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></msub><mo>(</mo><mo>−</mo><mn>2</mn><mo>+</mo><mi>h</mi><mo>)</mo><mo>=</mo></math><b>−2</b>。</p>
+            <p class="note"><b>ポイント：</b>この極限は、関数<math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup></math> の<math><mi>x</mi><mo>=</mo><mo>−</mo><mn>1</mn></math>における<b>微分係数</b>そのもの。微分係数の定義の形を見たら、<br>「展開 → h で割る → h → 0」の順で処理する。なお<math><mi>f</mi><mi>′</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mn>2</mn><mi>x</mi></math>から<math><mi>f</mi><mi>′</mi><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo><mo>=</mo><mo>−</mo><mn>2</mn></math>とも一致する。</p>
           </div>
           <p class="prob-done">(1) クリア！　(2) のタブも開いてみよう。</p>
         </div>
 
         <!-- 補充1 (2) -->
-        <div class="tabpanel" id="panel-q1-2" data-flow="q1-2" data-label="補充1 (2)">
+        <div class="nofig tabpanel" id="panel-q1-2" data-flow="q1-2" data-label="補充1 (2)">
           <div class="prob-head">
             <span class="sub prob-q" style="margin:0">(2)</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
-          <p class="formula">lim<sub>h→0</sub> <span class="fr"><span class="fr-n">2(a＋h)<sup>2</sup> − 2a<sup>2</sup></span><span class="fr-d">h</span></span>　（a は定数）</p>
+          <p class="formula"><math><msub><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></msub><mfrac><mrow><mn>2</mn><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>h</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>2</mn><msup><mi>a</mi><mn>2</mn></msup></mrow><mi>h</mi></mfrac></math>　（a は定数）</p>
           <div class="step hint">
-            <h3>ヒント 1 ― (a＋h)<sup>2</sup> を展開する</h3>
-            <p>(a＋h)<sup>2</sup> ＝ a<sup>2</sup> ＋ 2ah ＋ h<sup>2</sup>。これを 2 倍して 2a<sup>2</sup> を引くと、分子 ＝ 2(a<sup>2</sup> ＋ 2ah ＋ h<sup>2</sup>) − 2a<sup>2</sup> となる。</p>
-            <p>2a<sup>2</sup> が消えて、分子は <b>4ah ＋ 2h<sup>2</sup></b> になることを確かめよう（a は定数として扱う）。</p>
+            <h3>ヒント<math><mn>1</mn><mo>―</mo><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>h</mi><mo>)</mo></mrow><mn>2</mn></msup></math> を展開する</h3>
+            <p class="cite"><span class="cite-tag">使う公式</span>［展開公式］ <math><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>h</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>a</mi><mi>h</mi><mo>+</mo><msup><mi>h</mi><mn>2</mn></msup></math>。この展開を 2 倍して分子を作り、2a² が消えることを確かめる。</p><p><math><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>h</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>a</mi><mi>h</mi><mo>+</mo><msup><mi>h</mi><mn>2</mn></msup></math>。これを 2 倍して<math><mn>2</mn><msup><mi>a</mi><mn>2</mn></msup></math> を引くと、分子<math><mo>=</mo><mn>2</mn><mo>(</mo><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>a</mi><mi>h</mi><mo>+</mo><msup><mi>h</mi><mn>2</mn></msup><mo>)</mo><mo>−</mo><mn>2</mn><msup><mi>a</mi><mn>2</mn></msup></math> となる。</p>
+            <p><math><mn>2</mn><msup><mi>a</mi><mn>2</mn></msup></math> が消えて、分子は <b><math><mn>4</mn><mi>a</mi><mi>h</mi><mo>+</mo><mn>2</mn><msup><mi>h</mi><mn>2</mn></msup></math></b> になることを確かめよう<br>（a は定数として扱う）。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― h で割って、h → 0 とする</h3>
-            <p><span class="fr"><span class="fr-n">4ah ＋ 2h<sup>2</sup></span><span class="fr-d">h</span></span> ＝ 4a ＋ 2h と約分できる。あとは h を 0 に近づけたとき、2h の部分がどうなるかを見よう。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>［約分（h≠0）］ <math><mfrac><mrow><mn>4</mn><mi>a</mi><mi>h</mi><mo>+</mo><mn>2</mn><msup><mi>h</mi><mn>2</mn></msup></mrow><mi>h</mi></mfrac><mo>=</mo><mn>4</mn><mi>a</mi><mo>+</mo><mn>2</mn><mi>h</mi></math>。h で約分し、残った 2h が 0 に近づくことを見る。</p><p><math><mfrac><mrow><mn>4</mn><mi>a</mi><mi>h</mi><mo>+</mo><mn>2</mn><msup><mi>h</mi><mn>2</mn></msup></mrow><mi>h</mi></mfrac><mo>=</mo><mn>4</mn><mi>a</mi><mo>+</mo><mn>2</mn><mi>h</mi></math>と約分できる。あとは h を 0 に近づけたとき、<br>2h の部分がどうなるかを見よう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (2)</h3>
             <p class="big">4a</p>
-            <p>lim<sub>h→0</sub> <span class="fr"><span class="fr-n">2(a＋h)<sup>2</sup> − 2a<sup>2</sup></span><span class="fr-d">h</span></span> ＝ lim<sub>h→0</sub> (4a ＋ 2h) ＝ <b>4a</b>。</p>
-            <p class="note"><b>ポイント：</b>これは関数 f(x) ＝ 2x<sup>2</sup> の x ＝ a における微分係数。f′(x) ＝ 4x だから f′(a) ＝ 4a と一致する。「文字 a があっても、h についての計算の進め方は (1) と同じ」だよ。</p>
+            <p class="cite"><span class="cite-tag">使う定義</span>［微分係数と導関数］ <math><mi>f</mi><mi>′</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mn>4</mn><mi>x</mi></math>。この極限は f′(a) であり、導関数からも同じ値になることを確かめる。</p><p><math><msub><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></msub><mfrac><mrow><mn>2</mn><msup><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mi>h</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>2</mn><msup><mi>a</mi><mn>2</mn></msup></mrow><mi>h</mi></mfrac><mo>=</mo><msub><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></msub><mo>(</mo><mn>4</mn><mi>a</mi><mo>+</mo><mn>2</mn><mi>h</mi><mo>)</mo><mo>=</mo></math><b>4a</b>。</p>
+            <p class="note"><b>ポイント：</b>これは関数<math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mn>2</mn><msup><mi>x</mi><mn>2</mn></msup></math> の<math><mi>x</mi><mo>=</mo><mi>a</mi></math>における微分係数。<math><mi>f</mi><mi>′</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mn>4</mn><mi>x</mi></math>だから<math><mi>f</mi><mi>′</mi><mo>(</mo><mi>a</mi><mo>)</mo><mo>=</mo><mn>4</mn><mi>a</mi></math>と一致する。「文字 a があっても、<br>h についての計算の進め方は (1) と同じ」だよ。</p>
           </div>
           <p class="prob-done">(2) クリア！　補充1 はこれで完了。次は補充2へ。</p>
         </div>
       </section>
 
       <!-- ===== 補充2 ===== -->
-      <section class="card prob" id="prob-q2" data-flow="q2" data-label="補充2">
+      <section class="nofig card prob" id="prob-q2" data-flow="q2" data-label="補充2">
         <div class="prob-head">
           <span class="prob-tag">補充 2</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
         <div class="qside">
-        <p class="prob-q">f(2) ＝ −2、f′(0) ＝ 3、f′(1) ＝ −1 をすべて満たす2次関数 f(x) を求めよ。</p>
+        <p class="prob-q"><math><mi>f</mi><mo>(</mo><mn>2</mn><mo>)</mo><mo>=</mo><mo>−</mo><mn>2</mn></math>、<math><mi>f</mi><mi>′</mi><mo>(</mo><mn>0</mn><mo>)</mo><mo>=</mo><mn>3</mn></math>、<math><mi>f</mi><mi>′</mi><mo>(</mo><mn>1</mn><mo>)</mo><mo>=</mo><mo>−</mo><mn>1</mn></math>をすべて満たす2次関数 f(x) を求めよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― f(x) ＝ ax<sup>2</sup>＋bx＋c とおいて微分する</h3>
-          <p>求める2次関数を <b>f(x) ＝ ax<sup>2</sup> ＋ bx ＋ c</b>（a ≠ 0）とおく。まず導関数を作ろう。</p>
-          <p class="formula" style="margin-bottom:10px">f′(x) ＝ 2ax ＋ b</p>
-          <p>あとは3つの条件を、a、b、c の式に直していく。</p>
+          <h3>ヒント<math><mn>1</mn><mo>―</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mi>a</mi><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>b</mi><mi>x</mi><mo>+</mo><mi>c</mi></math>とおいて微分する</h3>
+          <p>求める2次関数を <b><math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mi>a</mi><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>b</mi><mi>x</mi><mo>+</mo><mi>c</mi></math></b><math><mo>(</mo><mi>a</mi><mo>≠</mo><mn>0</mn><mo>)</mo></math>とおく。まず導関数を作ろう。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span>［導関数（x² の微分）］ <math><mi>f</mi><mi>′</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mn>2</mn><mi>a</mi><mi>x</mi><mo>+</mo><mi>b</mi></math>。x² の項を微分してこの導関数を作り、条件を式に直す準備をする。</p><p class="formula" style="margin-bottom:10px"><math display="block"><mi>f</mi><mi>′</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mn>2</mn><mi>a</mi><mi>x</mi><mo>+</mo><mi>b</mi></math></p>
+          <p>あとは3つの条件を、<br>a、b、c の式に直していく。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― f′ の条件から b と a を決める</h3>
-          <p>f′(0) ＝ 3 に x ＝ 0 を代入すると、f′(0) ＝ <b>b</b> だから、すぐに b の値が分かる。</p>
-          <p>次に f′(1) ＝ −1 に x ＝ 1 を代入すると 2a ＋ b ＝ −1。ここに先ほど求めた b を代入すれば、a も求まる。2つとも求めてみよう。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span>［導関数］ <math><mi>f</mi><mi>′</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mn>2</mn><mi>a</mi><mi>x</mi><mo>+</mo><mi>b</mi></math>。x＝0、x＝1 をこの導関数に代入して、b と a の式を作る。</p><p><math><mi>f</mi><mi>′</mi><mo>(</mo><mn>0</mn><mo>)</mo><mo>=</mo><mn>3</mn></math>に<math><mi>x</mi><mo>=</mo><mn>0</mn></math>を代入すると、<math><mi>f</mi><mi>′</mi><mo>(</mo><mn>0</mn><mo>)</mo><mo>=</mo></math><b>b</b> だから、すぐに b の値が分かる。</p>
+          <p>次に<math><mi>f</mi><mi>′</mi><mo>(</mo><mn>1</mn><mo>)</mo><mo>=</mo><mo>−</mo><mn>1</mn></math>に<math><mi>x</mi><mo>=</mo><mn>1</mn></math>を代入すると<math><mn>2</mn><mi>a</mi><mo>+</mo><mi>b</mi><mo>=</mo><mo>−</mo><mn>1</mn></math>。ここに先ほど求めた b を代入すれば、<br>a も求まる。2つとも求めてみよう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 3 ― f(2) の条件で c を決める</h3>
-          <p>f(2) ＝ −2 に x ＝ 2 を代入すると <b>4a ＋ 2b ＋ c ＝ −2</b>。</p>
-          <p>ヒント2で求めた a、b の値を代入すると、c だけが残る式になる。c を計算しよう。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span>［2次関数の形］ <math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mi>a</mi><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>b</mi><mi>x</mi><mo>+</mo><mi>c</mi></math>。x＝2 を元の関数に代入して、c を決める式を作る。</p><p><math><mi>f</mi><mo>(</mo><mn>2</mn><mo>)</mo><mo>=</mo><mo>−</mo><mn>2</mn></math>に<math><mi>x</mi><mo>=</mo><mn>2</mn></math>を代入すると <b><math><mn>4</mn><mi>a</mi><mo>+</mo><mn>2</mn><mi>b</mi><mo>+</mo><mi>c</mi><mo>=</mo><mo>−</mo><mn>2</mn></math></b>。</p>
+          <p>ヒント2で求めた a、b の値を代入すると、<br>c だけが残る式になる。c を計算しよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
-          <p class="big">f(x) ＝ −2x<sup>2</sup> ＋ 3x</p>
-          <p>f′(x) ＝ 2ax ＋ b とする。f′(0) ＝ b ＝ 3 より <b>b ＝ 3</b>。f′(1) ＝ 2a ＋ b ＝ −1 に b ＝ 3 を代入して 2a ＝ −4 より <b>a ＝ −2</b>。さらに f(2) ＝ 4a ＋ 2b ＋ c ＝ −2 に代入すると −8 ＋ 6 ＋ c ＝ −2 より <b>c ＝ 0</b>。</p>
-          <p>よって <b>f(x) ＝ −2x<sup>2</sup> ＋ 3x</b>。（確かめ：f(2) ＝ −8 ＋ 6 ＝ −2 ✓、f′(x) ＝ −4x ＋ 3 より f′(0) ＝ 3 ✓、f′(1) ＝ −1 ✓）</p>
+          <p class="big"><math display="block"><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mo>−</mo><mn>2</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>3</mn><mi>x</mi></math></p>
+          <p class="cite"><span class="cite-tag">使う公式</span>［導関数］ <math><mi>f</mi><mi>′</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mn>2</mn><mi>a</mi><mi>x</mi><mo>+</mo><mi>b</mi></math>。この導関数に条件を1つずつ代入して、a、b、c を順に決める。</p><p><math><mi>f</mi><mi>′</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mn>2</mn><mi>a</mi><mi>x</mi><mo>+</mo><mi>b</mi></math>とする。<math><mi>f</mi><mi>′</mi><mo>(</mo><mn>0</mn><mo>)</mo><mo>=</mo><mi>b</mi><mo>=</mo><mn>3</mn></math>より <b><math><mi>b</mi><mo>=</mo><mn>3</mn></math></b>。<math><mi>f</mi><mi>′</mi><mo>(</mo><mn>1</mn><mo>)</mo><mo>=</mo><mn>2</mn><mi>a</mi><mo>+</mo><mi>b</mi><mo>=</mo><mo>−</mo><mn>1</mn></math>に<math><mi>b</mi><mo>=</mo><mn>3</mn></math>を代入して<math><mn>2</mn><mi>a</mi><mo>=</mo><mo>−</mo><mn>4</mn></math>より <b><math><mi>a</mi><mo>=</mo><mo>−</mo><mn>2</mn></math></b>。さらに<math><mi>f</mi><mo>(</mo><mn>2</mn><mo>)</mo><mo>=</mo><mn>4</mn><mi>a</mi><mo>+</mo><mn>2</mn><mi>b</mi><mo>+</mo><mi>c</mi><mo>=</mo><mo>−</mo><mn>2</mn></math>に代入すると<math><mo>−</mo><mn>8</mn><mo>+</mo><mn>6</mn><mo>+</mo><mi>c</mi><mo>=</mo><mo>−</mo><mn>2</mn></math>より <b><math><mi>c</mi><mo>=</mo><mn>0</mn></math></b>。</p>
+          <p>よって <b><math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mo>−</mo><mn>2</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>3</mn><mi>x</mi></math></b>。（確かめ：<math><mi>f</mi><mo>(</mo><mn>2</mn><mo>)</mo><mo>=</mo><mo>−</mo><mn>8</mn><mo>+</mo><mn>6</mn><mo>=</mo><mo>−</mo><mn>2</mn><mo>✓</mo></math>、<math><mi>f</mi><mi>′</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mo>−</mo><mn>4</mn><mi>x</mi><mo>+</mo><mn>3</mn></math>より<math><mi>f</mi><mi>′</mi><mo>(</mo><mn>0</mn><mo>)</mo><mo>=</mo><mn>3</mn><mo>✓</mo></math>、<math><mi>f</mi><mi>′</mi><mo>(</mo><mn>1</mn><mo>)</mo><mo>=</mo><mo>−</mo><mn>1</mn><mo>✓</mo><mo>)</mo></math></p>
           <p class="note"><b>ポイント：</b>「条件を満たす関数を求めよ」は、<b>文字でおく → 条件を1つずつ式に直す → 連立方程式を解く</b>が型。f′ の条件は f(x) ではなく f′(x) に代入することに注意。</p>
         </div>
         <p class="prob-done">補充2 クリア！　次は補充3へ。</p>
       </section>
 
       <!-- ===== 補充3 ===== -->
-      <section class="card prob" id="prob-q3" data-flow="q3" data-label="補充3">
+      <section class="nofig card prob" id="prob-q3" data-flow="q3" data-label="補充3">
         <div class="prob-head">
           <span class="prob-tag">補充 3</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
         <div class="qside">
-        <p class="prob-q">関数 y ＝ x<sup>3</sup> ＋ 2 のグラフに、点 C(1, 2) から引いた接線の方程式を求めよ。</p>
+        <p class="prob-q">関数<math><mi>y</mi><mo>=</mo><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mn>2</mn></math>のグラフに、点 C(1, 2) から引いた接線の方程式を求めよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 接点を (a, a<sup>3</sup>＋2) とおく</h3>
-          <p>点 C が曲線上にあるか確認すると、x ＝ 1 のとき y ＝ 1<sup>3</sup> ＋ 2 ＝ 3 ≠ 2。つまり <b>C は曲線上にない</b>ので、接点は分からない。そこで接点の x 座標を a とおく。</p>
-          <p>y′ ＝ 3x<sup>2</sup> だから、接点 (a, a<sup>3</sup>＋2) における接線の方程式は</p>
-          <p class="formula" style="margin-bottom:10px">y ＝ 3a<sup>2</sup>(x − a) ＋ a<sup>3</sup> ＋ 2</p>
+          <h3>ヒント 1 ― 接点を<math><mo>(</mo><mi>a</mi><mo>,</mo><msup><mi>a</mi><mn>3</mn></msup><mo>+</mo><mn>2</mn><mo>)</mo></math>とおく</h3>
+          <p>点 C が曲線上にあるか確認すると、<math><mi>x</mi><mo>=</mo><mn>1</mn></math>のとき<math><mi>y</mi><mo>=</mo><msup><mn>1</mn><mn>3</mn></msup><mo>+</mo><mn>2</mn><mo>=</mo><mn>3</mn><mo>≠</mo><mn>2</mn></math>。つまり <b>C は曲線上にない</b>ので、接点は分からない。<br>そこで接点の x 座標を a とおく。</p>
+          <p><math><mi>y</mi><mi>′</mi><mo>=</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup></math> だから、接点<math><mo>(</mo><mi>a</mi><mo>,</mo><msup><mi>a</mi><mn>3</mn></msup><mo>+</mo><mn>2</mn><mo>)</mo></math>における接線の方程式は</p>
+          <p class="cite"><span class="cite-tag">使う公式</span>［接線の方程式］ <math><mi>y</mi><mo>=</mo><mn>3</mn><msup><mi>a</mi><mn>2</mn></msup><mo>(</mo><mi>x</mi><mo>−</mo><mi>a</mi><mo>)</mo><mo>+</mo><msup><mi>a</mi><mn>3</mn></msup><mo>+</mo><mn>2</mn></math>。接点における傾き 3a² を使って、接線を a の式で書く。</p><p class="formula" style="margin-bottom:10px"><math display="block"><mi>y</mi><mo>=</mo><mn>3</mn><msup><mi>a</mi><mn>2</mn></msup><mo>(</mo><mi>x</mi><mo>−</mo><mi>a</mi><mo>)</mo><mo>+</mo><msup><mi>a</mi><mn>3</mn></msup><mo>+</mo><mn>2</mn></math></p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 「点 C を通る」条件で a の方程式を作る</h3>
-          <p>接線が点 C(1, 2) を通るから、x ＝ 1、y ＝ 2 を代入する。</p>
-          <p class="formula" style="margin-bottom:10px">2 ＝ 3a<sup>2</sup>(1 − a) ＋ a<sup>3</sup> ＋ 2</p>
-          <p>右辺を展開して整理すると <b>2a<sup>3</sup> − 3a<sup>2</sup> ＝ 0</b>、つまり <b>a<sup>2</sup>(2a − 3) ＝ 0</b> になる。a の値を2つ求めよう。</p>
+          <p>接線が点 C(1, 2) を通るから、<math><mi>x</mi><mo>=</mo><mn>1</mn></math>、<math><mi>y</mi><mo>=</mo><mn>2</mn></math>を代入する。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span>［接線の方程式］ <math><mi>y</mi><mo>=</mo><mn>3</mn><msup><mi>a</mi><mn>2</mn></msup><mo>(</mo><mi>x</mi><mo>−</mo><mi>a</mi><mo>)</mo><mo>+</mo><msup><mi>a</mi><mn>3</mn></msup><mo>+</mo><mn>2</mn></math>。この接線に点 C の座標を代入して、a の方程式を作る。</p><p class="formula" style="margin-bottom:10px"><math display="block"><mn>2</mn><mo>=</mo><mn>3</mn><msup><mi>a</mi><mn>2</mn></msup><mo>(</mo><mn>1</mn><mo>−</mo><mi>a</mi><mo>)</mo><mo>+</mo><msup><mi>a</mi><mn>3</mn></msup><mo>+</mo><mn>2</mn></math></p>
+          <p>右辺を展開して整理すると <b><math><mn>2</mn><msup><mi>a</mi><mn>3</mn></msup><mo>−</mo><mn>3</mn><msup><mi>a</mi><mn>2</mn></msup><mo>=</mo><mn>0</mn></math></b>、つまり <b><math><msup><mi>a</mi><mn>2</mn></msup><mo>(</mo><mn>2</mn><mi>a</mi><mo>−</mo><mn>3</mn><mo>)</mo><mo>=</mo><mn>0</mn></math></b> になる。a の値を2つ求めよう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 3 ― a の値ごとに接線を書く</h3>
-          <p>a ＝ 0 のとき：傾きは 3a<sup>2</sup> ＝ 0、接点は (0, 2)。接線は水平な直線になる。</p>
-          <p>a ＝ <span class="fr"><span class="fr-n">3</span><span class="fr-d">2</span></span> のとき：傾きは 3 · <span class="fr"><span class="fr-n">9</span><span class="fr-d">4</span></span> ＝ <span class="fr"><span class="fr-n">27</span><span class="fr-d">4</span></span>、接点は (<span class="fr"><span class="fr-n">3</span><span class="fr-d">2</span></span>, <span class="fr"><span class="fr-n">43</span><span class="fr-d">8</span></span>)（y 座標は (<span class="fr"><span class="fr-n">3</span><span class="fr-d">2</span></span>)<sup>3</sup> ＋ 2 ＝ <span class="fr"><span class="fr-n">27</span><span class="fr-d">8</span></span> ＋ 2）。</p>
-          <p>それぞれ接線の公式 y ＝ （傾き）(x − 接点の x) ＋ 接点の y に当てはめてみよう。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span>［接線の方程式］ <math><mi>y</mi><mo>=</mo><mn>3</mn><msup><mi>a</mi><mn>2</mn></msup><mo>(</mo><mi>x</mi><mo>−</mo><mi>a</mi><mo>)</mo><mo>+</mo><msup><mi>a</mi><mn>3</mn></msup><mo>+</mo><mn>2</mn></math>。求めた a の値を1つずつ当てはめて、接線を2本書く。</p><p><math><mi>a</mi><mo>=</mo><mn>0</mn></math>のとき：傾きは<math><mn>3</mn><msup><mi>a</mi><mn>2</mn></msup><mo>=</mo><mn>0</mn></math>、接点は<math><mo>(</mo><mn>0</mn><mo>,</mo><mn>2</mn><mo>)</mo></math>。接線は水平な直線になる。</p>
+          <p><math><mi>a</mi><mo>=</mo><mfrac><mn>3</mn><mn>2</mn></mfrac></math> のとき：傾きは<math><mn>3</mn><mo>·</mo><mfrac><mn>9</mn><mn>4</mn></mfrac><mo>=</mo><mfrac><mn>27</mn><mn>4</mn></mfrac></math>、接点は<math><mo>(</mo><mfrac><mn>3</mn><mn>2</mn></mfrac><mo>,</mo><mfrac><mn>43</mn><mn>8</mn></mfrac><mo>)</mo><mo>(</mo><mi>y</mi></math>座標は<math><msup><mrow><mo>(</mo><mfrac><mn>3</mn><mn>2</mn></mfrac><mo>)</mo></mrow><mn>3</mn></msup><mo>+</mo><mn>2</mn><mo>=</mo><mfrac><mn>27</mn><mn>8</mn></mfrac><mo>+</mo><mn>2</mn><mo>)</mo></math>。</p>
+          <p>それぞれ接線の公式<math><mi>y</mi><mo>=</mo><mo>(</mo></math>傾き）(x − 接点の x) ＋ 接点の y に当てはめてみよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
-          <p class="big">y ＝ 2、　y ＝ <span class="fr"><span class="fr-n">27</span><span class="fr-d">4</span></span>x − <span class="fr"><span class="fr-n">19</span><span class="fr-d">4</span></span></p>
-          <p>a<sup>2</sup>(2a − 3) ＝ 0 より a ＝ 0, <span class="fr"><span class="fr-n">3</span><span class="fr-d">2</span></span>。</p>
-          <p>a ＝ 0 のとき、接線は <b>y ＝ 2</b>。a ＝ <span class="fr"><span class="fr-n">3</span><span class="fr-d">2</span></span> のとき、接線は y ＝ <span class="fr"><span class="fr-n">27</span><span class="fr-d">4</span></span>(x − <span class="fr"><span class="fr-n">3</span><span class="fr-d">2</span></span>) ＋ <span class="fr"><span class="fr-n">43</span><span class="fr-d">8</span></span> ＝ <span class="fr"><span class="fr-n">27</span><span class="fr-d">4</span></span>x − <span class="fr"><span class="fr-n">81</span><span class="fr-d">8</span></span> ＋ <span class="fr"><span class="fr-n">43</span><span class="fr-d">8</span></span> ＝ <b><span class="fr"><span class="fr-n">27</span><span class="fr-d">4</span></span>x − <span class="fr"><span class="fr-n">19</span><span class="fr-d">4</span></span></b>。</p>
+          <p class="big"><math><mi>y</mi><mo>=</mo><mn>2</mn></math>、　<math><mi>y</mi><mo>=</mo><mfrac><mn>27</mn><mn>4</mn></mfrac><mi>x</mi><mo>−</mo><mfrac><mn>19</mn><mn>4</mn></mfrac></math></p>
+          <p class="cite"><span class="cite-tag">使う公式</span>［接線の方程式］ <math><mi>y</mi><mo>=</mo><mn>3</mn><msup><mi>a</mi><mn>2</mn></msup><mo>(</mo><mi>x</mi><mo>−</mo><mi>a</mi><mo>)</mo><mo>+</mo><msup><mi>a</mi><mn>3</mn></msup><mo>+</mo><mn>2</mn></math>。a の方程式を解いて接点を決め、それぞれの接線を書く。</p><p><math><msup><mi>a</mi><mn>2</mn></msup><mo>(</mo><mn>2</mn><mi>a</mi><mo>−</mo><mn>3</mn><mo>)</mo><mo>=</mo><mn>0</mn></math>より<math><mi>a</mi><mo>=</mo><mn>0</mn><mo>,</mo><mfrac><mn>3</mn><mn>2</mn></mfrac></math>。</p>
+          <p><math><mi>a</mi><mo>=</mo><mn>0</mn></math>のとき、接線は <b><math><mi>y</mi><mo>=</mo><mn>2</mn></math></b>。<math><mi>a</mi><mo>=</mo><mfrac><mn>3</mn><mn>2</mn></mfrac></math> のとき、接線は</p>
+<div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>y</mi><mo>=</mo><mfrac><mn>27</mn><mn>4</mn></mfrac><mo>(</mo><mi>x</mi><mo>−</mo><mfrac><mn>3</mn><mn>2</mn></mfrac><mo>)</mo><mo>+</mo><mfrac><mn>43</mn><mn>8</mn></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>y</mi></mphantom><mo>=</mo><mfrac><mn>27</mn><mn>4</mn></mfrac><mi>x</mi><mo>−</mo><mfrac><mn>81</mn><mn>8</mn></mfrac><mo>+</mo><mfrac><mn>43</mn><mn>8</mn></mfrac></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>y</mi></mphantom><mo>=</mo></math></div>
+</div>
+<p><b><math><mfrac><mn>27</mn><mn>4</mn></mfrac><mi>x</mi><mo>−</mo><mfrac><mn>19</mn><mn>4</mn></mfrac></math></b>。</p>
           <figure>
             <div class="figbox">
               <svg class="graph" viewBox="0 0 210 350" data-ox="95" data-oy="308" data-s="27" data-gx0="-2.2" data-gx1="2.4" data-gy0="-1" data-gy1="11" role="img" aria-label="y＝xの3乗＋2 のグラフと点Cから引いた2本の接線" style="max-width:300px;margin:0 auto">
@@ -525,9 +581,9 @@
                 <text class="glabel" data-x="1" data-y="2" data-dx="8" data-dy="22" font-size="13">C(1, 2)</text>
               </svg>
             </div>
-            <figcaption>曲線 y ＝ x<sup>3</sup> ＋ 2 と、点 C(1, 2) から引いた2本の接線。C は曲線の外にあるので、接線は2本引ける。</figcaption>
+            <figcaption>曲線<math><mi>y</mi><mo>=</mo><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mn>2</mn></math>と、点 C(1, 2) から引いた2本の接線。C は曲線の外にあるので、接線は2本引ける。</figcaption>
           </figure>
-          <p class="note"><b>ポイント：</b>曲線の<b>外の点</b>から引く接線は、点の座標から傾きが決まらない。必ず「接点を (a, f(a)) とおく → 接線がその点を通る条件で a の方程式を解く」の順で進める。</p>
+          <p class="note"><b>ポイント：</b>曲線の<b>外の点</b>から引く接線は、点の座標から傾きが決まらない。<br>必ず「接点を (a, f(a)) とおく → <br>接線がその点を通る条件で a の方程式を解く」の順で進める。</p>
         </div>
         <p class="prob-done">補充3 クリア！　第1節はここまで。次は第2節の補充4へ。</p>
       </section>
@@ -540,7 +596,7 @@
       </div>
 
       <!-- ===== 補充4 ===== -->
-      <section class="card prob" id="prob-q4">
+      <section class="nofig card prob" id="prob-q4">
         <div class="prob-head">
           <span class="prob-tag">補充 4</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
@@ -555,108 +611,108 @@
         </div>
 
         <!-- 補充4 (1) -->
-        <div class="tabpanel show" id="panel-q4-1" data-flow="q4-1" data-label="補充4 (1)">
+        <div class="nofig tabpanel show" id="panel-q4-1" data-flow="q4-1" data-label="補充4 (1)">
           <div class="prob-head">
             <span class="sub prob-q" style="margin:0">(1)</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
-          <p class="formula">y ＝ x<sup>3</sup> − 6x ＋ 2</p>
+          <p class="formula"><math display="block"><mi>y</mi><mo>=</mo><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>6</mn><mi>x</mi><mo>+</mo><mn>2</mn></math></p>
           <div class="step hint">
-            <h3>ヒント 1 ― 微分して y′ ＝ 0 になる x を求める</h3>
-            <p>y′ ＝ 3x<sup>2</sup> − 6 ＝ <b>3(x<sup>2</sup> − 2)</b> と計算できる。</p>
-            <p>y′ ＝ 0 となるのは x<sup>2</sup> − 2 ＝ 0 のとき。x の値を2つ求めよう（± がつくことに注意）。</p>
+            <h3>ヒント 1 ― 微分して<math><mi>y</mi><mi>′</mi><mo>=</mo><mn>0</mn></math>になる x を求める</h3>
+            <p class="cite"><span class="cite-tag">使う公式</span>［導関数（x³ の微分）］ <math><mi>y</mi><mi>′</mi><mo>=</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup></math>。x³ の項を微分する考え方で y′ を作り、y′＝0 になる x を求める。</p><p><math><mi>y</mi><mi>′</mi><mo>=</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>6</mn><mo>=</mo></math><b><math><mn>3</mn><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mo>)</mo></math></b> と計算できる。</p>
+            <p><math><mi>y</mi><mi>′</mi><mo>=</mo><mn>0</mn></math>となるのは<math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mo>=</mo><mn>0</mn></math>のとき。<br>x の値を2つ求めよう（± がつくことに注意）。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 増減表で y′ の符号を調べる</h3>
-            <p>y′ ＝ 3(x ＋ √2)(x − √2) と因数分解できる。x ＜ −√2、−√2 ＜ x ＜ √2、x ＞ √2 の3つの区間で、y′ の符号（＋か−か）を1つずつ確かめよう。</p>
-            <p>符号が ＋ の区間では増加、− の区間では減少する。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>［増減の判定］ <math><mi>y</mi><mi>′</mi><mo>&gt;</mo><mn>0</mn><mtext>で増加</mtext><mo>,</mo><mi>y</mi><mi>′</mi><mo>&lt;</mo><mn>0</mn><mtext>で減少</mtext></math>。y′ の符号が ＋ の区間と − の区間を分けて、増減を調べる。</p><p><math><mi>y</mi><mi>′</mi><mo>=</mo><mn>3</mn><mo>(</mo><mi>x</mi><mo>+</mo><msqrt><mn>2</mn></msqrt><mo>)</mo><mo>(</mo><mi>x</mi><mo>−</mo><msqrt><mn>2</mn></msqrt><mo>)</mo></math>と因数分解できる。<math><mi>x</mi><mo>&lt;</mo><mo>−</mo><msqrt><mn>2</mn></msqrt></math>、<math><mo>−</mo><msqrt><mn>2</mn></msqrt><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><msqrt><mn>2</mn></msqrt></math>、<math><mi>x</mi><mo>&gt;</mo><msqrt><mn>2</mn></msqrt></math>の3つの区間で、<br>y′ の符号（＋か−か）を1つずつ確かめよう。</p>
+            <p>符号が ＋ の区間では増加、<br>− の区間では減少する。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 3 ― 極大値・極小値を計算する</h3>
-            <p>増減が「増加 → 減少」に切り替わる x ＝ −√2 で極大値、「減少 → 増加」に切り替わる x ＝ √2 で極小値をとる。</p>
-            <p>それぞれ元の式 y ＝ x<sup>3</sup> − 6x ＋ 2 に代入しよう。(−√2)<sup>3</sup> ＝ −2√2、(√2)<sup>3</sup> ＝ 2√2 を使うと計算しやすいよ。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>［極値の判定］ <math><mi>x</mi><mo>=</mo><mo>−</mo><msqrt><mn>2</mn></msqrt><mtext>で極大</mtext><mo>,</mo><mi>x</mi><mo>=</mo><msqrt><mn>2</mn></msqrt><mtext>で極小</mtext></math>。符号の切り替わりから極大・極小の場所を決め、値を計算する。</p><p>増減が「増加 → 減少」に切り替わる<math><mi>x</mi><mo>=</mo><mo>−</mo><msqrt><mn>2</mn></msqrt></math>で極大値、「減少 → 増加」に切り替わる<math><mi>x</mi><mo>=</mo><msqrt><mn>2</mn></msqrt></math>で極小値をとる。</p>
+            <p>それぞれ元の式<math><mi>y</mi><mo>=</mo><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>6</mn><mi>x</mi><mo>+</mo><mn>2</mn></math>に代入しよう。<math><msup><mrow><mo>(</mo><mo>−</mo><msqrt><mn>2</mn></msqrt><mo>)</mo></mrow><mn>3</mn></msup><mo>=</mo><mo>−</mo><mn>2</mn><msqrt><mn>2</mn></msqrt></math>、<math><msup><mrow><mo>(</mo><msqrt><mn>2</mn></msqrt><mo>)</mo></mrow><mn>3</mn></msup><mo>=</mo><mn>2</mn><msqrt><mn>2</mn></msqrt></math>を使うと計算しやすいよ。</p>
           </div>
           <div class="step answer">
             <h3>解答 (1)</h3>
-            <p class="big">極大値 4√2 ＋ 2（x ＝ −√2）、極小値 −4√2 ＋ 2（x ＝ √2）</p>
-            <p>y′ ＝ 3(x ＋ √2)(x − √2) の符号から増減表を作ると：</p>
+            <p class="big">極大値<math><mn>4</mn><msqrt><mn>2</mn></msqrt><mo>+</mo><mn>2</mn><mo>(</mo><mi>x</mi><mo>=</mo><mo>−</mo><msqrt><mn>2</mn></msqrt><mo>)</mo></math>、極小値<math><mo>−</mo><mn>4</mn><msqrt><mn>2</mn></msqrt><mo>+</mo><mn>2</mn><mo>(</mo><mi>x</mi><mo>=</mo><msqrt><mn>2</mn></msqrt><mo>)</mo></math></p>
+            <p class="cite"><span class="cite-tag">使う性質</span>［増減と極値の判定］ <math><mi>y</mi><mi>′</mi><mo>&gt;</mo><mn>0</mn><mtext>で増加</mtext><mo>,</mo><mi>y</mi><mi>′</mi><mo>&lt;</mo><mn>0</mn><mtext>で減少</mtext></math>。y′ の符号から増減表を作り、極値を読み取る。</p><p><math><mi>y</mi><mi>′</mi><mo>=</mo><mn>3</mn><mo>(</mo><mi>x</mi><mo>+</mo><msqrt><mn>2</mn></msqrt><mo>)</mo><mo>(</mo><mi>x</mi><mo>−</mo><msqrt><mn>2</mn></msqrt><mo>)</mo></math>の符号から増減表を作ると：</p>
             <table class="ztable" aria-label="補充4 (1) の増減表">
-              <tr><th>x</th><td>…</td><td>−√2</td><td>…</td><td>√2</td><td>…</td></tr>
+              <tr><th>x</th><td>…</td><td><math><mo>−</mo><msqrt><mn>2</mn></msqrt></math></td><td>…</td><td><math><msqrt><mn>2</mn></msqrt></math></td><td>…</td></tr>
               <tr><th>y′</th><td class="sgn">＋</td><td>0</td><td class="sgn">−</td><td>0</td><td class="sgn">＋</td></tr>
-              <tr><th>y</th><td>↗</td><td>4√2＋2</td><td>↘</td><td>−4√2＋2</td><td>↗</td></tr>
+              <tr><th>y</th><td>↗</td><td><math><mn>4</mn><msqrt><mn>2</mn></msqrt><mo>+</mo><mn>2</mn></math></td><td>↘</td><td><math><mo>−</mo><mn>4</mn><msqrt><mn>2</mn></msqrt><mo>+</mo><mn>2</mn></math></td><td>↗</td></tr>
             </table>
-            <p>x ＝ −√2 のとき極大値 (−√2)<sup>3</sup> − 6(−√2) ＋ 2 ＝ −2√2 ＋ 6√2 ＋ 2 ＝ <b>4√2 ＋ 2</b>、x ＝ √2 のとき極小値 2√2 − 6√2 ＋ 2 ＝ <b>−4√2 ＋ 2</b>。</p>
-            <p class="note"><b>ポイント：</b>極値の判定は増減表がすべて。<b>y′ の符号が切り替わる点</b>でだけ極値をとる。極大値・極小値は、x の値を元の y の式に代入して求める。</p>
+            <p><math><mi>x</mi><mo>=</mo><mo>−</mo><msqrt><mn>2</mn></msqrt></math>のとき極大値<math><msup><mrow><mo>(</mo><mo>−</mo><msqrt><mn>2</mn></msqrt><mo>)</mo></mrow><mn>3</mn></msup><mo>−</mo><mn>6</mn><mo>(</mo><mo>−</mo><msqrt><mn>2</mn></msqrt><mo>)</mo><mo>+</mo><mn>2</mn><mo>=</mo><mo>−</mo><mn>2</mn><msqrt><mn>2</mn></msqrt><mo>+</mo><mn>6</mn><msqrt><mn>2</mn></msqrt><mo>+</mo><mn>2</mn><mo>=</mo></math><b><math><mn>4</mn><msqrt><mn>2</mn></msqrt><mo>+</mo><mn>2</mn></math></b>、<math><mi>x</mi><mo>=</mo><msqrt><mn>2</mn></msqrt></math>のとき極小値<math><mn>2</mn><msqrt><mn>2</mn></msqrt><mo>−</mo><mn>6</mn><msqrt><mn>2</mn></msqrt><mo>+</mo><mn>2</mn><mo>=</mo></math><b><math><mo>−</mo><mn>4</mn><msqrt><mn>2</mn></msqrt><mo>+</mo><mn>2</mn></math></b>。</p>
+            <p class="note"><b>ポイント：</b>極値の判定は増減表がすべて。<b>y′ の符号が切り替わる点</b>でだけ極値をとる。<br>極大値・極小値は、x の値を元の y の式に代入して求める。</p>
           </div>
           <p class="prob-done">(1) クリア！　(2) のタブも開いてみよう。</p>
         </div>
 
         <!-- 補充4 (2) -->
-        <div class="tabpanel" id="panel-q4-2" data-flow="q4-2" data-label="補充4 (2)">
+        <div class="nofig tabpanel" id="panel-q4-2" data-flow="q4-2" data-label="補充4 (2)">
           <div class="prob-head">
             <span class="sub prob-q" style="margin:0">(2)</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
-          <p class="formula">y ＝ (1 − x)<sup>3</sup></p>
+          <p class="formula"><math display="block"><mi>y</mi><mo>=</mo><msup><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mi>x</mi><mo>)</mo></mrow><mn>3</mn></msup></math></p>
           <div class="step hint">
             <h3>ヒント 1 ― 合成関数として微分する</h3>
-            <p>(1 − x)<sup>3</sup> は「かっこの中身が 1 − x」の3乗。微分するときは、3乗の微分のあとに<b>中身の微分 (1 − x)′ ＝ −1 を掛ける</b>ことを忘れずに。</p>
-            <p class="formula" style="margin-bottom:10px">y′ ＝ 3(1 − x)<sup>2</sup> · (−1) ＝ −3(1 − x)<sup>2</sup></p>
+            <p><math><msup><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mi>x</mi><mo>)</mo></mrow><mn>3</mn></msup></math> は「かっこの中身が 1 − x」の3乗。<br>微分するときは、3乗の微分のあとに<b>中身の微分<math><mo>(</mo><mn>1</mn><mo>−</mo><mi>x</mi><mo>)</mo><mo>′</mo><mo>=</mo><mo>−</mo><mn>1</mn></math>を掛ける</b>ことを忘れずに。</p>
+            <p class="cite"><span class="cite-tag">使う公式</span>［かっこの3乗の微分］ <math><mi>y</mi><mi>′</mi><mo>=</mo><mn>3</mn><msup><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mi>x</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>·</mo><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo><mo>=</mo><mo>−</mo><mn>3</mn><msup><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mi>x</mi><mo>)</mo></mrow><mn>2</mn></msup></math>。3乗の微分のあとに中身の微分 −1 を掛けて、y′ を作る。</p><p class="formula" style="margin-bottom:10px"><math display="block"><mi>y</mi><mi>′</mi><mo>=</mo><mn>3</mn><msup><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mi>x</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>·</mo><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo><mo>=</mo><mo>−</mo><mn>3</mn><msup><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mi>x</mi><mo>)</mo></mrow><mn>2</mn></msup></math></p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― y′ の符号を調べる</h3>
-            <p>(1 − x)<sup>2</sup> は2乗だから、x がどんな値でも <b>0 以上</b>。したがって y′ ＝ −3(1 − x)<sup>2</sup> の符号はどうなるか考えよう。</p>
-            <p>また、y′ ＝ 0 になるのは x ＝ 1 のときだけだが、その<b>前後で符号が変わるかどうか</b>も確かめよう。これが極値の有無を決める。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>［2乗は 0 以上］ <math><msup><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mi>x</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>≧</mo><mn>0</mn></math>。2乗の部分が 0 以上であることから、y′ の符号を決める。</p><p><math><msup><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mi>x</mi><mo>)</mo></mrow><mn>2</mn></msup></math> は2乗だから、x がどんな値でも <b>0 以上</b>。したがって<math><mi>y</mi><mi>′</mi><mo>=</mo><mo>−</mo><mn>3</mn><msup><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mi>x</mi><mo>)</mo></mrow><mn>2</mn></msup></math> の符号はどうなるか考えよう。</p>
+            <p>また、<math><mi>y</mi><mi>′</mi><mo>=</mo><mn>0</mn></math>になるのは<math><mi>x</mi><mo>=</mo><mn>1</mn></math>のときだけだが、その<b>前後で符号が変わるかどうか</b>も確かめよう。<br>これが極値の有無を決める。</p>
           </div>
           <div class="step answer">
             <h3>解答 (2)</h3>
             <p class="big">常に減少し、極値はない</p>
-            <p>y′ ＝ −3(1 − x)<sup>2</sup> ≦ 0 で、y′ ＝ 0 となる x ＝ 1 の前後でも y′ の符号は − のまま変わらない。増減表は：</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>［極値の判定（符号の変化）］ <math><msup><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mi>x</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>≧</mo><mn>0</mn></math>。x＝1 の前後で符号が変わらないことから、極値がないと判断する。</p><p><math><mi>y</mi><mi>′</mi><mo>=</mo><mo>−</mo><mn>3</mn><msup><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mi>x</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>≦</mo><mn>0</mn></math>で、<math><mi>y</mi><mi>′</mi><mo>=</mo><mn>0</mn></math>となる<math><mi>x</mi><mo>=</mo><mn>1</mn></math>の前後でも y′ の符号は − のまま変わらない。<br>増減表は：</p>
             <table class="ztable" aria-label="補充4 (2) の増減表">
               <tr><th>x</th><td>…</td><td>1</td><td>…</td></tr>
               <tr><th>y′</th><td class="sgn">−</td><td>0</td><td class="sgn">−</td></tr>
               <tr><th>y</th><td>↘</td><td>0</td><td>↘</td></tr>
             </table>
             <p>よって y は<b>常に減少</b>し、<b>極値をとらない</b>。</p>
-            <p class="note"><b>ポイント：</b>「y′ ＝ 0 になる点がある」ことと「極値をとる」ことは別物。<b>符号が切り替わらなければ極値ではない</b>。ここが (1) との決定的な違いだよ。</p>
+            <p class="note"><b>ポイント：</b>「<math><mi>y</mi><mi>′</mi><mo>=</mo><mn>0</mn></math>になる点がある」ことと「極値をとる」ことは別物。<br><b>符号が切り替わらなければ極値ではない</b>。ここが (1) との決定的な違いだよ。</p>
           </div>
           <p class="prob-done">(2) クリア！　補充4 はこれで完了。次は補充5へ。</p>
         </div>
       </section>
 
       <!-- ===== 補充5 ===== -->
-      <section class="card prob" id="prob-q5" data-flow="q5" data-label="補充5">
+      <section class="nofig card prob" id="prob-q5" data-flow="q5" data-label="補充5">
         <div class="prob-head">
           <span class="prob-tag">補充 5</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
         <div class="qside">
-        <p class="prob-q">関数 f(x) ＝ x<sup>3</sup> ＋ ax<sup>2</sup> ＋ bx ＋ 1 が x ＝ −1 で極大値、x ＝ 3 で極小値をとるとき、定数 a、b の値と、極大値・極小値を求めよ。</p>
+        <p class="prob-q">関数<math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mi>a</mi><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>b</mi><mi>x</mi><mo>+</mo><mn>1</mn></math>が<math><mi>x</mi><mo>=</mo><mo>−</mo><mn>1</mn></math>で極大値、<math><mi>x</mi><mo>=</mo><mn>3</mn></math>で極小値をとるとき、定数 a、b の値と、極大値・極小値を求めよ。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 1 ― 極値をとる点では f′(x) ＝ 0</h3>
-          <p>まず導関数を作る：<b>f′(x) ＝ 3x<sup>2</sup> ＋ 2ax ＋ b</b>。</p>
-          <p>x ＝ −1 と x ＝ 3 で極値をとるのだから、この2点では <b>f′(−1) ＝ 0、f′(3) ＝ 0</b> が成り立つ。この2つの式を書き出してみよう。</p>
+          <h3>ヒント 1 ― 極値をとる点では<math><mi>f</mi><mi>′</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mn>0</mn></math></h3>
+          <p class="cite"><span class="cite-tag">使う性質</span>［極値をとる点では f′(x)＝0］ <math><mi>f</mi><mi>′</mi><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo><mo>=</mo><mn>0</mn><mo>,</mo><mi>f</mi><mi>′</mi><mo>(</mo><mn>3</mn><mo>)</mo><mo>=</mo><mn>0</mn></math>。極大・極小をとる2点でこの条件を使い、a、b の式を作る。</p><p>まず導関数を作る：<b><math><mi>f</mi><mi>′</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>a</mi><mi>x</mi><mo>+</mo><mi>b</mi></math></b>。</p>
+          <p><math><mi>x</mi><mo>=</mo><mo>−</mo><mn>1</mn></math>と<math><mi>x</mi><mo>=</mo><mn>3</mn></math>で極値をとるのだから、この2点では <b><math><mi>f</mi><mi>′</mi><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo><mo>=</mo><mn>0</mn></math>、<math><mi>f</mi><mi>′</mi><mo>(</mo><mn>3</mn><mo>)</mo><mo>=</mo><mn>0</mn></math></b> が成り立つ。<br>この2つの式を書き出してみよう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 連立方程式を解く</h3>
-          <p>f′(−1) ＝ 3 − 2a ＋ b ＝ 0、f′(3) ＝ 27 ＋ 6a ＋ b ＝ 0 の2式ができる。</p>
-          <p>2式の辺々を引くと b が消えて a だけの式になる。まず a を求め、次にどちらかの式に戻して b を求めよう。</p>
+          <p class="cite"><span class="cite-tag">使う性質</span>［極値をとる点では f′(x)＝0］ <math><mi>f</mi><mi>′</mi><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo><mo>=</mo><mn>0</mn><mo>,</mo><mi>f</mi><mi>′</mi><mo>(</mo><mn>3</mn><mo>)</mo><mo>=</mo><mn>0</mn></math>。この2式を連立方程式として解き、a と b を求める。</p><p><math><mi>f</mi><mi>′</mi><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo><mo>=</mo><mn>3</mn><mo>−</mo><mn>2</mn><mi>a</mi><mo>+</mo><mi>b</mi><mo>=</mo><mn>0</mn></math>、<math><mi>f</mi><mi>′</mi><mo>(</mo><mn>3</mn><mo>)</mo><mo>=</mo><mn>27</mn><mo>+</mo><mn>6</mn><mi>a</mi><mo>+</mo><mi>b</mi><mo>=</mo><mn>0</mn></math>の2式ができる。</p>
+          <p>2式の辺々を引くと b が消えて a だけの式になる。<br>まず a を求め、次にどちらかの式に戻して <br>b を求めよう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 3 ― 極大値・極小値を計算する</h3>
-          <p>a、b が決まれば f′(x) ＝ 3x<sup>2</sup> − 6x − 9 ＝ 3(x ＋ 1)(x − 3) と因数分解でき、確かに x ＝ −1 で「増加 → 減少」（極大）、x ＝ 3 で「減少 → 増加」（極小）になることが確かめられる。</p>
-          <p>あとは f(−1) と f(3) を、元の f(x) に a、b の値を代入して計算しよう。f(−1) ＝ −1 ＋ a − b ＋ 1、f(3) ＝ 27 ＋ 9a ＋ 3b ＋ 1 だ。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span>［導関数］ <math><mi>f</mi><mi>′</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>a</mi><mi>x</mi><mo>+</mo><mi>b</mi></math>。決まった a、b で導関数を因数分解し、増減の切り替わりを確かめる。</p><p>a、b が決まれば<math><mi>f</mi><mi>′</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>6</mn><mi>x</mi><mo>−</mo><mn>9</mn><mo>=</mo><mn>3</mn><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo><mo>(</mo><mi>x</mi><mo>−</mo><mn>3</mn><mo>)</mo></math>と因数分解でき、確かに<math><mi>x</mi><mo>=</mo><mo>−</mo><mn>1</mn></math>で「増加 → 減少」（極大）、<math><mi>x</mi><mo>=</mo><mn>3</mn></math>で「減少 → 増加」（極小）になることが確かめられる。</p>
+          <p>あとは f(−1) と f(3) を、<br>元の f(x) に a、b の値を代入して計算しよう。<math><mi>f</mi><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo><mo>=</mo><mo>−</mo><mn>1</mn><mo>+</mo><mi>a</mi><mo>−</mo><mi>b</mi><mo>+</mo><mn>1</mn></math>、<math><mi>f</mi><mo>(</mo><mn>3</mn><mo>)</mo><mo>=</mo><mn>27</mn><mo>+</mo><mn>9</mn><mi>a</mi><mo>+</mo><mn>3</mn><mi>b</mi><mo>+</mo><mn>1</mn></math>だ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
-          <p class="big">a ＝ −3、b ＝ −9、極大値 12、極小値 −26</p>
-          <p>f′(−1) ＝ 0、f′(3) ＝ 0 より、3 − 2a ＋ b ＝ 0 …①、27 ＋ 6a ＋ b ＝ 0 …②。② − ① を計算すると 24 ＋ 8a ＝ 0 より <b>a ＝ −3</b>。① に代入して 3 ＋ 6 ＋ b ＝ 0 より <b>b ＝ −9</b>。</p>
-          <p>f(x) ＝ x<sup>3</sup> − 3x<sup>2</sup> − 9x ＋ 1 だから、極大値 f(−1) ＝ −1 − 3 ＋ 9 ＋ 1 ＝ <b>12</b>、極小値 f(3) ＝ 27 − 27 − 27 ＋ 1 ＝ <b>−26</b>。</p>
-          <p class="note"><b>ポイント：</b>「x ＝ α で極値をとる」は <b>f′(α) ＝ 0</b> と翻訳するのが第一歩（補充2と同じ発想）。ただし f′ ＝ 0 は必要条件なので、最後に増減の切り替わり（符号の変化）まで確認して初めて「極大・極小」と言える。</p>
+          <p class="big"><math><mi>a</mi><mo>=</mo><mo>−</mo><mn>3</mn></math>、<math><mi>b</mi><mo>=</mo><mo>−</mo><mn>9</mn></math>、極大値 12、極小値 −26</p>
+          <p class="cite"><span class="cite-tag">使う性質</span>［極値をとる点では f′(x)＝0］ <math><mi>f</mi><mi>′</mi><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo><mo>=</mo><mn>0</mn><mo>,</mo><mi>f</mi><mi>′</mi><mo>(</mo><mn>3</mn><mo>)</mo><mo>=</mo><mn>0</mn></math>。この条件から作った2式を解いて a、b を決め、極値を計算する。</p><p><math><mi>f</mi><mi>′</mi><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo><mo>=</mo><mn>0</mn></math>、<math><mi>f</mi><mi>′</mi><mo>(</mo><mn>3</mn><mo>)</mo><mo>=</mo><mn>0</mn></math>より、<math><mn>3</mn><mo>−</mo><mn>2</mn><mi>a</mi><mo>+</mo><mi>b</mi><mo>=</mo><mn>0</mn><mo>…</mo><mo>①</mo></math>、<math><mn>27</mn><mo>+</mo><mn>6</mn><mi>a</mi><mo>+</mo><mi>b</mi><mo>=</mo><mn>0</mn><mo>…</mo><mo>②</mo></math>。② − ① を計算すると<math><mn>24</mn><mo>+</mo><mn>8</mn><mi>a</mi><mo>=</mo><mn>0</mn></math>より <b><math><mi>a</mi><mo>=</mo><mo>−</mo><mn>3</mn></math></b>。① に代入して<math><mn>3</mn><mo>+</mo><mn>6</mn><mo>+</mo><mi>b</mi><mo>=</mo><mn>0</mn></math>より <b><math><mi>b</mi><mo>=</mo><mo>−</mo><mn>9</mn></math></b>。</p>
+          <p><math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>9</mn><mi>x</mi><mo>+</mo><mn>1</mn></math>だから、極大値<math><mi>f</mi><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo><mo>=</mo><mo>−</mo><mn>1</mn><mo>−</mo><mn>3</mn><mo>+</mo><mn>9</mn><mo>+</mo><mn>1</mn><mo>=</mo></math><b>12</b>、極小値<math><mi>f</mi><mo>(</mo><mn>3</mn><mo>)</mo><mo>=</mo><mn>27</mn><mo>−</mo><mn>27</mn><mo>−</mo><mn>27</mn><mo>+</mo><mn>1</mn><mo>=</mo></math><b>−26</b>。</p>
+          <p class="note"><b>ポイント：</b>「<math><mi>x</mi><mo>=</mo><mi>α</mi></math>で極値をとる」は <b><math><mi>f</mi><mi>′</mi><mo>(</mo><mi>α</mi><mo>)</mo><mo>=</mo><mn>0</mn></math></b> と翻訳するのが第一歩（補充2と同じ発想）。<br>ただし<math><mi>f</mi><mi>′</mi><mo>=</mo><mn>0</mn></math>は必要条件なので、<br>最後に増減の切り替わり（符号の変化）まで確認して<br>初めて「極大・極小」と言える。</p>
         </div>
         <p class="prob-done">補充5 クリア！　次は補充6へ。</p>
       </section>
@@ -669,7 +725,7 @@
           <span class="prob-state">ヒント 0 / 4</span>
         </div>
         <div class="qside">
-        <p class="prob-q">底面の直径と高さの和が 18 cm である直円柱がある。<br />(1) 底面の半径を x cm とするとき、この円柱の体積 V cm<sup>3</sup> を x の式で表せ。<br />(2) V が最大になるときの円柱の高さを求めよ。</p>
+        <p class="prob-q">底面の直径と高さの和が 18 cm である直円柱がある。<br />(1) 底面の半径を x cm とするとき、この円柱の体積<math><mi>V</mi><mi>c</mi><msup><mi>m</mi><mn>3</mn></msup></math> を x の式で表せ。<br />(2) V が最大になるときの円柱の高さを求めよ。</p>
         <figure>
           <div class="figbox">
             <svg viewBox="0 0 384 252" role="img" aria-label="底面の半径 x センチメートル、高さ 18 引く 2x センチメートルの直円柱の図" style="max-width:384px;margin:0 auto">
@@ -695,68 +751,68 @@
               <text class="cyl-txt" x="192" y="238" font-size="15" text-anchor="middle">直径 ＋ 高さ ＝ 18 cm</text>
             </svg>
           </div>
-          <figcaption>底面の半径が x cm なら、直径は 2x cm。直径と高さの和が 18 cm だから、高さは (18 − 2x) cm と表せる。</figcaption>
+          <figcaption>底面の半径が x cm なら、<br>直径は 2x cm。直径と高さの和が 18 cm だから、<br>高さは (18 − 2x) cm と表せる。</figcaption>
         </figure>
         </div>
         <div class="step hint">
           <h3>ヒント 1 ― (1) 高さを x で表す</h3>
-          <p>半径が x cm だから直径は <b>2x cm</b>。「直径 ＋ 高さ ＝ 18」より、高さ ＝ 18 − 2x（cm）と表せる。</p>
-          <p>これで、円柱の大きさを決める量がすべて x だけで表せた。</p>
+          <p class="cite"><span class="cite-tag">使う定義</span>［直径は半径の2倍］ <math><mtext>直径</mtext><mo>=</mo><mn>2</mn><mi>x</mi></math>。半径を2倍して直径を x で表し、高さを 18−2x と書く。</p><p>半径が x cm だから直径は <b>2x cm</b>。「直径 ＋ 高さ<math><mo>=</mo><mn>18</mn></math>」より、高さ<math><mo>=</mo><mn>18</mn><mo>−</mo><mn>2</mn><mi>x</mi><mo>(</mo><mi>c</mi><mi>m</mi><mo>)</mo></math>と表せる。</p>
+          <p>これで、<br>円柱の大きさを決める量がすべて x だけで表せた。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― (1) 体積の公式に当てはめる</h3>
-          <p>円柱の体積は <b>V ＝ π ×（半径）<sup>2</sup> × 高さ</b>。</p>
-          <p>半径 x、高さ 18 − 2x を当てはめて、V の式を書いてみよう。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span>［円柱の体積］ <math><mi>V</mi><mo>=</mo><mi>π</mi><msup><mi>x</mi><mn>2</mn></msup><mo>(</mo><mn>18</mn><mo>−</mo><mn>2</mn><mi>x</mi><mo>)</mo></math>。半径 x と高さ 18−2x を当てはめて、体積を x の式で表す。</p><p>円柱の体積は <b><math><mi>V</mi><mo>=</mo><mi>π</mi><mo>×</mo><mo>(</mo></math>半径<math><msup><mo>)</mo><mn>2</mn></msup><mo>×</mo></math>高さ</b>。</p>
+          <p>半径 x、高さ 18 − 2x を当てはめて、<br>V の式を書いてみよう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 3 ― (2) V を微分する</h3>
-          <p>V ＝ −2πx<sup>3</sup> ＋ 18πx<sup>2</sup> と展開してから微分すると、V′ ＝ −6πx<sup>2</sup> ＋ 36πx ＝ <b>−6πx(x − 6)</b>。</p>
-          <p>V′ ＝ 0 になる x を求めよう。なお、半径と高さが正であることから、x の範囲は <b>0 ＜ x ＜ 9</b> だ（高さ 18 − 2x ＞ 0 より）。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span>［導関数（x³、x² の微分）］ <math><mi>V</mi><mi>′</mi><mo>=</mo><mo>−</mo><mn>6</mn><mi>π</mi><mi>x</mi><mo>(</mo><mi>x</mi><mo>−</mo><mn>6</mn><mo>)</mo></math>。V を展開して微分し、V′＝0 になる x を求める。</p><p><math><mi>V</mi><mo>=</mo><mo>−</mo><mn>2</mn><mi>π</mi><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mn>18</mn><mi>π</mi><msup><mi>x</mi><mn>2</mn></msup></math> と展開してから微分すると、<math><mi>V</mi><mi>′</mi><mo>=</mo><mo>−</mo><mn>6</mn><mi>π</mi><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>36</mn><mi>π</mi><mi>x</mi><mo>=</mo></math><b><math><mo>−</mo><mn>6</mn><mi>π</mi><mi>x</mi><mo>(</mo><mi>x</mi><mo>−</mo><mn>6</mn><mo>)</mo></math></b>。</p>
+          <p><math><mi>V</mi><mi>′</mi><mo>=</mo><mn>0</mn></math>になる x を求めよう。<br>なお、半径と高さが正であることから、<br>x の範囲は <b>0 ＜ x ＜ 9</b> だ（高さ 18 − 2x ＞ 0 より）。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 4 ― (2) 増減を調べて「高さ」に直す</h3>
-          <p>0 ＜ x ＜ 6 では V′ ＞ 0（増加）、6 ＜ x ＜ 9 では V′ ＜ 0（減少）。だから V が最大になる x が分かる。</p>
-          <p>最後に、問題で聞かれているのは x ではなく<b>高さ</b>。高さ ＝ 18 − 2x に、求めた x を代入して答えよう。</p>
+          <p class="cite"><span class="cite-tag">使う性質</span>［増減と最大の判定］ <math><mi>y</mi><mi>′</mi><mo>&gt;</mo><mn>0</mn><mtext>で増加</mtext><mo>,</mo><mi>y</mi><mi>′</mi><mo>&lt;</mo><mn>0</mn><mtext>で減少</mtext></math>。V′ の符号の切り替わりから最大になる x を決め、高さに直す。</p><p>0 ＜ x ＜ 6 では V′ ＞ 0（増加）、<br>6 ＜ x ＜ 9 では V′ ＜ 0（減少）。<br>だから V が最大になる x が分かる。</p>
+          <p>最後に、<br>問題で聞かれているのは x ではなく<b>高さ</b>。高さ<math><mo>=</mo><mn>18</mn><mo>−</mo><mn>2</mn><mi>x</mi></math>に、求めた x を代入して答えよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
-          <p class="big">(1) V ＝ πx<sup>2</sup>(18 − 2x)　　(2) 高さ 6 cm のとき最大</p>
-          <p>(1) 高さは 18 − 2x（cm）だから、V ＝ πx<sup>2</sup>(18 − 2x) ＝ <b>−2πx<sup>3</sup> ＋ 18πx<sup>2</sup></b>（0 ＜ x ＜ 9）。</p>
-          <p>(2) V′ ＝ −6πx(x − 6) より、V は x ＝ 6 で最大になる。このとき高さは 18 − 2 · 6 ＝ <b>6 cm</b>（半径も 6 cm で、直径 12 cm ＋ 高さ 6 cm ＝ 18 cm ✓）。</p>
-          <p class="note"><b>ポイント：</b>最大・最小の応用問題の型は「<b>条件を使って1つの変数で表す → 微分する → 増減を調べる</b>」。変数の範囲（ここでは 0 ＜ x ＜ 9）を書き添えることと、聞かれた量（高さ）で答えることを忘れずに。</p>
+          <p class="big"><math><mo>(</mo><mn>1</mn><mo>)</mo><mi>V</mi><mo>=</mo><mi>π</mi><msup><mi>x</mi><mn>2</mn></msup><mo>(</mo><mn>18</mn><mo>−</mo><mn>2</mn><mi>x</mi><mo>)</mo></math>　　(2) 高さ 6 cm のとき最大</p>
+          <p class="cite"><span class="cite-tag">使う公式</span>［円柱の体積］ <math><mi>V</mi><mo>=</mo><mi>π</mi><msup><mi>x</mi><mn>2</mn></msup><mo>(</mo><mn>18</mn><mo>−</mo><mn>2</mn><mi>x</mi><mo>)</mo></math>。この式を微分して増減を調べ、最大になるときの高さを求める。</p><p>(1) 高さは 18 − 2x（cm）だから、<br><math><mi>V</mi><mo>=</mo><mi>π</mi><msup><mi>x</mi><mn>2</mn></msup><mo>(</mo><mn>18</mn><mo>−</mo><mn>2</mn><mi>x</mi><mo>)</mo><mo>=</mo></math><b><math><mo>−</mo><mn>2</mn><mi>π</mi><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mn>18</mn><mi>π</mi><msup><mi>x</mi><mn>2</mn></msup></math></b><math><mo>(</mo><mn>0</mn><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mn>9</mn><mo>)</mo></math>。</p>
+          <p><math><mo>(</mo><mn>2</mn><mo>)</mo><mi>V</mi><mi>′</mi><mo>=</mo><mo>−</mo><mn>6</mn><mi>π</mi><mi>x</mi><mo>(</mo><mi>x</mi><mo>−</mo><mn>6</mn><mo>)</mo></math>より、V は<math><mi>x</mi><mo>=</mo><mn>6</mn></math>で最大になる。このとき高さは<math><mn>18</mn><mo>−</mo><mn>2</mn><mo>·</mo><mn>6</mn><mo>=</mo></math><b>6 cm</b><math><mo>(</mo></math>半径も 6 cm で、直径 12 cm ＋ 高さ<math><mn>6</mn><mi>c</mi><mi>m</mi><mo>=</mo><mn>18</mn><mi>c</mi><mi>m</mi><mo>✓</mo><mo>)</mo></math>。</p>
+          <p class="note"><b>ポイント：</b>最大・最小の応用問題の型は「<b>条件を使って1つの変数で表す → 微分する → 増減を調べる</b>」。変数の範囲（ここでは 0 ＜ x ＜ 9）を書き添えることと、<br>聞かれた量（高さ）で答えることを忘れずに。</p>
         </div>
         <p class="prob-done">補充6 クリア！　次は補充7へ。</p>
       </section>
 
       <!-- ===== 補充7 ===== -->
-      <section class="card prob" id="prob-q7" data-flow="q7" data-label="補充7">
+      <section class="nofig card prob" id="prob-q7" data-flow="q7" data-label="補充7">
         <div class="prob-head">
           <span class="prob-tag">補充 7</span>
           <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
         <div class="qside">
-        <p class="prob-q">方程式 x<sup>3</sup> ＋ 3x<sup>2</sup> ＝ a が異なる3個の実数解をもつとき、定数 a の値の範囲を求めよ。</p>
+        <p class="prob-q">方程式<math><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>=</mo><mi>a</mi></math>が異なる3個の実数解をもつとき、定数 a の値の範囲を求めよ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 1 ― グラフの共有点として読み替える</h3>
-          <p>左辺を f(x) ＝ x<sup>3</sup> ＋ 3x<sup>2</sup> とおく。方程式の実数解は、曲線 <b>y ＝ f(x)</b> と直線 <b>y ＝ a</b> の<b>共有点の x 座標</b>と一致する。</p>
-          <p>「異なる3個の実数解」＝「共有点が3個」。だから、y ＝ f(x) のグラフの形を調べればよい。</p>
+          <p class="cite"><span class="cite-tag">使う性質</span>［解と共有点の関係］ <math><mi>y</mi><mo>=</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>,</mo><mi>y</mi><mo>=</mo><mi>a</mi></math>。方程式の解を、曲線と直線の共有点の x 座標として読み替える。</p><p>左辺を<math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup></math> とおく。方程式の実数解は、曲線 <b><math><mi>y</mi><mo>=</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></math></b> と直線 <b><math><mi>y</mi><mo>=</mo><mi>a</mi></math></b> の<b>共有点の x 座標</b>と一致する。</p>
+          <p>「異なる3個の実数解」＝「共有点が3個」。<br>だから、<math><mi>y</mi><mo>=</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>のグラフの形を調べればよい。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― f(x) の極大値・極小値を求める</h3>
-          <p>f′(x) ＝ 3x<sup>2</sup> ＋ 6x ＝ <b>3x(x ＋ 2)</b>。f′(x) ＝ 0 となる x は 2つある。</p>
-          <p>増減を調べると、x ＝ −2 で極大、x ＝ 0 で極小になる。f(−2) と f(0) の値をそれぞれ計算しよう。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span>［導関数］ <math><mi>f</mi><mi>′</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>6</mn><mi>x</mi><mo>=</mo><mn>3</mn><mi>x</mi><mo>(</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo></math>。f を微分して増減を調べ、極大値と極小値を求める。</p><p><math><mi>f</mi><mi>′</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>6</mn><mi>x</mi><mo>=</mo></math><b>3x(x ＋ 2)</b>。<math><mi>f</mi><mi>′</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mn>0</mn></math>となる x は 2つある。</p>
+          <p>増減を調べると、<math><mi>x</mi><mo>=</mo><mo>−</mo><mn>2</mn></math>で極大、<math><mi>x</mi><mo>=</mo><mn>0</mn></math>で極小になる。<br>f(−2) と f(0) の値をそれぞれ計算しよう。</p>
         </div>
         <div class="step hint">
-          <h3>ヒント 3 ― 直線 y ＝ a の位置を考える</h3>
-          <p>直線 y ＝ a は水平な直線で、a の値で上下に動く。</p>
-          <p>この直線が曲線と3点で交わるのは、a が<b>極小値より大きく、極大値より小さい</b>ときだけだ。ヒント2で求めた2つの値をはさむ範囲として、a の条件を書いてみよう。</p>
+          <h3>ヒント 3 ― 直線<math><mi>y</mi><mo>=</mo><mi>a</mi></math>の位置を考える</h3>
+          <p>直線<math><mi>y</mi><mo>=</mo><mi>a</mi></math>は水平な直線で、<br>a の値で上下に動く。</p>
+          <p class="cite"><span class="cite-tag">使う性質</span>［共有点が3個になる条件］ <math><mn>0</mn><mo>&lt;</mo><mi>a</mi><mo>&lt;</mo><mn>4</mn></math>。極小値と極大値の間に a があるときだけ、共有点が3個になる。</p><p>この直線が曲線と3点で交わるのは、a が<b>極小値より大きく、極大値より小さい</b>ときだけだ。<br>ヒント2で求めた2つの値をはさむ範囲として、<br>a の条件を書いてみよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
           <p class="big">0 ＜ a ＜ 4</p>
-          <p>f′(x) ＝ 3x(x ＋ 2) より、f(x) は x ＝ −2 で極大値 f(−2) ＝ −8 ＋ 12 ＝ <b>4</b>、x ＝ 0 で極小値 f(0) ＝ <b>0</b> をとる。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span>［導関数と極値］ <math><mi>f</mi><mi>′</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>6</mn><mi>x</mi><mo>=</mo><mn>3</mn><mi>x</mi><mo>(</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo></math>。この導関数から極大値 4 と極小値 0 を求め、a の範囲を決める。</p><p><math><mi>f</mi><mi>′</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mn>3</mn><mi>x</mi><mo>(</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo></math>より、f(x) は<math><mi>x</mi><mo>=</mo><mo>−</mo><mn>2</mn></math>で極大値<math><mi>f</mi><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo><mo>=</mo><mo>−</mo><mn>8</mn><mo>+</mo><mn>12</mn><mo>=</mo></math><b>4</b>、<math><mi>x</mi><mo>=</mo><mn>0</mn></math>で極小値<math><mi>f</mi><mo>(</mo><mn>0</mn><mo>)</mo><mo>=</mo></math><b>0</b> をとる。</p>
           <figure>
             <div class="figbox">
               <svg class="graph" viewBox="0 0 260 330" data-ox="158" data-oy="252" data-s="42" data-gx0="-3.4" data-gx1="1.9" data-gy0="-1.7" data-gy1="5.7" data-asymy="4" role="img" aria-label="y＝xの3乗＋3xの2乗 のグラフ。極大値4と極小値0の間に直線 y＝a があると共有点は3個" style="max-width:320px;margin:0 auto">
@@ -772,10 +828,10 @@
                 <text class="glabel" data-x="0" data-y="0" data-dx="9" data-dy="20" font-size="13">極小値 0</text>
               </svg>
             </div>
-            <figcaption>直線 y ＝ a が極小値 0 と極大値 4 の間（0 ＜ a ＜ 4）にあるときだけ、曲線との共有点が3個できる。a ＝ 0 や a ＝ 4 のときは共有点が2個（うち1つは接点）になってしまう。</figcaption>
+            <figcaption>直線<math><mi>y</mi><mo>=</mo><mi>a</mi></math>が極小値 0 と極大値 4 の間（0 ＜ a ＜ 4）にあるときだけ、<br>曲線との共有点が3個できる。<math><mi>a</mi><mo>=</mo><mn>0</mn></math>や<math><mi>a</mi><mo>=</mo><mn>4</mn></math>のときは共有点が2個<br>（うち1つは接点）になってしまう。</figcaption>
           </figure>
           <p>よって、共有点が3個になるのは <b>0 ＜ a ＜ 4</b> のとき。</p>
-          <p class="note"><b>ポイント：</b>「方程式の解の個数」の問題は、<b>グラフと直線の共有点の個数</b>に読み替える。境目は必ず極大値・極小値のところで生まれるので、等号（a ＝ 0、a ＝ 4）が入るかどうかを接する場合で確かめよう。</p>
+          <p class="note"><b>ポイント：</b>「方程式の解の個数」の問題は、<b>グラフと直線の共有点の個数</b>に読み替える。<br>境目は必ず極大値・極小値のところで生まれるので、等号<math><mo>(</mo><mi>a</mi><mo>=</mo><mn>0</mn></math>、<math><mi>a</mi><mo>=</mo><mn>4</mn><mo>)</mo></math>が入るかどうかを接する場合で確かめよう。</p>
         </div>
         <p class="prob-done">補充7 クリア！　第2節はここまで。次は第3節の補充8へ。</p>
       </section>
@@ -788,7 +844,7 @@
       </div>
 
       <!-- ===== 補充8 ===== -->
-      <section class="card prob" id="prob-q8">
+      <section class="nofig card prob" id="prob-q8">
         <div class="prob-head">
           <span class="prob-tag">補充 8</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
@@ -803,74 +859,80 @@
         </div>
 
         <!-- 補充8 (1) -->
-        <div class="tabpanel show" id="panel-q8-1" data-flow="q8-1" data-label="補充8 (1)">
+        <div class="nofig tabpanel show" id="panel-q8-1" data-flow="q8-1" data-label="補充8 (1)">
           <div class="prob-head">
             <span class="sub prob-q" style="margin:0">(1)</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
-          <p class="formula"><span class="int"><span class="int-s">∫</span><span class="int-lims"><span class="int-u">1</span><span class="int-l">−1</span></span></span> (3x − 1)<sup>2</sup> dx</p>
+          <p class="formula"><math display="block"><msubsup><mo class="int-op">∫</mo><mrow><mo>−</mo><mn>1</mn></mrow><mn>1</mn></msubsup><msup><mrow><mo>(</mo><mn>3</mn><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup><mi>d</mi><mi>x</mi></math></p>
           <div class="step hint">
             <h3>ヒント 1 ― かっこを展開する</h3>
-            <p>(3x − 1)<sup>2</sup> のままでは積分できないので、先に展開しよう。(a − b)<sup>2</sup> ＝ a<sup>2</sup> − 2ab ＋ b<sup>2</sup> の形で、<b>9x<sup>2</sup> − 6x ＋ 1</b> になることを確かめよう。</p>
+            <p class="cite"><span class="cite-tag">使う公式</span>［展開公式］ <math><msup><mrow><mo>(</mo><mn>3</mn><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>9</mn><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>6</mn><mi>x</mi><mo>+</mo><mn>1</mn></math>。かっこを展開して、項ごとに積分できる形に直す。</p><p><math><msup><mrow><mo>(</mo><mn>3</mn><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup></math> のままでは積分できないので、<br>先に展開しよう。<math><msup><mrow><mo>(</mo><mi>a</mi><mo>−</mo><mi>b</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mi>a</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>a</mi><mi>b</mi><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup></math> の形で、<b><math><mn>9</mn><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>6</mn><mi>x</mi><mo>+</mo><mn>1</mn></math></b> になることを確かめよう。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 項ごとに積分する</h3>
-            <p>展開した式を項ごとに積分すると、原始関数は</p>
-            <p class="formula" style="margin-bottom:10px">[ 3x<sup>3</sup> − 3x<sup>2</sup> ＋ x ]</p>
-            <p>の形になる。9x<sup>2</sup> の積分が 3x<sup>3</sup>、−6x の積分が −3x<sup>2</sup>、1 の積分が x だ。</p>
+            <p>展開した式を項ごとに積分すると、<br>原始関数は</p>
+            <p class="cite"><span class="cite-tag">使う公式</span>［xⁿ の積分］ <math><mo>[</mo><mn>3</mn><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi><mo>]</mo></math>。各項を積分して、この形の原始関数を作る。</p><p class="formula" style="margin-bottom:10px"><math display="block"><mo>[</mo><mn>3</mn><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi><mo>]</mo></math></p>
+            <p>の形になる。<math><mn>9</mn><msup><mi>x</mi><mn>2</mn></msup></math> の積分が<math><mn>3</mn><msup><mi>x</mi><mn>3</mn></msup></math>、−6x の積分が<math><mo>−</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup></math>、1 の積分が x だ。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 3 ― 上端と下端の値を引く</h3>
-            <p>定積分は「（x ＝ 1 のときの値）−（x ＝ −1 のときの値）」。</p>
-            <p>x ＝ 1 のとき：3 − 3 ＋ 1。x ＝ −1 のとき：−3 − 3 − 1。マイナスの値から引くところで符号に注意して、2つを計算しよう。</p>
+            <p class="cite"><span class="cite-tag">使う定義</span>［定積分の計算］ <math><mo>[</mo><mi>F</mi><mo>(</mo><mi>x</mi><mo>)</mo><msubsup><mo>]</mo><mi>a</mi><mi>b</mi></msubsup><mo>=</mo><mi>F</mi><mo>(</mo><mi>b</mi><mo>)</mo><mo>−</mo><mi>F</mi><mo>(</mo><mi>a</mi><mo>)</mo></math>。上端の値から下端の値を引いて、定積分の値を求める。</p><p>定積分は「<math><mo>(</mo><mi>x</mi><mo>=</mo><mn>1</mn></math>のときの値<math><mo>)</mo><mo>−</mo><mo>(</mo><mi>x</mi><mo>=</mo><mo>−</mo><mn>1</mn></math>のときの値）」。</p>
+            <p><math><mi>x</mi><mo>=</mo><mn>1</mn></math>のとき：3 − 3 ＋ 1。<math><mi>x</mi><mo>=</mo><mo>−</mo><mn>1</mn></math>のとき：−3 − 3 − 1。<br>マイナスの値から引くところで符号に注意して、<br>2つを計算しよう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (1)</h3>
             <p class="big">8</p>
-            <p><span class="int"><span class="int-s">∫</span><span class="int-lims"><span class="int-u">1</span><span class="int-l">−1</span></span></span> (3x − 1)<sup>2</sup> dx ＝ <span class="int"><span class="int-s">∫</span><span class="int-lims"><span class="int-u">1</span><span class="int-l">−1</span></span></span> (9x<sup>2</sup> − 6x ＋ 1) dx ＝ [3x<sup>3</sup> − 3x<sup>2</sup> ＋ x]<span class="ev"><span class="ev-lims"><span class="ev-u">1</span><span class="ev-l">−1</span></span></span> ＝ (3 − 3 ＋ 1) − (−3 − 3 − 1) ＝ 1 − (−7) ＝ <b>8</b>。</p>
-            <p class="note"><b>ポイント：</b>かっこの2乗は<b>展開してから積分</b>するのが基本。下端が負の数のときは、奇数乗・偶数乗の符号に注意し、「引くマイナスはプラス」を落とさないように。</p>
+            <p class="cite"><span class="cite-tag">使う定義</span>［定積分の計算］ <math><mo>[</mo><mi>F</mi><mo>(</mo><mi>x</mi><mo>)</mo><msubsup><mo>]</mo><mi>a</mi><mi>b</mi></msubsup><mo>=</mo><mi>F</mi><mo>(</mo><mi>b</mi><mo>)</mo><mo>−</mo><mi>F</mi><mo>(</mo><mi>a</mi><mo>)</mo></math>。展開して積分し、上端の値から下端の値を引いて計算する。</p><div class="chain-crow">
+<div class="crow"><math displaystyle="true"><msubsup><mo class="int-op">∫</mo><mrow><mo>−</mo><mn>1</mn></mrow><mn>1</mn></msubsup><msup><mrow><mo>(</mo><mn>3</mn><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup><mi>d</mi><mi>x</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mrow><mo>−</mo><mn>1</mn></mrow><mn>1</mn></msubsup><mo>(</mo><mn>9</mn><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>6</mn><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo><mi>d</mi><mi>x</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msubsup><mo class="int-op">∫</mo><mrow><mo>−</mo><mn>1</mn></mrow><mn>1</mn></msubsup><msup><mrow><mo>(</mo><mn>3</mn><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup><mi>d</mi><mi>x</mi></mphantom><mo>=</mo><mo>[</mo><mn>3</mn><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi><msubsup><mo>]</mo><mrow><mo>−</mo><mn>1</mn></mrow><mn>1</mn></msubsup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msubsup><mo class="int-op">∫</mo><mrow><mo>−</mo><mn>1</mn></mrow><mn>1</mn></msubsup><msup><mrow><mo>(</mo><mn>3</mn><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup><mi>d</mi><mi>x</mi></mphantom><mo>=</mo><mo>(</mo><mn>3</mn><mo>−</mo><mn>3</mn><mo>+</mo><mn>1</mn><mo>)</mo><mo>−</mo><mo>(</mo><mo>−</mo><mn>3</mn><mo>−</mo><mn>3</mn><mo>−</mo><mn>1</mn><mo>)</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msubsup><mo class="int-op">∫</mo><mrow><mo>−</mo><mn>1</mn></mrow><mn>1</mn></msubsup><msup><mrow><mo>(</mo><mn>3</mn><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup><mi>d</mi><mi>x</mi></mphantom><mo>=</mo><mn>1</mn><mo>−</mo><mo>(</mo><mo>−</mo><mn>7</mn><mo>)</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><msubsup><mo class="int-op">∫</mo><mrow><mo>−</mo><mn>1</mn></mrow><mn>1</mn></msubsup><msup><mrow><mo>(</mo><mn>3</mn><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup><mi>d</mi><mi>x</mi></mphantom><mo>=</mo><mstyle mathvariant="bold"><mn>8</mn></mstyle><mtext>。</mtext></math></div>
+</div>
+            <p class="note"><b>ポイント：</b>かっこの2乗は<b>展開してから積分</b>するのが基本。<br>下端が負の数のときは、奇数乗・偶数乗の符号に注意し、<br>「引くマイナスはプラス」を落とさないように。</p>
           </div>
           <p class="prob-done">(1) クリア！　(2) のタブも開いてみよう。</p>
         </div>
 
         <!-- 補充8 (2) -->
-        <div class="tabpanel" id="panel-q8-2" data-flow="q8-2" data-label="補充8 (2)">
+        <div class="nofig tabpanel" id="panel-q8-2" data-flow="q8-2" data-label="補充8 (2)">
           <div class="prob-head">
             <span class="sub prob-q" style="margin:0">(2)</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 2</span>
           </div>
-          <p class="formula"><span class="int"><span class="int-s">∫</span><span class="int-lims"><span class="int-u">2</span><span class="int-l">−1</span></span></span> (t<sup>2</sup> − 5t ＋ 4) dt</p>
+          <p class="formula"><math display="block"><msubsup><mo class="int-op">∫</mo><mrow><mo>−</mo><mn>1</mn></mrow><mn>2</mn></msubsup><mo>(</mo><msup><mi>t</mi><mn>2</mn></msup><mo>−</mo><mn>5</mn><mi>t</mi><mo>+</mo><mn>4</mn><mo>)</mo><mi>d</mi><mi>t</mi></math></p>
           <div class="step hint">
             <h3>ヒント 1 ― 原始関数 F(t) を作る</h3>
-            <p>変数が t でもやり方は同じ。項ごとに積分すると</p>
-            <p class="formula" style="margin-bottom:10px">F(t) ＝ <span class="fr"><span class="fr-n">1</span><span class="fr-d">3</span></span>t<sup>3</sup> − <span class="fr"><span class="fr-n">5</span><span class="fr-d">2</span></span>t<sup>2</sup> ＋ 4t</p>
-            <p>t<sup>2</sup> の積分は <span class="fr"><span class="fr-n">1</span><span class="fr-d">3</span></span>t<sup>3</sup>、−5t の積分は −<span class="fr"><span class="fr-n">5</span><span class="fr-d">2</span></span>t<sup>2</sup>（係数 −5 に <span class="fr"><span class="fr-n">1</span><span class="fr-d">2</span></span> が掛かる）になることを確かめよう。</p>
+            <p>変数が t でもやり方は同じ。<br>項ごとに積分すると</p>
+            <p class="cite"><span class="cite-tag">使う公式</span>［tⁿ の積分］ <math><mi>F</mi><mo>(</mo><mi>t</mi><mo>)</mo><mo>=</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><msup><mi>t</mi><mn>3</mn></msup><mo>−</mo><mfrac><mn>5</mn><mn>2</mn></mfrac><msup><mi>t</mi><mn>2</mn></msup><mo>+</mo><mn>4</mn><mi>t</mi></math>。変数が t でも項ごとに積分して、この原始関数を作る。</p><p class="formula" style="margin-bottom:10px"><math display="block"><mi>F</mi><mo>(</mo><mi>t</mi><mo>)</mo><mo>=</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><msup><mi>t</mi><mn>3</mn></msup><mo>−</mo><mfrac><mn>5</mn><mn>2</mn></mfrac><msup><mi>t</mi><mn>2</mn></msup><mo>+</mo><mn>4</mn><mi>t</mi></math></p>
+            <p><math><msup><mi>t</mi><mn>2</mn></msup></math> の積分は <math><mfrac><mn>1</mn><mn>3</mn></mfrac><msup><mi>t</mi><mn>3</mn></msup></math>、−5t の積分は<math><mo>−</mo><mfrac><mn>5</mn><mn>2</mn></mfrac><msup><mi>t</mi><mn>2</mn></msup><mo>(</mo></math>係数 −5 に <math><mfrac><mn>1</mn><mn>2</mn></mfrac></math> が掛かる）になることを確かめよう。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― F(2) と F(−1) を計算して引く</h3>
-            <p>F(2) ＝ <span class="fr"><span class="fr-n">8</span><span class="fr-d">3</span></span> − 10 ＋ 8、F(−1) ＝ −<span class="fr"><span class="fr-n">1</span><span class="fr-d">3</span></span> − <span class="fr"><span class="fr-n">5</span><span class="fr-d">2</span></span> − 4。</p>
-            <p>それぞれを分数のまま計算し、最後に F(2) − F(−1) を求めよう。通分のとき符号ミスに注意。</p>
+            <p class="cite"><span class="cite-tag">使う定義</span>［定積分の計算］ <math><mo>[</mo><mi>F</mi><mo>(</mo><mi>x</mi><mo>)</mo><msubsup><mo>]</mo><mi>a</mi><mi>b</mi></msubsup><mo>=</mo><mi>F</mi><mo>(</mo><mi>b</mi><mo>)</mo><mo>−</mo><mi>F</mi><mo>(</mo><mi>a</mi><mo>)</mo></math>。F(2) から F(−1) を引いて、定積分の値を求める。</p><p><math><mi>F</mi><mo>(</mo><mn>2</mn><mo>)</mo><mo>=</mo><mfrac><mn>8</mn><mn>3</mn></mfrac><mo>−</mo><mn>10</mn><mo>+</mo><mn>8</mn></math>、<math><mi>F</mi><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo><mo>=</mo><mo>−</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>−</mo><mfrac><mn>5</mn><mn>2</mn></mfrac><mo>−</mo><mn>4</mn></math>。</p>
+            <p>それぞれを分数のまま計算し、<br>最後に F(2) − F(−1) を求めよう。<br>通分のとき符号ミスに注意。</p>
           </div>
           <div class="step answer">
             <h3>解答 (2)</h3>
-            <p class="big"><span class="fr"><span class="fr-n">15</span><span class="fr-d">2</span></span></p>
-            <p><span class="int"><span class="int-s">∫</span><span class="int-lims"><span class="int-u">2</span><span class="int-l">−1</span></span></span> (t<sup>2</sup> − 5t ＋ 4) dt ＝ [<span class="fr"><span class="fr-n">1</span><span class="fr-d">3</span></span>t<sup>3</sup> − <span class="fr"><span class="fr-n">5</span><span class="fr-d">2</span></span>t<sup>2</sup> ＋ 4t]<span class="ev"><span class="ev-lims"><span class="ev-u">2</span><span class="ev-l">−1</span></span></span>。F(2) ＝ <span class="fr"><span class="fr-n">8</span><span class="fr-d">3</span></span> − 2 ＝ <span class="fr"><span class="fr-n">2</span><span class="fr-d">3</span></span>、F(−1) ＝ −<span class="fr"><span class="fr-n">1</span><span class="fr-d">3</span></span> − <span class="fr"><span class="fr-n">5</span><span class="fr-d">2</span></span> − 4 ＝ −<span class="fr"><span class="fr-n">41</span><span class="fr-d">6</span></span>。よって、求める値は <span class="fr"><span class="fr-n">2</span><span class="fr-d">3</span></span> − (−<span class="fr"><span class="fr-n">41</span><span class="fr-d">6</span></span>) ＝ <span class="fr"><span class="fr-n">45</span><span class="fr-d">6</span></span> ＝ <b><span class="fr"><span class="fr-n">15</span><span class="fr-d">2</span></span></b>。</p>
-            <p class="note"><b>ポイント：</b>積分する変数が x でなく t でも、計算の進め方はまったく同じ。<b>分数は途中で約分せず、最後にそろえて計算する</b>と符号ミスが減るよ。</p>
+            <p class="big"><math display="block"><mfrac><mn>15</mn><mn>2</mn></mfrac></math></p>
+            <p class="cite"><span class="cite-tag">使う定義</span>［定積分の計算］ <math><mo>[</mo><mi>F</mi><mo>(</mo><mi>x</mi><mo>)</mo><msubsup><mo>]</mo><mi>a</mi><mi>b</mi></msubsup><mo>=</mo><mi>F</mi><mo>(</mo><mi>b</mi><mo>)</mo><mo>−</mo><mi>F</mi><mo>(</mo><mi>a</mi><mo>)</mo></math>。原始関数に両端の値を代入し、その差を計算する。</p><p><math><msubsup><mo class="int-op">∫</mo><mrow><mo>−</mo><mn>1</mn></mrow><mn>2</mn></msubsup><mo>(</mo><msup><mi>t</mi><mn>2</mn></msup><mo>−</mo><mn>5</mn><mi>t</mi><mo>+</mo><mn>4</mn><mo>)</mo><mi>d</mi><mi>t</mi><mo>=</mo><mo>[</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><msup><mi>t</mi><mn>3</mn></msup><mo>−</mo><mfrac><mn>5</mn><mn>2</mn></mfrac><msup><mi>t</mi><mn>2</mn></msup><mo>+</mo><mn>4</mn><mi>t</mi><msubsup><mo>]</mo><mrow><mo>−</mo><mn>1</mn></mrow><mn>2</mn></msubsup></math>。<math><mi>F</mi><mo>(</mo><mn>2</mn><mo>)</mo><mo>=</mo><mfrac><mn>8</mn><mn>3</mn></mfrac><mo>−</mo><mn>2</mn><mo>=</mo><mfrac><mn>2</mn><mn>3</mn></mfrac></math>、<math><mi>F</mi><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo><mo>=</mo><mo>−</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>−</mo><mfrac><mn>5</mn><mn>2</mn></mfrac><mo>−</mo><mn>4</mn><mo>=</mo><mo>−</mo><mfrac><mn>41</mn><mn>6</mn></mfrac></math>。よって、求める値は <math><mfrac><mn>2</mn><mn>3</mn></mfrac><mo>−</mo><mo>(</mo><mo>−</mo><mfrac><mn>41</mn><mn>6</mn></mfrac><mo>)</mo><mo>=</mo><mfrac><mn>45</mn><mn>6</mn></mfrac><mo>=</mo></math><b><math><mfrac><mn>15</mn><mn>2</mn></mfrac></math></b>。</p>
+            <p class="note"><b>ポイント：</b>積分する変数が x でなく t でも、<br>計算の進め方はまったく同じ。<b>分数は途中で約分せず、最後にそろえて計算する</b>と符号ミスが減るよ。</p>
           </div>
           <p class="prob-done">(2) クリア！　補充8 はこれで完了。次は補充9へ。</p>
         </div>
       </section>
 
       <!-- ===== 補充9 ===== -->
-      <section class="card prob" id="prob-q9">
+      <section class="nofig card prob" id="prob-q9">
         <div class="prob-head">
           <span class="prob-tag">補充 9</span>
           <span class="prob-state">下のタブで小問を選んでね</span>
         </div>
         <div class="qside">
-        <p class="prob-q">放物線 y ＝ x<sup>2</sup> と次の放物線で囲まれた図形の面積を求めよ。</p>
+        <p class="prob-q">放物線<math><mi>y</mi><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup></math> と次の放物線で囲まれた図形の面積を求めよ。</p>
         </div>
 
         <div class="tabs" role="tablist" aria-label="補充9の小問">
@@ -879,34 +941,44 @@
         </div>
 
         <!-- 補充9 (1) -->
-        <div class="tabpanel show" id="panel-q9-1" data-flow="q9-1" data-label="補充9 (1)">
+        <div class="nofig tabpanel show" id="panel-q9-1" data-flow="q9-1" data-label="補充9 (1)">
           <div class="prob-head">
             <span class="sub prob-q" style="margin:0">(1)</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
-          <p class="formula">y ＝ −x<sup>2</sup> ＋ 2x ＋ 4</p>
+          <p class="formula"><math display="block"><mi>y</mi><mo>=</mo><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>4</mn></math></p>
           <div class="step hint">
             <h3>ヒント 1 ― 交点の x 座標を求める</h3>
-            <p>囲まれた図形の左右の端は、2つの放物線の<b>交点</b>。y を消去して x<sup>2</sup> ＝ −x<sup>2</sup> ＋ 2x ＋ 4 とおく。</p>
-            <p>整理すると 2x<sup>2</sup> − 2x − 4 ＝ 0、つまり x<sup>2</sup> − x − 2 ＝ 0。因数分解して交点の x 座標を2つ求めよう。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>［交点は2式を等しくおいて求める］ <math><msup><mi>x</mi><mn>2</mn></msup><mo>=</mo><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>4</mn></math>。y を消去してこの方程式を解き、交点の x 座標を求める。</p><p>囲まれた図形の左右の端は、<br>2つの放物線の<b>交点</b>。y を消去して<math><msup><mi>x</mi><mn>2</mn></msup><mo>=</mo><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>4</mn></math>とおく。</p>
+            <p>整理すると<math><mn>2</mn><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>x</mi><mo>−</mo><mn>4</mn><mo>=</mo><mn>0</mn></math>、つまり<math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>=</mo><mn>0</mn></math>。<br>因数分解して交点の x 座標を2つ求めよう。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 上下の関係を調べる</h3>
-            <p>交点と交点の間では、どちらが上にあるか。区間内の適当な x、たとえば x ＝ 0 で比べると、x<sup>2</sup> の方は 0、もう一方は 4。</p>
-            <p>面積は <b><span class="int int-bare"><span class="int-s">∫</span></span>｛（上の式）−（下の式）｝dx</b>。被積分関数は (−x<sup>2</sup> ＋ 2x ＋ 4) − x<sup>2</sup> になる。</p>
+            <p class="cite"><span class="cite-tag">使う公式</span>［2曲線で囲まれた面積］ <math><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mo>{</mo><mo>(</mo><mtext>上の式</mtext><mo>)</mo><mo>−</mo><mo>(</mo><mtext>下の式</mtext><mo>)</mo><mo>}</mo><mi>d</mi><mi>x</mi></math>。上の式から下の式を引いたものを、交点の間で積分する。</p><p>交点と交点の間では、どちらが上にあるか。<br>区間内の適当な x、たとえば<math><mi>x</mi><mo>=</mo><mn>0</mn></math>で比べると、<math><msup><mi>x</mi><mn>2</mn></msup></math> の方は 0、もう一方は 4。</p>
+            <p>面積は <b><math><mo class="int-op">∫</mo><mo>｛</mo><mo>(</mo></math>上の式）−（下の式）｝dx</b>。被積分関数は<math><mo>(</mo><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>4</mn><mo>)</mo><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup></math> になる。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 3 ― 積分の形に書く</h3>
-            <p>被積分関数を整理すると −2x<sup>2</sup> ＋ 2x ＋ 4。積分区間は、ヒント1で求めた交点の x 座標の小さい方から大きい方までだ。</p>
-            <p class="formula" style="margin-bottom:10px">S ＝ <span class="int"><span class="int-s">∫</span><span class="int-lims"><span class="int-u"><span class="boxq">　</span></span><span class="int-l"><span class="boxq">　</span></span></span></span> (−2x<sup>2</sup> ＋ 2x ＋ 4) dx ＝ [ −<span class="fr"><span class="fr-n">2</span><span class="fr-d">3</span></span>x<sup>3</sup> ＋ x<sup>2</sup> ＋ 4x ]</p>
-            <p>□ にはヒント1で求めた交点の x 座標が入る。あとは両端の値を代入して引くだけだ。計算してみよう。</p>
+            <p class="cite"><span class="cite-tag">使う公式</span>［xⁿ の積分］ <math><mo>[</mo><mo>−</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>4</mn><mi>x</mi><mo>]</mo></math>。被積分関数を積分して、この形の原始関数を作る。</p><p>被積分関数を整理すると<math><mo>−</mo><mn>2</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>4</mn></math>。<br>積分区間は、ヒント1で求めた交点の x 座標の<br>小さい方から大きい方までだ。</p>
+            <p class="mq-wide formula" style="margin-bottom:10px"><math display="block"><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mrow/><mrow/></msubsup><mo>(</mo><mo>−</mo><mn>2</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>4</mn><mo>)</mo><mi>d</mi><mi>x</mi><mo>=</mo><mo>[</mo><mo>−</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>4</mn><mi>x</mi><mo>]</mo></math></p>
+<div class="mq-narrow">
+<p class="formula" style="margin-bottom:10px"><math display="block"><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mrow/><mrow/></msubsup><mo>(</mo><mo>−</mo><mn>2</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>4</mn><mo>)</mo><mi>d</mi><mi>x</mi><mo>=</mo><mo>[</mo><mo>−</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><msup><mi>x</mi><mn>2</mn></msup></math></p>
+<p class="formula cont" style="margin-bottom:10px"><math display="block"><mo>+</mo><mn>4</mn><mi>x</mi><mo>]</mo></math></p>
+</div>
+            <p>□ にはヒント1で求めた交点の x 座標が入る。<br>あとは両端の値を代入して引くだけだ。計算してみよう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (1)</h3>
             <p class="big">9</p>
-            <p>交点の x 座標は x<sup>2</sup> − x − 2 ＝ (x − 2)(x ＋ 1) ＝ 0 より x ＝ −1, 2。その間では −x<sup>2</sup> ＋ 2x ＋ 4 が上にあるから</p>
-            <p>S ＝ <span class="int"><span class="int-s">∫</span><span class="int-lims"><span class="int-u">2</span><span class="int-l">−1</span></span></span> {(−x<sup>2</sup> ＋ 2x ＋ 4) − x<sup>2</sup>} dx ＝ [−<span class="fr"><span class="fr-n">2</span><span class="fr-d">3</span></span>x<sup>3</sup> ＋ x<sup>2</sup> ＋ 4x]<span class="ev"><span class="ev-lims"><span class="ev-u">2</span><span class="ev-l">−1</span></span></span> ＝ (−<span class="fr"><span class="fr-n">16</span><span class="fr-d">3</span></span> ＋ 4 ＋ 8) − (<span class="fr"><span class="fr-n">2</span><span class="fr-d">3</span></span> ＋ 1 − 4) ＝ <span class="fr"><span class="fr-n">20</span><span class="fr-d">3</span></span> − (−<span class="fr"><span class="fr-n">7</span><span class="fr-d">3</span></span>) ＝ <b>9</b>。</p>
+            <p class="cite"><span class="cite-tag">使う公式</span>［2曲線で囲まれた面積］ <math><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mo>{</mo><mo>(</mo><mtext>上の式</mtext><mo>)</mo><mo>−</mo><mo>(</mo><mtext>下の式</mtext><mo>)</mo><mo>}</mo><mi>d</mi><mi>x</mi></math>。交点の間で（上）−（下）を積分して、面積を求める。</p><p>交点の x 座標は<math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>=</mo><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo><mo>=</mo><mn>0</mn></math>より<math><mi>x</mi><mo>=</mo><mo>−</mo><mn>1</mn><mo>,</mo><mn>2</mn></math>。その間では<math><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>4</mn></math>が上にあるから</p>
+            <div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mrow><mo>−</mo><mn>1</mn></mrow><mn>2</mn></msubsup><mo>{</mo><mo>(</mo><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>4</mn><mo>)</mo><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>}</mo><mi>d</mi><mi>x</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>S</mi></mphantom><mo>=</mo><mo>[</mo><mo>−</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>4</mn><mi>x</mi><msubsup><mo>]</mo><mrow><mo>−</mo><mn>1</mn></mrow><mn>2</mn></msubsup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>S</mi></mphantom><mo>=</mo><mo>(</mo><mo>−</mo><mfrac><mn>16</mn><mn>3</mn></mfrac><mo>+</mo><mn>4</mn><mo>+</mo><mn>8</mn><mo>)</mo><mo>−</mo><mo>(</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mo>+</mo><mn>1</mn><mo>−</mo><mn>4</mn><mo>)</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>S</mi></mphantom><mo>=</mo><mfrac><mn>20</mn><mn>3</mn></mfrac><mo>−</mo><mo>(</mo><mo>−</mo><mfrac><mn>7</mn><mn>3</mn></mfrac><mo>)</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>S</mi></mphantom><mo>=</mo><mstyle mathvariant="bold"><mn>9</mn></mstyle><mtext>。</mtext></math></div>
+</div>
             <figure>
               <div class="figbox">
                 <svg class="graph" viewBox="0 0 300 350" data-ox="128" data-oy="278" data-s="44" data-gx0="-2.6" data-gx1="3.6" data-gy0="-1.6" data-gy1="6.1" role="img" aria-label="y＝xの2乗 と y＝−xの2乗＋2x＋4 で囲まれた面積" style="max-width:330px;margin:0 auto">
@@ -921,41 +993,47 @@
                   <text class="glabel" data-x="-2.55" data-y="6.0" font-size="12.5">y＝−x²＋2x＋4</text>
                 </svg>
               </div>
-              <figcaption>色のついた部分が求める面積。交点 (−1, 1) と (2, 4) の間で、上の放物線から下の放物線を引いたものを積分する。</figcaption>
+              <figcaption>色のついた部分が求める面積。交点<math><mo>(</mo><mo>−</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>)</mo></math>と<math><mo>(</mo><mn>2</mn><mo>,</mo><mn>4</mn><mo>)</mo></math>の間で、<br>上の放物線から下の放物線を引いたものを積分する。</figcaption>
             </figure>
-            <p class="note"><b>ポイント：</b>2曲線で囲まれた面積は「<b>交点を求める → 上下を判定 →（上）−（下）を交点間で積分</b>」の3手順。積分区間は問題文に書かれていないので、交点が区間の端になるのがこのタイプの特徴だよ。</p>
+            <p class="note"><b>ポイント：</b>2曲線で囲まれた面積は「<b>交点を求める → 上下を判定 →（上）−（下）を交点間で積分</b>」の3手順。<br>積分区間は問題文に書かれていないので、<br>交点が区間の端になるのがこのタイプの特徴だよ。</p>
           </div>
           <p class="prob-done">(1) クリア！　(2) のタブも開いてみよう。</p>
         </div>
 
         <!-- 補充9 (2) -->
-        <div class="tabpanel" id="panel-q9-2" data-flow="q9-2" data-label="補充9 (2)">
+        <div class="nofig tabpanel" id="panel-q9-2" data-flow="q9-2" data-label="補充9 (2)">
           <div class="prob-head">
             <span class="sub prob-q" style="margin:0">(2)</span>
             <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div>
             <span class="prob-state">ヒント 0 / 3</span>
           </div>
-          <p class="formula">y ＝ <span class="fr"><span class="fr-n">1</span><span class="fr-d">2</span></span>x<sup>2</sup> ＋ 2</p>
+          <p class="formula"><math display="block"><mi>y</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn></math></p>
           <div class="step hint">
             <h3>ヒント 1 ― 交点の x 座標を求める</h3>
-            <p>x<sup>2</sup> ＝ <span class="fr"><span class="fr-n">1</span><span class="fr-d">2</span></span>x<sup>2</sup> ＋ 2 とおいて整理すると、<span class="fr"><span class="fr-n">1</span><span class="fr-d">2</span></span>x<sup>2</sup> ＝ 2、つまり x<sup>2</sup> ＝ 4 になる。</p>
-            <p>交点の x 座標を2つ求めよう（± を忘れずに）。</p>
+            <p class="cite"><span class="cite-tag">使う性質</span>［交点は2式を等しくおいて求める］ <math><msup><mi>x</mi><mn>2</mn></msup><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn></math>。2式を等しくおいて整理し、交点の x 座標を求める。</p><p><math><msup><mi>x</mi><mn>2</mn></msup><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn></math>とおいて整理すると、<math><mfrac><mn>1</mn><mn>2</mn></mfrac><msup><mi>x</mi><mn>2</mn></msup><mo>=</mo><mn>2</mn></math>、つまり<math><msup><mi>x</mi><mn>2</mn></msup><mo>=</mo><mn>4</mn></math>になる。</p>
+            <p>交点の x 座標を2つ求めよう<br>（± を忘れずに）。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 2 ― 上下の関係を調べる</h3>
-            <p>交点の間で比べる。x ＝ 0 では、x<sup>2</sup> の方は 0、もう一方は 2。どちらが上か分かったら、被積分関数は（上）−（下）＝ 2 − <span class="fr"><span class="fr-n">1</span><span class="fr-d">2</span></span>x<sup>2</sup> になることを確かめよう。</p>
-            <p>なお、被積分関数は偶関数（y 軸対称）だから、<span class="int"><span class="int-s">∫</span><span class="int-lims"><span class="int-u">2</span><span class="int-l">−2</span></span></span> ＝ 2<span class="int"><span class="int-s">∫</span><span class="int-lims"><span class="int-u">2</span><span class="int-l">0</span></span></span> と直して計算してもよい。</p>
+            <p class="cite"><span class="cite-tag">使う公式</span>［2曲線で囲まれた面積］ <math><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mo>{</mo><mo>(</mo><mtext>上の式</mtext><mo>)</mo><mo>−</mo><mo>(</mo><mtext>下の式</mtext><mo>)</mo><mo>}</mo><mi>d</mi><mi>x</mi></math>。上の式から下の式を引いたものを、交点の間で積分する。</p><p>交点の間で比べる。<math><mi>x</mi><mo>=</mo><mn>0</mn></math>では、<math><msup><mi>x</mi><mn>2</mn></msup></math> の方は 0、もう一方は 2。<br>どちらが上か分かったら、被積分関数は（上）−（下<math><mo>)</mo><mo>=</mo><mn>2</mn><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><msup><mi>x</mi><mn>2</mn></msup></math> になることを確かめよう。</p>
+            <p>なお、被積分関数は偶関数（y 軸対称）だから、<br><math><msubsup><mo class="int-op">∫</mo><mrow><mo>−</mo><mn>2</mn></mrow><mn>2</mn></msubsup><mo>=</mo><mn>2</mn><msubsup><mo class="int-op">∫</mo><mn>0</mn><mn>2</mn></msubsup></math> と直して計算してもよい。</p>
           </div>
           <div class="step hint">
             <h3>ヒント 3 ― 積分を計算する</h3>
-            <p>原始関数は [ 2x − <span class="fr"><span class="fr-n">1</span><span class="fr-d">6</span></span>x<sup>3</sup> ]。（<span class="fr"><span class="fr-n">1</span><span class="fr-d">2</span></span>x<sup>2</sup> の積分は <span class="fr"><span class="fr-n">1</span><span class="fr-d">2</span></span> · <span class="fr"><span class="fr-n">1</span><span class="fr-d">3</span></span>x<sup>3</sup> ＝ <span class="fr"><span class="fr-n">1</span><span class="fr-d">6</span></span>x<sup>3</sup>。）</p>
-            <p>交点の x 座標を両端として、（大きい方の値）−（小さい方の値）を計算しよう。</p>
+            <p class="cite"><span class="cite-tag">使う公式</span>［xⁿ の積分］ <math><mo>[</mo><mn>2</mn><mi>x</mi><mo>−</mo><mfrac><mn>1</mn><mn>6</mn></mfrac><msup><mi>x</mi><mn>3</mn></msup><mo>]</mo></math>。被積分関数を積分して、この形の原始関数を作る。</p><p>原始関数は<math><mo>[</mo><mn>2</mn><mi>x</mi><mo>−</mo><mfrac><mn>1</mn><mn>6</mn></mfrac><msup><mi>x</mi><mn>3</mn></msup><mo>]</mo></math>。<math><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><msup><mi>x</mi><mn>2</mn></msup></math> の積分は <math><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>·</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><msup><mi>x</mi><mn>3</mn></msup><mo>=</mo><mfrac><mn>1</mn><mn>6</mn></mfrac><msup><mi>x</mi><mn>3</mn></msup></math>。）</p>
+            <p>交点の x 座標を両端として、<br>（大きい方の値）−（小さい方の値）を計算しよう。</p>
           </div>
           <div class="step answer">
             <h3>解答 (2)</h3>
-            <p class="big"><span class="fr"><span class="fr-n">16</span><span class="fr-d">3</span></span></p>
-            <p>交点の x 座標は x ＝ ±2。その間では <span class="fr"><span class="fr-n">1</span><span class="fr-d">2</span></span>x<sup>2</sup> ＋ 2 が上にあるから</p>
-            <p>S ＝ <span class="int"><span class="int-s">∫</span><span class="int-lims"><span class="int-u">2</span><span class="int-l">−2</span></span></span> {(<span class="fr"><span class="fr-n">1</span><span class="fr-d">2</span></span>x<sup>2</sup> ＋ 2) − x<sup>2</sup>} dx ＝ <span class="int"><span class="int-s">∫</span><span class="int-lims"><span class="int-u">2</span><span class="int-l">−2</span></span></span> (2 − <span class="fr"><span class="fr-n">1</span><span class="fr-d">2</span></span>x<sup>2</sup>) dx ＝ [2x − <span class="fr"><span class="fr-n">1</span><span class="fr-d">6</span></span>x<sup>3</sup>]<span class="ev"><span class="ev-lims"><span class="ev-u">2</span><span class="ev-l">−2</span></span></span> ＝ (4 − <span class="fr"><span class="fr-n">4</span><span class="fr-d">3</span></span>) − (−4 ＋ <span class="fr"><span class="fr-n">4</span><span class="fr-d">3</span></span>) ＝ <b><span class="fr"><span class="fr-n">16</span><span class="fr-d">3</span></span></b>。</p>
+            <p class="big"><math display="block"><mfrac><mn>16</mn><mn>3</mn></mfrac></math></p>
+            <p class="cite"><span class="cite-tag">使う公式</span>［2曲線で囲まれた面積］ <math><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mo>{</mo><mo>(</mo><mtext>上の式</mtext><mo>)</mo><mo>−</mo><mo>(</mo><mtext>下の式</mtext><mo>)</mo><mo>}</mo><mi>d</mi><mi>x</mi></math>。交点の間で（上）−（下）を積分して、面積を求める。</p><p>交点の x 座標は<math><mi>x</mi><mo>=</mo><mo>±</mo><mn>2</mn></math>。その間では <math><mfrac><mn>1</mn><mn>2</mn></mfrac><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn></math>が上にあるから</p>
+            <div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mrow><mo>−</mo><mn>2</mn></mrow><mn>2</mn></msubsup><mo>{</mo><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mo>)</mo><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>}</mo><mi>d</mi><mi>x</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>S</mi></mphantom><mo>=</mo><msubsup><mo class="int-op">∫</mo><mrow><mo>−</mo><mn>2</mn></mrow><mn>2</mn></msubsup><mo>(</mo><mn>2</mn><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><msup><mi>x</mi><mn>2</mn></msup><mo>)</mo><mi>d</mi><mi>x</mi></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>S</mi></mphantom><mo>=</mo><mo>[</mo><mn>2</mn><mi>x</mi><mo>−</mo><mfrac><mn>1</mn><mn>6</mn></mfrac><msup><mi>x</mi><mn>3</mn></msup><msubsup><mo>]</mo><mrow><mo>−</mo><mn>2</mn></mrow><mn>2</mn></msubsup></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>S</mi></mphantom><mo>=</mo><mo>(</mo><mn>4</mn><mo>−</mo><mfrac><mn>4</mn><mn>3</mn></mfrac><mo>)</mo><mo>−</mo><mo>(</mo><mo>−</mo><mn>4</mn><mo>+</mo><mfrac><mn>4</mn><mn>3</mn></mfrac><mo>)</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mi>S</mi></mphantom><mo>=</mo><mstyle mathvariant="bold"><mfrac><mn>16</mn><mn>3</mn></mfrac></mstyle><mtext>。</mtext></math></div>
+</div>
             <figure>
               <div class="figbox">
                 <svg class="graph" viewBox="0 0 320 268" data-ox="160" data-oy="224" data-s="46" data-gx0="-3.1" data-gx1="3.1" data-gy0="-0.9" data-gy1="4.7" role="img" aria-label="y＝xの2乗 と y＝2分の1 xの2乗＋2 で囲まれた面積" style="max-width:340px;margin:0 auto">
@@ -970,9 +1048,9 @@
                   <text class="glabel" data-x="-3.05" data-y="4.6" font-size="12.5">y＝(1/2)x²＋2</text>
                 </svg>
               </div>
-              <figcaption>色のついた部分が求める面積。グラフは y 軸対称（偶関数）なので、右半分を2倍しても計算できる。</figcaption>
+              <figcaption>色のついた部分が求める面積。<br>グラフは y 軸対称（偶関数）なので、<br>右半分を2倍しても計算できる。</figcaption>
             </figure>
-            <p class="note"><b>ポイント：</b>(1) とまったく同じ3手順。グラフが y 軸対称なときは、<b>偶関数の性質 <span class="int"><span class="int-s">∫</span><span class="int-lims"><span class="int-u">a</span><span class="int-l">−a</span></span></span> ＝ 2<span class="int"><span class="int-s">∫</span><span class="int-lims"><span class="int-u">a</span><span class="int-l">0</span></span></span></b> を使うと計算が半分になる。</p>
+            <p class="note"><b>ポイント：</b>(1) とまったく同じ3手順。グラフが y 軸対称なときは、<b>偶関数の性質 <math><msubsup><mo class="int-op">∫</mo><mrow><mo>−</mo><mi>a</mi></mrow><mi>a</mi></msubsup><mo>=</mo><mn>2</mn><msubsup><mo class="int-op">∫</mo><mn>0</mn><mi>a</mi></msubsup></math></b> を使うと計算が半分になる。</p>
           </div>
           <p class="prob-done">(2) クリア！　補充9 はこれで完了。最後は補充10へ。</p>
         </div>
@@ -986,7 +1064,7 @@
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
         <div class="qside">
-        <p class="prob-q">関数 y ＝ |x<sup>2</sup> − 1| のグラフと x 軸および直線 x ＝ −2、x ＝ 2 で囲まれた、図の3つの斜線部分の面積の和を求めよ。</p>
+        <p class="prob-q">関数<math><mi>y</mi><mo>=</mo><mo>|</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>|</mo></math>のグラフと x 軸および直線<math><mi>x</mi><mo>=</mo><mo>−</mo><mn>2</mn></math>、<math><mi>x</mi><mo>=</mo><mn>2</mn></math>で囲まれた、図の3つの斜線部分の面積の和を求めよ。</p>
         <figure>
           <div class="figbox">
             <svg class="graph" viewBox="0 0 340 250" data-ox="170" data-oy="208" data-s="58" data-gx0="-2.7" data-gx1="2.7" data-gy0="-0.6" data-gy1="3.4" role="img" aria-label="y＝絶対値 xの2乗−1 のグラフと、x＝−2から2までの3つの斜線部分" style="max-width:380px;margin:0 auto">
@@ -1003,34 +1081,49 @@
               <text class="glabel" data-x="1.3" data-y="3.35" font-size="14">y＝|x²−1|</text>
             </svg>
           </div>
-          <figcaption>y ＝ |x<sup>2</sup> − 1| のグラフ。x<sup>2</sup> − 1 が負になる −1 ＜ x ＜ 1 の部分は、x 軸で折り返されて上に来る。色のついた3つの部分の面積の和を求める。</figcaption>
+          <figcaption><math><mi>y</mi><mo>=</mo><mo>|</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>|</mo></math>のグラフ。<math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn></math>が負になる −1 ＜ x ＜ 1 の部分は、<br>x 軸で折り返されて上に来る。<br>色のついた3つの部分の面積の和を求める。</figcaption>
         </figure>
         </div>
         <div class="step hint">
           <h3>ヒント 1 ― 絶対値の中身の符号で区間を分ける</h3>
-          <p>絶対値を外すには、中身 x<sup>2</sup> − 1 の符号を調べる。x<sup>2</sup> − 1 ＝ (x ＋ 1)(x − 1) だから、符号が変わるのは x ＝ −1 と x ＝ 1 のところ。</p>
-          <p>−2 ≦ x ≦ 2 を <b>−2 〜 −1、−1 〜 1、1 〜 2</b> の3区間に分けて、それぞれ中身が正か負かを確認しよう。</p>
+          <p class="cite"><span class="cite-tag">使う定義</span>［絶対値の外し方］ <math><mo>|</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>|</mo><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>≧</mo><mn>0</mn><mo>)</mo><mo>,</mo><mn>1</mn><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>&lt;</mo><mn>0</mn><mo>)</mo></math>。中身の符号が変わる点で区間を分け、区間ごとに外し方を決める。</p><p>絶対値を外すには、中身<math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn></math>の符号を調べる。<math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>=</mo><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo></math>だから、符号が変わるのは<math><mi>x</mi><mo>=</mo><mo>−</mo><mn>1</mn></math>と<math><mi>x</mi><mo>=</mo><mn>1</mn></math>のところ。</p>
+          <p><math><mo>−</mo><mn>2</mn><mo>≦</mo><mi>x</mi><mo>≦</mo><mn>2</mn></math>を <b>−2 〜 −1、−1 〜 1、1 〜 2</b> の3区間に分けて、<br>それぞれ中身が正か負かを確認しよう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 区間ごとに絶対値を外して積分を立てる</h3>
-          <p>外側の2区間（|x| ≧ 1）では x<sup>2</sup> − 1 ≧ 0 だから |x<sup>2</sup> − 1| ＝ <b>x<sup>2</sup> − 1</b> のまま。</p>
-          <p>真ん中の区間（−1 ＜ x ＜ 1）では x<sup>2</sup> − 1 ＜ 0 だから、符号を変えて |x<sup>2</sup> − 1| ＝ <b>1 − x<sup>2</sup></b> となる。</p>
-          <p>面積の和は、この3つの定積分の和として立式できる。</p>
+          <p class="cite"><span class="cite-tag">使う定義</span>［絶対値の外し方］ <math><mo>|</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>|</mo><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>≧</mo><mn>0</mn><mo>)</mo><mo>,</mo><mn>1</mn><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>&lt;</mo><mn>0</mn><mo>)</mo></math>。区間ごとにこの決まりで絶対値を外し、3つの積分を立てる。</p><p>外側の2区間<math><mo>(</mo><mo>|</mo><mi>x</mi><mo>|</mo><mo>≧</mo><mn>1</mn><mo>)</mo></math>では<math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>≧</mo><mn>0</mn></math>だから<math><mo>|</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>|</mo><mo>=</mo></math><b><math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn></math></b> のまま。</p>
+          <p>真ん中の区間（−1 ＜ x ＜ 1）では<math><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>&lt;</mo><mn>0</mn></math>だから、符号を変えて<math><mo>|</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>|</mo><mo>=</mo></math><b><math><mn>1</mn><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup></math></b> となる。</p>
+          <p>面積の和は、<br>この3つの定積分の和として立式できる。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 3 ― 対称性を使って計算する</h3>
-          <p>y ＝ |x<sup>2</sup> − 1| は偶関数で、グラフは y 軸対称。だから左側の区間の面積と右側の区間の面積は<b>等しい</b>。計算は2種類で済む。</p>
-          <p><span class="int"><span class="int-s">∫</span><span class="int-lims"><span class="int-u">−1</span><span class="int-l">−2</span></span></span> (x<sup>2</sup> − 1) dx ＝ [ <span class="fr"><span class="fr-n">1</span><span class="fr-d">3</span></span>x<sup>3</sup> − x ] と、<span class="int"><span class="int-s">∫</span><span class="int-lims"><span class="int-u">1</span><span class="int-l">−1</span></span></span> (1 − x<sup>2</sup>) dx ＝ [ x − <span class="fr"><span class="fr-n">1</span><span class="fr-d">3</span></span>x<sup>3</sup> ] の2つを計算してみよう。</p>
+          <p class="cite"><span class="cite-tag">使う性質</span>［偶関数の対称性］ <math><msubsup><mo class="int-op">∫</mo><mrow><mo>−</mo><mi>a</mi></mrow><mi>a</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>d</mi><mi>x</mi><mo>=</mo><mn>2</mn><msubsup><mo class="int-op">∫</mo><mn>0</mn><mi>a</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>d</mi><mi>x</mi></math>。y 軸対称であることを使い、等しい面積の計算を繰り返さない。</p><p><math><mi>y</mi><mo>=</mo><mo>|</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>|</mo></math>は偶関数で、グラフは y 軸対称。<br>だから左側の区間の面積と右側の区間の面積は<b>等しい</b>。計算は2種類で済む。</p>
+          <p><math><msubsup><mo class="int-op">∫</mo><mrow><mo>−</mo><mn>2</mn></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msubsup><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>)</mo><mi>d</mi><mi>x</mi><mo>=</mo><mo>[</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mi>x</mi><mo>]</mo></math>と、<math><msubsup><mo class="int-op">∫</mo><mrow><mo>−</mo><mn>1</mn></mrow><mn>1</mn></msubsup><mo>(</mo><mn>1</mn><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>)</mo><mi>d</mi><mi>x</mi><mo>=</mo><mo>[</mo><mi>x</mi><mo>−</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><msup><mi>x</mi><mn>3</mn></msup><mo>]</mo></math>の2つを計算してみよう。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
           <p class="big">4</p>
-          <p>区間を −1 と 1 で分けて絶対値を外すと、求める面積の和は</p>
-          <p><span class="int"><span class="int-s">∫</span><span class="int-lims"><span class="int-u">−1</span><span class="int-l">−2</span></span></span> (x<sup>2</sup> − 1) dx ＋ <span class="int"><span class="int-s">∫</span><span class="int-lims"><span class="int-u">1</span><span class="int-l">−1</span></span></span> (1 − x<sup>2</sup>) dx ＋ <span class="int"><span class="int-s">∫</span><span class="int-lims"><span class="int-u">2</span><span class="int-l">1</span></span></span> (x<sup>2</sup> − 1) dx。</p>
-          <p>1つ目：[<span class="fr"><span class="fr-n">1</span><span class="fr-d">3</span></span>x<sup>3</sup> − x]<span class="ev"><span class="ev-lims"><span class="ev-u">−1</span><span class="ev-l">−2</span></span></span> ＝ (−<span class="fr"><span class="fr-n">1</span><span class="fr-d">3</span></span> ＋ 1) − (−<span class="fr"><span class="fr-n">8</span><span class="fr-d">3</span></span> ＋ 2) ＝ <span class="fr"><span class="fr-n">2</span><span class="fr-d">3</span></span> − (−<span class="fr"><span class="fr-n">2</span><span class="fr-d">3</span></span>) ＝ <span class="fr"><span class="fr-n">4</span><span class="fr-d">3</span></span>。3つ目は対称性からこれと等しく <span class="fr"><span class="fr-n">4</span><span class="fr-d">3</span></span>。</p>
-          <p>2つ目：[x − <span class="fr"><span class="fr-n">1</span><span class="fr-d">3</span></span>x<sup>3</sup>]<span class="ev"><span class="ev-lims"><span class="ev-u">1</span><span class="ev-l">−1</span></span></span> ＝ (1 − <span class="fr"><span class="fr-n">1</span><span class="fr-d">3</span></span>) − (−1 ＋ <span class="fr"><span class="fr-n">1</span><span class="fr-d">3</span></span>) ＝ <span class="fr"><span class="fr-n">2</span><span class="fr-d">3</span></span> − (−<span class="fr"><span class="fr-n">2</span><span class="fr-d">3</span></span>) ＝ <span class="fr"><span class="fr-n">4</span><span class="fr-d">3</span></span>。</p>
-          <p>よって、面積の和は <span class="fr"><span class="fr-n">4</span><span class="fr-d">3</span></span> × 3 ＝ <b>4</b>。</p>
-          <p class="note"><b>ポイント：</b>絶対値のついた関数の面積は「<b>中身の符号が変わる点で区間を分けて、絶対値を外してから積分</b>」が鉄則。今回は3つの部分がどれも <span class="fr"><span class="fr-n">4</span><span class="fr-d">3</span></span> になる面白い問題だよ。</p>
+          <p class="cite"><span class="cite-tag">使う定義</span>［絶対値の外し方］ <math><mo>|</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>|</mo><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>≧</mo><mn>0</mn><mo>)</mo><mo>,</mo><mn>1</mn><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>&lt;</mo><mn>0</mn><mo>)</mo></math>。区間ごとに絶対値を外して積分し、3つの面積を合計する。</p><p>区間を −1 と 1 で分けて絶対値を外すと、<br>求める面積の和は</p>
+          <p class="mq-wide"><math><msubsup><mo class="int-op">∫</mo><mrow><mo>−</mo><mn>2</mn></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msubsup><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>)</mo><mi>d</mi><mi>x</mi><mo>+</mo><msubsup><mo class="int-op">∫</mo><mrow><mo>−</mo><mn>1</mn></mrow><mn>1</mn></msubsup><mo>(</mo><mn>1</mn><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>)</mo><mi>d</mi><mi>x</mi><mo>+</mo><msubsup><mo class="int-op">∫</mo><mn>1</mn><mn>2</mn></msubsup><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>)</mo><mi>d</mi><mi>x</mi></math>。</p>
+<div class="mq-narrow">
+<p class="formula"><math display="block"><msubsup><mo class="int-op">∫</mo><mrow><mo>−</mo><mn>2</mn></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msubsup><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>)</mo><mi>d</mi><mi>x</mi><mo>+</mo><msubsup><mo class="int-op">∫</mo><mrow><mo>−</mo><mn>1</mn></mrow><mn>1</mn></msubsup><mo>(</mo><mn>1</mn><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>)</mo><mi>d</mi><mi>x</mi></math></p>
+<p class="formula cont"><math display="block"><mo>+</mo><msubsup><mo class="int-op">∫</mo><mn>1</mn><mn>2</mn></msubsup><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn><mo>)</mo><mi>d</mi><mi>x</mi><mtext>。</mtext></math></p>
+</div>
+          <p>1つ目：</p>
+<div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mo>[</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mi>x</mi><msubsup><mo>]</mo><mrow><mo>−</mo><mn>2</mn></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msubsup><mo>=</mo><mo>(</mo><mo>−</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>+</mo><mn>1</mn><mo>)</mo><mo>−</mo><mo>(</mo><mo>−</mo><mfrac><mn>8</mn><mn>3</mn></mfrac><mo>+</mo><mn>2</mn><mo>)</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mo>[</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mi>x</mi><msubsup><mo>]</mo><mrow><mo>−</mo><mn>2</mn></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msubsup></mphantom><mo>=</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mo>−</mo><mo>(</mo><mo>−</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mo>)</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mo>[</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mi>x</mi><msubsup><mo>]</mo><mrow><mo>−</mo><mn>2</mn></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msubsup></mphantom><mo>=</mo><mfrac><mn>4</mn><mn>3</mn></mfrac></math></div>
+</div>
+<p>。3つ目は対称性からこれと等しく <math><mfrac><mn>4</mn><mn>3</mn></mfrac></math>。</p>
+          <p>2つ目：</p>
+<div class="chain-crow">
+<div class="crow"><math displaystyle="true"><mo>[</mo><mi>x</mi><mo>−</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><msup><mi>x</mi><mn>3</mn></msup><msubsup><mo>]</mo><mrow><mo>−</mo><mn>1</mn></mrow><mn>1</mn></msubsup><mo>=</mo><mo>(</mo><mn>1</mn><mo>−</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>)</mo><mo>−</mo><mo>(</mo><mo>−</mo><mn>1</mn><mo>+</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>)</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mo>[</mo><mi>x</mi><mo>−</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><msup><mi>x</mi><mn>3</mn></msup><msubsup><mo>]</mo><mrow><mo>−</mo><mn>1</mn></mrow><mn>1</mn></msubsup></mphantom><mo>=</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mo>−</mo><mo>(</mo><mo>−</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mo>)</mo></math></div>
+<div class="crow"><math displaystyle="true"><mphantom><mo>[</mo><mi>x</mi><mo>−</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><msup><mi>x</mi><mn>3</mn></msup><msubsup><mo>]</mo><mrow><mo>−</mo><mn>1</mn></mrow><mn>1</mn></msubsup></mphantom><mo>=</mo><mfrac><mn>4</mn><mn>3</mn></mfrac><mtext>。</mtext></math></div>
+</div>
+          <p>よって、面積の和は <math><mfrac><mn>4</mn><mn>3</mn></mfrac><mo>×</mo><mn>3</mn><mo>=</mo></math><b>4</b>。</p>
+          <p class="note"><b>ポイント：</b>絶対値のついた関数の面積は「<b>中身の符号が変わる点で区間を分けて、絶対値を外してから積分</b>」が鉄則。今回は3つの部分がどれも <math><mfrac><mn>4</mn><mn>3</mn></mfrac></math> になる面白い問題だよ。</p>
         </div>
         <p class="prob-done">補充10 クリア！　補充問題 全10問が完了したよ。おつかれさま！</p>
       </section>
@@ -1039,12 +1132,12 @@
       <section class="card summary">
         <h2>補充問題のポイント</h2>
         <ul>
-          <li><b>微分係数は、定義の極限そのもの。</b>「展開 → h で割る → h → 0」の順で計算し、f(x) ＝ x<sup>2</sup> なら f′(a) の形にも読み替えられる（補充1）。</li>
-          <li><b>条件から関数を決めるときは、文字でおいて連立方程式に直す。</b>f(x) ＝ ax<sup>2</sup> ＋ bx ＋ c とおく（補充2）。極値の条件は f′(x) ＝ 0 と翻訳する（補充5）。</li>
-          <li><b>曲線の外の点からの接線は、接点を (a, f(a)) とおく。</b>接線がその点を通る条件で a の方程式を作る（補充3）。</li>
-          <li><b>極値は f′ の符号の変化で決まる。</b>f′ ＝ 0 でも符号が変わらなければ極値なし（補充4）。最大値の問題は「1変数で表す → 微分 → 増減表」（補充6）。</li>
-          <li><b>方程式の実数解の個数は、グラフと直線 y ＝ a の共有点の個数。</b>極小値と極大値の間にあるとき3個になる（補充7）。</li>
-          <li><b>面積は（上）−（下）の定積分。</b>交点が積分区間の端になる（補充9）。絶対値は、中身の符号が変わる点で区間を分けて外す（補充10）。</li>
+          <p class="cite"><span class="cite-tag">使う定義</span>［微分係数と導関数］ <math><mi>f</mi><mi>′</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mn>2</mn><mi>x</mi></math>。極限の形を導関数の値として読み替えることもできる。</p><li><b>微分係数は、定義の極限そのもの。</b>「展開 → h で割る → h → 0」の順で計算し、<br><math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup></math> なら f′(a) の形にも読み替えられる（補充1）。</li>
+          <p class="cite"><span class="cite-tag">使う公式</span>［2次関数の形と導関数］ <math><mi>f</mi><mi>′</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mn>2</mn><mi>a</mi><mi>x</mi><mo>+</mo><mi>b</mi></math>。文字でおいた関数の導関数に条件を代入し、連立方程式に直す。</p><li><b>条件から関数を決めるときは、<br>文字でおいて連立方程式に直す。</b><math><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mi>a</mi><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>b</mi><mi>x</mi><mo>+</mo><mi>c</mi></math>とおく（補充2）。極値の条件は<math><mi>f</mi><mi>′</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mn>0</mn></math>と翻訳する（補充5）。</li>
+          <p class="cite"><span class="cite-tag">使う公式</span>［接線の方程式］ <math><mi>y</mi><mo>=</mo><mn>3</mn><msup><mi>a</mi><mn>2</mn></msup><mo>(</mo><mi>x</mi><mo>−</mo><mi>a</mi><mo>)</mo><mo>+</mo><msup><mi>a</mi><mn>3</mn></msup><mo>+</mo><mn>2</mn></math>。接点を a とおき、接線が通る点の条件で a の方程式を作る。</p><li><b>曲線の外の点からの接線は、<br>接点を (a, f(a)) とおく。</b>接線がその点を通る条件で <br>a の方程式を作る（補充3）。</li>
+          <p class="cite"><span class="cite-tag">使う性質</span>［増減と極値の判定］ <math><mi>y</mi><mi>′</mi><mo>&gt;</mo><mn>0</mn><mtext>で増加</mtext><mo>,</mo><mi>y</mi><mi>′</mi><mo>&lt;</mo><mn>0</mn><mtext>で減少</mtext></math>。f′ の符号が切り替わる点でだけ、極値をとる。</p><li><b>極値は f′ の符号の変化で決まる。</b><math><mi>f</mi><mi>′</mi><mo>=</mo><mn>0</mn></math>でも符号が変わらなければ極値なし（補充4）。最大値の問題は「1変数で表す → 微分 → 増減表」（補充6）。</li>
+          <p class="cite"><span class="cite-tag">使う性質</span>［解と共有点の関係］ <math><mi>y</mi><mo>=</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>,</mo><mi>y</mi><mo>=</mo><mi>a</mi></math>。解の個数を、曲線と直線の共有点の個数として調べる。</p><li><b>方程式の実数解の個数は、グラフと直線<math><mi>y</mi><mo>=</mo><mi>a</mi></math>の共有点の個数。</b>極小値と極大値の間にあるとき<br>3個になる（補充7）。</li>
+          <p class="cite"><span class="cite-tag">使う公式</span>［2曲線で囲まれた面積］ <math><mi>S</mi><mo>=</mo><msubsup><mo class="int-op">∫</mo><mi>a</mi><mi>b</mi></msubsup><mo>{</mo><mo>(</mo><mtext>上の式</mtext><mo>)</mo><mo>−</mo><mo>(</mo><mtext>下の式</mtext><mo>)</mo><mo>}</mo><mi>d</mi><mi>x</mi></math>。交点を区間の端として、（上）−（下）を積分する。</p><li><b>面積は（上）−（下）の定積分。</b>交点が積分区間の端になる（補充9）。<br>絶対値は、中身の符号が変わる点で区間を分けて外す（補充10）。</li>
         </ul>
       </section>
 
@@ -1061,7 +1154,7 @@
     <div class="ctrl-bar">
       <div class="ctrl-inner">
         <p class="ctrl-label">いまの課題：<b id="ctrlLabel">補充1 (1)</b>　―　「次へ」でヒントを1つずつ開こう</p>
-        <p class="ctrl-progress" id="ctrlProgress">全体の進み具合：<b>0 / 10 問</b> クリア</p>
+        <p class="ctrl-progress" id="ctrlProgress">全体の進み具合：<b><math><mfrac><mn>0</mn><mn>10</mn></mfrac></math>問</b> クリア</p>
         <div class="ctrl-btns">
           <button class="btn" id="btnReset" type="button">最初からやり直す</button>
           <button class="btn btn-next" id="btnNext" type="button">次へ ▶</button>
