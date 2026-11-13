@@ -169,6 +169,15 @@
       .answer{background:var(--ans-bg);border:1.5px solid var(--ans-line);color:var(--ans-ink)}
       .answer .big{font-size:18px;font-weight:900;text-align:center;margin:4px 0 10px}
       .note{font-size:14px;border-top:1px dashed currentColor;padding-top:8px;margin-top:2px}
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
       .prob-done{
         display:none;text-align:center;font-weight:900;color:var(--accent-deep);
         padding:2px 0 12px;font-size:15px;
@@ -254,7 +263,22 @@
     .frac { display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle; margin: 0 .14em; line-height: 1.18; font-size: .84em; }
 .frac > .num { border-bottom: .055em solid currentColor; padding: 0 .2em .05em; }
 .frac > .den { padding: .05em .2em 0; }
-</style>
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+    </style>
   </head>
   <body>
     <div class="wrap">
@@ -292,7 +316,7 @@
           <span class="prob-state">ステップ 0 / 4</span>
         </div>
         <div class="qside">
-        <p>△OABにおいて、<span class="v">OA</span>＝<span class="v">a</span>、<span class="v">OB</span>＝<span class="v">b</span> とする。このとき、△OABの面積 <span class="mi">S</span> を、ベクトル <span class="v">a</span>、<span class="v">b</span> で表してみよう。また、∠AOB＝<span class="mi">θ</span>（0°＜<span class="mi">θ</span>＜180°）とする。</p>
+        <p>△OABにおいて、<math><mover><mi>OA</mi><mo>→</mo></mover><mo>=</mo><mover><mi>a</mi><mo>→</mo></mover></math>、<math><mover><mi>OB</mi><mo>→</mo></mover><mo>=</mo><mover><mi>b</mi><mo>→</mo></mover></math> とする。<br>このとき、△OABの面積 <math><mi>S</mi></math> を、ベクトル <math><mover><mi>a</mi><mo>→</mo></mover></math>、<math><mover><mi>b</mi><mo>→</mo></mover></math> で表してみよう。<br>また、<math><mo>∠</mo><mi>AOB</mi><mo>=</mo><mi>θ</mi><mo>(</mo><mn>0</mn><mo>°</mo><mo>&lt;</mo><mi>θ</mi><mo>&lt;</mo><mn>180</mn><mo>°</mo><mo>)</mo></math>とする。</p>
         <figure>
           <div class="figbox">
             <svg viewBox="0 0 520 262" role="img" aria-label="三角形OABの図。OからAへのベクトルが a、OからBへのベクトルが b、間の角がθ">
@@ -319,34 +343,40 @@
               <path d="M161 111 H175 M170 106.5 L175.5 111 L170 115.5" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
             </svg>
           </div>
-          <figcaption>△OAB。<span class="v" style="padding-top:.4em">OA</span>＝<span class="v" style="padding-top:.4em">a</span>、<span class="v" style="padding-top:.4em">OB</span>＝<span class="v" style="padding-top:.4em">b</span>、2辺の間の角が<span class="mi">θ</span>。</figcaption>
+          <figcaption>△OAB。<math><mover><mi>OA</mi><mo>→</mo></mover><mo>=</mo><mover><mi>a</mi><mo>→</mo></mover></math>、<math><mover><mi>OB</mi><mo>→</mo></mover><mo>=</mo><mover><mi>b</mi><mo>→</mo></mover></math>、2辺の間の角が<math><mi>θ</mi></math>。</figcaption>
         </figure>
         <p>公式がどうやって出てくるか、下の <b>次へ</b> で1ステップずつ追ってみよう。</p>
         </div>
 
         <div class="step deriv">
           <h3>ステップ 1 ― 数学Iの面積公式から出発</h3>
-          <p>2辺の長さとその間の角が分かれば、三角形の面積は数学Iで学んだ公式で求められた。</p>
-          <p class="formula"><span class="mi">S</span> ＝ <span class="frac"><span class="num">1</span><span class="den">2</span></span>｜<span class="v">a</span>｜｜<span class="v">b</span>｜sin<span class="mi">θ</span></p>
-          <p>あとは sin<span class="mi">θ</span> を、ベクトルで表せる形（内積）に置きかえればよい。</p>
+          <p>2辺の長さとその間の角が分かれば、<br>三角形の面積は数学Iで学んだ公式で求められた。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span>数学Iの「三角形の面積」の公式。2辺の長さと、その間の角が分かれば面積が出る。この問題では、2辺の長さが <math><mo>|</mo><mover><mi>a</mi><mo>→</mo></mover><mo>|</mo></math>、<math><mo>|</mo><mover><mi>b</mi><mo>→</mo></mover><mo>|</mo></math>、間の角が <math><mi>θ</mi></math> にあたるよ。</p>
+          <p class="formula"><math display="block"><mi>S</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>|</mo><mover><mi>a</mi><mo>→</mo></mover><mo>|</mo><mo>|</mo><mover><mi>b</mi><mo>→</mo></mover><mo>|</mo><mi>sin</mi><mi>θ</mi></math></p>
+          <p>あとは <math><mi>sin</mi><mi>θ</mi></math> を、ベクトルで表せる形（内積）に置きかえればよい。</p>
         </div>
         <div class="step deriv">
-          <h3>ステップ 2 ― sin<span class="mi">θ</span> を cos<span class="mi">θ</span> で表す</h3>
-          <p>0°＜<span class="mi">θ</span>＜180° では sin<span class="mi">θ</span>＞0 だから、sin²<span class="mi">θ</span>＋cos²<span class="mi">θ</span>＝1 より</p>
-          <p class="formula">sin<span class="mi">θ</span> ＝ √(1−cos²<span class="mi">θ</span>)</p>
-          <p>そして内積の定義から、cos<span class="mi">θ</span> は <span class="v">a</span>・<span class="v">b</span> ＝｜<span class="v">a</span>｜｜<span class="v">b</span>｜cos<span class="mi">θ</span> を変形して</p>
-          <p class="formula">cos<span class="mi">θ</span> ＝ <span class="frac"><span class="num"><span class="v">a</span>・<span class="v">b</span></span><span class="den">｜<span class="v">a</span>｜｜<span class="v">b</span>｜</span></span></p>
+          <h3>ステップ 2 ― <math><mi>sin</mi><mi>θ</mi></math> を <math><mi>cos</mi><mi>θ</mi></math> で表す</h3>
+          <p><math><mn>0</mn><mo>°</mo><mo>&lt;</mo><mi>θ</mi><mo>&lt;</mo><mn>180</mn><mo>°</mo></math> では <math><mi>sin</mi><mi>θ</mi><mo>&gt;</mo><mn>0</mn></math> だから、<math><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn></math> より</p>
+          <p class="cite"><span class="cite-tag">使う公式</span>三角関数の相互関係 <math><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn></math>。これを <math><msup><mi>sin</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><mn>1</mn><mo>−</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></math> の形に変形して、両辺のルートをとるんだ。</p>
+          <p class="formula"><math display="block"><mi>sin</mi><mi>θ</mi><mo>=</mo><msqrt><mrow><mn>1</mn><mo>−</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></mrow></msqrt></math></p>
+          <p>そして内積の定義から、<br><math><mi>cos</mi><mi>θ</mi></math> は <math><mover><mi>a</mi><mo>→</mo></mover><mo>⋅</mo><mover><mi>b</mi><mo>→</mo></mover><mo>=</mo><mo>|</mo><mover><mi>a</mi><mo>→</mo></mover><mo>|</mo><mo>|</mo><mover><mi>b</mi><mo>→</mo></mover><mo>|</mo><mi>cos</mi><mi>θ</mi></math> を変形して</p>
+          <p class="cite"><span class="cite-tag">使う定義</span>内積の定義 <math><mover><mi>a</mi><mo>→</mo></mover><mo>⋅</mo><mover><mi>b</mi><mo>→</mo></mover><mo>=</mo><mo>|</mo><mover><mi>a</mi><mo>→</mo></mover><mo>|</mo><mo>|</mo><mover><mi>b</mi><mo>→</mo></mover><mo>|</mo><mi>cos</mi><mi>θ</mi></math>。この両辺を <math><mo>|</mo><mover><mi>a</mi><mo>→</mo></mover><mo>|</mo><mo>|</mo><mover><mi>b</mi><mo>→</mo></mover><mo>|</mo></math> で割ると、<math><mi>cos</mi><mi>θ</mi></math> の式になるよ。</p>
+          <p class="formula"><math display="block"><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mover><mi>a</mi><mo>→</mo></mover><mo>⋅</mo><mover><mi>b</mi><mo>→</mo></mover></mrow><mrow><mo>|</mo><mover><mi>a</mi><mo>→</mo></mover><mo>|</mo><mo>|</mo><mover><mi>b</mi><mo>→</mo></mover><mo>|</mo></mrow></mfrac></math></p>
         </div>
         <div class="step deriv">
           <h3>ステップ 3 ― ステップ1の公式に代入する</h3>
-          <p><span class="mi">S</span> ＝ <span class="frac"><span class="num">1</span><span class="den">2</span></span>｜<span class="v">a</span>｜｜<span class="v">b</span>｜√(1−cos²<span class="mi">θ</span>) のルートの中に、｜<span class="v">a</span>｜²｜<span class="v">b</span>｜² を取り込むと</p>
-          <p class="formula"><span class="mi">S</span> ＝ <span class="frac"><span class="num">1</span><span class="den">2</span></span>√（｜<span class="v">a</span>｜²｜<span class="v">b</span>｜² − ｜<span class="v">a</span>｜²｜<span class="v">b</span>｜²cos²<span class="mi">θ</span>）</p>
-          <p>ここで ｜<span class="v">a</span>｜｜<span class="v">b</span>｜cos<span class="mi">θ</span> ＝ <span class="v">a</span>・<span class="v">b</span> だから、｜<span class="v">a</span>｜²｜<span class="v">b</span>｜²cos²<span class="mi">θ</span> ＝ （<span class="v">a</span>・<span class="v">b</span>）² と書きかえられる。</p>
+          <p><math><mi>S</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>|</mo><mover><mi>a</mi><mo>→</mo></mover><mo>|</mo><mo>|</mo><mover><mi>b</mi><mo>→</mo></mover><mo>|</mo><msqrt><mrow><mn>1</mn><mo>−</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></mrow></msqrt></math> のルートの中に、<math><msup><mrow><mo>|</mo><mover><mi>a</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup><msup><mrow><mo>|</mo><mover><mi>b</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup></math> を取り込むと</p>
+          <p class="cite"><span class="cite-tag">使う性質</span>正の数 <math><mi>x</mi></math> は、<math><mi>x</mi><mo>=</mo><msqrt><msup><mi>x</mi><mn>2</mn></msup></msqrt></math> と書ける。だから <math><mo>|</mo><mover><mi>a</mi><mo>→</mo></mover><mo>|</mo><mo>|</mo><mover><mi>b</mi><mo>→</mo></mover><mo>|</mo></math> も、<math><msqrt><mrow><msup><mrow><mo>|</mo><mover><mi>a</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup><msup><mrow><mo>|</mo><mover><mi>b</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup></mrow></msqrt></math> としてルートの中に取り込めるんだ。</p>
+          <p class="formula mq-wide"><math display="block"><mi>S</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><msqrt><mrow><msup><mrow><mo>|</mo><mover><mi>a</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup><msup><mrow><mo>|</mo><mover><mi>b</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup><mo>−</mo><msup><mrow><mo>|</mo><mover><mi>a</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup><msup><mrow><mo>|</mo><mover><mi>b</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></mrow></msqrt></math></p>
+          <p class="formula mq-narrow" style="font-size:15px"><math display="block"><mi>S</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><msqrt><mrow><msup><mrow><mo>|</mo><mover><mi>a</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup><msup><mrow><mo>|</mo><mover><mi>b</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup><mo>−</mo><msup><mrow><mo>|</mo><mover><mi>a</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup><msup><mrow><mo>|</mo><mover><mi>b</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></mrow></msqrt></math></p>
+          <p class="cite"><span class="cite-tag">使う定義</span>内積の定義そのもの：<math><mo>|</mo><mover><mi>a</mi><mo>→</mo></mover><mo>|</mo><mo>|</mo><mover><mi>b</mi><mo>→</mo></mover><mo>|</mo><mi>cos</mi><mi>θ</mi><mo>=</mo><mover><mi>a</mi><mo>→</mo></mover><mo>⋅</mo><mover><mi>b</mi><mo>→</mo></mover></math>。ルートの中の <math><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi></math> を含む部分は、この左辺を2乗したものだよ。</p>
+          <p>ここで <math><mo>|</mo><mover><mi>a</mi><mo>→</mo></mover><mo>|</mo><mo>|</mo><mover><mi>b</mi><mo>→</mo></mover><mo>|</mo><mi>cos</mi><mi>θ</mi><mo>=</mo><mover><mi>a</mi><mo>→</mo></mover><mo>⋅</mo><mover><mi>b</mi><mo>→</mo></mover></math> だから、<math><msup><mrow><mo>|</mo><mover><mi>a</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup><msup><mrow><mo>|</mo><mover><mi>b</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup><msup><mi>cos</mi><mn>2</mn></msup><mi>θ</mi><mo>=</mo><msup><mrow><mo>(</mo><mover><mi>a</mi><mo>→</mo></mover><mo>⋅</mo><mover><mi>b</mi><mo>→</mo></mover><mo>)</mo></mrow><mn>2</mn></msup></math> と書きかえられる。</p>
         </div>
         <div class="step deriv">
           <h3>ステップ 4 ― ベクトルによる三角形の面積の公式</h3>
-          <p class="formula"><span class="mi">S</span> ＝ <span class="frac"><span class="num">1</span><span class="den">2</span></span>√（｜<span class="v">a</span>｜²｜<span class="v">b</span>｜² − （<span class="v">a</span>・<span class="v">b</span>）²）　……①</p>
-          <p>｜<span class="v">a</span>｜、｜<span class="v">b</span>｜ と内積 <span class="v">a</span>・<span class="v">b</span> の3つが分かれば、角<span class="mi">θ</span>が分からなくても面積が求められる。これがベクトルによる三角形の面積の公式だ。</p>
+          <p class="formula"><math display="block"><mi>S</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><msqrt><mrow><msup><mrow><mo>|</mo><mover><mi>a</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup><msup><mrow><mo>|</mo><mover><mi>b</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup><mo>−</mo><msup><mrow><mo>(</mo><mover><mi>a</mi><mo>→</mo></mover><mo>⋅</mo><mover><mi>b</mi><mo>→</mo></mover><mo>)</mo></mrow><mn>2</mn></msup></mrow></msqrt></math>　……①</p>
+          <p><math><mo>|</mo><mover><mi>a</mi><mo>→</mo></mover><mo>|</mo></math>、<math><mo>|</mo><mover><mi>b</mi><mo>→</mo></mover><mo>|</mo></math> と内積 <math><mover><mi>a</mi><mo>→</mo></mover><mo>⋅</mo><mover><mi>b</mi><mo>→</mo></mover></math> の3つが分かれば、角<math><mi>θ</mi></math>が分からなくても面積が求められる。<br>これがベクトルによる三角形の面積の公式だ。</p>
         </div>
         <p class="prob-done">公式①が導けた！　次は練習1で使ってみよう。</p>
       </section>
@@ -367,31 +397,40 @@
           <span class="prob-state">ヒント 0 / 3</span>
         </div>
         <div class="qside">
-        <p class="prob-q">△OABについて、｜<span class="v">OA</span>｜＝4、｜<span class="v">OB</span>｜＝5、<span class="v">OA</span>・<span class="v">OB</span>＝−10 のとき、△OABの面積を求めよ。</p>
+        <p class="prob-q">△OABについて、<math><mo>|</mo><mover><mi>OA</mi><mo>→</mo></mover><mo>|</mo><mo>=</mo><mn>4</mn></math>、<math><mo>|</mo><mover><mi>OB</mi><mo>→</mo></mover><mo>|</mo><mo>=</mo><mn>5</mn></math>、<math><mover><mi>OA</mi><mo>→</mo></mover><mo>⋅</mo><mover><mi>OB</mi><mo>→</mo></mover><mo>=</mo><mo>−</mo><mn>10</mn></math> のとき、△OABの面積を求めよ。</p>
         </div>
 
         <div class="step hint">
           <h3>ヒント 1 ― 使う公式を書き出す</h3>
           <p>解説で導いた公式①を、まずそのまま書いてみよう。</p>
-          <p class="formula" style="background:var(--surface)"><span class="mi">S</span> ＝ <span class="frac"><span class="num">1</span><span class="den">2</span></span>√（｜<span class="v">a</span>｜²｜<span class="v">b</span>｜² − （<span class="v">a</span>・<span class="v">b</span>）²）</p>
-          <p>この問題では <span class="v">a</span>＝<span class="v">OA</span>、<span class="v">b</span>＝<span class="v">OB</span> のこと。問題文の3つの数（4、5、−10）が、公式のどの部分に入るか確認しよう。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span>解説で導いた「ベクトルによる三角形の面積の公式」①。計算はこの公式に数を入れるだけだよ。</p>
+          <p class="formula" style="background:var(--surface)"><math display="block"><mi>S</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><msqrt><mrow><msup><mrow><mo>|</mo><mover><mi>a</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup><msup><mrow><mo>|</mo><mover><mi>b</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup><mo>−</mo><msup><mrow><mo>(</mo><mover><mi>a</mi><mo>→</mo></mover><mo>⋅</mo><mover><mi>b</mi><mo>→</mo></mover><mo>)</mo></mrow><mn>2</mn></msup></mrow></msqrt></math></p>
+          <p>この問題では <math><mover><mi>a</mi><mo>→</mo></mover><mo>=</mo><mover><mi>OA</mi><mo>→</mo></mover></math>、<math><mover><mi>b</mi><mo>→</mo></mover><mo>=</mo><mover><mi>OB</mi><mo>→</mo></mover></math> のこと。<br>問題文の3つの数（4、5、−10）が、公式のどの部分に入るか確認しよう。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 3つの数を代入する</h3>
-          <p>｜<span class="v">OA</span>｜＝4、｜<span class="v">OB</span>｜＝5、<span class="v">OA</span>・<span class="v">OB</span>＝−10 を公式①に代入すると</p>
-          <p class="formula" style="background:var(--surface)"><span class="mi">S</span> ＝ <span class="frac"><span class="num">1</span><span class="den">2</span></span>√（4²・5² − （−10）²）</p>
+          <p><math><mo>|</mo><mover><mi>OA</mi><mo>→</mo></mover><mo>|</mo><mo>=</mo><mn>4</mn></math>、<math><mo>|</mo><mover><mi>OB</mi><mo>→</mo></mover><mo>|</mo><mo>=</mo><mn>5</mn></math>、<math><mover><mi>OA</mi><mo>→</mo></mover><mo>⋅</mo><mover><mi>OB</mi><mo>→</mo></mover><mo>=</mo><mo>−</mo><mn>10</mn></math> を公式①に代入すると</p>
+          <p class="cite"><span class="cite-tag">使う公式</span>公式①への代入。<math><mo>|</mo><mover><mi>a</mi><mo>→</mo></mover><mo>|</mo></math> の場所に <math><mn>4</mn></math>、<math><mo>|</mo><mover><mi>b</mi><mo>→</mo></mover><mo>|</mo></math> の場所に <math><mn>5</mn></math>、<math><mover><mi>a</mi><mo>→</mo></mover><mo>⋅</mo><mover><mi>b</mi><mo>→</mo></mover></math> の場所に <math><mo>−</mo><mn>10</mn></math> を入れるよ。</p>
+          <p class="formula" style="background:var(--surface)"><math display="block"><mi>S</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><msqrt><mrow><msup><mn>4</mn><mn>2</mn></msup><mo>⋅</mo><msup><mn>5</mn><mn>2</mn></msup><mo>−</mo><msup><mrow><mo>(</mo><mo>−</mo><mn>10</mn><mo>)</mo></mrow><mn>2</mn></msup></mrow></msqrt></math></p>
           <p>内積は<b>2乗する</b>ので、−10 のマイナスは消えてなくなるよ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 3 ― ルートの中を計算する</h3>
-          <p>4²・5²＝16・25＝<b>400</b>、（−10）²＝<b>100</b>。だからルートの中は 400−100＝<b>300</b>。</p>
-          <p>√300 は、300＝100×3 と見ると √300＝10√3 と直せる。あとは <span class="frac"><span class="num">1</span><span class="den">2</span></span> 倍するだけだ。</p>
+          <p><math><msup><mn>4</mn><mn>2</mn></msup><mo>⋅</mo><msup><mn>5</mn><mn>2</mn></msup><mo>=</mo><mn>16</mn><mo>⋅</mo><mn>25</mn><mo>=</mo></math><b>400</b>、<math><msup><mrow><mo>(</mo><mo>−</mo><mn>10</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo></math><b>100</b>。だからルートの中は <math><mn>400</mn><mo>−</mo><mn>100</mn><mo>=</mo></math><b>300</b>。</p>
+          <p class="cite"><span class="cite-tag">使う性質</span>ルートの積は分けて書ける：<math><msqrt><mrow><mi>x</mi><mo>×</mo><mi>y</mi></mrow></msqrt><mo>=</mo><msqrt><mi>x</mi></msqrt><mo>×</mo><msqrt><mi>y</mi></msqrt></math>（<math><mi>x</mi></math>、<math><mi>y</mi></math> は0以上）。<math><msqrt><mn>300</mn></msqrt></math> は <math><mn>300</mn><mo>=</mo><mn>100</mn><mo>×</mo><mn>3</mn></math> と分けて考えるんだ。</p>
+          <p><math><msqrt><mn>300</mn></msqrt></math> は、<math><mn>300</mn><mo>=</mo><mn>100</mn><mo>×</mo><mn>3</mn></math> と見ると <math><msqrt><mn>300</mn></msqrt><mo>=</mo><mn>10</mn><msqrt><mn>3</mn></msqrt></math> と直せる。あとは <math><mfrac><mn>1</mn><mn>2</mn></mfrac></math> 倍するだけだ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
-          <p class="big"><span class="mi">S</span> ＝ 5√3</p>
-          <p><span class="mi">S</span> ＝ <span class="frac"><span class="num">1</span><span class="den">2</span></span>√（4²・5²−（−10）²）＝ <span class="frac"><span class="num">1</span><span class="den">2</span></span>√300 ＝ <span class="frac"><span class="num">1</span><span class="den">2</span></span>・10√3 ＝ <b>5√3</b>。</p>
-          <p class="note"><b>ポイント：</b>公式①は「代入するだけ」で使える。内積が負の数でも、2乗するから心配いらない。</p>
+          <p class="big"><math display="block"><mi>S</mi><mo>=</mo><mn>5</mn><msqrt><mn>3</mn></msqrt></math></p>
+          <p class="mq-wide"><math><mi>S</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><msqrt><mrow><msup><mn>4</mn><mn>2</mn></msup><mo>⋅</mo><msup><mn>5</mn><mn>2</mn></msup><mo>−</mo><msup><mrow><mo>(</mo><mo>−</mo><mn>10</mn><mo>)</mo></mrow><mn>2</mn></msup></mrow></msqrt><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><msqrt><mn>300</mn></msqrt><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>⋅</mo><mn>10</mn><msqrt><mn>3</mn></msqrt><mo>=</mo></math><b><math><mn>5</mn><msqrt><mn>3</mn></msqrt></math></b>。</p>
+          <div class="mq-narrow">
+            <div class="crow"><math displaystyle="true"><mi>S</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><msqrt><mrow><msup><mn>4</mn><mn>2</mn></msup><mo>⋅</mo><msup><mn>5</mn><mn>2</mn></msup><mo>−</mo><msup><mrow><mo>(</mo><mo>−</mo><mn>10</mn><mo>)</mo></mrow><mn>2</mn></msup></mrow></msqrt></math></div>
+            <div class="crow"><math displaystyle="true"><mphantom><mi>S</mi></mphantom><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><msqrt><mn>300</mn></msqrt></math></div>
+            <div class="crow"><math displaystyle="true"><mphantom><mi>S</mi></mphantom><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>⋅</mo><mn>10</mn><msqrt><mn>3</mn></msqrt></math></div>
+            <div class="crow"><math displaystyle="true"><mphantom><mi>S</mi></mphantom><mo>=</mo><mstyle mathvariant="bold"><mn>5</mn><msqrt><mn>3</mn></msqrt></mstyle><mtext>。</mtext></math></div>
+          </div>
+          <p class="note"><b>ポイント：</b>公式①は「代入するだけ」で使える。<br>内積が負の数でも、2乗するから心配いらない。</p>
         </div>
         <p class="prob-done">練習1 クリア！　次は成分で面積を求める公式を学ぼう。</p>
       </section>
@@ -412,30 +451,50 @@
           <span class="prob-state">ステップ 0 / 4</span>
         </div>
         <div class="qside">
-        <p>公式①において、<span class="v">a</span>＝（<span class="mi">a</span><sub>1</sub>, <span class="mi">a</span><sub>2</sub>）、<span class="v">b</span>＝（<span class="mi">b</span><sub>1</sub>, <span class="mi">b</span><sub>2</sub>）であるとする。このとき、ルートの中身 ｜<span class="v">a</span>｜²｜<span class="v">b</span>｜²−（<span class="v">a</span>・<span class="v">b</span>）² が、成分だけできれいに表せる。下の <b>次へ</b> で計算の流れを追ってみよう。</p>
+        <p>公式①において、<math><mover><mi>a</mi><mo>→</mo></mover><mo>=</mo><mo>(</mo><msub><mi>a</mi><mn>1</mn></msub><mo>,</mo><msub><mi>a</mi><mn>2</mn></msub><mo>)</mo></math>、<math><mover><mi>b</mi><mo>→</mo></mover><mo>=</mo><mo>(</mo><msub><mi>b</mi><mn>1</mn></msub><mo>,</mo><msub><mi>b</mi><mn>2</mn></msub><mo>)</mo></math>であるとする。このとき、ルートの中身 <math><msup><mrow><mo>|</mo><mover><mi>a</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup><msup><mrow><mo>|</mo><mover><mi>b</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup><mo>−</mo><msup><mrow><mo>(</mo><mover><mi>a</mi><mo>→</mo></mover><mo>⋅</mo><mover><mi>b</mi><mo>→</mo></mover><mo>)</mo></mrow><mn>2</mn></msup></math> が、成分だけできれいに表せる。<br>下の <b>次へ</b> で計算の流れを追ってみよう。</p>
         </div>
 
         <div class="step deriv">
           <h3>ステップ 1 ― 3つの量を成分で書き直す</h3>
-          <p>成分表示のとき、各量は次のようになる（「3 ベクトルの成分」「4 ベクトルの内積」で学んだ通り）。</p>
-          <p class="formula">｜<span class="v">a</span>｜²＝<span class="mi">a</span><sub>1</sub>²＋<span class="mi">a</span><sub>2</sub>²　　｜<span class="v">b</span>｜²＝<span class="mi">b</span><sub>1</sub>²＋<span class="mi">b</span><sub>2</sub>²　　<span class="v">a</span>・<span class="v">b</span>＝<span class="mi">a</span><sub>1</sub><span class="mi">b</span><sub>1</sub>＋<span class="mi">a</span><sub>2</sub><span class="mi">b</span><sub>2</sub></p>
+          <p>成分表示のとき、<br>各量は次のようになる（「3 ベクトルの成分」「4 ベクトルの内積」で学んだ通り）。</p>
+          <p class="cite"><span class="cite-tag">使う定義</span>ベクトルの大きさ <math><mo>|</mo><mover><mi>a</mi><mo>→</mo></mover><mo>|</mo><mo>=</mo><msqrt><mrow><msup><msub><mi>a</mi><mn>1</mn></msub><mn>2</mn></msup><mo>+</mo><msup><msub><mi>a</mi><mn>2</mn></msub><mn>2</mn></msup></mrow></msqrt></math>。両辺を2乗するとルートが消えて、<math><msup><mrow><mo>|</mo><mover><mi>a</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup></math> の公式になるよ。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span>内積の成分表示 <math><mover><mi>a</mi><mo>→</mo></mover><mo>⋅</mo><mover><mi>b</mi><mo>→</mo></mover><mo>=</mo><msub><mi>a</mi><mn>1</mn></msub><msub><mi>b</mi><mn>1</mn></msub><mo>+</mo><msub><mi>a</mi><mn>2</mn></msub><msub><mi>b</mi><mn>2</mn></msub></math>。x成分同士、y成分同士を掛けて足すんだ。</p>
+          <p class="formula mq-wide"><math display="block"><msup><mrow><mo>|</mo><mover><mi>a</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><msub><mi>a</mi><mn>1</mn></msub><mn>2</mn></msup><mo>+</mo><msup><msub><mi>a</mi><mn>2</mn></msub><mn>2</mn></msup><mspace width="2em"/><msup><mrow><mo>|</mo><mover><mi>b</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><msub><mi>b</mi><mn>1</mn></msub><mn>2</mn></msup><mo>+</mo><msup><msub><mi>b</mi><mn>2</mn></msub><mn>2</mn></msup><mspace width="2em"/><mover><mi>a</mi><mo>→</mo></mover><mo>⋅</mo><mover><mi>b</mi><mo>→</mo></mover><mo>=</mo><msub><mi>a</mi><mn>1</mn></msub><msub><mi>b</mi><mn>1</mn></msub><mo>+</mo><msub><mi>a</mi><mn>2</mn></msub><msub><mi>b</mi><mn>2</mn></msub></math></p>
+          <div class="mq-narrow mq-stack">
+            <p class="formula"><math display="block"><msup><mrow><mo>|</mo><mover><mi>a</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><msub><mi>a</mi><mn>1</mn></msub><mn>2</mn></msup><mo>+</mo><msup><msub><mi>a</mi><mn>2</mn></msub><mn>2</mn></msup></math></p>
+            <p class="formula"><math display="block"><msup><mrow><mo>|</mo><mover><mi>b</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><msub><mi>b</mi><mn>1</mn></msub><mn>2</mn></msup><mo>+</mo><msup><msub><mi>b</mi><mn>2</mn></msub><mn>2</mn></msup></math></p>
+            <p class="formula"><math display="block"><mover><mi>a</mi><mo>→</mo></mover><mo>⋅</mo><mover><mi>b</mi><mo>→</mo></mover><mo>=</mo><msub><mi>a</mi><mn>1</mn></msub><msub><mi>b</mi><mn>1</mn></msub><mo>+</mo><msub><mi>a</mi><mn>2</mn></msub><msub><mi>b</mi><mn>2</mn></msub></math></p>
+          </div>
         </div>
         <div class="step deriv">
           <h3>ステップ 2 ― ルートの中身を展開する</h3>
-          <p>｜<span class="v">a</span>｜²｜<span class="v">b</span>｜²−（<span class="v">a</span>・<span class="v">b</span>）² ＝（<span class="mi">a</span><sub>1</sub>²＋<span class="mi">a</span><sub>2</sub>²）（<span class="mi">b</span><sub>1</sub>²＋<span class="mi">b</span><sub>2</sub>²）−（<span class="mi">a</span><sub>1</sub><span class="mi">b</span><sub>1</sub>＋<span class="mi">a</span><sub>2</sub><span class="mi">b</span><sub>2</sub>）² を展開すると</p>
-          <p class="formula">＝ <span class="mi">a</span><sub>1</sub>²<span class="mi">b</span><sub>2</sub>² − 2<span class="mi">a</span><sub>1</sub><span class="mi">b</span><sub>1</sub><span class="mi">a</span><sub>2</sub><span class="mi">b</span><sub>2</sub> ＋ <span class="mi">a</span><sub>2</sub>²<span class="mi">b</span><sub>1</sub>²</p>
-          <p><span class="mi">a</span><sub>1</sub>²<span class="mi">b</span><sub>1</sub>² と <span class="mi">a</span><sub>2</sub>²<span class="mi">b</span><sub>2</sub>² は、引く側にも出てきて<b>打ち消し合う</b>。残るのはこの3項だけだ。</p>
+          <p class="mq-wide"><math><msup><mrow><mo>|</mo><mover><mi>a</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup><msup><mrow><mo>|</mo><mover><mi>b</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup><mo>−</mo><msup><mrow><mo>(</mo><mover><mi>a</mi><mo>→</mo></mover><mo>⋅</mo><mover><mi>b</mi><mo>→</mo></mover><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mrow><mo>(</mo><msup><msub><mi>a</mi><mn>1</mn></msub><mn>2</mn></msup><mo>+</mo><msup><msub><mi>a</mi><mn>2</mn></msub><mn>2</mn></msup><mo>)</mo></mrow><mrow><mo>(</mo><msup><msub><mi>b</mi><mn>1</mn></msub><mn>2</mn></msup><mo>+</mo><msup><msub><mi>b</mi><mn>2</mn></msub><mn>2</mn></msup><mo>)</mo></mrow><mo>−</mo><msup><mrow><mo>(</mo><msub><mi>a</mi><mn>1</mn></msub><msub><mi>b</mi><mn>1</mn></msub><mo>+</mo><msub><mi>a</mi><mn>2</mn></msub><msub><mi>b</mi><mn>2</mn></msub><mo>)</mo></mrow><mn>2</mn></msup></math> を展開すると</p>
+          <div class="mq-narrow">
+            <p class="formula"><math display="block"><msup><mrow><mo>|</mo><mover><mi>a</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup><msup><mrow><mo>|</mo><mover><mi>b</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup><mo>−</mo><msup><mrow><mo>(</mo><mover><mi>a</mi><mo>→</mo></mover><mo>⋅</mo><mover><mi>b</mi><mo>→</mo></mover><mo>)</mo></mrow><mn>2</mn></msup></math></p>
+            <p class="formula cont"><math display="block"><mo>=</mo><mrow><mo>(</mo><msup><msub><mi>a</mi><mn>1</mn></msub><mn>2</mn></msup><mo>+</mo><msup><msub><mi>a</mi><mn>2</mn></msub><mn>2</mn></msup><mo>)</mo></mrow><mrow><mo>(</mo><msup><msub><mi>b</mi><mn>1</mn></msub><mn>2</mn></msup><mo>+</mo><msup><msub><mi>b</mi><mn>2</mn></msub><mn>2</mn></msup><mo>)</mo></mrow></math></p>
+            <p class="formula cont"><math display="block"><mo>−</mo><msup><mrow><mo>(</mo><msub><mi>a</mi><mn>1</mn></msub><msub><mi>b</mi><mn>1</mn></msub><mo>+</mo><msub><mi>a</mi><mn>2</mn></msub><msub><mi>b</mi><mn>2</mn></msub><mo>)</mo></mrow><mn>2</mn></msup></math></p>
+            <p>を展開すると</p>
+          </div>
+          <p class="cite"><span class="cite-tag">使う公式</span>和の2乗の展開 <math><msup><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mi>y</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mi>y</mi><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup></math>。かっこ同士の掛け算は、分配法則で項を1つずつ掛けて足していくよ。</p>
+          <p class="formula"><math display="block"><mo>=</mo><msup><msub><mi>a</mi><mn>1</mn></msub><mn>2</mn></msup><msup><msub><mi>b</mi><mn>2</mn></msub><mn>2</mn></msup><mo>−</mo><mn>2</mn><msub><mi>a</mi><mn>1</mn></msub><msub><mi>b</mi><mn>1</mn></msub><msub><mi>a</mi><mn>2</mn></msub><msub><mi>b</mi><mn>2</mn></msub><mo>+</mo><msup><msub><mi>a</mi><mn>2</mn></msub><mn>2</mn></msup><msup><msub><mi>b</mi><mn>1</mn></msub><mn>2</mn></msup></math></p>
+          <p><math><msup><msub><mi>a</mi><mn>1</mn></msub><mn>2</mn></msup><msup><msub><mi>b</mi><mn>1</mn></msub><mn>2</mn></msup></math> と <math><msup><msub><mi>a</mi><mn>2</mn></msub><mn>2</mn></msup><msup><msub><mi>b</mi><mn>2</mn></msub><mn>2</mn></msup></math> は、引く側にも出てきて<b>打ち消し合う</b>。残るのはこの3項だけだ。</p>
         </div>
         <div class="step deriv">
           <h3>ステップ 3 ― 残った3項をくくる</h3>
-          <p><span class="mi">a</span><sub>1</sub>²<span class="mi">b</span><sub>2</sub>² − 2<span class="mi">a</span><sub>1</sub><span class="mi">b</span><sub>1</sub><span class="mi">a</span><sub>2</sub><span class="mi">b</span><sub>2</sub> ＋ <span class="mi">a</span><sub>2</sub>²<span class="mi">b</span><sub>1</sub>² は、（<span class="mi">X</span>−<span class="mi">Y</span>）²＝<span class="mi">X</span>²−2<span class="mi">X</span><span class="mi">Y</span>＋<span class="mi">Y</span>² の形そのもの。<span class="mi">X</span>＝<span class="mi">a</span><sub>1</sub><span class="mi">b</span><sub>2</sub>、<span class="mi">Y</span>＝<span class="mi">a</span><sub>2</sub><span class="mi">b</span><sub>1</sub> と見ると</p>
-          <p class="formula">＝ （<span class="mi">a</span><sub>1</sub><span class="mi">b</span><sub>2</sub> − <span class="mi">a</span><sub>2</sub><span class="mi">b</span><sub>1</sub>）²</p>
+          <p><math><msup><msub><mi>a</mi><mn>1</mn></msub><mn>2</mn></msup><msup><msub><mi>b</mi><mn>2</mn></msub><mn>2</mn></msup><mo>−</mo><mn>2</mn><msub><mi>a</mi><mn>1</mn></msub><msub><mi>b</mi><mn>1</mn></msub><msub><mi>a</mi><mn>2</mn></msub><msub><mi>b</mi><mn>2</mn></msub><mo>+</mo><msup><msub><mi>a</mi><mn>2</mn></msub><mn>2</mn></msup><msup><msub><mi>b</mi><mn>1</mn></msub><mn>2</mn></msup></math> は、<math><msup><mrow><mo>(</mo><mi>X</mi><mo>−</mo><mi>Y</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mi>X</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>X</mi><mi>Y</mi><mo>+</mo><msup><mi>Y</mi><mn>2</mn></msup></math> の形そのもの。<math><mi>X</mi><mo>=</mo><msub><mi>a</mi><mn>1</mn></msub><msub><mi>b</mi><mn>2</mn></msub></math>、<math><mi>Y</mi><mo>=</mo><msub><mi>a</mi><mn>2</mn></msub><msub><mi>b</mi><mn>1</mn></msub></math> と見ると</p>
+          <p class="cite"><span class="cite-tag">使う公式</span>因数分解の公式 <math><msup><mi>X</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>X</mi><mi>Y</mi><mo>+</mo><msup><mi>Y</mi><mn>2</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><mi>X</mi><mo>−</mo><mi>Y</mi><mo>)</mo></mrow><mn>2</mn></msup></math> を逆向きに使う。「2乗 − 2×（積） ＋ 2乗」の形が見えたら、<math><msup><mrow><mo>(</mo><mi>X</mi><mo>−</mo><mi>Y</mi><mo>)</mo></mrow><mn>2</mn></msup></math> にまとめられるよ。</p>
+          <p class="formula"><math display="block"><mo>=</mo><msup><mrow><mo>(</mo><msub><mi>a</mi><mn>1</mn></msub><msub><mi>b</mi><mn>2</mn></msub><mo>−</mo><msub><mi>a</mi><mn>2</mn></msub><msub><mi>b</mi><mn>1</mn></msub><mo>)</mo></mrow><mn>2</mn></msup></math></p>
           <p>つまり、ルートの中身はきれいな<b>2乗の形</b>になる。</p>
         </div>
         <div class="step deriv">
           <h3>ステップ 4 ― 成分による面積の公式</h3>
-          <p class="formula"><span class="mi">S</span> ＝ <span class="frac"><span class="num">1</span><span class="den">2</span></span>√（（<span class="mi">a</span><sub>1</sub><span class="mi">b</span><sub>2</sub>−<span class="mi">a</span><sub>2</sub><span class="mi">b</span><sub>1</sub>）²） ＝ <span class="frac"><span class="num">1</span><span class="den">2</span></span>｜<span class="mi">a</span><sub>1</sub><span class="mi">b</span><sub>2</sub> − <span class="mi">a</span><sub>2</sub><span class="mi">b</span><sub>1</sub>｜</p>
-          <p><b>なぜ絶対値がつくの？</b>　<span class="mi">a</span><sub>1</sub><span class="mi">b</span><sub>2</sub>−<span class="mi">a</span><sub>2</sub><span class="mi">b</span><sub>1</sub> の符号は、<span class="v">a</span> と <span class="v">b</span> の順序（向きの回り方）で変わってしまう。でも面積はいつも<b>正の数</b>でなければならない。だから √(<span class="mi">X</span>²)＝｜<span class="mi">X</span>｜ として、絶対値をつけて正にするんだ。</p>
+          <p class="cite"><span class="cite-tag">使う性質</span><math><msqrt><msup><mi>X</mi><mn>2</mn></msup></msqrt><mo>=</mo><mo>|</mo><mi>X</mi><mo>|</mo></math>。2乗した数のルートは、もとの数ではなく「絶対値」になる（<math><mi>X</mi></math> が負でも、結果は正になる）。</p>
+          <p class="formula mq-wide"><math display="block"><mi>S</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><msqrt><mrow><msup><mrow><mo>(</mo><msub><mi>a</mi><mn>1</mn></msub><msub><mi>b</mi><mn>2</mn></msub><mo>−</mo><msub><mi>a</mi><mn>2</mn></msub><msub><mi>b</mi><mn>1</mn></msub><mo>)</mo></mrow><mn>2</mn></msup></mrow></msqrt><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>|</mo><msub><mi>a</mi><mn>1</mn></msub><msub><mi>b</mi><mn>2</mn></msub><mo>−</mo><msub><mi>a</mi><mn>2</mn></msub><msub><mi>b</mi><mn>1</mn></msub><mo>|</mo></math></p>
+          <div class="mq-narrow">
+            <p class="formula"><math display="block"><mi>S</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><msqrt><mrow><msup><mrow><mo>(</mo><msub><mi>a</mi><mn>1</mn></msub><msub><mi>b</mi><mn>2</mn></msub><mo>−</mo><msub><mi>a</mi><mn>2</mn></msub><msub><mi>b</mi><mn>1</mn></msub><mo>)</mo></mrow><mn>2</mn></msup></mrow></msqrt></math></p>
+            <p class="formula cont"><math display="block"><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>|</mo><msub><mi>a</mi><mn>1</mn></msub><msub><mi>b</mi><mn>2</mn></msub><mo>−</mo><msub><mi>a</mi><mn>2</mn></msub><msub><mi>b</mi><mn>1</mn></msub><mo>|</mo></math></p>
+          </div>
+          <p><b>なぜ絶対値がつくの？</b>　<math><msub><mi>a</mi><mn>1</mn></msub><msub><mi>b</mi><mn>2</mn></msub><mo>−</mo><msub><mi>a</mi><mn>2</mn></msub><msub><mi>b</mi><mn>1</mn></msub></math> の符号は、<math><mover><mi>a</mi><mo>→</mo></mover></math> と <math><mover><mi>b</mi><mo>→</mo></mover></math> の順序（向きの回り方）で変わってしまう。<br>でも面積はいつも<b>正の数</b>でなければならない。<br>だから <math><msqrt><msup><mi>X</mi><mn>2</mn></msup></msqrt><mo>=</mo><mo>|</mo><mi>X</mi><mo>|</mo></math> として、絶対値をつけて正にするんだ。</p>
         </div>
         <p class="prob-done">成分の公式が導けた！　練習2で使ってみよう。</p>
       </section>
@@ -494,32 +553,45 @@
               <text x="206" y="240" class="svg-txt" font-size="16">B（2, −1）</text>
             </svg>
           </div>
-          <figcaption>3点 O（0, 0）、A（4, 1）、B（2, −1）を結んだ三角形。原点Oから出る2辺がカギになる。</figcaption>
+          <figcaption>3点 O（0, 0）、A（4, 1）、B（2, −1）を結んだ三角形。<br>原点Oから出る2辺がカギになる。</figcaption>
         </figure>
         </div>
 
         <div class="step hint">
           <h3>ヒント 1 ― Oから出る2つのベクトルの成分を書く</h3>
-          <p>成分の公式を使うには、<span class="v">a</span>＝<span class="v">OA</span>、<span class="v">b</span>＝<span class="v">OB</span> の成分が必要だ。</p>
+          <p>成分の公式を使うには、<math><mover><mi>a</mi><mo>→</mo></mover><mo>=</mo><mover><mi>OA</mi><mo>→</mo></mover></math>、<math><mover><mi>b</mi><mo>→</mo></mover><mo>=</mo><mover><mi>OB</mi><mo>→</mo></mover></math> の成分が必要だ。</p>
           <p>Oは原点（0, 0）だから、点の座標がそのまま成分になる。</p>
-          <p class="formula" style="background:var(--surface)"><span class="v">OA</span>＝（4, 1）　　<span class="v">OB</span>＝（2, −1）</p>
+          <p class="cite"><span class="cite-tag">使う定義</span>ベクトルの成分：原点Oから点 <math><mi>A</mi><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>)</mo></math> へ向かうベクトル <math><mover><mi>OA</mi><mo>→</mo></mover></math> の成分は <math><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>)</mo></math>。始点が原点なら、終点の座標がそのまま成分になるんだ。</p>
+          <p class="formula mq-wide" style="background:var(--surface)"><math display="block"><mover><mi>OA</mi><mo>→</mo></mover><mo>=</mo><mo>(</mo><mn>4</mn><mo>,</mo><mn>1</mn><mo>)</mo><mspace width="2em"/><mover><mi>OB</mi><mo>→</mo></mover><mo>=</mo><mo>(</mo><mn>2</mn><mo>,</mo><mo>−</mo><mn>1</mn><mo>)</mo></math></p>
+          <div class="mq-narrow mq-stack">
+            <p class="formula" style="background:var(--surface)"><math display="block"><mover><mi>OA</mi><mo>→</mo></mover><mo>=</mo><mo>(</mo><mn>4</mn><mo>,</mo><mn>1</mn><mo>)</mo></math></p>
+            <p class="formula" style="background:var(--surface)"><math display="block"><mover><mi>OB</mi><mo>→</mo></mover><mo>=</mo><mo>(</mo><mn>2</mn><mo>,</mo><mo>−</mo><mn>1</mn><mo>)</mo></math></p>
+          </div>
         </div>
         <div class="step hint">
           <h3>ヒント 2 ― 成分の公式に当てはめる</h3>
-          <p><span class="mi">a</span><sub>1</sub>＝4、<span class="mi">a</span><sub>2</sub>＝1、<span class="mi">b</span><sub>1</sub>＝2、<span class="mi">b</span><sub>2</sub>＝−1 として、<span class="mi">S</span>＝<span class="frac"><span class="num">1</span><span class="den">2</span></span>｜<span class="mi">a</span><sub>1</sub><span class="mi">b</span><sub>2</sub>−<span class="mi">a</span><sub>2</sub><span class="mi">b</span><sub>1</sub>｜ に代入しよう。</p>
-          <p class="formula" style="background:var(--surface)"><span class="mi">S</span> ＝ <span class="frac"><span class="num">1</span><span class="den">2</span></span>｜4×（−1） − 1×2｜</p>
-          <p>「4×（−1）」と「1×2」は、成分同士の<b>たすき掛け</b>（斜め同士の掛け算）だよ。</p>
+          <p><math><msub><mi>a</mi><mn>1</mn></msub><mo>=</mo><mn>4</mn></math>、<math><msub><mi>a</mi><mn>2</mn></msub><mo>=</mo><mn>1</mn></math>、<math><msub><mi>b</mi><mn>1</mn></msub><mo>=</mo><mn>2</mn></math>、<math><msub><mi>b</mi><mn>2</mn></msub><mo>=</mo><mo>−</mo><mn>1</mn></math> として、<math><mi>S</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>|</mo><msub><mi>a</mi><mn>1</mn></msub><msub><mi>b</mi><mn>2</mn></msub><mo>−</mo><msub><mi>a</mi><mn>2</mn></msub><msub><mi>b</mi><mn>1</mn></msub><mo>|</mo></math> に代入しよう。</p>
+          <p class="cite"><span class="cite-tag">使う公式</span>成分による面積の公式 <math><mi>S</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>|</mo><msub><mi>a</mi><mn>1</mn></msub><msub><mi>b</mi><mn>2</mn></msub><mo>−</mo><msub><mi>a</mi><mn>2</mn></msub><msub><mi>b</mi><mn>1</mn></msub><mo>|</mo></math>。解説で導いた、この公式を使うよ。</p>
+          <p class="formula" style="background:var(--surface)"><math display="block"><mi>S</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>|</mo><mn>4</mn><mo>×</mo><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo><mo>−</mo><mn>1</mn><mo>×</mo><mn>2</mn><mo>|</mo></math></p>
+          <p>「<math><mn>4</mn><mo>×</mo><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></math>」と「<math><mn>1</mn><mo>×</mo><mn>2</mn></math>」は、成分同士の<b>たすき掛け</b>（斜め同士の掛け算）だよ。</p>
         </div>
         <div class="step hint">
           <h3>ヒント 3 ― 絶対値の中を計算する</h3>
-          <p>4×（−1）＝<b>−4</b>、1×2＝<b>2</b>。だから中身は −4−2＝<b>−6</b>。</p>
-          <p>マイナスになったら、絶対値をとって <b>6</b> に直す。あとは <span class="frac"><span class="num">1</span><span class="den">2</span></span> 倍するだけだ。</p>
+          <p><math><mn>4</mn><mo>×</mo><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo><mo>=</mo></math><b>−4</b>、<math><mn>1</mn><mo>×</mo><mn>2</mn><mo>=</mo></math><b>2</b>。だから中身は <math><mo>−</mo><mn>4</mn><mo>−</mo><mn>2</mn><mo>=</mo></math><b>−6</b>。</p>
+          <p class="cite"><span class="cite-tag">使う定義</span>絶対値：中身が負の数のときは、符号を＋に変えた数が絶対値になる。<math><mo>|</mo><mo>−</mo><mn>6</mn><mo>|</mo><mo>=</mo><mn>6</mn></math> のように直すよ。</p>
+          <p>マイナスになったら、絶対値をとって <b>6</b> に直す。あとは <math><mfrac><mn>1</mn><mn>2</mn></mfrac></math> 倍するだけだ。</p>
         </div>
         <div class="step answer">
           <h3>解答</h3>
           <p class="big">面積 ＝ 3</p>
-          <p><span class="mi">S</span> ＝ <span class="frac"><span class="num">1</span><span class="den">2</span></span>｜4×（−1）−1×2｜ ＝ <span class="frac"><span class="num">1</span><span class="den">2</span></span>｜−6｜ ＝ <span class="frac"><span class="num">1</span><span class="den">2</span></span>×6 ＝ <b>3</b>。</p>
-          <p class="note"><b>ポイント：</b>頂点の1つが原点のときは、残り2点の座標をそのまま成分として「たすき掛けの差の絶対値×<span class="frac"><span class="num">1</span><span class="den">2</span></span>」で面積が出る。</p>
+          <p class="mq-wide"><math><mi>S</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>|</mo><mn>4</mn><mo>×</mo><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo><mo>−</mo><mn>1</mn><mo>×</mo><mn>2</mn><mo>|</mo><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>|</mo><mo>−</mo><mn>6</mn><mo>|</mo><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>×</mo><mn>6</mn><mo>=</mo></math><b>3</b>。</p>
+          <div class="mq-narrow">
+            <div class="crow"><math displaystyle="true"><mi>S</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>|</mo><mn>4</mn><mo>×</mo><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo><mo>−</mo><mn>1</mn><mo>×</mo><mn>2</mn><mo>|</mo></math></div>
+            <div class="crow"><math displaystyle="true"><mphantom><mi>S</mi></mphantom><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>|</mo><mo>−</mo><mn>6</mn><mo>|</mo></math></div>
+            <div class="crow"><math displaystyle="true"><mphantom><mi>S</mi></mphantom><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>×</mo><mn>6</mn></math></div>
+            <div class="crow"><math displaystyle="true"><mphantom><mi>S</mi></mphantom><mo>=</mo><mstyle mathvariant="bold"><mn>3</mn></mstyle><mtext>。</mtext></math></div>
+          </div>
+          <p class="note"><b>ポイント：</b>頂点の1つが原点のときは、残り2点の座標をそのまま成分として<br>「たすき掛けの差の絶対値×<math><mfrac><mn>1</mn><mn>2</mn></mfrac></math>」で面積が出る。</p>
         </div>
         <p class="prob-done">練習2 クリア！　下のまとめで公式を2つとも確認しよう。</p>
       </section>
@@ -528,9 +600,9 @@
       <section class="card summary">
         <h2>この項のポイント</h2>
         <ul>
-          <li><b>ベクトルの公式：</b>△OABで <span class="v" style="padding-top:.4em">OA</span>＝<span class="v" style="padding-top:.4em">a</span>、<span class="v" style="padding-top:.4em">OB</span>＝<span class="v" style="padding-top:.4em">b</span> のとき、面積は <b><span class="mi">S</span> ＝ <span class="frac"><span class="num">1</span><span class="den">2</span></span>√（｜<span class="v" style="padding-top:.4em">a</span>｜²｜<span class="v" style="padding-top:.4em">b</span>｜² − （<span class="v" style="padding-top:.4em">a</span>・<span class="v" style="padding-top:.4em">b</span>）²）</b>。長さと内積が分かれば、角が分からなくてもOK。</li>
-          <li><b>成分の公式：</b>成分が分かれば <b><span class="mi">S</span> ＝ <span class="frac"><span class="num">1</span><span class="den">2</span></span>｜<span class="mi">a</span><sub>1</sub><span class="mi">b</span><sub>2</sub> − <span class="mi">a</span><sub>2</sub><span class="mi">b</span><sub>1</sub>｜</b>。たすき掛けの差の絶対値をとって、半分にする。</li>
-          <li><b>絶対値を忘れずに。</b><span class="mi">a</span><sub>1</sub><span class="mi">b</span><sub>2</sub>−<span class="mi">a</span><sub>2</sub><span class="mi">b</span><sub>1</sub> は負になることもあるが、面積は正。最後に絶対値で正に直す。</li>
+          <li><b>ベクトルの公式：</b>△OABで <math><mover><mi>OA</mi><mo>→</mo></mover><mo>=</mo><mover><mi>a</mi><mo>→</mo></mover></math>、<math><mover><mi>OB</mi><mo>→</mo></mover><mo>=</mo><mover><mi>b</mi><mo>→</mo></mover></math> のとき、面積は <b><math><mi>S</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><msqrt><mrow><msup><mrow><mo>|</mo><mover><mi>a</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup><msup><mrow><mo>|</mo><mover><mi>b</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup><mo>−</mo><msup><mrow><mo>(</mo><mover><mi>a</mi><mo>→</mo></mover><mo>⋅</mo><mover><mi>b</mi><mo>→</mo></mover><mo>)</mo></mrow><mn>2</mn></msup></mrow></msqrt></math></b>。<br>長さと内積が分かれば、角が分からなくてもOK。<p class="cite"><span class="cite-tag">使う公式</span>三角形の面積（ベクトル）：<math><mi>S</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><msqrt><mrow><msup><mrow><mo>|</mo><mover><mi>a</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup><msup><mrow><mo>|</mo><mover><mi>b</mi><mo>→</mo></mover><mo>|</mo></mrow><mn>2</mn></msup><mo>−</mo><msup><mrow><mo>(</mo><mover><mi>a</mi><mo>→</mo></mover><mo>⋅</mo><mover><mi>b</mi><mo>→</mo></mover><mo>)</mo></mrow><mn>2</mn></msup></mrow></msqrt></math>。長さと内積だけで面積が出るよ。</p></li>
+          <li><b>成分の公式：</b>成分が分かれば <b><math><mi>S</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>|</mo><msub><mi>a</mi><mn>1</mn></msub><msub><mi>b</mi><mn>2</mn></msub><mo>−</mo><msub><mi>a</mi><mn>2</mn></msub><msub><mi>b</mi><mn>1</mn></msub><mo>|</mo></math></b>。<br>たすき掛けの差の絶対値をとって、半分にする。<p class="cite"><span class="cite-tag">使う公式</span>三角形の面積（成分）：<math><mi>S</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>|</mo><msub><mi>a</mi><mn>1</mn></msub><msub><mi>b</mi><mn>2</mn></msub><mo>−</mo><msub><mi>a</mi><mn>2</mn></msub><msub><mi>b</mi><mn>1</mn></msub><mo>|</mo></math>。成分が分かれば、こちらの方が速いよ。</p></li>
+          <li><b>絶対値を忘れずに。</b><math><msub><mi>a</mi><mn>1</mn></msub><msub><mi>b</mi><mn>2</mn></msub><mo>−</mo><msub><mi>a</mi><mn>2</mn></msub><msub><mi>b</mi><mn>1</mn></msub></math> は負になることもあるが、面積は正。<br>最後に絶対値で正に直す。</li>
         </ul>
       </section>
 
@@ -673,6 +745,8 @@
         refreshBar();
       })();
     </script>
+
+  <!-- Nanryo portal アクセス集計ビーコン（全ページ共通・</body>直前に挿入） -->
 <script>
 (function(){try{
   if(/[?&]nocount=1/.test(location.search)){try{localStorage.setItem('np_nocount','1');}catch(e){}}
@@ -689,5 +763,5 @@
     +'&u='+first;
 }catch(e){}})();
 </script>
-  </body>
+</body>
 </html>
