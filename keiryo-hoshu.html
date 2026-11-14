@@ -268,6 +268,11 @@
           min-height:0;max-height:calc(100vh - 345px);overflow-y:auto;
           padding:2px 6px 2px 2px;
         }
+        /* タブ式課題（補充問題6）：左カラムには選択中の小問の見出しと図だけを表示する
+           （見出しと図はJSで .qside へ移され、タブ切り替えで .on が付け替わる） */
+        .prob .qside .qpart{display:none}
+        .prob .qside .qpart.on{display:block}
+        .prob .qside .prob-head.qpart.on{display:flex}
       }
     
       /* ---------- クイズ（選択式・答え合わせ） ---------- */
@@ -948,6 +953,61 @@
           });
         });
 
+        /* ---------- タブ式課題（補充問題6）：広い画面では小問の見出し・図を左カラム（.qside）へ移す ---------- */
+        var tabCards = [];
+        Array.prototype.forEach.call(['prob-ho6'], function(secId){
+          var card = document.getElementById(secId);
+          if (!card) return;
+          var qside = card.querySelector(':scope > .qside');
+          if (!qside || !card.querySelector(':scope > .tabs')) return;
+          var items = [];
+          Array.prototype.forEach.call(card.querySelectorAll(':scope > .tabpanel'), function(panel){
+            var head = panel.querySelector(':scope > .prob-head');
+            var fig = panel.querySelector(':scope > figure');
+            [head, fig].forEach(function(el){ if (el) el.classList.add('qpart'); });
+            items.push({ panel: panel, head: head, fig: fig, id: panel.getAttribute('data-flow'),
+                         headHome: head ? head.nextElementSibling : null,
+                         figHome: fig ? fig.nextElementSibling : null });
+          });
+          tabCards.push({ card: card, qside: qside, items: items });
+        });
+        function syncQside(tc){
+          var shown = tc.card.querySelector('.tabpanel.show');
+          var activeFlow = shown ? shown.getAttribute('data-flow') : null;
+          tc.items.forEach(function(it){
+            var on = it.id === activeFlow;
+            if (it.head) it.head.classList.toggle('on', on);
+            if (it.fig) it.fig.classList.toggle('on', on);
+          });
+        }
+        var wideMq = window.matchMedia('(min-width: 1024px)');
+        function applyTabLayout(){
+          var wide = wideMq.matches;
+          tabCards.forEach(function(tc){
+            tc.items.forEach(function(it){
+              if (wide){
+                if (it.head && it.head.parentNode !== tc.qside) tc.qside.appendChild(it.head);
+                if (it.fig && it.fig.parentNode !== tc.qside) tc.qside.appendChild(it.fig);
+              } else {
+                /* 狭い画面では、移す前に記録した元の位置（次の要素の前）へ戻す */
+                if (it.fig && it.fig.parentNode !== it.panel){
+                  if (it.figHome && it.figHome.parentNode === it.panel) it.panel.insertBefore(it.fig, it.figHome);
+                  else it.panel.appendChild(it.fig);
+                }
+                if (it.head && it.head.parentNode !== it.panel){
+                  if (it.headHome && it.headHome.parentNode === it.panel) it.panel.insertBefore(it.head, it.headHome);
+                  else if (it.fig && it.fig.parentNode === it.panel) it.panel.insertBefore(it.head, it.fig);
+                  else it.panel.appendChild(it.head);
+                }
+              }
+            });
+            syncQside(tc);
+          });
+        }
+        if (wideMq.addEventListener) wideMq.addEventListener('change', applyTabLayout);
+        else if (wideMq.addListener) wideMq.addListener(applyTabLayout);
+        applyTabLayout();
+
         /* ---------- タブ切り替え ---------- */
         Array.prototype.slice.call(document.querySelectorAll('.tabs')).forEach(function(group){
           var tabs = Array.prototype.slice.call(group.querySelectorAll('.tab'));
@@ -963,6 +1023,7 @@
                 });
               }
               setActive(target);
+              tabCards.forEach(syncQside);
             });
           });
         });
