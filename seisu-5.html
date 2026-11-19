@@ -1,0 +1,712 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:," />
+    <title>数学A 5 ユークリッドの互除法 自習ページ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Serif+JP:wght@700;900&family=STIX+Two+Math&display=swap" rel="stylesheet" />
+    <style>
+      :root{
+        --bg:#f4f7f5;
+        --surface:#ffffff;
+        --surface2:#eef4f1;
+        --ink:#1d2a26;
+        --ink-soft:#43554e;
+        --line:#cfddd6;
+        --accent:#0e7a5f;
+        --accent-deep:#0a5c48;
+        --accent-soft:#e2f2ec;
+        --blue:#1f6fb4;
+        --orange:#d96c1e;
+        --hint-bg:#fff6cf;
+        --hint-line:#e3c84e;
+        --hint-ink:#4d4210;
+        --ans-bg:#e6f6ea;
+        --ans-line:#4caf6d;
+        --ans-ink:#14401f;
+        --bar-bg:rgba(255,255,255,.94);
+        --shadow:0 2px 10px rgba(20,50,40,.08);
+      }
+      @media (prefers-color-scheme: dark){
+        :root{
+          --bg:#101714;
+          --surface:#1a2420;
+          --surface2:#22302a;
+          --ink:#e8f0ec;
+          --ink-soft:#b3c4bc;
+          --line:#3a4a43;
+          --accent:#3cb894;
+          --accent-deep:#8fd8c0;
+          --accent-soft:#1d332b;
+          --blue:#6cb2e8;
+          --orange:#f09a4e;
+          --hint-bg:#3d3617;
+          --hint-line:#a68e2e;
+          --hint-ink:#f5e9bd;
+          --ans-bg:#17301e;
+          --ans-line:#3f9957;
+          --ans-ink:#c9eed2;
+          --bar-bg:rgba(20,28,24,.94);
+          --shadow:0 2px 10px rgba(0,0,0,.4);
+        }
+      }
+      *{box-sizing:border-box}
+      html{scroll-behavior:smooth}
+      @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} *{transition:none!important} }
+      body{
+        margin:0; background:var(--bg); color:var(--ink);
+        font-family:"STIX Two Math","Noto Sans JP",system-ui,-apple-system,"Hiragino Kaku Gothic ProN",sans-serif;
+        line-height:1.85; font-size:16px;
+        padding-bottom:132px;
+      }
+      .wrap{max-width:780px;margin:0 auto;padding:0 16px 8px}
+
+      /* ---------- ヘッダー ---------- */
+      header{padding:26px 0 6px}
+      .badge{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:700;font-size:13px;
+        padding:4px 12px;border-radius:999px;letter-spacing:.04em;
+      }
+      @media (prefers-color-scheme: dark){ .badge{color:#0c1712} }
+      h1{
+        font-family:"Noto Serif JP",serif;font-weight:900;font-size:32px;line-height:1.35;
+        margin:12px 0 4px;letter-spacing:.02em;
+      }
+      .num-badge{
+        display:inline-block;background:var(--accent);color:#fff;font-family:"STIX Two Math","Noto Sans JP",sans-serif;
+        font-weight:900;font-size:.5em;border-radius:9px;padding:.1em .5em;
+        vertical-align:.42em;margin-right:.35em;letter-spacing:.03em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .num-badge{color:#0c1712} }
+      .page-meta{color:var(--ink-soft);font-size:14px;font-weight:500}
+      .page-meta b{color:var(--accent-deep)}
+
+      /* ---------- 使い方 ---------- */
+      .howto{
+        background:var(--accent-soft);border:1.5px solid var(--accent);border-radius:14px;
+        padding:14px 18px;margin:18px 0 26px;box-shadow:var(--shadow);
+      }
+      .howto h2{margin:0 0 6px;font-size:16px;color:var(--accent-deep)}
+      .howto ol{margin:0;padding-left:1.4em}
+      .howto li{margin:2px 0}
+      .howto .next-word{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:700;border-radius:6px;
+        padding:0 8px;font-size:.92em;
+      }
+      @media (prefers-color-scheme: dark){ .howto .next-word{color:#0c1712} }
+
+      /* ---------- セクション見出し ---------- */
+      .sec-head{display:flex;align-items:center;gap:10px;margin:34px 0 12px}
+      .sec-tag{
+        background:var(--ink);color:var(--bg);font-weight:900;font-size:14px;border-radius:8px;
+        padding:3px 10px;white-space:nowrap;
+      }
+      .sec-head h2{font-size:21px;margin:0;font-weight:900}
+      .sec-head .pno{margin-left:auto;color:var(--ink-soft);font-size:13px;white-space:nowrap}
+
+      .card{
+        background:var(--surface);border:1px solid var(--line);border-radius:14px;
+        padding:18px 18px 8px;margin:0 0 18px;box-shadow:var(--shadow);
+      }
+      .card p{margin:0 0 12px}
+      .def{
+        background:var(--surface2);border-radius:10px;padding:12px 16px;margin:0 0 14px;
+      }
+      .def p:last-child{margin-bottom:0}
+      .key{font-weight:900;color:var(--accent-deep)}
+      figure{margin:6px 0 14px}
+      figure svg{width:100%;height:auto;display:block}
+      figcaption{font-size:13.5px;color:var(--ink-soft);text-align:center;margin-top:6px;line-height:1.6}
+      .figbox{background:var(--surface2);border-radius:12px;padding:12px 10px 6px}
+
+      /* ---------- 数式 ---------- */
+      .formula{
+        text-align:center;font-size:19px;font-weight:700;letter-spacing:.03em;
+        background:var(--surface2);border-radius:10px;padding:12px 8px;margin:0 0 14px;
+      }
+      .formula.left{text-align:left;padding-left:18px}
+      sup{font-size:.68em;line-height:0;font-weight:700}
+      /* 変数（イタリック体で表示する数式中の文字） */
+      i{font-family:"STIX Two Math","Noto Sans JP",sans-serif;font-style:italic}
+      .law-no{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:.72em;
+        width:1.7em;height:1.7em;line-height:1.7em;border-radius:50%;text-align:center;
+        vertical-align:.18em;margin-right:.5em;font-family:"STIX Two Math","Noto Sans JP",sans-serif;
+      }
+      @media (prefers-color-scheme: dark){ .law-no{color:#0c1712} }
+      .mini{font-size:14.5px;color:var(--ink-soft)}
+      .card p,.card li,figcaption,table.comp{
+        font-family:"STIX Two Math","Noto Sans JP",sans-serif;
+      }
+      .blank{
+        display:inline-block;min-width:1.5em;text-align:center;border:1.5px solid currentColor;
+        border-radius:5px;padding:0 .15em;line-height:1.3;font-weight:900;
+      }
+
+      /* ---------- 問題カード（ヒント式） ---------- */
+      .prob{border:2px solid var(--line);transition:border-color .2s}
+      .prob.active{border-color:var(--accent)}
+      .prob-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+      .prob-tag{
+        font-weight:900;font-size:14px;border-radius:8px;padding:3px 12px;color:#fff;background:var(--blue);
+      }
+      .prob-tag.ren{background:#c2452d}
+      .prob-tag.think{background:var(--accent)}
+      @media (prefers-color-scheme: dark){ .prob-tag{color:#0d141b} .prob-tag.ren{color:#1c0f0a} .prob-tag.think{color:#0c1712} }
+      .prob-state{margin-left:auto;font-size:13px;font-weight:700;color:var(--ink-soft)}
+      .dots{display:flex;gap:6px;align-items:center}
+      .dot{width:11px;height:11px;border-radius:50%;border:2px solid var(--ink-soft);background:transparent}
+      .dot.on{background:var(--accent);border-color:var(--accent)}
+      .dot.ans.on{background:#2f9e4f;border-color:#2f9e4f}
+      .prob-q{font-weight:700;font-size:16.5px;margin:0 0 10px}
+
+      .step{display:none;margin:0 0 12px;border-radius:12px;padding:12px 16px 4px;scroll-margin-bottom:150px}
+      .step.show{display:block;animation:pop .25s ease}
+      @keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+      .step h3{margin:0 0 6px;font-size:14px;font-weight:900;letter-spacing:.05em}
+      .step p{margin:0 0 10px}
+      .hint{background:var(--hint-bg);border:1.5px solid var(--hint-line);color:var(--hint-ink)}
+      .hint h3{color:inherit}
+      .answer{background:var(--ans-bg);border:1.5px solid var(--ans-line);color:var(--ans-ink)}
+      .answer .big{font-size:19px;font-weight:900;text-align:center;margin:4px 0 10px}
+      .note{font-size:14px;border-top:1px dashed currentColor;padding-top:8px;margin-top:2px}
+      .prob-done{
+        display:none;text-align:center;font-weight:900;color:var(--accent-deep);
+        padding:2px 0 12px;font-size:15px;
+      }
+      .prob-done.show{display:block}
+
+      /* ---------- タブ ---------- */
+      .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}
+      .tab{
+        font-family:"STIX Two Math","Noto Sans JP",sans-serif;font-size:15px;font-weight:700;cursor:pointer;
+        border:2px solid var(--line);background:var(--surface);color:var(--ink);
+        border-radius:999px;padding:6px 16px;
+      }
+      .tab[aria-selected=true]{background:var(--accent);border-color:var(--accent);color:#fff}
+      @media (prefers-color-scheme: dark){ .tab[aria-selected=true]{color:#0c1712} }
+      .tabpanel{display:none}
+      .tabpanel.show{display:flex;flex-direction:column}
+      [data-flow]{display:flex;flex-direction:column}
+      .tabpanel:not(.show){display:none}
+      [data-flow] > .prob-head{order:1}
+      [data-flow] > .prob-q{order:2}
+      [data-flow] > .prob-done{order:999}
+      /* 広い画面の2段組み用ラッパー（狭い画面では従来どおりの縦並びを保つ） */
+      [data-flow] > .qside{order:2}
+      [data-flow] > .steps-wrap{order:3}
+      .steps-wrap{display:flex;flex-direction:column;min-width:0}
+
+      /* ---------- まとめ ---------- */
+      .summary{border:2px solid var(--accent);background:var(--accent-soft)}
+      .summary h2{margin:0 0 8px;font-size:18px;color:var(--accent-deep)}
+      .summary ul{margin:0;padding-left:1.3em}
+      .summary li{margin:4px 0}
+
+      /* ---------- フッター ---------- */
+      footer{margin:30px 0 10px;text-align:center}
+      .foot-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+      .back-btn{
+        display:inline-block;text-decoration:none;font-weight:700;color:var(--ink);
+        border:2px solid var(--line);background:var(--surface);border-radius:12px;padding:12px 26px;
+      }
+      .next-btn{
+        display:block;text-decoration:none;font-weight:900;font-size:17px;color:#fff;
+        background:var(--accent);border:2px solid var(--accent);border-radius:12px;
+        padding:16px 26px;margin:0 0 12px;
+      }
+      @media (prefers-color-scheme: dark){ .next-btn{color:#0c1712} }
+      .foot-note{color:var(--ink-soft);font-size:13px;margin-top:12px}
+
+      /* ---------- 下部固定バー ---------- */
+      .ctrl-bar{
+        position:fixed;left:0;right:0;bottom:0;z-index:50;background:var(--bar-bg);
+        backdrop-filter:blur(8px);border-top:1.5px solid var(--line);
+        padding:10px 14px calc(10px + env(safe-area-inset-bottom));
+      }
+      .ctrl-inner{max-width:780px;margin:0 auto}
+      .ctrl-label{font-size:13px;font-weight:700;color:var(--ink-soft);margin:0 0 6px;text-align:center}
+      .ctrl-label b{color:var(--accent-deep)}
+      .overall{height:6px;background:var(--surface2);border-radius:99px;overflow:hidden;margin:0 0 8px}
+      .overall-fill{height:100%;background:var(--accent);width:0%;transition:width .3s ease}
+      .ctrl-btns{display:flex;gap:10px}
+      .btn{
+        font-family:inherit;cursor:pointer;border-radius:12px;font-weight:900;border:2px solid var(--line);
+        background:var(--surface);color:var(--ink);padding:12px 14px;font-size:15px;
+      }
+      .btn-next{
+        flex:1;background:var(--accent);border-color:var(--accent);color:#fff;font-size:17px;padding:12px;
+      }
+      @media (prefers-color-scheme: dark){ .btn-next{color:#0c1712} }
+      .btn-next:disabled{background:var(--surface2);border-color:var(--line);color:var(--ink-soft);cursor:default}
+      .btn:active{transform:scale(.98)}
+
+      /* SVG内の文字・線 */
+      .svg-txt{font-family:"STIX Two Math","Noto Sans JP",sans-serif;font-weight:700;fill:var(--ink)}
+      .svg-txt-soft{font-family:"STIX Two Math","Noto Sans JP",sans-serif;fill:var(--ink-soft)}
+
+      /* ---------- 広い画面（PC・タブレット横画面）：2段組み ---------- */
+      @media (min-width:1024px){
+        .wrap{max-width:1560px;padding:0 28px 8px}
+        .ctrl-inner{max-width:1560px}
+        /* 解説カードの図は読みやすい大きさに抑えて中央寄せ */
+        section.card:not(.prob) figure{max-width:940px;margin-left:auto;margin-right:auto}
+        /* ヒント・解答内の図にも表示上限を付ける（全幅レイアウトで巨大化しないように） */
+        .card.prob .step figure{max-width:640px;margin-left:auto;margin-right:auto}
+        .card.prob .step figure svg{max-height:80vh}
+
+        .prob{
+          display:grid;
+          grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);
+          column-gap:30px;align-items:start;
+        }
+        .prob>.prob-head{grid-column:1/-1}
+        /* 左カラム：問題文＋図。右カラムが伸びても図が常に見えるよう sticky */
+        .qside{
+          grid-column:1;grid-row:2/span 3;min-width:0;
+          position:sticky;top:14px;
+        }
+        .qside figure{margin-top:0}
+
+        /* 右カラム（単独課題）：ヒント・解答は内部だけスクロール */
+        .prob>.steps-wrap{
+          grid-column:2;min-width:0;min-height:0;
+          max-height:calc(100vh - 235px);overflow-y:auto;
+          padding:2px 6px 2px 2px;
+        }
+        .prob>.prob-done{grid-column:2}
+
+        /* 右カラム（タブ式課題）：タブと小問パネルを右カラムへ */
+        .prob>.tabs{grid-column:2;margin-top:2px}
+        .prob>.tabpanel{grid-column:2;min-width:0}
+        .tabpanel .steps-wrap{
+          min-height:0;max-height:calc(100vh - 345px);overflow-y:auto;
+          padding:2px 6px 2px 2px;
+        }
+      }
+    
+      .cite{
+        background:var(--surface);border:1.5px solid var(--accent);border-left:6px solid var(--accent);
+        border-radius:8px;padding:8px 12px 4px;margin:0 0 10px;font-size:14.5px;line-height:1.75;
+      }
+      .cite-tag{
+        display:inline-block;background:var(--accent);color:#fff;font-weight:900;font-size:12px;
+        border-radius:6px;padding:1px 8px;margin:0 6px 0 0;letter-spacing:.06em;vertical-align:.1em;white-space:nowrap;
+      }
+      @media (prefers-color-scheme: dark){ .cite-tag{color:#0c1712} }
+
+      math{font-family:"STIX Two Math",serif}
+      math[display="block"]{text-align:center}
+      /* 狭幅（スマホ）での数式のはみ出し対策：広幅用 .mq-wide と狭幅用 .mq-narrow を切り替える */
+      .mq-narrow{display:none}
+      .formula{max-width:100%}
+      @media (max-width:700px){
+        .mq-wide{display:none}
+        .mq-narrow{display:block}
+        div.mq-narrow math[display="block"]{text-align:left}
+        div.mq-narrow.mq-stack math[display="block"]{text-align:center}
+        div.mq-narrow .formula.cont{margin-left:1.6em}
+        div.mq-narrow .crow{margin:0 0 .25em;text-align:left}
+        div.mq-narrow .crow:last-child{margin-bottom:0}
+        .formula{overflow-x:auto}
+      }
+      /* ＝が3つ以上の計算チェーンは全幅でも＝揃えの縦並びにする（唯一の形） */
+      .chain-crow{margin:0 0 4px}
+      .chain-crow .crow{margin:0 0 .25em;text-align:left}
+      .chain-crow .crow:last-child{margin-bottom:0}
+      /* 図のない問題は広幅でも全幅レイアウト（左カラムが大きく余るのを避ける） */
+      @media (min-width:1024px){
+        .nofig{display:block !important}
+        .nofig .prob-cols{display:block !important}
+        .nofig .prob-main,.nofig .flow-main,.nofig .flow-left,.nofig .qside,.nofig .col-left,.nofig .prob-left{position:static !important;max-height:none !important}
+        .nofig>.prob-q{position:static !important}
+        .nofig .prob-side,.nofig .prob-right,.nofig .flow-right,.nofig .flow-steps,.nofig .steps-wrap,.nofig .col-right,.nofig .steps-stack{position:static !important;max-height:none !important;overflow:visible !important}
+      }
+</style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <span class="badge">数学A　第3章　数学と人間の活動</span>
+        <h1><span class="num-badge">5</span>ユークリッドの互除法</h1>
+        <p class="page-meta">教科書 <b>p.132〜135</b>　｜　第5節 ユークリッドの互除法</p>
+      </header>
+
+      <!-- ================= 使い方 ================= -->
+      <section class="howto" aria-label="使い方">
+        <h2>このページの使い方（自習の流れ）</h2>
+        <ol>
+          <li><b>解説</b>を読んで、新しい言葉（定義）の意味をつかむ</li>
+          <li><b>例</b>をヒントで解く ― 分からなければ下の <span class="next-word">次へ</span> でヒントを1つずつ開く</li>
+          <li><b>練習問題</b>に挑戦 ― 答えは最後のヒントのあとに出てくるよ</li>
+        </ol>
+      </section>
+<div class="sec-head"><span class="sec-tag">解説 1</span><h2>長方形を正方形で敷き詰める</h2><span class="pno">教科書 p.132</span></div>
+<section class="card">
+        <p>125ページでは、素因数分解して最大公約数を求める方法を学んだね。でも、素因数が大きい数の場合、素因数分解は簡単ではない。ここでは、最大公約数を求める優れた方法を学ぼう。</p>
+        <p><b>問題</b>　2辺の長さが <math><mn>391</mn></math> cm, <math><mn>299</mn></math> cm の長方形の枠に、1辺の長さ <math><mi>a</mi></math> cm の正方形のタイルをすき間なく敷き詰めたい。タイルをできるだけ大きくするには、<math><mi>a</mi></math> の値をいくらにすればよいか。ただし、<math><mi>a</mi></math> は整数とする。</p>
+        <p>求める <math><mi>a</mi></math> の値は <math><mn>391</mn></math>, <math><mn>299</mn></math> の最大公約数だね（第3節と同じ考え方）。ここでは、「長方形を、短い方の辺を1辺とする正方形で次々に敷き詰めていく」という操作で考えてみよう。</p>
+        <figure>
+            <div class="figbox">
+              <svg viewBox="0 0 430 330" role="img" aria-label="391かける299の長方形を正方形で敷き詰める操作の図" style="max-width:400px">
+                <rect x="50" y="30" width="260" height="260" fill="#d96f5a" fill-opacity="0.25"></rect>
+                <rect x="310" y="30" width="80" height="80" fill="#5a86d9" fill-opacity="0.30"></rect>
+                <rect x="310" y="110" width="80" height="80" fill="#5a86d9" fill-opacity="0.30"></rect>
+                <rect x="310" y="190" width="80" height="80" fill="#5a86d9" fill-opacity="0.30"></rect>
+                <g fill="#7ab648" fill-opacity="0.45">
+                  <rect x="310" y="270" width="20" height="20"></rect>
+                  <rect x="330" y="270" width="20" height="20"></rect>
+                  <rect x="350" y="270" width="20" height="20"></rect>
+                  <rect x="370" y="270" width="20" height="20"></rect>
+                </g>
+                <rect x="50" y="30" width="340" height="260" fill="none" stroke="var(--ink)" stroke-width="1.6"></rect>
+                <line x1="310" y1="30" x2="310" y2="290" stroke="var(--ink)" stroke-width="1.2"></line>
+                <line x1="310" y1="110" x2="390" y2="110" stroke="var(--ink)" stroke-width="1.2"></line>
+                <line x1="310" y1="190" x2="390" y2="190" stroke="var(--ink)" stroke-width="1.2"></line>
+                <line x1="310" y1="270" x2="390" y2="270" stroke="var(--ink)" stroke-width="1.2"></line>
+                <line x1="330" y1="270" x2="330" y2="290" stroke="var(--ink)" stroke-width="1"></line>
+                <line x1="350" y1="270" x2="350" y2="290" stroke="var(--ink)" stroke-width="1"></line>
+                <line x1="370" y1="270" x2="370" y2="290" stroke="var(--ink)" stroke-width="1"></line>
+                <text x="220" y="18" text-anchor="middle" font-size="14" fill="var(--ink)">391</text>
+                <text x="34" y="165" text-anchor="middle" font-size="14" fill="var(--ink)" transform="rotate(-90 34 165)">299</text>
+                <text x="180" y="312" text-anchor="middle" font-size="14" fill="var(--ink)">299</text>
+                <text x="350" y="312" text-anchor="middle" font-size="14" fill="var(--ink)">92</text>
+                <text x="398" y="75" font-size="13" fill="var(--ink)">92</text>
+                <text x="398" y="155" font-size="13" fill="var(--ink)">92</text>
+                <text x="398" y="235" font-size="13" fill="var(--ink)">92</text>
+                <text x="398" y="285" font-size="13" fill="var(--ink)">23</text>
+              </svg>
+            </div>
+            <figcaption>① 1辺 <math><mn>299</mn></math> の正方形を1個 → 残りは <math><mn>299</mn></math>, <math><mn>92</mn></math> の長方形。② 1辺 <math><mn>92</mn></math> の正方形を3個 → 残りは <math><mn>92</mn></math>, <math><mn>23</mn></math> の長方形。③ 1辺 <math><mn>23</mn></math> の正方形を4個で、ぴったり敷き詰められる。</figcaption>
+          </figure>
+      </section>
+<div class="sec-head"><span class="sec-tag">練習</span><h2>練習 20 ― 最後の正方形と最大公約数</h2><span class="pno">教科書 p.132</span></div>
+<section class="nofig card prob active" id="prob-ren20" data-flow="ren20" data-label="練習20（最後の正方形）" data-final="答え">
+<div class="prob-head"><span class="prob-tag">練習 20</span><div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div><span class="prob-state">ヒント 0 / 2</span></div>
+<p class="prob-q">③で最後に敷き詰められた正方形の1辺の長さ <math><mn>23</mn></math> が上の問題の答えである。<math><mn>23</mn></math> は、<math><mn>391</mn></math> と <math><mn>299</mn></math> の最大公約数であることを確かめよ。</p>
+<div class="step hint"><h3>ヒント 1 ― 23 が公約数であること</h3><p><math><mn>391</mn><mo>=</mo><mn>23</mn><mo>·</mo><mn>17</mn></math>、<math><mn>299</mn><mo>=</mo><mn>23</mn><mo>·</mo><mn>13</mn></math> と計算できるね。だから <math><mn>23</mn></math> は <math><mn>391</mn></math> と <math><mn>299</mn></math> の公約数だよ。</p></div>
+<div class="step hint"><h3>ヒント 2 ― もっと大きい公約数はないこと</h3><p>公約数は、<math><mn>391</mn><mo>=</mo><mn>23</mn><mo>·</mo><mn>17</mn></math> の <math><mn>17</mn></math> と、<math><mn>299</mn><mo>=</mo><mn>23</mn><mo>·</mo><mn>13</mn></math> の <math><mn>13</mn></math> の公約数でもなければならない。<math><mn>17</mn></math> と <math><mn>13</mn></math> はどちらも素数で、互いに素だね。</p></div>
+<div class="step answer"><h3>答え ― 練習 20</h3><p class="big"><math><mn>391</mn><mo>=</mo><mn>23</mn><mo>·</mo><mn>17</mn></math>、<math><mn>299</mn><mo>=</mo><mn>23</mn><mo>·</mo><mn>13</mn></math> で、<math><mn>17</mn></math> と <math><mn>13</mn></math> は互いに素だから、最大公約数は <math><mn>23</mn></math></p><p>敷き詰めの操作で最後に現れた正方形の1辺が、そのまま最大公約数になるんだね。この操作を割り算の言葉で書いたものが、次のユークリッドの互除法だよ。</p></div>
+<p class="prob-done">敷き詰めの最後の正方形が、最大公約数と一致したね。</p></section>
+<div class="sec-head"><span class="sec-tag">解説 2</span><h2>ユークリッドの互除法</h2><span class="pno">教科書 p.133</span></div>
+<section class="card">
+        <div class="def">
+          <p><b>ユークリッドの互除法</b></p>
+          <p>自然数 <math><mi>a</mi></math>, <math><mi>b</mi></math> について、<math><mi>a</mi></math> を <math><mi>b</mi></math> で割ったときの余りを <math><mi>r</mi></math> とすると、<math><mi>a</mi></math> と <math><mi>b</mi></math> の最大公約数は、<math><mi>b</mi></math> と <math><mi>r</mi></math> の最大公約数に等しい。</p>
+        </div>
+        <p>この定理を繰り返し用いると、2つの整数の最大公約数を求めることができる。これを<span class="key">ユークリッドの互除法</span>（単に互除法ともいう）といい、例9の互除法は、前ページの敷き詰めの操作と対応しているよ。割り算を繰り返すと余りは小さくなっていき、余りは <math><mn>0</mn></math> 以上だから、いずれ余りは <math><mn>0</mn></math> になる。余りが <math><mn>0</mn></math> になったときの割る数が、最大公約数だね。</p>
+      </section>
+<div class="sec-head"><span class="sec-tag">例題</span><h2>例 9 ― 391 と 299 の最大公約数</h2><span class="pno">教科書 p.133</span></div>
+<section class="nofig card prob" id="prob-rei9" data-flow="rei9" data-label="例9（ユークリッドの互除法）" data-final="答え">
+<div class="prob-head"><span class="prob-tag">例 9</span><div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div><span class="prob-state">ヒント 0 / 2</span></div>
+<p class="prob-q"><math><mn>391</mn></math>, <math><mn>299</mn></math> の最大公約数を、ユークリッドの互除法で求めよう。</p>
+<div class="step hint"><h3>ヒント 1 ― 敷き詰めと対応させる</h3><p>① <math><mn>391</mn><mo>=</mo><mn>299</mn><mo>·</mo><mn>1</mn><mo>+</mo><mn>92</mn></math> ― だから、<math><mn>391</mn></math> と <math><mn>299</mn></math> の最大公約数は、<math><mn>299</mn></math> と <math><mn>92</mn></math> の最大公約数に等しい。余り <math><mn>92</mn></math> は、敷き詰めで残った長方形の短い辺だね。</p></div>
+<div class="step hint"><h3>ヒント 2 ― 繰り返す</h3><p>② <math><mn>299</mn><mo>=</mo><mn>92</mn><mo>·</mo><mn>3</mn><mo>+</mo><mn>23</mn></math> ― 商の <math><mn>3</mn></math> は、1辺 <math><mn>92</mn></math> の正方形が3個入ったことに対応するよ。次は <math><mn>92</mn></math> を <math><mn>23</mn></math> で割ろう。</p></div>
+<div class="step answer"><h3>答え ― 例 9</h3><p class="big"><math><mn>23</mn></math></p><p>③ <math><mn>92</mn><mo>=</mo><mn>23</mn><mo>·</mo><mn>4</mn><mo>+</mo><mn>0</mn></math> で余りが <math><mn>0</mn></math> になったから、最大公約数は割る数の <math><mn>23</mn></math> だね。練習20の結果と一致したよ。</p></div>
+<p class="prob-done">互除法の商は、敷き詰められる正方形の個数に対応しているんだね。</p></section>
+<div class="sec-head"><span class="sec-tag">練習</span><h2>練習 21 ― 互除法で最大公約数</h2><span class="pno">教科書 p.133</span></div>
+<section class="nofig card prob" id="prob-ren21" data-flow="ren21" data-label="練習21（ユークリッドの互除法）" data-final="答え">
+<div class="prob-head"><span class="prob-tag">練習 21</span><div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div><span class="prob-state">ヒント 0 / 2</span></div>
+<p class="prob-q">次の2つの整数の最大公約数を、互除法を用いて求めよ。(1) <math><mn>629</mn></math>, <math><mn>259</mn></math>　(2) <math><mn>841</mn></math>, <math><mn>377</mn></math>　(3) <math><mn>1463</mn></math>, <math><mn>304</mn></math></p>
+<div class="step hint"><h3>ヒント 1 ― (1) の進め方</h3><p><math><mn>629</mn><mo>=</mo><mn>259</mn><mo>·</mo><mn>2</mn><mo>+</mo><mn>111</mn></math>、<math><mn>259</mn><mo>=</mo><mn>111</mn><mo>·</mo><mn>2</mn><mo>+</mo><mn>37</mn></math> と進むよ。次は <math><mn>111</mn></math> を <math><mn>37</mn></math> で割ってみよう。</p></div>
+<div class="step hint"><h3>ヒント 2 ― (2)(3) の方針</h3><p>(2) は <math><mn>841</mn><mo>=</mo><mn>377</mn><mo>·</mo><mn>2</mn><mo>+</mo><mn>87</mn></math> から。(3) は割り算が4回ほど必要だよ。余りが <math><mn>0</mn></math> になるまで、焦らず続けよう。</p></div>
+<div class="step answer"><h3>答え ― 練習 21</h3><p class="big">(1) <math><mn>37</mn></math>　(2) <math><mn>29</mn></math>　(3) <math><mn>19</mn></math></p><p>(1) <math><mn>111</mn><mo>=</mo><mn>37</mn><mo>·</mo><mn>3</mn><mo>+</mo><mn>0</mn></math> となって <math><mn>37</mn></math> だね。(2) <math><mn>377</mn><mo>=</mo><mn>87</mn><mo>·</mo><mn>4</mn><mo>+</mo><mn>29</mn></math>、<math><mn>87</mn><mo>=</mo><mn>29</mn><mo>·</mo><mn>3</mn><mo>+</mo><mn>0</mn></math> となって <math><mn>29</mn></math> だね。(3) <math><mn>1463</mn><mo>=</mo><mn>304</mn><mo>·</mo><mn>4</mn><mo>+</mo><mn>247</mn></math>、<math><mn>304</mn><mo>=</mo><mn>247</mn><mo>·</mo><mn>1</mn><mo>+</mo><mn>57</mn></math>、<math><mn>247</mn><mo>=</mo><mn>57</mn><mo>·</mo><mn>4</mn><mo>+</mo><mn>19</mn></math>、<math><mn>57</mn><mo>=</mo><mn>19</mn><mo>·</mo><mn>3</mn><mo>+</mo><mn>0</mn></math> で <math><mn>19</mn></math> だね。</p></div>
+<p class="prob-done">大きな数の最大公約数も、互除法なら素因数分解なしで求まるね。</p></section>
+<div class="sec-head"><span class="sec-tag">解説 3</span><h2>互除法と無理数</h2><span class="pno">教科書 p.134</span></div>
+<section class="card">
+        <p>実数のうち、有理数でない数を<span class="key">無理数</span>という。たとえば <math><msqrt><mn>2</mn></msqrt></math> は無理数である。ここまでは長方形や正方形の辺の長さを整数としていたが、これを有理数、無理数の範囲にまで広げて、<math><msqrt><mn>2</mn></msqrt></math> が無理数であることを証明してみよう。</p>
+        <p>まず、2辺の長さがともに有理数である長方形に、1辺の長さができるだけ大きい正方形をすき間なく敷き詰めることを考えよう。ここでは、2辺の長さが <math><mfrac><mn>17</mn><mn>13</mn></mfrac></math>, <math><mn>1</mn></math> である長方形について考える。</p>
+        <p>この長方形を <math><mn>13</mn></math> 倍に拡大すると、2辺の長さはそれぞれ自然数 <math><mn>17</mn></math>, <math><mn>13</mn></math> になる。このとき、132ページと同じように考えると、1種類の正方形で敷き詰められるから、もとの大きさの長方形も1種類の正方形で敷き詰めることができるんだ。</p>
+        <figure>
+            <div class="figbox">
+              <svg viewBox="0 0 420 330" role="img" aria-label="13倍に拡大した17かける13の長方形を1辺1の正方形で敷き詰めた図" style="max-width:420px">
+                <rect x="40" y="30" width="340" height="260" fill="var(--surface2)"></rect>
+                <line x1="40" y1="30" x2="40" y2="290" stroke="var(--line)" stroke-width="1"></line><line x1="60" y1="30" x2="60" y2="290" stroke="var(--line)" stroke-width="1"></line><line x1="80" y1="30" x2="80" y2="290" stroke="var(--line)" stroke-width="1"></line><line x1="100" y1="30" x2="100" y2="290" stroke="var(--line)" stroke-width="1"></line><line x1="120" y1="30" x2="120" y2="290" stroke="var(--line)" stroke-width="1"></line><line x1="140" y1="30" x2="140" y2="290" stroke="var(--line)" stroke-width="1"></line><line x1="160" y1="30" x2="160" y2="290" stroke="var(--line)" stroke-width="1"></line><line x1="180" y1="30" x2="180" y2="290" stroke="var(--line)" stroke-width="1"></line><line x1="200" y1="30" x2="200" y2="290" stroke="var(--line)" stroke-width="1"></line><line x1="220" y1="30" x2="220" y2="290" stroke="var(--line)" stroke-width="1"></line><line x1="240" y1="30" x2="240" y2="290" stroke="var(--line)" stroke-width="1"></line><line x1="260" y1="30" x2="260" y2="290" stroke="var(--line)" stroke-width="1"></line><line x1="280" y1="30" x2="280" y2="290" stroke="var(--line)" stroke-width="1"></line><line x1="300" y1="30" x2="300" y2="290" stroke="var(--line)" stroke-width="1"></line><line x1="320" y1="30" x2="320" y2="290" stroke="var(--line)" stroke-width="1"></line><line x1="340" y1="30" x2="340" y2="290" stroke="var(--line)" stroke-width="1"></line><line x1="360" y1="30" x2="360" y2="290" stroke="var(--line)" stroke-width="1"></line><line x1="380" y1="30" x2="380" y2="290" stroke="var(--line)" stroke-width="1"></line><line x1="40" y1="30" x2="380" y2="30" stroke="var(--line)" stroke-width="1"></line><line x1="40" y1="50" x2="380" y2="50" stroke="var(--line)" stroke-width="1"></line><line x1="40" y1="70" x2="380" y2="70" stroke="var(--line)" stroke-width="1"></line><line x1="40" y1="90" x2="380" y2="90" stroke="var(--line)" stroke-width="1"></line><line x1="40" y1="110" x2="380" y2="110" stroke="var(--line)" stroke-width="1"></line><line x1="40" y1="130" x2="380" y2="130" stroke="var(--line)" stroke-width="1"></line><line x1="40" y1="150" x2="380" y2="150" stroke="var(--line)" stroke-width="1"></line><line x1="40" y1="170" x2="380" y2="170" stroke="var(--line)" stroke-width="1"></line><line x1="40" y1="190" x2="380" y2="190" stroke="var(--line)" stroke-width="1"></line><line x1="40" y1="210" x2="380" y2="210" stroke="var(--line)" stroke-width="1"></line><line x1="40" y1="230" x2="380" y2="230" stroke="var(--line)" stroke-width="1"></line><line x1="40" y1="250" x2="380" y2="250" stroke="var(--line)" stroke-width="1"></line><line x1="40" y1="270" x2="380" y2="270" stroke="var(--line)" stroke-width="1"></line><line x1="40" y1="290" x2="380" y2="290" stroke="var(--line)" stroke-width="1"></line>
+                <rect x="40" y="30" width="340" height="260" fill="none" stroke="var(--ink-soft)" stroke-width="1.8"></rect>
+                <rect x="40" y="30" width="20" height="20" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.8"></rect>
+                <text x="210" y="20" text-anchor="middle" font-size="14" fill="var(--ink)">17</text>
+                <text x="24" y="165" text-anchor="middle" font-size="14" fill="var(--ink)" transform="rotate(-90 24 165)">13</text>
+                <text x="210" y="318" text-anchor="middle" font-size="13" fill="var(--ink-soft)">13 倍に拡大した長方形。1 マスが、もとの長方形での 1/13 の正方形</text>
+              </svg>
+            </div>
+          </figure>
+      </section>
+<div class="sec-head"><span class="sec-tag">練習</span><h2>練習 22 ― 分数の辺の長方形</h2><span class="pno">教科書 p.134</span></div>
+<section class="nofig card prob" id="prob-ren22" data-flow="ren22" data-label="練習22（有理数の辺）" data-final="答え">
+<div class="prob-head"><span class="prob-tag">練習 22</span><div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div><span class="prob-state">ヒント 0 / 2</span></div>
+<p class="prob-q">2辺の長さが <math><mfrac><mn>17</mn><mn>13</mn></mfrac></math>, <math><mn>1</mn></math> である長方形にすき間なく敷き詰めることができる、最も大きい正方形の1辺の長さを求めよ。</p>
+<div class="step hint"><h3>ヒント 1 ― 13倍に拡大して考える</h3><p><math><mn>13</mn></math> 倍に拡大した <math><mn>17</mn></math>, <math><mn>13</mn></math> の長方形で考えるよ。互除法では <math><mn>17</mn><mo>=</mo><mn>13</mn><mo>·</mo><mn>1</mn><mo>+</mo><mn>4</mn></math>、<math><mn>13</mn><mo>=</mo><mn>4</mn><mo>·</mo><mn>3</mn><mo>+</mo><mn>1</mn></math>、<math><mn>4</mn><mo>=</mo><mn>1</mn><mo>·</mo><mn>4</mn></math> だから、敷き詰められる正方形の1辺は、拡大した世界では <math><mn>1</mn></math> だね。</p></div>
+<div class="step hint"><h3>ヒント 2 ― もとの大きさに戻す</h3><p>拡大した世界の <math><mn>1</mn></math> は、もとの世界では <math><mn>13</mn></math> 分の1。つまり、もとの長方形では1辺が <math><mfrac><mn>1</mn><mn>13</mn></mfrac></math> の正方形で敷き詰められるよ。これより大きい正方形では、両方の辺を割り切れないね。</p></div>
+<div class="step answer"><h3>答え ― 練習 22</h3><p class="big"><math display="block"><mfrac><mn>1</mn><mn>13</mn></mfrac></math></p><p>分数の辺でも、「拡大して整数の互除法に帰着させる」と考えればよいんだね。</p></div>
+<p class="prob-done">拡大・縮小の考え方が、有理数の場合のカギだね。</p></section>
+<div class="sec-head"><span class="sec-tag">練習</span><h2>練習 23 ― 2つの分数の辺</h2><span class="pno">教科書 p.134</span></div>
+<section class="nofig card prob" id="prob-ren23" data-flow="ren23" data-label="練習23（有理数の辺）" data-final="答え">
+<div class="prob-head"><span class="prob-tag">練習 23</span><div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div><span class="prob-state">ヒント 0 / 2</span></div>
+<p class="prob-q">2辺の長さが <math><mfrac><mn>39</mn><mn>10</mn></mfrac></math>, <math><mfrac><mn>3</mn><mn>2</mn></mfrac></math> である長方形にすき間なく敷き詰めることができる、最も大きい正方形の1辺の長さを求めよ。</p>
+<div class="step hint"><h3>ヒント 1 ― 通分して拡大する</h3><p>分母の最小公倍数 <math><mn>10</mn></math> 倍に拡大すると、2辺は <math><mn>39</mn></math> と <math><mn>15</mn></math>（<math><mfrac><mn>3</mn><mn>2</mn></mfrac><mo>×</mo><mn>10</mn><mo>=</mo><mn>15</mn></math>）になるよ。整数の互除法に帰着させよう。</p></div>
+<div class="step hint"><h3>ヒント 2 ― 39 と 15 の互除法</h3><p><math><mn>39</mn><mo>=</mo><mn>15</mn><mo>·</mo><mn>2</mn><mo>+</mo><mn>9</mn></math>、<math><mn>15</mn><mo>=</mo><mn>9</mn><mo>·</mo><mn>1</mn><mo>+</mo><mn>6</mn></math>、<math><mn>9</mn><mo>=</mo><mn>6</mn><mo>·</mo><mn>1</mn><mo>+</mo><mn>3</mn></math>、<math><mn>6</mn><mo>=</mo><mn>3</mn><mo>·</mo><mn>2</mn></math> と進むよ。拡大した世界での答えは <math><mn>3</mn></math> だね。もとの世界に戻そう。</p></div>
+<div class="step answer"><h3>答え ― 練習 23</h3><p class="big"><math display="block"><mfrac><mn>3</mn><mn>10</mn></mfrac></math></p><p><math><mn>10</mn></math> 倍に拡大した世界での <math><mn>3</mn></math> は、もとの世界では <math><mfrac><mn>3</mn><mn>10</mn></mfrac></math> だね。</p></div>
+<p class="prob-done">分母の最小公倍数で拡大するのがコツだね。</p></section>
+<div class="sec-head"><span class="sec-tag">解説 4</span><h2>√2 が無理数であること</h2><span class="pno">教科書 p.135</span></div>
+<section class="card">
+        <p>2辺の長さが <math><mn>1</mn></math>, <math><msqrt><mn>2</mn></msqrt></math> の長方形については、同じ操作をしても、<b>いつまでも最初の長方形と相似である長方形が出てくる</b>。つまり、敷き詰めは永遠に終わらないんだ。</p>
+        <figure>
+            <div class="figbox">
+              <svg viewBox="0 0 400 290" role="img" aria-label="2辺が1とルート2の長方形ABCDに正方形を敷き詰めた図" style="max-width:400px">
+                <rect x="70" y="40" width="170" height="170" fill="#d96f5a" fill-opacity="0.25"></rect>
+                <rect x="240" y="40" width="70" height="70" fill="#5a86d9" fill-opacity="0.30"></rect>
+                <rect x="240" y="110" width="70" height="70" fill="#5a86d9" fill-opacity="0.30"></rect>
+                <rect x="70" y="40" width="240" height="170" fill="none" stroke="var(--ink)" stroke-width="1.6"></rect>
+                <line x1="240" y1="40" x2="240" y2="210" stroke="var(--ink)" stroke-width="1.2"></line>
+                <line x1="240" y1="110" x2="310" y2="110" stroke="var(--ink)" stroke-width="1.2"></line>
+                <line x1="240" y1="180" x2="310" y2="180" stroke="var(--ink)" stroke-width="1.2"></line>
+                <text x="58" y="36" font-size="15" fill="var(--ink)">A</text>
+                <text x="316" y="36" font-size="15" fill="var(--ink)">D</text>
+                <text x="58" y="228" font-size="15" fill="var(--ink)">B</text>
+                <text x="316" y="228" font-size="15" fill="var(--ink)">C</text>
+                <text x="228" y="36" font-size="15" fill="var(--ink)">E</text>
+                <text x="228" y="114" font-size="15" fill="var(--ink)">F</text>
+                <text x="228" y="184" font-size="15" fill="var(--ink)">G</text>
+                <text x="234" y="228" font-size="15" fill="var(--ink)">H</text>
+                <text x="316" y="114" font-size="15" fill="var(--ink)">I</text>
+                <text x="316" y="184" font-size="15" fill="var(--ink)">J</text>
+                <text x="190" y="24" text-anchor="middle" font-size="14" fill="var(--ink)">√2</text>
+                <text x="48" y="130" text-anchor="middle" font-size="14" fill="var(--ink)">1</text>
+                <text x="155" y="232" text-anchor="middle" font-size="14" fill="var(--ink)">1</text>
+                <text x="278" y="232" text-anchor="middle" font-size="13" fill="var(--ink)">√2−1</text>
+                <text x="322" y="80" font-size="13" fill="var(--ink)">√2−1</text>
+                <text x="322" y="150" font-size="13" fill="var(--ink)">√2−1</text>
+              </svg>
+            </div>
+            <figcaption>長方形 <math><mi>A</mi><mi>B</mi><mi>C</mi><mi>D</mi></math>（<math><mi>A</mi><mi>B</mi><mo>=</mo><mn>1</mn></math>、<math><mi>A</mi><mi>D</mi><mo>=</mo><msqrt><mn>2</mn></msqrt></math>）。左に1辺 <math><mn>1</mn></math> の正方形 <math><mi>A</mi><mi>B</mi><mi>H</mi><mi>E</mi></math>、右に1辺 <math><msqrt><mn>2</mn></msqrt><mo>−</mo><mn>1</mn></math> の正方形が2つ入り、下に長方形 <math><mi>G</mi><mi>J</mi><mi>C</mi><mi>H</mi></math> が残る。</figcaption>
+          </figure>
+        <p>もし <math><msqrt><mn>2</mn></msqrt></math> が有理数なら、辺の長さが <math><mn>1</mn></math>, <math><msqrt><mn>2</mn></msqrt></math> の長方形は、適当に拡大すれば辺の長さがともに自然数の長方形になり、敷き詰めはいつか終わるはずだね。しかし実際には終わらない。だから <math><msqrt><mn>2</mn></msqrt></math> は有理数ではない、すなわち無理数であることが分かるんだ。</p>
+      </section>
+<div class="sec-head"><span class="sec-tag">練習</span><h2>練習 24 ― 相似な長方形を見つける</h2><span class="pno">教科書 p.135</span></div>
+<section class="nofig card prob" id="prob-ren24" data-flow="ren24" data-label="練習24（相似な長方形）" data-final="判定法">
+<div class="prob-head"><span class="prob-tag think">考え方</span><div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot ans"></span></div><span class="prob-state">ステップ 0 / 3</span></div>
+<p class="prob-q">右上の図で、最初の長方形 <math><mi>A</mi><mi>B</mi><mi>C</mi><mi>D</mi></math> と相似である長方形を見つけ、相似であることを証明せよ。</p>
+<div class="step hint"><h3>ステップ 1 ― 候補は F, I, C, H の長方形</h3><p>右の帯の途中から下までを切り取った、長方形 <math><mi>F</mi><mi>I</mi><mi>C</mi><mi>H</mi></math> に注目しよう。辺 <math><mi>F</mi><mi>I</mi></math> は帯の幅、辺 <math><mi>I</mi><mi>C</mi></math> は「全体の高さ <math><mn>1</mn></math> から、1つ目の正方形の高さ <math><msqrt><mn>2</mn></msqrt><mo>−</mo><mn>1</mn></math> を引いたもの」だね。</p></div>
+<div class="step hint"><h3>ステップ 2 ― 2辺の長さを求める</h3><p><math><mi>F</mi><mi>I</mi><mo>=</mo><msqrt><mn>2</mn></msqrt><mo>−</mo><mn>1</mn></math>、<math><mi>I</mi><mi>C</mi><mo>=</mo><mn>1</mn><mo>−</mo><mo>(</mo><msqrt><mn>2</mn></msqrt><mo>−</mo><mn>1</mn><mo>)</mo><mo>=</mo><mn>2</mn><mo>−</mo><msqrt><mn>2</mn></msqrt></math> だね。この2辺の比 <math><mi>F</mi><mi>I</mi><mo>:</mo><mi>I</mi><mi>C</mi></math> を簡単にしてみよう。</p></div>
+<div class="step hint"><h3>ステップ 3 ― 比を比べる</h3><p class="cite"><span class="cite-tag">使う計算</span><math><mn>2</mn><mo>−</mo><msqrt><mn>2</mn></msqrt><mo>=</mo><msqrt><mn>2</mn></msqrt><mo>(</mo><msqrt><mn>2</mn></msqrt><mo>−</mo><mn>1</mn><mo>)</mo></math> ― 右辺を展開すると <math><mn>2</mn><mo>−</mo><msqrt><mn>2</mn></msqrt></math> になることを確かめよう。</p><p>だから <math><mi>F</mi><mi>I</mi><mo>:</mo><mi>I</mi><mi>C</mi><mo>=</mo><mo>(</mo><msqrt><mn>2</mn></msqrt><mo>−</mo><mn>1</mn><mo>)</mo><mo>:</mo><msqrt><mn>2</mn></msqrt><mo>(</mo><msqrt><mn>2</mn></msqrt><mo>−</mo><mn>1</mn><mo>)</mo><mo>=</mo><mn>1</mn><mo>:</mo><msqrt><mn>2</mn></msqrt></math> となるね。もとの長方形の2辺の比は <math><mi>A</mi><mi>B</mi><mo>:</mo><mi>A</mi><mi>D</mi><mo>=</mo><mn>1</mn><mo>:</mo><msqrt><mn>2</mn></msqrt></math> だよ。</p></div>
+<div class="step answer"><h3>まとめ ― 練習 24 の証明</h3><p class="big">長方形 <math><mi>F</mi><mi>I</mi><mi>C</mi><mi>H</mi></math> が、長方形 <math><mi>A</mi><mi>B</mi><mi>C</mi><mi>D</mi></math> と相似である</p><p><math><mi>F</mi><mi>I</mi><mo>:</mo><mi>I</mi><mi>C</mi><mo>=</mo><mn>1</mn><mo>:</mo><msqrt><mn>2</mn></msqrt><mo>=</mo><mi>A</mi><mi>B</mi><mo>:</mo><mi>A</mi><mi>D</mi></math> だから、2つの長方形は相似だね。しかも長方形 <math><mi>F</mi><mi>I</mi><mi>C</mi><mi>H</mi></math> はもとの長方形を縮小したものだから、この中にまた同じ操作が繰り返され、相似な長方形がいつまでも現れる。だから敷き詰めは終わらないんだ。</p></div>
+<p class="prob-done">相似な長方形が繰り返し現れることが、√2 が無理数であることの心臓部だね。</p></section>
+      <!-- ================= まとめ ================= -->
+      <section class="card" id="summaryLock">
+        <p style="margin:0;text-align:center;font-weight:700;color:var(--ink-soft)">「この節のポイント」（まとめ）は、全部の課題のステップを開くと、ここに表示されるよ。</p>
+      </section>
+      <section class="card summary" id="summaryCard" style="display:none">
+        <h2>この節のポイント</h2>
+        <ul>
+<p class="cite"><span class="cite-tag">使う定理</span>ユークリッドの互除法 ― <math><mi>a</mi></math> を <math><mi>b</mi></math> で割った余りが <math><mi>r</mi></math> のとき、<math><mi>a</mi></math> と <math><mi>b</mi></math> の最大公約数は、<math><mi>b</mi></math> と <math><mi>r</mi></math> の最大公約数に等しい。余りが <math><mn>0</mn></math> になったときの割る数が答え。</p>
+          <li>互除法の商は、敷き詰められる正方形の個数に対応する。</li>
+          <li><b>有理数の辺</b>は、分母の最小公倍数で拡大して、整数の互除法に帰着させる。</li>
+          <li>敷き詰めが終わらない（相似な長方形が繰り返し現れる）ことが、<math><msqrt><mn>2</mn></msqrt></math> が無理数であることの証明になる。</li>
+        </ul>
+      </section>
+
+      <!-- ================= フッター ================= -->
+      <footer>
+        <a class="next-btn" href="seisu-6.html">次へ：1次不定方程式 →</a>
+        <div class="foot-btns">
+          <a class="back-btn" href="seisu.html">← 数学A 第3章 自習ページトップに戻る</a>
+          <a class="back-btn" href="index.html">Nanryo mathematics portal に戻る</a>
+        </div>
+        <p class="foot-note">数学A 第3章 数学と人間の活動 ｜ 5 ユークリッドの互除法（教科書 p.132〜135）</p>
+      </footer>
+    </div>
+
+    <!-- ================= 下部固定バー ================= -->
+    <div class="ctrl-bar">
+      <div class="ctrl-inner">
+        <p class="ctrl-label">いまの課題：<b id="ctrlLabel">練習20（最後の正方形）</b>　―　全体の進み具合：<b id="overallText">0 / 19</b></p>
+        <div class="overall" aria-hidden="true"><div class="overall-fill" id="overallFill"></div></div>
+        <div class="ctrl-btns">
+          <button class="btn" id="btnReset" type="button">最初からやり直す</button>
+          <button class="btn btn-next" id="btnNext" type="button">次へ：ヒント1を開く</button>
+        </div>
+      </div>
+    </div>
+
+<script>
+      (function(){
+        "use strict";
+
+        /* ---------- ヒント式フロー ---------- */
+        var flows = {};   // flowId -> {root, steps, dots, stateEl, doneEl, idx, label, hintTotal, finalWord}
+        var order = [];
+        var activeId = null;
+
+        /* 広い画面の2段組み用：問題文と図を左カラム（.qside）にまとめる
+           （狭い画面では素のブロック要素として従来どおり縦に並ぶ） */
+        function buildQside(root){
+          var parts = Array.prototype.slice.call(root.children).filter(function(el){
+            return el.classList.contains('prob-q') || el.tagName === 'FIGURE';
+          });
+          if (!parts.length) return;
+          var qside = document.createElement('div');
+          qside.className = 'qside';
+          root.insertBefore(qside, parts[0]);
+          parts.forEach(function(el){ qside.appendChild(el); });
+        }
+
+        function registerFlow(root){
+          var id = root.getAttribute('data-flow');
+          var steps = Array.prototype.slice.call(root.querySelectorAll(':scope > .step'));
+          /* ステップ群をラッパーに移す。
+             広い画面ではこのラッパーが右カラムとなり、内部だけがスクロールする */
+          if (steps.length){
+            var wrap = document.createElement('div');
+            wrap.className = 'steps-wrap';
+            root.insertBefore(wrap, steps[0]);
+            steps.forEach(function(s){ wrap.appendChild(s); });
+          }
+          /* 単独課題（カード自体がフロー）のときだけ、問題文＋図を左カラムにまとめる
+             （タブ式の小問パネルは右カラム内にあるので対象外） */
+          if (root.tagName === 'SECTION') buildQside(root);
+          var head = root.querySelector(':scope > .prob-head');
+          var dots = head ? Array.prototype.slice.call(head.querySelectorAll('.dot')) : [];
+          var stateEl = head ? head.querySelector('.prob-state') : null;
+          var doneEl = root.querySelector(':scope > .prob-done');
+          flows[id] = {
+            id: id, root: root, steps: steps, dots: dots, stateEl: stateEl,
+            doneEl: doneEl, idx: 0, label: root.getAttribute('data-label') || id,
+            hintTotal: steps.filter(function(s){ return s.classList.contains('hint'); }).length,
+            finalWord: root.getAttribute('data-final') || '解答'
+          };
+          order.push(id);
+        }
+        Array.prototype.slice.call(document.querySelectorAll('[data-flow]')).forEach(registerFlow);
+        /* タブ式課題の外側カード（フロー本体ではない）も、問題文＋図を左カラムにまとめる */
+        Array.prototype.slice.call(document.querySelectorAll('.prob:not([data-flow])')).forEach(buildQside);
+        activeId = order[0];
+
+        var btnNext = document.getElementById('btnNext');
+        var btnReset = document.getElementById('btnReset');
+        var ctrlLabel = document.getElementById('ctrlLabel');
+        var overallText = document.getElementById('overallText');
+        var overallFill = document.getElementById('overallFill');
+        var cards = Array.prototype.slice.call(document.querySelectorAll('.prob'));
+
+        function refreshFlow(f){
+          f.steps.forEach(function(s, i){
+            s.classList.toggle('show', i < f.idx);
+            /* 新しいヒントほど上に来るよう、ステップの表示順を逆転させる */
+            s.style.order = String(10 + (f.steps.length - i));
+          });
+          f.dots.forEach(function(d, i){ d.classList.toggle('on', i < f.idx); });
+          if (f.stateEl){
+            var unit = (f.id === 'k2') ? 'ステップ' : 'ヒント';
+            if (f.idx === 0) f.stateEl.textContent = unit + ' 0 / ' + f.hintTotal;
+            else if (f.idx <= f.hintTotal) f.stateEl.textContent = unit + ' ' + f.idx + ' / ' + f.hintTotal;
+            else f.stateEl.textContent = f.finalWord + 'を表示済み';
+          }
+          if (f.doneEl) f.doneEl.classList.toggle('show', f.idx >= f.steps.length);
+        }
+        function refreshBar(){
+          var f = flows[activeId];
+          ctrlLabel.textContent = f.label;
+          var unit = (f.id === 'k2') ? 'ステップ' : 'ヒント';
+          if (f.idx >= f.steps.length){
+            btnNext.disabled = true;
+            btnNext.textContent = 'ぜんぶ開いたよ ✓';
+          } else if (f.idx === f.hintTotal){
+            btnNext.disabled = false;
+            btnNext.textContent = '次へ：' + f.finalWord + 'を見る';
+          } else {
+            btnNext.disabled = false;
+            btnNext.textContent = '次へ：' + unit + (f.idx + 1) + 'を開く';
+          }
+          /* 全体進捗 */
+          var total = 0, opened = 0;
+          order.forEach(function(id){ total += flows[id].steps.length; opened += flows[id].idx; });
+          overallText.textContent = opened + ' / ' + total;
+          overallFill.style.width = (total ? (opened / total * 100) : 0) + '%';
+          /* まとめは全部開いたときだけ表示（答えが先に漏れないように） */
+          var allDone = total > 0 && opened >= total;
+          document.getElementById('summaryCard').style.display = allDone ? '' : 'none';
+          document.getElementById('summaryLock').style.display = allDone ? 'none' : '';
+          /* アクティブカードの枠 */
+          cards.forEach(function(card){
+            var has = card === f.root || card.contains(f.root);
+            card.classList.toggle('active', has);
+          });
+        }
+        function setActive(id){
+          if (flows[id]) { activeId = id; refreshBar(); }
+        }
+
+        btnNext.addEventListener('click', function(){
+          var f = flows[activeId];
+          if (f.idx >= f.steps.length) return;
+          f.idx += 1;
+          refreshFlow(f);
+          refreshBar();
+          var shown = f.steps[f.idx - 1];
+          if (shown) shown.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        });
+        btnReset.addEventListener('click', function(){
+          var f = flows[activeId];
+          f.idx = 0;
+          refreshFlow(f);
+          refreshBar();
+          var card = f.root;
+          while (card && !(card.classList && card.classList.contains('prob'))) card = card.parentElement;
+          (card || f.root).scrollIntoView({ block: 'start', behavior: 'smooth' });
+        });
+
+        /* カードを触ったら、その課題（表示中の小問）を操作対象にする */
+        cards.forEach(function(card){
+          card.addEventListener('click', function(){
+            if (card.hasAttribute('data-flow')) { setActive(card.getAttribute('data-flow')); return; }
+            var visible = card.querySelector('.tabpanel.show');
+            if (visible) setActive(visible.getAttribute('data-flow'));
+          });
+        });
+
+        /* ---------- タブ切り替え ---------- */
+        Array.prototype.slice.call(document.querySelectorAll('.tabs')).forEach(function(group){
+          var tabs = Array.prototype.slice.call(group.querySelectorAll('.tab'));
+          tabs.forEach(function(tab){
+            tab.addEventListener('click', function(){
+              tabs.forEach(function(t){ t.setAttribute('aria-selected', t === tab ? 'true' : 'false'); });
+              var target = tab.getAttribute('data-tab');
+              var card = group;
+              while (card && !(card.classList && card.classList.contains('prob'))) card = card.parentElement;
+              if (card){
+                Array.prototype.slice.call(card.querySelectorAll('.tabpanel')).forEach(function(p){
+                  p.classList.toggle('show', p.id === 'panel-' + target);
+                });
+              }
+              setActive(target);
+            });
+          });
+        });
+
+        order.forEach(function(id){ refreshFlow(flows[id]); });
+        refreshBar();
+      })();
+    </script>
+
+<script>
+(function(){try{
+  if(/[?&]nocount=1/.test(location.search)){try{localStorage.setItem('np_nocount','1');}catch(e){}}
+  try{if(localStorage.getItem('np_nocount')==='1')return;}catch(e){}
+  var page=location.pathname.split('/').pop()||'index.html';
+  var d=new Date();
+  var day=d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2);
+  var key='np_seen_'+page+'_'+day;var first='1';
+  try{if(localStorage.getItem(key)){first='0';}else{localStorage.setItem(key,'1');}}catch(e){}
+  var img=new Image();
+  img.src='https://script.google.com/macros/s/AKfycbwX7COlhh9f5-mEHop2Dg-PRXDljPye5GvmRg-uom9SWdiqezoSbmRyFwekHesfsAhV/exec'
+    +'?page='+encodeURIComponent(page)
+    +'&title='+encodeURIComponent(document.title)
+    +'&u='+first;
+}catch(e){}})();
+</script>
+  </body>
+</html>
